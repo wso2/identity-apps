@@ -389,6 +389,30 @@ export interface DevPortalNS {
                 };
                 notifications: {
                     updateConfigurations: Notification;
+                    updateEnable: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    updateAccountLockOnCreation: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    updateInternalNotificationManagement: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    updateReCaptcha: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
                 };
                 form: {
                     enable: {
@@ -404,6 +428,7 @@ export interface DevPortalNS {
                         label: string;
                     };
                     verificationLinkExpiryTime: {
+                        hint: string;
                         label: string;
                         placeholder: string;
                         validations: {
@@ -411,6 +436,7 @@ export interface DevPortalNS {
                         };
                     };
                     smsOTPExpiryTime: {
+                        hint: string;
                         label: string;
                         placeholder: string;
                         validations: {
@@ -438,6 +464,30 @@ export interface DevPortalNS {
                 };
                 notifications: {
                     updateConfigurations: Notification;
+                    updateEnableUsernameRecovery: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    updateUsernameRecoveryReCaptcha: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    updateEnableNotificationPasswordRecovery: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    updateNotificationPasswordRecoveryReCaptcha: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
                 };
                 usernameRecovery: {
                     actionTitles: {
@@ -464,7 +514,7 @@ export interface DevPortalNS {
                         enableNotificationBasedRecovery: {
                             label: string;
                         };
-                        enableReCaptchaBasedRecovery: {
+                        enableReCaptchaForNotificationBasedRecovery: {
                             label: string;
                         };
                         enableSecurityQuestionBasedRecovery: {
