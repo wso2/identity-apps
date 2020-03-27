@@ -28,13 +28,33 @@ import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { KeyValue } from "../dynamic-fields";
 
+/**
+ * Prop types for `AddLocalClaims` component
+ */
 interface AddLocalClaimsPropsInterface {
+    /**
+     * Open the modal
+     */
     open: boolean;
+    /**
+     * Handler to be called when the modal is closed
+     */
     onClose: () => void;
-    claimID: string;
+    /**
+     * Function to be called to initiate an update
+     */
     update: () => void;
+    /**
+     * The base URI of the claim
+     */
     claimURIBase: string;
 }
+
+/**
+ * A component that lets you add a local claim
+ * @param {AddLocalClaimsPropsInterface} props
+ * @return {React.ReactElement} component
+ */
 export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.ReactElement => {
 
     const { open, onClose, update, claimURIBase } = props;
@@ -48,6 +68,9 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
 
     const dispatch = useDispatch();
 
+    /**
+     * Submit handler that sends the API request to add the local claim
+     */
     const handleSubmit = () => {
         addLocalClaim(data).then(() => {
             dispatch(addAlert(
@@ -70,21 +93,33 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
         })
     }
 
-    const onSubmitBasicDetails = (dataFromForm, values: Map<string, FormValue>) => {
+    /**
+     * Handler that is called when the `Basic Details` wizard step is completed
+     * @param {Claim} dataFromForm 
+     * @param {Map<string, FormValue>} values
+     */
+    const onSubmitBasicDetails = (dataFromForm: Claim, values: Map<string, FormValue>) => {
         setCurrentWizardStep(1);
         const tempData = { ...data, ...dataFromForm };
         setData(tempData);
         setBasicDetailsData(values);
-        
     }
 
-    const onSubmitMappedAttributes = (dataFromForm, values: KeyValue[]) => {
+    /**
+     * Handler that is called when the `MApped Attributes` step of the wizard is completed
+     * @param {Claim} dataFromForm 
+     * @param {KeyValue[]} values 
+     */
+    const onSubmitMappedAttributes = (dataFromForm: Claim, values: KeyValue[]) => {
         setCurrentWizardStep(2);
         const tempData = { ...data, ...dataFromForm };
         setData(tempData);
         setMappedAttributesData(values);
     }
 
+    /**
+     * An array of objects that contains data of each step of the wizard
+     */
     const STEPS = [
         {
             content: (
@@ -119,6 +154,9 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
         }
     ];
 
+    /**
+     * Moves the wizard to the next step
+     */
     const next = () => {
         switch (currentWizardStep) {
             case 0:
@@ -133,6 +171,9 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
         }
     }
 
+    /**
+     * Moves wizard to teh previous step
+     */
     const previous = () => {
         setCurrentWizardStep(currentWizardStep - 1);
     }
@@ -149,7 +190,10 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
                 Add a Local Claim
             </Modal.Header>
             <Modal.Content className="steps-container">
-                <Steps.Group header="Fill in the following details to create a local claim." current={ currentWizardStep }>
+                <Steps.Group
+                    header="Fill in the following details to create a local claim."
+                    current={ currentWizardStep }
+                >
                     {STEPS.map((step, index) => (
                         <Steps.Step
                             key={ index }

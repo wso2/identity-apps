@@ -34,22 +34,34 @@ export interface Claim {
     properties?: Property[];
 }
 
+/**
+ * Type of userstore-attribute mapping
+ */
 export interface AttributeMapping {
     mappedAttribute: string;
     userstore: string;
 }
 
+/**
+ * Type of additional property key-value pair
+ */
 export interface Property{
     key: string;
     value: string;
 }
 
+/**
+ * Type of claim dialect
+ */
 export interface ClaimDialect {
     id: string;
     dialectURI: string;
     link: Link;
 }
 
+/**
+ * Type of link attribute found in claim dialect objects
+ */
 interface Link {
     href: string;
     rel: string;
@@ -65,11 +77,17 @@ export interface ExternalClaim {
     mappedLocalClaimURI: string;
 }
 
+/**
+ * Captures the external claim addition data
+ */
 export interface AddExternalClaim {
     claimURI: string;
     mappedLocalClaimURI: string;
 }
 
+/**
+ * Type of query params passed when fetching a list
+ */
 export interface ClaimsGetParams {
     limit: number;
     offset: number;

@@ -42,6 +42,7 @@ export const common: CommonNS = {
     delete: "මකන්න",
     description: "විස්තරය",
     deviceModel: "උපාංග ආකෘතිය",
+    done: "සම්පූර්ණයි",
     edit: "සංස්කරණය කරන්න",
     endsWith: "සමඟ අවසන් වේ",
     equals: "සමාන",
@@ -49,6 +50,7 @@ export const common: CommonNS = {
     goBackHome: "නැවත ප්\u200Dරධාන පිටුවට",
     help: "උපකාර",
     hidePassword: "මුරපදය සඟවන්න",
+    identityProviders: "හැඳුනුම්පත් සපයන්නා",
     initiator: "ආරම්භකයා",
     ipAddress: "ip ලිපිනය",
     lastAccessed: "අවසන් ප්\u200Dරවේශය",
@@ -56,6 +58,7 @@ export const common: CommonNS = {
     loginTime: "පිවිසුම් කාලය",
     logout: "වරන්න",
     more: "තව",
+    myAccount: "පුද්ගලික ගිණුම",
     name: "නම",
     operatingSystem: "මෙහෙයුම් පද්ධතිය",
     operations: "මෙහෙයුම්",
@@ -89,5 +92,6 @@ export const common: CommonNS = {
     terminateSession: "සැසිය අවසන් කරන්න",
     type: "වර්ගය",
     update: "යාවත්කාලීන කරන්න",
-    user: "පරිශීලක"
+    user: "පරිශීලක",
+    verify: "සත්‍යාපනය කරන්න"
 };

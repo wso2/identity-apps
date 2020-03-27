@@ -22,6 +22,7 @@ import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { Grid, Label } from "semantic-ui-react";
 import { MainApplicationInterface } from "../../../models";
 
+
 /**
  * Proptypes for the wizard summary component.
  */
@@ -56,7 +57,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         }
 
         onSubmit(summary);
-    }, [ triggerSubmit ]);
+    }, [triggerSubmit]);
 
     return (
         <Grid className="wizard-summary">
@@ -76,6 +77,9 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                         ) }
                         { summary?.inboundProtocolConfiguration?.oidc?.publicClient && (
                             <Label className="info-label">Public</Label>
+                        ) }
+                        { summary?.inboundProtocolConfiguration?.oidc?.refreshToken?.renewRefreshToken && (
+                            <Label className="info-label">Renew RefreshToken</Label>
                         ) }
                         { summary?.description && (
                             <div className="description">{ summary.description }</div>

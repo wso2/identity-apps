@@ -16,13 +16,14 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement } from "react";
 import { Modal, ModalHeaderProps } from "semantic-ui-react";
+import React, { FunctionComponent, ReactElement } from "react";
 
 /**
  * Confirmation modal header component.
  *
  * @param {ModalHeaderProps} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
 export const ConfirmationModalHeader: FunctionComponent<ModalHeaderProps> = (

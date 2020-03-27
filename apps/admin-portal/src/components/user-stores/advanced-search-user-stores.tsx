@@ -21,7 +21,8 @@ import { Field, Forms } from "@wso2is/forms";
 import { AdvancedSearch } from "@wso2is/react-components";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Form, Grid } from "semantic-ui-react";
+import { Divider, Form, Grid } from "semantic-ui-react";
+import { AdvancedSearchIcons } from "../../configs";
 
 /**
  * Filter attribute field identifier.
@@ -74,13 +75,10 @@ export const UserStoresSearch: FunctionComponent<LocalClaimsSearchPropsInterface
     /**
      * Filter attribute options.
      *
-     * @remarks
-     * Only filter by `name` is supported in the current API implementation.
-     *
      * @type {({text: string; value: string})[]}
      */
     const filterAttributeOptions = [
-        { value: "displayName", text: t("common:name") },
+        { value: "name", text: t("common:name") },
         { value: "description", text: "Description" },
     ];
 
@@ -93,7 +91,7 @@ export const UserStoresSearch: FunctionComponent<LocalClaimsSearchPropsInterface
         { value: "sw", text: t("common:startsWith") },
         { value: "ew", text: t("common:endsWith") },
         { value: "co", text: t("common:contains") },
-        { value: "eq", text: t("common:equals") },
+        { value: "eq", text: t("common:equals") }
     ];
 
     /**
@@ -146,6 +144,7 @@ export const UserStoresSearch: FunctionComponent<LocalClaimsSearchPropsInterface
         <AdvancedSearch
             aligned="left"
             clearButtonPopupLabel={ t("devPortal:components.applications.search.popups.clear") }
+            clearIcon={ AdvancedSearchIcons.clear }
             defaultSearchStrategy={ DEFAULT_SEARCH_STRATEGY }
             dropdownTriggerPopupLabel={ t("devPortal:components.applications.search.popups.dropdown") }
             hintActionKeys={ t("devPortal:components.applications.search.hints.querySearch.actionKeys") }
@@ -220,10 +219,7 @@ export const UserStoresSearch: FunctionComponent<LocalClaimsSearchPropsInterface
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
-                            <Field
-                                hidden={ true }
-                                type="divider"
-                            />
+                            <Divider hidden />
                             <Form.Group inline={ true }>
                                 <Field
                                     size="small"

@@ -17,9 +17,9 @@
  *
  */
 
+import { RouteInterface } from "@wso2is/core/models";
 import { StoryCategories } from "../../hierarchy";
 import { StoryMetaInterface } from "../../models";
-import { RouteInterface } from "@wso2is/core/models";
 
 export const meta: StoryMetaInterface = {
     components: [ "SidePanel" ],
@@ -27,14 +27,14 @@ export const meta: StoryMetaInterface = {
     stories: [
         {
             description: "Default side panel view without any child items.",
-            title: "Default",
+            title: "Default"
         },
         {
             description: "Side panel view with child items.",
-            title: "With child items",
+            title: "With child items"
         }
     ],
-    title: `${ StoryCategories.COMPONENTS }/Side Panel`,
+    title: `${ StoryCategories.COMPONENTS }/Side Panel`
 };
 
 export const ROUTES: RouteInterface[] = [

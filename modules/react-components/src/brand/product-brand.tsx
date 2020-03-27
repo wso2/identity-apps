@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import React, { PropsWithChildren, ReactElement } from "react";
 import classNames from "classnames";
-import React, { PropsWithChildren } from "react";
 
 /**
  * Product brand component Prop types.
  */
-interface ProductBrandPropsInterface {
+export interface ProductBrandPropsInterface {
     className?: string;
     logo?: any;
     name: string;
@@ -33,11 +33,11 @@ interface ProductBrandPropsInterface {
  * Product Brand component.
  *
  * @param {React.PropsWithChildren<ProductBrandPropsInterface>} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
 export const ProductBrand: React.FunctionComponent<PropsWithChildren<ProductBrandPropsInterface>> = (
     props: PropsWithChildren<ProductBrandPropsInterface>
-): JSX.Element => {
+): ReactElement => {
 
     const {
         children,
