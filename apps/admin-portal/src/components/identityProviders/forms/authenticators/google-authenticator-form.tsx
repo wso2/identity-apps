@@ -79,13 +79,13 @@ export const GoogleAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
                     key: GoogleAuthenticatorProperties.ADDITIONAL_QUERY_PARAMETERS,
                     value: values.get(GoogleAuthenticatorProperties.ADDITIONAL_QUERY_PARAMETERS)
                 }
-            ],
+            ]
         };
 
         return {
             ...formValues,
             isDefault: initialValues?.isDefault,
-            isEnabled: initialValues?.isEnabled,
+            isEnabled: initialValues?.isEnabled
         };
     };
 
