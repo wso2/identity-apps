@@ -25,21 +25,21 @@ export const meta: StoryMetaInterface = {
     description: "Component to render headings.",
     stories: [
         {
-            description: "Default heading.",
-            title: "Default",
+            description: "Default heading appearance.",
+            title: "Default"
         },
         {
             description: "Headings used to give emphasis to text content on a page.",
-            title: "Page Headings",
+            title: "Page Headings"
         },
         {
             description: "Heading sized based on Semantic UI sizing standards.",
-            title: "Heading Sizes",
+            title: "Heading Sizes"
         },
         {
             description: "Long heading limited using the ellipsis prop.",
-            title: "Ellipsis",
+            title: "Ellipsis"
         }
     ],
-    title: `${ StoryCategories.COMPONENTS }/Heading`,
+    title: `${ StoryCategories.COMPONENTS }/Heading`
 };

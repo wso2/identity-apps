@@ -25,25 +25,29 @@ export const meta: StoryMetaInterface = {
     description: "Alert component to show success, error, warning and info notifications on the front end dashboards.",
     stories: [
         {
+            description: "Displays all the alert variations.",
+            title: "All variations"
+        },
+        {
             description: "Alert to show success messages.",
-            title: "Success",
+            title: "Success Alert"
         },
         {
             description: "Alert to show error messages.",
-            title: "Error"
+            title: "Error Alert"
         },
         {
             description: "Alert to show warning messages.",
-            title: "Warning"
+            title: "Warning Alert"
         },
         {
             description: "Alert to show info messages.",
-            title: "Info"
+            title: "Info Alert"
         },
         {
             description: "Play around with different props to dynamically interact with the alert component.",
-            title: "Playground"
+            title: "Playground Alert"
         }
     ],
-    title: StoryCategories.COMPONENTS + "/Alert",
+    title: StoryCategories.COMPONENTS + "/Alert"
 };
