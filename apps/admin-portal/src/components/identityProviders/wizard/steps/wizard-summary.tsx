@@ -67,12 +67,14 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                 eachProp.key === eachPropMetadata.key);
             if (eachProp.value !== undefined) {
                 return (
-                    <Grid.Row className="summary-field" columns={ 2 }>
+                    <Grid.Row className="summary-field" columns={ 2 } key={ eachProp?.key }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">{propertyMetadata?.displayName}</div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                            <div className="value url">{eachProp?.value.toString()}</div>
+                            <div className="value url">{
+                                eachProp?.value.toString() === "" ? " - " : eachProp?.value
+                            }</div>
                         </Grid.Column>
                     </Grid.Row>
                 )

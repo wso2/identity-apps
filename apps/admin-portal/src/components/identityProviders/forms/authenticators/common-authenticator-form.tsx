@@ -137,7 +137,7 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
     const getAuthenticatorPropertyFields = () => {
         return initialValues.properties?.map((eachProp: AuthenticatorProperty) => {
             return (
-                <Grid.Row columns={ 1 }>
+                <Grid.Row columns={ 1 } key={ eachProp?.key }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         {getPropertyField(eachProp)}
                     </Grid.Column>
