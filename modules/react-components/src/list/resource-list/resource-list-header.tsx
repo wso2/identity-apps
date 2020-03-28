@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import classNames from "classnames";
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Grid, List, SemanticWIDTHS } from "semantic-ui-react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import classNames from "classnames";
 import { ResourceListHeaderCellPropsInterface } from "./resource-list-header-cell";
 
 /**
  * Proptypes for the resource list header component.
  */
-interface ResourceListHeaderPropsInterface {
+export interface ResourceListHeaderPropsInterface {
     /**
      * Additional CSS classes.
      */
@@ -35,6 +35,7 @@ interface ResourceListHeaderPropsInterface {
  * Resource list header component.
  *
  * @param {ResourceListHeaderPropsInterface} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
 export const ResourceListHeader: FunctionComponent<PropsWithChildren<ResourceListHeaderPropsInterface>> = (

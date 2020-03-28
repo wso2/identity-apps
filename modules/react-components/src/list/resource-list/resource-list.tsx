@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
 import { List , ListProps } from "semantic-ui-react";
-import { ResourceListItem } from "./resource-list-item";
+import React, { FunctionComponent, ReactElement } from "react";
+import classNames from "classnames";
 import { ResourceListHeader } from "./resource-list-header";
 import { ResourceListHeaderCell } from "./resource-list-header-cell";
+import { ResourceListItem } from "./resource-list-item";
 
 /**
  * Interface for the resource tab sub component.
  */
-interface ResourceListSubComponentsInterface {
+export interface ResourceListSubComponentsInterface {
     Header: typeof ResourceListHeader;
     HeaderCell: typeof ResourceListHeaderCell;
     Item: typeof ResourceListItem;
@@ -36,6 +36,7 @@ interface ResourceListSubComponentsInterface {
  * Resource list component.
  *
  * @param {ListProps} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
 export const ResourceList: FunctionComponent<ListProps> & ResourceListSubComponentsInterface = (
