@@ -16,6 +16,4 @@
  * under the License.
  */
 
-export * from "./general-details-form";
-export * from "./advanced-configurations-form";
-export * from "./authenticator-form-factory";
+export * from "./common-authenticator-form";

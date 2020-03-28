@@ -17,13 +17,18 @@
  */
 
 import React, { FunctionComponent } from "react";
-import { FederatedAuthenticatorListItemInterface, IdentityProviderInterface } from "../../../../models/identity-provider";
+import {
+    FederatedAuthenticatorListItemInterface,
+    FederatedAuthenticatorMetaInterface,
+    IdentityProviderInterface
+} from "../../../../models/identity-provider";
 import { AuthenticatorFormFactory } from "../../forms/authenticator-form-factory";
 
 /**
  * Proptypes for the authenticator settings wizard form component.
  */
 interface AuthenticatorSettingsWizardFormPropsInterface {
+    metadata: FederatedAuthenticatorMetaInterface;
     initialValues: IdentityProviderInterface;
     onSubmit: (values: IdentityProviderInterface) => void;
     triggerSubmit: boolean;
@@ -40,6 +45,7 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
 ): JSX.Element => {
 
     const {
+        metadata,
         initialValues,
         onSubmit,
         triggerSubmit
@@ -62,6 +68,7 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
     const authenticator = initialValues?.federatedAuthenticators?.authenticators[0];
     return (
         <AuthenticatorFormFactory
+            metadata={ metadata }
             initialValues={ authenticator }
             onSubmit={ handleSubmit }
             type={ authenticator.name }

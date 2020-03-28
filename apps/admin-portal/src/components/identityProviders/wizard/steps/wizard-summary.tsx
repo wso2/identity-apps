@@ -19,12 +19,13 @@
 import { AppAvatar, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { Divider, Grid } from "semantic-ui-react";
-import { IdentityProviderInterface } from "../../../../models";
+import {FederatedAuthenticatorMetaInterface, IdentityProviderInterface} from "../../../../models";
 
 /**
  * Proptypes for the wizard summary component.
  */
 interface WizardSummaryProps {
+    authenticatorMetadata: FederatedAuthenticatorMetaInterface;
     identityProvider: IdentityProviderInterface;
     triggerSubmit: boolean;
     onSubmit: (identityProvider: IdentityProviderInterface) => void;
@@ -41,6 +42,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
 ): ReactElement => {
 
     const {
+        authenticatorMetadata,
         identityProvider,
         triggerSubmit,
         onSubmit
@@ -61,14 +63,16 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
 
     const getAuthenticatorProperties = () => {
         return authenticatorSummary?.properties.map((eachProp) => {
-            if (eachProp.value) {
+            const propertyMetadata = authenticatorMetadata?.properties?.find(eachPropMetadata =>
+                eachProp.key === eachPropMetadata.key);
+            if (eachProp.value !== undefined) {
                 return (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">{eachProp.key}</div>
+                            <div className="label">{propertyMetadata?.displayName}</div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                            <div className="value url">{eachProp.value}</div>
+                            <div className="value url">{eachProp?.value.toString()}</div>
                         </Grid.Column>
                     </Grid.Row>
                 )

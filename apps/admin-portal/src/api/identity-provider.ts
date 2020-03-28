@@ -318,3 +318,34 @@ export const getFederatedAuthenticatorsList = (): Promise<any> => {
             return Promise.reject(error);
         });
 };
+
+/**
+ * Get federated authenticator metadata.
+ *
+ * @param idpId ID of the Identity Provider.
+ * @param authenticatorId ID of the Federated Authenticator.
+ * @return {Promise<any>} A promise containing the response.
+ */
+export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Promise<any> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.identityProviders + "/meta/federated-authenticators/" + authenticatorId
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to get federated authenticator metadata for: "
+                    + authenticatorId));
+            }
+            return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};

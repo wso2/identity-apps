@@ -16,20 +16,20 @@
  * under the License.
  */
 
-import {AlertLevels} from "@wso2is/core/models";
-import {addAlert} from "@wso2is/core/store";
-import {ContentLoader, Heading} from "@wso2is/react-components";
-import React, {FunctionComponent, ReactElement, useEffect, useState} from "react";
-import {useDispatch} from "react-redux";
-import {getFederatedAuthenticatorDetails, getFederatedAuthenticatorMeta, updateFederatedAuthenticator} from "../../api";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { ContentLoader, Heading } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { getFederatedAuthenticatorDetails, getFederatedAuthenticatorMeta, updateFederatedAuthenticator } from "../../api";
 import {
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
     FederatedAuthenticatorMetaInterface,
     SupportedAuthenticators
 } from "../../models";
-import {AuthenticatorFormFactory} from "./forms/authenticator-form-factory";
-import {Divider} from "semantic-ui-react";
+import { AuthenticatorFormFactory } from "./forms";
+import { Divider } from "semantic-ui-react";
 
 /**
  * Proptypes for the identity providers settings component.

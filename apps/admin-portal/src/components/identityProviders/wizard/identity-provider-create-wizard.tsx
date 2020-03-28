@@ -27,15 +27,22 @@ import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 
-import { createIdentityProvider } from "../../../api";
+import { createIdentityProvider, getFederatedAuthenticatorMetadata, getFederatedAuthenticatorsList } from "../../../api";
 import { history } from "../../../helpers";
-import { IdentityProviderInterface, IdentityProviderTemplateListItemInterface } from "../../../models";
-import { AppState } from "../../../store";
+import {
+    AuthenticatorProperty,
+    FederatedAuthenticatorListItemInterface,
+    FederatedAuthenticatorMetaInterface,
+    IdentityProviderInterface,
+    IdentityProviderTemplateListItemInterface
+} from "../../../models";
+import { AppState, store } from "../../../store";
 import { IdentityProviderConstants } from "../../../constants";
 import { IdentityProviderWizardStepIcons } from "../../../configs";
 import { IdentityProviderManagementUtils } from "../../../utils/identity-provider-management-utils";
 
 import { AuthenticatorSettings, GeneralSettings, WizardSummary } from "./steps";
+import { setAvailableAuthenticatorsMeta } from "../../../store/actions/IdentityProvider";
 
 /**
  * Proptypes for the identity provider creation wizard component.
@@ -98,6 +105,8 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     const [wizardState, setWizardState] = useState<WizardStateInterface>(undefined);
     const [partiallyCompletedStep, setPartiallyCompletedStep] = useState<number>(undefined);
     const [currentWizardStep, setCurrentWizardStep] = useState<number>(currentStep);
+    const [authenticatorMetadata, setAuthenticatorMetadata] = useState<FederatedAuthenticatorMetaInterface>(
+        undefined);
 
     const dispatch = useDispatch();
 
@@ -250,6 +259,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
             case 1: {
                 return (
                     <AuthenticatorSettings
+                        metadata={ authenticatorMetadata }
                         initialValues={ wizardState[WizardConstants.IDENTITY_PROVIDER] }
                         onSubmit={ (values): void => handleWizardFormSubmit(
                             values, WizardConstants.IDENTITY_PROVIDER) }
@@ -260,6 +270,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
             case 2: {
                 return (
                     <WizardSummary
+                        authenticatorMetadata={ authenticatorMetadata }
                         triggerSubmit={ finishSubmit }
                         identityProvider={ generateWizardSummary() }
                         onSubmit={ handleWizardFormFinish }
@@ -295,27 +306,75 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     }, []);
 
     /**
+     * Gets the authenticator meta data.
+     *
+     * @param authenticatorId
+     */
+    const getAuthenticatorMetadata = (authenticatorId: string): Promise<void> => {
+        return getFederatedAuthenticatorMetadata(authenticatorId)
+            .then((response) => {
+                setAuthenticatorMetadata(response);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    store.dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Retrieval error"
+                    }));
+                    return;
+                }
+                store.dispatch(addAlert({
+                    description: "An error occurred retrieving the authenticator: ." + authenticatorId,
+                    level: AlertLevels.ERROR,
+                    message: "Retrieval error"
+                }));
+            });
+    };
+
+    /**
      * Called when `availableAuthenticators` are changed.
      */
     useEffect(() => {
-        // Initialize identity provider in the WizardState.
         const availableAuthenticator = _.find(availableAuthenticators, { "name": template.authenticator.name });
-        const identityProvider: IdentityProviderInterface = {
-            federatedAuthenticators: {
-                authenticators: [{
-                    authenticatorId: availableAuthenticator?.authenticatorId,
-                    name: availableAuthenticator?.name
-                }],
-                defaultAuthenticatorId: availableAuthenticator?.authenticatorId
-            }
-        };
-        
-        setWizardState(_.merge(wizardState, {
-            [WizardConstants.IDENTITY_PROVIDER]: identityProvider
-        }));
-        
-        setWizardSteps(STEPS);
+        if (availableAuthenticator) {
+            getAuthenticatorMetadata(availableAuthenticator.authenticatorId);
+        }
     }, [availableAuthenticators]);
+
+    const getAuthenticatorProperties = () => {
+        return authenticatorMetadata?.properties.map(
+            (eachProp): AuthenticatorProperty => {
+                return {
+                    key: eachProp?.key,
+                    value: eachProp?.defaultValue
+                }
+            });
+    };
+
+    /**
+     * Called when `authenticatorMetadata` is changed.
+     */
+    useEffect(() => {
+        if (authenticatorMetadata) {
+            const identityProvider: IdentityProviderInterface = {
+                federatedAuthenticators: {
+                    authenticators: [{
+                        authenticatorId: authenticatorMetadata?.authenticatorId,
+                        name: authenticatorMetadata?.name,
+                        properties: getAuthenticatorProperties()
+                    }],
+                    defaultAuthenticatorId: authenticatorMetadata?.authenticatorId
+                }
+            };
+
+            setWizardState(_.merge(wizardState, {
+                [WizardConstants.IDENTITY_PROVIDER]: identityProvider
+            }));
+
+            setWizardSteps(STEPS);
+        }
+    }, [authenticatorMetadata]);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`

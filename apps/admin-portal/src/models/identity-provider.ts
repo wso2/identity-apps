@@ -110,7 +110,7 @@ export interface FederatedAuthenticatorMetaPropertyInterface {
 
 export interface FederatedAuthenticatorMetaInterface {
     authenticatorId?: string;
-    name?: SupportedAuthenticators;
+    name?: string;
     displayName?: string;
     properties?: FederatedAuthenticatorMetaPropertyInterface[];
 }
@@ -167,7 +167,9 @@ export interface IdentityProviderTemplateListItemInterface {
 export enum SupportedQuickStartTemplates {
     FACEBOOK = "facebook",
     GOOGLE = "google",
-    TWITTER = "twitter"
+    TWITTER = "twitter",
+    OIDC = "oidc",
+    SAML = "saml"
 }
 
 /**
@@ -181,7 +183,8 @@ export enum SupportedAuthenticators {
     FACEBOOK = "FacebookAuthenticator",
     GOOGLE = "GoogleOIDCAuthenticator",
     TWITTER = "TwitterAuthenticator",
-    OIDC = "oidc"
+    OIDC = "OpenIDConnectAuthenticator",
+    SAML = "SAMLSSOAuthenticator",
 }
 
 /**

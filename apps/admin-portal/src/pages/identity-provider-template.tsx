@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import React, {FunctionComponent, ReactElement, SyntheticEvent, useState} from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
 import { QuickStartIdentityProviderTemplates } from "../components";
-import { IdPIcons, IdPCapabilityIcons } from "../configs";
+import {IdPCapabilityIcons, IdPIcons, InboundProtocolLogos} from "../configs";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import {
@@ -29,7 +29,7 @@ import {
     SupportedProvisioningConnectors,
     SupportedQuickStartTemplates
 } from "../models";
-import {IdentityProviderCreateWizard} from "../components/identityProviders/wizard";
+import { IdentityProviderCreateWizard } from "../components/identityProviders/wizard";
 
 /**
  * Choose the application template from this page.
@@ -85,6 +85,36 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
             id: SupportedQuickStartTemplates.TWITTER,
             image: IdPIcons?.twitter,
             authenticator: { name: SupportedAuthenticators.TWITTER },
+            provisioningConnectors: SupportedProvisioningConnectors.NONE,
+            services: [
+                {
+                    displayName: "Authentication",
+                    logo: IdPCapabilityIcons.authentication,
+                    name: "authentication"
+                }
+            ]
+        },
+        {
+            description: "Allow users from a generic identity provider to access your applications via OpenID Connect.",
+            displayName: "OpenID Connect Identity Provider",
+            id: SupportedQuickStartTemplates.OIDC,
+            image: InboundProtocolLogos?.oidc,
+            authenticator: { name: SupportedAuthenticators.OIDC },
+            provisioningConnectors: SupportedProvisioningConnectors.NONE,
+            services: [
+                {
+                    displayName: "Authentication",
+                    logo: IdPCapabilityIcons.authentication,
+                    name: "authentication"
+                }
+            ]
+        },
+        {
+            description: "Allow users from a generic identity provider to access your applications via SAML.",
+            displayName: "SAML Identity Provider",
+            id: SupportedQuickStartTemplates.SAML,
+            image: InboundProtocolLogos?.saml,
+            authenticator: { name: SupportedAuthenticators.SAML },
             provisioningConnectors: SupportedProvisioningConnectors.NONE,
             services: [
                 {
@@ -149,8 +179,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
                 <QuickStartIdentityProviderTemplates
                     templates={ TEMPLATES[ SupportedIdentityProviderTemplateCategories.QUICK_START ] }
                     onTemplateSelect={ (e, { id }) => {
-                        console.log ("triggered a click!");
-                        handleTemplateSelection(e, {id}, SupportedIdentityProviderTemplateCategories.QUICK_START);
+                        handleTemplateSelection(e, { id }, SupportedIdentityProviderTemplateCategories.QUICK_START);
                     }
                     }
                 />

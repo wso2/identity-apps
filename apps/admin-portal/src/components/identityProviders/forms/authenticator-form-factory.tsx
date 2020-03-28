@@ -16,15 +16,9 @@
  * under the License.
  */
 
-import React, {FunctionComponent, ReactElement} from "react";
-import {
-    FederatedAuthenticatorListItemInterface,
-    FederatedAuthenticatorMetaInterface,
-    SupportedAuthenticators
-} from "../../../models";
-import {OIDCAuthenticatorForm} from "./authenticators/oidc-authenticator-form";
-import {GoogleAuthenticatorForm} from "./authenticators/google-authenticator-form";
-import {en} from "../../../../../user-portal/src/locales";
+import React, { FunctionComponent, ReactElement } from "react";
+import { FederatedAuthenticatorListItemInterface, FederatedAuthenticatorMetaInterface } from "../../../models";
+import { CommonAuthenticatorForm } from "./authenticators";
 
 /**
  * Proptypes for the inbound form factory component.
@@ -58,14 +52,9 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
     } = props;
 
     switch (type) {
-        case SupportedAuthenticators.OIDC:
-            return <OIDCAuthenticatorForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit }
-                                          triggerSubmit={ triggerSubmit } enableSubmitButton={ enableSubmitButton }/>;
-        case SupportedAuthenticators.GOOGLE:
-            return <GoogleAuthenticatorForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit }
-                                            triggerSubmit={ triggerSubmit } enableSubmitButton={ enableSubmitButton }/>;
         default:
-            return null;
+            return <CommonAuthenticatorForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit }
+                                            triggerSubmit={ triggerSubmit } enableSubmitButton={ enableSubmitButton }/>;
     }
 };
 
