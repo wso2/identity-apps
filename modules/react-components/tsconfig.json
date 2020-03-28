@@ -5,9 +5,9 @@
         "declaration": true,
         "rootDirs": ["src", "stories"],
         "baseUrl": ".",
-        "declarationDir": "dist/types",
+        "declarationDir": "dist/typings",
         "typeRoots": [ "./types/*", "node_modules/@types" ]
     },
-    "exclude": ["node_modules"],
+    "exclude": ["node_modules", "stories"],
     "extends": "../../configs/common.tsconfig.json"
 }
