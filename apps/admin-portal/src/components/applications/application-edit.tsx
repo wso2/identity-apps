@@ -182,6 +182,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onDelete={ onDelete }
                 onUpdate={ onUpdate }
                 permissions={ permissions }
+                showRegenerate={ selectedInboundProtocol?.id === SupportedAuthProtocolTypes.OIDC }
+                // TODO we need check whether application is active or not as well.
+                showRevoke={  selectedInboundProtocol?.id === SupportedAuthProtocolTypes.OIDC }
             />
         </ResourceTab.Pane>
     );
