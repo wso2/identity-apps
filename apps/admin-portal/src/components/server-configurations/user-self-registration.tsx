@@ -111,12 +111,10 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 
 	const genericErrorMessage = {
 		description: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
-			"updateConfigurations.genericError.description"
-		),
+			"updateConfigurations.genericError.description"),
 		level: AlertLevels.ERROR,
 		message: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
-			"updateConfigurations.genericError.message"
-		)
+			"updateConfigurations.genericError.message")
 	};
 
 	/**
@@ -158,43 +156,28 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 				}
 			]
 		};
-		let successNotification = {};
+		const successNotification = {
+			description: "",
+			level: AlertLevels.SUCCESS,
+			message: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
+				"updateEnable.success.message")
+		};
 		switch (key) {
 			case ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE:
-				successNotification = {
-					description: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
-						"updateEnable.success.description"),
-					level: AlertLevels.SUCCESS,
-					message: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
-						"updateEnable.success.message")
-				};
+				successNotification.description = t("devPortal:components.serverConfigs.selfRegistration." +
+					"notifications.updateEnable.success.description");
 				break;
 			case ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION:
-				successNotification = {
-					description: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
-						"updateAccountLockOnCreation.success.description"),
-					level: AlertLevels.SUCCESS,
-					message: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
-						"updateAccountLockOnCreation.success.message")
-				};
+				successNotification.description = t("devPortal:components.serverConfigs.selfRegistration." +
+					"notifications.updateAccountLockOnCreation.success.description");
 				break;
 			case ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED:
-				successNotification = {
-					description: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
-						"updateInternalNotificationManagement.success.description"),
-					level: AlertLevels.SUCCESS,
-					message: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
-						"updateInternalNotificationManagement.success.message")
-				};
+				successNotification.description = t("devPortal:components.serverConfigs.selfRegistration." +
+					"notifications.updateInternalNotificationManagement.success.description");
 				break;
 			case ServerConfigurationsConstants.RE_CAPTCHA:
-				successNotification = {
-					description: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
-						"updateReCaptcha.success.description"),
-					level: AlertLevels.SUCCESS,
-					message: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
-						"updateReCaptcha.success.message")
-				};
+				successNotification.description = t("devPortal:components.serverConfigs.selfRegistration." +
+					"notifications.updateReCaptcha.success.description");
 				break;
 		}
 		makeSelfRegistrationPatchCall(data, successNotification);

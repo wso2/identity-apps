@@ -101,27 +101,19 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 	};
 
 	const errorMessage = {
-		description: t(
-			"devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
-			"error.description"
-		),
+		description: t("devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
+			"error.description"),
 		level: AlertLevels.ERROR,
-		message: t(
-			"devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
-			"error.message"
-		)
+		message: t("devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
+			"error.message")
 	};
 
 	const genericErrorMessage = {
-		description: t(
-			"devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
-			"genericError.description"
-		),
+		description: t("devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
+			"genericError.description"),
 		level: AlertLevels.ERROR,
-		message: t(
-			"devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
-			"genericError.message"
-		)
+		message: t("devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
+			"genericError.message")
 	};
 
 	/**
@@ -158,43 +150,28 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 				}
 			]
 		};
-		let successNotification = {};
+		const successNotification = {
+			description: "",
+			level: AlertLevels.SUCCESS,
+			message: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
+				"updateConfigurations.success.message")
+		};
 		switch (key) {
 			case ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE:
-				successNotification = {
-					description: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
-						"updateEnableUsernameRecovery.success.description"),
-					level: AlertLevels.SUCCESS,
-					message: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
-						"updateEnableUsernameRecovery.success.message")
-				};
+				successNotification.description = t("devPortal:components.serverConfigs.accountRecovery." +
+					"notifications.updateEnableUsernameRecovery.success.description");
 				break;
 			case ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA:
-				successNotification = {
-					description: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
-						"updateUsernameRecoveryReCaptcha.success.description"),
-					level: AlertLevels.SUCCESS,
-					message: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
-						"updateUsernameRecoveryReCaptcha.success.message")
-				};
+				successNotification.description = t("devPortal:components.serverConfigs.accountRecovery." +
+					"notifications.updateUsernameRecoveryReCaptcha.success.description");
 				break;
 			case ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE:
-				successNotification = {
-					description: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
-						"updateEnableNotificationPasswordRecovery.success.description"),
-					level: AlertLevels.SUCCESS,
-					message: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
-						"updateEnableNotificationPasswordRecovery.success.message")
-				};
+				successNotification.description = t("devPortal:components.serverConfigs.accountRecovery." +
+					"notifications.updateEnableNotificationPasswordRecovery.success.description");
 				break;
 			case ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA:
-				successNotification = {
-					description: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
-						"updateNotificationPasswordRecoveryReCaptcha.success.description"),
-					level: AlertLevels.SUCCESS,
-					message: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
-						"updateNotificationPasswordRecoveryReCaptcha.success.message")
-				};
+				successNotification.description = t("devPortal:components.serverConfigs.accountRecovery." +
+					"notifications.updateNotificationPasswordRecoveryReCaptcha.success.description");
 				break;
 		}
 		makeAccountRecoveryPatchCall(data, successNotification);
@@ -255,15 +232,11 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 			]
 		};
 		const successNotification = {
-			description: t(
-				"devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
-				"success.description"
-			),
+			description: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
+				"updateConfigurations.success.description"),
 			level: AlertLevels.SUCCESS,
-			message: t(
-				"devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
-				"success.message"
-			)
+			message: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
+				"updateConfigurations.success.message")
 		};
 		makeAccountRecoveryPatchCall(data, successNotification);
 	};
