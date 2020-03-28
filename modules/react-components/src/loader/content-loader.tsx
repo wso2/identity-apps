@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import classNames from "classnames";
-import React, { FunctionComponent } from "react";
 import { Dimmer, Loader, LoaderProps } from "semantic-ui-react";
+import React, { FunctionComponent } from "react";
+import classNames from "classnames";
 
 /**
  * Content loader component Prop types.

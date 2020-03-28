@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import LoadingBar from "react-top-loading-bar";
 
 /**
- * Global loader component Prop types.
+ * Top loading bar component Prop types.
  */
-export interface GlobalLoaderProps {
+export interface TopLoadingBarPropsInterface {
     /**
      * Height of the loading bar.
      */
@@ -34,12 +34,15 @@ export interface GlobalLoaderProps {
 }
 
 /**
- * Global loader component.
+ * Top loading bar component component.
  *
- * @param {GlobalLoaderProps} props - Props injected to the global loader component.
- * @return {JSX.Element}
+ * @param {TopLoadingBarPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const GlobalLoader = (props: GlobalLoaderProps): JSX.Element => {
+export const TopLoadingBar: FunctionComponent<TopLoadingBarPropsInterface> = (
+    props: TopLoadingBarPropsInterface
+): ReactElement => {
 
     const {
         height,
@@ -69,9 +72,9 @@ export const GlobalLoader = (props: GlobalLoaderProps): JSX.Element => {
 };
 
 /**
- * Global loader component default props.
+ * Top loading bar component default props.
  */
-GlobalLoader.defaultProps = {
+TopLoadingBar.defaultProps = {
     height: 3,
-    visibility: true,
+    visibility: true
 };

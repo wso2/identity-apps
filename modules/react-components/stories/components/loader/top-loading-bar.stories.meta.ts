@@ -17,4 +17,21 @@
  *
  */
 
-export * from "./global-loader.stories";
+import { StoryCategories } from "../../hierarchy";
+import { StoryMetaInterface } from "../../models";
+
+export const meta: StoryMetaInterface = {
+    components: [ "TopLoadingBar" ],
+    description: "Components to display different app loading status",
+    stories: [
+        {
+            description: "Top loading bar to display AJAX request loading status.",
+            title: "Default"
+        },
+        {
+            description: "Play around with different props to dynamically interact with the top loading bar component.",
+            title: "Playground"
+        }
+    ],
+    title: `${ StoryCategories.COMPONENTS }/Top Loading Bar`
+};
