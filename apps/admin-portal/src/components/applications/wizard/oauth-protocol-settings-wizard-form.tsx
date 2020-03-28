@@ -21,18 +21,19 @@ import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import { Grid } from "semantic-ui-react";
-import { SupportedQuickStartTemplateTypes } from "../../../models";
+import { MainApplicationInterface } from "../../../models";
 import { URLInputComponent } from "../components";
-import { isEmpty } from "lodash";
+import _ from "lodash";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
  */
 interface OAuthProtocolSettingsWizardFormPropsInterface {
     initialValues: any;
+    templateValues: MainApplicationInterface;
     triggerSubmit: boolean;
-    templateType: SupportedQuickStartTemplateTypes;
     onSubmit: (values: any) => void;
+    showCallbackURL: boolean;
 }
 
 /**
@@ -41,21 +42,26 @@ interface OAuthProtocolSettingsWizardFormPropsInterface {
  * @param {OAuthProtocolSettingsWizardFormPropsInterface} props - Props injected to the component.
  * @return {JSX.Element}
  */
-export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSettingsWizardFormPropsInterface> = (
+export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSettingsWizardFormPropsInterface> = (
     props: OAuthProtocolSettingsWizardFormPropsInterface
 ): JSX.Element => {
 
     const {
         initialValues,
         triggerSubmit,
-        templateType,
-        onSubmit
+        onSubmit,
+        templateValues,
+        showCallbackURL
     } = props;
 
-    const initialCallbackURLs = initialValues?.inboundProtocolConfiguration?.oidc?.callbackURLs;
-
-    const [ callBackUrls, setCallBackUrls ] = useState("");
+    const [callBackUrls, setCallBackUrls] = useState("");
+    const [publicClient, setPublicClient] = useState<string[]>([]);
+    const [refreshToken, setRefreshToken] = useState<string[]>([]);
+    const [showRefreshToken, setShowRefreshToken] = useState(false);
     const [showURLError, setShowURLError] = useState(false);
+
+    // TODO enable after fixing callbackURL.
+    // const [showCallbackUrl, setShowCallbackUrl] = useState(false);
 
     const form = useRef(null);
 
@@ -100,8 +106,58 @@ export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     }, [triggerSubmit]);
 
     useEffect(() => {
-        setCallBackUrls("");
-    }, []);
+        if (_.isEmpty(initialValues?.inboundProtocolConfiguration?.oidc)) {
+
+            if (!_.isEmpty(templateValues?.inboundProtocolConfiguration?.oidc?.callbackURLs)) {
+                setCallBackUrls(
+                    buildCallBackURLWithSeparator(
+                        templateValues?.inboundProtocolConfiguration?.oidc?.callbackURLs[0]
+                    )
+                );
+            } else {
+                setCallBackUrls("");
+            }
+            if (templateValues?.inboundProtocolConfiguration?.oidc?.publicClient) {
+                setPublicClient(["supportPublicClients"])
+            }
+            if (templateValues?.inboundProtocolConfiguration?.oidc?.refreshToken?.renewRefreshToken) {
+                setRefreshToken(["refreshToken"])
+            }
+        } else {
+            setCallBackUrls(
+                buildCallBackURLWithSeparator(initialValues?.inboundProtocolConfiguration?.oidc?.callbackURLs[0]
+                )
+            );
+            if (initialValues?.inboundProtocolConfiguration?.oidc?.publicClient) {
+                setPublicClient(["supportPublicClients"])
+            }
+            if (initialValues?.inboundProtocolConfiguration?.oidc?.refreshToken?.renewRefreshToken) {
+                setRefreshToken(["refreshToken"])
+            }
+        }
+    }, [initialValues]);
+
+
+    // /**
+    //  *  check whether to show the callback url or not
+    //  *  TODO  Enable this after fixing callbackURL component.
+    //  */
+    // useEffect(() => {
+    //     const allowedGrantTypes = templateValues.inboundProtocolConfiguration.oidc.grantTypes;
+    //     if (_.intersection(allowedGrantTypes, ["authorization_code", "implicit"]).length > 0) {
+    //        setShowCallbackUrl(true);
+    //        // setCallBackUrls("");
+    //     }
+    // }, [initialValues]);
+
+    useEffect(() => {
+        const allowedGrantTypes = templateValues.inboundProtocolConfiguration.oidc.grantTypes;
+        if (_.intersection(allowedGrantTypes, ["refresh_token"]).length > 0) {
+            setShowRefreshToken(true);
+        }
+    }, [templateValues]);
+
+
     /**
      * Sanitizes and prepares the form values for submission.
      *
@@ -109,21 +165,29 @@ export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      * @return {object} Prepared values.
      */
     const getFormValues = (values: any): object => {
-        return {
+        const configs = {
             inboundProtocolConfiguration: {
                 oidc: {
-                    callbackURLs: [ buildCallBackUrlWithRegExp(callBackUrls) ],
                     publicClient: values.get("publicClients").includes("supportPublicClients")
                 }
             }
         };
+        if (showCallbackURL) {
+            configs.inboundProtocolConfiguration.oidc["callbackURLs"] = [buildCallBackUrlWithRegExp(callBackUrls)];
+        }
+        if (showRefreshToken) {
+            configs.inboundProtocolConfiguration.oidc["refreshToken"] = {
+                renewRefreshToken: values.get("RefreshToken").includes("refreshToken")
+            };
+        }
+        return configs;
     };
 
-    return (
+    return (templateValues &&
         <Forms
             onSubmit={ (values) => {
                 // check whether callback url is empty or not
-                if (isEmpty(callBackUrls)) {
+                if (_.isEmpty(callBackUrls)) {
                     setShowURLError(true);
                 } else {
                     onSubmit(getFormValues(values));
@@ -136,7 +200,6 @@ export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                     urlState={ callBackUrls }
                     setURLState={ setCallBackUrls }
                     labelName={ "Callback URL" }
-                    value={ buildCallBackURLWithSeparator(initialCallbackURLs) }
                     placeholder={ "Enter callbackUrl" }
                     validationErrorMsg={ "Please add valid URL." }
                     validation={ (value: string) => {
@@ -145,27 +208,21 @@ export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                         }
                         return false;
                     } }
+                    computerWidth={ 10 }
                     setShowError={ setShowURLError }
                     showError={ showURLError }
                     hint={ " After the authentication, we will only redirect to the above callback URLs " +
                     "and you can specify multiple URLs" }
                 />
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Field
                             name="publicClients"
                             label=""
                             required={ false }
                             requiredErrorMessage="this is needed"
                             type="checkbox"
-                            disabled={ templateType === SupportedQuickStartTemplateTypes.SPA }
-                            value={
-                                templateType === SupportedQuickStartTemplateTypes.SPA
-                                    ? [ "supportPublicClients" ]
-                                    : initialValues?.inboundProtocolConfiguration?.oidc?.publicClient
-                                    ? [ "supportPublicClients" ]
-                                    : []
-                            }
+                            value={ publicClient }
                             children={ [
                                 {
                                     label: "Public Client",
@@ -178,7 +235,35 @@ export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
+                { showRefreshToken &&
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                        <Field
+                            name="RefreshToken"
+                            label=""
+                            required={ false }
+                            requiredErrorMessage="this is needed"
+                            type="checkbox"
+                            value={ refreshToken }
+                            children={ [
+                                {
+                                    label: "Renew Refresh Token",
+                                    value: "refreshToken"
+                                },
+                            ] }
+                        />
+                        <Hint>Issue a new refresh token per request when Refresh Token Grant is used.</Hint>
+                    </Grid.Column>
+                </Grid.Row>
+                }
             </Grid>
         </Forms>
     );
+};
+
+/**
+ * Default props for the .
+ */
+OauthProtocolSettingsWizardForm.defaultProps = {
+    showCallbackURL: false
 };

@@ -37,3 +37,4 @@ export * from "./user-stores";
 export * from "./user-stores-edit";
 export * from "./role-edit";
 export * from "./server-configurations";
+export * from "./application-template";
