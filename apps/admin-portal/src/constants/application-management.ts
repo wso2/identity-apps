@@ -42,11 +42,36 @@ export class ApplicationManagementConstants {
     public static readonly ADAPTIVE_AUTH_TEMPLATES_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching adaptive authentication templates.";
     public static readonly ADAPTIVE_AUTH_TEMPLATES_FETCH_ERROR: string = "An error occurred while fetching the " +
-        "metadata related to the required auth protocol.";
+        "required adaptive authentication template.";
 
     public static readonly DEFAULT_ADAPTIVE_AUTH_SCRIPT: string[] = [
         "var onLoginRequest = function(context) {",
         "};",
         ""
-    ]
+    ];
+
+    /**
+     * Key to access the application management CRUD operation permissions in the app config file.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly CRUD_PERMISSIONS_APP_CONFIG_KEY: string = "applications.permissions";
+
+    /**
+     * Key to access the application management features.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly EDIT_FEATURES_APP_CONFIG_KEY: string = "applications.features.edit";
+
+    public static readonly APPLICATION_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while fetching application template.";
+    public static readonly APPLICATION_TEMPLATE_FETCH_ERROR: string = "An error occurred while fetching the " +
+        "required adaptive application template.";
+    public static readonly APPLICATION_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
+        "invalid status code while fetching application templates list.";
+    public static readonly APPLICATION_TEMPLATES_LIST_FETCH_ERROR: string = "An error occurred while fetching the " +
+        "required adaptive application templates list.";
 }

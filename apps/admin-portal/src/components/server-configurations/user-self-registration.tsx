@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import React, { FunctionComponent, useEffect, useState } from "react";
-import { SettingsSectionIcons } from "../../configs";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { Button, Container, Divider, Form, Grid, Modal } from "semantic-ui-react";
 import { EditSection, Hint, Section } from "@wso2is/react-components";
-import { useTranslation } from "react-i18next";
-import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
-import { getSelfSignUpConfigurations, updateSelfSignUpConfigurations } from "../../api/user-self-registration";
-import { SelfSignUpConfigurationsInterface } from "../../models/server-configurations";
+import { getSelfSignUpConfigurations, updateSelfSignUpConfigurations } from "../../api";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
-import { useDispatch } from "react-redux";
+import { SelfSignUpConfigurationsInterface } from "../../models/server-configurations";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
+import { SettingsSectionIcons } from "../../configs";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 /**
  * Constant to store the self registration from identifier.
@@ -61,7 +61,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 
 	const dispatch = useDispatch();
 
-	const {t} = useTranslation();
+	const { t } = useTranslation();
 
 	/**
 	 * Handles the `onSubmit` event of the forms.
@@ -101,34 +101,92 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		});
 	};
 
+	const errorMessage = {
+		description: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
+			"updateConfigurations.error.description"),
+		level: AlertLevels.ERROR,
+		message: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
+			"updateConfigurations.error.message")
+	};
+
+	const genericErrorMessage = {
+		description: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
+			"updateConfigurations.genericError.description"),
+		level: AlertLevels.ERROR,
+		message: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
+			"updateConfigurations.genericError.message")
+	};
+
 	/**
-	 * Create and return the PATCH request data by reading the form values.
+	 * Call the API to update configs.
+	 *
+	 * @param data Payload to be sent to the API.
+	 * @param successNotification Notification data for success instance. If errors occurred, common error notification
+	 * will be user.
 	 */
-	const getSelfSignUpPatchCallData = () => {
-		return {
+	const makeSelfRegistrationPatchCall = (data, successNotification) => {
+		updateSelfSignUpConfigurations(data)
+			.then(() => {
+				dispatch(addAlert(successNotification));
+				handleConfirmationModalClose();
+				hideFormEditView(USER_SELF_REGISTRATION_FORM_IDENTIFIER);
+			})
+			.catch((error) => {
+				// Axios throws a generic `Network Error` for 401 status.
+				// As a temporary solution, a check to see if a response is available has been used.
+				if (!error.response || error.response.status === 401) {
+					dispatch(addAlert(errorMessage));
+				} else if (error.response && error.response.data && error.response.data.detail) {
+
+					dispatch(addAlert(errorMessage));
+				} else {
+					// Generic error message
+					dispatch(addAlert(genericErrorMessage));
+				}
+			});
+	};
+
+	const saveSelfRegistrationConfigs = (key, value) => {
+		const data = {
 			"operation": "UPDATE",
 			"properties": [
 				{
-					"name": ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
-					"value": selfSignUpConfigs.checkboxValues.includes(
-						ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE) ? "true" : "false"
-				},
-				{
-					"name": ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION,
-					"value": selfSignUpConfigs.checkboxValues.includes(
-						ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) ? "true" : "false"
-				},
-				{
-					"name": ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED,
-					"value": selfSignUpConfigs.checkboxValues.includes(
-						ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED) ?
-						"true" : "false"
-				},
-				{
-					"name": ServerConfigurationsConstants.RE_CAPTCHA,
-					"value": selfSignUpConfigs.checkboxValues.includes(
-						ServerConfigurationsConstants.RE_CAPTCHA) ? "true" : "false"
-				},
+					"name": key,
+					"value": value
+				}
+			]
+		};
+		const successNotification = {
+			description: "",
+			level: AlertLevels.SUCCESS,
+			message: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
+				"updateEnable.success.message")
+		};
+		switch (key) {
+			case ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE:
+				successNotification.description = t("devPortal:components.serverConfigs.selfRegistration." +
+					"notifications.updateEnable.success.description");
+				break;
+			case ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION:
+				successNotification.description = t("devPortal:components.serverConfigs.selfRegistration." +
+					"notifications.updateAccountLockOnCreation.success.description");
+				break;
+			case ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED:
+				successNotification.description = t("devPortal:components.serverConfigs.selfRegistration." +
+					"notifications.updateInternalNotificationManagement.success.description");
+				break;
+			case ServerConfigurationsConstants.RE_CAPTCHA:
+				successNotification.description = t("devPortal:components.serverConfigs.selfRegistration." +
+					"notifications.updateReCaptcha.success.description");
+				break;
+		}
+		makeSelfRegistrationPatchCall(data, successNotification);
+	};
+
+	const saveSelfRegistrationAdvancedConfigs = () => {
+		const data = {
+			"operation": "UPDATE",
+			"properties": [
 				{
 					"name": ServerConfigurationsConstants.VERIFICATION_CODE_EXPIRY_TIME,
 					"value": selfSignUpConfigs.verificationCodeExpiryTime
@@ -140,76 +198,17 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 				{
 					"name": ServerConfigurationsConstants.CALLBACK_REGEX,
 					"value": selfSignUpConfigs.callbackRegex
-				},
+				}
 			]
 		};
-	};
-
-	/**
-	 * Calls the API and updates the self registrations configurations.
-	 */
-	const saveSelfRegistrationConfigs = () => {
-		const data = getSelfSignUpPatchCallData();
-		updateSelfSignUpConfigurations(data)
-			.then(() => {
-				dispatch(addAlert({
-					description: t(
-						"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
-						"success.description"
-					),
-					level: AlertLevels.SUCCESS,
-					message: t(
-						"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
-						"success.message"
-					)
-				}));
-				handleConfirmationModalClose();
-				hideFormEditView(USER_SELF_REGISTRATION_FORM_IDENTIFIER);
-			})
-			.catch((error) => {
-				// Axios throws a generic `Network Error` for 401 status.
-				// As a temporary solution, a check to see if a response is available has been used.
-				if (!error.response || error.response.status === 401) {
-					dispatch(addAlert({
-						description: t(
-							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
-							"error.description"
-						),
-						level: AlertLevels.ERROR,
-						message: t(
-							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
-							"error.message"
-						)
-					}));
-				} else if (error.response && error.response.data && error.response.data.detail) {
-
-					dispatch(addAlert({
-						description: t(
-							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
-							"error.description",
-							{description: error.response.data.detail}
-						),
-						level: AlertLevels.ERROR,
-						message: t(
-							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
-							"error.message"
-						)
-					}));
-				} else {
-					// Generic error message
-					dispatch(addAlert({
-						description: t(
-							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
-							"genericError.description"
-						),
-						level: AlertLevels.ERROR,
-						message: t(
-							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
-							"genericError.message"
-						)
-					}));
-				}
-			});
+		const successNotification = {
+			description: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
+				"updateConfigurations.success.description"),
+			level: AlertLevels.SUCCESS,
+			message: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
+				"updateConfigurations.success.message")
+		};
+		makeSelfRegistrationPatchCall(data, successNotification);
 	};
 
 	/**
@@ -218,60 +217,42 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 	useEffect(() => {
 		getSelfSignUpConfigurations()
 			.then((response) => {
-				const checkboxValues = getSelfRegistrationCheckboxValues(response);
 				const configs = {
-					checkboxValues: checkboxValues,
-					verificationCodeExpiryTime: response.properties.find(
-						property => property.name == ServerConfigurationsConstants.VERIFICATION_CODE_EXPIRY_TIME).value,
+					accountLockOnCreation: extractArrayValue(response,
+						ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION),
+					callbackRegex: response.properties.find(
+						property => property.name == ServerConfigurationsConstants.CALLBACK_REGEX).value,
+					enable: extractArrayValue(response, ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE),
+					internalNotificationManagement: extractArrayValue(response,
+						ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED),
+					reCaptcha: extractArrayValue(response, ServerConfigurationsConstants.RE_CAPTCHA),
 					smsOTPExpiryTime: response.properties.find(
 						property => property.name == ServerConfigurationsConstants.SMS_OTP_EXPIRY_TIME).value,
-					callbackRegex: response.properties.find(
-						property => property.name == ServerConfigurationsConstants.CALLBACK_REGEX).value
+					verificationCodeExpiryTime: response.properties.find(
+						property => property.name == ServerConfigurationsConstants.VERIFICATION_CODE_EXPIRY_TIME).value
 				};
 				setSelfSignUpConfigs(configs);
 			});
 	}, []);
 
-	/**
-	 * Loop through the properties array of the API response and extract the checkbox values.
-	 *
-	 * @param data API Response data.
-	 * @return String array. Ex: [ "Enable", "LockOnCreation", ...]
-	 */
-	const getSelfRegistrationCheckboxValues = (data) => {
-		const values = [];
-		data.properties.map((property => {
-			if (property.name === ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE) {
-				property.value === "true" ? values.push(ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE) : "";
-			}
-			if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
-				property.value === "true" ? values.push(ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) : "";
-			}
-			if (property.name === ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED) {
-				property.value === "true" ? values.push(
-					ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED) : "";
-			}
-			if (property.name === ServerConfigurationsConstants.RE_CAPTCHA) {
-				property.value === "true" ? values.push(ServerConfigurationsConstants.RE_CAPTCHA) : "";
-			}
-		}));
-		return values;
+	const extractArrayValue = (response, key) => {
+		return response.properties.find(prop => prop.name === key).value === "true" ? [key] : [];
 	};
 
 	const confirmationModal = (
 		<Modal size="mini" open={ showConfirmationModal } onClose={ handleConfirmationModalClose } dimmer="blurring">
 			<Modal.Content>
 				<Container>
-					<h3>{ t("views:components.serverConfigs.selfRegistration.confirmation.heading") }</h3>
+					<h3>{ t("devPortal:components.serverConfigs.selfRegistration.confirmation.heading") }</h3>
 				</Container>
 				<Divider hidden={ true }/>
-				<p>{ t("views:components.serverConfigs.selfRegistration.confirmation.message") }</p>
+				<p>{ t("devPortal:components.serverConfigs.selfRegistration.confirmation.message") }</p>
 			</Modal.Content>
 			<Modal.Actions>
 				<Button className="link-button" onClick={ handleConfirmationModalClose }>
 					{ t("common:cancel") }
 				</Button>
-				<Button primary={ true } onClick={ saveSelfRegistrationConfigs }>
+				<Button primary={ true } onClick={ saveSelfRegistrationAdvancedConfigs }>
 					{ t("common:continue") }
 				</Button>
 			</Modal.Actions>
@@ -280,14 +261,115 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 
 	const getFormValues = (values) => {
 		return {
-			checkboxValues: values.get("SelfRegistrationCheckBoxes"),
-			verificationCodeExpiryTime: values.get(ServerConfigurationsConstants.VERIFICATION_CODE_EXPIRY_TIME),
+			accountLockOnCreation: selfSignUpConfigs.accountLockOnCreation,
+			callbackRegex: values.get(ServerConfigurationsConstants.CALLBACK_REGEX),
+			enable: selfSignUpConfigs.enable,
+			internalNotificationManagement: selfSignUpConfigs.internalNotificationManagement,
+			reCaptcha: selfSignUpConfigs.reCaptcha,
 			smsOTPExpiryTime: values.get(ServerConfigurationsConstants.SMS_OTP_EXPIRY_TIME),
-			callbackRegex: values.get(ServerConfigurationsConstants.CALLBACK_REGEX)
+			verificationCodeExpiryTime: values.get(ServerConfigurationsConstants.VERIFICATION_CODE_EXPIRY_TIME)
 		}
 	};
 
-	const showUserSelfRegistrationView = editingForm[USER_SELF_REGISTRATION_FORM_IDENTIFIER] ? (
+	const userSelfRegistrationSummary = (
+		<EditSection>
+			<Forms>
+				<Field
+					name={ ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE }
+					required={ false }
+					requiredErrorMessage=""
+					type="checkbox"
+					children={ [
+						{
+							label: t("devPortal:components.serverConfigs.selfRegistration.form." +
+								"enable.label"),
+							value: ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE
+						}
+					] }
+					value={ selfSignUpConfigs.enable }
+					listen={
+						(values) => {
+							const value = values.get(ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE).length > 0
+								? "true" : "false";
+							saveSelfRegistrationConfigs(ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE, value);
+						}
+					}
+					toggle
+				/>
+				<Field
+					name={ ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION }
+					required={ false }
+					requiredErrorMessage=""
+					type="checkbox"
+					children={ [
+						{
+							label: t("devPortal:components.serverConfigs.selfRegistration.form." +
+								"enableAccountLockOnCreation.label"),
+							value: ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION
+						}
+					] }
+					value={ selfSignUpConfigs.accountLockOnCreation }
+					listen={
+						(values) => {
+							const value = values.get(ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION).length > 0
+								? "true" : "false";
+							saveSelfRegistrationConfigs(ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION, value);
+						}
+					}
+					toggle
+				/>
+				<Field
+					name={ ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED }
+					required={ false }
+					requiredErrorMessage=""
+					type="checkbox"
+					children={ [
+						{
+							label: t("devPortal:components.serverConfigs.selfRegistration.form." +
+								"internalNotificationManagement.label"),
+							value: ServerConfigurationsConstants.
+								SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED
+						}
+					] }
+					value={ selfSignUpConfigs.internalNotificationManagement }
+					listen={
+						(values) => {
+							const value = values.get(ServerConfigurationsConstants.
+								SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED).length > 0 ? "true" : "false";
+							saveSelfRegistrationConfigs(ServerConfigurationsConstants.
+									SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED, value);
+						}
+					}
+					toggle
+				/>
+				<Field
+					name={ ServerConfigurationsConstants.RE_CAPTCHA }
+					required={ false }
+					requiredErrorMessage=""
+					type="checkbox"
+					children={ [
+						{
+							label: t("devPortal:components.serverConfigs.selfRegistration.form." +
+								"enableReCaptcha.label"),
+							value: ServerConfigurationsConstants.RE_CAPTCHA
+						}
+					] }
+					value={ selfSignUpConfigs.reCaptcha }
+					listen={
+						(values) => {
+							const value = (values.get(ServerConfigurationsConstants.RE_CAPTCHA) &&
+								values.get(ServerConfigurationsConstants.RE_CAPTCHA).length > 0)
+								? "true" : "false";
+							saveSelfRegistrationConfigs(ServerConfigurationsConstants.RE_CAPTCHA, value);
+						}
+					}
+					toggle
+				/>
+			</Forms>
+		</EditSection>
+	);
+
+	const showUserSelfRegistrationView = editingForm[USER_SELF_REGISTRATION_FORM_IDENTIFIER] && (
 		<EditSection>
 			<Forms
 				onSubmit={ (values) => {
@@ -296,135 +378,111 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 				} }
 				resetState={ reset }
 			>
-				<Field
-					name="SelfRegistrationCheckBoxes"
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("views:components.serverConfigs.selfRegistration.form.enable.label"),
-							value: ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE
-						},
-						{
-							label: t("views:components.serverConfigs.selfRegistration.form." +
-								"enableAccountLockOnCreation.label"),
-							value: ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION
-						},
-						{
-							label: t("views:components.serverConfigs.selfRegistration.form." +
-								"internalNotificationManagement.label"),
-							value: ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED
-						},
-						{
-							label: t("views:components.serverConfigs.selfRegistration.form.enableReCaptcha.label"),
-							value: ServerConfigurationsConstants.RE_CAPTCHA
-						}
-					] }
-					value={ selfSignUpConfigs.checkboxValues }
-				/>
-				<Field
-					label={ t(
-						"views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime.label"
-					) }
-					name={ ServerConfigurationsConstants.VERIFICATION_CODE_EXPIRY_TIME }
-					placeholder={ t(
-						"views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime.placeholder"
-					) }
-					required={ true }
-					requiredErrorMessage={ t(
-						"views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime." +
-						"validations.empty"
-					) }
-					type="number"
-					value={ selfSignUpConfigs.verificationCodeExpiryTime }
-					width={ 9 }
-				/>
-				<Hint>
-					{ t("views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime.placeholder") }
-				</Hint>
-				<Field
-					label={ t(
-						"views:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.label"
-					) }
-					name={ ServerConfigurationsConstants.SMS_OTP_EXPIRY_TIME }
-					placeholder={ t(
-						"views:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.placeholder"
-					) }
-					required={ true }
-					requiredErrorMessage={ t(
-						"views:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.validations.empty"
-					) }
-					type="number"
-					value={ selfSignUpConfigs.smsOTPExpiryTime }
-					width={ 9 }
-				/>
-				<Hint>
-					{ t("views:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.placeholder") }
-				</Hint>
-				<Field
-					label={ t(
-						"views:components.serverConfigs.selfRegistration.form.callbackURLRegex.label"
-					) }
-					name={ ServerConfigurationsConstants.CALLBACK_REGEX }
-					placeholder={ t(
-						"views:components.serverConfigs.selfRegistration.form.callbackURLRegex.placeholder"
-					) }
-					required={ true }
-					requiredErrorMessage={ t(
-						"views:components.serverConfigs.selfRegistration.form.callbackURLRegex.validations.empty"
-					) }
-					type="text"
-					value={ selfSignUpConfigs.callbackRegex }
-					width={ 9 }
-				/>
-				<Field
-					name=""
-					required={ false }
-					requiredErrorMessage=""
-					hidden={ true }
-					type="divider"
-				/>
-				<Form.Group>
-					<Field
-						name=""
-						required={ false }
-						requiredErrorMessage=""
-						size="small"
-						type="submit"
-						value={ t("common:submit").toString() }
-					/>
-					<Field
-						name=""
-						required={ false }
-						requiredErrorMessage=""
-						className="link-button"
-						onClick={ () => {
-							hideFormEditView(USER_SELF_REGISTRATION_FORM_IDENTIFIER);
-						} }
-						size="small"
-						type="button"
-						value={ t("common:cancel").toString() }
-					/>
-				</Form.Group>
-
+				<Grid>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Field
+								label={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"verificationLinkExpiryTime.label") }
+								name={ ServerConfigurationsConstants.VERIFICATION_CODE_EXPIRY_TIME }
+								placeholder={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"verificationLinkExpiryTime.placeholder") }
+								required={ true }
+								requiredErrorMessage={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"verificationLinkExpiryTime.validations.empty") }
+								type="number"
+								value={ selfSignUpConfigs.verificationCodeExpiryTime }
+								width={ 4 }
+							/>
+							<Hint>
+								{ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"verificationLinkExpiryTime.hint") }
+							</Hint>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Field
+								label={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"smsOTPExpiryTime.label") }
+								name={ ServerConfigurationsConstants.SMS_OTP_EXPIRY_TIME }
+								placeholder={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"smsOTPExpiryTime.placeholder") }
+								required={ true }
+								requiredErrorMessage={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"smsOTPExpiryTime.validations.empty") }
+								type="number"
+								value={ selfSignUpConfigs.smsOTPExpiryTime }
+								width={ 4 }
+							/>
+							<Hint>
+								{ t("devPortal:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.hint") }
+							</Hint>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Field
+								label={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"callbackURLRegex.label") }
+								name={ ServerConfigurationsConstants.CALLBACK_REGEX }
+								placeholder={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"callbackURLRegex.placeholder") }
+								required={ true }
+								requiredErrorMessage={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"callbackURLRegex.validations.empty") }
+								type="text"
+								value={ selfSignUpConfigs.callbackRegex }
+								width={ 9 }
+							/>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Form.Group>
+								<Field
+									name=""
+									required={ false }
+									requiredErrorMessage=""
+									size="small"
+									type="submit"
+									value={ t("common:save").toString() }
+								/>
+								<Field
+									name=""
+									required={ false }
+									requiredErrorMessage=""
+									className="link-button"
+									onClick={ () => {
+										hideFormEditView(USER_SELF_REGISTRATION_FORM_IDENTIFIER);
+									} }
+									size="small"
+									type="button"
+									value={ t("common:cancel").toString() }
+								/>
+							</Form.Group>
+						</Grid.Column>
+					</Grid.Row>
+				</Grid>
 			</Forms>
 		</EditSection>
-	) : null;
+	);
 
 	return (
 		<Section
-			description={ t("views:components.serverConfigs.selfRegistration.description") }
-			header={ t("views:components.serverConfigs.selfRegistration.heading") }
+			description={ t("devPortal:components.serverConfigs.selfRegistration.description") }
+			header={ t("devPortal:components.serverConfigs.selfRegistration.heading") }
 			icon={ SettingsSectionIcons.federatedAssociations }
 			iconMini={ SettingsSectionIcons.federatedAssociationsMini }
 			iconSize="auto"
 			iconStyle="colored"
 			iconFloated="right"
 			onPrimaryActionClick={ () => showFormEditView(USER_SELF_REGISTRATION_FORM_IDENTIFIER) }
-			primaryAction={ t("views:components.serverConfigs.selfRegistration.actionTitles.config") }
+			primaryAction={ t("devPortal:components.serverConfigs.selfRegistration.actionTitles.config") }
 			primaryActionIcon="key"
+			showActionBar={ !editingForm[USER_SELF_REGISTRATION_FORM_IDENTIFIER] }
 		>
+			{ userSelfRegistrationSummary }
 			{ showUserSelfRegistrationView }
 			{ confirmationModal }
 		</Section>

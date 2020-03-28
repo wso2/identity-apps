@@ -202,6 +202,28 @@ export const Avatar: React.FunctionComponent<PropsWithChildren<AvatarPropsInterf
         return name.charAt(0).toUpperCase();
     };
 
+    if (React.isValidElement(image)){
+        return (
+            <Image
+                className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
+                bordered={ bordered }
+                floated={ floated }
+                circular={ avatarType === "user" }
+                rounded={ avatarType === "app" }
+                style={ style }
+                onClick={ onClick }
+                onMouseOver={ onMouseOver }
+                onMouseOut={ onMouseOut }
+            >
+                <div className="wrapper">
+                    {
+                        image
+                    }
+                </div>
+            </Image>
+        )
+    }
+
     if (image) {
         return (
             <>

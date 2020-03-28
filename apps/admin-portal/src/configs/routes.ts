@@ -23,6 +23,7 @@ import {
     ApplicationEditPage,
     ApplicationsPage,
     ApplicationTemplateSelectPage,
+    CustomizePage,
     HomePage,
     IdentityProvidersPage,
     IdentityProviderTemplateSelectPage,
@@ -37,6 +38,7 @@ import {
     ClaimDialectsPage,
     LocalClaimsEditPage,
     UserStores,
+    UserStoresEditPage,
     IdentityProviderEditPage,
     ServerConfigurationsPage
 } from "../pages";
@@ -218,7 +220,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         component: ClaimDialectsPage,
         exact: true,
         icon: "claims",
-        id: "claimDialects",
+        id: "claims",
         level: 2,
         name: "Claim Dialects",
         path: CLAIM_DIALECTS_PATH,
@@ -239,11 +241,20 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: UserStores,
         icon: "userStore",
-        id: "user-stores",
+        id: "userStores",
         name: "User Stores",
         path: USER_STORES_PATH,
         protected: true,
         showOnSidePanel: true
+    },
+    {
+        component: UserStoresEditPage,
+        icon: "userStore",
+        id: "edit-user-store",
+        name: "Edit User Store",
+        path: "/edit-user-store/:id",
+        protected: true,
+        showOnSidePanel: false
     },
     {
         component: ServerConfigurationsPage,
@@ -253,7 +264,16 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         name: "Server Configurations",
         path: "/server-configurations",
         protected: true,
-        showOnSidePanel: true,
+        showOnSidePanel: true
+    },
+    {
+        component: CustomizePage,
+        icon: "overview",
+        id: "customize",
+        name: "Customize",
+        path: "/customize",
+        protected: true,
+        showOnSidePanel: false
     },
     {
         component: PrivacyPage,

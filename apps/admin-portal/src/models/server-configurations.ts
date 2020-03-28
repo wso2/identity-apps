@@ -17,11 +17,34 @@
  */
 
 /**
- *  Captures the basic details in the applications.
+ *  Captures the configurations related to user self sign up.
  */
 export interface SelfSignUpConfigurationsInterface {
-	checkboxValues?: string[];
+	enable?: string[];
+	accountLockOnCreation?: string[];
+	internalNotificationManagement?: string[];
+	reCaptcha?: string[];
 	verificationCodeExpiryTime?: string;
 	smsOTPExpiryTime?: string;
 	callbackRegex?: string;
+}
+
+/**
+ *  Captures the configurations related to user account recovery.
+ */
+export interface AccountRecoveryConfigurationsInterface {
+	callbackRegex?: string;
+	enableForcedChallengeQuestions?: string[];
+	enableNotificationPasswordRecovery?: string[];
+	enableReCaptchaForNotificationPasswordRecovery?: string[];
+	enableReCaptchaForQuestionPasswordRecovery?: string[];
+	enableReCaptchaForUsernameRecovery?: string[];
+	enableSecurityQuestionPasswordRecovery?: string[];
+	enableUsernameRecovery?: string[];
+	notificationCheckBoxes?: string[];
+	notificationInternallyManaged?: string[];
+	passwordRecoveryMinAnswers?: string;
+	reCaptchaMaxFailedAttempts?: string;
+	recoveryLinkExpiryTime?: string;
+	smsOTPExpiryTime?: string;
 }

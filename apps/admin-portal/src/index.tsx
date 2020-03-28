@@ -17,12 +17,24 @@
  */
 
 import { ContextUtils, HttpUtils } from "@wso2is/core/utils";
+import { ThemeProvider } from "@wso2is/react-components";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import axios from "axios";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
 import { GlobalConfig } from "./configs";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
+import {
+    I18n,
+    I18nInstanceInitException,
+    I18nModuleConstants,
+    isLanguageSupported,
+    LanguageChangeException
+} from "@wso2is/i18n";
+import { store } from "./store";
+import { setSupportedI18nLanguages } from "./store/actions";
+import { StringUtils } from "@wso2is/core/utils";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(GlobalConfig);
@@ -30,11 +42,50 @@ ContextUtils.setRuntimeConfig(GlobalConfig);
 // Set up the Http client.
 HttpUtils.setupHttpClient(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
 
+// Set up the i18n module.
+I18n.init({
+    ...GlobalConfig?.i18nModuleOptions?.initOptions,
+    debug: GlobalConfig?.debug
+    },
+    GlobalConfig?.i18nModuleOptions?.overrideOptions,
+    GlobalConfig?.i18nModuleOptions?.langAutoDetectEnabled,
+    GlobalConfig?.i18nModuleOptions?.xhrBackendPluginEnabled)
+    .then(() => {
+
+        // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
+        // will fail. This constructs the path without the tenant, therefore it'll look for the file in
+        // `https://localhost:9443/admin-portal/resources/i18n/meta.json` rather than looking for the file in
+        // `https://localhost:9443/t/wso2.com/admin-portal/resources/i18n/meta.json`.
+        const metaPath = `/${ StringUtils.removeSlashesFromPath(GlobalConfig.appBaseNameWithoutTenant) }/${
+            StringUtils.removeSlashesFromPath(GlobalConfig.i18nModuleOptions.resourcePath) }/meta.json`;
+
+        // Fetch the meta file to get the supported languages.
+        axios.get(metaPath)
+            .then((response) => {
+                // Set the supported languages in redux store.
+                store.dispatch(setSupportedI18nLanguages(response?.data));
+
+                const isSupported = isLanguageSupported(I18n.instance.language, null, response?.data);
+
+                if (!isSupported) {
+                    I18n.instance.changeLanguage(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE)
+                        .catch((error) => {
+                            throw new LanguageChangeException(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE, error)
+                        })
+                }
+            })
+    })
+    .catch((error) => {
+        throw new I18nInstanceInitException(error);
+    });
+
 ReactDOM.render(
     (
-        <BrowserRouter>
-            <App/>
-        </BrowserRouter>
+        <ThemeProvider>
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
+        </ThemeProvider>
     ),
     document.getElementById("root")
 );

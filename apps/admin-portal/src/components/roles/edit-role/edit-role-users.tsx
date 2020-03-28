@@ -76,33 +76,33 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
                     "members": newUsers
                 }
             }]
-        }
+        };
         
         updateRoleDetails(roleObject.id, roleData).then(response => {
             handleAlerts({
                 description: t(
-                    "views:components.roles.notifications.updateRole.success.description"
+                    "devPortal:components.roles.notifications.updateRole.success.description"
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "views:components.roles.notifications.updateRole.success.message"
+                    "devPortal:components.roles.notifications.updateRole.success.message"
                 )
             });
             onRoleUpdate();
         }).catch(error => {
             handleAlerts({
                 description: t(
-                    "views:components.roles.notifications.updateRole.error.description"
+                    "devPortal:components.roles.notifications.updateRole.error.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "views:components.roles.notifications.updateRole.error.message"
+                    "devPortal:components.roles.notifications.updateRole.error.message"
                 )
             });
         })
-    }
+    };
 
     return (
         <AddRoleUsers isEdit={ true } assignedUsers={ roleObject.members } onSubmit={ onUserUpdate }/>
     )
-}
+};

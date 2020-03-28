@@ -26,7 +26,7 @@ import { useTrigger } from "@wso2is/forms";
 import { ApplicationWizardStepIcons } from "../../../configs";
 import { RoleBasics } from "./role-basics";
 import { PermissionList } from "./role-permisson";
-import { createRole, updatePermissionForRole } from "../../../api";
+import { createRole, updateRolePermissions } from "../../../api";
 import { CreateRoleInterface, AlertLevels, CreateRoleMemberInterface } from "../../../models";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -109,7 +109,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
      */
     const addRole = (basicData: any): void => {
         const members: CreateRoleMemberInterface[] = [];
-        const users = basicData.RoleUserList.users
+        const users = basicData.RoleUserList
         if (users.length > 0) {
             users.forEach(user => {
                 members.push({
@@ -143,46 +143,46 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                     })
                 }
 
-                updatePermissionForRole(createdRoleId, permData).then(() => {
+                updateRolePermissions(createdRoleId, permData).then(() => {
                     dispatch(addAlert({
                         description: t(
-                            "views:components.roles.notifications.createRole.success.description"
+                            "devPortal:components.roles.notifications.createRole.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "views:components.roles.notifications.createRole.success.message"
+                            "devPortal:components.roles.notifications.createRole.success.message"
                         )
                     }));
                 }).catch(error => {
                     if (!error.response || error.response.status === 401) {
                         dispatch(addAlert({
                             description: t(
-                                "views:components.roles.notifications.createPermission.error.description"
+                                "devPortal:components.roles.notifications.createPermission.error.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "views:components.roles.notifications.createPermission.error.message"
+                                "devPortal:components.roles.notifications.createPermission.error.message"
                             )
                         }));
                     } else if (error.response && error.response.data.detail) {
                         dispatch(addAlert({
                             description: t(
-                                "views:components.roles.notifications.createPermission.error.description",
+                                "devPortal:components.roles.notifications.createPermission.error.description",
                                 { description: error.response.data.detail }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "views:components.roles.notifications.createPermission.error.message"
+                                "devPortal:components.roles.notifications.createPermission.error.message"
                             )
                         }));
                     } else {
                         dispatch(addAlert({
                             description: t(
-                                "views:components.roles.notifications.createPermission.genericError.description"
+                                "devPortal:components.roles.notifications.createPermission.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "views:components.roles.notifications.createPermission.genericError.message"
+                                "devPortal:components.roles.notifications.createPermission.genericError.message"
                             )
                         }));
                     }
@@ -194,32 +194,32 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             if (!error.response || error.response.status === 401) {
                 dispatch(addAlert({
                     description: t(
-                        "views:components.roles.notifications.createRole.error.description"
+                        "devPortal:components.roles.notifications.createRole.error.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.roles.notifications.createRole.error.message"
+                        "devPortal:components.roles.notifications.createRole.error.message"
                     )
                 }));
             } else if (error.response && error.response.data.detail) {
                 dispatch(addAlert({
                     description: t(
-                        "views:components.roles.notifications.createRole.error.description",
+                        "devPortal:components.roles.notifications.createRole.error.description",
                         { description: error.response.data.detail }
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.roles.notifications.createRole.error.message"
+                        "devPortal:components.roles.notifications.createRole.error.message"
                     )
                 }));
             } else {
                 dispatch(addAlert({
                     description: t(
-                        "views:components.roles.notifications.createRole.genericError.description"
+                        "devPortal:components.roles.notifications.createRole.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.roles.notifications.createRole.genericError.message"
+                        "devPortal:components.roles.notifications.createRole.genericError.message"
                     )
                 }));
             }
@@ -255,7 +255,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
      */
     const handleWizardSubmit = (values: any, formType: WizardStepsFormTypes) => {
         setCurrentWizardStep(currentStep + 1);
-        setWizardState(_.merge(wizardState, { [ formType ]: values }));
+        setWizardState({...wizardState, [ formType ]: values});
     };
 
     // Create role wizard steps
@@ -263,6 +263,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         content: (
             <RoleBasics
                 triggerSubmit={ submitGeneralSettings }
+                initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
                 onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
             />
         ),
@@ -271,7 +272,9 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     },{
         content: (
             <PermissionList
+                isEdit={ false }
                 triggerSubmit={ submitPermissionList }
+                initialValues={ wizardState && wizardState[ WizardStepsFormTypes.PERM_LIST ] }
                 onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.PERM_LIST) }
             />
         ),
@@ -282,6 +285,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             <AddRoleUsers
                 isEdit={ false }
                 triggerSubmit={ submitRoleUserList }
+                initialValues={ wizardState && wizardState[ WizardStepsFormTypes.USER_LIST ] }
                 onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.USER_LIST) }
             />
         ),

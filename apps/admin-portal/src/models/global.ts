@@ -17,6 +17,7 @@
  */
 
 import { AlertInterface } from "./alert";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
 
 export interface GlobalInterface {
     alert: AlertInterface;
@@ -24,6 +25,7 @@ export interface GlobalInterface {
     alertSystem: any;
     isApplicationsPageVisible: boolean;
     isGlobalLoaderVisible: boolean;
+    supportedI18nLanguages: SupportedLanguagesMeta;
 }
 
 /**

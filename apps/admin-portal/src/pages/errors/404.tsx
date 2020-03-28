@@ -38,16 +38,16 @@ export const PageNotFound = (): JSX.Element => {
                     as={ Link }
                     to={ GlobalConfig.appHomePath }
                 >
-                    { t("views:placeholders.404.action") }
+                    { t("devPortal:placeholders.404.action") }
                 </Button>
             ) }
             image={ EmptyPlaceholderIllustrations.pageNotFound }
             imageSize="tiny"
             subtitle={ [
-                t("views:placeholders.404.subtitles.0"),
-                t("views:placeholders.404.subtitles.1")
+                t("devPortal:placeholders.404.subtitles.0"),
+                t("devPortal:placeholders.404.subtitles.1")
             ] }
-            title={ t("views:placeholders.404.title") }
+            title={ t("devPortal:placeholders.404.title") }
         />
     );
 };

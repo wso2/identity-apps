@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, Heading, Hint, SelectionCard } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
@@ -74,6 +74,10 @@ interface ApplicationSettingsPropsInterface {
      *  Is inbound protocol config request is still loading.
      */
     isInboundProtocolConfigRequestLoading: boolean;
+    /**
+     * CRUD permissions,
+     */
+    permissions?: CRUDPermissionsInterface;
 }
 
 /**

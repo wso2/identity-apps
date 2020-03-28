@@ -26,6 +26,8 @@ import {
     ApplicationBasicInterface,
     ApplicationInterface,
     ApplicationListInterface,
+    ApplicationTemplateInterface,
+    ApplicationTemplateListInterface,
     AuthProtocolMetaListItemInterface,
     HttpMethods,
     OIDCDataInterface,
@@ -578,6 +580,98 @@ export const getAdaptiveAuthTemplates = (): Promise<AdaptiveAuthTemplatesListInt
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ApplicationManagementConstants.ADAPTIVE_AUTH_TEMPLATES_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Get Application Template data.
+ *
+ * @param templateId Template Id of the application.
+ *
+ * @return {Promise<ApplicationTemplateInterface>} A promise containing the response.
+ */
+export const getApplicationTemplateData = (templateId: string): Promise<ApplicationTemplateInterface> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.applications + "/templates/" + templateId
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.APPLICATION_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as ApplicationTemplateInterface);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.APPLICATION_TEMPLATE_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Gets the application template list with limit and offset.
+ *
+ * @param {number} limit - Maximum Limit of the application template List.
+ * @param {number} offset - Offset for get to start.
+ * @param {string} filter - Search filter.
+ *
+ * @return {Promise<ApplicationTemplateListInterface>} A promise containing the response.
+ */
+export const getApplicationTemplateList = (limit?: number, offset?: number,
+                                           filter?: string): Promise<ApplicationTemplateListInterface> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: {
+            filter,
+            limit,
+            offset
+        },
+        url: ServiceResourcesEndpoint.applications + "/templates"
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.APPLICATION_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as ApplicationTemplateListInterface);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.APPLICATION_TEMPLATES_LIST_FETCH_ERROR,
                 error.stack,
                 error.code,
                 error.request,

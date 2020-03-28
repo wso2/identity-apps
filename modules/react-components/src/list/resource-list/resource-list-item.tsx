@@ -35,11 +35,11 @@ import {
 /**
  * Proptypes for the resource list item component.
  */
-interface ResourceListItemPropsInterface extends ListItemProps {
+export interface ResourceListItemPropsInterface extends ListItemProps {
     /**
      * List items actions.
      */
-    actions?: ResourceListAction[];
+    actions?: ResourceListActionInterface[];
     /**
      * Action panel float direction.
      */
@@ -82,7 +82,7 @@ interface ResourceListItemPropsInterface extends ListItemProps {
 /**
  * Resource list action interface.
  */
-interface ResourceListAction {
+export interface ResourceListActionInterface {
     disabled?: boolean;
     hidden?: boolean;
     icon: SemanticICONS;
@@ -125,11 +125,15 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                         ? (metaContent.length + 2) as StrictGridRowProps["columns"]
                         : 3
                 }>
-                    <Grid.Column width={ descriptionColumnWidth }>
+                    <Grid.Column width={ descriptionColumnWidth } className="resource-item-column">
                         { avatar }
                         <List.Content>
                             <List.Header className="list-item-name">{ itemHeader }</List.Header>
-                            <List.Description className="list-item-description">{ itemDescription }</List.Description>
+                            { itemDescription && 
+                                <List.Description className="list-item-description">
+                                    { itemDescription }
+                                </List.Description>
+                            }
                         </List.Content>
                     </Grid.Column>
                     {

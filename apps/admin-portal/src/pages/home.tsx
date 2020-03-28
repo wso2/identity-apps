@@ -36,10 +36,10 @@ export const HomePage = (): JSX.Element => {
     return (
         <PageHeader
             title={ t(
-                "views:pages.overView.title",
+                "devPortal:pages.overView.title",
                 { firstName: resolveUserDisplayName(profileDetails) }
             ) }
-            description={ t("views:pages.overView.subTitle") }
+            description={ t("devPortal:pages.overView.subTitle") }
             titleTextAlign="left"
         />
     );

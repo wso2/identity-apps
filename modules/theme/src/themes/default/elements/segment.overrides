@@ -197,6 +197,7 @@
     align-items: center;
     padding: 0 1em 0 0;
     border: 0.5px solid @RoleSummaryUserListBackgroundColor;
+    vertical-align: top;
 
     .circular {
         margin-right: 0.5em !important;

@@ -16,9 +16,11 @@
  * under the License.
  */
 
-import { ApplicationTemplateCard } from "@wso2is/react-components";
 import React, { FunctionComponent, SyntheticEvent } from "react";
 import { ApplicationTemplateListItemInterface } from "../../../models";
+import { ApplicationTemplateCard } from "./application-template-card";
+import { EmptyPlaceholder } from "@wso2is/react-components";
+import { EmptyPlaceholderIllustrations } from "../../../configs";
 
 /**
  * Proptypes for the quick start templates component.
@@ -58,13 +60,19 @@ export const QuickStartApplicationTemplates: FunctionComponent<QuickStartApplica
                             key={ index }
                             description={ template.description }
                             image={ template.image }
-                            technologies={ template.technologies }
-                            name={ template.displayName }
+                            technologyTypes={ template.types }
+                            name={ template.name }
                             id={ template.id }
                             onClick={ onTemplateSelect }
                         />
                     ))
-                    : null
+                    :
+                    <EmptyPlaceholder
+                        image={ EmptyPlaceholderIllustrations.newList }
+                        imageSize="tiny"
+                        title={ "No Templates Available" }
+                        subtitle={ ["Please add templates to display"] }
+                    />
             }
         </>
     );

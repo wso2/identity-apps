@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/theme",
-    "version": "1.0.101",
+    "version": "1.0.118",
     "description": "Theme for web components of WSO2 Identity Server Webapps.",
     "keywords": [
         "WSO2",
@@ -30,6 +30,8 @@
     "peerDependencies": {
         "fs-extra": "*",
         "less": "*",
+        "less-to-json": "*",
+        "merge-files": "*",
         "semantic-ui-css": "*",
         "semantic-ui-less": "*"
     }

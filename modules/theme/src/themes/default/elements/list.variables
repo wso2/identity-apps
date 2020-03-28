@@ -49,3 +49,19 @@
 
 /* List Item Border Radius */
 @userRolesListItemBorderRadius: 0.5em;
+
+/* Role List Icon wrapper */
+@roleListWrapperColor: #e8e8e8;
+
+/*------------------------
+   Dynamic Fields
+--------------------------*/
+
+@borderRadius: @defaultBorderRadius;
+@raisedShadow: 0px 2px 3px 0px @borderColor;
+@menuBorderWidth: 1px;
+@menuBorderColor: @borderColor;
+@menuBorder: @menuBorderWidth solid @menuBorderColor;
+@menuBoxShadow: @raisedShadow;
+@menuBorderRadius: @borderRadius;
+@dynamicFieldButtons: 108px;

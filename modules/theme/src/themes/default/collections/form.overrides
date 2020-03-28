@@ -1,3 +1,24 @@
 /*******************************
         Form Overrides
 *******************************/
+
+/*-------------------------------
+      Hidden/Disable Field
+--------------------------------*/
+
+.ui.form {
+    .field {
+        &.hidden {
+            display: none;
+        }
+
+        &.disabled {
+            opacity: 1;
+
+            >label {
+                opacity: 1;
+            }
+        }
+    }
+}
+

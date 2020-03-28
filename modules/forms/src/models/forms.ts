@@ -35,7 +35,8 @@ export type Type =
     | "reset"
     | "button"
     | "divider"
-    | "custom";
+    | "custom"
+    | "toggle";
 
 /**
  * Model of the Validation object passed into validation functions
@@ -57,6 +58,7 @@ export interface Error {
  * The generic interface for all input fields
  */
 interface FormFieldModel {
+    className?: string;
     name: string;
     label?: string | React.ReactElement;
     listen?: (values: Map<string, FormValue>) => void;
@@ -64,6 +66,7 @@ interface FormFieldModel {
     readOnly?: boolean;
     disabled?: boolean;
     displayErrorOn?: "blur" | "submit";
+    hidden?: boolean;
 }
 
 /**
@@ -134,6 +137,15 @@ export interface CheckboxField extends FormRequiredFieldModel {
     type: "checkbox";
     children: CheckboxChild[];
     value?: string[];
+    [extra: string]: any;
+}
+
+/**
+ * Toggle field model
+ */
+export interface ToggleField extends FormRequiredFieldModel {
+    type: "toggle";
+    value?: string;
     [extra: string]: any;
 }
 
@@ -239,7 +251,8 @@ export type FormField =
     | Reset
     | FormButton
     | FormDivider
-    | CustomField;
+    | CustomField
+    | ToggleField;
 
 /**
  * FormField value types

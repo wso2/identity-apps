@@ -21,11 +21,12 @@
  */
 export interface Permission {
     label?: string;
-    name?: string;
-    isExpanded?: boolean;
+    name: string;
+    isExpanded: boolean;
     children?: Permission[];
     fullPath?: string;
     isChecked: boolean;
+    id: string;
 }
 
 /**

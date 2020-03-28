@@ -34,15 +34,17 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { Button, Responsive } from "semantic-ui-react";
+import { Button, Image, Responsive } from "semantic-ui-react";
 import { ProtectedRoute } from "../components";
 import { GlobalConfig, LogoImage, routes, SidePanelIcons, SidePanelMiscIcons } from "../configs";
 import { UIConstants } from "../constants";
 import { AppConfig, history } from "../helpers";
 import { AppConfigInterface } from "../models";
 import { AppState } from "../store";
-import { filterRoutes } from "../utils";
 import { BaseLayout } from "./base";
+import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
+import { RouteUtils } from "@wso2is/core/utils";
+import { ThemeContext } from "@wso2is/react-components";
 
 /**
  * Dashboard layout Prop types.
@@ -62,12 +64,16 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
 ): ReactElement => {
 
     const { fluid } = props;
+    const { state } = useContext(ThemeContext);
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const profileDetails: AuthReducerStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
+    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state.global.supportedI18nLanguages);
 
+    const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(routes);
     const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(routes[0]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
@@ -247,12 +253,15 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
             })
         };
 
-        recurse(filterRoutes(routes, appConfig));
+        recurse(filteredRoutes);
 
         return resolvedRoutes;
     };
 
     useEffect(() => {
+        // Filter the routes and get only the enabled routes defined in the app config.
+        setFilteredRoutes(RouteUtils.filterEnabledRoutes<AppConfigInterface>(routes, appConfig));
+
         if (_.isEmpty(profileDetails)) {
             dispatch(getProfileInfo(() => null));
         }
@@ -276,6 +285,17 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
         setFooterHeight(document.getElementById("app-footer").offsetHeight);
     }, []);
 
+    /**
+     * Handles language switch action.
+     * @param {string} language - Selected language.
+     */
+    const handleLanguageSwitch = (language: string): void => {
+        I18n.instance.changeLanguage(language)
+            .catch((error) => {
+                throw new LanguageChangeException(language, error)
+            })
+    };
+
     return (
         <BaseLayout>
             <Responsive
@@ -287,8 +307,16 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     brand={ (
                         <ProductBrand
                             style={ { marginTop: 0 } }
-                            logo={ <Logo image={ LogoImage }  /> }
-                            name={ ContextUtils.getRuntimeConfig().applicationName }
+                            logo={  state.logo && state.logo !== "" ?
+                                <Image src={ state.logo } style={ { maxHeight: 25 } } />
+                                :
+                                <Logo image={ LogoImage } />
+                            }
+                            name={ state.productName && state.productName !== "" ?
+                                state.productName
+                                :
+                                ContextUtils.getRuntimeConfig().applicationName
+                            }
                         />
                     ) }
                     brandLink={ ContextUtils.getRuntimeConfig().appHomePath }
@@ -331,7 +359,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
                     icons={ SidePanelIcons }
-                    routes={ filterRoutes(routes, appConfig) }
+                    routes={ filteredRoutes }
                     selected={ selectedRoute }
                 >
                     <Switch>
@@ -339,7 +367,13 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     </Switch>
                 </SidePanel>
                 <Footer
-                    copyright={
+                    showLanguageSwitcher
+                    currentLanguage={ I18n.instance?.language }
+                    supportedLanguages={ supportedI18nLanguages }
+                    onLanguageChange={ handleLanguageSwitch }
+                    copyright={ state.copyrightText && state.copyrightText !== "" ?
+                        state.copyrightText
+                        :
                         ContextUtils.getRuntimeConfig().copyrightText
                             ? ContextUtils.getRuntimeConfig().copyrightText
                             : null

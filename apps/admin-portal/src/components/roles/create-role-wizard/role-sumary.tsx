@@ -55,14 +55,24 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
     return (
         <Grid className="wizard-summary">
             { summary?.BasicDetails && (
-                <Grid.Row className="summary-field" columns={ 2 }>
-                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                        <div className="label">Role Name</div>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                        <div className="value url">{ summary.BasicDetails.roleName }</div>
-                    </Grid.Column>
-                </Grid.Row>
+                <>
+                    <Grid.Row className="summary-field" columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                            <div className="label">Domain</div>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                            <div className="value url">{ summary.BasicDetails.domain }</div>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row className="summary-field" columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                            <div className="label">Role Name</div>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                            <div className="value url">{ summary.BasicDetails.roleName }</div>
+                        </Grid.Column>
+                    </Grid.Row>
+                </>
             ) }
             {
                 summary?.PermissionList &&
@@ -88,9 +98,8 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                     : null
             }
             {
-                summary?.RoleUserList && summary.RoleUserList.users && 
-                summary.RoleUserList.users instanceof Array &&
-                summary.RoleUserList.users.length > 0
+                summary?.RoleUserList && summary.RoleUserList instanceof Array &&
+                summary.RoleUserList.length > 0
                     ? (
                         <Grid.Row className="summary-field" columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
@@ -99,7 +108,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                                 <Label.Group>
                                     {
-                                        summary.RoleUserList.users
+                                        summary.RoleUserList
                                             .map((user, index) => (
                                                 <div key={ index } className="role-summary-user">
                                                     <UserAvatar

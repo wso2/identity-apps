@@ -27,8 +27,10 @@ import {
     PasswordField,
     RadioField,
     Reset,
-    TextField
+    TextField,
+    ToggleField
 } from "../../src";
+import { FormValue } from "../models";
 
 /**
  * Type guard to check if an input element is a text field
@@ -80,6 +82,14 @@ export const isCheckBoxField = (toBeDetermined: FormField): toBeDetermined is Ch
  * Type guard to check if an input element is of the type Radio
  * @param toBeDetermined
  */
+export const isToggleField = (toBeDetermined: FormField): toBeDetermined is ToggleField => {
+    return (toBeDetermined as ToggleField).type === "toggle";
+};
+
+/**
+ * Type guard to check if an input element is of the type Radio
+ * @param toBeDetermined
+ */
 export const isSubmitField = (toBeDetermined: FormField): toBeDetermined is FormSubmit => {
     return (toBeDetermined as FormSubmit).type === "submit";
 };
@@ -122,12 +132,13 @@ export const isCustomField = (toBeDetermined: FormField): toBeDetermined is Cust
  */
 export const isInputField = (
     toBeDetermined: FormField
-): toBeDetermined is TextField | CheckboxField | DropdownField | RadioField | PasswordField => {
+): toBeDetermined is TextField | CheckboxField | DropdownField | RadioField | PasswordField | ToggleField => {
     return (
         isTextField(toBeDetermined) ||
         isCheckBoxField(toBeDetermined) ||
         isDropdownField(toBeDetermined) ||
         isRadioField(toBeDetermined) ||
-        isPasswordField(toBeDetermined)
+        isPasswordField(toBeDetermined) ||
+        isToggleField(toBeDetermined)
     );
 };

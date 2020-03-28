@@ -39,7 +39,7 @@ export class CommonUtils {
     static humanizeDateDifference = (date: string): string => {
         const now = moment(new Date());
         const recievedDate = moment(date);
-        return "last modified " + moment.duration(now.diff(recievedDate)).humanize() + " ago";
+        return "Last modified " + moment.duration(now.diff(recievedDate)).humanize() + " ago";
     };
     
 }

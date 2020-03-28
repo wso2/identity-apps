@@ -94,6 +94,8 @@
             window["runConfig"] = {
                 appBaseName: window.userConfig.appBaseName || getTenantPath(tenantName) + 
                     "<%= htmlWebpackPlugin.options.publicPath %>",
+                appBaseNameWithoutTenant: window.userConfig.appBaseNameWithoutTenant ||
+                    "<%= htmlWebpackPlugin.options.publicPath %>",
                 clientHost: window.userConfig.clientHost || clientOriginAddress + getTenantPath(tenantName),
                 clientOrigin: window.userConfig.clientOrigin || clientOriginAddress,
                 clientID: window.userConfig.clientID ||

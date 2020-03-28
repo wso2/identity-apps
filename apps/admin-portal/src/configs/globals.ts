@@ -16,8 +16,12 @@
  * under the License.
  */
 
+import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { I18nConstants } from "../constants";
+
 interface RuntimeConfigInterface {
     appBaseName?: string;
+    appBaseNameWithoutTenant?: string;
     appHomePath?: string;
     appLoginPath?: string;
     applicationName?: string;
@@ -25,7 +29,9 @@ interface RuntimeConfigInterface {
     clientID?: string;
     clientOrigin?: string;
     copyrightText?: string;
+    debug?: boolean;
     doNotDeleteApplications?: string[];
+    i18nModuleOptions?: I18nModuleOptionsInterface;
     loginCallbackUrl?: string;
     serverHost?: string;
     serverOrigin?: string;
@@ -41,6 +47,9 @@ const RUNTIME_CONFIG: RuntimeConfigInterface = window["runConfig"];
 
 export const GlobalConfig: RuntimeConfigInterface = {
     appBaseName: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.appBaseName || APP_BASENAME) : APP_BASENAME,
+    appBaseNameWithoutTenant: (RUNTIME_CONFIG)
+        ? (RUNTIME_CONFIG.appBaseNameWithoutTenant || APP_BASENAME)
+        : APP_BASENAME,
     appHomePath: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.appHomePath || APP_HOME_PATH) : APP_HOME_PATH,
     appLoginPath: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.appLoginPath || APP_LOGIN_PATH) : APP_LOGIN_PATH,
     applicationName: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.applicationName || APP_NAME) : APP_NAME,
@@ -48,7 +57,28 @@ export const GlobalConfig: RuntimeConfigInterface = {
     clientID: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.clientID || CLIENT_ID_DEFAULT) : CLIENT_ID_DEFAULT,
     clientOrigin: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.clientOrigin || CLIENT_ORIGIN_DEFAULT) : CLIENT_ORIGIN_DEFAULT,
     copyrightText: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.copyrightText || COPYRIGHT_TEXT_DEFAULT) : COPYRIGHT_TEXT_DEFAULT,
+    debug: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.debug || DEBUG_MODE) : DEBUG_MODE,
     doNotDeleteApplications: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.doNotDeleteApplications || []) : [],
+    i18nModuleOptions: {
+        initOptions: RUNTIME_CONFIG?.i18nModuleOptions?.initOptions
+            ? RUNTIME_CONFIG.i18nModuleOptions.initOptions
+            : I18nConstants.MODULE_INIT_OPTIONS,
+        langAutoDetectEnabled: RUNTIME_CONFIG?.i18nModuleOptions?.langAutoDetectEnabled
+            ? RUNTIME_CONFIG.i18nModuleOptions.langAutoDetectEnabled
+            : I18nConstants.LANG_AUTO_DETECT_ENABLED,
+        namespaceDirectories: RUNTIME_CONFIG?.i18nModuleOptions?.namespaceDirectories
+            ? RUNTIME_CONFIG?.i18nModuleOptions?.namespaceDirectories
+            : I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
+        overrideOptions: RUNTIME_CONFIG?.i18nModuleOptions?.overrideOptions
+            ? RUNTIME_CONFIG.i18nModuleOptions.overrideOptions
+            : I18nConstants.INIT_OPTIONS_OVERRIDE,
+        resourcePath: RUNTIME_CONFIG?.i18nModuleOptions?.resourcePath
+            ? RUNTIME_CONFIG.i18nModuleOptions.resourcePath
+            : I18N_RESOURCE_PATH,
+        xhrBackendPluginEnabled: RUNTIME_CONFIG?.i18nModuleOptions?.xhrBackendPluginEnabled
+            ? RUNTIME_CONFIG.i18nModuleOptions.xhrBackendPluginEnabled
+            : I18nConstants.XHR_BACKEND_PLUGIN_ENABLED
+    },
     loginCallbackUrl: (RUNTIME_CONFIG) ?
         (RUNTIME_CONFIG.clientHost || CLIENT_HOST_DEFAULT) + (RUNTIME_CONFIG.loginCallbackUrl || LOGIN_CALLBACK_URL) :
         LOGIN_CALLBACK_URL,

@@ -16,19 +16,27 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LinkButton, PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, MouseEvent, useEffect, useState } from "react";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    SyntheticEvent,
+    MouseEvent,
+    useEffect,
+    useState,
+    useContext
+} from "react";
 import { useDispatch } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getApplicationList } from "../api";
 import { ApplicationList, ApplicationSearch } from "../components";
-import { history } from "../helpers";
+import { AppConfig, history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
-import { ApplicationListInterface } from "../models";
-import { ApplicationConstants } from "../constants";
+import { AppConfigInterface, ApplicationListInterface } from "../models";
+import { ApplicationConstants, ApplicationManagementConstants } from "../constants";
 import { EmptyPlaceholderIllustrations } from "../configs";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
@@ -66,6 +74,8 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
 
     const dispatch = useDispatch();
 
+    const appConfig: AppConfigInterface = useContext(AppConfig);
+
     const [ searchQuery, setSearchQuery ] = useState("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
         APPLICATIONS_LIST_SORTING_OPTIONS[ 0 ]
@@ -74,6 +84,25 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(DEFAULT_APP_LIST_ITEM_LIMIT);
     const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
+    const [ permissions, setPermissions ] = useState<CRUDPermissionsInterface>(undefined);
+
+    /**
+     * Called when the app config value changes.
+     */
+    useEffect(() => {
+        if (!appConfig) {
+            return;
+        }
+
+        setPermissions(_.get(appConfig, ApplicationManagementConstants.CRUD_PERMISSIONS_APP_CONFIG_KEY));
+    }, [ appConfig ]);
+
+    /**
+     * Called on every `listOffset` & `listItemLimit` change.
+     */
+    useEffect(() => {
+        getAppLists(listItemLimit, listOffset, null);
+    }, [ listOffset, listItemLimit ]);
 
     /**
      * Retrieves the list of applications.
@@ -110,13 +139,6 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                 setApplicationListRequestLoading(false);
             });
     };
-
-    /**
-     * Called on every `listOffset` & `listItemLimit` change.
-     */
-    useEffect(() => {
-        getAppLists(listItemLimit, listOffset, null);
-    }, [ listOffset, listItemLimit ]);
 
     /**
      * Sets the list sorting strategy.
@@ -239,15 +261,17 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                 onPageChange={ handlePaginationChange }
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
                 rightActionPanel={
-                    (
-                        <PrimaryButton
-                            onClick={ (): void => {
-                                history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
-                            } }
-                        >
-                            <Icon name="add"/>Add application
-                        </PrimaryButton>
-                    )
+                    permissions && permissions.create === false
+                        ? null
+                        : (
+                            <PrimaryButton
+                                onClick={ (): void => {
+                                    history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
+                                } }
+                            >
+                                <Icon name="add"/>Add application
+                            </PrimaryButton>
+                        )
                 }
                 showPagination={ true }
                 showTopActionPanel={ !(!searchQuery && appList?.totalResults <= 0) }
@@ -259,7 +283,13 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                 {
                     (appList?.totalResults > 0 ||
                         appList?.applications instanceof Array && appList.applications.length > 0)
-                        ? <ApplicationList list={ appList } onApplicationDelete={ handleApplicationDelete } />
+                        ? (
+                            <ApplicationList
+                                permissions={ permissions }
+                                list={ appList }
+                                onApplicationDelete={ handleApplicationDelete }
+                            />
+                        )
                         : !isApplicationListRequestLoading && showPlaceholders()
                 }
             </ListLayout>

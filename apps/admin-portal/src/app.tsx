@@ -16,72 +16,99 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, Suspense, ReactElement } from "react";
+import { ThemeContext } from "@wso2is/react-components";
 import { I18nextProvider } from "react-i18next";
 import { Provider } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
-import { baseRoutes, GlobalConfig, i18n } from "./configs";
+import { baseRoutes, GlobalConfig } from "./configs";
 import { AppConfig, history } from "./helpers";
 import { AppConfigInterface } from "./models";
 import { store } from "./store";
-import { getAppConfig } from "./utils";
+import { ContentLoader } from "@wso2is/react-components";
+import { I18n } from "@wso2is/i18n";
+import { getAppConfig } from "@wso2is/core/api";
+import { ApplicationConstants } from "./constants";
+import { Helmet } from "react-helmet";
 
 /**
  * Main App component.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const App = (): JSX.Element => {
+export const App = (): ReactElement => {
 
-    const [appConfig, setAppConfig] = useState<AppConfigInterface>(null);
+    const [ appConfig, setAppConfig ] = useState<AppConfigInterface>(null);
+
+    const { state } = useContext(ThemeContext);
 
     /**
      * Obtain app.config.json from the server root when the app mounts.
      */
     useEffect(() => {
-        getAppConfig().then((appConfigModule) => {
-            setAppConfig(appConfigModule);
-        });
+        // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
+        // will fail. Using `appBaseNameWithoutTenant` will create a path without the tenant. Therefore,
+        // `getAppConfig()` will look for the app config file in `https://localhost:9443/admin-portal` rather than
+        // looking it in `https://localhost:9443/t/wso2.com/admin-portal`.
+        getAppConfig<AppConfigInterface>(ApplicationConstants.APP_CONFIG_FILE_NAME,
+            GlobalConfig.appBaseNameWithoutTenant)
+            .then((response) => {
+                setAppConfig(response);
+            })
+            .catch(() => {
+                // TODO: Log the error here.
+            });
     }, []);
 
     return (
         <Router history={ history }>
             <div className="container-fluid">
-                <I18nextProvider i18n={ i18n }>
+                <I18nextProvider i18n={ I18n.instance }>
                     <Provider store={ store }>
                         <AppConfig.Provider value={ appConfig }>
-                            <Switch>
-                                <Redirect exact={ true } path="/" to={ GlobalConfig.appLoginPath } />
-                                {
-                                    baseRoutes.map((route, index) => {
-                                        return (
-                                            route.protected ?
-                                                (
-                                                    <ProtectedRoute
-                                                        component={ route.component }
-                                                        path={ route.path }
-                                                        key={ index }
-                                                        exact={ route.exact }
-                                                    />
-                                                )
-                                                :
-                                                (
-                                                    <Route
-                                                        path={ route.path }
-                                                        render={ (props) =>
-                                                            (<route.component { ...props } />)
-                                                        }
-                                                        key={ index }
-                                                        exact={ route.exact }
-                                                    />
-                                                )
-                                        );
-                                    })
-                                }
-                            </Switch>
+                            <Helmet defer={ false }>
+                                <link
+                                    href={ `/libs/themes/${state.theme}/theme.min.css` }
+                                    rel="stylesheet"
+                                    type="text/css"
+                                />
+                                <style type="text/css">
+                                    { state.css }
+                                </style>
+                            </Helmet>
+                            <Suspense fallback={ <ContentLoader dimmer /> }>
+                                <Switch>
+                                    <Redirect exact={ true } path="/" to={ GlobalConfig.appLoginPath }/>
+                                    {
+                                        baseRoutes.map((route, index) => {
+                                            return (
+                                                route.protected ?
+                                                    (
+                                                        <ProtectedRoute
+                                                            component={ route.component }
+                                                            path={ route.path }
+                                                            key={ index }
+                                                            exact={ route.exact }
+                                                        />
+                                                    )
+                                                    :
+                                                    (
+                                                        <Route
+                                                            path={ route.path }
+                                                            render={ (props) =>
+                                                                (<route.component { ...props } />)
+                                                            }
+                                                            key={ index }
+                                                            exact={ route.exact }
+                                                        />
+                                                    )
+                                            );
+                                        })
+                                    }
+                                </Switch>
+                            </Suspense>
                         </AppConfig.Provider>
-
                     </Provider>
                 </I18nextProvider>
             </div>

@@ -54,7 +54,7 @@ export const APPLICATIONS_PAGE_PATH = "/applications";
  * @type {string}
  * @default
  */
-export const LOCAL_CLAIMS_PATH = "/local-dialect";
+export const LOCAL_CLAIMS_PATH = "/local-claims";
 
 /**
  * Path to the applications page.
@@ -137,6 +137,14 @@ export class ApplicationConstants {
         .set("APPLICATIONS", "/applications")
         .set("APPLICATION_TEMPLATES", "/applications/templates")
         .set("APPLICATION_EDIT", "/applications/:id");
+
+    /**
+     * Name of the app config file for the developer portal.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly APP_CONFIG_FILE_NAME: string = "app.config.json";
 }
 
 /**

@@ -22,7 +22,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { addUser, addUserRole, getGroupsList } from "../../../api";
+import { addUser, addUserRole, getRolesList } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
 import { AlertLevels } from "../../../models";
 import { addAlert } from "../../../store/actions";
@@ -88,15 +88,15 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ tempRoleList, setTempRoleList ] = useState([]);
     const [ initialRoleList, setInitialRoleList ] = useState([]);
 
-    const getRolesList = (domain: string) => {
-        getGroupsList(domain)
+    const getRoles = (domain: string) => {
+        getRolesList(domain)
             .then((response) => {
                 setRoleList(response.data.Resources);
             });
     };
 
     const getRoleListForDomain = (domain: string) => {
-        getGroupsList(domain)
+        getRolesList(domain)
             .then((response) => {
                 setRoleList([ ...roleList, ...response.data.Resources ]);
                 setInitialRoleList([ ...roleList, ...response.data.Resources ]);
@@ -125,7 +125,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     }, [ partiallyCompletedStep ]);
 
     useEffect(() => {
-        getRolesList("Application");
+        getRoles("Application");
     }, []);
 
     useEffect(() => {
@@ -183,34 +183,34 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     if (!error.response || error.response.status === 401) {
                         dispatch(addAlert({
                             description: t(
-                                "views:components.users.notifications.addUser.error.description"
+                                "devPortal:components.users.notifications.addUser.error.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "views:components.users.notifications.addUser.error.message"
+                                "devPortal:components.users.notifications.addUser.error.message"
                             )
                         }));
                     } else if (error.response && error.response.data && error.response.data.detail) {
 
                         dispatch(addAlert({
                             description: t(
-                                "views:components.users.notifications.addUser.error.description",
+                                "devPortal:components.users.notifications.addUser.error.description",
                                 { description: error.response.data.detail }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "views:components.users.notifications.addUser.error.message"
+                                "devPortal:components.users.notifications.addUser.error.message"
                             )
                         }));
                     } else {
                         // Generic error message
                         dispatch(addAlert({
                             description: t(
-                                "views:components.users.notifications.addUser.genericError.description"
+                                "devPortal:components.users.notifications.addUser.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "views:components.users.notifications.addUser.genericError.message"
+                                "devPortal:components.users.notifications.addUser.genericError.message"
                             )
                         }));
                     }
@@ -270,11 +270,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             .then((response) => {
                 dispatch(addAlert({
                     description: t(
-                        "views:components.users.notifications.addUser.success.description"
+                        "devPortal:components.users.notifications.addUser.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "views:components.users.notifications.addUser.success.message"
+                        "devPortal:components.users.notifications.addUser.success.message"
                     )
                 }));
 
@@ -291,34 +291,34 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 if (!error.response || error.response.status === 401) {
                     dispatch(addAlert({
                         description: t(
-                            "views:components.users.notifications.addUser.error.description"
+                            "devPortal:components.users.notifications.addUser.error.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.users.notifications.addUser.error.message"
+                            "devPortal:components.users.notifications.addUser.error.message"
                         )
                     }));
                 } else if (error.response && error.response.data && error.response.data.detail) {
 
                     dispatch(addAlert({
                         description: t(
-                            "views:components.users.notifications.addUser.error.description",
+                            "devPortal:components.users.notifications.addUser.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.users.notifications.addUser.error.message"
+                            "devPortal:components.users.notifications.addUser.error.message"
                         )
                     }));
                 } else {
                     // Generic error message
                     dispatch(addAlert({
                         description: t(
-                            "views:components.users.notifications.addUser.genericError.description"
+                            "devPortal:components.users.notifications.addUser.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.users.notifications.addUser.genericError.message"
+                            "devPortal:components.users.notifications.addUser.genericError.message"
                         )
                     }));
                 }

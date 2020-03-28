@@ -17,7 +17,7 @@
  */
 
 import { SearchUtils } from "@wso2is/core/utils";
-import { Field, Forms } from "@wso2is/forms";
+import { Field, Forms, FormValue } from "@wso2is/forms";
 import { AdvancedSearch } from "@wso2is/react-components";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -46,7 +46,7 @@ const FILTER_VALUES_FIELD_IDENTIFIER = "filerValues";
  * field value to this.
  * @type {string}
  */
-const DEFAULT_SEARCH_STRATEGY = "name co";
+const DEFAULT_SEARCH_STRATEGY = "displayName co";
 
 /**
  * Prop types for the application search component.
@@ -69,20 +69,18 @@ export const LocalClaimsSearch: FunctionComponent<LocalClaimsSearchPropsInterfac
 
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
     const [externalSearchQuery, setExternalSearchQuery] = useState("");
+    const [filterAttribute, setFilterAttribute] = useState("displayName");
 
     const { t } = useTranslation();
 
     /**
      * Filter attribute options.
      *
-     * @remarks
-     * Only filter by `name` is supported in the current API implementation.
      *
      * @type {({text: string; value: string})[]}
      */
     const filterAttributeOptions = [
         { value: "displayName", text: t("common:name") },
-        { value: "description", text: "Description" },
         { value: "claimURI", text: "Claim ID" }
     ];
 
@@ -107,12 +105,12 @@ export const LocalClaimsSearch: FunctionComponent<LocalClaimsSearchPropsInterfac
         const value = values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER) === "claimURI"
             ? claimURIBase + "/" + values.get(FILTER_VALUES_FIELD_IDENTIFIER)
             : values.get(FILTER_VALUES_FIELD_IDENTIFIER);
-        
+
         const query = values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
             + " "
             + values.get(FILTER_CONDITION_FIELD_IDENTIFIER)
             + " "
-            + value ;
+            + value;
 
         setExternalSearchQuery(query.toString());
         onFilter(query.toString());
@@ -151,16 +149,16 @@ export const LocalClaimsSearch: FunctionComponent<LocalClaimsSearchPropsInterfac
     return (
         <AdvancedSearch
             aligned="left"
-            clearButtonPopupLabel={ t("views:components.applications.search.popups.clear") }
+            clearButtonPopupLabel={ t("devPortal:components.applications.search.popups.clear") }
             defaultSearchStrategy={ DEFAULT_SEARCH_STRATEGY }
-            dropdownTriggerPopupLabel={ t("views:components.applications.search.popups.dropdown") }
-            hintActionKeys={ t("views:components.applications.search.hints.querySearch.actionKeys") }
-            hintLabel={ t("views:components.applications.search.hints.querySearch.label") }
+            dropdownTriggerPopupLabel={ t("devPortal:components.applications.search.popups.dropdown") }
+            hintActionKeys={ t("devPortal:components.applications.search.hints.querySearch.actionKeys") }
+            hintLabel={ t("devPortal:components.applications.search.hints.querySearch.label") }
             onExternalSearchQueryClear={ handleExternalSearchQueryClear }
             onSearchQuerySubmit={ handleSearchQuerySubmit }
-            placeholder={ t("views:components.applications.search.placeholder") }
+            placeholder={ t("devPortal:components.applications.search.placeholder") }
             resetSubmittedState={ handleResetSubmittedState }
-            searchOptionsHeader={ t("views:components.applications.search.options.header") }
+            searchOptionsHeader={ t("devPortal:components.applications.search.options.header") }
             externalSearchQuery={ externalSearchQuery }
             submitted={ isFormSubmitted }
         >
@@ -176,16 +174,23 @@ export const LocalClaimsSearch: FunctionComponent<LocalClaimsSearchPropsInterfac
                                         value: attribute.value
                                     };
                                 }) }
-                                label={ t("views:components.applications.search.forms.searchForm.inputs" +
+                                label={ t("devPortal:components.applications.search.forms.searchForm.inputs" +
                                     ".filerAttribute.label") }
+                                listen={ (values: Map<string, FormValue>) => {
+                                    setFilterAttribute(
+                                        values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER).toString()
+                                    );
+                                } }
                                 name={ FILTER_ATTRIBUTE_FIELD_IDENTIFIER }
-                                placeholder={ t("views:components.applications.search.forms.searchForm.inputs" +
+                                placeholder={ t("devPortal:components.applications.search.forms.searchForm.inputs" +
                                     ".filerAttribute.placeholder") }
                                 required={ true }
-                                requiredErrorMessage={ t("views:components.applications.search.forms.searchForm" +
+                                requiredErrorMessage={ t("devPortal:components.applications.search.forms.searchForm" +
                                     ".inputs.filerAttribute.validations.empty") }
                                 type="dropdown"
                                 width={ 16 }
+                                value={ filterAttributeOptions?.length === 1 ? filterAttributeOptions[0]?.value : null }
+                                disabled={ filterAttributeOptions?.length === 1 }
                             />
                             <Grid>
                                 <Grid.Row columns={ 2 }>
@@ -198,13 +203,13 @@ export const LocalClaimsSearch: FunctionComponent<LocalClaimsSearchPropsInterfac
                                                     value: condition.value
                                                 };
                                             }) }
-                                            label={ t("views:components.applications.search.forms.searchForm.inputs" +
-                                                ".filterCondition.label") }
+                                            label={ t("devPortal:components.applications.search.forms.searchForm" +
+                                                ".inputs.filterCondition.label") }
                                             name={ FILTER_CONDITION_FIELD_IDENTIFIER }
-                                            placeholder={ t("views:components.applications.search.forms." +
+                                            placeholder={ t("devPortal:components.applications.search.forms." +
                                                 "searchForm.inputs.filterCondition.placeholder") }
                                             required={ true }
-                                            requiredErrorMessage={ t("views:components.applications.search.forms" +
+                                            requiredErrorMessage={ t("devPortal:components.applications.search.forms" +
                                                 ".searchForm.inputs.filterCondition.validations.empty") }
                                             type="dropdown"
                                             width={ 16 }
@@ -212,13 +217,16 @@ export const LocalClaimsSearch: FunctionComponent<LocalClaimsSearchPropsInterfac
                                     </Grid.Column>
                                     <Grid.Column width={ 8 }>
                                         <Field
-                                            label={ t("views:components.applications.search.forms.searchForm.inputs" +
-                                                ".filterValue.label") }
+                                            label={ t("devPortal:components.applications.search.forms.searchForm" +
+                                                ".inputs.filterValue.label") }
                                             name={ FILTER_VALUES_FIELD_IDENTIFIER }
-                                            placeholder={ t("views:components.applications.search.forms." +
-                                                "searchForm.inputs.filterValue.placeholder") }
+                                            placeholder={
+                                                filterAttribute === "displayName"
+                                                    ? "E.g. Local, Country etc."
+                                                    : "E.g. http://wso2.org/claims/local"
+                                            }
                                             required={ true }
-                                            requiredErrorMessage={ t("views:components.applications.search." +
+                                            requiredErrorMessage={ t("devPortal:components.applications.search." +
                                                 "forms.searchForm.inputs.filterValue.validations.empty") }
                                             type="text"
                                             width={ 16 }

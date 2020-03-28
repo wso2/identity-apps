@@ -44,6 +44,14 @@ export class ServerConfigurationsConstants {
 	public static readonly SELF_SIGN_UP_CONNECTOR_ID: string = "c2VsZi1zaWduLXVw";
 
 	/**
+	 * UUID of the identity governance account recovery connector.
+	 *
+	 * @constant
+	 * @type {string}
+	 */
+	public static readonly ACCOUNT_RECOVERY_CONNECTOR_ID: string = "YWNjb3VudC1yZWNvdmVyeQ";
+
+	/**
 	 * Self registration API Keywords constants.
 	 */
 	public static readonly SELF_REGISTRATION_ENABLE: string = "SelfRegistration.Enable";
@@ -54,4 +62,31 @@ export class ServerConfigurationsConstants {
 	public static readonly VERIFICATION_CODE_EXPIRY_TIME: string = "SelfRegistration.VerificationCode.ExpiryTime";
 	public static readonly SMS_OTP_EXPIRY_TIME: string = "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime";
 	public static readonly CALLBACK_REGEX: string = "SelfRegistration.CallbackRegex";
+
+	/**
+	 * Account recovery API Keywords constants.
+	 */
+	public static readonly USERNAME_RECOVERY_ENABLE: string = "Recovery.Notification.Username.Enable";
+	public static readonly USERNAME_RECOVERY_RE_CAPTCHA: string = "Recovery.ReCaptcha.Username.Enable";
+	public static readonly PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE: string =
+		"Recovery.Notification.Password.Enable";
+	public static readonly PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA: string =
+		"Recovery.ReCaptcha.Password.Enable";
+	public static readonly PASSWORD_RECOVERY_QUESTION_BASED_ENABLE: string = "Recovery.Question.Password.Enable";
+	public static readonly PASSWORD_RECOVERY_QUESTION_BASED_MIN_ANSWERS: string =
+		"Recovery.Question.Password.MinAnswers";
+	public static readonly PASSWORD_RECOVERY_QUESTION_BASED_RE_CAPTCHA_ENABLE: string =
+		"Recovery.Question.Password.ReCaptcha.Enable";
+	public static readonly RE_CAPTCHA_MAX_FAILED_ATTEMPTS: string =
+		"Recovery.Question.Password.ReCaptcha.MaxFailedAttempts";
+	public static readonly ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED: string =
+		"Recovery.Notification.InternallyManage";
+	public static readonly NOTIFY_RECOVERY_START: string = "Recovery.Question.Password.NotifyStart";
+	public static readonly NOTIFY_SUCCESS: string = "Recovery.NotifySuccess";
+	public static readonly RECOVERY_LINK_EXPIRY_TIME: string = "Recovery.ExpiryTime";
+	public static readonly RECOVERY_SMS_EXPIRY_TIME: string = "Recovery.Notification.Password.ExpiryTime.smsOtp";
+	public static readonly RECOVERY_CALLBACK_REGEX: string = "Recovery.CallbackRegex";
+	public static readonly PASSWORD_RECOVERY_QUESTION_FORCED_ENABLE: string =
+		"Recovery.Question.Password.Forced.Enable";
+
 }
