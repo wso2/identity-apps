@@ -26,7 +26,7 @@ import {
     ApplicationBasicInterface,
     ApplicationInterface,
     ApplicationListInterface,
-    ApplicationTemplate,
+    ApplicationTemplateInterface,
     ApplicationTemplateListInterface,
     AuthProtocolMetaListItemInterface,
     HttpMethods,
@@ -592,8 +592,10 @@ export const getAdaptiveAuthTemplates = (): Promise<AdaptiveAuthTemplatesListInt
  * Get Application Template data.
  *
  * @param templateId Template Id of the application.
+ *
+ * @return {Promise<ApplicationTemplateInterface>} A promise containing the response.
  */
-export const getApplicationTemplateData = (templateId: string): Promise<any> => {
+export const getApplicationTemplateData = (templateId: string): Promise<ApplicationTemplateInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -616,7 +618,7 @@ export const getApplicationTemplateData = (templateId: string): Promise<any> => 
                     response.config);
             }
 
-            return Promise.resolve(response.data as ApplicationTemplate);
+            return Promise.resolve(response.data as ApplicationTemplateInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ApplicationManagementConstants.APPLICATION_TEMPLATE_FETCH_ERROR,
@@ -635,10 +637,10 @@ export const getApplicationTemplateData = (templateId: string): Promise<any> => 
  * @param {number} offset - Offset for get to start.
  * @param {string} filter - Search filter.
  *
- * @return {Promise<ApplicationListInterface>} A promise containing the response.
+ * @return {Promise<ApplicationTemplateListInterface>} A promise containing the response.
  */
 export const getApplicationTemplateList = (limit?: number, offset?: number,
-                                           filter?: string): Promise<any> => {
+                                           filter?: string): Promise<ApplicationTemplateListInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",

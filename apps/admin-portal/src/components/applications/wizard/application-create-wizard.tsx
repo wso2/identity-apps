@@ -28,7 +28,7 @@ import { createApplication, getApplicationTemplateData } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
 import { history } from "../../../helpers";
 import {
-    ApplicationTemplate,
+    ApplicationTemplateInterface,
     ApplicationTemplateListItemInterface,
     MainApplicationInterface,
     SupportedAuthProtocolTypes
@@ -133,7 +133,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
         getApplicationTemplateData(id)
             .then((response) => {
-                setTemplateSettings((response as ApplicationTemplate).application);
+                setTemplateSettings((response as ApplicationTemplateInterface).application);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {

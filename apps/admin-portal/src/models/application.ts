@@ -273,7 +273,7 @@ export interface ApplicationTemplateListInterface {
 /**
  *  Contains Application template data.
  */
-export interface ApplicationTemplate extends ApplicationTemplateListItemInterface {
+export interface ApplicationTemplateInterface extends ApplicationTemplateListItemInterface {
     application: MainApplicationInterface;
 }
 

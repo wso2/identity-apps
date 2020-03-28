@@ -59,12 +59,12 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
         hideComponent
     } = props;
 
-    const [changeUrl, setChangeUrl] = useState("");
-    const [predictValue, setPredictValue] = useState([]);
-    const [validURL, setValidURL] = useState(true);
-    const [duplicateURL, setDuplicateURL] = useState(false);
-    const [keepFocus, setKeepFocus] = useState(false);
-    const [hideEntireComponent, setHideEntireComponent] = useState(false);
+    const [changeUrl, setChangeUrl] = useState<string>("");
+    const [predictValue, setPredictValue] = useState<string[]>([]);
+    const [validURL, setValidURL] = useState<boolean>(true);
+    const [duplicateURL, setDuplicateURL] = useState<boolean>(false);
+    const [keepFocus, setKeepFocus] = useState<boolean>(false);
+    const [hideEntireComponent, setHideEntireComponent] = useState<boolean>(false);
 
     /**
      * Add URL to the URL list.
