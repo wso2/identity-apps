@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { FunctionComponent, SyntheticEvent, useState } from "react";
+import React, {FunctionComponent, ReactElement, SyntheticEvent, useState} from "react";
 import { QuickStartIdentityProviderTemplates } from "../components";
 import { IdPIcons, IdPCapabilityIcons } from "../configs";
 import { history } from "../helpers";
@@ -29,13 +29,14 @@ import {
     SupportedProvisioningConnectors,
     SupportedQuickStartTemplates
 } from "../models";
+import {IdentityProviderCreateWizard} from "../components/identityProviders/wizard";
 
 /**
  * Choose the application template from this page.
  *
  * @return {JSX.Element}
  */
-export const IdentityProviderTemplateSelectPage: FunctionComponent<any> = (): JSX.Element => {
+export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): ReactElement => {
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateListItemInterface>(null);
@@ -48,7 +49,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<any> = (): JS
             displayName: "Facebook",
             id: SupportedQuickStartTemplates.FACEBOOK,
             image: IdPIcons?.facebook,
-            authenticators: SupportedAuthenticators.FACEBOOK,
+            authenticator: { name: SupportedAuthenticators.FACEBOOK },
             provisioningConnectors: SupportedProvisioningConnectors.NONE,
             services: [
                 {
@@ -63,7 +64,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<any> = (): JS
             displayName: "Google",
             id: SupportedQuickStartTemplates.GOOGLE,
             image: IdPIcons?.google,
-            authenticators: SupportedAuthenticators.GOOGLE,
+            authenticator: { name: SupportedAuthenticators.GOOGLE },
             provisioningConnectors: SupportedProvisioningConnectors.GOOGLE,
             services: [
                 {
@@ -83,7 +84,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<any> = (): JS
             displayName: "Twitter",
             id: SupportedQuickStartTemplates.TWITTER,
             image: IdPIcons?.twitter,
-            authenticators: SupportedAuthenticators.TWITTER,
+            authenticator: { name: SupportedAuthenticators.TWITTER },
             provisioningConnectors: SupportedProvisioningConnectors.NONE,
             services: [
                 {
@@ -121,7 +122,6 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<any> = (): JS
         if (!Object.prototype.hasOwnProperty.call(TEMPLATES, templateCategory)) {
             return;
         }
-
         const selected = TEMPLATES[templateCategory].find((template) => template.id === id);
 
         if (!selected) {
@@ -148,20 +148,21 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<any> = (): JS
             <div className="quick-start-templates">
                 <QuickStartIdentityProviderTemplates
                     templates={ TEMPLATES[ SupportedIdentityProviderTemplateCategories.QUICK_START ] }
-                    onTemplateSelect={ (e, { id }) =>
-                        handleTemplateSelection(e, { id }, SupportedIdentityProviderTemplateCategories.QUICK_START)
+                    onTemplateSelect={ (e, { id }) => {
+                        console.log ("triggered a click!");
+                        handleTemplateSelection(e, {id}, SupportedIdentityProviderTemplateCategories.QUICK_START);
+                    }
                     }
                 />
             </div>
-            {/*{ showWizard && (*/}
-            {/*    <ApplicationCreateWizard*/}
-            {/*        title={ selectedTemplate?.displayName }*/}
-            {/*        subTitle={ selectedTemplate?.description }*/}
-            {/*        closeWizard={ () => setShowWizard(false) }*/}
-            {/*        templateType={ selectedTemplate?.id }*/}
-            {/*        protocol={ selectedTemplate?.protocols[0] }*/}
-            {/*    />*/}
-            {/*) }*/}
+            { showWizard && (
+                <IdentityProviderCreateWizard
+                    title={ selectedTemplate?.displayName }
+                    subTitle={ selectedTemplate?.description }
+                    closeWizard={ () => setShowWizard(false) }
+                    template={ selectedTemplate }
+                />
+            ) }
         </PageLayout>
     );
 };

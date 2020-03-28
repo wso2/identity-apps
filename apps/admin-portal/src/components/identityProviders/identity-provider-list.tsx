@@ -95,7 +95,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     };
 
     return (
-        <ResourceList className="applications-list">
+        <ResourceList className="identity-providers-list">
             {
                 list.identityProviders.map((idp, index) => {
                     // TODO Remove this check and move the logic to backend.

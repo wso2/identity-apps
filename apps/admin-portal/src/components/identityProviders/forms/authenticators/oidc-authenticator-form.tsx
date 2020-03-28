@@ -16,32 +16,19 @@
  * under the License.
  */
 
-import { Field, Forms } from "@wso2is/forms";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Grid } from "semantic-ui-react";
-import {
-    FederatedAuthenticatorListItemInterface,
-    FederatedAuthenticatorMetaInterface
-} from "../../../models";
-
-/**
- * Proptypes for the inbound OIDC form component.
- */
-interface OIDCFormPropsInterface {
-    metadata: FederatedAuthenticatorMetaInterface;
-    initialValues: FederatedAuthenticatorListItemInterface;
-    onSubmit: (values: any) => void;
-}
+import {Field, Forms} from "@wso2is/forms";
+import React, {FunctionComponent, ReactElement, useEffect, useState} from "react";
+import {Button, Grid} from "semantic-ui-react";
+import {AuthenticatorFormPropsInterface} from "../../../../models";
 
 /**
  * Inbound OIDC protocol configurations form.
  *
- * @param {OIDCFormPropsInterface} props
  * @return { ReactElement }
  * @constructor
  */
-export const OIDCAuthenticatorForm: FunctionComponent<OIDCFormPropsInterface> = (
-    props: OIDCFormPropsInterface
+export const OIDCAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsInterface> = (
+    props
 ): ReactElement => {
 
     const {

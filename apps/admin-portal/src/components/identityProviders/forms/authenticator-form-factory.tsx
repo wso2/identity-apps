@@ -17,17 +17,25 @@
  */
 
 import React, {FunctionComponent, ReactElement} from "react";
-import { SupportedAuthProtocolTypes } from "../../../models";
-import { OIDCAuthenticatorForm } from "./oidc-authenticator-form";
+import {
+    FederatedAuthenticatorListItemInterface,
+    FederatedAuthenticatorMetaInterface,
+    SupportedAuthenticators
+} from "../../../models";
+import {OIDCAuthenticatorForm} from "./authenticators/oidc-authenticator-form";
+import {GoogleAuthenticatorForm} from "./authenticators/google-authenticator-form";
+import {en} from "../../../../../user-portal/src/locales";
 
 /**
  * Proptypes for the inbound form factory component.
  */
 interface AuthenticatorFormFactoryInterface {
-    metadata: any;
-    initialValues: any;
-    onSubmit: (values: any) => void;
-    type: SupportedAuthProtocolTypes;
+    metadata?: FederatedAuthenticatorMetaInterface;
+    initialValues: FederatedAuthenticatorListItemInterface;
+    onSubmit: (values: FederatedAuthenticatorListItemInterface) => void;
+    type: string;
+    triggerSubmit?: boolean;
+    enableSubmitButton?: boolean;
 }
 
 /**
@@ -44,13 +52,23 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         metadata,
         initialValues,
         onSubmit,
-        type
+        type,
+        triggerSubmit,
+        enableSubmitButton
     } = props;
 
     switch (type) {
-        case SupportedAuthProtocolTypes.OIDC:
-            return <OIDCAuthenticatorForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit } />;
+        case SupportedAuthenticators.OIDC:
+            return <OIDCAuthenticatorForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit }
+                                          triggerSubmit={ triggerSubmit } enableSubmitButton={ enableSubmitButton }/>;
+        case SupportedAuthenticators.GOOGLE:
+            return <GoogleAuthenticatorForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit }
+                                            triggerSubmit={ triggerSubmit } enableSubmitButton={ enableSubmitButton }/>;
         default:
             return null;
     }
+};
+
+AuthenticatorFormFactory.defaultProps = {
+    enableSubmitButton: true
 };

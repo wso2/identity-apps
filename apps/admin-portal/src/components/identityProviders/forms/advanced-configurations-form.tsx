@@ -25,7 +25,7 @@ import { IdentityProviderAdvanceInterface} from "../../../models";
 import { FormValidation } from "@wso2is/validation";
 
 /**
- *  Advance Configurations for the Application.
+ *  Advance Configurations for the Identity Provider.
  */
 interface AdvanceConfigurationsFormPropsInterface extends IdentityProviderAdvanceInterface {
     config: IdentityProviderAdvanceInterface;
