@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import {AuthProtocolMetaListItemInterface} from "./application-inbound";
+import { AuthProtocolMetaListItemInterface } from "./application-inbound";
 
 /**
  * Available Identity Provider list.
