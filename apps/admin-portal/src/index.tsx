@@ -35,6 +35,7 @@ import {
 import { store } from "./store";
 import { setSupportedI18nLanguages } from "./store/actions";
 import { StringUtils } from "@wso2is/core/utils";
+import { Provider } from "react-redux";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(GlobalConfig);
@@ -81,11 +82,13 @@ I18n.init({
 
 ReactDOM.render(
     (
-        <ThemeProvider>
-            <BrowserRouter>
-                <App/>
-            </BrowserRouter>
-        </ThemeProvider>
+        <Provider store={ store }>
+            <ThemeProvider>
+                <BrowserRouter>
+                    <App/>
+                </BrowserRouter>
+            </ThemeProvider>
+        </Provider>
     ),
     document.getElementById("root")
 );

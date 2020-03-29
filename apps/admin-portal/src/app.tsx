@@ -19,18 +19,18 @@
 import React, { useContext, useEffect, useState, Suspense, ReactElement } from "react";
 import { ThemeContext } from "@wso2is/react-components";
 import { I18nextProvider } from "react-i18next";
-import { Provider } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
 import { baseRoutes, GlobalConfig } from "./configs";
 import { AppConfig, history } from "./helpers";
-import { AppConfigInterface } from "./models";
-import { store } from "./store";
+import { AppConfigInterface, DeploymentConfigInterface } from "./models";
 import { ContentLoader } from "@wso2is/react-components";
 import { I18n } from "@wso2is/i18n";
 import { getAppConfig } from "@wso2is/core/api";
 import { ApplicationConstants } from "./constants";
 import { Helmet } from "react-helmet";
+import { setDeploymentConfigs } from "@wso2is/core/store";
 
 /**
  * Main App component.
@@ -42,6 +42,8 @@ export const App = (): ReactElement => {
     const [ appConfig, setAppConfig ] = useState<AppConfigInterface>(null);
 
     const { state } = useContext(ThemeContext);
+
+    const dispatch = useDispatch();
 
     /**
      * Obtain app.config.json from the server root when the app mounts.
@@ -59,6 +61,10 @@ export const App = (): ReactElement => {
             .catch(() => {
                 // TODO: Log the error here.
             });
+    }, []);
+
+    useEffect(() => {
+        dispatch(setDeploymentConfigs<DeploymentConfigInterface>(GlobalConfig));
     }, []);
 
     return (
