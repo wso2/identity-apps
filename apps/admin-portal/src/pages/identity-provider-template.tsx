@@ -18,7 +18,7 @@
 
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
 import { QuickStartIdentityProviderTemplates } from "../components";
-import {IdPCapabilityIcons, IdPIcons, InboundProtocolLogos} from "../configs";
+import { IdPCapabilityIcons, IdPIcons, InboundProtocolLogos } from "../configs";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import {
