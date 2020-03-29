@@ -41,8 +41,7 @@ export class IdentityProviderManagementUtils {
      * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private constructor() {
-    }
+    private constructor() { }
 
     /**
      * Gets the list of available authenticator list and sets them in the redux store.
