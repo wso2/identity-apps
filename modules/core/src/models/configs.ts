@@ -55,3 +55,75 @@ export interface FeatureConfigInterface<T = {}> {
      */
     features?: T;
 }
+
+/**
+ * Common config interface for deployment settings.
+ */
+export interface CommonDeploymentConfigInterface {
+    /**
+     * Base name of the application (tenant qualified).
+     * ex: `/t/wos2.com/admin-portal`
+     */
+    appBaseName: string;
+    /**
+     * Base name without tenant.
+     * ex: `/admin-portal`
+     */
+    appBaseNameWithoutTenant: string;
+    /**
+     * Home path of the application.
+     * ex: `/overview`
+     */
+    appHomePath: string;
+    /**
+     * Login path of the application.
+     * ex: `/login`
+     */
+    appLoginPath: string;
+    /**
+     * Name of the application.
+     * ex: `DEVELOPER PORTAL`
+     */
+    applicationName: string;
+    /**
+     * Host of the client application.
+     * ex: `https://localhost:9001`
+     */
+    clientHost: string;
+    /**
+     * Client ID of the client application.
+     */
+    clientID: string;
+    /**
+     * Origin of the client application. Usually same as `clientHost`.
+     */
+    clientOrigin: string;
+    /**
+     * Debug mode toggle.
+     */
+    debug: boolean;
+    /**
+     * Callback to directed on successful login.
+     * ex: `/admin-portal/login`
+     */
+    loginCallbackUrl: string;
+    /**
+     * Host of the Identity Sever.
+     * ex: https://localhost:9443
+     */
+    serverHost: string;
+    /**
+     * Server origin. Usually same as `serverHost`.
+     */
+    serverOrigin: string;
+    /**
+     * Tenant domain.
+     * ex: `wso2.com`
+     */
+    tenant: string;
+    /**
+     * Tenant path.
+     * ex: `/t/`
+     */
+    tenantPath: string;
+}
