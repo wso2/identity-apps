@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import {combineReducers} from "redux";
-import {applicationReducer, authenticateReducer, globalReducer} from "./reducers";
-import {LoadersReducer} from "./reducers/loaders";
-import {identityProviderReducer} from "./reducers/identityProvider";
+import { combineReducers } from "redux";
+import { applicationReducer, authenticateReducer, globalReducer } from "./reducers";
+import { LoadersReducer } from "./reducers/loaders";
+import { identityProviderReducer } from "./reducers/identityProvider";
 
 /**
  * Combines all the reducers.
