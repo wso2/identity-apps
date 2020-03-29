@@ -20,7 +20,9 @@ import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import { Card, CardProps, Popup } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "@wso2is/react-components";
-import { ApplicationTemplateIllustrations, TechnologyLogos } from "../../../configs";
+// Importing the following from the `configs` index causes a circular dependency due to `GlobalConfig` being exported
+// from the index as well. TODO: Revert the import after this issue is fixed.
+import { ApplicationTemplateIllustrations, TechnologyLogos } from "../../../configs/ui";
 
 /**
  * Proptypes for the application template card component.
