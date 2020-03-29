@@ -68,16 +68,16 @@
                     e.preventDefault();
 
                     var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
+                    var isSaaSApp = JSON.parse(getParameterByName("isSaaSApp").toLowerCase());
                     var tenantName = getParameterByName("tenantDomain");
+
                     var userName = document.getElementById("username");
                     var usernameUserInput = document.getElementById("usernameUserInput");
-                    var isSaaSApp = JSON.parse(getParameterByName("isSaaSApp").toLowerCase());
 
                     if (usernameUserInput) {
                         var usernameUserInputValue = usernameUserInput.value.trim();
 
-                        // TODO: Check `isSaasApp` scenario is needed
-                        if (tenantName) {
+                        if (tenantName && tenantName !== "null" && tenantName !== undefined) {
 
                             if (isEmailUsernameEnabled) {
 
@@ -209,7 +209,7 @@
 
     <% if (Boolean.parseBoolean(loginFailed)) { %>
     <div class="ui visible negative message" id="error-msg"><%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %></div>
-    <% } else if((Boolean.TRUE.toString()).equals(request.getParameter("authz_failure"))){%>
+    <% } else if ((Boolean.TRUE.toString()).equals(request.getParameter("authz_failure"))){%>
     <div class="ui visible negative message" id="error-msg">
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unauthorized.to.login")%>
     </div>
