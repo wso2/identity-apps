@@ -344,6 +344,7 @@ export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Prom
                 return Promise.reject(new Error("Failed to get federated authenticator metadata for: "
                     + authenticatorId));
             }
+
             return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
         }).catch((error) => {
             return Promise.reject(error);
