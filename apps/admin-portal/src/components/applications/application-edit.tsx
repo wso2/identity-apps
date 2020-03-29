@@ -184,7 +184,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 permissions={ permissions }
                 showRegenerate={ selectedInboundProtocol?.id === SupportedAuthProtocolTypes.OIDC }
                 // TODO we need check whether application is active or not as well.
-                showRevoke={  selectedInboundProtocol?.id === SupportedAuthProtocolTypes.OIDC }
+                showRevoke={ selectedInboundProtocol?.id === SupportedAuthProtocolTypes.OIDC }
             />
         </ResourceTab.Pane>
     );
