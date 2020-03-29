@@ -22,12 +22,12 @@ import {
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface
 } from "../models";
-import {getFederatedAuthenticatorsList} from "../api";
+import { getFederatedAuthenticatorsList } from "../api";
 import _ from "lodash";
-import {store} from "../store";
-import {addAlert} from "@wso2is/core/store";
-import {AlertLevels} from "@wso2is/core/models";
-import {setAvailableAuthenticatorsMeta} from "../store/actions/IdentityProvider";
+import { store } from "../store";
+import { addAlert } from "@wso2is/core/store";
+import { AlertLevels } from "@wso2is/core/models";
+import { setAvailableAuthenticatorsMeta } from "../store/actions/IdentityProvider";
 
 /**
  * Utility class for identity provider operations.
