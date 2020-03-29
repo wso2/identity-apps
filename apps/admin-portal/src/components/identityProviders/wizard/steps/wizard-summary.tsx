@@ -19,7 +19,7 @@
 import { AppAvatar, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { Divider, Grid } from "semantic-ui-react";
-import {FederatedAuthenticatorMetaInterface, IdentityProviderInterface} from "../../../../models";
+import { FederatedAuthenticatorMetaInterface, IdentityProviderInterface } from "../../../../models";
 
 /**
  * Proptypes for the wizard summary component.
