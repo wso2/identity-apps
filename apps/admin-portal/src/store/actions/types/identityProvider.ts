@@ -22,7 +22,7 @@
  * @readonly
  * @enum {string}
  */
-import {FederatedAuthenticatorListItemInterface, FederatedAuthenticatorMetaInterface} from "../../../models";
+import { FederatedAuthenticatorListItemInterface, FederatedAuthenticatorMetaInterface } from "../../../models";
 
 export enum IdentityProviderActionTypes {
     /**
