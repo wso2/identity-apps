@@ -17,7 +17,7 @@
  */
 
 import { IdentityProviderReducerStateInterface } from "../../models";
-import { IdentityProviderActions, IdentityProviderActionTypes } from "../actions/types/identityProvider";
+import { IdentityProviderActions, IdentityProviderActionTypes } from "../actions/types/identity-provider";
 
 /**
  * Common profile reducer initial state.

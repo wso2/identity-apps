@@ -27,11 +27,10 @@ import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 
-import { createIdentityProvider, getFederatedAuthenticatorMetadata, getFederatedAuthenticatorsList } from "../../../api";
+import { createIdentityProvider, getFederatedAuthenticatorMetadata } from "../../../api";
 import { history } from "../../../helpers";
 import {
     AuthenticatorProperty,
-    FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface,
     IdentityProviderInterface,
     IdentityProviderTemplateListItemInterface
@@ -42,7 +41,6 @@ import { IdentityProviderWizardStepIcons } from "../../../configs";
 import { IdentityProviderManagementUtils } from "../../../utils/identity-provider-management-utils";
 
 import { AuthenticatorSettings, GeneralSettings, WizardSummary } from "./steps";
-import { setAvailableAuthenticatorsMeta } from "../../../store/actions/IdentityProvider";
 
 /**
  * Proptypes for the identity provider creation wizard component.

@@ -96,7 +96,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             name: values.get("name").toString(),
             description: values.get("description").toString(),
             image: values.get("image").toString(),
-            isPrimary: !!values.get("isPrimary"),
+            isPrimary: !!values.get("isPrimary")
         };
     };
 

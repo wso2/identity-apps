@@ -19,7 +19,7 @@
 import { combineReducers } from "redux";
 import { applicationReducer, authenticateReducer, globalReducer } from "./reducers";
 import { LoadersReducer } from "./reducers/loaders";
-import { identityProviderReducer } from "./reducers/identityProvider";
+import { identityProviderReducer } from "./reducers/identity-provider";
 
 /**
  * Combines all the reducers.

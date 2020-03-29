@@ -19,9 +19,9 @@
 import _ from "lodash";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
-import React, {FunctionComponent, useState, useEffect, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { IdentityProviderAdvanceInterface} from "../../../models";
+import { IdentityProviderAdvanceInterface } from "../../../models";
 import { FormValidation } from "@wso2is/validation";
 
 /**
@@ -58,7 +58,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
     const updateConfiguration = (values: any): any => {
         return {
             homeRealmIdentifier: values.get("homeRealmIdentifier"),
-            isFederationHub: !!values.get("federationHub")?.includes("federationHub"),
+            isFederationHub: !!values.get("federationHub")?.includes("federationHub")
         };
     };
 

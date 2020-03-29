@@ -17,5 +17,3 @@
  */
 
 export * from "./identity-provider-create-wizard";
-export * from "./steps/general-settings";
-export * from "./steps/wizard-summary";
