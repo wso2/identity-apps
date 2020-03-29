@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { FeatureConfigInterface } from "@wso2is/core/models";
+import { CommonDeploymentConfigInterface, FeatureConfigInterface } from "@wso2is/core/models";
+import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 
 /**
  * Application configuration interface.
@@ -100,4 +101,37 @@ export interface ClaimDialectsConfigInterface {
      * External claims configuration feature.
      */
     externalClaims: FeatureConfigInterface;
+}
+
+/**
+ * Config interface for deployment settings.
+ */
+export interface DeploymentConfigInterface extends CommonDeploymentConfigInterface {
+    /**
+     * Copyright text for the footer.
+     */
+    copyrightText: string;
+    /**
+     * Application(SPs) that shouldn't be allowed to delete.
+     */
+    doNotDeleteApplications?: string[];
+    /**
+     * i18n module options.
+     */
+    i18nModuleOptions?: I18nModuleOptionsInterface;
+    /**
+     * Title text.
+     * ex: `WSO2 Identity Server`
+     */
+    titleText?: string;
+    /**
+     * Base name of the user portal.
+     * ex: `/user-portal` ot `/t/wos2.com/user-portal`
+     */
+    userPortalBaseName: string;
+    /**
+     * User portal host.
+     * ex: `https://localhost:9000`
+     */
+    userPortalClientHost: string;
 }

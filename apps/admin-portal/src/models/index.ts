@@ -22,7 +22,7 @@ export * from "./application";
 export * from "./auth";
 export * from "./authenticated-user";
 export * from "./claim";
-export * from "./configs";
+export * from "./config";
 export * from "./crypto";
 export * from "./notifications";
 export * from "./tokens";
