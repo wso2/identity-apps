@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import {IdentityProviderReducerStateInterface} from "../../models";
-import {IdentityProviderActions, IdentityProviderActionTypes} from "../actions/types/identityProvider";
+import { IdentityProviderReducerStateInterface } from "../../models";
+import { IdentityProviderActions, IdentityProviderActionTypes } from "../actions/types/identityProvider";
 
 /**
  * Common profile reducer initial state.
