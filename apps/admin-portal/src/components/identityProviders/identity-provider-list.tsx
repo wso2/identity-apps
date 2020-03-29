@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import { history } from "../../helpers";
 import { deleteIdentityProvider } from "../../api";
 import { IdentityProviderListResponseInterface } from "../../models";
-import {GlobalConfig} from "../../configs";
+import { GlobalConfig } from "../../configs";
 
 /**
  * Proptypes for the identity provider list component.
