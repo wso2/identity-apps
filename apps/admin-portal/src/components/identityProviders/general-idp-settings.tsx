@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
 import { deleteIdentityProvider, updateIdentityProviderDetails } from "../../api";
 import { GlobalConfig } from "../../configs";
-import { ApplicationInterface, IdentityProviderInterface } from "../../models";
+import { IdentityProviderInterface } from "../../models";
 import { GeneralDetailsForm } from "./forms";
 
 /**
@@ -92,7 +92,7 @@ export const GeneralIdentityProviderSettings: FunctionComponent<GeneralIdentityP
      */
     const handleIdentityProviderDelete = (): void => {
         deleteIdentityProvider(idpId)
-            .then((response) => {
+            .then(() => {
                 dispatch(addAlert({
                     description: "Successfully deleted the identity provider",
                     level: AlertLevels.SUCCESS,
@@ -127,7 +127,7 @@ export const GeneralIdentityProviderSettings: FunctionComponent<GeneralIdentityP
      */
     const handleFormSubmit = (updatedDetails: IdentityProviderInterface): void => {
         updateIdentityProviderDetails(updatedDetails)
-            .then((response) => {
+            .then(() => {
                 dispatch(addAlert({
                     description: "Successfully updated the identity provider",
                     level: AlertLevels.SUCCESS,
@@ -167,7 +167,7 @@ export const GeneralIdentityProviderSettings: FunctionComponent<GeneralIdentityP
                         onSubmit={ handleFormSubmit }
                         imageUrl={ imageUrl }
                     />
-                    { !(GlobalConfig.doNotDeleteApplications.includes(name)) && (
+                    { !(GlobalConfig.doNotDeleteIdentityProviders.includes(name)) && (
                         <DangerZoneGroup sectionHeader="Danger Zone">
                             <DangerZone
                                 actionTitle="Delete identity provider"
