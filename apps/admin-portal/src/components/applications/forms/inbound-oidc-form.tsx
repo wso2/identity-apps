@@ -17,11 +17,11 @@
  */
 
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { Heading, Hint } from "@wso2is/react-components";
+import { CopyInputField, Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Divider, Grid } from "semantic-ui-react";
+import { Button, Divider, Form, Grid } from "semantic-ui-react";
 import {
     emptyOIDCConfig,
     MetadataPropertyInterface,
@@ -208,13 +208,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 mandatory: values.get("PKCE").includes("mandatory"),
                 supportPlainTransformAlgorithm: !!values.get("PKCE").includes("supportPlainTransformAlgorithm")
             },
-            publicClient: values.get("supportPublicClients").length > 1,
+            publicClient: values.get("supportPublicClients").length > 0,
             refreshToken: {
                 expiryInSeconds: parseInt(values.get("expiryInSeconds"), 10),
-                renewRefreshToken: values.get("RefreshToken").length > 1
+                renewRefreshToken: values.get("RefreshToken").length > 0
             },
             scopeValidators: values.get("scopeValidator"),
-            validateRequestObjectSignature: values.get("enableRequestObjectSignatureValidation").length > 1
+            validateRequestObjectSignature: values.get("enableRequestObjectSignatureValidation").length > 0
         };
 
         // If the app is newly created do not add `clientId` & `clientSecret`.
@@ -254,16 +254,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             initialValues.clientId && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                        <Field
-                                            name="clientId"
-                                            label="Client ID"
-                                            required={ false }
-                                            requiredErrorMessage=""
-                                            placeholder="Enter Client ID"
-                                            type="text"
-                                            value={ initialValues.clientId }
-                                            readOnly
-                                        />
+                                        <Form.Field>
+                                            <label>Client ID</label>
+                                            <CopyInputField value={ initialValues?.clientId } />
+                                        </Form.Field>
                                     </Grid.Column>
                                 </Grid.Row>
                             )

@@ -504,7 +504,7 @@ export const regenerateClientSecret = (appId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.applications + "/" + appId + "inbound-protocols/oidc/regenerate-secret"
+        url: ServiceResourcesEndpoint.applications + "/" + appId + "/inbound-protocols/oidc/regenerate-secret"
     };
 
     return httpClient.request(requestConfig)
@@ -532,7 +532,7 @@ export const revokeClientSecret = (appId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.applications + "/" + appId + "inbound-protocols/oidc/revoke"
+        url: ServiceResourcesEndpoint.applications + "/" + appId + "/inbound-protocols/oidc/revoke"
     };
 
     return httpClient.request(requestConfig)
