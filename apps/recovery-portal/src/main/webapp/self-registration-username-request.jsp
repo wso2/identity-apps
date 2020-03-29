@@ -203,7 +203,7 @@
                         if (usernameUserInput) {
                             var usernameUserInputValue = usernameUserInput.value.trim();
 
-                            if (tenantName && tenantName !== "null" && tenantName !== undefined) {
+                            if (tenantName !== "null") {
 
                                 if (isEmailUsernameEnabled) {
 

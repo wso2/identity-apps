@@ -77,7 +77,7 @@
                     if (usernameUserInput) {
                         var usernameUserInputValue = usernameUserInput.value.trim();
 
-                        if (tenantName && tenantName !== "null" && tenantName !== undefined) {
+                        if (tenantName && tenantName !== "null") {
 
                             if (isEmailUsernameEnabled) {
 
