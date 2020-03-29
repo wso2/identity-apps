@@ -16,8 +16,16 @@
  * under the License.
  */
 
-export * from "./authenticate";
-export * from "./config";
-export * from "./loaders";
-export * from "./global";
-export * from "./profile";
+import { CommonConfigActionTypes, SetDeploymentConfigsActionInterface } from "./types";
+
+/**
+ * Redux action to set the deployment configs.
+ *
+ * @param {T} configs - Deployment configs.
+ *
+ * @return {SetDeploymentConfigsActionInterface<T>} An action of type `SET_DEPLOYMENT_CONFIGS`
+ */
+export const setDeploymentConfigs = <T>(configs: T): SetDeploymentConfigsActionInterface<T> => ({
+    payload: configs,
+    type: CommonConfigActionTypes.SET_DEPLOYMENT_CONFIGS
+});

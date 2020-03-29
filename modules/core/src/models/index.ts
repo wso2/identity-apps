@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export * from "./configs";
+export * from "./config";
 export * from "./global";
 export * from "./http";
 export * from "./profile";
