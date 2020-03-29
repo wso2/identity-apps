@@ -35,7 +35,7 @@ import {
 const httpClient = AxiosHttpClient.getInstance();
 
 /**
- * Creates a new identity provider.
+ * Creates Identity Provider.
  *
  * @param identityProvider Identity provider settings data.
  */
