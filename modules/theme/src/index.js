@@ -60,7 +60,6 @@ export const PadlockIcon = require("../dist/lib/themes/default/assets/images/ico
 export const PlugIcon = require("../dist/lib/themes/default/assets/images/icons/plug-icon.svg");
 export const SecurityQuestionsIcon = 
     require("../dist/lib/themes/default/assets/images/icons/security-questions-icon.svg");
-export const ServerIcon = require("../dist/lib/themes/default/assets/images/icons/server-icon.svg");
 export const SMSIcon = require("../dist/lib/themes/default/assets/images/icons/sms-icon.svg");
 export const SpinWheelIcon = require("../dist/lib/themes/default/assets/images/icons/spin-wheel-icon.svg");
 export const SuccessIcon = require("../dist/lib/themes/default/assets/images/icons/success-icon.svg");

@@ -63,7 +63,6 @@ import {
     ReactLogo,
     ReportIcon,
     SamlLogo,
-    ServerIcon,
     SettigsSectionIconSet,
     SMSOTPIcon,
     SPATemplateIllustration,
@@ -78,8 +77,7 @@ import {
     WebAppTemplateIllustration,
     WSFedLogo,
     WSTrustLogo,
-    ClaimsIcon,
-    UserStoreIcon
+    ClaimsIcon
 } from "@wso2is/theme";
 
 type ImageType = string;
@@ -105,7 +103,7 @@ export const SidePanelIcons = {
     claims: ClaimsIcon,
     connections: PlugIcon,
     overview: DashboardIcon,
-    serverConfigurations: ServerIcon,
+    serverConfigurations: GearsIcon,
     userStore: DatabaseIcon,
     usersAndRoles: UserIcon
 };
