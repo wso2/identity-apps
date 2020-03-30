@@ -50,7 +50,7 @@ const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
 ];
 
 /**
- * React component to list User Roles.
+ * React component to list User Groups.
  * 
  * @return {ReactElement}
  */
