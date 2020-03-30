@@ -74,13 +74,10 @@ export const UserStoresSearch: FunctionComponent<LocalClaimsSearchPropsInterface
     /**
      * Filter attribute options.
      *
-     * @remarks
-     * Only filter by `name` is supported in the current API implementation.
-     *
      * @type {({text: string; value: string})[]}
      */
     const filterAttributeOptions = [
-        { value: "displayName", text: t("common:name") },
+        { value: "name", text: t("common:name") },
         { value: "description", text: "Description" },
     ];
 
@@ -93,7 +90,7 @@ export const UserStoresSearch: FunctionComponent<LocalClaimsSearchPropsInterface
         { value: "sw", text: t("common:startsWith") },
         { value: "ew", text: t("common:endsWith") },
         { value: "co", text: t("common:contains") },
-        { value: "eq", text: t("common:equals") },
+        { value: "eq", text: t("common:equals") }
     ];
 
     /**
