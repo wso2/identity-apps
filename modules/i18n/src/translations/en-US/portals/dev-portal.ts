@@ -614,8 +614,8 @@ export const devPortal: DevPortalNS = {
                 },
                 placeholder: "Search by  user name",
                 popups: {
-                    clear: "clear search",
-                    dropdown: "show options"
+                    clear: "Clear search",
+                    dropdown: "Show options"
                 },
                 resultsIndicator: "Showing results for the query \"{{query}}\""
             }

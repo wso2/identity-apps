@@ -46,7 +46,7 @@ const FILTER_VALUES_FIELD_IDENTIFIER = "filerValues";
  * field value to this.
  * @type {string}
  */
-const DEFAULT_SEARCH_STRATEGY = "userName sw";
+const DEFAULT_SEARCH_STRATEGY = "userName co";
 
 /**
  * Prop types for the user search component.
