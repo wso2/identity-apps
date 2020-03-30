@@ -22,6 +22,7 @@ import { useTranslation } from "react-i18next";
 import { Form, Grid } from "semantic-ui-react";
 import { buildSearchQuery } from "../../utils";
 import { AdvancedSearch } from "@wso2is/react-components";
+import { AdvancedSearchIcons } from "../../configs";
 
 /**
  * Filter attribute field identifier.
@@ -143,6 +144,7 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (
         <AdvancedSearch
             aligned="left"
             clearButtonPopupLabel={ t("devPortal:components.users.search.popups.clear") }
+            clearIcon={ AdvancedSearchIcons.clear }
             defaultSearchStrategy={ DEFAULT_SEARCH_STRATEGY }
             dropdownTriggerPopupLabel={ t("devPortal:components.users.search.popups.dropdown") }
             hintActionKeys={ t("devPortal:components.users.search.hints.querySearch.actionKeys") }
