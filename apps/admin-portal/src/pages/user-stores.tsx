@@ -30,7 +30,8 @@ import { addAlert } from "../store/actions";
 import { filterList, sortList } from "../utils";
 
 /**
- * This renders the User Stores page
+ * This renders the User Stores page.
+ *
  * @return {React.ReactElement}
  */
 export const UserStores = (): React.ReactElement => {
