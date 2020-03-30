@@ -21,51 +21,6 @@
  */
 export class IdentityProviderManagementConstants {
 
-    // /**
-    //  * Private constructor to avoid object instantiation from outside
-    //  * the class.
-    //  *
-    //  * @hideconstructor
-    //  */
-    // /* eslint-disable @typescript-eslint/no-empty-function */
-    // private constructor() { }
-    //
-    // // API errors
-    // public static readonly AUTH_PROTOCOL_METADATA_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
-    //     "code while retrieving the auth protocol metadata.";
-    // public static readonly AUTH_PROTOCOL_METADATA_FETCH_ERROR: string = "An error occurred while fetching the " +
-    //     "metadata related to the required auth protocol.";
-    // public static readonly AUTH_PROTOCOL_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
-    //     "status code while updating the auth protocol config.";
-    // public static readonly AUTH_PROTOCOL_CONFIG_UPDATE_ERROR: string = "An error occurred while updating the auth" +
-    //     "protocol config.";
-    // public static readonly ADAPTIVE_AUTH_TEMPLATES_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
-    //     "status code while fetching adaptive authentication templates.";
-    // public static readonly ADAPTIVE_AUTH_TEMPLATES_FETCH_ERROR: string = "An error occurred while fetching the " +
-    //     "required adaptive authentication template.";
-    //
-    // public static readonly DEFAULT_ADAPTIVE_AUTH_SCRIPT: string[] = [
-    //     "var onLoginRequest = function(context) {",
-    //     "};",
-    //     ""
-    // ];
-    //
-    // /**
-    //  * Key to access the application management CRUD operation permissions in the app config file.
-    //  * @constant
-    //  * @type {string}
-    //  * @default
-    //  */
-    // public static readonly CRUD_PERMISSIONS_APP_CONFIG_KEY: string = "applications.permissions";
-    //
-    // /**
-    //  * Key to access the application management features.
-    //  * @constant
-    //  * @type {string}
-    //  * @default
-    //  */
-    // public static readonly EDIT_FEATURES_APP_CONFIG_KEY: string = "applications.features.edit";
-    //
     public static readonly IDENTITY_PROVIDER_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while fetching identity provider template.";
     public static readonly IDENTITY_PROVIDER_TEMPLATE_FETCH_ERROR: string = "An error occurred while fetching " +
