@@ -16,20 +16,18 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
-import { PageLayout } from "../layouts";
-import { ListLayout } from "../layouts";
-import { PrimaryButton } from "@wso2is/react-components";
-import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
-import { ClaimsAvatarBackground, ClaimsList, ListType } from "../components";
-import { AlertLevels, ClaimDialect } from "../models";
-import { getDialects } from "../api";
-import { DEFAULT_USER_LIST_ITEM_LIMIT, LOCAL_CLAIMS_PATH } from "../constants";
-import { AddEditDialect, DialectSearch } from "../components";
-import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
+import { PrimaryButton } from "@wso2is/react-components";
+import React, { useContext, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
+import { getDialects } from "../api";
+import { AddEditDialect, ClaimsAvatarBackground, ClaimsList, DialectSearch, ListType } from "../components";
+import { DEFAULT_USER_LIST_ITEM_LIMIT, LOCAL_CLAIMS_PATH } from "../constants";
+import { AppConfig, history } from "../helpers";
+import { ListLayout, PageLayout } from "../layouts";
+import { AlertLevels, AppConfigInterface, ClaimDialect } from "../models";
 import { filterList, sortList } from "../utils";
-import { history } from "../helpers";
 
 /**
  * This displays a list fo claim dialects
@@ -58,6 +56,8 @@ export const ClaimDialectsPage = (): React.ReactElement => {
     const [sortOrder, setSortOrder] = useState(true);
     const [localURI, setLocalURI] = useState("");
 
+    const appConfig: AppConfigInterface = useContext(AppConfig);
+
     const dispatch = useDispatch();
 
     /**
@@ -68,7 +68,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
      * @param {string} sort.
      * @param {string} filter.
      */
-    const getDialect = (limit?: number, offset?: number, sort?: string, filter?: string ) => {
+    const getDialect = (limit?: number, offset?: number, sort?: string, filter?: string) => {
         getDialects({
             limit, offset, sort, filter
         }).then((response: ClaimDialect[]) => {
@@ -90,7 +90,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                 }
             ));
         })
-    }
+    };
 
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
@@ -170,53 +170,58 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                 description="View, edit and add Claim Dialects"
                 showBottomDivider={ true }
             >
-                <Segment>
-                    <List>
-                        <List.Item>
-                            <Grid>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 12 }>
-                                        <Image
-                                            floated="left"
-                                            verticalAlign="middle"
-                                            rounded
-                                            centered
-                                            size="mini"
-                                        >
-                                            <ClaimsAvatarBackground primary/>
-                                            <span className="claims-letter">
+                {
+                    appConfig?.claimDialects?.features?.localClaims?.permissions?.read &&
+                    (
+                        <Segment>
+                            <List>
+                                <List.Item>
+                                    <Grid>
+                                        <Grid.Row columns={ 2 }>
+                                            <Grid.Column width={ 12 }>
+                                                <Image
+                                                    floated="left"
+                                                    verticalAlign="middle"
+                                                    rounded
+                                                    centered
+                                                    size="mini"
+                                                >
+                                                    <ClaimsAvatarBackground primary/>
+                                                    <span className="claims-letter">
                                                 L
                                             </span>
-                                        </Image>
-                                        <List.Header>
-                                            Local Dialect
-                                        </List.Header>
-                                        <List.Description>
-                                            { localURI }
-                                        </List.Description>
-                                    </Grid.Column>
-                                    <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
-                                        <Popup
-                                            inverted
-                                            trigger={
-                                                <Icon
-                                                    link
-                                                    name="arrow right"
-                                                    onClick={ () => {
-                                                        history.push(LOCAL_CLAIMS_PATH);
-                                                    } }
+                                                </Image>
+                                                <List.Header>
+                                                    Local Dialect
+                                                </List.Header>
+                                                <List.Description>
+                                                    {localURI}
+                                                </List.Description>
+                                            </Grid.Column>
+                                            <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
+                                                <Popup
+                                                    inverted
+                                                    trigger={
+                                                        <Icon
+                                                            link
+                                                            name="arrow right"
+                                                            onClick={ () => {
+                                                                history.push(LOCAL_CLAIMS_PATH);
+                                                            } }
+                                                        />
+                                                    }
+                                                    position="top center"
+                                                    content="View local claims"
                                                 />
-                                            }
-                                            position="top center"
-                                            content="View local claims"
-                                        />
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </List.Item>
-                    </List>
-                </Segment>
-                <Divider hidden />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </List.Item>
+                            </List>
+                        </Segment>
+                    )
+                }
+                <Divider hidden/>
                 <ListLayout
                     advancedSearch={
                         <DialectSearch onFilter={ (query) => {
@@ -231,7 +236,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                                     level: AlertLevels.ERROR
                                 }));
                             }
-                        } } />
+                        } }/>
                     }
                     currentListSize={ listItemLimit }
                     listItemLimit={ listItemLimit }
@@ -240,13 +245,13 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                     onSortStrategyChange={ handleSortStrategyChange }
                     onSortOrderChange={ handleSortOrderChange }
                     rightActionPanel={
-                        (
+                        appConfig?.claimDialects?.permissions?.create && (
                             <PrimaryButton
                                 onClick={ () => {
                                     setAddEditClaim(true);
                                 } }
                             >
-                                <Icon name="add" />Add a dialect
+                                <Icon name="add"/>Add a dialect
                             </PrimaryButton>
                         )
                     }
