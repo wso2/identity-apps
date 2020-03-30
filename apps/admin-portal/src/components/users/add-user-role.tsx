@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import _ from "lodash";
 import { Forms } from "@wso2is/forms";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
@@ -37,7 +37,7 @@ interface AddUserRoleProps {
  *
  * @return {JSX.Element}
  */
-export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: AddUserRoleProps): ReactElement => {
+export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserRoleProps): ReactElement => {
 
     const {
         initialValues,
@@ -136,6 +136,22 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
         }
     };
 
+    /**
+     * The following method handles creating a label for the list item.
+     *
+     * @param roleName: string
+     */
+    const createItemLabel = (roleName: string) => {
+        const role = roleName.split("/");
+        if (role.length > 0) {
+            if (role[0] == "Application") {
+                return { labelText: "Application", labelColor: null, name: "application-label" };
+            } else {
+                return { labelText: "Internal", labelColor: null, name: "internal-label" };
+            }
+        }
+    };
+
     return (
         <>
         <Forms
@@ -156,14 +172,15 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
                 >
                     {
                         initialValues.roleList.map((role, index)=> {
+                            const roleName = role.displayName.split("/");
                             return (
                                 <TransferListItem
                                     handleItemChange={ () => handleUnassignedItemCheckboxChange(role) }
                                     key={ index }
-                                    listItem={ role.displayName }
+                                    listItem={ roleName.length > 0 ? roleName[1] : role.displayName }
                                     listItemId={ role.id }
                                     listItemIndex={ index }
-                                    listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
+                                    listItemTypeLabel={ createItemLabel(role.displayName) }
                                     isItemChecked={ checkedUnassignedListItems.includes(role) }
                                     showSecondaryActions={ false }
                                 />
@@ -178,14 +195,15 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
                 >
                     {
                         initialValues.tempRoleList.map((role, index)=> {
+                            const roleName = role.displayName.split("/");
                             return (
                                 <TransferListItem
                                     handleItemChange={ () => handleAssignedItemCheckboxChange(role) }
                                     key={ index }
-                                    listItem={ role.displayName }
+                                    listItem={ roleName.length > 0 ? roleName[1] : role.displayName }
                                     listItemId={ role.id }
                                     listItemIndex={ index }
-                                    listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
+                                    listItemTypeLabel={ createItemLabel(role.displayName) }
                                     isItemChecked={ checkedAssignedListItems.includes(role) }
                                     showSecondaryActions={ false }
                                 />

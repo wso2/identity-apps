@@ -95,19 +95,16 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ tempGroupList, setTempGroupList ] = useState([]);
     const [ initialGroupList, setInitialGroupList ] = useState([]);
 
-    const getGroups = (domain: string) => {
+    const [ applicationRoles, setApplicationRoles ] = useState([]);
+    const [ internalRoles, setInternalRoles ] = useState([]);
+    const [ isInternalRolesSet, setIsInternalRolesSet ] = useState(false);
+    const [ isApplicationRolesSet, setIsApplicationRolesSet ] = useState(false);
+
+    const getGroupListForDomain = (domain: string) => {
         getRolesList(domain)
             .then((response) => {
                 setGroupsList(response.data.Resources);
                 setInitialGroupList(response.data.Resources);
-            });
-    };
-
-    const getRoleListForDomain = (domain: string) => {
-        getRolesList(domain)
-            .then((response) => {
-                setRoleList([ ...roleList, ...response.data.Resources ]);
-                setInitialRoleList([ ...roleList, ...response.data.Resources ]);
             });
     };
 
@@ -127,6 +124,34 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setTempGroupList(newGroupList);
     };
 
+    useEffect(() => {
+        if (applicationRoles.length === 0) {
+            getRolesList("Application")
+                .then((response) => {
+                    setApplicationRoles(response.data.Resources);
+                    setIsApplicationRolesSet(true);
+                });
+        }
+
+    }, []);
+
+    useEffect(() => {
+        if (internalRoles.length === 0) {
+            getRolesList("Internal")
+                .then((response) => {
+                    setInternalRoles(response.data.Resources);
+                    setIsInternalRolesSet(true);
+                });
+        }
+    }, []);
+
+    useEffect(() => {
+        if (internalRoles.length > 0 && applicationRoles.length > 0) {
+            setRoleList(_.concat(applicationRoles, internalRoles));
+            setInitialRoleList(_.concat(applicationRoles, internalRoles));
+        }
+    }, [ isInternalRolesSet, isApplicationRolesSet ]);
+
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
      * value change , and resets the partially completed step value.
@@ -141,14 +166,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     }, [ partiallyCompletedStep ]);
 
     useEffect(() => {
-        if (groupList.length === 0) {
-            getGroups("Application");
-        }
-    }, []);
-
-    useEffect(() => {
         if ( wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain) {
-            getRoleListForDomain(wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain);
+            getGroupListForDomain(wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain);
         }
     }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain ]);
 
@@ -158,10 +177,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 setSubmitGeneralSettings();
                 break;
             case 1:
-                setSubmitRoleList();
+                setSubmitGroupList();
                 break;
             case 2:
-                setSubmitGroupList();
+                setSubmitRoleList();
                 break;
             case 3:
                 setFinishSubmit();
@@ -448,19 +467,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         },
         {
             content: (
-                <AddUserRole
-                    triggerSubmit={ submitRoleList }
-                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
-                    initialValues={ { initialRoleList: initialRoleList, roleList: roleList, tempRoleList: tempRoleList } }
-                    handleRoleListChange={ (roles) => handleRoleListChange(roles) }
-                    handleTempListChange={ (roles) => handleAddedListChange(roles) }
-                />
-            ),
-            icon: ApplicationWizardStepIcons.general,
-            title: "Assign user roles"
-        },
-        {
-            content: (
                 <AddUserGroup
                     triggerSubmit={ submitGroupList }
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
@@ -471,6 +477,25 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             ),
             icon: ApplicationWizardStepIcons.general,
             title: "Assign user groups"
+        },
+        {
+            content: (
+                <AddUserRole
+                    triggerSubmit={ submitRoleList }
+                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
+                    initialValues={
+                        {
+                            initialRoleList: initialRoleList,
+                            roleList: roleList,
+                            tempRoleList: tempRoleList
+                        }
+                    }
+                    handleRoleListChange={ (roles) => handleRoleListChange(roles) }
+                    handleTempListChange={ (roles) => handleAddedListChange(roles) }
+                />
+            ),
+            icon: ApplicationWizardStepIcons.general,
+            title: "Assign user roles"
         },
         {
             content: (

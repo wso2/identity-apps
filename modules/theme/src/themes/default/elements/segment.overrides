@@ -213,10 +213,10 @@
         margin-top: @userRolesListSegmentMarginTop;
         height: @userRolesListSegmentHeight;
         overflow: auto;
-        width: 281px !important;
+        width: @TransferComponentSegmentWidth;
 
         .ui.table {
-            font-size: 12px;
+            font-size: @TransferComponentSegmentTableFontSize;
             border-left: none;
             border-right: none;
         }
@@ -239,14 +239,14 @@
             color: white;
 
             &.application-label {
-                background-color: #99A1CC !important;
-                border-color: #8E95B6 !important;
+                background-color: @TransferComponentSegmentApplicationLabelBackgroundColor;
+                border-color: @TransferComponentSegmentApplicationLabelBorderColor;
 
             }
 
             &.internal-label {
-                background-color: #8DC1D4 !important;
-                border-color: #7CB5CA !important;
+                background-color: @TransferComponentSegmentInternalLabelBackgroundColor;
+                border-color: @TransferComponentSegmentInternalLabelBorderColor;
             }
         }
     }

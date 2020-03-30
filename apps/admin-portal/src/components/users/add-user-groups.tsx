@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import _ from "lodash";
 import { Forms } from "@wso2is/forms";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
@@ -24,7 +24,7 @@ import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react
 /**
  * Proptypes for the application consents list component.
  */
-interface AddUserGroupProps {
+interface AddUserGroupPropsInterface {
     initialValues: any;
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
@@ -37,7 +37,8 @@ interface AddUserGroupProps {
  *
  * @return {ReactElement}
  */
-export const AddUserGroup: React.FunctionComponent<AddUserGroupProps> = (props: AddUserGroupProps): ReactElement => {
+export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
+    props: AddUserGroupPropsInterface): ReactElement => {
 
     const {
         initialValues,
@@ -50,6 +51,14 @@ export const AddUserGroup: React.FunctionComponent<AddUserGroupProps> = (props: 
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState([]);
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState([]);
 
+    /**
+     * The following method handles the onChange event of the
+     * search field. It matches the string pattern of the user
+     * input value with the elements of the user list.
+     *
+     * @param e
+     * @param value
+     */
     const handleSearchFieldChange = (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => {
         let isMatch = false;
         const filteredGroupList = [];
@@ -69,6 +78,10 @@ export const AddUserGroup: React.FunctionComponent<AddUserGroupProps> = (props: 
         }
     };
 
+    /**
+     * The following method handles adding list items checked in the initial
+     * roles list to the assigned roles list.
+     */
     const addGroups = () => {
         const addedGroups = [ ...initialValues.tempGroupList ];
         if (checkedUnassignedListItems?.length > 0) {
@@ -82,6 +95,10 @@ export const AddUserGroup: React.FunctionComponent<AddUserGroupProps> = (props: 
         handleGroupListChange(initialValues.groupList.filter(x => !addedGroups.includes(x)));
     };
 
+    /**
+     * The following method handles removing list items checked in the assigned
+     * roles list to the initial role list.
+     */
     const removeGroups = () => {
         const removedGroups = [ ...initialValues.groupList ];
         if (checkedAssignedListItems?.length > 0) {
@@ -96,6 +113,10 @@ export const AddUserGroup: React.FunctionComponent<AddUserGroupProps> = (props: 
         setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedGroups.includes(x)))
     };
 
+    /**
+     * The following method handles the onChange event of the
+     * checkbox field of an unassigned item.
+     */
     const handleUnassignedItemCheckboxChange = (group) => {
         const checkedGroups = [ ...checkedUnassignedListItems ];
 
@@ -108,6 +129,10 @@ export const AddUserGroup: React.FunctionComponent<AddUserGroupProps> = (props: 
         }
     };
 
+    /**
+     * The following method handles the onChange event of the
+     * checkbox field of an assigned item.
+     */
     const handleAssignedItemCheckboxChange = (group) => {
         const checkedGroups = [ ...checkedAssignedListItems ];
 
@@ -120,79 +145,63 @@ export const AddUserGroup: React.FunctionComponent<AddUserGroupProps> = (props: 
         }
     };
 
-    const createItemLabel = (roleName: string) => {
-
-        const role = roleName.split("/");
-        if (role.length > 0) {
-            if (role[0] == "Application") {
-                return { labelText: "Application", labelColor: null, name: "application-label" };
-            } else {
-                return { labelText: "Internal", labelColor: null, name: "internal-label" };
-            }
-        }
-    };
-
     return (
-        <>
-            <Forms
-                onSubmit={ () => {
-                    onSubmit({ groups: initialValues?.tempGroupList });
-                } }
-                submitState={ triggerSubmit }
+        <Forms
+            onSubmit={ () => {
+                onSubmit({ groups: initialValues?.tempGroupList });
+            } }
+            submitState={ triggerSubmit }
+        >
+            <TransferComponent
+                addItems={ addGroups }
+                removeItems={ removeGroups }
+                handleListSearch={ handleSearchFieldChange }
             >
-                <TransferComponent
-                    addItems={ addGroups }
-                    removeItems={ removeGroups }
-                    handleListSearch={ handleSearchFieldChange }
+                <TransferList
+                    isListEmpty={ !(initialValues.groupList.length > 0) }
+                    listType="unselected"
+                    listHeaders={ [ "Name", "Type" ] }
                 >
-                    <TransferList
-                        isListEmpty={ !(initialValues.groupList.length > 0) }
-                        listType="unselected"
-                        listHeaders={ [ "Name", "Type" ] }
-                    >
-                        {
-                            initialValues.groupList.map((group, index)=> {
-                                const groupName = group.displayName.split("/");
-                                return (
-                                    <TransferListItem
-                                        handleItemChange={ () => handleUnassignedItemCheckboxChange(group) }
-                                        key={ index }
-                                        listItem={ groupName.length > 0 ? groupName[1] : group.displayName }
-                                        listItemId={ group.id }
-                                        listItemIndex={ index }
-                                        listItemTypeLabel={ createItemLabel(group.displayName) }
-                                        isItemChecked={ checkedUnassignedListItems.includes(group) }
-                                        showSecondaryActions={ false }
-                                    />
-                                )
-                            })
-                        }
-                    </TransferList>
-                    <TransferList
-                        isListEmpty={ !(initialValues.tempGroupList.length > 0) }
-                        listType="selected"
-                        listHeaders={ [ "Name", "Type" ] }
-                    >
-                        {
-                            initialValues.tempGroupList.map((group, index)=> {
-                                const groupName = group.displayName.split("/");
-                                return (
-                                    <TransferListItem
-                                        handleItemChange={ () => handleAssignedItemCheckboxChange(group) }
-                                        key={ index }
-                                        listItem={ groupName.length > 0 ? groupName[1] : group.displayName }
-                                        listItemId={ group.id }
-                                        listItemIndex={ index }
-                                        listItemTypeLabel={ createItemLabel(group.displayName) }
-                                        isItemChecked={ checkedAssignedListItems.includes(group) }
-                                        showSecondaryActions={ false }
-                                    />
-                                )
-                            })
-                        }
-                    </TransferList>
-                </TransferComponent>
-            </Forms>
-        </>
+                    {
+                        initialValues.groupList.map((group, index)=> {
+                            return (
+                                <TransferListItem
+                                    handleItemChange={ () => handleUnassignedItemCheckboxChange(group) }
+                                    key={ index }
+                                    listItem={ group.displayName }
+                                    listItemId={ group.id }
+                                    listItemIndex={ index }
+                                    listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
+                                    isItemChecked={ checkedUnassignedListItems.includes(group) }
+                                    showSecondaryActions={ false }
+                                />
+                            )
+                        })
+                    }
+                </TransferList>
+                <TransferList
+                    isListEmpty={ !(initialValues.tempGroupList.length > 0) }
+                    listType="selected"
+                    listHeaders={ [ "Name", "Type" ] }
+                >
+                    {
+                        initialValues.tempGroupList.map((group, index)=> {
+                            return (
+                                <TransferListItem
+                                    handleItemChange={ () => handleAssignedItemCheckboxChange(group) }
+                                    key={ index }
+                                    listItem={ group.displayName }
+                                    listItemId={ group.id }
+                                    listItemIndex={ index }
+                                    listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
+                                    isItemChecked={ checkedAssignedListItems.includes(group) }
+                                    showSecondaryActions={ false }
+                                />
+                            )
+                        })
+                    }
+                </TransferList>
+            </TransferComponent>
+        </Forms>
     );
 };

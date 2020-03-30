@@ -55,8 +55,6 @@ export const TransferList: FunctionComponent<TransferListProps> = (
     } = props;
 
     return (
-
-
         <>
             {
                 !isListEmpty ? (

@@ -47,3 +47,14 @@
 
 @RoleSummaryUserListBackgroundColor: #f7f7f7;
 @RoleSummaryUserListBackgroundColor: #efefef;
+
+/*************************************
+    Transfer Component Variation
+*************************************/
+
+@TransferComponentSegmentWidth: 281px !important;
+@TransferComponentSegmentTableFontSize: 12px;
+@TransferComponentSegmentApplicationLabelBackgroundColor: #99A1CC !important;
+@TransferComponentSegmentApplicationLabelBorderColor: #8E95B6 !important;
+@TransferComponentSegmentInternalLabelBackgroundColor: #8DC1D4 !important;
+@TransferComponentSegmentInternalLabelBorderColor: #7CB5CA !important;

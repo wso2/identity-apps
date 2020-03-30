@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import React, {FunctionComponent, ReactElement, useState} from "react";
-import {Checkbox, Icon, Label, LabelProps, SemanticCOLORS, Table, TableRowProps} from "semantic-ui-react";
+import React, { FunctionComponent, ReactElement } from "react";
+import { Checkbox, Icon, Label, LabelProps, SemanticCOLORS, Table, TableRowProps } from "semantic-ui-react";
 
 /**
  * Proptypes for the transfer list item label.
