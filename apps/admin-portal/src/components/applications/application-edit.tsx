@@ -267,7 +267,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (features.attributeMapping === undefined || features.attributeMapping.enabled !== false) {
 
                 panes.push({
-                    menuItem: "Attribute",
+                    menuItem: "Attributes",
                     render: AttributeSettingTabPane
                 });
             }
@@ -282,7 +282,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (features.advanceSettings === undefined || features.advanceSettings.enabled !== false) {
 
                 panes.push({
-                    menuItem: "Advance",
+                    menuItem: "Advanced",
                     render: AdvancedSettingsTabPane,
                 });
             }
