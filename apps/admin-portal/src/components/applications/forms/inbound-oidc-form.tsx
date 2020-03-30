@@ -255,7 +255,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                         <Form.Field>
-                                            <label>Client id</label>
+                                            <label>Client ID</label>
                                             <CopyInputField value={ initialValues?.clientId } />
                                         </Form.Field>
                                     </Grid.Column>
@@ -306,7 +306,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             labelName={ "Callback URL" }
                             required={ true }
                             value={ buildCallBackURLWithSeparator(initialValues.callbackURLs?.toString()) }
-                            placeholder={ "Enter callbackUrl" }
+                            placeholder={ "Enter callback URL" }
                             validationErrorMsg={ "Please add valid URL." }
                             validation={ (value: string) => {
                                 if (FormValidation.url(value)) {
@@ -612,10 +612,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Divider hidden/>
                                 <Field
                                     name="backChannelLogoutUrl"
-                                    label="Back channel logout url"
+                                    label="Back channel logout URL"
                                     required={ false }
-                                    requiredErrorMessage="Please fill the Back Channel Logout Url"
-                                    placeholder="Enter the Back Channel Logout Url"
+                                    requiredErrorMessage="Please fill the Back Channel Logout URL"
+                                    placeholder="Enter the Back Channel Logout URL"
                                     type="text"
                                     value={ initialValues.logout?.backChannelLogoutUrl }
                                 />
@@ -625,10 +625,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="frontChannelLogoutUrl"
-                                    label="Front channel logout url"
+                                    label="Front channel logout URL"
                                     required={ false }
-                                    requiredErrorMessage="Please fill the Front Channel Logout Url"
-                                    placeholder="Enter the Front Channel Logout Url"
+                                    requiredErrorMessage="Please fill the Front Channel Logout URL"
+                                    placeholder="Enter the Front Channel Logout URL"
                                     type="text"
                                     value={ initialValues.logout?.frontChannelLogoutUrl }
                                 />
