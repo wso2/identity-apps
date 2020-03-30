@@ -104,6 +104,29 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                     )
                     : null
             }
+            {
+                summary?.groups &&
+                summary.groups instanceof Array &&
+                summary.groups.length > 0
+                    ? (
+                        <Grid.Row className="summary-field" columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                                <div className="label">Group(s)</div>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                                <Label.Group>
+                                    {
+                                        summary.groups
+                                            .map((group, index) => (
+                                                <Label key={ index } basic circular>{ group.displayName }</Label>
+                                            ))
+                                    }
+                                </Label.Group>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                    : null
+            }
             { summary?.userName && (
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">

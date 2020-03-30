@@ -30,6 +30,7 @@ import { AddUser } from "../add-user";
 import { AddUserWizardSummary } from "./wizard-summary";
 import { useTrigger } from "@wso2is/forms";
 import { AddUserRole } from "../add-user-role";
+import { AddUserGroup } from "../add-user-groups";
 
 interface AddUserWizardPropsInterface {
     closeWizard: () => void;
@@ -55,6 +56,7 @@ interface WizardStateInterface {
 enum WizardStepsFormTypes {
     BASIC_DETAILS = "BasicDetails",
     ROLE_LIST= "RoleList",
+    GROUP_LIST= "GroupList",
     SUMMARY = "summary"
 }
 
@@ -78,6 +80,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitRoleList, setSubmitRoleList ] = useTrigger();
+    const [ submitGroupList, setSubmitGroupList ] = useTrigger();
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
@@ -88,10 +91,15 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ tempRoleList, setTempRoleList ] = useState([]);
     const [ initialRoleList, setInitialRoleList ] = useState([]);
 
-    const getRoles = (domain: string) => {
+    const [ groupList, setGroupsList ] = useState([]);
+    const [ tempGroupList, setTempGroupList ] = useState([]);
+    const [ initialGroupList, setInitialGroupList ] = useState([]);
+
+    const getGroups = (domain: string) => {
         getRolesList(domain)
             .then((response) => {
-                setRoleList(response.data.Resources);
+                setGroupsList(response.data.Resources);
+                setInitialGroupList(response.data.Resources);
             });
     };
 
@@ -111,6 +119,14 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setTempRoleList(newRoleList);
     };
 
+    const handleGroupListChange = (groupList) => {
+        setGroupsList(groupList);
+    };
+
+    const handleAddedGroupListChange = (newGroupList) => {
+        setTempGroupList(newGroupList);
+    };
+
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
      * value change , and resets the partially completed step value.
@@ -125,7 +141,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     }, [ partiallyCompletedStep ]);
 
     useEffect(() => {
-        getRoles("Application");
+        if (groupList.length === 0) {
+            getGroups("Application");
+        }
     }, []);
 
     useEffect(() => {
@@ -143,6 +161,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 setSubmitRoleList();
                 break;
             case 2:
+                setSubmitGroupList();
+                break;
+            case 3:
                 setFinishSubmit();
         }
     };
@@ -154,12 +175,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     /**
      * This function handles assigning the roles to the user.
      */
-    const assignUserRole = (user: any, roles: any) => {
+    const assignUserRole = (user: any, roles: any, groups: any) => {
         const roleIds = [];
+        const groupIds = [];
 
-        roles.map((role) => {
-            roleIds.push(role.id);
-        });
         const data = {
             Operations: [
                 {
@@ -177,44 +196,96 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
         };
 
-        for (const roleId of roleIds) {
-            addUserRole(data, roleId)
-                .catch((error) => {
-                    if (!error.response || error.response.status === 401) {
-                        dispatch(addAlert({
-                            description: t(
-                                "devPortal:components.users.notifications.addUser.error.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "devPortal:components.users.notifications.addUser.error.message"
-                            )
-                        }));
-                    } else if (error.response && error.response.data && error.response.data.detail) {
+        if (roles.length > 0) {
+            roles.map((role) => {
+                roleIds.push(role.id);
+            });
 
-                        dispatch(addAlert({
-                            description: t(
-                                "devPortal:components.users.notifications.addUser.error.description",
-                                { description: error.response.data.detail }
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "devPortal:components.users.notifications.addUser.error.message"
-                            )
-                        }));
-                    } else {
-                        // Generic error message
-                        dispatch(addAlert({
-                            description: t(
-                                "devPortal:components.users.notifications.addUser.genericError.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "devPortal:components.users.notifications.addUser.genericError.message"
-                            )
-                        }));
-                    }
-                });
+            for (const roleId of roleIds) {
+                addUserRole(data, roleId)
+                    .catch((error) => {
+                        if (!error.response || error.response.status === 401) {
+                            dispatch(addAlert({
+                                description: t(
+                                    "devPortal:components.users.notifications.addUser.error.description"
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "devPortal:components.users.notifications.addUser.error.message"
+                                )
+                            }));
+                        } else if (error.response && error.response.data && error.response.data.detail) {
+
+                            dispatch(addAlert({
+                                description: t(
+                                    "devPortal:components.users.notifications.addUser.error.description",
+                                    { description: error.response.data.detail }
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "devPortal:components.users.notifications.addUser.error.message"
+                                )
+                            }));
+                        } else {
+                            // Generic error message
+                            dispatch(addAlert({
+                                description: t(
+                                    "devPortal:components.users.notifications.addUser.genericError.description"
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "devPortal:components.users.notifications.addUser.genericError.message"
+                                )
+                            }));
+                        }
+                    });
+            }
+        }
+
+        if (groups.length > 0) {
+            groups.map((group) => {
+                groupIds.push(group.id);
+            });
+
+            for (const groupId of groupIds) {
+                addUserRole(data, groupId)
+                    .catch((error) => {
+                        if (!error.response || error.response.status === 401) {
+                            dispatch(addAlert({
+                                description: t(
+                                    "devPortal:components.users.notifications.addUser.error.description"
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "devPortal:components.users.notifications.addUser.error.message"
+                                )
+                            }));
+                        } else if (error.response && error.response.data && error.response.data.detail) {
+
+                            dispatch(addAlert({
+                                description: t(
+                                    "devPortal:components.users.notifications.addUser.error.description",
+                                    { description: error.response.data.detail }
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "devPortal:components.users.notifications.addUser.error.message"
+                                )
+                            }));
+                        } else {
+                            // Generic error message
+                            dispatch(addAlert({
+                                description: t(
+                                    "devPortal:components.users.notifications.addUser.genericError.description"
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "devPortal:components.users.notifications.addUser.genericError.message"
+                                )
+                            }));
+                        }
+                    });
+            }
         }
     };
     
@@ -278,9 +349,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     )
                 }));
 
-                if (wizardState.RoleList.roles && wizardState.RoleList.roles.length > 0) {
-                    assignUserRole(response.data, wizardState.RoleList.roles)
+                if (wizardState?.RoleList?.roles && wizardState?.GroupList?.groups) {
+                    assignUserRole(response.data, wizardState.RoleList.roles, wizardState.GroupList.groups)
                 }
+
                 updateList();
                 closeWizard();
             })
@@ -386,6 +458,19 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             ),
             icon: ApplicationWizardStepIcons.general,
             title: "Assign user roles"
+        },
+        {
+            content: (
+                <AddUserGroup
+                    triggerSubmit={ submitGroupList }
+                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
+                    initialValues={ { initialGroupList: initialGroupList, groupList: groupList, tempGroupList: tempGroupList } }
+                    handleGroupListChange={ (groups) => handleGroupListChange(groups) }
+                    handleTempListChange={ (groups) => handleAddedGroupListChange(groups) }
+                />
+            ),
+            icon: ApplicationWizardStepIcons.general,
+            title: "Assign user groups"
         },
         {
             content: (
