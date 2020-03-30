@@ -23,7 +23,7 @@ import { TransferListSearch } from "./transfer-list-search";
 /**
  * Proptypes transfer component.
  */
-export interface TransferComponentProps {
+export interface TransferComponentPropsInterface {
     handleListSearch: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string; }) => void;
     addItems: () => void;
     removeItems: () => void;
@@ -35,8 +35,8 @@ export interface TransferComponentProps {
  * @param {TransferComponentProps} props - Props injected to the component.
  * @return {React.ReactElement}
  */
-export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComponentProps>> = (
-    props: PropsWithChildren<TransferComponentProps>
+export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComponentPropsInterface>> = (
+    props: PropsWithChildren<TransferComponentPropsInterface>
 ): ReactElement => {
 
     const {

@@ -20,7 +20,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { Checkbox, Table, TableProps } from "semantic-ui-react";
 import { EmptyPlaceholder } from "../placeholder";
 
-interface TransferListItem {
+interface TransferListItemInterface {
     itemName: string;
     itemId: string;
 }
@@ -28,8 +28,8 @@ interface TransferListItem {
 /**
  * Proptypes transfer list component.
  */
-export interface TransferListProps extends TableProps {
-    listValues?: TransferListItem[] | string[];
+export interface TransferListPropsInterface extends TableProps {
+    listValues?: TransferListItemInterface[] | string[];
     listHeaders?: any;
     listType: "selected" | "unselected";
     isListEmpty: boolean;
@@ -43,8 +43,8 @@ export interface TransferListProps extends TableProps {
  * @param {TransferListProps} props - Props injected to the component.
  * @return {React.ReactElement}
  */
-export const TransferList: FunctionComponent<TransferListProps> = (
-    props: TransferListProps
+export const TransferList: FunctionComponent<TransferListPropsInterface> = (
+    props: TransferListPropsInterface
 ): ReactElement => {
 
     const {
