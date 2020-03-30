@@ -18,23 +18,24 @@
  */
 
 import { boolean, radios, select, text } from "@storybook/addon-knobs";
-import React from "react";
+import React, { ReactElement } from "react";
 import { AppAvatar } from "../../../src";
 import { meta } from "./app-avatar.stories.meta";
 
 export default {
     parameters: {
         component: AppAvatar,
-        componentSubtitle: meta.description,
+        componentSubtitle: meta.description
     },
     title: "Components API/Components/App Avatar"
 };
 
 /**
  * Story to display all the app avatar variations.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const All = () => {
+export const AllAppAvatarVariations = (): ReactElement => {
     return (
         <>
             <AppAvatar
@@ -54,88 +55,86 @@ export const All = () => {
     );
 };
 
-All.story = {
+AllAppAvatarVariations.story = {
     parameters: {
         docs: {
-            storyDescription: meta.description,
-        },
+            storyDescription: meta.stories[ 0 ].description
+        }
     }
 };
 
 /**
  * Story to display the app avatar with initials.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Initials = () => (
-    <>
-        <AppAvatar
-            name="User Portal"
-            size="tiny"
-            spaced="right"
-        />
-    </>
+export const AppAvatarWithInitials = (): ReactElement => (
+    <AppAvatar
+        name="User Portal"
+        size="tiny"
+        spaced="right"
+    />
 );
 
-Initials.story = {
+AppAvatarWithInitials.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 0 ].description,
-        },
+            storyDescription: meta.stories[ 1 ].description
+        }
     }
 };
 
 /**
  * Story to display the app avatar from image.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Image = () => (
-    <>
-        <AppAvatar
-            name="Google Drive"
-            image={ "https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/a3/62/4f/a3624fbc-6f28-da42-fc2e-a01a" +
-            "4c93943d/AppIcon-0-1x_U007emarketing-0-0-GLES2_U002c0-512MB-sRGB-0-0-0-85-220-0-0-0-6.png/246x0w.jpg"
-            }
-            size="tiny"
-            spaced="right"
-        />
-    </>
+export const AppAvatarFromImage = (): ReactElement => (
+    <AppAvatar
+        name="Google Drive"
+        image={ "https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/a3/62/4f/a3624fbc-6f28-da42-fc2e-a01a" +
+        "4c93943d/AppIcon-0-1x_U007emarketing-0-0-GLES2_U002c0-512MB-sRGB-0-0-0-85-220-0-0-0-6.png/246x0w.jpg"
+        }
+        size="tiny"
+        spaced="right"
+    />
 );
 
-Image.story = {
+AppAvatarFromImage.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 1 ].description,
-        },
+            storyDescription: meta.stories[ 2 ].description
+        }
     }
 };
 /**
  * Story to display the app avatar loading status.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Placeholder = () => (
-    <>
-        <AppAvatar
-            isLoading={ true }
-            name="User Portal"
-            size="tiny"
-            spaced="right"
-        />
-    </>
+export const AppAvatarPlaceholder = (): ReactElement => (
+    <AppAvatar
+        isLoading={ true }
+        name="User Portal"
+        size="tiny"
+        spaced="right"
+    />
 );
 
-Placeholder.story = {
+AppAvatarPlaceholder.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 2 ].description,
-        },
+            storyDescription: meta.stories[ 3 ].description
+        }
     }
 };
 
 /**
  * Story to display the app avatar sizes.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Sizes = () => (
+export const AppAvatarSizes = (): ReactElement => (
     <>
         <AppAvatar
             spaced="right"
@@ -160,50 +159,49 @@ export const Sizes = () => (
     </>
 );
 
-Sizes.story = {
+AppAvatarSizes.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 3 ].description,
-        },
+            storyDescription: meta.stories[ 4 ].description
+        }
     }
 };
 
 /**
  * Story to enable user to dynamically interact with the avatar component.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Playground = () => (
-    <>
-        <AppAvatar
-            name={ text("Application name", "User Portal") }
-            // tslint:disable:object-literal-sort-keys
-            size={ select(
-                "Size",
-                {
-                    Mini: "mini",
-                    Little: "little",
-                    Tiny: "tiny",
-                    Small: "small",
-                    Medium: "medium",
-                    Large: "large",
-                    Big: "big",
-                    Huge: "huge",
-                    Massive: "massive"
-                },
-                "tiny"
-            ) }
-            image={ text("Image URL", null) }
-            isLoading={ boolean("Loading", false) }
-            // tslint:enable:object-literal-sort-keys
-            spaced={ radios("Spaced", { Right: "right", Left: "left" }, "right") }
-        />
-    </>
+export const AppAvatarPlayground = (): ReactElement => (
+    <AppAvatar
+        name={ text("Application name", "User Portal") }
+        // tslint:disable:object-literal-sort-keys
+        size={ select(
+            "Size",
+            {
+                Mini: "mini",
+                Little: "little",
+                Tiny: "tiny",
+                Small: "small",
+                Medium: "medium",
+                Large: "large",
+                Big: "big",
+                Huge: "huge",
+                Massive: "massive"
+            },
+            "tiny"
+        ) }
+        image={ text("Image URL", null) }
+        isLoading={ boolean("Loading", false) }
+        // tslint:enable:object-literal-sort-keys
+        spaced={ radios("Spaced", { Right: "right", Left: "left" }, "right") }
+    />
 );
 
-Playground.story = {
+AppAvatarPlayground.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 4 ].description,
-        },
+            storyDescription: meta.stories[ 5 ].description
+        }
     }
 };

@@ -17,5 +17,21 @@
  *
  */
 
-export * from "./app-avatar.stories";
-export * from "./user-avatar.stories";
+import { StoryCategories } from "../../hierarchy";
+import { StoryMetaInterface } from "../../models";
+
+export const meta: StoryMetaInterface = {
+    components: [ "ContentLoader" ],
+    description: "Loader to display loading status of content.",
+    stories: [
+        {
+            description: "Default appearance of the content loader component.",
+            title: "Default"
+        },
+        {
+            description: "Play around with different props to dynamically interact with the content loader component.",
+            title: "Playground"
+        }
+    ],
+    title: `${ StoryCategories.COMPONENTS }/Content Loader`
+};

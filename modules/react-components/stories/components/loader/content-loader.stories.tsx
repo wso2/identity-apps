@@ -17,28 +17,40 @@
  *
  */
 
-import React, { ReactElement } from "react";
-import { Hint } from "../../../src";
-import { meta } from "./hint.stories.meta";
+import { boolean, text } from "@storybook/addon-knobs";
+import React, { ReactElement, useEffect, useState } from "react";
+import { ContentLoader } from "../../../src";
+import { meta } from "./top-loading-bar.stories.meta";
 
 export default {
     parameters: {
-        component: Hint,
+        component: ContentLoader,
         componentSubtitle: meta.description
     },
-    title: "Components API/Components/Hint"
+    title: "Components API/Components/Content Loader"
 };
 
 /**
- * Story to display the default hint.
+ * Story to display the content loader default behaviour.
  *
  * @return {React.ReactElement}
  */
-export const DefaultHint = (): ReactElement => (
-    <Hint>This is a default hint</Hint>
-);
+export const DefaultContentLoader = (): ReactElement => {
 
-DefaultHint.story = {
+    const [ visibility, setVisibility ] = useState(false);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setVisibility(!visibility);
+        }, 100);
+    }, []);
+
+    return (
+        <ContentLoader active={ visibility }/>
+    );
+};
+
+DefaultContentLoader.story = {
     parameters: {
         docs: {
             storyDescription: meta.stories[ 0 ].description
@@ -47,15 +59,19 @@ DefaultHint.story = {
 };
 
 /**
- * Story to display a hint with an icon.
+ * Story to enable user to dynamically interact with the content loader component.
  *
  * @return {React.ReactElement}
  */
-export const HintWithIcon = (): ReactElement => (
-    <Hint icon="info circle">This is an example of a hint with an icon.</Hint>
+export const ContentLoaderPlayground = (): ReactElement => (
+    <ContentLoader
+        text={ text("Text", "Loading") }
+        active={ boolean("Active", true) }
+        dimmer={ boolean("Dimmer", true) }
+    />
 );
 
-HintWithIcon.story = {
+ContentLoaderPlayground.story = {
     parameters: {
         docs: {
             storyDescription: meta.stories[ 1 ].description

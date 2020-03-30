@@ -35,6 +35,7 @@ import {
     CodeIcon,
     CrossIcon,
     DashboardIcon,
+    DatabaseIcon,
     DocumentIcon,
     DotNetLogo,
     DragIcon,
@@ -76,8 +77,7 @@ import {
     WebAppTemplateIllustration,
     WSFedLogo,
     WSTrustLogo,
-    ClaimsIcon,
-    UserStoreIcon
+    ClaimsIcon
 } from "@wso2is/theme";
 
 type ImageType = string;
@@ -100,11 +100,12 @@ export const HomeTileIconImages = HomeTileIcons;
 export const SidePanelIcons = {
     applications: AppIcon,
     childIcon: ArrowRight,
+    claims: ClaimsIcon,
     connections: PlugIcon,
     overview: DashboardIcon,
-    usersAndRoles: UserIcon,
-    claims: ClaimsIcon,
-    userStore: UserStoreIcon
+    serverConfigurations: GearsIcon,
+    userStore: DatabaseIcon,
+    usersAndRoles: UserIcon
 };
 
 export const SidePanelMiscIcons = {

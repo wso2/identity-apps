@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import classNames from "classnames";
-import React, { PropsWithChildren } from "react";
 import { Icon, SemanticICONS } from "semantic-ui-react";
+import React, { PropsWithChildren, ReactElement } from "react";
+import classNames from "classnames";
 
 /**
  * Heading component prop types.
  */
-interface HintPropsInterface {
+export interface HintPropsInterface {
     /**
      * Additional classes.
      */
@@ -50,11 +50,11 @@ interface HintPropsInterface {
  * Hint component.
  *
  * @param {React.PropsWithChildren<HintPropsInterface>} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
 export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>> = (
     props: PropsWithChildren<HintPropsInterface>
-): JSX.Element => {
+): ReactElement => {
 
     const {
         children,
