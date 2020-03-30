@@ -270,7 +270,8 @@
             color: @userRolesListItemFontColor;
 
             .user-image {
-                width: inherit;
+                width: @userRoleAvatarSize;
+                height: @userRoleAvatarSize;
             }
 
             .wrapper{ 

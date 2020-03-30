@@ -54,6 +54,12 @@
 @roleListWrapperColor: #e8e8e8;
 
 /*------------------------
+   roles list
+--------------------------*/
+
+@userRoleAvatarSize: 41px;
+
+/*------------------------
    Dynamic Fields
 --------------------------*/
 
