@@ -16,14 +16,14 @@
 * under the License.
 */
 
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
 import { ResourceList, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { UserStoreListItem, AlertLevels } from "../../models";
+import {UserStoreListItem, AlertLevels, AppConfigInterface} from "../../models";
 import { Modal } from "semantic-ui-react";
 import { deleteUserStore } from "../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../store/actions";
-import { history } from "../../helpers";
+import {AppConfig, history} from "../../helpers";
 
 /**
  * Prop types of the `UserStoresList` component
@@ -53,6 +53,8 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
 
     const dispatch = useDispatch();
 
+    const appConfig: AppConfigInterface = useContext(AppConfig);
+
     /**
      * Delete a user store
      * @param {string} id user store id
@@ -68,7 +70,7 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
     const closeDeleteConfirm = () => {
         setDeleteConfirm(false);
         setDeleteID(null);
-    }
+    };
 
     /**
      * Shows the delete confirmation modal
@@ -133,23 +135,24 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
             {showDeleteConfirm()}
             <ResourceList>
                 {
-                    list?.map((userStore: UserStoreListItem, index: number) => {
+                    appConfig?.userStores?.permissions?.read
+                    && list?.map((userStore: UserStoreListItem, index: number) => {
                         return (
                             <ResourceList.Item
                                 key={ index }
                                 actions={ [
-                                    {
+                                    appConfig?.userStores?.permissions?.update && {
                                         icon: "pencil alternate",
                                         onClick: () => {
                                             history.push("/edit-user-store/"+userStore?.id);
                                         },
-                                        popupText: "edit",
+                                        popupText: "Edit",
                                         type: "button"
                                     },
-                                    {
+                                    appConfig?.userStores?.permissions?.delete && {
                                         icon: "trash alternate",
                                         onClick: () => { initDelete(userStore?.id) },
-                                        popupText: "delete",
+                                        popupText: "Delete",
                                         type: "dropdown"
                                     }
                                 ] }
@@ -163,4 +166,4 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
             </ResourceList>
         </>
     )
-}
+};
