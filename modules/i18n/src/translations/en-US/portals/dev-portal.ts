@@ -759,22 +759,22 @@ export const devPortal: DevPortalNS = {
                     },
                     updateEnableNotificationPasswordRecovery: {
                         success: {
-                            description: "Successfully updated notification based password recovery status.",
+                            description: "Successfully updated notification based password recovery status."
                         }
                     },
                     updateEnableUsernameRecovery: {
                         success: {
-                            description: "Successfully updated username recovery status.",
+                            description: "Successfully updated username recovery status."
                         }
                     },
                     updateNotificationPasswordRecoveryReCaptcha: {
                         success: {
-                            description: "Successfully configured reCaptcha for notification based password recovery.",
+                            description: "Successfully configured reCaptcha for notification based password recovery."
                         }
                     },
                     updateUsernameRecoveryReCaptcha: {
                         success: {
-                            description: "Successfully configured reCaptcha for username recovery.",
+                            description: "Successfully configured reCaptcha for username recovery."
                         }
                     }
                 },
@@ -825,13 +825,10 @@ export const devPortal: DevPortalNS = {
                                 empty: "Number of questions required for password recovery is required."
                             }
                         }
-                    }
+                    },
+                    heading: "Other Settings"
                 },
                 passwordRecovery: {
-                    actionTitles: {
-                        config: "Configure"
-                    },
-                    description: "Configure how password recovery should happen with your users.",
                     form: {
                         enableNotificationBasedRecovery: {
                             label: "Enable notification based password recovery"
@@ -859,10 +856,6 @@ export const devPortal: DevPortalNS = {
                     heading: "Password Recovery"
                 },
                 usernameRecovery: {
-                    actionTitles: {
-                        config: "Configure"
-                    },
-                    description: "Configure how username recovery should happen with your users.",
                     form: {
                         enable: {
                             label: "Enable username recovery"
@@ -872,6 +865,99 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     heading: "Username Recovery"
+                }
+            },
+            loginPolicies: {
+                accountDisable: {
+                    form: {
+                        accountDisableInternalNotificationManagement: {
+                            hint: "Set false if the client application handles notification sending.",
+                            label: "Internal notification management"
+                        },
+                        accountDisablingEnable: {
+                            hint: "Allow administrator to disable user accounts.",
+                            label: "Enable account disabling"
+                        }
+                    },
+                    heading: "Account Disabling"
+                },
+                accountLock: {
+                    form: {
+                        accountLockEnable: {
+                            hint: "Lock user account on failed login attempts.",
+                            label: "Enable account locking"
+                        },
+                        accountLockInternalNotificationManagement: {
+                            hint: "Set false if the client application handles notification sending.",
+                            label: "Internal notification management"
+                        },
+                        accountLockTime: {
+                            hint: "Initial account lock time period in minutes.",
+                            label: "Account lock time"
+                        },
+                        accountLockTimeIncrementFactor: {
+                            hint: "Account lock time will be increased by this factor.",
+                            label: "Account lock time increment factor"
+                        },
+                        maxFailedLoginAttemptsToAccountLock: {
+                            hint: "Number of failed login attempts allowed until account lock.",
+                            label: "Maximum failed login attempts"
+                        }
+                    },
+                    heading: "Account Locking"
+                },
+                actionTitles: {
+                    config: "Advanced Configurations"
+                },
+                confirmation: {
+                    heading: "Confirmation",
+                    message: "Do you wish to save the configurations related to login policies?"
+                },
+                description: "Configure the login policies of the system.",
+                heading: "Login Policies",
+                notifications: {
+                    accountDisablingEnable: {
+                        success: {
+                            description: "Successfully updated the account disabling policy."
+                        }
+                    },
+                    accountLockEnable: {
+                        success: {
+                            description: "Successfully updated the account locking policy."
+                        }
+                    },
+                    updateConfigurations: {
+                        error: {
+                            description: "An error occurred while updating the login policies.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the login policies.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the login policies.",
+                            message: "Configurations updated successfully"
+                        }
+                    }
+                },
+                reCaptcha: {
+                    form: {
+                        maxFailedLoginAttemptsToReCaptcha: {
+                            hint: "Number of failed login attempts allowed until prompting reCaptcha.",
+                            label: "Maximum failed login attempts"
+                        },
+                        reCaptchaAfterMaxFailedAttemptsEnable: {
+                            hint: "Enable reCaptcha verification during SSO login after allowed number of failed " +
+                                "attempts are exceeded.",
+                            label: "Prompt reCaptcha after max failed attempts"
+                        },
+                        reCaptchaAlwaysEnable: {
+                            hint: "Enable reCaptcha verification always during SSO login.",
+                            label: "Always prompt reCaptcha"
+                        }
+                    },
+                    heading: "Captcha for SSO Login"
                 }
             },
             selfRegistration: {
@@ -924,37 +1010,37 @@ export const devPortal: DevPortalNS = {
                 notifications: {
                     updateAccountLockOnCreation: {
                         success: {
-                            description: "Successfully updated self registration account lock on creation status.",
+                            description: "Successfully updated self registration account lock on creation status."
                         }
                     },
                     updateConfigurations: {
                         error: {
-                            description: "An error occurred while updating the self sign up configurations.",
+                            description: "An error occurred while updating the self registration configurations.",
                             message: "Error updating the configurations"
                         },
                         genericError: {
-                            description: "Couldn't update the self sign up configurations.",
+                            description: "Couldn't update the self registration configurations.",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully updated the self sign up configurations.",
+                            description: "Successfully updated the self registration configurations.",
                             message: "Configurations updated successfully"
                         }
                     },
                     updateEnable: {
                         success: {
-                            description: "Successfully updated self registration enabled status.",
+                            description: "Successfully updated self registration enabled status."
                         }
                     },
                     updateInternalNotificationManagement: {
                         success: {
                             description: "Successfully updated self registration internal notification " +
-                                "management status.",
+                                "management status."
                         }
                     },
                     updateReCaptcha: {
                         success: {
-                            description: "Successfully updated self registration enable reCaptcha status.",
+                            description: "Successfully updated self registration enable reCaptcha status."
                         }
                     }
                 }

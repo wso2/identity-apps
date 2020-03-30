@@ -104,3 +104,45 @@ export const getAccountRecoveryConfigurations = (): Promise<any> => {
 export const updateAccountRecoveryConfigurations = (data: object): Promise<any> => {
     return updateConfigurations(data, store.getState().config.endpoints.accountRecovery);
 };
+
+/**
+ * Retrieve all login policies configurations.
+ *
+ * @returns {Promise<any>} a promise containing the configurations.
+ */
+export const getAllLoginPoliciesConfigurations = (): Promise<any> => {
+    return getConfigurations(ServiceResourcesEndpoint.loginPolicies);
+};
+
+/**
+ * Update account locking configurations.
+ *
+ * @param data request payload
+ *
+ * @returns {Promise<any>} a promise containing the response.
+ */
+export const updateAccountLockingConfigurations = (data: object): Promise<any> => {
+    return updateConfigurations(data, ServiceResourcesEndpoint.accountLocking);
+};
+
+/**
+ * Update account disabling configurations.
+ *
+ * @param data request payload
+ *
+ * @returns {Promise<any>} a promise containing the response.
+ */
+export const updateAccountDisablingConfigurations = (data: object): Promise<any> => {
+    return updateConfigurations(data, ServiceResourcesEndpoint.accountDisabling);
+};
+
+/**
+ * Update captcha for sso login configurations.
+ *
+ * @param data request payload
+ *
+ * @returns {Promise<any>} a promise containing the response.
+ */
+export const updateCaptchaForSSOLoginConfigurations = (data: object): Promise<any> => {
+    return updateConfigurations(data, ServiceResourcesEndpoint.captchaForSSOLogin);
+};

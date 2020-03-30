@@ -482,10 +482,6 @@ export interface DevPortalNS {
                     };
                 };
                 usernameRecovery: {
-                    actionTitles: {
-                        config: string;
-                    };
-                    description: string;
                     heading: string;
                     form: {
                         enable: {
@@ -497,10 +493,6 @@ export interface DevPortalNS {
                     };
                 };
                 passwordRecovery: {
-                    actionTitles: {
-                        config: string;
-                    };
-                    description: string;
                     heading: string;
                     form: {
                         enableNotificationBasedRecovery: {
@@ -527,6 +519,7 @@ export interface DevPortalNS {
                     };
                 };
                 otherSettings: {
+                    heading: string;
                     form: {
                         enableForcedChallengeQuestions: {
                             label: string;
@@ -572,6 +565,85 @@ export interface DevPortalNS {
                             validations: {
                                 empty: string;
                             };
+                        };
+                    };
+                };
+            };
+            loginPolicies: {
+                actionTitles: {
+                    config: string;
+                };
+                description: string;
+                heading: string;
+                confirmation: {
+                    heading: string;
+                    message: string;
+                };
+                notifications: {
+                    updateConfigurations: Notification;
+                    accountLockEnable: {
+                        success: {
+                            description: string;
+                        };
+                    };
+                    accountDisablingEnable: {
+                        success: {
+                            description: string;
+                        };
+                    };
+                };
+                accountLock: {
+                    heading: string;
+                    form: {
+                        accountLockEnable: {
+                            label: string;
+                            hint: string;
+                        };
+                        maxFailedLoginAttemptsToAccountLock: {
+                            label: string;
+                            hint: string;
+                        };
+                        accountLockTime: {
+                            label: string;
+                            hint: string;
+                        };
+                        accountLockTimeIncrementFactor: {
+                            label: string;
+                            hint: string;
+                        };
+                        accountLockInternalNotificationManagement: {
+                            label: string;
+                            hint: string;
+                        };
+                    };
+                };
+                accountDisable: {
+                    heading: string;
+                    form: {
+                        accountDisablingEnable: {
+                            label: string;
+                            hint: string;
+                        };
+                        accountDisableInternalNotificationManagement: {
+                            label: string;
+                            hint: string;
+                        };
+                    };
+                };
+                reCaptcha: {
+                    heading: string;
+                    form: {
+                        reCaptchaAlwaysEnable: {
+                            label: string;
+                            hint: string;
+                        };
+                        reCaptchaAfterMaxFailedAttemptsEnable: {
+                            label: string;
+                            hint: string;
+                        };
+                        maxFailedLoginAttemptsToReCaptcha: {
+                            label: string;
+                            hint: string;
                         };
                     };
                 };

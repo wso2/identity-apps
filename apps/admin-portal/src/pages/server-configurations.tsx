@@ -23,6 +23,7 @@ import { Grid } from "semantic-ui-react";
 import { AlertInterface } from "../../../user-portal/src/models";
 import { addAlert } from "../../../user-portal/src/store/actions";
 import { AccountRecovery, UserSelfRegistration } from "../components";
+import { LoginPolicies } from "../components/server-configurations/login-policies";
 
 /**
  * Governance Features page.
@@ -52,6 +53,7 @@ export const ServerConfigurationsPage: FunctionComponent<{}> = (): ReactElement 
 					<Grid.Column width={ 16 }>
 						<UserSelfRegistration onAlertFired={ handleAlerts }/>
 						<AccountRecovery onAlertFired={ handleAlerts }/>
+						<LoginPolicies onAlertFired={ handleAlerts }/>
 					</Grid.Column>
 				</Grid.Row>
 			</Grid>

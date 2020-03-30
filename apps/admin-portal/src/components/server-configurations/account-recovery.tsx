@@ -30,7 +30,7 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 /**
- * Constant to store the self registration from identifier.
+ * Constant to store the account recovery from identifier.
  * @type {string}
  */
 const ACCOUNT_RECOVERY_FORM_IDENTIFIER = "accountRecoveryForm";
@@ -43,7 +43,7 @@ interface AccountRecoveryProps {
 }
 
 /**
- * User Self Registration component.
+ * User Account Recovery component.
  *
  * @param {AccountRecoveryProps} props - Props injected to the account recovery component.
  * @return {JSX.Element}

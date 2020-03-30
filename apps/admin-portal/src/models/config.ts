@@ -188,4 +188,8 @@ export interface ServiceResourceEndpointsInterface {
     wellKnown: string;
     selfSignUp: string;
     accountRecovery: string;
+    loginPolicies: string;
+    accountLocking: string;
+    accountDisabling: string;
+    captchaForSSOLogin: string;
 }
