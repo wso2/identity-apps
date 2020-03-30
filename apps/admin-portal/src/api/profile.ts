@@ -20,8 +20,9 @@ import { SignInUtil } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
 import axios from "axios";
 import { isEmpty } from "lodash";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
+import { ServiceResourcesEndpoint } from "../configs";
 import { BasicProfileInterface, HttpMethods, ProfileSchema } from "../models";
+import { store } from "../store";
 
 /**
  * Get an axios instance.
@@ -39,7 +40,7 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getUserDetails = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -84,7 +85,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/scim+json"
         },
         method: HttpMethods.GET,
@@ -137,7 +138,7 @@ export const updateProfileInfo = (data: object): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
@@ -165,7 +166,7 @@ export const updateUserInfo = (userId: string, data: object): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
@@ -191,7 +192,7 @@ export const updateUserInfo = (userId: string, data: object): Promise<any> => {
 export const getProfileSchemas = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,

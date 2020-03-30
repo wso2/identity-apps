@@ -18,9 +18,10 @@
 
 import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
+import { ServiceResourcesEndpoint } from "../configs";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { SYSTEM_SCOPE } from "../constants";
+import { store } from "../store";
 
 /**
  * Get an axios instance.
@@ -38,7 +39,7 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getAssociations = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -64,7 +65,7 @@ export const addAccountAssociation = (data: object): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -89,7 +90,7 @@ export const addAccountAssociation = (data: object): Promise<any> => {
 export const removeLinkedAccount = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
@@ -119,7 +120,7 @@ export const removeLinkedAccount = (id: string): Promise<any> => {
 export const removeAllLinkedAccounts = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
@@ -145,14 +146,14 @@ export const removeAllLinkedAccounts = (): Promise<any> => {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
     const requestParams = {
-        "client_id": GlobalConfig.clientID,
+        "client_id": store.getState().config?.deployment?.clientID,
         "scope": [ SYSTEM_SCOPE ],
         "tenant-domain": account.tenantDomain,
         "username": account.username,
         "userstore-domain": account.userStoreDomain
     };
 
-    return SignInUtil.sendAccountSwitchRequest(requestParams, GlobalConfig.clientHost)
+    return SignInUtil.sendAccountSwitchRequest(requestParams, store.getState().config?.deployment?.clientHost)
         .then((response) => {
             AuthenticateSessionUtil.initUserSession(response,
                 SignInUtil.getAuthenticatedUser(response.idToken));

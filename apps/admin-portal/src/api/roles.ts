@@ -17,8 +17,9 @@
  */
 
 import { AxiosHttpClient } from "@wso2is/http";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
+import { ServiceResourcesEndpoint } from "../configs";
 import { HttpMethods, CreateRoleInterface, SearchRoleInterface, PatchRoleDataInterface } from "../models";
+import { store } from "../store";
 
 /**
  * Initialize an axios Http client.
@@ -35,7 +36,7 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getRolesList = (domain: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -56,13 +57,13 @@ export const getRolesList = (domain: string): Promise<any> => {
 
 /**
  * Retrive Role details for a give role id.
- * 
+ *
  * @param roleId role id to retrive role details
  */
 export const getRoleById = (roleId: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -78,7 +79,7 @@ export const getRoleById = (roleId: string): Promise<any> => {
 
 /**
  * Update Data of the matched ID or the role
- * 
+ *
  * @param roleId role id to update role details
  * @param roleData Data that needs to be updated.
  */
@@ -86,7 +87,7 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
     const requestConfig = {
         data: roleData,
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
@@ -102,14 +103,14 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
 
 /**
  * Retrieve a list of matched roles according to the search query.
- * 
+ *
  * @param searchData - search query data
  */
 export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> => {
     const requestConfig = {
         data: searchData,
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -125,7 +126,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
 
 /**
  * Delete a selected role with a given role ID.
- * 
+ *
  * @param roleId - Id of the role which needs to be deleted.
  * @returns {Promise<any>} a promise containing the status of the delete.
  */
@@ -133,7 +134,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
 export const deleteRoleById = (roleId: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
@@ -149,14 +150,14 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
 
 /**
  * Create a role in the system with role data given by user.
- * 
+ *
  * @param data - data object used to create the role
  */
 export const createRole = (data: CreateRoleInterface): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -168,11 +169,11 @@ export const createRole = (data: CreateRoleInterface): Promise<any> => {
     }).catch((error) => {
         return Promise.reject(error)
     });
-} 
+}
 
 /**
  * Add or Update permission for the given Role using the role ID.
- * 
+ *
  * @param roleId - ID of the role which needs to be updated
  * @param data - Permission data of the role
  */
@@ -180,7 +181,7 @@ export const updateRolePermissions = (roleId: string, data: any): Promise<any> =
     const requestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
@@ -202,7 +203,7 @@ export const updateRolePermissions = (roleId: string, data: any): Promise<any> =
 export const getPermissionList = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -218,19 +219,19 @@ export const getPermissionList = (): Promise<any> => {
 
 /**
  * Retrieve the list of permissions available for a given Role Id.
- * 
+ *
  * @param roleId Role Id to retrieve relevent permissions
  */
 export const getPermissionsForRole = (roleId: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
         url: ServiceResourcesEndpoint.groups + "/" + roleId + "/permissions"
     };
-    
+
     return httpClient.request(requestConfig).then((response) => {
         return Promise.resolve(response);
     }).catch((error) => {

@@ -17,8 +17,9 @@
  */
 
 import { AxiosHttpClient } from "@wso2is/http";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
+import { ServiceResourcesEndpoint } from "../configs";
 import { HttpMethods, UserListInterface } from "../models";
+import { store } from "../store";
 
 /**
  * Initialize an axios Http client.
@@ -35,7 +36,7 @@ export const getUsersList = (count: number, startIndex: number, filter: string, 
     Promise<UserListInterface> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -67,7 +68,7 @@ export const getUsersList = (count: number, startIndex: number, filter: string, 
 export const getUserStoreList = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -95,7 +96,7 @@ export const addUser = (data: object): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -122,7 +123,7 @@ export const addUser = (data: object): Promise<any> => {
 export const deleteUser = (userId: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/scim+json"
         },
         method: HttpMethods.DELETE,
