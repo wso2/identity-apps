@@ -19,7 +19,7 @@
 import { AlertInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { Alert } from "@wso2is/react-components";
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UIConstants } from "../constants";
 import { AppState } from "../store";
@@ -30,11 +30,11 @@ import { TopLoadingBar } from "@wso2is/react-components";
  * This layout contains the alert and can be used by any other
  * layout to include the alert.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
 export const BaseLayout: React.FunctionComponent<PropsWithChildren<{}>> = (
     props: PropsWithChildren<{}>
-): JSX.Element => {
+): ReactElement => {
 
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: any = useSelector((state: AppState) => state.global.alertSystem);
