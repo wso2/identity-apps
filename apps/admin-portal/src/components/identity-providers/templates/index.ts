@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from "./identity-provider-create-wizard";
+export * from "./quick-start-identity-provider-templates";

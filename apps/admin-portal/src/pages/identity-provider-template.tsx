@@ -16,20 +16,16 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
-import { QuickStartIdentityProviderTemplates } from "../components";
-import { IdPCapabilityIcons, IdPIcons, InboundProtocolLogos } from "../configs";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
-import {
-    IdentityProviderTemplateListItemInterface,
-    IdentityProviderTemplatesInterface,
-    SupportedAuthenticators,
-    SupportedIdentityProviderTemplateCategories,
-    SupportedProvisioningConnectors,
-    SupportedQuickStartTemplates
-} from "../models";
-import { IdentityProviderCreateWizard } from "../components/identityProviders/wizard";
+import { IdentityProviderTemplateListInterface, IdentityProviderTemplateListItemInterface } from "../models";
+import { IdentityProviderCreateWizard } from "../components/identity-providers/wizard";
+import { QuickStartIdentityProviderTemplates } from "../components/identity-providers/templates";
+import { getIdentityProviderTemplate, getIdentityProviderTemplateList } from "../api";
+import { useDispatch } from "react-redux";
+import { addAlert } from "@wso2is/core/store";
+import { AlertLevels } from "@wso2is/core/models";
 
 /**
  * Choose the application template from this page.
@@ -40,97 +36,75 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateListItemInterface>(null);
+    const [availableTemplates, setAvailableTemplates] = useState<IdentityProviderTemplateListItemInterface[]>([]);
+    
+    const dispatch = useDispatch();
 
-    // TODO Remove this hard coded list and retrieve the template list from an endpoint.
-    // Quick start templates list.
-    const QUICK_START_IDENTITY_PROVIDER_TEMPLATES: IdentityProviderTemplateListItemInterface[] = [
-        {
-            description: "Allow users from Facebook to access your applications.",
-            displayName: "Facebook",
-            id: SupportedQuickStartTemplates.FACEBOOK,
-            image: IdPIcons?.facebook,
-            authenticator: { name: SupportedAuthenticators.FACEBOOK },
-            provisioningConnectors: SupportedProvisioningConnectors.NONE,
-            services: [
-                {
-                    displayName: "Authentication",
-                    logo: IdPCapabilityIcons.authentication,
-                    name: "authentication"
-                }
-            ]
-        },
-        {
-            description: "Allow users from Google to access your applications.",
-            displayName: "Google",
-            id: SupportedQuickStartTemplates.GOOGLE,
-            image: IdPIcons?.google,
-            authenticator: { name: SupportedAuthenticators.GOOGLE },
-            provisioningConnectors: SupportedProvisioningConnectors.GOOGLE,
-            services: [
-                {
-                    displayName: "Authentication",
-                    logo: IdPCapabilityIcons.authentication,
-                    name: "authentication"
-                },
-                {
-                    displayName: "Provision",
-                    logo: IdPCapabilityIcons.provision,
-                    name: "provision"
-                }
-            ]
-        },
-        {
-            description: "Allow users from Twitter to access your applications.",
-            displayName: "Twitter",
-            id: SupportedQuickStartTemplates.TWITTER,
-            image: IdPIcons?.twitter,
-            authenticator: { name: SupportedAuthenticators.TWITTER },
-            provisioningConnectors: SupportedProvisioningConnectors.NONE,
-            services: [
-                {
-                    displayName: "Authentication",
-                    logo: IdPCapabilityIcons.authentication,
-                    name: "authentication"
-                }
-            ]
-        },
-        {
-            description: "Allow users from an OIDC IdP to access your applications.",
-            displayName: "OpenID Connect",
-            id: SupportedQuickStartTemplates.OIDC,
-            image: InboundProtocolLogos?.oidc,
-            authenticator: { name: SupportedAuthenticators.OIDC },
-            provisioningConnectors: SupportedProvisioningConnectors.NONE,
-            services: [
-                {
-                    displayName: "Authentication",
-                    logo: IdPCapabilityIcons.authentication,
-                    name: "authentication"
-                }
-            ]
-        },
-        {
-            description: "Allow users from a SAML IdP to access your applications.",
-            displayName: "SAML",
-            id: SupportedQuickStartTemplates.SAML,
-            image: InboundProtocolLogos?.saml,
-            authenticator: { name: SupportedAuthenticators.SAML },
-            provisioningConnectors: SupportedProvisioningConnectors.NONE,
-            services: [
-                {
-                    displayName: "Authentication",
-                    logo: IdPCapabilityIcons.authentication,
-                    name: "authentication"
-                }
-            ]
-        }
-    ];
+    /**
+     * Retrieve Identity Provider template list.
+     *
+     */
+    const getTemplateList = (): void => {
 
-    // TODO Remove this hard coded list and retrieve the template list from an endpoint.
-    // Templates list.
-    const TEMPLATES: IdentityProviderTemplatesInterface = {
-        [ SupportedIdentityProviderTemplateCategories.QUICK_START as string ]: QUICK_START_IDENTITY_PROVIDER_TEMPLATES
+        getIdentityProviderTemplateList()
+            .then((response) => {
+                const templateList: IdentityProviderTemplateListInterface = response;
+                // sort templateList based on display Order
+                templateList.templates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
+                setAvailableTemplates(templateList.templates);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Identity provider Template List Fetch Error"
+                    }));
+
+                    return;
+                }
+                dispatch(addAlert({
+                    description: "An error occurred while retrieving identity provider template list",
+                    level: AlertLevels.ERROR,
+                    message: "Retrieval Error"
+                }));
+            })
     };
+
+    /**
+     * Retrieve Identity Provider template.
+     *
+     */
+    const getTemplate = (templateId: string): void => {
+
+        getIdentityProviderTemplate(templateId)
+            .then((response) => {
+                setSelectedTemplate(response as IdentityProviderTemplateListItemInterface);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Identity provider Template List Fetch Error"
+                    }));
+
+                    return;
+                }
+                dispatch(addAlert({
+                    description: "An error occurred while retrieving identity provider template list",
+                    level: AlertLevels.ERROR,
+                    message: "Retrieval Error"
+                }));
+            })
+    };
+
+    /**
+     *  Get Identity Provider templates.
+     */
+    useEffect(() => {
+        getTemplateList();
+    }, []);
 
     /**
      * Handles back button click.
@@ -144,23 +118,18 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
      *
      * @param {React.SyntheticEvent} e - Click event.
      * @param {string} id - Id of the template.
-     * @param {SupportedIdentityProviderTemplateCategories} templateCategory - The category of the selected template.
      */
-    const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string },
-                                     templateCategory: SupportedIdentityProviderTemplateCategories): void => {
-
-        if (!Object.prototype.hasOwnProperty.call(TEMPLATES, templateCategory)) {
-            return;
-        }
-        const selected = TEMPLATES[templateCategory].find((template) => template.id === id);
-
-        if (!selected) {
-            return;
-        }
-
-        setSelectedTemplate(selected);
-        setShowWizard(true);
+    const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
+        getTemplate(id);
     };
+    
+    useEffect(() => {
+        if (!selectedTemplate) {
+            return;
+        }
+        setSelectedTemplate(selectedTemplate);
+        setShowWizard(true);
+    }, [selectedTemplate]);
 
     return (
         <PageLayout
@@ -175,21 +144,25 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
             bottomMargin={ false }
             showBottomDivider
         >
-            <div className="quick-start-templates">
-                <QuickStartIdentityProviderTemplates
-                    templates={ TEMPLATES[ SupportedIdentityProviderTemplateCategories.QUICK_START ] }
-                    onTemplateSelect={ (e, { id }) => {
-                        handleTemplateSelection(e, { id }, SupportedIdentityProviderTemplateCategories.QUICK_START);
-                    }
-                    }
-                />
-            </div>
+            { availableTemplates && (
+                <div className="quick-start-templates">
+                    <QuickStartIdentityProviderTemplates
+                        templates={ availableTemplates }
+                        onTemplateSelect={ (e, { id }) => {
+                            handleTemplateSelection(e, { id });
+                        } }
+                    />
+                </div>
+            ) }
             { showWizard && (
                 <IdentityProviderCreateWizard
-                    title={ selectedTemplate?.displayName }
+                    title={ selectedTemplate?.name }
                     subTitle={ selectedTemplate?.description }
-                    closeWizard={ () => setShowWizard(false) }
-                    template={ selectedTemplate }
+                    closeWizard={ () => {
+                        setSelectedTemplate(null);
+                        setShowWizard(false);
+                    } }
+                    template={ selectedTemplate?.idp }
                 />
             ) }
         </PageLayout>

@@ -27,7 +27,7 @@ import { IdentityProviderConstants } from "../constants";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
-import { EditIdentityProvider } from "../components/identityProviders/identity-provider-edit";
+import { EditIdentityProvider } from "../components/identity-providers/identity-provider-edit";
 
 /**
  * Identity Provider Edit page.

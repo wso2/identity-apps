@@ -19,13 +19,18 @@
 import { AxiosHttpClient } from "@wso2is/http";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import {
+    ApplicationTemplateListInterface,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface,
     HttpMethods,
     IdentityProviderInterface,
     IdentityProviderListResponseInterface,
-    IdentityProviderResponseInterface
+    IdentityProviderResponseInterface, IdentityProviderTemplateListInterface, IdentityProviderTemplateListItemInterface
 } from "../models";
+import {AxiosError, AxiosResponse} from "axios";
+import {ApplicationManagementConstants} from "../constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import {IdentityProviderManagementConstants} from "../constants/identity-provider-management-constants";
 
 /**
  * Get an axios instance.
@@ -348,5 +353,98 @@ export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Prom
             return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
         }).catch((error) => {
             return Promise.reject(error);
+        });
+};
+
+/**
+ * Gets the identity provider template list with limit and offset.
+ *
+ * @param {number} limit - Maximum Limit of the identity provider template List.
+ * @param {number} offset - Offset for get to start.
+ * @param {string} filter - Search filter.
+ *
+ * @return {Promise<ApplicationTemplateListInterface>} A promise containing the response.
+ */
+export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
+                                           filter?: string): Promise<IdentityProviderTemplateListInterface> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: {
+            filter,
+            limit,
+            offset
+        },
+        url: ServiceResourcesEndpoint.identityProviders + "/templates"
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    IdentityProviderManagementConstants
+                        .IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as IdentityProviderTemplateListInterface);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                IdentityProviderManagementConstants.IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Gets the identity provider template.
+ *
+ * @param templateId Id value of the template.
+ * @return {Promise<ApplicationTemplateListInterface>} A promise containing the response.
+ */
+export const getIdentityProviderTemplate = (templateId: string): Promise<IdentityProviderTemplateListItemInterface> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.identityProviders + "/templates/" + templateId
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    IdentityProviderManagementConstants
+                        .IDENTITY_PROVIDER_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as IdentityProviderTemplateListItemInterface);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                IdentityProviderManagementConstants.IDENTITY_PROVIDER_TEMPLATE_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };

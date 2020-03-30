@@ -83,7 +83,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         isEnabled
     } = props;
 
-    const [ isEnable, setIsEnable ] = useState<boolean>(isEnabled);
+    const [isEnable, setIsEnable] = useState<boolean>(isEnabled);
 
     /**
      * Prepare form values for submitting.
@@ -92,7 +92,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      * @return {any} Sanitized form values.
      */
     const updateConfigurations = (values: Map<string, FormValue>): IdentityProviderInterface => {
-        return  {
+        return {
             name: values.get("name").toString(),
             description: values.get("description").toString(),
             image: values.get("image").toString(),

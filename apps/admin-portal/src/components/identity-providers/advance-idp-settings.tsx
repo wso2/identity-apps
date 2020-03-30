@@ -68,7 +68,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
      * @param values - Form values.
      */
     const handleAdvancedConfigFormSubmit = (values: any): void => {
-        updateIdentityProviderDetails({ id: idpId, ...values } )
+        updateIdentityProviderDetails({ id: idpId, ...values })
             .then((response) => {
                 dispatch(addAlert({
                     description: "Successfully updated the advanced configurations.",

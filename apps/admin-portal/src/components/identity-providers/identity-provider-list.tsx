@@ -57,7 +57,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
      * @param {string} idpId Identity provider id.
      */
     const handleIdentityProviderEdit = (idpId: string): void => {
-        history.push(`identity-providers/${ idpId }`);
+        history.push(`identity-providers/${idpId}`);
     };
 
     /**

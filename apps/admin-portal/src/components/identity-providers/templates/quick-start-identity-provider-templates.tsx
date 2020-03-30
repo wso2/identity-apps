@@ -16,9 +16,10 @@
  * under the License.
  */
 
-import { IdentityProviderTemplateCard } from "@wso2is/react-components";
+import { EmptyPlaceholder, IdentityProviderTemplateCard } from "@wso2is/react-components";
 import React, { FunctionComponent, SyntheticEvent } from "react";
 import { IdentityProviderTemplateListItemInterface } from "../../../models";
+import { EmptyPlaceholderIllustrations, IdPIcons } from "../../../configs";
 
 /**
  * Proptypes for the quick start templates component.
@@ -33,6 +34,16 @@ interface QuickStartIdentityProviderTemplatesPropsInterface {
      */
     templates: IdentityProviderTemplateListItemInterface[];
 }
+
+/**
+ * Get the corresponding image if it matches to a predefined IdP icon.
+ * @param image Input image.
+ * @return Predefined image if available. If not, return input parameter.
+ */
+const getPredefinedIdpImage = (image) => {
+    const match = Object.keys(IdPIcons).find(key => key.toString() === image);
+    return match ? IdPIcons[match] : image;
+};
 
 /**
  * Quick start application templates component.
@@ -57,15 +68,21 @@ export const QuickStartIdentityProviderTemplates: FunctionComponent<QuickStartId
                         <IdentityProviderTemplateCard
                             key={ index }
                             description={ template.description }
-                            image={ template.image }
+                            image={ getPredefinedIdpImage(template.image) }
                             services={ template.services }
-                            name={ template.displayName }
+                            name={ template.name }
                             id={ template.id }
                             onClick={ onTemplateSelect }
                             imageSize={ "tiny" }
                         />
                     ))
-                    : null
+                    :
+                    <EmptyPlaceholder
+                        image={ EmptyPlaceholderIllustrations.newList }
+                        imageSize="tiny"
+                        title={ "No Templates Available" }
+                        subtitle={ ["Please add templates to display"] }
+                    />
             }
         </>
     );

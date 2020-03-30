@@ -16,4 +16,5 @@
  * under the License.
  */
 
-export * from "./identity-provider-list";
+export * from "./identity-provider-create-wizard";
+export * from "./steps";

@@ -167,7 +167,7 @@ export const GeneralIdentityProviderSettings: FunctionComponent<GeneralIdentityP
                         onSubmit={ handleFormSubmit }
                         imageUrl={ imageUrl }
                     />
-                    { !(GlobalConfig.doNotDeleteIdentityProviders.includes(name)) && (
+                    {!(GlobalConfig.doNotDeleteIdentityProviders.includes(name)) && (
                         <DangerZoneGroup sectionHeader="Danger Zone">
                             <DangerZone
                                 actionTitle="Delete identity provider"
@@ -176,7 +176,7 @@ export const GeneralIdentityProviderSettings: FunctionComponent<GeneralIdentityP
                                 onActionClick={ handleIdentityProviderDelete }
                             />
                         </DangerZoneGroup>
-                    ) }
+                    )}
                 </>
             )
             : <ContentLoader/>

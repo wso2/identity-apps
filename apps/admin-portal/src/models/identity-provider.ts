@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { AuthProtocolMetaListItemInterface } from "./application-inbound";
-
 /**
  * Available Identity Provider list.
  */
@@ -137,6 +135,7 @@ export interface IdentityProviderResponseInterface {
 /**
  *  Captures IDPs name, logo and ID
  */
+
 /* eslint-disable @typescript-eslint/interface-name-prefix */
 export interface IDPNameInterface {
     authenticatorId: string;
@@ -145,17 +144,26 @@ export interface IDPNameInterface {
 }
 
 /**
+ *  Identity provider template list interface.
+ */
+export interface IdentityProviderTemplateListInterface {
+    templates: IdentityProviderTemplateListItemInterface[];
+}
+
+/**
  *  Identity provider template list item interface.
  */
 export interface IdentityProviderTemplateListItemInterface {
-    description: string;
-    displayName: string;
     id: SupportedQuickStartTemplates;
+    name: string;
+    description: string;
     /* eslint-disable @typescript-eslint/no-explicit-any */
     image: any;
-    authenticator: FederatedAuthenticatorMetaInterface;
-    provisioningConnectors: SupportedProvisioningConnectors;
-    services: SupportedServicesInterface[];
+    category: string;
+    displayOrder: number;
+    // todo This is missing in the backend response.
+    services?: SupportedServicesInterface[];
+    idp: IdentityProviderInterface;
 }
 
 /**
@@ -179,7 +187,7 @@ export enum SupportedQuickStartTemplates {
  * @enum {string}
  */
 export enum SupportedAuthenticators {
-    NONE ="none",
+    NONE = "none",
     FACEBOOK = "FacebookAuthenticator",
     GOOGLE = "GoogleOIDCAuthenticator",
     TWITTER = "TwitterAuthenticator",
@@ -194,7 +202,7 @@ export enum SupportedAuthenticators {
  * @enum {string}
  */
 export enum SupportedProvisioningConnectors {
-    NONE ="none",
+    NONE = "none",
     GOOGLE = "google"
 }
 
@@ -222,7 +230,7 @@ export enum SupportedIdentityProviderTemplateCategories {
  *  Identity provider templates interface.
  */
 export interface IdentityProviderTemplatesInterface {
-    [ key: string ]: IdentityProviderTemplateListItemInterface[];
+    [key: string]: IdentityProviderTemplateListItemInterface[];
 }
 
 export const emptyIdentityProvider = (): IdentityProviderListItemInterface => ({

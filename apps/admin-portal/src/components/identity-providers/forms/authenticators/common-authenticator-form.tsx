@@ -93,7 +93,7 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
     };
 
     const getConfidentialField = (eachProp: AuthenticatorProperty,
-                              propertyMetadata: FederatedAuthenticatorMetaPropertyInterface) => {
+                                  propertyMetadata: FederatedAuthenticatorMetaPropertyInterface) => {
         return (
             <Field
                 showPassword="Show Secret"
