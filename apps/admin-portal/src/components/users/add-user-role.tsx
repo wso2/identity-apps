@@ -113,7 +113,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         }
         handleTempListChange(addedRoles);
         handleRoleListChange(initialValues.roleList.filter(x => !addedRoles.includes(x)));
-        setIsSelectUnassignedAllRolesChecked(!isSelectUnassignedRolesAllRolesChecked);
+        setIsSelectUnassignedAllRolesChecked(false);
     };
 
     const removeRoles = () => {
@@ -128,7 +128,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         handleRoleListChange(removedRoles);
         handleTempListChange(initialValues.tempRoleList.filter(x => !removedRoles.includes(x)));
         setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles.includes(x)));
-        setIsSelectAssignedAllRolesChecked(!isSelectAssignedAllRolesChecked);
+        setIsSelectAssignedAllRolesChecked(false);
     };
 
     const handleUnassignedItemCheckboxChange = (role) => {

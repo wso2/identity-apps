@@ -120,7 +120,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         }
         handleTempListChange(addedGroups);
         handleGroupListChange(initialValues.groupList.filter(x => !addedGroups.includes(x)));
-        setIsSelectUnassignedAllChecked(!isSelectUnassignedAllChecked);
+        setIsSelectUnassignedAllChecked(false);
     };
 
     /**
@@ -139,7 +139,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         handleGroupListChange(removedGroups);
         handleTempListChange(initialValues.tempGroupList.filter(x => !removedGroups.includes(x)));
         setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedGroups.includes(x)))
-        setIsSelectAssignedAllChecked(!isSelectAssignedAllChecked);
+        setIsSelectAssignedAllChecked(false);
     };
 
     /**

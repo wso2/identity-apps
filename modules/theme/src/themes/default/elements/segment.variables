@@ -54,7 +54,7 @@
 
 @TransferComponentSegmentWidth: 281px !important;
 @TransferComponentSegmentTableFontSize: 12px;
-@TransferComponentSegmentApplicationLabelBackgroundColor: #99A1CC !important;
-@TransferComponentSegmentApplicationLabelBorderColor: #8E95B6 !important;
-@TransferComponentSegmentInternalLabelBackgroundColor: #8DC1D4 !important;
-@TransferComponentSegmentInternalLabelBorderColor: #7CB5CA !important;
+@TransferComponentSegmentApplicationLabelBackgroundColor: #99A1CC;
+@TransferComponentSegmentApplicationLabelBorderColor: #8E95B6;
+@TransferComponentSegmentInternalLabelBackgroundColor: #8DC1D4;
+@TransferComponentSegmentInternalLabelBorderColor: #7CB5CA;
