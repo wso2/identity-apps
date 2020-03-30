@@ -16,11 +16,11 @@
 * under the License.
 */
 
-import React, {useContext, useRef, useState} from "react";
+import React, { useContext, useRef, useState } from "react";
 import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components"
-import {AlertLevels, AppConfigInterface, Claim, ClaimDialect, ExternalClaim} from "../../models";
+import { AlertLevels, AppConfigInterface, Claim, ClaimDialect, ExternalClaim } from "../../models";
 import { List, Modal } from "semantic-ui-react";
-import {AppConfig, history} from "../../helpers";
+import { AppConfig, history } from "../../helpers";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
