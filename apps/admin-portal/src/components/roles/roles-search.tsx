@@ -187,7 +187,7 @@ export const RoleSearch: FunctionComponent<RoleSearchProps> = (props: RoleSearch
                                         <Field
                                             size="small"
                                             type="submit"
-                                            value={ t("common:search").toString() }
+                                            value={ t("common:search") }
                                         />
                                     </Grid.Column>
                                     <Grid.Column width={ 5 }>
@@ -195,7 +195,7 @@ export const RoleSearch: FunctionComponent<RoleSearchProps> = (props: RoleSearch
                                             className="link-button"
                                             size="small"
                                             type="reset"
-                                            value={ t("common:resetFilters").toString() }
+                                            value={ t("common:resetFilters") }
                                         />
                                     </Grid.Column>
                                 </Grid.Row>
