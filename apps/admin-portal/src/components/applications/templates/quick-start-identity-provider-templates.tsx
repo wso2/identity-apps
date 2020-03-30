@@ -62,6 +62,7 @@ export const QuickStartIdentityProviderTemplates: FunctionComponent<QuickStartId
                             name={ template.displayName }
                             id={ template.id }
                             onClick={ onTemplateSelect }
+                            imageSize={ "tiny" }
                         />
                     ))
                     : null
