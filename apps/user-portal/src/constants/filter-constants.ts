@@ -137,7 +137,7 @@ export const FIDO = "fido";
 export const AUTHENTICATOR_APP = "authenticatorApp";
 
 /**
- * ACtive Sessions key.
+ * Active Sessions key.
  * @constant
  * @type {string}
  * @default
