@@ -23,6 +23,7 @@ import React, { PropsWithChildren } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UIConstants } from "../constants";
 import { AppState } from "../store";
+import { TopLoadingBar } from "@wso2is/react-components";
 
 /**
  * Base layout.
@@ -37,6 +38,7 @@ export const BaseLayout: React.FunctionComponent<PropsWithChildren<{}>> = (
 
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: any = useSelector((state: AppState) => state.global.alertSystem);
+    const ajaxLoaderVisibility: boolean = useSelector((state: AppState) => state.global.isGlobalLoaderVisible);
 
     const dispatch = useDispatch();
     const { children } = props;
@@ -47,6 +49,7 @@ export const BaseLayout: React.FunctionComponent<PropsWithChildren<{}>> = (
 
     return (
         <>
+            <TopLoadingBar height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT } visibility={ ajaxLoaderVisibility } />
             { children }
             <Alert
                 dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
