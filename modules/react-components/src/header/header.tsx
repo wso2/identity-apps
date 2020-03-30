@@ -18,7 +18,7 @@
 
 import { getGravatarImage } from "@wso2is/core/api";
 import { resolveUserDisplayName, resolveUsername } from "@wso2is/core/helpers";
-import { AuthReducerStateInterface, LinkedAccountInterface, ProfileInfoInterface } from "@wso2is/core/models";
+import { LinkedAccountInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
@@ -38,7 +38,8 @@ import { UserAvatar } from "../avatar";
  * Header component prop types.
  */
 interface HeaderPropsInterface {
-    basicProfileInfo: AuthReducerStateInterface;
+    // TODO: Add proper type interface.
+    basicProfileInfo: any;
     brand?: React.ReactNode;
     brandLink?: string;
     className?: string;
@@ -46,7 +47,8 @@ interface HeaderPropsInterface {
     fluid?: boolean;
     isProfileInfoLoading: boolean;
     linkedAccounts?: LinkedAccountInterface[];
-    profileInfo: ProfileInfoInterface;
+    // TODO: Add proper type interface.
+    profileInfo: any;
     onLinkedAccountSwitch?: (account: LinkedAccountInterface) => void;
     onSidePanelToggleClick?: () => void;
     showSidePanelToggle?: boolean;

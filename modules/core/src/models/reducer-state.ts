@@ -92,5 +92,5 @@ export interface CommonProfileReducerStateInterface {
  * Interface for common config reducer state.
  */
 export interface CommonConfigReducerStateInterface<T> {
-    deployment: T;
+    deployment?: T;
 }

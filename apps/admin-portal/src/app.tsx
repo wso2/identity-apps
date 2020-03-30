@@ -75,6 +75,8 @@ export const App = (): ReactElement => {
      * Set the deployment configs in redux state.
      */
     useEffect(() => {
+        // Replace `RuntimeConfigInterface` with the proper deployment config interface,
+        // once runtime config is refactored.
         dispatch(setDeploymentConfigs<RuntimeConfigInterface>(Config.getRuntimeConfig()));
     }, []);
 

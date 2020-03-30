@@ -23,7 +23,7 @@ import { IdentityAppsException } from "./identity-apps-exception";
  */
 export class IdentityAppsApiException extends IdentityAppsException {
 
-    public code: string;
+    public code: number | string;
     public request: any;
     public response: any;
     public config: any;
@@ -32,12 +32,12 @@ export class IdentityAppsApiException extends IdentityAppsException {
      * Constructor.
      * @param {string} message - Message for the exception.
      * @param {any} stack - Stack trace for the error.
-     * @param {string} code - Error status code.
+     * @param {number | string} code - Error status code.
      * @param request - Sent Request object.
      * @param response - Received response object.
      * @param config - Request config object.
      */
-    constructor(message?: string, stack?: any, code?: string, request?: any, response?: any, config?: any) {
+    constructor(message?: string, stack?: any, code?: number | string, request?: any, response?: any, config?: any) {
         super(message, stack);
         this.code = code;
         this.request = request;

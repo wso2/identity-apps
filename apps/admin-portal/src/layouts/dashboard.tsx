@@ -17,7 +17,7 @@
  */
 
 import { getProfileInfo } from "@wso2is/core/api";
-import { AuthReducerStateInterface, ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
+import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import { Footer, Header, Logo, ProductBrand, SidePanel } from "@wso2is/react-components";
 import classNames from "classnames";
 import _ from "lodash";
@@ -38,7 +38,7 @@ import { ProtectedRoute } from "../components";
 import { Config, LogoImage, routes, SidePanelIcons, SidePanelMiscIcons } from "../configs";
 import { UIConstants } from "../constants";
 import { AppConfig, history } from "../helpers";
-import { AppConfigInterface, ConfigReducerStateInterface } from "../models";
+import { AppConfigInterface, AuthStateInterface, ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
 import { BaseLayout } from "./base";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
@@ -67,7 +67,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const profileDetails: AuthReducerStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages);
