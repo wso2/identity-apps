@@ -21,10 +21,8 @@ import { addAlert } from "@wso2is/core/store";
 import { AppAvatar, ConfirmationModal, ResourceList, ResourceListActionInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { history } from "../../helpers";
-// TODO: Importing `deleteApplication` before `history` import throws `appBaseName` undefined error.
-// tslint:disable-next-line:ordered-imports
 import { deleteApplication } from "../../api";
+import { history } from "../../helpers";
 import { ApplicationListInterface, ApplicationListItemInterface, ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 
