@@ -16,23 +16,24 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { PageLayout } from "../layouts";
 import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
 import { Icon, DropdownProps, PaginationProps, DropdownItemProps } from "semantic-ui-react";
 import { ClaimsList, ListType, LocalClaimsSearch } from "../components";
-import { Claim, ClaimsGetParams, AlertLevels } from "../models";
+import {Claim, ClaimsGetParams, AlertLevels, AppConfigInterface} from "../models";
 import { getAllLocalClaims, getADialect } from "../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT, CLAIM_DIALECTS_PATH } from "../constants";
 import { AddLocalClaims } from "../components";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
-import { history } from "../helpers";
+import {AppConfig, history} from "../helpers";
 import { filterList, sortList } from "../utils";
 
 /**
- * This returns the list of local claims
+ * This returns the list of local claims.
+ *
  * @return {React.ReactElement}
  */
 export const LocalClaimsPage = (): React.ReactElement => {
@@ -64,12 +65,15 @@ export const LocalClaimsPage = (): React.ReactElement => {
 
     const dispatch = useDispatch();
 
+    const appConfig: AppConfigInterface = useContext(AppConfig);
+
     /**
-    * Fetches all the local claims
-    * @param {number} limit
-    * @param {number} offset
-    * @param {string} sort
-    * @param {string} filter
+    * Fetches all the local claims.
+     *
+    * @param {number} limit.
+    * @param {number} offset.
+    * @param {string} sort.
+    * @param {string} filter.
     */
     const getLocalClaims = (limit?: number, sort?: string, offset?: number, filter?: string) => {
         const params: ClaimsGetParams = {
@@ -114,46 +118,52 @@ export const LocalClaimsPage = (): React.ReactElement => {
     }, []);
 
     /**
-    * This slices a portion of the list to display
-    * @param {ClaimDialect[]} list
-    * @param {number} limit
-    * @param {number} offset
-    * @return {ClaimDialect[]} Paginated List
+    * This slices a portion of the list to display.
+     *
+    * @param {ClaimDialect[]} list.
+    * @param {number} limit.
+    * @param {number} offset.
+     *
+    * @return {ClaimDialect[]} Paginated List.
     */
     const paginate = (list: Claim[], limit: number, offset: number): Claim[] => {
         return list?.slice(offset, offset + limit);
     };
 
     /**
-    * Handles change in the number of items to show
-    * @param {React.MouseEvent<HTMLAnchorElement>} event
-    * @param {data} data
+    * Handles change in the number of items to show.
+     *
+    * @param {React.MouseEvent<HTMLAnchorElement>} event.
+    * @param {data} data.
     */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
     };
 
     /**
-    * Paginates
-    * @param {React.MouseEvent<HTMLAnchorElement>} event
-    * @param {PaginationProps} data
+    * Paginates.
+     *
+    * @param {React.MouseEvent<HTMLAnchorElement>} event.
+    * @param {PaginationProps} data.
     */
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
     };
 
     /**
-    * Handle sort strategy change
-    * @param {React.SyntheticEvent<HTMLElement>} event
-    * @param {DropdownProps} data
+    * Handle sort strategy change.
+     *
+    * @param {React.SyntheticEvent<HTMLElement>} event.
+    * @param {DropdownProps} data.
     */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
         setSortBy(SORT_BY.filter(option => option.value === data.value)[0]);
     };
 
     /**
-    * Handles sort order change
-    * @param {boolean} isAscending
+    * Handles sort order change.
+     *
+    * @param {boolean} isAscending.
     */
     const handleSortOrderChange = (isAscending: boolean) => {
         setSortOrder(isAscending);
@@ -207,7 +217,7 @@ export const LocalClaimsPage = (): React.ReactElement => {
                     onPageChange={ handlePaginationChange }
                     onSortStrategyChange={ handleSortStrategyChange }
                     rightActionPanel={
-                        (
+                        appConfig?.claimDialects?.features?.localClaims?.permissions?.create && (
                             <PrimaryButton
                                 onClick={ () => {
                                     setOpenModal(true);
