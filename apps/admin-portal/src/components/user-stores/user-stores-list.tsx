@@ -18,12 +18,12 @@
 
 import React, {useContext, useState} from "react";
 import { ResourceList, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import {UserStoreListItem, AlertLevels, AppConfigInterface} from "../../models";
+import { UserStoreListItem, AlertLevels, AppConfigInterface } from "../../models";
 import { Modal } from "semantic-ui-react";
 import { deleteUserStore } from "../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../store/actions";
-import {AppConfig, history} from "../../helpers";
+import { AppConfig, history } from "../../helpers";
 
 /**
  * Prop types of the `UserStoresList` component
