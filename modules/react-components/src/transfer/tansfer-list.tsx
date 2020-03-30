@@ -29,7 +29,7 @@ interface TransferListItem {
  * Proptypes transfer list component.
  */
 export interface TransferListProps extends TableProps {
-    listValues: TransferListItem[] | string[];
+    listValues?: TransferListItem[] | string[];
     listHeaders?: any;
     listType: "selected" | "unselected";
     isListEmpty: boolean;

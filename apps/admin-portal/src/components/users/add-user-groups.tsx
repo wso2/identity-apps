@@ -50,8 +50,6 @@ export const AddUserGroup: React.FunctionComponent<AddUserGroupProps> = (props: 
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState([]);
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState([]);
 
-    console.log("Groups", initialValues);
-
     const handleSearchFieldChange = (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => {
         let isMatch = false;
         const filteredGroupList = [];

@@ -25,7 +25,7 @@ import {Checkbox, Icon, Label, LabelProps, SemanticCOLORS, Table, TableRowProps}
 interface ItemTypeLabelPropsInterface extends LabelProps {
     labelText: string;
     labelColor: SemanticCOLORS;
-    name: string;
+    name?: string;
 }
 
 /**
@@ -37,7 +37,7 @@ interface TransferListItemPropsInterface extends TableRowProps {
     listItemIndex: number;
     listItemTypeLabel?: ItemTypeLabelPropsInterface;
     isItemChecked: boolean;
-    handleItemCheck: () => void;
+    handleItemCheck?: () => void;
     handleItemChange: () => void;
     showSecondaryActions: boolean;
 }
