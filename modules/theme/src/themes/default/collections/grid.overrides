@@ -263,3 +263,34 @@
          }
      }
 }
+
+/*-----------------------------------
+          Transfer Component
+-------------------------------------*/
+
+.ui.grid {
+     &.transfer-list {
+
+         margin-left: 0em !important;
+
+         .row {
+             &.transfer-list-row {
+                 .column {
+                     &.transfer-list-button-column {
+                         margin-left: -0.5em !important;
+                         margin-right: 1.5em !important;
+
+                         .ui.basic.button {
+                             margin-bottom: 1em;
+                             margin-left: 15px;
+                         }
+                     }
+
+                     &.transfer-list-assigned-column {
+                        margin-left: 15px !important;
+                     }
+                 }
+             }
+         }
+     }
+}

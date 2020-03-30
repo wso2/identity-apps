@@ -31,7 +31,7 @@
 
 /* User Roles List Segment */
 @userRolesListSegmentMarginTop: 10px;
-@userRolesListSegmentHeight: 250px;
+@userRolesListSegmentHeight: 281px;
 
 /* Assigned Roles List Segment */
 @assignedRolesListSegmentHeight: 298px;

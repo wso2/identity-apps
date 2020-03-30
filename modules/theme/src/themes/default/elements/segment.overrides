@@ -203,3 +203,51 @@
         margin-right: 0.5em !important;
     }
 }
+
+/*******************************
+     Transfer list Variation
+*******************************/
+
+.ui.segment {
+    &.transfer-segment {
+        margin-top: @userRolesListSegmentMarginTop;
+        height: @userRolesListSegmentHeight;
+        overflow: auto;
+        width: 281px !important;
+
+        .ui.table {
+            font-size: 12px;
+            border-left: none;
+            border-right: none;
+        }
+
+        .user-role-list-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-role-list-item i{
+            margin-left: auto;
+        }
+
+        .user-role-list-item .user-image {
+            background-color: #ccc;
+            padding: 0px !important;
+        }
+
+        .ui.label {
+            color: white;
+
+            &.application-label {
+                background-color: #99A1CC !important;
+                border-color: #8E95B6 !important;
+
+            }
+
+            &.internal-label {
+                background-color: #8DC1D4 !important;
+                border-color: #7CB5CA !important;
+            }
+        }
+    }
+}
