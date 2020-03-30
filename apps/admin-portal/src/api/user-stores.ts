@@ -58,7 +58,7 @@ export const getUserStores = (params: QueryParams): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            if (error?.response?.data?.code === RESOURCE_NOT_FOUND_ERROR_CODE) {
+            if (error?.response?.data?.code !== RESOURCE_NOT_FOUND_ERROR_CODE) {
                 return Promise.reject(error?.response?.data);
             }
         });
