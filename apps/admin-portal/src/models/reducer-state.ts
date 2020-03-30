@@ -16,22 +16,7 @@
  * under the License.
  */
 
-export * from "./alert";
-export * from "./api";
-export * from "./application";
-export * from "./auth";
-export * from "./authenticated-user";
-export * from "./claim";
-export * from "./config";
-export * from "./crypto";
-export * from "./notifications";
-export * from "./tokens";
-export * from "./profile";
-export * from "./global";
-export * from "./loaders";
-export * from "./application-inbound";
-export * from "./user";
-export * from "./identity-provider";
-export * from "./roles";
-export * from "./user-stores";
-export * from "./reducer-state";
+import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
+import { DeploymentConfigInterface } from "./config";
+
+export type ConfigReducerStateInterface = CommonConfigReducerStateInterface<DeploymentConfigInterface>;
