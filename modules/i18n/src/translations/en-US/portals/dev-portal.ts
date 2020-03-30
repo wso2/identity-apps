@@ -632,56 +632,56 @@ export const devPortal: DevPortalNS = {
                 deleteRole: {
                     error: {
                         description: "{{description}}",
-                        message: "Error deleting the selected role."
+                        message: "Error Deleting the Selected Role."
                     },
                     genericError: {
-                        description: "Couldn't remove the selected role.",
-                        message: "Something went wrong"
+                        description: "Couldn't Remove the Selected Role.",
+                        message: "Something Went Wrong"
                     },
                     success: {
-                        description: "The selected role was deleted successfully.",
+                        description: "The Selected Role Was Deleted Successfully.",
                         message: "Role deleted successfully"
                     }
                 },
                 updateRole: {
                     error: {
                         description: "{{description}}",
-                        message: "Error updating the selected role."
+                        message: "Error Updating the Selected Role."
                     },
                     genericError: {
-                        description: "Couldn't update the selected role.",
-                        message: "Something went wrong"
+                        description: "Couldn't Update the Selected Role.",
+                        message: "Something Went Wrong"
                     },
                     success: {
-                        description: "The selected role was updated successfully.",
+                        description: "The Selected Role Was Updated Successfully.",
                         message: "Role updated successfully"
                     }
                 },
                 createRole: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occured while creating the role."
+                        message: "Error Occurred While Creating the Role."
                     },
                     genericError: {
-                        description: "Couldn't create the role.",
-                        message: "Something went wrong"
+                        description: "Couldn't Create the Role.",
+                        message: "Something Went Wrong"
                     },
                     success: {
-                        description: "The role was created successfully.",
-                        message: "Role created successfully."
+                        description: "The Role Was Created Successfully.",
+                        message: "Role Created Successfully."
                     }
                 },
                 createPermission: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occured while adding permission to role."
+                        message: "Error Occurred While Adding Permission to Role."
                     },
                     genericError: {
-                        description: "Couldn't add permissions to role.",
-                        message: "Something went wrong"
+                        description: "Couldn't Add Permissions to Role.",
+                        message: "Something Went Wrong"
                     },
                     success: {
-                        description: "Permissions were successfully added to the role.",
+                        description: "Permissions Were Successfully Added to the Role.",
                         message: "Role created successfully."
                     }
                 }
@@ -691,24 +691,24 @@ export const devPortal: DevPortalNS = {
                     searchForm: {
                         inputs: {
                             filerAttribute: {
-                                label: "Filter attribute",
+                                label: "Filter Attribute",
                                 placeholder: "E.g. role name.",
                                 validations: {
-                                    empty: "Filter attribute is a required field"
+                                    empty: "Filter Attribute Is a Required Field"
                                 }
                             },
                             filterCondition: {
-                                label: "Filter condition",
+                                label: "Filter Condition",
                                 placeholder: "E.g. Starts with etc.",
                                 validations: {
-                                    empty: "Filter condition is a required field"
+                                    empty: "Filter Condition Is a Required Field"
                                 }
                             },
                             filterValue: {
-                                label: "Filter value",
-                                placeholder: "Enter value to search",
+                                label: "Filter Value",
+                                placeholder: "Enter Value to Search",
                                 validations: {
-                                    empty: "Filter value is a required field"
+                                    empty: "Filter Value Is a Required Field"
                                 }
                             },
                         }
@@ -717,18 +717,18 @@ export const devPortal: DevPortalNS = {
                 hints: {
                     querySearch: {
                         actionKeys: "Shift + Enter",
-                        label: "To search as a query"
+                        label: "To Search as a Query"
                     }
                 },
                 options: {
-                    header: "Advanced search",
+                    header: "Advanced Search",
                 },
-                placeholder: "Search by role name",
+                placeholder: "Search by Role Name",
                 popups: {
-                    clear: "clear search",
-                    dropdown: "Show options"
+                    clear: "Clear Search",
+                    dropdown: "Show Options"
                 },
-                resultsIndicator: "Showing results for the query \"{{query}}\""
+                resultsIndicator: "Showing Results for the Query \"{{query}}\""
             }
         },
         serverConfigs: {
