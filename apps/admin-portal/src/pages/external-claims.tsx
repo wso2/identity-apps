@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { PageLayout } from "../layouts";
 import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
 import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { ClaimsList, ListType, AddExternalClaims, EditExternalClaims, ExternalClaimsSearch } from "../components";
-import { ExternalClaim, ClaimDialect, AlertLevels } from "../models";
+import {ExternalClaim, ClaimDialect, AlertLevels, AppConfigInterface} from "../models";
 import { getAllExternalClaims, getADialect } from "../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT, CLAIM_DIALECTS_PATH } from "../constants";
-import { history } from "../helpers";
+import {AppConfig, history} from "../helpers";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
 import { EmptyPlaceholder } from "../components/shared";
@@ -69,6 +69,8 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
 
     const dispatch = useDispatch();
 
+    const appConfig: AppConfigInterface = useContext(AppConfig);
+
     const dialectID = props.match.params.id;
 
     useEffect(() => {
@@ -92,11 +94,12 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
     }, []);
 
     /**
-     * Fetch external claims
-     * @param {number} limit 
-     * @param {number} offset 
-     * @param {string} sort 
-     * @param {string} filter 
+     * Fetch external claims.
+     *
+     * @param {number} limit.
+     * @param {number} offset.
+     * @param {string} sort.
+     * @param {string} filter.
      */
     const getExternalClaims = (limit?: number, offset?: number, sort?: string, filter?: string) => {
         dialectID && getAllExternalClaims(dialectID, { limit, offset, sort, filter }).then(response => {
@@ -122,10 +125,11 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
     }, [sortBy, sortOrder]);
 
     /**
-     * Slices and returns a portion of the list
-     * @param {ExternalClaim[]} list
-     * @param {number} limit 
-     * @param {number} offset 
+     * Slices and returns a portion of the list.
+     *
+     * @param {ExternalClaim[]} list.
+     * @param {number} limit.
+     * @param {number} offset.
      * 
      * @return {ExternalClaim[]}
      */
@@ -134,35 +138,38 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
     };
 
     /**
-     * Handles change in the number of items to show
-     * @param {React.MouseEvent<HTMLAnchorElement>} event
-     * @param {data} data
+     * Handles change in the number of items to show.
+     *
+     * @param {React.MouseEvent<HTMLAnchorElement>} event.
+     * @param {data} data.
      */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
     };
 
     /**
-    * Paginates
-    * @param {React.MouseEvent<HTMLAnchorElement>} event
-    * @param {PaginationProps} data
+    * Paginates.
+    * @param {React.MouseEvent<HTMLAnchorElement>} event.
+    * @param {PaginationProps} data.
     */
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
     };
 
     /**
-     * Handle sort strategy change
-     * @param {React.SyntheticEvent<HTMLElement>} event
-     * @param {DropdownProps} data
+     * Handle sort strategy change.
+     *
+     * @param {React.SyntheticEvent<HTMLElement>} event.
+     * @param {DropdownProps} data.
      */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
         setSortBy(SORT_BY.filter(option => option.value === data.value)[0]);
     };
 
     /**
-    * Handles sort order change
-    * @param {boolean} isAscending
+    * Handles sort order change.
+     *
+    * @param {boolean} isAscending.
     */
     const handleSortOrderChange = (isAscending: boolean) => {
         setSortOrder(isAscending);
@@ -227,7 +234,7 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                             onSortStrategyChange={ handleSortStrategyChange }
                             onSortOrderChange={ handleSortOrderChange }
                             rightActionPanel={
-                                (
+                                appConfig?.claimDialects?.features?.externalClaims?.permissions?.create && (
                                     <PrimaryButton
                                         onClick={ () => {
                                             setAddClaim(true);
