@@ -37,7 +37,7 @@ import { filterList, sortList } from "../utils";
 export const UserStores = (): React.ReactElement => {
 
     /**
-     * Sets the attributes by which the list can be sorted
+     * Sets the attributes by which the list can be sorted.
      */
     const SORT_BY = [
         {
@@ -160,7 +160,7 @@ export const UserStores = (): React.ReactElement => {
         <>
             {
                 openModal
-                    ? (
+                    && (
                         <AddUserStore
                             open={ openModal }
                             onClose={ () => {
@@ -168,7 +168,6 @@ export const UserStores = (): React.ReactElement => {
                             } }
                         />
                     )
-                    : null
             }
             <PageLayout
                 title="User Stores"
