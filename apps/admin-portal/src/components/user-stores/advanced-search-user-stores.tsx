@@ -21,7 +21,7 @@ import { Field, Forms } from "@wso2is/forms";
 import { AdvancedSearch } from "@wso2is/react-components";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Form, Grid } from "semantic-ui-react";
+import { Divider, Form, Grid } from "semantic-ui-react";
 import { AdvancedSearchIcons } from "../../configs";
 
 /**
@@ -222,10 +222,7 @@ export const UserStoresSearch: FunctionComponent<LocalClaimsSearchPropsInterface
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
-                            <Field
-                                hidden={ true }
-                                type="divider"
-                            />
+                            <Divider hidden />
                             <Form.Group inline={ true }>
                                 <Field
                                     size="small"
