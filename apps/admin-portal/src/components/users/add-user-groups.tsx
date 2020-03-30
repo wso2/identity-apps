@@ -16,10 +16,11 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import _ from "lodash";
 import { Forms } from "@wso2is/forms";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
+import { RolesInterface } from "../../models/roles";
 
 /**
  * Proptypes for the application consents list component.
@@ -48,8 +49,26 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         handleTempListChange
     } = props;
 
-    const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState([]);
-    const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState([]);
+    const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesInterface[]>([]);
+    const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<RolesInterface[]>([]);
+    const [ isSelectUnassignedAllChecked, setIsSelectUnassignedAllChecked ] = useState(false);
+    const [ isSelectAssignedAllChecked, setIsSelectAssignedAllChecked ] = useState(false);
+
+    useEffect(() => {
+        if (isSelectAssignedAllChecked) {
+            setCheckedAssignedListItems(initialValues?.tempGroupList);
+        } else {
+            setCheckedAssignedListItems([])
+        }
+    }, [ isSelectAssignedAllChecked ]);
+
+    useEffect(() => {
+        if (setIsSelectUnassignedAllChecked) {
+            setCheckedUnassignedListItems(initialValues?.groupList);
+        } else {
+            setCheckedUnassignedListItems([])
+        }
+    }, [ isSelectUnassignedAllChecked ]);
 
     /**
      * The following method handles the onChange event of the
@@ -78,6 +97,14 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         }
     };
 
+     const selectAllUnAssignedList = () => {
+         setIsSelectUnassignedAllChecked(!isSelectUnassignedAllChecked);
+     };
+
+    const selectAllAssignedList = () => {
+        setIsSelectAssignedAllChecked(!isSelectAssignedAllChecked);
+    };
+
     /**
      * The following method handles adding list items checked in the initial
      * roles list to the assigned roles list.
@@ -93,6 +120,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         }
         handleTempListChange(addedGroups);
         handleGroupListChange(initialValues.groupList.filter(x => !addedGroups.includes(x)));
+        setIsSelectUnassignedAllChecked(!isSelectUnassignedAllChecked);
     };
 
     /**
@@ -111,6 +139,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         handleGroupListChange(removedGroups);
         handleTempListChange(initialValues.tempGroupList.filter(x => !removedGroups.includes(x)));
         setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedGroups.includes(x)))
+        setIsSelectAssignedAllChecked(!isSelectAssignedAllChecked);
     };
 
     /**
@@ -120,7 +149,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
     const handleUnassignedItemCheckboxChange = (group) => {
         const checkedGroups = [ ...checkedUnassignedListItems ];
 
-        if (checkedGroups.includes(group)) {
+        if (checkedGroups?.includes(group)) {
             checkedGroups.splice(checkedGroups.indexOf(group), 1);
             setCheckedUnassignedListItems(checkedGroups);
         } else {
@@ -136,7 +165,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
     const handleAssignedItemCheckboxChange = (group) => {
         const checkedGroups = [ ...checkedAssignedListItems ];
 
-        if (checkedGroups.includes(group)) {
+        if (checkedGroups?.includes(group)) {
             checkedGroups.splice(checkedGroups.indexOf(group), 1);
             setCheckedAssignedListItems(checkedGroups);
         } else {
@@ -161,6 +190,8 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                     isListEmpty={ !(initialValues.groupList.length > 0) }
                     listType="unselected"
                     listHeaders={ [ "Name", "Type" ] }
+                    handleHeaderCheckboxChange={ selectAllUnAssignedList }
+                    isHeaderCheckboxChecked={ isSelectUnassignedAllChecked }
                 >
                     {
                         initialValues.groupList.map((group, index)=> {
@@ -183,6 +214,8 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                     isListEmpty={ !(initialValues.tempGroupList.length > 0) }
                     listType="selected"
                     listHeaders={ [ "Name", "Type" ] }
+                    handleHeaderCheckboxChange={ selectAllAssignedList }
+                    isHeaderCheckboxChecked={ isSelectAssignedAllChecked }
                 >
                     {
                         initialValues.tempGroupList.map((group, index)=> {

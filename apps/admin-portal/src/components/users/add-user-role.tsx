@@ -16,10 +16,11 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import _ from "lodash";
 import { Forms } from "@wso2is/forms";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
+import { RolesInterface } from "../../models/roles";
 
 /**
  * Proptypes for the application consents list component.
@@ -47,23 +48,39 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         handleTempListChange
     } = props;
 
-    const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState([]);
-    const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState([]);
+    const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesInterface[]>([]);
+    const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<RolesInterface[]>([]);
+    const [ isSelectUnassignedRolesAllRolesChecked, setIsSelectUnassignedAllRolesChecked ] = useState(false);
+    const [ isSelectAssignedAllRolesChecked, setIsSelectAssignedAllRolesChecked ] = useState(false);
+
+    useEffect(() => {
+        if (isSelectAssignedAllRolesChecked) {
+            setCheckedAssignedListItems(initialValues?.tempRoleList);
+        } else {
+            setCheckedAssignedListItems([])
+        }
+    }, [ isSelectAssignedAllRolesChecked ]);
+
+    useEffect(() => {
+        if (isSelectUnassignedRolesAllRolesChecked) {
+            setCheckedUnassignedListItems(initialValues?.roleList);
+        } else {
+            setCheckedUnassignedListItems([])
+        }
+    }, [ isSelectUnassignedRolesAllRolesChecked ]);
 
     /**
      * The following function enables the user to select all the roles at once.
      */
-    const handleSelectAll = () => {
-        handleTempListChange(initialValues.initialRoleList);
-        handleRoleListChange([]);
+    const selectAllUnAssignedList = () => {
+        setIsSelectUnassignedAllRolesChecked(!isSelectUnassignedRolesAllRolesChecked);
     };
 
     /**
      * The following function enables the user to deselect all the roles at once.
      */
-    const handleRemoveAll = () => {
-        handleRoleListChange(initialValues.initialRoleList);
-        handleTempListChange([]);
+    const selectAllAssignedList = () => {
+        setIsSelectAssignedAllRolesChecked(!isSelectAssignedAllRolesChecked);
     };
 
     const handleSearchFieldChange = (e, { value }) => {
@@ -96,6 +113,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         }
         handleTempListChange(addedRoles);
         handleRoleListChange(initialValues.roleList.filter(x => !addedRoles.includes(x)));
+        setIsSelectUnassignedAllRolesChecked(!isSelectUnassignedRolesAllRolesChecked);
     };
 
     const removeRoles = () => {
@@ -109,7 +127,8 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         }
         handleRoleListChange(removedRoles);
         handleTempListChange(initialValues.tempRoleList.filter(x => !removedRoles.includes(x)));
-        setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles.includes(x)))
+        setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles.includes(x)));
+        setIsSelectAssignedAllRolesChecked(!isSelectAssignedAllRolesChecked);
     };
 
     const handleUnassignedItemCheckboxChange = (role) => {
@@ -169,6 +188,8 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                     isListEmpty={ !(initialValues.roleList.length > 0) }
                     listType="unselected"
                     listHeaders={ [ "Name", "Type" ] }
+                    handleHeaderCheckboxChange={ selectAllUnAssignedList }
+                    isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
                 >
                     {
                         initialValues.roleList.map((role, index)=> {
@@ -192,6 +213,8 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                     isListEmpty={ !(initialValues.tempRoleList.length > 0) }
                     listType="selected"
                     listHeaders={ [ "Name", "Type" ] }
+                    handleHeaderCheckboxChange={ selectAllAssignedList }
+                    isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
                 >
                     {
                         initialValues.tempRoleList.map((role, index)=> {

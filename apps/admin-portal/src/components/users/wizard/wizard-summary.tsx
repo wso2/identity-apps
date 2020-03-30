@@ -82,29 +82,6 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                 </Grid.Row>
             ) }
             {
-                summary?.roles &&
-                summary.roles instanceof Array &&
-                summary.roles.length > 0
-                    ? (
-                        <Grid.Row className="summary-field" columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                                <div className="label">Role(s)</div>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                                <Label.Group>
-                                    {
-                                        summary.roles
-                                            .map((role, index) => (
-                                                <Label key={ index } basic circular>{ role.displayName }</Label>
-                                            ))
-                                    }
-                                </Label.Group>
-                            </Grid.Column>
-                        </Grid.Row>
-                    )
-                    : null
-            }
-            {
                 summary?.groups &&
                 summary.groups instanceof Array &&
                 summary.groups.length > 0
@@ -119,6 +96,29 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                                         summary.groups
                                             .map((group, index) => (
                                                 <Label key={ index } basic circular>{ group.displayName }</Label>
+                                            ))
+                                    }
+                                </Label.Group>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                    : null
+            }
+            {
+                summary?.roles &&
+                summary.roles instanceof Array &&
+                summary.roles.length > 0
+                    ? (
+                        <Grid.Row className="summary-field" columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                                <div className="label">Role(s)</div>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                                <Label.Group>
+                                    {
+                                        summary.roles
+                                            .map((role, index) => (
+                                                <Label key={ index } basic circular>{ role.displayName }</Label>
                                             ))
                                     }
                                 </Label.Group>

@@ -33,6 +33,8 @@ export interface TransferListProps extends TableProps {
     listHeaders?: any;
     listType: "selected" | "unselected";
     isListEmpty: boolean;
+    handleHeaderCheckboxChange: () => void;
+    isHeaderCheckboxChecked: boolean;
 }
 
 /**
@@ -51,7 +53,9 @@ export const TransferList: FunctionComponent<TransferListProps> = (
         rest,
         listValues,
         listHeaders,
-        isListEmpty
+        isListEmpty,
+        handleHeaderCheckboxChange,
+        isHeaderCheckboxChecked
     } = props;
 
     return (
@@ -63,7 +67,12 @@ export const TransferList: FunctionComponent<TransferListProps> = (
                         listHeaders instanceof Array && (
                             <Table.Header>
                                 <Table.Row>
-                                    <Table.HeaderCell><Checkbox/></Table.HeaderCell>
+                                    <Table.HeaderCell>
+                                        <Checkbox
+                                            checked={ isHeaderCheckboxChecked }
+                                            onChange={ handleHeaderCheckboxChange }
+                                        />
+                                    </Table.HeaderCell>
                                     {
                                         listHeaders?.map((header, index) => {
                                             return (
@@ -81,7 +90,7 @@ export const TransferList: FunctionComponent<TransferListProps> = (
                 ) : (
                     <div className={ "empty-placeholder-center" }>
                         <EmptyPlaceholder
-                            subtitle={ [ "You have not assigned any roles to the user." ] }
+                            subtitle={ [ "There are no items in this list at the moment." ] }
                         />
                     </div>
                 )
