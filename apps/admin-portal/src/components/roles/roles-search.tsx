@@ -181,19 +181,25 @@ export const RoleSearch: FunctionComponent<RoleSearchProps> = (props: RoleSearch
                                 hidden={ true }
                                 type="divider"
                             />
-                            <Form.Group inline={ true }>
-                                <Field
-                                    size="small"
-                                    type="submit"
-                                    value={ t("common:search").toString() }
-                                />
-                                <Field
-                                    className="link-button"
-                                    size="small"
-                                    type="reset"
-                                    value={ t("common:resetFilters").toString() }
-                                />
-                            </Form.Group>
+                            <Grid>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column width={ 3 }>
+                                        <Field
+                                            size="small"
+                                            type="submit"
+                                            value={ t("common:search") }
+                                        />
+                                    </Grid.Column>
+                                    <Grid.Column width={ 5 }>
+                                        <Field
+                                            className="link-button"
+                                            size="small"
+                                            type="reset"
+                                            value={ t("common:resetFilters") }
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
                         </Forms>
                     </Grid.Column>
                 </Grid.Row>

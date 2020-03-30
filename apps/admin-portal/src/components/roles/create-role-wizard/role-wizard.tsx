@@ -340,7 +340,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         >
             <Modal.Header className="wizard-header">
                 Create Role
-                <Heading as="h6">Create a new role in the system with specific permissions</Heading>
+                <Heading as="h6">Create a New Role in the System with Specific Permissions.</Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group header="Fill the following mandatory details of the new role." current={ currentStep }>
