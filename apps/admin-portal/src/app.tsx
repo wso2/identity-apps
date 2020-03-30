@@ -22,9 +22,9 @@ import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
-import { baseRoutes, GlobalConfig } from "./configs";
+import { baseRoutes, Config } from "./configs";
 import { AppConfig, history } from "./helpers";
-import { AppConfigInterface, ConfigReducerStateInterface, DeploymentConfigInterface } from "./models";
+import { AppConfigInterface, ConfigReducerStateInterface, RuntimeConfigInterface } from "./models";
 import { ContentLoader } from "@wso2is/react-components";
 import { I18n } from "@wso2is/i18n";
 import { getAppConfig } from "@wso2is/core/api";
@@ -75,7 +75,7 @@ export const App = (): ReactElement => {
      * Set the deployment configs in redux state.
      */
     useEffect(() => {
-        dispatch(setDeploymentConfigs<DeploymentConfigInterface>(GlobalConfig));
+        dispatch(setDeploymentConfigs<RuntimeConfigInterface>(Config.getRuntimeConfig()));
     }, []);
 
     return (

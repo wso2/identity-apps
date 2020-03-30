@@ -16,69 +16,143 @@
  * under the License.
  */
 
-import { GlobalConfig } from "./globals";
+import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "../models";
+import { I18nConstants } from "../constants";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 
-interface ServiceResourcesType {
-    applications: string;
-    associations: string;
-    authorize: string;
-    bulk: string;
-    challenges: string;
-    challengeAnswers: string;
-    consents: string;
-    groups: string;
-    claims: string;
-    externalClaims: string;
-    identityProviders: string;
-    issuer: string;
-    jwks: string;
-    localClaims: string;
-    logout: string;
-    me: string;
-    permission: string;
-    profileSchemas: string;
-    sessions: string;
-    token: string;
-    user: string;
-    users: string;
-    userStores: string;
-    revoke: string;
-    wellKnown: string;
-    selfSignUp: string;
-    accountRecovery: string;
-}
+/**
+ * Class to handle application config operations.
+ */
+export class Config {
 
-export const ServiceResourcesEndpoint: ServiceResourcesType = {
-    applications: `${GlobalConfig.serverHost}/api/server/v1/applications`,
-    associations: `${GlobalConfig.serverHost}/api/users/v1/me/associations`,
-    authorize: `${GlobalConfig.serverHost}/oauth2/authorize`,
-    bulk: `${GlobalConfig.serverHost}/scim2/Bulk`,
-    challengeAnswers: `${GlobalConfig.serverHost}/api/users/v1/me/challenge-answers`,
-    challenges: `${GlobalConfig.serverHost}/api/users/v1/me/challenges`,
-    claims: `${GlobalConfig.serverHost}/api/server/v1/claim-dialects`,
-    consents: `${GlobalConfig}/api/identity/consent-mgt/v1.0/consents`,
-    externalClaims:`${GlobalConfig.serverHost}/api/server/v1/claim-dialects/{}/claims`,
-    groups: `${GlobalConfig.serverHost}/scim2/Groups`,
-    identityProviders: `${GlobalConfig.serverHost}/api/server/v1/identity-providers`,
-    issuer: `${GlobalConfig.serverHost}/oauth2/token`,
-    jwks: `${GlobalConfig.serverHost}/oauth2/jwks`,
-    localClaims: `${GlobalConfig.serverHost}/api/server/v1/claim-dialects/local/claims`,
-    logout: `${GlobalConfig.serverHost}/oidc/logout`,
-    me: `${GlobalConfig.serverHost}/scim2/Me`, // TODO: Remove this endpoint and use ID token to get the details
-    permission: `${GlobalConfig.serverHost}/api/server/v1/permission-management/permissions`,
-    profileSchemas: `${GlobalConfig.serverHost}/scim2/Schemas`,
-    revoke: `${GlobalConfig.serverHost}/oauth2/revoke`,
-    sessions: `${GlobalConfig.serverHost}/api/users/v1/me/sessions`,
-    token: `${GlobalConfig.serverHost}/oauth2/token`,
-    user: `${GlobalConfig.serverHost}/api/identity/user/v1.0/me`,
-    userStores: `${GlobalConfig.serverHost}/api/server/v1/userstores`,
-    users: `${GlobalConfig.serverHost}/scim2/Users`,
-    wellKnown: `${GlobalConfig.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`,
-    selfSignUp: `${GlobalConfig.serverHost}/api/server/v1/identity-governance/${
-        ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID}/connectors/${
-        ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID}`,
-    accountRecovery: `${GlobalConfig.serverHost}/api/server/v1/identity-governance/${
-        ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID}/connectors/${
-        ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID}`
-};
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() { }
+
+    private static RUNTIME_CONFIG = window["runConfig"];
+
+    /**
+     * Get the application runtime config.
+     *
+     * @return {RuntimeConfigInterface} Runtime configurations object./
+     */
+    public static getRuntimeConfig(): RuntimeConfigInterface {
+        return {
+            appBaseName: (this.RUNTIME_CONFIG) ? (this.RUNTIME_CONFIG.appBaseName || APP_BASENAME) : APP_BASENAME,
+            appBaseNameWithoutTenant: (this.RUNTIME_CONFIG)
+                ? (this.RUNTIME_CONFIG.appBaseNameWithoutTenant || APP_BASENAME)
+                : APP_BASENAME,
+            appHomePath: (this.RUNTIME_CONFIG) ? (this.RUNTIME_CONFIG.appHomePath || APP_HOME_PATH) : APP_HOME_PATH,
+            appLoginPath: (this.RUNTIME_CONFIG) ? (this.RUNTIME_CONFIG.appLoginPath || APP_LOGIN_PATH) : APP_LOGIN_PATH,
+            applicationName: (this.RUNTIME_CONFIG) ? (this.RUNTIME_CONFIG.applicationName || APP_NAME) : APP_NAME,
+            clientHost: (this.RUNTIME_CONFIG)
+                ? (this.RUNTIME_CONFIG.clientHost || CLIENT_HOST_DEFAULT)
+                : CLIENT_HOST_DEFAULT,
+            clientID: (this.RUNTIME_CONFIG) ? (this.RUNTIME_CONFIG.clientID || CLIENT_ID_DEFAULT) : CLIENT_ID_DEFAULT,
+            clientOrigin: (this.RUNTIME_CONFIG)
+                ? (this.RUNTIME_CONFIG.clientOrigin || CLIENT_ORIGIN_DEFAULT)
+                : CLIENT_ORIGIN_DEFAULT,
+            copyrightText: (this.RUNTIME_CONFIG)
+                ? (this.RUNTIME_CONFIG.copyrightText || COPYRIGHT_TEXT_DEFAULT)
+                : COPYRIGHT_TEXT_DEFAULT,
+            debug: (this.RUNTIME_CONFIG) ? (this.RUNTIME_CONFIG.debug || DEBUG_MODE) : DEBUG_MODE,
+            doNotDeleteApplications: (this.RUNTIME_CONFIG) ? (this.RUNTIME_CONFIG.doNotDeleteApplications || []) : [],
+            doNotDeleteIdentityProviders: (this.RUNTIME_CONFIG)
+                ? (this.RUNTIME_CONFIG.doNotDeleteIdentityProviders || [])
+                : [],
+            i18nModuleOptions: {
+                initOptions: this.RUNTIME_CONFIG?.i18nModuleOptions?.initOptions
+                    ? this.RUNTIME_CONFIG.i18nModuleOptions.initOptions
+                    : I18nConstants.MODULE_INIT_OPTIONS,
+                langAutoDetectEnabled: this.RUNTIME_CONFIG?.i18nModuleOptions?.langAutoDetectEnabled
+                    ? this.RUNTIME_CONFIG.i18nModuleOptions.langAutoDetectEnabled
+                    : I18nConstants.LANG_AUTO_DETECT_ENABLED,
+                namespaceDirectories: this.RUNTIME_CONFIG?.i18nModuleOptions?.namespaceDirectories
+                    ? this.RUNTIME_CONFIG?.i18nModuleOptions?.namespaceDirectories
+                    : I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
+                overrideOptions: this.RUNTIME_CONFIG?.i18nModuleOptions?.overrideOptions
+                    ? this.RUNTIME_CONFIG.i18nModuleOptions.overrideOptions
+                    : I18nConstants.INIT_OPTIONS_OVERRIDE,
+                resourcePath: this.RUNTIME_CONFIG?.i18nModuleOptions?.resourcePath
+                    ? this.RUNTIME_CONFIG.i18nModuleOptions.resourcePath
+                    : I18N_RESOURCE_PATH,
+                xhrBackendPluginEnabled: this.RUNTIME_CONFIG?.i18nModuleOptions?.xhrBackendPluginEnabled
+                    ? this.RUNTIME_CONFIG.i18nModuleOptions.xhrBackendPluginEnabled
+                    : I18nConstants.XHR_BACKEND_PLUGIN_ENABLED
+            },
+            loginCallbackUrl: (this.RUNTIME_CONFIG)
+                ? (
+                    (this.RUNTIME_CONFIG.clientHost || CLIENT_HOST_DEFAULT) +
+                    (this.RUNTIME_CONFIG.loginCallbackUrl || LOGIN_CALLBACK_URL)
+                )
+                : LOGIN_CALLBACK_URL,
+            serverHost: (this.RUNTIME_CONFIG)
+                ? (this.RUNTIME_CONFIG.serverHost || SERVER_HOST_DEFAULT)
+                : SERVER_HOST_DEFAULT,
+            serverOrigin: (this.RUNTIME_CONFIG)
+                ? (this.RUNTIME_CONFIG.serverOrigin || SERVER_ORIGIN_DEFAULT)
+                : SERVER_ORIGIN_DEFAULT,
+            tenant: (this.RUNTIME_CONFIG)
+                ? (this.RUNTIME_CONFIG.tenant || TENANT_DEFAULT)
+                : TENANT_DEFAULT,
+            tenantPath: (this.RUNTIME_CONFIG)
+                ? (this.RUNTIME_CONFIG.tenantPath || TENANT_PATH_DEFAULT)
+                : TENANT_PATH_DEFAULT,
+            titleText: (this.RUNTIME_CONFIG)
+                ? (this.RUNTIME_CONFIG.copyrightText || TITLE_TEXT_DEFAULT)
+                : TITLE_TEXT_DEFAULT,
+            userPortalBaseName: (this.RUNTIME_CONFIG) ?
+                (this.RUNTIME_CONFIG.userPortalBaseName || USER_PORTAL_BASENAME) : USER_PORTAL_BASENAME,
+            userPortalClientHost: (this.RUNTIME_CONFIG) ?
+                (this.RUNTIME_CONFIG.userPortalClientHost || USER_PORTAL_CLIENT_HOST_DEFAULT)
+                : USER_PORTAL_CLIENT_HOST_DEFAULT
+        };
+    }
+
+    /**
+     * Get the the list of service resource endpoints.
+     *
+     * @return {ServiceResourceEndpointsInterface} Service resource endpoints as an object.
+     */
+    public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
+        return {
+            accountRecovery: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID}/connectors/${
+                ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID}`,
+            applications: `${this.getRuntimeConfig().serverHost}/api/server/v1/applications`,
+            associations: `${this.getRuntimeConfig().serverHost}/api/users/v1/me/associations`,
+            authorize: `${this.getRuntimeConfig().serverHost}/oauth2/authorize`,
+            bulk: `${this.getRuntimeConfig().serverHost}/scim2/Bulk`,
+            challengeAnswers: `${this.getRuntimeConfig().serverHost}/api/users/v1/me/challenge-answers`,
+            challenges: `${this.getRuntimeConfig().serverHost}/api/users/v1/me/challenges`,
+            claims: `${this.getRuntimeConfig().serverHost}/api/server/v1/claim-dialects`,
+            consents: `${this.getRuntimeConfig()}/api/identity/consent-mgt/v1.0/consents`,
+            externalClaims:`${this.getRuntimeConfig().serverHost}/api/server/v1/claim-dialects/{}/claims`,
+            groups: `${this.getRuntimeConfig().serverHost}/scim2/Groups`,
+            identityProviders: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-providers`,
+            issuer: `${this.getRuntimeConfig().serverHost}/oauth2/token`,
+            jwks: `${this.getRuntimeConfig().serverHost}/oauth2/jwks`,
+            localClaims: `${this.getRuntimeConfig().serverHost}/api/server/v1/claim-dialects/local/claims`,
+            logout: `${this.getRuntimeConfig().serverHost}/oidc/logout`,
+            // TODO: Remove this endpoint and use ID token to get the details
+            me: `${this.getRuntimeConfig().serverHost}/scim2/Me`,
+            permission: `${this.getRuntimeConfig().serverHost}/api/server/v1/permission-management/permissions`,
+            profileSchemas: `${this.getRuntimeConfig().serverHost}/scim2/Schemas`,
+            revoke: `${this.getRuntimeConfig().serverHost}/oauth2/revoke`,
+            selfSignUp: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID}/connectors/${
+                ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID}`,
+            sessions: `${this.getRuntimeConfig().serverHost}/api/users/v1/me/sessions`,
+            token: `${this.getRuntimeConfig().serverHost}/oauth2/token`,
+            user: `${this.getRuntimeConfig().serverHost}/api/identity/user/v1.0/me`,
+            userStores: `${this.getRuntimeConfig().serverHost}/api/server/v1/userstores`,
+            users: `${this.getRuntimeConfig().serverHost}/scim2/Users`,
+            wellKnown: `${this.getRuntimeConfig().serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
+        }
+    }
+}

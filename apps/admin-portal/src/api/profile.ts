@@ -20,7 +20,7 @@ import { SignInUtil } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
 import axios from "axios";
 import { isEmpty } from "lodash";
-import { ServiceResourcesEndpoint } from "../configs";
+import { Config } from "../configs";
 import { BasicProfileInterface, HttpMethods, ProfileSchema } from "../models";
 import { store } from "../store";
 
@@ -44,7 +44,7 @@ export const getUserDetails = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.users + "/" + id
+        url: Config.getServiceResourceEndpoints().users + "/" + id
     };
 
     return httpClient
@@ -89,7 +89,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
             "Content-Type": "application/scim+json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.me
+        url: Config.getServiceResourceEndpoints().me
     };
 
     return httpClient
@@ -142,7 +142,7 @@ export const updateProfileInfo = (data: object): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.me
+        url: Config.getServiceResourceEndpoints().me
     };
 
     return httpClient
@@ -170,7 +170,7 @@ export const updateUserInfo = (userId: string, data: object): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.users + "/" + userId
+        url: Config.getServiceResourceEndpoints().users + "/" + userId
     };
 
     return httpClient
@@ -196,7 +196,7 @@ export const getProfileSchemas = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.profileSchemas
+        url: Config.getServiceResourceEndpoints().profileSchemas
     };
 
     return httpClient

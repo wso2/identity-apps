@@ -17,6 +17,6 @@
  */
 
 import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
-import { DeploymentConfigInterface } from "./config";
+import { RuntimeConfigInterface } from "./config";
 
-export type ConfigReducerStateInterface = CommonConfigReducerStateInterface<DeploymentConfigInterface>;
+export type ConfigReducerStateInterface = CommonConfigReducerStateInterface<RuntimeConfigInterface>;

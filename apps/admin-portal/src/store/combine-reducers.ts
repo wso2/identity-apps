@@ -21,7 +21,7 @@ import { applicationReducer, authenticateReducer, globalReducer } from "./reduce
 import { LoadersReducer } from "./reducers/loaders";
 import { identityProviderReducer } from "./reducers/identity-provider";
 import { commonConfigReducer } from "@wso2is/core/store";
-import { DeploymentConfigInterface } from "../models";
+import { RuntimeConfigInterface } from "../models";
 
 /**
  * Combines all the reducers.
@@ -32,7 +32,7 @@ export const reducers = combineReducers({
     identityProvider: identityProviderReducer,
     application: applicationReducer,
     authenticationInformation: authenticateReducer,
-    config: commonConfigReducer<DeploymentConfigInterface>(),
+    config: commonConfigReducer<RuntimeConfigInterface>(),
     global: globalReducer,
     loaders: LoadersReducer
 });

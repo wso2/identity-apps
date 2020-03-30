@@ -19,7 +19,7 @@
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AxiosHttpClient } from "@wso2is/http";
 import { AxiosError, AxiosResponse } from "axios";
-import { ServiceResourcesEndpoint } from "../configs";
+import { Config } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
 import {
     AdaptiveAuthTemplatesListInterface,
@@ -62,7 +62,7 @@ export const getApplicationDetails = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.applications + "/" + id
+        url: Config.getServiceResourceEndpoints().applications + "/" + id
     };
 
     return httpClient.get(requestConfig.url, { headers: requestConfig.headers })
@@ -90,7 +90,7 @@ export const deleteApplication = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: ServiceResourcesEndpoint.applications + "/" + id
+        url: Config.getServiceResourceEndpoints().applications + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -123,7 +123,7 @@ export const updateApplicationDetails = (app: ApplicationInterface): Promise<any
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.applications + "/" + id
+        url: Config.getServiceResourceEndpoints().applications + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -160,7 +160,7 @@ export const getApplicationList = (limit: number, offset: number,
             limit,
             offset
         },
-        url: ServiceResourcesEndpoint.applications
+        url: Config.getServiceResourceEndpoints().applications
     };
 
     return httpClient.request(requestConfig)
@@ -187,7 +187,7 @@ export const getAvailableInboundProtocols = (customOnly: boolean): Promise<AuthP
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.applications + "/meta/inbound-protocols?customOnly=" + customOnly
+        url: Config.getServiceResourceEndpoints().applications + "/meta/inbound-protocols?customOnly=" + customOnly
     };
 
     return httpClient.request(requestConfig)
@@ -216,7 +216,7 @@ export const getAuthProtocolMetadata = <T>(protocol: SupportedAuthProtocolMetaTy
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ ServiceResourcesEndpoint.applications}/meta/inbound-protocols/${ protocol }`
+        url: `${ Config.getServiceResourceEndpoints().applications}/meta/inbound-protocols/${ protocol }`
     };
 
     return httpClient.request(requestConfig)
@@ -256,7 +256,7 @@ export const getOIDCData = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.applications + "/" + id + "/inbound-protocols/oidc"
+        url: Config.getServiceResourceEndpoints().applications + "/" + id + "/inbound-protocols/oidc"
     };
 
     return httpClient.request(requestConfig)
@@ -288,7 +288,8 @@ export const getInboundProtocolConfig = (applicationId: string, inboundProtocolI
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ ServiceResourcesEndpoint.applications }/${ applicationId }/inbound-protocols/${ inboundProtocolId }`
+        url: `${ Config.getServiceResourceEndpoints().applications }/${ applicationId }/inbound-protocols/${
+            inboundProtocolId }`
     };
 
     return httpClient.request(requestConfig)
@@ -318,7 +319,7 @@ export const updateOIDCData = (id: string, OIDC: object): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: ServiceResourcesEndpoint.applications + "/" + id + "/inbound-protocols/oidc"
+        url: Config.getServiceResourceEndpoints().applications + "/" + id + "/inbound-protocols/oidc"
     };
 
     return httpClient.request(requestConfig)
@@ -351,7 +352,7 @@ export const updateAuthProtocolConfig = <T>(id: string, config: any,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${ ServiceResourcesEndpoint.applications}/${ id }/inbound-protocols/${ protocol }`
+        url: `${ Config.getServiceResourceEndpoints().applications}/${ id }/inbound-protocols/${ protocol }`
     };
 
     return httpClient.request(requestConfig)
@@ -393,7 +394,7 @@ export const updateAdvanceConfigurations = (id: string, advancedConfigs: object)
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.applications + "/" + id
+        url: Config.getServiceResourceEndpoints().applications + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -421,7 +422,7 @@ export const createApplication = (application: object): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.applications
+        url: Config.getServiceResourceEndpoints().applications
     };
 
     return httpClient.request(requestConfig)
@@ -449,7 +450,7 @@ export const updateAuthenticationSequence = (id: string, data: object): Promise<
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.applications + "/" + id
+        url: Config.getServiceResourceEndpoints().applications + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -477,7 +478,7 @@ export const updateClaimConfiguration = (id: string, data: object): Promise<any>
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.applications + "/" + id
+        url: Config.getServiceResourceEndpoints().applications + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -505,7 +506,8 @@ export const regenerateClientSecret = (appId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.applications + "/" + appId + "/inbound-protocols/oidc/regenerate-secret"
+        url: Config.getServiceResourceEndpoints().applications + "/" + appId +
+            "/inbound-protocols/oidc/regenerate-secret"
     };
 
     return httpClient.request(requestConfig)
@@ -533,7 +535,7 @@ export const revokeClientSecret = (appId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.applications + "/" + appId + "/inbound-protocols/oidc/revoke"
+        url: Config.getServiceResourceEndpoints().applications + "/" + appId + "/inbound-protocols/oidc/revoke"
     };
 
     return httpClient.request(requestConfig)
@@ -560,7 +562,7 @@ export const getAdaptiveAuthTemplates = (): Promise<AdaptiveAuthTemplatesListInt
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ ServiceResourcesEndpoint.applications }/meta/adaptive-auth-templates`
+        url: `${ Config.getServiceResourceEndpoints().applications }/meta/adaptive-auth-templates`
     };
 
     return httpClient.request(requestConfig)
@@ -604,7 +606,7 @@ export const getApplicationTemplateData = (templateId: string): Promise<Applicat
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.applications + "/templates/" + templateId
+        url: Config.getServiceResourceEndpoints().applications + "/templates/" + templateId
     };
 
     return httpClient.request(requestConfig)
@@ -654,7 +656,7 @@ export const getApplicationTemplateList = (limit?: number, offset?: number,
             limit,
             offset
         },
-        url: ServiceResourcesEndpoint.applications + "/templates"
+        url: Config.getServiceResourceEndpoints().applications + "/templates"
     };
 
     return httpClient.request(requestConfig)

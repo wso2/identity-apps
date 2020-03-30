@@ -17,7 +17,7 @@
  */
 
 import { AxiosHttpClient } from "@wso2is/http";
-import { ServiceResourcesEndpoint } from "../configs";
+import { Config } from "../configs";
 import { HttpMethods, CreateRoleInterface, SearchRoleInterface, PatchRoleDataInterface } from "../models";
 import { store } from "../store";
 
@@ -43,7 +43,7 @@ export const getRolesList = (domain: string): Promise<any> => {
         params: {
             domain
         },
-        url: ServiceResourcesEndpoint.groups
+        url: Config.getServiceResourceEndpoints().groups
     };
 
     return httpClient.request(requestConfig)
@@ -67,7 +67,7 @@ export const getRoleById = (roleId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.groups + "/" + roleId
+        url: Config.getServiceResourceEndpoints().groups + "/" + roleId
     };
 
     return httpClient.request(requestConfig).then((response) => {
@@ -91,7 +91,7 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.groups + "/" + roleId
+        url: Config.getServiceResourceEndpoints().groups + "/" + roleId
     };
 
     return httpClient.request(requestConfig).then((response) => {
@@ -114,7 +114,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.groups + "/.search"
+        url: Config.getServiceResourceEndpoints().groups + "/.search"
     };
 
     return httpClient.request(requestConfig).then((response) => {
@@ -138,7 +138,7 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: ServiceResourcesEndpoint.groups + "/" + roleId
+        url: Config.getServiceResourceEndpoints().groups + "/" + roleId
     };
 
     return httpClient.request(requestConfig).then((response) => {
@@ -161,7 +161,7 @@ export const createRole = (data: CreateRoleInterface): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.groups
+        url: Config.getServiceResourceEndpoints().groups
     };
 
     return httpClient.request(requestConfig).then((response) => {
@@ -185,7 +185,7 @@ export const updateRolePermissions = (roleId: string, data: any): Promise<any> =
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: ServiceResourcesEndpoint.groups + "/" + roleId + "/permissions"
+        url: Config.getServiceResourceEndpoints().groups + "/" + roleId + "/permissions"
     };
 
     return httpClient.request(requestConfig).then((response) => {
@@ -207,7 +207,7 @@ export const getPermissionList = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.permission
+        url: Config.getServiceResourceEndpoints().permission
     };
 
     return httpClient.request(requestConfig).then((response) => {
@@ -229,7 +229,7 @@ export const getPermissionsForRole = (roleId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.groups + "/" + roleId + "/permissions"
+        url: Config.getServiceResourceEndpoints().groups + "/" + roleId + "/permissions"
     };
 
     return httpClient.request(requestConfig).then((response) => {

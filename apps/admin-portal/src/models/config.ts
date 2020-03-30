@@ -104,9 +104,22 @@ export interface ClaimDialectsConfigInterface {
 }
 
 /**
- * Config interface for deployment settings.
+ * Deployment config interface for dev portal.
+ *
+ * @remarks
+ * Convert to an interface when extension is required.
  */
-export interface DeploymentConfigInterface extends CommonDeploymentConfigInterface {
+export type DeploymentConfigInterface = CommonDeploymentConfigInterface;
+
+/**
+ * Runtime config interface.
+ *
+ * @remarks
+ * Different config type i.e deployment, features, ui, etc. can be grouped under
+ * runtime config. So, that the all the configs can be handled through one file.
+ * TODO: Group the different configs rather than having them in a flat structure.
+ */
+export interface RuntimeConfigInterface extends DeploymentConfigInterface {
     /**
      * Copyright text for the footer.
      */
@@ -115,6 +128,10 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * Application(SPs) that shouldn't be allowed to delete.
      */
     doNotDeleteApplications?: string[];
+    /**
+     * Application(SPs) that shouldn't be allowed to delete.
+     */
+    doNotDeleteIdentityProviders?: string[];
     /**
      * i18n module options.
      */
@@ -134,4 +151,37 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * ex: `https://localhost:9000`
      */
     userPortalClientHost: string;
+}
+
+/**
+ * Service resource endpoints config.
+ */
+export interface ServiceResourceEndpointsInterface {
+    applications: string;
+    associations: string;
+    authorize: string;
+    bulk: string;
+    challenges: string;
+    challengeAnswers: string;
+    consents: string;
+    groups: string;
+    claims: string;
+    externalClaims: string;
+    identityProviders: string;
+    issuer: string;
+    jwks: string;
+    localClaims: string;
+    logout: string;
+    me: string;
+    permission: string;
+    profileSchemas: string;
+    sessions: string;
+    token: string;
+    user: string;
+    users: string;
+    userStores: string;
+    revoke: string;
+    wellKnown: string;
+    selfSignUp: string;
+    accountRecovery: string;
 }

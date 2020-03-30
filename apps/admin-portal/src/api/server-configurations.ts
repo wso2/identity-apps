@@ -17,7 +17,7 @@
  */
 
 import { AxiosHttpClient } from "@wso2is/http";
-import { ServiceResourcesEndpoint } from "../configs";
+import { Config } from "../configs";
 import { HttpMethods } from "../models";
 import { store } from "../store";
 
@@ -72,7 +72,7 @@ export const updateConfigurations = (data: object, url: string): Promise<any> =>
  * @returns {Promise<any>} a promise containing the configurations.
  */
 export const getSelfSignUpConfigurations = (): Promise<any> => {
-    return getConfigurations(ServiceResourcesEndpoint.selfSignUp);
+    return getConfigurations(Config.getServiceResourceEndpoints().selfSignUp);
 };
 
 /**
@@ -83,7 +83,7 @@ export const getSelfSignUpConfigurations = (): Promise<any> => {
  * @returns {Promise<any>} a promise containing the response.
  */
 export const updateSelfSignUpConfigurations = (data: object): Promise<any> => {
-    return updateConfigurations(data, ServiceResourcesEndpoint.selfSignUp);
+    return updateConfigurations(data, Config.getServiceResourceEndpoints().selfSignUp);
 };
 
 /**
@@ -92,7 +92,7 @@ export const updateSelfSignUpConfigurations = (data: object): Promise<any> => {
  * @returns {Promise<any>} a promise containing the configurations.
  */
 export const getAccountRecoveryConfigurations = (): Promise<any> => {
-    return getConfigurations(ServiceResourcesEndpoint.accountRecovery);
+    return getConfigurations(Config.getServiceResourceEndpoints().accountRecovery);
 };
 
 /**
@@ -103,5 +103,5 @@ export const getAccountRecoveryConfigurations = (): Promise<any> => {
  * @returns {Promise<any>} a promise containing the response.
  */
 export const updateAccountRecoveryConfigurations = (data: object): Promise<any> => {
-    return updateConfigurations(data, ServiceResourcesEndpoint.accountRecovery);
+    return updateConfigurations(data, Config.getServiceResourceEndpoints().accountRecovery);
 };

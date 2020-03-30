@@ -18,7 +18,6 @@
 
 import { getProfileInfo } from "@wso2is/core/api";
 import { AuthReducerStateInterface, ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
-import { ContextUtils } from "@wso2is/core/utils";
 import { Footer, Header, Logo, ProductBrand, SidePanel } from "@wso2is/react-components";
 import classNames from "classnames";
 import _ from "lodash";
@@ -36,7 +35,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Button, Image, Responsive } from "semantic-ui-react";
 import { ProtectedRoute } from "../components";
-import { LogoImage, routes, SidePanelIcons, SidePanelMiscIcons } from "../configs";
+import { Config, LogoImage, routes, SidePanelIcons, SidePanelMiscIcons } from "../configs";
 import { UIConstants } from "../constants";
 import { AppConfig, history } from "../helpers";
 import { AppConfigInterface, ConfigReducerStateInterface } from "../models";
@@ -316,11 +315,11 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                             name={ state.productName && state.productName !== "" ?
                                 state.productName
                                 :
-                                ContextUtils.getRuntimeConfig().applicationName
+                                Config.getRuntimeConfig().applicationName
                             }
                         />
                     ) }
-                    brandLink={ ContextUtils.getRuntimeConfig().appHomePath }
+                    brandLink={ Config.getRuntimeConfig().appHomePath }
                     basicProfileInfo={ profileDetails }
                     fluid={ !isMobileViewport ? fluid : false }
                     isProfileInfoLoading={ isProfileInfoLoading }
@@ -375,8 +374,8 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     copyright={ state.copyrightText && state.copyrightText !== "" ?
                         state.copyrightText
                         :
-                        ContextUtils.getRuntimeConfig().copyrightText
-                            ? ContextUtils.getRuntimeConfig().copyrightText
+                        Config.getRuntimeConfig().copyrightText
+                            ? Config.getRuntimeConfig().copyrightText
                             : null
                     }
                     fixed="bottom"

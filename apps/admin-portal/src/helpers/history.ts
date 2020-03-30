@@ -16,7 +16,7 @@
  * under the License.
  */
 
+import { Config } from "../configs";
 import { createBrowserHistory } from "history";
-import { GlobalConfig } from "../configs";
 
-export const history = createBrowserHistory({ basename: GlobalConfig.appBaseName });
+export const history = createBrowserHistory({ basename: Config.getRuntimeConfig().appBaseName });

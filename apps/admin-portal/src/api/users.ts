@@ -17,7 +17,7 @@
  */
 
 import { AxiosHttpClient } from "@wso2is/http";
-import { ServiceResourcesEndpoint } from "../configs";
+import { Config } from "../configs";
 import { HttpMethods, UserListInterface } from "../models";
 import { store } from "../store";
 
@@ -47,7 +47,7 @@ export const getUsersList = (count: number, startIndex: number, filter: string, 
             startIndex,
             attributes
         },
-        url: ServiceResourcesEndpoint.users
+        url: Config.getServiceResourceEndpoints().users
     };
 
     return httpClient.request(requestConfig)
@@ -72,7 +72,7 @@ export const getUserStoreList = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.userStores
+        url: Config.getServiceResourceEndpoints().userStores
     };
 
     return httpClient.request(requestConfig)
@@ -100,7 +100,7 @@ export const addUser = (data: object): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.users
+        url: Config.getServiceResourceEndpoints().users
     };
 
     return httpClient.request(requestConfig)
@@ -127,7 +127,7 @@ export const deleteUser = (userId: string): Promise<any> => {
             "Content-Type": "application/scim+json"
         },
         method: HttpMethods.DELETE,
-        url: ServiceResourcesEndpoint.users + "/" + userId
+        url: Config.getServiceResourceEndpoints().users + "/" + userId
     };
 
     return httpClient.request(requestConfig)
@@ -155,7 +155,7 @@ export const addUserRole = (data: object, groupId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.groups + "/" + groupId
+        url: Config.getServiceResourceEndpoints().groups + "/" + groupId
     };
 
     return httpClient.request(requestConfig)
@@ -182,7 +182,7 @@ export const updateUserRoles = (data: object): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.bulk
+        url: Config.getServiceResourceEndpoints().bulk
     };
 
     return httpClient.request(requestConfig)

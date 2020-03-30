@@ -27,7 +27,7 @@ import {
 import _ from "lodash";
 import { getProfileSchemas } from "../../api";
 import { getProfileInfo } from "@wso2is/core/api";
-import { ServiceResourcesEndpoint } from "../../configs";
+import { Config } from "../../configs";
 import { history } from "../../helpers";
 import { AlertLevels, ProfileSchema } from "../../models";
 import { store } from "../index";
@@ -231,17 +231,17 @@ export const handleSignIn = (consentDenied = false) => (dispatch): void => {
         dispatch(setSignIn());
         dispatch(getProfileInformation());
     } else {
-        OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false)
+        OPConfigurationUtil.initOPConfiguration(Config.getServiceResourceEndpoints().wellKnown, false)
             .then(() => {
                 sendSignInRequest();
             })
             .catch(() => {
-                OPConfigurationUtil.setAuthorizeEndpoint(ServiceResourcesEndpoint.authorize);
-                OPConfigurationUtil.setTokenEndpoint(ServiceResourcesEndpoint.token);
-                OPConfigurationUtil.setRevokeTokenEndpoint(ServiceResourcesEndpoint.revoke);
-                OPConfigurationUtil.setEndSessionEndpoint(ServiceResourcesEndpoint.logout);
-                OPConfigurationUtil.setJwksUri(ServiceResourcesEndpoint.jwks);
-                OPConfigurationUtil.setIssuer(ServiceResourcesEndpoint.issuer);
+                OPConfigurationUtil.setAuthorizeEndpoint(Config.getServiceResourceEndpoints().authorize);
+                OPConfigurationUtil.setTokenEndpoint(Config.getServiceResourceEndpoints().token);
+                OPConfigurationUtil.setRevokeTokenEndpoint(Config.getServiceResourceEndpoints().revoke);
+                OPConfigurationUtil.setEndSessionEndpoint(Config.getServiceResourceEndpoints().logout);
+                OPConfigurationUtil.setJwksUri(Config.getServiceResourceEndpoints().jwks);
+                OPConfigurationUtil.setIssuer(Config.getServiceResourceEndpoints().issuer);
                 OPConfigurationUtil.setOPConfigInitiated();
 
                 sendSignInRequest();
