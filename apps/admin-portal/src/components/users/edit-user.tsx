@@ -19,10 +19,10 @@
 import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
 import { useDispatch } from "react-redux";
-import { AlertInterface, BasicProfileInterface } from "../../../models";
-import { addAlert } from "../../../store/actions";
-import { UserProfile } from "../user-profile";
-import { UserRolesList } from "../user-roles";
+import { AlertInterface, BasicProfileInterface } from "../../models";
+import { addAlert } from "../../store/actions";
+import { UserProfile } from "./user-profile";
+import { UserRolesList } from "./user-roles";
 
 interface EditUserPropsInterface {
     user: BasicProfileInterface;
