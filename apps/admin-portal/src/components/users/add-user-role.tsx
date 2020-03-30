@@ -106,28 +106,28 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         const addedRoles = [ ...initialValues.tempRoleList ];
         if (checkedUnassignedListItems?.length > 0) {
             checkedUnassignedListItems.map((role) => {
-                if (!(initialValues.tempRoleList.includes(role))) {
+                if (!(initialValues?.tempRoleList?.includes(role))) {
                     addedRoles.push(role);
                 }
             });
         }
         handleTempListChange(addedRoles);
-        handleRoleListChange(initialValues.roleList.filter(x => !addedRoles.includes(x)));
+        handleRoleListChange(initialValues?.roleList.filter(x => !addedRoles?.includes(x)));
         setIsSelectUnassignedAllRolesChecked(false);
     };
 
     const removeRoles = () => {
-        const removedRoles = [ ...initialValues.roleList ];
+        const removedRoles = [ ...initialValues?.roleList ];
         if (checkedAssignedListItems?.length > 0) {
             checkedAssignedListItems.map((role) => {
-                if (!(initialValues.roleList.includes(role))) {
+                if (!(initialValues?.roleList?.includes(role))) {
                     removedRoles.push(role);
                 }
             });
         }
         handleRoleListChange(removedRoles);
-        handleTempListChange(initialValues.tempRoleList.filter(x => !removedRoles.includes(x)));
-        setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles.includes(x)));
+        handleTempListChange(initialValues?.tempRoleList?.filter(x => !removedRoles?.includes(x)));
+        setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles?.includes(x)));
         setIsSelectAssignedAllRolesChecked(false);
     };
 
@@ -185,23 +185,23 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                 handleListSearch={ handleSearchFieldChange }
             >
                 <TransferList
-                    isListEmpty={ !(initialValues.roleList.length > 0) }
+                    isListEmpty={ !(initialValues?.roleList?.length > 0) }
                     listType="unselected"
                     listHeaders={ [ "Name", "Type" ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
                 >
                     {
-                        initialValues.roleList.map((role, index)=> {
-                            const roleName = role.displayName.split("/");
+                        initialValues?.roleList?.map((role, index)=> {
+                            const roleName = role?.displayName?.split("/");
                             return (
                                 <TransferListItem
                                     handleItemChange={ () => handleUnassignedItemCheckboxChange(role) }
                                     key={ index }
-                                    listItem={ roleName.length > 0 ? roleName[1] : role.displayName }
+                                    listItem={ roleName?.length > 0 ? roleName[1] : role?.displayName }
                                     listItemId={ role.id }
                                     listItemIndex={ index }
-                                    listItemTypeLabel={ createItemLabel(role.displayName) }
+                                    listItemTypeLabel={ createItemLabel(role?.displayName) }
                                     isItemChecked={ checkedUnassignedListItems.includes(role) }
                                     showSecondaryActions={ false }
                                 />
@@ -210,20 +210,20 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                     }
                 </TransferList>
                 <TransferList
-                    isListEmpty={ !(initialValues.tempRoleList.length > 0) }
+                    isListEmpty={ !(initialValues?.tempRoleList?.length > 0) }
                     listType="selected"
                     listHeaders={ [ "Name", "Type" ] }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
                     isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
                 >
                     {
-                        initialValues.tempRoleList.map((role, index)=> {
+                        initialValues?.tempRoleList?.map((role, index)=> {
                             const roleName = role.displayName.split("/");
                             return (
                                 <TransferListItem
                                     handleItemChange={ () => handleAssignedItemCheckboxChange(role) }
                                     key={ index }
-                                    listItem={ roleName.length > 0 ? roleName[1] : role.displayName }
+                                    listItem={ roleName?.length > 0 ? roleName[1] : role?.displayName }
                                     listItemId={ role.id }
                                     listItemIndex={ index }
                                     listItemTypeLabel={ createItemLabel(role.displayName) }

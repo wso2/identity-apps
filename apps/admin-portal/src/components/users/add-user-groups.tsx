@@ -85,7 +85,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         if (!_.isEmpty(value)) {
             const re = new RegExp(_.escapeRegExp(value), 'i');
 
-            initialValues.groupList && initialValues.groupList.map((group) => {
+            initialValues?.groupList && initialValues.groupList?.map((group) => {
                 isMatch = re.test(group.displayName);
                 if (isMatch) {
                     filteredGroupList.push(group);
@@ -110,10 +110,10 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
      * roles list to the assigned roles list.
      */
     const addGroups = () => {
-        const addedGroups = [ ...initialValues.tempGroupList ];
+        const addedGroups = [ ...initialValues?.tempGroupList ];
         if (checkedUnassignedListItems?.length > 0) {
             checkedUnassignedListItems.map((group) => {
-                if (!(initialValues.tempGroupList.includes(group))) {
+                if (!(initialValues?.tempGroupList?.includes(group))) {
                     addedGroups.push(group);
                 }
             });
@@ -128,17 +128,17 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
      * roles list to the initial role list.
      */
     const removeGroups = () => {
-        const removedGroups = [ ...initialValues.groupList ];
+        const removedGroups = [ ...initialValues?.groupList ];
         if (checkedAssignedListItems?.length > 0) {
             checkedAssignedListItems.map((group) => {
-                if (!(initialValues.groupList.includes(group))) {
+                if (!(initialValues?.groupList?.includes(group))) {
                     removedGroups.push(group);
                 }
             });
         }
         handleGroupListChange(removedGroups);
-        handleTempListChange(initialValues.tempGroupList.filter(x => !removedGroups.includes(x)));
-        setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedGroups.includes(x)))
+        handleTempListChange(initialValues?.tempGroupList?.filter(x => !removedGroups.includes(x)));
+        setCheckedAssignedListItems(checkedAssignedListItems?.filter(x => !removedGroups.includes(x)))
         setIsSelectAssignedAllChecked(false);
     };
 
@@ -187,14 +187,14 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                 handleListSearch={ handleSearchFieldChange }
             >
                 <TransferList
-                    isListEmpty={ !(initialValues.groupList.length > 0) }
+                    isListEmpty={ !(initialValues?.groupList?.length > 0) }
                     listType="unselected"
                     listHeaders={ [ "Name", "Type" ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedAllChecked }
                 >
                     {
-                        initialValues.groupList.map((group, index)=> {
+                        initialValues?.groupList?.map((group, index)=> {
                             return (
                                 <TransferListItem
                                     handleItemChange={ () => handleUnassignedItemCheckboxChange(group) }
@@ -218,7 +218,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                     isHeaderCheckboxChecked={ isSelectAssignedAllChecked }
                 >
                     {
-                        initialValues.tempGroupList.map((group, index)=> {
+                        initialValues?.tempGroupList?.map((group, index)=> {
                             return (
                                 <TransferListItem
                                     handleItemChange={ () => handleAssignedItemCheckboxChange(group) }
