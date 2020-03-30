@@ -54,6 +54,35 @@
             "delete": true
         }
     },
+    "claimDialects": {
+        "enabled": true,
+        "permissions": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true
+        },
+        "features": {
+            "localClaims": {
+                "enabled": true,
+                "permissions": {
+                    "create": true,
+                    "read": true,
+                    "update": true,
+                    "delete": true
+                }
+            },
+            "externalClaims": {
+                "enabled": true,
+                "permissions": {
+                    "create": true,
+                    "read": true,
+                    "update": true,
+                    "delete": true
+                }
+            }
+        }
+    },
     "userStores": {
         "enabled": true,
         "permissions": {
