@@ -19,10 +19,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteProps } from "react-router-dom";
-import { GlobalConfig } from "../configs";
 import * as ApplicationConstants from "../constants/application-constants";
 import { history } from "../helpers";
 import { updateAuthenticationCallbackUrl } from "../store/actions";
+import { ConfigReducerStateInterface } from "../models";
+import { AppState } from "../store";
 
 /**
  * Protected route component.
@@ -37,12 +38,13 @@ export const ProtectedRoute = (props: RouteProps): JSX.Element => {
     } = props;
 
     const isAuth = useSelector((state: any) => state.authenticationInformation.isAuth);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     /**
      * Update existing location path in the state to recall upon page refresh or authentication callback.
      * The login path and the login error path have been skipped.
      */
-    if ((history.location.pathname !== GlobalConfig.appLoginPath)
+    if ((history.location.pathname !== config?.deployment?.appLoginPath)
         && (history.location.pathname !== ApplicationConstants.LOGIN_ERROR_PAGE_PATH)) {
         updateAuthenticationCallbackUrl(history.location.pathname);
     }
@@ -54,7 +56,7 @@ export const ProtectedRoute = (props: RouteProps): JSX.Element => {
                     ? Component
                         ? <Component { ...renderProps } />
                         : null
-                    : <Redirect to={ GlobalConfig.appLoginPath }/>
+                    : <Redirect to={ config?.deployment?.appLoginPath } />
             }
             { ...rest }
         />

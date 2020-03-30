@@ -20,11 +20,11 @@ import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteApplication, regenerateClientSecret, revokeClientSecret, updateApplicationDetails } from "../../api";
-import { GlobalConfig } from "../../configs";
-import { ApplicationInterface } from "../../models";
+import { ApplicationInterface, ConfigReducerStateInterface } from "../../models";
 import { GeneralDetailsForm } from "./forms";
+import { AppState } from "../../store";
 
 /**
  * Proptypes for the applications general details component.
@@ -105,11 +105,13 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         showRevoke
     } = props;
 
+    const dispatch = useDispatch();
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showRevokeConfirmationModal, setShowRevokeConfirmationModal ] = useState<boolean>(false);
     const [ showRegenerateConfirmationModal, setShowRegenerateConfirmationModal ] = useState<boolean>(false);
-
-    const dispatch = useDispatch();
 
     /**
      * Deletes an application.
@@ -265,7 +267,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     {
                         (permissions && permissions.delete === false)
                             ? null
-                            : !GlobalConfig.doNotDeleteApplications.includes(name) && (
+                            : !config?.deployment?.doNotDeleteApplications.includes(name) && (
                             <DangerZoneGroup sectionHeader="Danger Zone">
                                 { showRegenerate && (
                                     <DangerZone

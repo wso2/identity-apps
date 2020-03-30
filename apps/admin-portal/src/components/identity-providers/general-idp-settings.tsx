@@ -20,11 +20,11 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteIdentityProvider, updateIdentityProviderDetails } from "../../api";
-import { GlobalConfig } from "../../configs";
-import { IdentityProviderInterface } from "../../models";
+import { ConfigReducerStateInterface, IdentityProviderInterface } from "../../models";
 import { GeneralDetailsForm } from "./forms";
+import { AppState } from "../../store";
 
 /**
  * Proptypes for the identity provider general details component.
@@ -86,6 +86,8 @@ export const GeneralIdentityProviderSettings: FunctionComponent<GeneralIdentityP
     } = props;
 
     const dispatch = useDispatch();
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     /**
      * Deletes an identity provider.
@@ -167,7 +169,7 @@ export const GeneralIdentityProviderSettings: FunctionComponent<GeneralIdentityP
                         onSubmit={ handleFormSubmit }
                         imageUrl={ imageUrl }
                     />
-                    {!(GlobalConfig.doNotDeleteIdentityProviders.includes(name)) && (
+                    { !(config?.deployment?.doNotDeleteIdentityProviders.includes(name)) && (
                         <DangerZoneGroup sectionHeader="Danger Zone">
                             <DangerZone
                                 actionTitle="Delete identity provider"
@@ -176,7 +178,7 @@ export const GeneralIdentityProviderSettings: FunctionComponent<GeneralIdentityP
                                 onActionClick={ handleIdentityProviderDelete }
                             />
                         </DangerZoneGroup>
-                    )}
+                    ) }
                 </>
             )
             : <ContentLoader/>

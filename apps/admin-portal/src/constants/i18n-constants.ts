@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { GlobalConfig } from "../configs";
 import { generateBackendPaths, I18nModuleConstants, I18nModuleInitOptions } from "@wso2is/i18n";
+import { store } from "../store";
 
 /**
  * Class containing dev portal specific i18n constants.
@@ -67,7 +67,10 @@ export class I18nConstants {
     public static readonly MODULE_INIT_OPTIONS: I18nModuleInitOptions = {
         backend: {
             loadPath: (language, namespace) => generateBackendPaths(
-                language, namespace, GlobalConfig?.appBaseNameWithoutTenant, GlobalConfig?.i18nModuleOptions
+                language,
+                namespace,
+                store.getState().config?.deployment?.appBaseNameWithoutTenant,
+                store.getState().config?.deployment?.i18nModuleOptions
             )
         },
         ns: [ I18nConstants.COMMON_NAMESPACE, I18nConstants.PORTAL_NAMESPACE ]

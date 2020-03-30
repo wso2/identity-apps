@@ -27,7 +27,7 @@ import {
 import _ from "lodash";
 import { getProfileSchemas } from "../../api";
 import { getProfileInfo } from "@wso2is/core/api";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../../configs";
+import { ServiceResourcesEndpoint } from "../../configs";
 import { history } from "../../helpers";
 import { AlertLevels, ProfileSchema } from "../../models";
 import { store } from "../index";
@@ -167,14 +167,14 @@ export const getProfileInformation = () => (dispatch): void => {
  */
 export const handleSignOut = () => (dispatch): void => {
     if (sessionStorage.length === 0) {
-        history.push(GlobalConfig.appLoginPath);
+        history.push(store.getState().config?.deployment?.appLoginPath);
     } else {
-        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl, () => {
+        SignOutUtil.sendSignOutRequest(store.getState().config?.deployment?.loginCallbackUrl, () => {
                 dispatch(setSignOut());
                 AuthenticateSessionUtil.endAuthenticatedSession();
                 OPConfigurationUtil.resetOPConfiguration();
             }).catch(() => {
-                history.push(GlobalConfig.appLoginPath);
+                history.push(store.getState().config?.deployment?.appLoginPath);
             });
     }
 };
@@ -184,14 +184,14 @@ export const handleSignOut = () => (dispatch): void => {
  */
 export const handleSignIn = (consentDenied = false) => (dispatch): void => {
     const requestParams: OIDCRequestParamsInterface = {
-        clientHost: GlobalConfig.clientHost,
-        clientId: GlobalConfig.clientID,
+        clientHost: store.getState().config?.deployment?.clientHost,
+        clientId: store.getState().config?.deployment?.clientID,
         clientSecret: null,
         enablePKCE: true,
-        redirectUri: GlobalConfig.loginCallbackUrl,
+        redirectUri: store.getState().config?.deployment?.loginCallbackUrl,
         scope: [ SYSTEM_SCOPE ],
-        serverOrigin: GlobalConfig.serverOrigin,
-        tenant: GlobalConfig.tenant
+        serverOrigin: store.getState().config?.deployment?.serverOrigin,
+        tenant: store.getState().config?.deployment?.tenant
     };
 
     const sendSignInRequest = (): void => {

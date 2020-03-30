@@ -20,13 +20,13 @@ import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AppAvatar, ConfirmationModal, ResourceList, ResourceListActionInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { history } from "../../helpers";
 // TODO: Importing `deleteApplication` before `history` import throws `appBaseName` undefined error.
 // tslint:disable-next-line:ordered-imports
 import { deleteApplication } from "../../api";
-import { ApplicationListInterface, ApplicationListItemInterface } from "../../models";
-import { GlobalConfig } from "../../configs";
+import { ApplicationListInterface, ApplicationListItemInterface, ConfigReducerStateInterface } from "../../models";
+import { AppState } from "../../store";
 
 /**
  *
@@ -63,10 +63,12 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         permissions
     } = props;
 
+    const dispatch = useDispatch();
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
-
-    const dispatch = useDispatch();
 
     /**
      * Redirects to the applications edit page when the edit button is clicked.
@@ -134,7 +136,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         }
 
         actions.push({
-            hidden: GlobalConfig.doNotDeleteApplications.includes(app.name),
+            hidden: config?.deployment?.doNotDeleteApplications.includes(app.name),
             icon: "trash alternate",
             onClick: (): void => {
                 setShowDeleteConfirmationModal(true);
