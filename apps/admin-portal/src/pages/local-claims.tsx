@@ -16,19 +16,19 @@
  * under the License.
  */
 
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { PageLayout } from "../layouts";
 import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
 import { Icon, DropdownProps, PaginationProps, DropdownItemProps } from "semantic-ui-react";
 import { ClaimsList, ListType, LocalClaimsSearch } from "../components";
-import {Claim, ClaimsGetParams, AlertLevels, AppConfigInterface} from "../models";
+import { Claim, ClaimsGetParams, AlertLevels, AppConfigInterface } from "../models";
 import { getAllLocalClaims, getADialect } from "../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT, CLAIM_DIALECTS_PATH } from "../constants";
 import { AddLocalClaims } from "../components";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
-import {AppConfig, history} from "../helpers";
+import { AppConfig, history } from "../helpers";
 import { filterList, sortList } from "../utils";
 
 /**
