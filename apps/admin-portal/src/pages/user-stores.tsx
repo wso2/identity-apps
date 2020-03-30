@@ -63,6 +63,8 @@ export const UserStores = (): React.ReactElement => {
 
     const dispatch = useDispatch();
 
+    const appConfig: AppConfigInterface = useContext(AppConfig);
+
     /**
      * Fetches all user stores.
      *
@@ -196,7 +198,7 @@ export const UserStores = (): React.ReactElement => {
                                 onSortStrategyChange={ handleSortStrategyChange }
                                 onSortOrderChange={ handleSortOrderChange }
                                 rightActionPanel={
-                                    (
+                                   appConfig?.userStores?.permissions?.create &&  (
                                         <PrimaryButton
                                             onClick={ () => {
                                                 setOpenModal(true);
