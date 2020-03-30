@@ -30,13 +30,14 @@ import { AlertLevels, AppConfigInterface, ClaimDialect } from "../models";
 import { filterList, sortList } from "../utils";
 
 /**
- * This displays a list fo claim dialects
+ * This displays a list fo claim dialects.
+ *
  * @return {React.ReactElement}
  */
 export const ClaimDialectsPage = (): React.ReactElement => {
 
     /**
-     * Sets the attributes by which the list can be sorted
+     * Sets the attributes by which the list can be sorted.
      */
     const SORT_BY = [
         {
