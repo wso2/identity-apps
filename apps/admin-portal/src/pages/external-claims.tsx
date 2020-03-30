@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { PageLayout } from "../layouts";
 import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
 import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { ClaimsList, ListType, AddExternalClaims, EditExternalClaims, ExternalClaimsSearch } from "../components";
-import {ExternalClaim, ClaimDialect, AlertLevels, AppConfigInterface} from "../models";
+import { ExternalClaim, ClaimDialect, AlertLevels, AppConfigInterface } from "../models";
 import { getAllExternalClaims, getADialect } from "../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT, CLAIM_DIALECTS_PATH } from "../constants";
-import {AppConfig, history} from "../helpers";
+import { AppConfig, history } from "../helpers";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
 import { EmptyPlaceholder } from "../components/shared";
@@ -33,8 +33,10 @@ import { EmptyPlaceholderIllustrations } from "../configs";
 import { filterList, sortList } from "../utils";
 
 /**
- * This lists the external claims
- * @param props 
+ * This lists the external claims.
+ *
+ * @param props.
+ *
  * @return {React.ReactElement}
  */
 export const ExternalClaimsPage = (props): React.ReactElement => {
