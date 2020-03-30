@@ -35,6 +35,7 @@ import {
     CodeIcon,
     CrossIcon,
     DashboardIcon,
+    DatabaseIcon,
     DocumentIcon,
     DotNetLogo,
     DragIcon,
@@ -62,6 +63,7 @@ import {
     ReactLogo,
     ReportIcon,
     SamlLogo,
+    ServerIcon,
     SettigsSectionIconSet,
     SMSOTPIcon,
     SPATemplateIllustration,
@@ -100,11 +102,12 @@ export const HomeTileIconImages = HomeTileIcons;
 export const SidePanelIcons = {
     applications: AppIcon,
     childIcon: ArrowRight,
+    claims: ClaimsIcon,
     connections: PlugIcon,
     overview: DashboardIcon,
-    usersAndRoles: UserIcon,
-    claims: ClaimsIcon,
-    userStore: UserStoreIcon
+    serverConfigurations: ServerIcon,
+    userStore: DatabaseIcon,
+    usersAndRoles: UserIcon
 };
 
 export const SidePanelMiscIcons = {

@@ -19,6 +19,8 @@
 ![forbidden](modules/theme/src/themes/default/assets/images/icons/forbidden-icon.svg) | Icon made by Freepik from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/prohibition-symbol_12572?term=not%20permitted&page=1&position=2)
 ![plug](modules/theme/src/themes/default/assets/images/icons/plug-icon.svg) | Icon made by prettycons from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/plug_978016?term=plug&page=1&position=20)
 ![drag](modules/theme/src/themes/default/assets/images/icons/drag-icon.svg) | Icon made by Pixel Perfect from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/drag_624828?term=drag&page=1&position=2)
+![database](modules/theme/src/themes/default/assets/images/icons/database-icon.svg) | Icon made by catkuro from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/database_1980250?term=database&page=1&position=4)
+![server](modules/theme/src/themes/default/assets/images/icons/server-icon.svg) | Icon made by DinosoftLabs from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/database_1798566?term=database&page=1&position=28)
 
 # Illustration Owners
 
