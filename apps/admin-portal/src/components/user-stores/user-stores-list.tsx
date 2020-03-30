@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import React, {useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import { ResourceList, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { UserStoreListItem, AlertLevels, AppConfigInterface } from "../../models";
 import { Modal } from "semantic-ui-react";
