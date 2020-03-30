@@ -191,6 +191,7 @@ export const Header: React.FunctionComponent<HeaderPropsInterface> = (
                                             >
                                                 <UserAvatar
                                                     authState={ basicProfileInfo }
+                                                    profileInfo={ profileInfo }
                                                     isLoading={ isProfileInfoLoading }
                                                     size="tiny"
                                                 />
