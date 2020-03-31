@@ -48,7 +48,9 @@ export class Config {
                 ? (this.RUNTIME_CONFIG.appBaseNameWithoutTenant || APP_BASENAME)
                 : APP_BASENAME,
             appHomePath: (this.RUNTIME_CONFIG) ? (this.RUNTIME_CONFIG.appHomePath || APP_HOME_PATH) : APP_HOME_PATH,
-            appLoginPath: (this.RUNTIME_CONFIG) ? (this.RUNTIME_CONFIG.appLoginPath || APP_LOGIN_PATH) : APP_LOGIN_PATH,
+            appLoginPath: (this.RUNTIME_CONFIG)
+                ? (this.RUNTIME_CONFIG.appLoginPath || APP_LOGIN_PATH)
+                : APP_LOGIN_PATH,
             applicationName: (this.RUNTIME_CONFIG) ? (this.RUNTIME_CONFIG.applicationName || APP_NAME) : APP_NAME,
             clientHost: (this.RUNTIME_CONFIG)
                 ? (this.RUNTIME_CONFIG.clientHost || CLIENT_HOST_DEFAULT)
