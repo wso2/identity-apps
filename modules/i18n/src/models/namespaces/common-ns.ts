@@ -31,6 +31,7 @@ export interface CommonNS {
     assignees: string;
     browser: string;
     cancel: string;
+    close: string;
     challengeQuestionNumber: string;
     change: string;
     claim: string;

@@ -602,14 +602,17 @@ export interface DevPortalNS {
                         maxFailedLoginAttemptsToAccountLock: {
                             label: string;
                             hint: string;
+                            placeholder: string;
                         };
                         accountLockTime: {
                             label: string;
                             hint: string;
+                            placeholder: string;
                         };
                         accountLockTimeIncrementFactor: {
                             label: string;
                             hint: string;
+                            placeholder: string;
                         };
                         accountLockInternalNotificationManagement: {
                             label: string;
@@ -633,17 +636,19 @@ export interface DevPortalNS {
                 reCaptcha: {
                     heading: string;
                     form: {
-                        reCaptchaAlwaysEnable: {
+                        reCaptchaPreference: {
                             label: string;
-                            hint: string;
-                        };
-                        reCaptchaAfterMaxFailedAttemptsEnable: {
-                            label: string;
-                            hint: string;
+                            reCaptchaAlwaysEnable: {
+                                label: string;
+                            };
+                            reCaptchaAfterMaxFailedAttemptsEnable: {
+                                label: string;
+                            };
                         };
                         maxFailedLoginAttemptsToReCaptcha: {
                             label: string;
                             hint: string;
+                            placeholder: string;
                         };
                     };
                 };

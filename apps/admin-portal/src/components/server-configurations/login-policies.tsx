@@ -179,19 +179,35 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 						"true" : "false"
 				},
 				{
-					"name": ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE,
-					"value": loginPoliciesConfigs.reCaptchaAlwaysEnable.length > 0 ? "true" : "false"
-				},
-				{
-					"name": ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE,
-					"value": loginPoliciesConfigs.reCaptchaAfterMaxFailedAttemptsEnable.length > 0 ? "true" : "false"
-				},
-				{
 					"name": ServerConfigurationsConstants.MAX_FAILED_LOGIN_ATTEMPTS_TO_RE_CAPTCHA,
 					"value": loginPoliciesConfigs.maxFailedLoginAttemptsToReCaptcha
 				}
 			]
 		};
+		if (loginPoliciesConfigs.reCaptchaPreference === ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE) {
+			data.properties.push(
+				{
+					"name": ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE,
+					"value": "true"
+				},
+				{
+					"name": ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE,
+					"value": "false"
+				}
+			)
+		} else if (loginPoliciesConfigs.reCaptchaPreference ===
+			ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE) {
+			data.properties.push(
+				{
+					"name": ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE,
+					"value": "false"
+				},
+				{
+					"name": ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE,
+					"value": "true"
+				}
+			)
+		}
 		const successNotification = {
 			description: t("devPortal:components.serverConfigs.loginPolicies.notifications." +
 				"updateConfigurations.success.description"),
@@ -218,10 +234,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 				ServerConfigurationsConstants.MAX_FAILED_LOGIN_ATTEMPTS_TO_ACCOUNT_LOCK),
 			maxFailedLoginAttemptsToReCaptcha: values.get(
 				ServerConfigurationsConstants.MAX_FAILED_LOGIN_ATTEMPTS_TO_RE_CAPTCHA),
-			reCaptchaAfterMaxFailedAttemptsEnable: values.get(
-				ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE),
-			reCaptchaAlwaysEnable: values.get(
-				ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE)
+			reCaptchaPreference: values.get("reCaptchaPreference")
 		};
 	};
 
@@ -240,8 +253,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 					accountLockTimeIncrementFactor: "",
 					maxFailedLoginAttemptsToAccountLock: "",
 					maxFailedLoginAttemptsToReCaptcha: "",
-					reCaptchaAfterMaxFailedAttemptsEnable: [],
-					reCaptchaAlwaysEnable: []
+					reCaptchaPreference: ""
 				};
 				response.connectors.map(connector => {
 					if (connector.id === ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID) {
@@ -263,10 +275,17 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 						configs.accountDisableInternalNotificationManagement = extractArrayValue(connector,
 							ServerConfigurationsConstants.ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT);
 					} else if(connector.id === ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID) {
-						configs.reCaptchaAlwaysEnable = extractArrayValue(connector,
+						const reCaptchaAlwaysEnable = extractArrayValue(connector,
 							ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE);
-						configs.reCaptchaAfterMaxFailedAttemptsEnable = extractArrayValue(connector,
+						const reCaptchaAfterMaxFailedAttemptsEnable = extractArrayValue(connector,
 							ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE);
+						if (reCaptchaAlwaysEnable.length > 0) {
+							configs.reCaptchaPreference =
+								ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE;
+						} else if (reCaptchaAfterMaxFailedAttemptsEnable.length > 0) {
+							configs.reCaptchaPreference =
+								ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE;
+						}
 						configs.maxFailedLoginAttemptsToReCaptcha = connector.properties.find(
 							property => property.name ==
 								ServerConfigurationsConstants.MAX_FAILED_LOGIN_ATTEMPTS_TO_RE_CAPTCHA).value;
@@ -458,45 +477,27 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 							<Divider/>
 							<h4>Captcha for SSO Login</h4>
 							<Field
-								name={ ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE }
+								name={ "reCaptchaPreference" }
 								required={ false }
 								requiredErrorMessage=""
-								type="checkbox"
+								default={ "" }
+								label={ t("devPortal:components.serverConfigs.loginPolicies.reCaptcha." +
+									"form.reCaptchaPreference.label") }
+								type="radio"
 								children={ [
 									{
 										label: t("devPortal:components.serverConfigs.loginPolicies." +
-											"reCaptcha.form.reCaptchaAlwaysEnable.label"),
+											"reCaptcha.form.reCaptchaPreference.reCaptchaAlwaysEnable.label"),
 										value: ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE
-									}
-								] }
-								value={ loginPoliciesConfigs.reCaptchaAlwaysEnable }
-							/>
-							<Hint>
-								{ t("devPortal:components.serverConfigs.loginPolicies." +
-									"reCaptcha.form.reCaptchaAlwaysEnable.hint") }
-							</Hint>
-						</Grid.Column>
-					</Grid.Row>
-					<Grid.Row columns={ 1 }>
-						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-							<Field
-								name={ ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE }
-								required={ false }
-								requiredErrorMessage=""
-								type="checkbox"
-								children={ [
+									},
 									{
-										label: t("devPortal:components.serverConfigs.loginPolicies." +
-											"reCaptcha.form.reCaptchaAfterMaxFailedAttemptsEnable.label"),
+										label: t("devPortal:components.serverConfigs.loginPolicies.reCaptcha." +
+											"form.reCaptchaPreference.reCaptchaAfterMaxFailedAttemptsEnable.label"),
 										value: ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE
 									}
 								] }
-								value={ loginPoliciesConfigs.reCaptchaAfterMaxFailedAttemptsEnable }
+								value={ loginPoliciesConfigs.reCaptchaPreference }
 							/>
-							<Hint>
-								{ t("devPortal:components.serverConfigs.loginPolicies.reCaptcha." +
-									"form.reCaptchaAfterMaxFailedAttemptsEnable.hint") }
-							</Hint>
 						</Grid.Column>
 					</Grid.Row>
 					<Grid.Row columns={ 1 }>

@@ -871,12 +871,12 @@ export const devPortal: DevPortalNS = {
                 accountDisable: {
                     form: {
                         accountDisableInternalNotificationManagement: {
-                            hint: "Set false if the client application handles notification sending.",
-                            label: "Internal notification management"
+                            hint: "If disabled, the client application should handle notification sending.",
+                            label: "Manage account disabling notifications internally"
                         },
                         accountDisablingEnable: {
                             hint: "Allow administrator to disable user accounts.",
-                            label: "Enable account disabling"
+                            label: "Allow the administrator to disable user accounts."
                         }
                     },
                     heading: "Account Disabling"
@@ -885,23 +885,27 @@ export const devPortal: DevPortalNS = {
                     form: {
                         accountLockEnable: {
                             hint: "Lock user account on failed login attempts.",
-                            label: "Enable account locking"
+                            label: "Lock user accounts on failed login attempts."
                         },
                         accountLockInternalNotificationManagement: {
-                            hint: "Set false if the client application handles notification sending.",
-                            label: "Internal notification management"
+                            hint: "If disabled, the client application should handle notification sending.",
+                            label: "Manage account locking notifications internally"
                         },
                         accountLockTime: {
                             hint: "Initial account lock time period in minutes.",
-                            label: "Account lock time"
+                            label: "Initial account lock duration",
+                            placeholder: "5"
                         },
                         accountLockTimeIncrementFactor: {
-                            hint: "Account lock time will be increased by this factor.",
-                            label: "Account lock time increment factor"
+                            hint: "Account lock duration will be increased by this factor. " +
+                                "Ex: Initial duration: 5m; Increment factor: 2; Next lock duration: 5 x 2 = 10m",
+                            label: "Account lock duration increment factor",
+                            placeholder: "2"
                         },
                         maxFailedLoginAttemptsToAccountLock: {
                             hint: "Number of failed login attempts allowed until account lock.",
-                            label: "Maximum failed login attempts"
+                            label: "Maximum failed login attempts",
+                            placeholder: "2"
                         }
                     },
                     heading: "Account Locking"
@@ -945,16 +949,17 @@ export const devPortal: DevPortalNS = {
                     form: {
                         maxFailedLoginAttemptsToReCaptcha: {
                             hint: "Number of failed login attempts allowed until prompting reCaptcha.",
-                            label: "Maximum failed login attempts"
+                            label: "Maximum failed login attempts",
+                            placeholder: "3"
                         },
-                        reCaptchaAfterMaxFailedAttemptsEnable: {
-                            hint: "Enable reCaptcha verification during SSO login after allowed number of failed " +
-                                "attempts are exceeded.",
-                            label: "Prompt reCaptcha after max failed attempts"
-                        },
-                        reCaptchaAlwaysEnable: {
-                            hint: "Enable reCaptcha verification always during SSO login.",
-                            label: "Always prompt reCaptcha"
+                        reCaptchaPreference: {
+                            label: "Select reCaptcha preference.",
+                            reCaptchaAfterMaxFailedAttemptsEnable: {
+                                label: "Prompt reCaptcha after max failed attempts"
+                            },
+                            reCaptchaAlwaysEnable: {
+                                label: "Always prompt reCaptcha"
+                            }
                         }
                     },
                     heading: "Captcha for SSO Login"

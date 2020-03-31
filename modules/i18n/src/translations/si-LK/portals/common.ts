@@ -33,6 +33,7 @@ export const common: CommonNS = {
     challengeQuestionNumber: "අභියෝගාත්මක ප්\u200Dරශ්නය {{number}}",
     change: "වෙනස් කරන්න",
     claim: "හිමිකම",
+    close: "වසන්න",
     completed: "සම්පුර්ණ කරන ලද",
     configure: "වින්\u200Dයාස කරන්න",
     contains: "අඩංගු වේ",

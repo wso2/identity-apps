@@ -58,6 +58,5 @@ export interface LoginPoliciesInterface {
 	accountDisableInternalNotificationManagement?: string[];
 	maxFailedLoginAttemptsToAccountLock?: string;
 	maxFailedLoginAttemptsToReCaptcha?: string;
-	reCaptchaAlwaysEnable?: string[];
-	reCaptchaAfterMaxFailedAttemptsEnable?: string[];
+	reCaptchaPreference?: string;
 }
