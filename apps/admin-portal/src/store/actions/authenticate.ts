@@ -28,7 +28,7 @@ import {
 } from "@wso2is/authentication";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import _ from "lodash";
-import { addAlert } from "./global";
+import { addAlert } from "@wso2is/core/store";
 import { getProfileInfo } from "@wso2is/core/api";
 import { getProfileSchemas } from "../../api";
 import { history } from "../../helpers";
