@@ -31,7 +31,7 @@
 
 /* User Roles List Segment */
 @userRolesListSegmentMarginTop: 10px;
-@userRolesListSegmentHeight: 250px;
+@userRolesListSegmentHeight: 281px;
 
 /* Assigned Roles List Segment */
 @assignedRolesListSegmentHeight: 298px;
@@ -47,3 +47,14 @@
 
 @RoleSummaryUserListBackgroundColor: #f7f7f7;
 @RoleSummaryUserListBackgroundColor: #efefef;
+
+/*************************************
+    Transfer Component Variation
+*************************************/
+
+@TransferComponentSegmentWidth: 281px !important;
+@TransferComponentSegmentTableFontSize: 12px;
+@TransferComponentSegmentApplicationLabelBackgroundColor: #99A1CC;
+@TransferComponentSegmentApplicationLabelBorderColor: #8E95B6;
+@TransferComponentSegmentInternalLabelBackgroundColor: #8DC1D4;
+@TransferComponentSegmentInternalLabelBorderColor: #7CB5CA;
