@@ -376,7 +376,7 @@ export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -385,7 +385,7 @@ export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
             limit,
             offset
         },
-        url: ServiceResourcesEndpoint.identityProviders + "/templates"
+        url: Config.getServiceResourceEndpoints().identityProviders + "/templates"
     };
 
     return httpClient.request(requestConfig)
@@ -423,11 +423,11 @@ export const getIdentityProviderTemplate = (templateId: string): Promise<Identit
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.identityProviders + "/templates/" + templateId
+        url: Config.getServiceResourceEndpoints().identityProviders + "/templates/" + templateId
     };
 
     return httpClient.request(requestConfig)
