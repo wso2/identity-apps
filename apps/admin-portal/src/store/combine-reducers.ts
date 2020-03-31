@@ -24,9 +24,9 @@ import {
     identityProviderReducer,
     LoadersReducer
 } from "./reducers";
+import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "../models";
 import { combineReducers } from "redux";
 import { commonConfigReducer } from "@wso2is/core/store";
-import { RuntimeConfigInterface } from "../models";
 
 /**
  * Combines all the reducers.
@@ -36,7 +36,8 @@ import { RuntimeConfigInterface } from "../models";
 export const reducers = combineReducers({
     application: applicationReducer,
     authenticationInformation: authenticateReducer,
-    config: commonConfigReducer<RuntimeConfigInterface>(commonConfigReducerInitialState),
+    config: commonConfigReducer<RuntimeConfigInterface, ServiceResourceEndpointsInterface>(
+        commonConfigReducerInitialState),
     global: globalReducer,
     identityProvider: identityProviderReducer,
     loaders: LoadersReducer

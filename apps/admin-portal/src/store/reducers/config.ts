@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { DeploymentConfigInterface, ServiceResourceEndpointsInterface } from "../../models";
+import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "../../models";
 import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
 
 /**
  * Initial state for the common config reducer.
  */
-export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<DeploymentConfigInterface,
+export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<RuntimeConfigInterface,
     ServiceResourceEndpointsInterface> = {
-    deployment: {},
-    endpoints: {}
+    deployment: null,
+    endpoints: null
 };
