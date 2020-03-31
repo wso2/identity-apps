@@ -28,7 +28,7 @@ import { ListLayout, PageLayout } from "../layouts";
 import { AlertLevels, AppConfigInterface, QueryParams, UserStoreListItem } from "../models";
 import { addAlert } from "../store/actions";
 import { filterList, sortList } from "../utils";
-import { AppConfig } from "../../../user-portal/src/helpers";
+import { AppConfig } from "../helpers";
 
 /**
  * This renders the User Stores page.
