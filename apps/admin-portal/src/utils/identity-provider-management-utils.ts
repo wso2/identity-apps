@@ -45,12 +45,10 @@ export class IdentityProviderManagementUtils {
 
     /**
      * Gets the list of available authenticator list and sets them in the redux store.
-     *
-     * @param {AuthProtocolMetaListItemInterface[]} meta - Meta data to filter.
      */
-    public static getAuthenticators(): Promise<void> {
+     public static getAuthenticators(): Promise<void> {
         return getFederatedAuthenticatorsList()
-            .then((response) => {
+            .then((response): void => {
                 store.dispatch(
                     setAvailableAuthenticatorsMeta(response)
                 );
