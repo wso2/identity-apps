@@ -20,30 +20,27 @@ import { CommonConfigActions, CommonConfigActionTypes } from "../actions/types";
 import { CommonConfigReducerStateInterface } from "../../models";
 
 /**
- * Initial state.
- */
-export const commonConfigReduceInitialState: CommonConfigReducerStateInterface<any> = {
-    deployment: {}
-};
-
-/**
  * Reducer to handle the state of common config actions.
  *
- * @param {CommonConfigReducerStateInterface<T>} state - Previous state.
- * @param {CommonConfigActions} action - Actions.
+ * @param {CommonConfigReducerStateInterface<T, S>} initialState - Reducer initial state.
  *
- * @return The new state.
+ * @return {CommonConfigReducerStateInterface<T, S>} The new state.
  */
-export const commonConfigReducer = <T>() => (
-    state: CommonConfigReducerStateInterface<T> = commonConfigReduceInitialState,
-    action: CommonConfigActions<T>
-) => {
+export const commonConfigReducer = <T, S>(initialState: CommonConfigReducerStateInterface<T, S>) => (
+    state: CommonConfigReducerStateInterface<T, S> = initialState,
+    action: CommonConfigActions<T, S>
+): CommonConfigReducerStateInterface<T, S> => {
 
     switch (action.type) {
         case CommonConfigActionTypes.SET_DEPLOYMENT_CONFIGS:
             return {
                 ...state,
                 deployment: action.payload
+            };
+        case CommonConfigActionTypes.SET_SERVICE_RESOURCE_ENDPOINTS:
+            return {
+                ...state,
+                endpoints: action.payload
             };
         default:
             return state;

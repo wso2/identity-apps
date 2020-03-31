@@ -28,7 +28,13 @@ export enum CommonConfigActionTypes {
      *
      * @type {string}
      */
-    SET_DEPLOYMENT_CONFIGS = "SET_DEPLOYMENT_CONFIGS"
+    SET_DEPLOYMENT_CONFIGS = "SET_DEPLOYMENT_CONFIGS",
+    /**
+     * Action type to set the service resource endpoints.
+     *
+     * @type {string}
+     */
+    SET_SERVICE_RESOURCE_ENDPOINTS = "SET_SERVICE_RESOURCE_ENDPOINTS"
 }
 
 /**
@@ -47,6 +53,15 @@ export interface SetDeploymentConfigsActionInterface<T = {}> extends CommonConfi
 }
 
 /**
+ * Action interface to set the service resource endpoints.
+ */
+export interface SetServiceResourceEndpointsActionInterface<T = {}> extends CommonConfigBaseActionInterface {
+    payload: T;
+    type: CommonConfigActionTypes.SET_SERVICE_RESOURCE_ENDPOINTS;
+}
+
+/**
  * Export action interfaces.
  */
-export type CommonConfigActions<T> = SetDeploymentConfigsActionInterface<T>;
+export type CommonConfigActions<T, S> = SetDeploymentConfigsActionInterface<T>
+    | SetServiceResourceEndpointsActionInterface<S>;

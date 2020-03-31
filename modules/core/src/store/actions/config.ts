@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import { CommonConfigActionTypes, SetDeploymentConfigsActionInterface } from "./types";
+import {
+    CommonConfigActionTypes,
+    SetDeploymentConfigsActionInterface,
+    SetServiceResourceEndpointsActionInterface
+} from "./types";
 
 /**
  * Redux action to set the deployment configs.
@@ -28,4 +32,16 @@ import { CommonConfigActionTypes, SetDeploymentConfigsActionInterface } from "./
 export const setDeploymentConfigs = <T>(configs: T): SetDeploymentConfigsActionInterface<T> => ({
     payload: configs,
     type: CommonConfigActionTypes.SET_DEPLOYMENT_CONFIGS
+});
+
+/**
+ * Redux action to set the service resource endpoints.
+ *
+ * @param {T} endpoints - Resource endpoints.
+ *
+ * @return {SetServiceResourceEndpointsActionInterface<T>} An action of type `SET_SERVICE_RESOURCE_ENDPOINTS`
+ */
+export const setServiceResourceEndpoints = <T>(endpoints: T): SetServiceResourceEndpointsActionInterface<T> => ({
+    payload: endpoints,
+    type: CommonConfigActionTypes.SET_SERVICE_RESOURCE_ENDPOINTS
 });
