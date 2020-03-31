@@ -105,11 +105,19 @@ export interface ClaimDialectsConfigInterface {
 
 /**
  * Deployment config interface for dev portal.
- *
- * @remarks
- * Convert to an interface when extension is required.
  */
-export type DeploymentConfigInterface = CommonDeploymentConfigInterface;
+export interface DeploymentConfigInterface extends CommonDeploymentConfigInterface {
+    /**
+     * Base name of the user portal.
+     * ex: `/user-portal` ot `/t/wos2.com/user-portal`
+     */
+    userPortalBaseName: string;
+    /**
+     * User portal host.
+     * ex: `https://localhost:9000`
+     */
+    userPortalClientHost: string;
+}
 
 /**
  * Runtime config interface.
@@ -118,6 +126,12 @@ export type DeploymentConfigInterface = CommonDeploymentConfigInterface;
  * Different config type i.e deployment, features, ui, etc. can be grouped under
  * runtime config. So, that the all the configs can be handled through one file.
  * TODO: Group the different configs rather than having them in a flat structure.
+ * Proposed structure:
+ * {
+ *     "deployment": DeploymentConfigInterface,
+ *     "i18n": I18nModuleOptionsInterface,
+ *     "ui": <UI_CONFIGS>
+ * }
  */
 export interface RuntimeConfigInterface extends DeploymentConfigInterface {
     /**
@@ -141,16 +155,6 @@ export interface RuntimeConfigInterface extends DeploymentConfigInterface {
      * ex: `WSO2 Identity Server`
      */
     titleText?: string;
-    /**
-     * Base name of the user portal.
-     * ex: `/user-portal` ot `/t/wos2.com/user-portal`
-     */
-    userPortalBaseName: string;
-    /**
-     * User portal host.
-     * ex: `https://localhost:9000`
-     */
-    userPortalClientHost: string;
 }
 
 /**
