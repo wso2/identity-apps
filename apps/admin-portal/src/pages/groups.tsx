@@ -23,7 +23,7 @@ import React, { ReactElement, useEffect, useState, SyntheticEvent } from "react"
 import { deleteRoleById, getRolesList, searchRoleList, getUserStoreList } from "../api";
 
 import { CreateRoleWizard } from "../components/roles/create-role-wizard";
-import { DEFAULT_ROLE_LIST_ITEM_LIMIT, APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../constants";
+import { DEFAULT_ROLE_LIST_ITEM_LIMIT } from "../constants";
 import { PrimaryButton } from "@wso2is/react-components";
 import { RoleList, RoleSearch } from "../components/roles";
 import { addAlert } from "../store/actions";
@@ -50,11 +50,11 @@ const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
 ];
 
 /**
- * React component to list User Roles.
+ * React component to list User Groups.
  * 
  * @return {ReactElement}
  */
-export const RolesPage = (): ReactElement => {
+export const GroupsPage = (): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
@@ -73,11 +73,11 @@ export const RolesPage = (): ReactElement => {
     }, []);
 
     useEffect(() => {
-        getRoles();
+        getGroups();
     },[ listOffset, listItemLimit ]);
 
     useEffect(() => {
-        getRoles();
+        getGroups();
         setListUpdated(false);
     }, [ isListUpdated ]);
 
@@ -86,18 +86,16 @@ export const RolesPage = (): ReactElement => {
     }, []);
 
     useEffect(() => {
-        getRoles();
+        getGroups();
     }, [ userStore ]);
 
-    const getRoles = () => {
+    const getGroups = () => {
         getRolesList(userStore).then((response)=> {
             if (response.status === 200) {
                 const roleResources = response.data.Resources
-
                 if (roleResources && roleResources instanceof Array) {
                     const updatedResources = roleResources.filter((role: RolesInterface) => {
-                        return role.displayName.includes(APPLICATION_DOMAIN) || 
-                                role.displayName.includes(INTERNAL_DOMAIN);
+                        return !role.displayName.includes("Application/") && !role.displayName.includes("Internal/");
                     })
                     response.data.Resources = updatedResources;
                 }
@@ -213,7 +211,7 @@ export const RolesPage = (): ReactElement => {
      */
     const handleUserFilter = (query: string): void => {
         if (query === null || query === "displayName sw ") {
-            getRoles();
+            getGroups();
             return;
         }
 
@@ -222,8 +220,8 @@ export const RolesPage = (): ReactElement => {
 
     return (
         <PageLayout
-            title="Roles"
-            description="Create and Manage Roles, Assign Permissions for Roles."
+            title="Groups"
+            description="Create and manage user groups, assign permissions for groups."
             showBottomDivider={ true } 
         >
             <ListLayout
@@ -238,9 +236,18 @@ export const RolesPage = (): ReactElement => {
                     (
                         <PrimaryButton onClick={ () => setShowWizard(true) }>
                             <Icon name="add"/>
-                            Add Role
+                            Add Group
                         </PrimaryButton>
                     )
+                }
+                leftActionPanel={
+                    <Dropdown
+                        selection
+                        options={ userStoreOptions && userStoreOptions }
+                        placeholder="Select User Store"
+                        value={ userStore && userStore }
+                        onChange={ handleDomainChange }
+                    />
                 }
                 showPagination={ true }
                 totalPages={ Math.ceil(roleList?.totalResults / listItemLimit) }
@@ -253,7 +260,7 @@ export const RolesPage = (): ReactElement => {
                 {
                     showWizard && (
                         <CreateRoleWizard
-                            isAddGroup={ false }
+                            isAddGroup
                             closeWizard={ () => setShowWizard(false) }
                             updateList={ () => setListUpdated(true) }
                         />

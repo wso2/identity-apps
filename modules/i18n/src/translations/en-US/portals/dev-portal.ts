@@ -660,7 +660,7 @@ export const devPortal: DevPortalNS = {
                 createRole: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occured while creating the role."
+                        message: "Error occurred while creating the role."
                     },
                     genericError: {
                         description: "Couldn't create the role.",
@@ -674,7 +674,7 @@ export const devPortal: DevPortalNS = {
                 createPermission: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occured while adding permission to role."
+                        message: "Error occurred while adding permission to role."
                     },
                     genericError: {
                         description: "Couldn't add permissions to role.",
@@ -691,21 +691,21 @@ export const devPortal: DevPortalNS = {
                     searchForm: {
                         inputs: {
                             filerAttribute: {
-                                label: "Filter attribute",
+                                label: "Filter Attribute",
                                 placeholder: "E.g. role name.",
                                 validations: {
                                     empty: "Filter attribute is a required field"
                                 }
                             },
                             filterCondition: {
-                                label: "Filter condition",
+                                label: "Filter Condition",
                                 placeholder: "E.g. Starts with etc.",
                                 validations: {
                                     empty: "Filter condition is a required field"
                                 }
                             },
                             filterValue: {
-                                label: "Filter value",
+                                label: "Filter Value",
                                 placeholder: "Enter value to search",
                                 validations: {
                                     empty: "Filter value is a required field"
@@ -721,11 +721,11 @@ export const devPortal: DevPortalNS = {
                     }
                 },
                 options: {
-                    header: "Advanced search",
+                    header: "Advanced Search",
                 },
                 placeholder: "Search by role name",
                 popups: {
-                    clear: "clear search",
+                    clear: "Clear search",
                     dropdown: "Show options"
                 },
                 resultsIndicator: "Showing results for the query \"{{query}}\""

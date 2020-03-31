@@ -24,6 +24,7 @@ import {
     ApplicationsPage,
     ApplicationTemplateSelectPage,
     CustomizePage,
+    GroupsPage,
     HomePage,
     IdentityProvidersPage,
     IdentityProviderTemplateSelectPage,
@@ -152,6 +153,17 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 level: 2,
                 name: "Users",
                 path: "/users",
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
+                component: GroupsPage,
+                exact: true,
+                icon: "childIcon",
+                id: "userGroups",
+                level: 2,
+                name: "User Groups",
+                path: "/groups",
                 protected: true,
                 showOnSidePanel: true
             },
