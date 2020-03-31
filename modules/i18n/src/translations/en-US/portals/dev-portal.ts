@@ -632,56 +632,56 @@ export const devPortal: DevPortalNS = {
                 deleteRole: {
                     error: {
                         description: "{{description}}",
-                        message: "Error Deleting the Selected Role."
+                        message: "Error deleting the selected role."
                     },
                     genericError: {
-                        description: "Couldn't Remove the Selected Role.",
-                        message: "Something Went Wrong"
+                        description: "Couldn't remove the selected role.",
+                        message: "Something went wrong"
                     },
                     success: {
-                        description: "The Selected Role Was Deleted Successfully.",
+                        description: "The selected role was deleted successfully.",
                         message: "Role deleted successfully"
                     }
                 },
                 updateRole: {
                     error: {
                         description: "{{description}}",
-                        message: "Error Updating the Selected Role."
+                        message: "Error updating the selected role."
                     },
                     genericError: {
-                        description: "Couldn't Update the Selected Role.",
-                        message: "Something Went Wrong"
+                        description: "Couldn't update the selected role.",
+                        message: "Something went wrong"
                     },
                     success: {
-                        description: "The Selected Role Was Updated Successfully.",
+                        description: "The selected role was updated successfully.",
                         message: "Role updated successfully"
                     }
                 },
                 createRole: {
                     error: {
                         description: "{{description}}",
-                        message: "Error Occurred While Creating the Role."
+                        message: "Error occurred while creating the role."
                     },
                     genericError: {
-                        description: "Couldn't Create the Role.",
-                        message: "Something Went Wrong"
+                        description: "Couldn't create the role.",
+                        message: "Something went wrong"
                     },
                     success: {
-                        description: "The Role Was Created Successfully.",
-                        message: "Role Created Successfully."
+                        description: "The role was created successfully.",
+                        message: "Role created successfully."
                     }
                 },
                 createPermission: {
                     error: {
                         description: "{{description}}",
-                        message: "Error Occurred While Adding Permission to Role."
+                        message: "Error occurred while adding permission to role."
                     },
                     genericError: {
-                        description: "Couldn't Add Permissions to Role.",
-                        message: "Something Went Wrong"
+                        description: "Couldn't add permissions to role.",
+                        message: "Something went wrong"
                     },
                     success: {
-                        description: "Permissions Were Successfully Added to the Role.",
+                        description: "Permissions were successfully added to the role.",
                         message: "Role created successfully."
                     }
                 }
@@ -694,21 +694,21 @@ export const devPortal: DevPortalNS = {
                                 label: "Filter Attribute",
                                 placeholder: "E.g. role name.",
                                 validations: {
-                                    empty: "Filter Attribute Is a Required Field"
+                                    empty: "Filter attribute is a required field"
                                 }
                             },
                             filterCondition: {
                                 label: "Filter Condition",
                                 placeholder: "E.g. Starts with etc.",
                                 validations: {
-                                    empty: "Filter Condition Is a Required Field"
+                                    empty: "Filter condition is a required field"
                                 }
                             },
                             filterValue: {
                                 label: "Filter Value",
-                                placeholder: "Enter Value to Search",
+                                placeholder: "Enter value to search",
                                 validations: {
-                                    empty: "Filter Value Is a Required Field"
+                                    empty: "Filter value is a required field"
                                 }
                             },
                         }
@@ -717,18 +717,18 @@ export const devPortal: DevPortalNS = {
                 hints: {
                     querySearch: {
                         actionKeys: "Shift + Enter",
-                        label: "To Search as a Query"
+                        label: "To search as a query"
                     }
                 },
                 options: {
                     header: "Advanced Search",
                 },
-                placeholder: "Search by Role Name",
+                placeholder: "Search by role name",
                 popups: {
-                    clear: "Clear Search",
-                    dropdown: "Show Options"
+                    clear: "Clear search",
+                    dropdown: "Show options"
                 },
-                resultsIndicator: "Showing Results for the Query \"{{query}}\""
+                resultsIndicator: "Showing results for the query \"{{query}}\""
             }
         },
         serverConfigs: {
