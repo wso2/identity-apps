@@ -16,18 +16,21 @@
  * under the License.
  */
 
-import { addAlert } from "@wso2is/core/store";
-import { PrimaryButton } from "@wso2is/react-components";
-import React, { useContext, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
-import { getDialects } from "../api";
-import { AddEditDialect, ClaimsAvatarBackground, ClaimsList, DialectSearch, ListType } from "../components";
+import { AddEditDialect, DialectSearch } from "../components";
+import { AlertLevels, ClaimDialect } from "../models";
+import { ClaimsAvatarBackground, ClaimsList, ListType } from "../components";
 import { DEFAULT_USER_LIST_ITEM_LIMIT, LOCAL_CLAIMS_PATH } from "../constants";
-import { AppConfig, history } from "../helpers";
-import { ListLayout, PageLayout } from "../layouts";
-import { AlertLevels, AppConfigInterface, ClaimDialect } from "../models";
+import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
 import { filterList, sortList } from "../utils";
+import React, { useEffect, useState } from "react";
+
+import { addAlert } from "@wso2is/core/store";
+import { getDialects } from "../api";
+import { history } from "../helpers";
+import { ListLayout } from "../layouts";
+import { PageLayout } from "../layouts";
+import { PrimaryButton } from "@wso2is/react-components";
+import { useDispatch } from "react-redux";
 
 /**
  * This displays a list fo claim dialects.
@@ -71,7 +74,10 @@ export const ClaimDialectsPage = (): React.ReactElement => {
      */
     const getDialect = (limit?: number, offset?: number, sort?: string, filter?: string): void => {
         getDialects({
-            limit, offset, sort, filter
+            filter,
+            limit,
+            offset,
+            sort
         }).then((response: ClaimDialect[]) => {
             const filteredDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
                 if (claim.id === "local") {
@@ -168,7 +174,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
             />
             <PageLayout
                 title="Claim Dialects"
-                description="View, edit and add Claim Dialects"
+                description="View, edit and add claim dialects"
                 showBottomDivider={ true }
             >
                 {
@@ -232,9 +238,9 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                                 setFilteredDialects(filteredDialects);
                             } catch (error) {
                                 dispatch(addAlert({
-                                    message: "Filter query format incorrect",
                                     description: error.message,
-                                    level: AlertLevels.ERROR
+                                    level: AlertLevels.ERROR,
+                                    message: "Filter query format incorrect"
                                 }));
                             }
                         } }/>
