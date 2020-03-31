@@ -17,11 +17,10 @@
  */
 
 import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authentication";
-import { AxiosHttpClient } from "@wso2is/http";
-import { Config } from "../configs";
 import { HttpMethods, LinkedAccountInterface } from "../models";
-import { SYSTEM_SCOPE } from "../constants";
+import { AxiosHttpClient } from "@wso2is/http";
 import { store } from "../store";
+import { SYSTEM_SCOPE } from "../constants";
 
 /**
  * Get an axios instance.
@@ -43,7 +42,7 @@ export const getAssociations = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().associations
+        url: store.getState().config?.endpoints?.associations
     };
 
     return httpClient.request(requestConfig)
@@ -69,7 +68,7 @@ export const addAccountAssociation = (data: object): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: Config.getServiceResourceEndpoints().associations
+        url: store.getState().config?.endpoints?.associations
     };
 
     return httpClient.request(requestConfig)
@@ -94,7 +93,7 @@ export const removeLinkedAccount = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${ Config.getServiceResourceEndpoints().associations }/${ id }`
+        url: `${ store.getState().config?.endpoints?.associations }/${ id }`
     };
 
     return httpClient.request(requestConfig)
@@ -124,7 +123,7 @@ export const removeAllLinkedAccounts = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: Config.getServiceResourceEndpoints().associations
+        url: store.getState().config?.endpoints?.associations
     };
 
     return httpClient.request(requestConfig)

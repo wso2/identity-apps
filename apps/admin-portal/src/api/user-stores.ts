@@ -17,7 +17,6 @@
  */
 
 import { HttpMethods, PatchData, QueryParams, TestConnection, UserStorePostData } from "../models";
-import { Config } from "../configs";
 import { AxiosHttpClient } from "@wso2is/http";
 import { store } from "../store";
 
@@ -47,7 +46,7 @@ export const getUserStores = (params: QueryParams): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().userStores,
+        url: store.getState().config?.endpoints?.userStores,
         params
     };
     return httpClient
@@ -78,7 +77,7 @@ export const getTypes = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${Config.getServiceResourceEndpoints().userStores}/meta/types`
+        url: `${store.getState().config?.endpoints?.userStores}/meta/types`
     };
     return httpClient
         .request(requestConfig)
@@ -110,7 +109,7 @@ export const getAType = (id: string, params: QueryParams): Promise<any> => {
             params
         },
         method: HttpMethods.GET,
-        url: `${Config.getServiceResourceEndpoints().userStores}/meta/types/${id}`,
+        url: `${store.getState().config?.endpoints?.userStores}/meta/types/${id}`,
         params
     };
     return httpClient
@@ -141,7 +140,7 @@ export const getAUserStore = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${Config.getServiceResourceEndpoints().userStores}/${id}`
+        url: `${store.getState().config?.endpoints?.userStores}/${id}`
     };
 
     return httpClient
@@ -172,7 +171,7 @@ export const deleteUserStore = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${Config.getServiceResourceEndpoints().userStores}/${id}`
+        url: `${store.getState().config?.endpoints?.userStores}/${id}`
     };
     return httpClient
         .request(requestConfig)
@@ -204,7 +203,7 @@ export const patchUserStore = (id: string, data: PatchData[]): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: `${Config.getServiceResourceEndpoints().userStores}/${id}`,
+        url: `${store.getState().config?.endpoints?.userStores}/${id}`,
         data
     };
     return httpClient
@@ -235,7 +234,7 @@ export const addUserStore = (data: UserStorePostData): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${Config.getServiceResourceEndpoints().userStores}`,
+        url: `${store.getState().config?.endpoints?.userStores}`,
         data
     };
     return httpClient
@@ -267,7 +266,7 @@ export const updateUserStore = (id: string,data: UserStorePostData): Promise<any
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${Config.getServiceResourceEndpoints().userStores}/${id}`,
+        url: `${store.getState().config?.endpoints?.userStores}/${id}`,
         data
     };
     return httpClient
@@ -298,7 +297,7 @@ export const testConnection = (data: TestConnection): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${Config.getServiceResourceEndpoints().userStores}/test-connection`,
+        url: `${store.getState().config?.endpoints?.userStores}/test-connection`,
         data
     };
     return httpClient

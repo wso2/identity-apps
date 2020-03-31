@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { Config } from "../configs";
 import { AddExternalClaim, Claim, ClaimsGetParams, HttpMethods } from "../models";
 import { AxiosHttpClient } from "@wso2is/http";
 import { store } from "../store";
@@ -48,7 +47,7 @@ export const addLocalClaim = (data: Claim): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: Config.getServiceResourceEndpoints().localClaims,
+        url: store.getState().config?.endpoints?.localClaims,
         data
     };
 
@@ -81,7 +80,7 @@ export const getAllLocalClaims = (params: ClaimsGetParams): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().localClaims,
+        url: store.getState().config?.endpoints?.localClaims,
         params
     };
 
@@ -114,7 +113,7 @@ export const getAClaim = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${Config.getServiceResourceEndpoints().localClaims}/${id}`
+        url: `${store.getState().config?.endpoints?.localClaims}/${id}`
     };
 
     return httpClient
@@ -148,7 +147,7 @@ export const updateAClaim = (id: string, data: Claim): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${Config.getServiceResourceEndpoints().localClaims}/${id}`,
+        url: `${store.getState().config?.endpoints?.localClaims}/${id}`,
         data
     };
     return httpClient
@@ -180,7 +179,7 @@ export const deleteAClaim = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${Config.getServiceResourceEndpoints().localClaims}/${id}`
+        url: `${store.getState().config?.endpoints?.localClaims}/${id}`
     };
     return httpClient
         .request(requestConfig)
@@ -210,7 +209,7 @@ export const addDialect = (dialectURI: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: Config.getServiceResourceEndpoints().claims,
+        url: store.getState().config?.endpoints?.claims,
         data: {
             dialectURI
         }
@@ -243,7 +242,7 @@ export const getADialect = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${Config.getServiceResourceEndpoints().claims}/${id}`
+        url: `${store.getState().config?.endpoints?.claims}/${id}`
     };
     return httpClient
         .request(requestConfig)
@@ -273,7 +272,7 @@ export const getDialects = (params: ClaimsGetParams): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().claims,
+        url: store.getState().config?.endpoints?.claims,
         params
     };
     return httpClient
@@ -305,7 +304,7 @@ export const updateADialect = (id: string, dialectURI: string): Promise<any> => 
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${Config.getServiceResourceEndpoints().claims}/${id}`,
+        url: `${store.getState().config?.endpoints?.claims}/${id}`,
         data: {
             dialectURI
         }
@@ -338,7 +337,7 @@ export const deleteADialect = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${Config.getServiceResourceEndpoints().claims}/${id}`
+        url: `${store.getState().config?.endpoints?.claims}/${id}`
     };
     return httpClient
         .request(requestConfig)
@@ -369,7 +368,7 @@ export const addExternalClaim = (dialectID: string, data: AddExternalClaim): Pro
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${Config.getServiceResourceEndpoints().externalClaims.replace("{}", dialectID)}`,
+        url: `${store.getState().config?.endpoints?.externalClaims.replace("{}", dialectID)}`,
         data
     };
     return httpClient
@@ -401,7 +400,7 @@ export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams)
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${Config.getServiceResourceEndpoints().externalClaims?.replace("{}", dialectID)}`,
+        url: `${store.getState().config?.endpoints?.externalClaims?.replace("{}", dialectID)}`,
         params
     };
     return httpClient
@@ -435,7 +434,7 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${Config.getServiceResourceEndpoints().externalClaims.replace("{}", dialectID)}/${claimID}`
+        url: `${store.getState().config?.endpoints?.externalClaims.replace("{}", dialectID)}/${claimID}`
     };
     return httpClient
         .request(requestConfig)
@@ -467,7 +466,7 @@ export const updateAnExternalClaim = (dialectID: string, claimID: string, data: 
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${Config.getServiceResourceEndpoints().externalClaims.replace("{}", dialectID)}/${claimID}`,
+        url: `${store.getState().config?.endpoints?.externalClaims.replace("{}", dialectID)}/${claimID}`,
         data
     };
     return httpClient
@@ -499,7 +498,7 @@ export const deleteAnExternalClaim = (dialectID: string, claimID: string): Promi
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${Config.getServiceResourceEndpoints().externalClaims.replace("{}", dialectID)}/${claimID}`
+        url: `${store.getState().config?.endpoints?.externalClaims.replace("{}", dialectID)}/${claimID}`
     };
     return httpClient
         .request(requestConfig)

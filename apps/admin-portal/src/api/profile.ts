@@ -16,12 +16,11 @@
  * under the License.
  */
 
-import { SignInUtil } from "@wso2is/authentication";
-import { AxiosHttpClient } from "@wso2is/http";
-import axios from "axios";
-import { isEmpty } from "lodash";
-import { Config } from "../configs";
 import { BasicProfileInterface, HttpMethods, ProfileSchema } from "../models";
+import _ from "lodash";
+import axios from "axios";
+import { AxiosHttpClient } from "@wso2is/http";
+import { SignInUtil } from "@wso2is/authentication";
 import { store } from "../store";
 
 /**
@@ -44,7 +43,7 @@ export const getUserDetails = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().users + "/" + id
+        url: store.getState().config?.endpoints?.users + "/" + id
     };
 
     return httpClient
@@ -89,14 +88,14 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
             "Content-Type": "application/scim+json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().me
+        url: store.getState().config?.endpoints?.me
     };
 
     return httpClient
         .request(requestConfig)
         .then(async (response) => {
             let gravatar = "";
-            if (isEmpty(response.data.userImage)) {
+            if (_.isEmpty(response.data.userImage)) {
                 try {
                     gravatar = await getGravatarImage(
                         typeof response.data.emails[0] === "string"
@@ -142,7 +141,7 @@ export const updateProfileInfo = (data: object): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: Config.getServiceResourceEndpoints().me
+        url: store.getState().config?.endpoints?.me
     };
 
     return httpClient
@@ -170,7 +169,7 @@ export const updateUserInfo = (userId: string, data: object): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: Config.getServiceResourceEndpoints().users + "/" + userId
+        url: store.getState().config?.endpoints?.users + "/" + userId
     };
 
     return httpClient
@@ -196,7 +195,7 @@ export const getProfileSchemas = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().profileSchemas
+        url: store.getState().config?.endpoints?.profileSchemas
     };
 
     return httpClient

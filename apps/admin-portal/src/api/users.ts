@@ -16,9 +16,8 @@
  * under the License.
  */
 
-import { AxiosHttpClient } from "@wso2is/http";
-import { Config } from "../configs";
 import { HttpMethods, UserListInterface } from "../models";
+import { AxiosHttpClient } from "@wso2is/http";
 import { store } from "../store";
 
 /**
@@ -47,7 +46,7 @@ export const getUsersList = (count: number, startIndex: number, filter: string, 
             startIndex,
             attributes
         },
-        url: Config.getServiceResourceEndpoints().users
+        url: store.getState().config?.endpoints?.users
     };
 
     return httpClient.request(requestConfig)
@@ -72,7 +71,7 @@ export const getUserStoreList = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().userStores
+        url: store.getState().config?.endpoints?.userStores
     };
 
     return httpClient.request(requestConfig)
@@ -100,7 +99,7 @@ export const addUser = (data: object): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: Config.getServiceResourceEndpoints().users
+        url: store.getState().config?.endpoints?.users
     };
 
     return httpClient.request(requestConfig)
@@ -127,7 +126,7 @@ export const deleteUser = (userId: string): Promise<any> => {
             "Content-Type": "application/scim+json"
         },
         method: HttpMethods.DELETE,
-        url: Config.getServiceResourceEndpoints().users + "/" + userId
+        url: store.getState().config?.endpoints?.users + "/" + userId
     };
 
     return httpClient.request(requestConfig)
@@ -155,7 +154,7 @@ export const addUserRole = (data: object, groupId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: Config.getServiceResourceEndpoints().groups + "/" + groupId
+        url: store.getState().config?.endpoints?.groups + "/" + groupId
     };
 
     return httpClient.request(requestConfig)
@@ -182,7 +181,7 @@ export const updateUserRoles = (data: object): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: Config.getServiceResourceEndpoints().bulk
+        url: store.getState().config?.endpoints?.bulk
     };
 
     return httpClient.request(requestConfig)

@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { AxiosHttpClient } from "@wso2is/http";
-import { Config } from "../configs";
+import { AxiosError, AxiosResponse } from "axios";
 import {
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface,
@@ -28,7 +27,7 @@ import {
     IdentityProviderTemplateListInterface,
     IdentityProviderTemplateListItemInterface
 } from "../models";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosHttpClient } from "@wso2is/http";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { IdentityProviderManagementConstants } from "../constants";
 import { store } from "../store";
@@ -54,7 +53,7 @@ export const createIdentityProvider = (identityProvider: object): Promise<any> =
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: Config.getServiceResourceEndpoints().identityProviders
+        url: store.getState().config?.endpoints?.identityProviders
     };
 
     return httpClient.request(requestConfig)
@@ -91,7 +90,7 @@ export const getIdentityProviderList = (limit?: number, offset?: number,
             limit,
             offset
         },
-        url: Config.getServiceResourceEndpoints().identityProviders
+        url: store.getState().config?.endpoints?.identityProviders
     };
 
     return httpClient.request(requestConfig)
@@ -119,7 +118,7 @@ export const getIdentityProviderDetail = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().identityProviders + "/" + id
+        url: store.getState().config?.endpoints?.identityProviders + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -147,7 +146,7 @@ export const deleteIdentityProvider = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: Config.getServiceResourceEndpoints().identityProviders + "/" + id
+        url: store.getState().config?.endpoints?.identityProviders + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -188,7 +187,7 @@ export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): P
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: Config.getServiceResourceEndpoints().identityProviders + "/" + id
+        url: store.getState().config?.endpoints?.identityProviders + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -224,7 +223,7 @@ export const updateFederatedAuthenticator = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: Config.getServiceResourceEndpoints().identityProviders + "/" + idpId +
+        url: store.getState().config?.endpoints?.identityProviders + "/" + idpId +
             "/federated-authenticators/" + authenticatorId
     };
 
@@ -255,7 +254,7 @@ export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId:
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().identityProviders + "/" + idpId +
+        url: store.getState().config?.endpoints?.identityProviders + "/" + idpId +
             "/federated-authenticators/" + authenticatorId
     };
 
@@ -287,7 +286,7 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().identityProviders + "/meta/federated-authenticators/" + id
+        url: store.getState().config?.endpoints?.identityProviders + "/meta/federated-authenticators/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -315,7 +314,7 @@ export const getFederatedAuthenticatorsList = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().identityProviders + "/meta/federated-authenticators"
+        url: store.getState().config?.endpoints?.identityProviders + "/meta/federated-authenticators"
     };
 
     return httpClient.request(requestConfig)
@@ -345,7 +344,7 @@ export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Prom
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().identityProviders + "/meta/federated-authenticators/" +
+        url: store.getState().config?.endpoints?.identityProviders + "/meta/federated-authenticators/" +
             authenticatorId
     };
 
@@ -385,7 +384,7 @@ export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
             limit,
             offset
         },
-        url: Config.getServiceResourceEndpoints().identityProviders + "/templates"
+        url: store.getState().config?.endpoints?.identityProviders + "/templates"
     };
 
     return httpClient.request(requestConfig)
@@ -427,7 +426,7 @@ export const getIdentityProviderTemplate = (templateId: string): Promise<Identit
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: Config.getServiceResourceEndpoints().identityProviders + "/templates/" + templateId
+        url: store.getState().config?.endpoints?.identityProviders + "/templates/" + templateId
     };
 
     return httpClient.request(requestConfig)
