@@ -16,9 +16,14 @@
  * under the License.
  */
 
-export * from "./authenticate";
-export * from "./application";
-export * from "./config";
-export * from "./global";
-export * from "./identity-provider";
-export * from "./loaders";
+import { DeploymentConfigInterface, ServiceResourceEndpointsInterface } from "../../models";
+import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
+
+/**
+ * Initial state for the common config reducer.
+ */
+export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<DeploymentConfigInterface,
+    ServiceResourceEndpointsInterface> = {
+    deployment: {},
+    endpoints: {}
+};
