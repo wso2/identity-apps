@@ -19,18 +19,18 @@
 import { AxiosHttpClient } from "@wso2is/http";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import {
-    ApplicationTemplateListInterface,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface,
     HttpMethods,
     IdentityProviderInterface,
     IdentityProviderListResponseInterface,
-    IdentityProviderResponseInterface, IdentityProviderTemplateListInterface, IdentityProviderTemplateListItemInterface
+    IdentityProviderResponseInterface,
+    IdentityProviderTemplateListInterface,
+    IdentityProviderTemplateListItemInterface
 } from "../models";
-import {AxiosError, AxiosResponse} from "axios";
-import {ApplicationManagementConstants} from "../constants";
+import { AxiosError, AxiosResponse } from "axios";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import {IdentityProviderManagementConstants} from "../constants/identity-provider-management-constants";
+import { IdentityProviderManagementConstants } from "../constants";
 
 /**
  * Get an axios instance.
@@ -363,7 +363,7 @@ export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Prom
  * @param {number} offset - Offset for get to start.
  * @param {string} filter - Search filter.
  *
- * @return {Promise<ApplicationTemplateListInterface>} A promise containing the response.
+ * @return {Promise<IdentityProviderTemplateListInterface>} A promise containing the response.
  */
 export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
                                            filter?: string): Promise<IdentityProviderTemplateListInterface> => {
@@ -411,7 +411,7 @@ export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
  * Gets the identity provider template.
  *
  * @param templateId Id value of the template.
- * @return {Promise<ApplicationTemplateListInterface>} A promise containing the response.
+ * @return {Promise<IdentityProviderTemplateListItemInterface>} A promise containing the response.
  */
 export const getIdentityProviderTemplate = (templateId: string): Promise<IdentityProviderTemplateListItemInterface> => {
     const requestConfig = {
