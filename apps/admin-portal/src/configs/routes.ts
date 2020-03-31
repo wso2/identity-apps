@@ -157,6 +157,17 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: true
             },
             {
+                component: GroupsPage,
+                exact: true,
+                icon: "childIcon",
+                id: "userGroups",
+                level: 2,
+                name: "User Groups",
+                path: "/groups",
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
                 component: RolesPage,
                 exact: true,
                 icon: "childIcon",
@@ -164,17 +175,6 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 level: 2,
                 name: "Roles",
                 path: "/roles",
-                protected: true,
-                showOnSidePanel: true
-            },
-            {
-                component: GroupsPage,
-                exact: true,
-                icon: "childIcon",
-                id: "groups",
-                level: 2,
-                name: "Groups",
-                path: "/groups",
                 protected: true,
                 showOnSidePanel: true
             },
