@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import Axios from "axios";
 import { Route, routes } from "../configs";
+
+import Axios from "axios";
 
 /**
  * Returns true if a given key in the JSON object is set to true
