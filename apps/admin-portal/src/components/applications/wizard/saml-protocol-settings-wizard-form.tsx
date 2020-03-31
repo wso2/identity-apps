@@ -125,7 +125,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                 <URLInputComponent
                     urlState={ assertionConsumerUrls }
                     setURLState={ setAssertionConsumerUrls }
-                    labelName={ "Assertion Consumer URLs" }
+                    labelName={ "Assertion consumer URLs" }
                     placeholder={ "Enter url " }
                     validationErrorMsg={ "Please add valid URL" }
                     validation={ (value: string): boolean => {

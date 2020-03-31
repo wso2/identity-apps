@@ -76,11 +76,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Heading as="h5">Subject</Heading>
-                        <Hint>Subject related configurations</Hint>
                         <Divider hidden/>
                         <Field
                             name="subjectAttribute"
-                            label="Subject Attribute"
+                            label="Subject attribute"
                             required={ false }
                             requiredErrorMessage="this is needed"
                             type="dropdown"
@@ -105,7 +104,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             children={
                                 [
                                     {
-                                        label: "Include UserDomain",
+                                        label: "Include userDomain",
                                         value: "includeUserDomain"
                                     }
                                 ]
@@ -127,7 +126,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             children={
                                 [
                                     {
-                                        label: "Include TenantDomain",
+                                        label: "Include tenantDomain",
                                         value: "includeTenantDomain"
                                     }
                                 ]
@@ -150,7 +149,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             children={
                                 [
                                     {
-                                        label: "Use Mapped Local Subject",
+                                        label: "Use mapped local subject",
                                         value: "useMappedLocalSubject"
                                     }
                                 ]
@@ -168,11 +167,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Heading as="h5">Role</Heading>
-                        <Hint>Role related configurations</Hint>
                         <Divider hidden/>
                         <Field
                             name="roleAttribute"
-                            label="Role Attribute"
+                            label="Role attribute"
                             required={ false }
                             requiredErrorMessage="this is needed"
                             type="dropdown"
@@ -197,7 +195,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             children={
                                 [
                                     {
-                                        label: "Include UserDomain",
+                                        label: "Include userDomain",
                                         value: "includeUserDomain"
                                     }
                                 ]

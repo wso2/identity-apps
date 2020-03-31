@@ -26,8 +26,8 @@ export const meta: StoryMetaInterface = {
     stories: [
         {
             description: "Default tab appearance.",
-            title: "Default",
+            title: "Default"
         }
     ],
-    title: `${ StoryCategories.COMPONENTS }/Tab`,
+    title: `${ StoryCategories.COMPONENTS }/Tab`
 };

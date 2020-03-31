@@ -18,25 +18,26 @@
  */
 
 import { boolean, number, select, text, withKnobs } from "@storybook/addon-knobs";
-import { AlertLevels } from "@wso2is/core/models";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { Alert } from "../../../src";
+import { AlertLevels } from "@wso2is/core/models";
 import { meta } from "./alert.stories.meta";
 
 export default {
     decorators: [ withKnobs ],
     parameters: {
         component: Alert,
-        componentSubtitle: meta.description,
+        componentSubtitle: meta.description
     },
     title: "Components API/Components/Alert"
 };
 
 /**
  * Story to display all the alert variations.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const All = () => {
+export const AllAlertVariations = (): ReactElement => {
     const [ alertSystem, setAlertSystem ] = useState(null);
 
     const handleAlertSystemInitialize = (system) => {
@@ -101,11 +102,20 @@ export const All = () => {
     );
 };
 
+AllAlertVariations.story = {
+    parameters: {
+        docs: {
+            storyDescription: meta.stories[ 0 ].description
+        }
+    }
+};
+
 /**
  * Story to display a success alert.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Success = () => {
+export const SuccessAlert = (): ReactElement => {
     const [ alertSystem, setAlertSystem ] = useState(null);
 
     const handleAlertSystemInitialize = (system) => {
@@ -129,19 +139,20 @@ export const Success = () => {
     );
 };
 
-Success.story = {
+SuccessAlert.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 0 ].description,
-        },
+            storyDescription: meta.stories[ 1 ].description
+        }
     }
 };
 
 /**
  * Story to display an error alert.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Error = () => {
+export const ErrorAlert = (): ReactElement => {
     const [ alertSystem, setAlertSystem ] = useState(null);
 
     const handleAlertSystemInitialize = (system) => {
@@ -165,19 +176,20 @@ export const Error = () => {
     );
 };
 
-Error.story = {
+ErrorAlert.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 1 ].description,
-        },
+            storyDescription: meta.stories[ 2 ].description
+        }
     }
 };
 
 /**
  * Story to display a warning alert.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Warning = () => {
+export const WarningAlert = (): ReactElement => {
     const [ alertSystem, setAlertSystem ] = useState(null);
 
     const handleAlertSystemInitialize = (system) => {
@@ -201,19 +213,20 @@ export const Warning = () => {
     );
 };
 
-Warning.story = {
+WarningAlert.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 2 ].description,
-        },
+            storyDescription: meta.stories[ 3 ].description
+        }
     }
 };
 
 /**
  * Story to display an info alert.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Info = () => {
+export const InfoAlert = (): ReactElement => {
     const [ alertSystem, setAlertSystem ] = useState(null);
 
     const handleAlertSystemInitialize = (system) => {
@@ -237,19 +250,20 @@ export const Info = () => {
     );
 };
 
-Info.story = {
+InfoAlert.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 3 ].description,
-        },
+            storyDescription: meta.stories[ 4 ].description
+        }
     }
 };
 
 /**
  * Story to enable user to dynamically interact with the alert component.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Playground = () => {
+export const AlertPlayground = (): ReactElement => {
     const [ alertSystem, setAlertSystem ] = useState(null);
 
     const handleAlertSystemInitialize = (system) => {
@@ -287,7 +301,7 @@ export const Playground = () => {
                     },
                     AlertLevels.SUCCESS
                 ),
-                message: text("Message", "Success message"),
+                message: text("Message", "Success message")
             } }
             onAlertSystemInitialize={ handleAlertSystemInitialize }
             withIcon={ boolean("With icon", true) }
@@ -295,10 +309,10 @@ export const Playground = () => {
     );
 };
 
-Playground.story = {
+AlertPlayground.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 4 ].description,
-        },
+            storyDescription: meta.stories[ 4 ].description
+        }
     }
 };

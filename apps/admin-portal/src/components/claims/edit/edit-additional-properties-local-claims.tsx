@@ -22,7 +22,7 @@ import { useTrigger } from "@wso2is/forms";
 import { AlertLevels, Claim } from "../../../models";
 import { updateAClaim } from "../../../api";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../../../store/actions";
+import { addAlert } from "@wso2is/core/store";
 import { DynamicField } from "../dynamic-fields";
 import { Hint, PrimaryButton } from "@wso2is/react-components";
 

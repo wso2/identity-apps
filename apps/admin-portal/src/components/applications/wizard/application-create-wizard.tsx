@@ -82,7 +82,7 @@ enum WizardStepsFormTypes {
 const STEPS: WizardStepInterface[] = [
     {
         icon: ApplicationWizardStepIcons.general,
-        title: "General settings"
+        title: "General Settings"
     },
     {
         icon: ApplicationWizardStepIcons.protocolConfig,

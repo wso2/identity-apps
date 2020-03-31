@@ -18,23 +18,24 @@
  */
 
 import { boolean, number } from "@storybook/addon-knobs";
-import React, { useEffect, useState } from "react";
-import { GlobalLoader } from "../../../../src";
-import { meta } from "./global-loader.stories.meta";
+import React, { ReactElement, useEffect, useState } from "react";
+import { meta } from "./top-loading-bar.stories.meta";
+import { TopLoadingBar } from "../../../src";
 
 export default {
     parameters: {
-        component: GlobalLoader,
-        componentSubtitle: meta.description,
+        component: TopLoadingBar,
+        componentSubtitle: meta.description
     },
-    title: "Components API/Components/Global Loader"
+    title: "Components API/Components/Top Loading Bar"
 };
 
 /**
  * Story to display the global loader component.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Global = () => {
+export const DefaultTopLoadingBar = (): ReactElement=> {
 
     const [ visibility, setVisibility ] = useState(false);
 
@@ -45,33 +46,34 @@ export const Global = () => {
     }, []);
 
     return (
-        <GlobalLoader height={ 3 } visibility={ visibility }/>
+        <TopLoadingBar height={ 3 } visibility={ visibility }/>
     );
 };
 
-Global.story = {
+DefaultTopLoadingBar.story = {
     parameters: {
         docs: {
-            storyDescription: meta.description,
-        },
+            storyDescription: meta.stories[ 0 ].description
+        }
     }
 };
 
 /**
  * Story to enable user to dynamically interact with the avatar component.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Playground = () => (
-    <GlobalLoader
+export const TopLoadingBarPlayground = (): ReactElement => (
+    <TopLoadingBar
         height={ number("Height", 3, { range: true, min: 1, max: 50, step: 1 }) }
         visibility={ boolean("Visibility", false) }
     />
 );
 
-Playground.story = {
+TopLoadingBarPlayground.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 0 ].description,
-        },
+            storyDescription: meta.stories[ 1 ].description
+        }
     }
 };

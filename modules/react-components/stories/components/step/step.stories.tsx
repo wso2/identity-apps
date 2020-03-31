@@ -18,23 +18,24 @@
  */
 
 import { DocumentIcon, GearsIcon, SpinWheelIcon } from "@wso2is/theme";
-import React from "react";
-import { Steps } from "../../../src";
+import React, { ReactElement } from "react";
 import { meta } from "./step.stories.meta";
+import { Steps } from "../../../src";
 
 export default {
     parameters: {
         component: Steps,
-        componentSubtitle: meta.description,
+        componentSubtitle: meta.description
     },
     title: "Components API/Components/Steps"
 };
 
 /**
  * Story to display steps.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Default = () => (
+export const DefaultSteps = (): ReactElement => (
     <Steps.Group header="Fill the basic information about your application." current={ 1 }>
         <Steps.Step icon={ DocumentIcon } title="General settings" />
         <Steps.Step icon={ SpinWheelIcon } title="Protocol Selection" />
@@ -42,10 +43,10 @@ export const Default = () => (
     </Steps.Group>
 );
 
-Default.story = {
+DefaultSteps.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 0 ].description,
-        },
+            storyDescription: meta.stories[ 0 ].description
+        }
     }
 };

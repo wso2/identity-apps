@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -14,20 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-import { StoryCategories } from "../../../hierarchy";
-import { StoryMetaInterface } from "../../../models";
-
-export const meta: StoryMetaInterface = {
-    components: [ "GlobalLoader" ],
-    description: "Component to display global loading status",
-    stories: [
-        {
-            description: "Play around with different props to dynamically interact with the loader component.",
-            title: "Playground"
-        }
-    ],
-    title: `${ StoryCategories.COMPONENTS }/Global Loader`,
-};
+export * from "./card.stories";

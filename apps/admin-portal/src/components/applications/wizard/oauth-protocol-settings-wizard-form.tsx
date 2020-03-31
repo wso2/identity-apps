@@ -225,7 +225,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                             value={ publicClient }
                             children={ [
                                 {
-                                    label: "Public Client",
+                                    label: "Public client",
                                     value: "supportPublicClients"
                                 }
                             ] }
@@ -247,7 +247,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                             value={ refreshToken }
                             children={ [
                                 {
-                                    label: "Renew Refresh Token",
+                                    label: "Renew refresh token",
                                     value: "refreshToken"
                                 },
                             ] }

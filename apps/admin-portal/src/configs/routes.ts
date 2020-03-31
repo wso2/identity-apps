@@ -259,7 +259,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: ServerConfigurationsPage,
         exact: true,
-        icon: "userStore",
+        icon: "serverConfigurations",
         id: "serverConfigurations",
         name: "Server Configurations",
         path: "/server-configurations",

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -14,7 +14,19 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-export * from "./global-loader.stories";
+import { StoryCategories } from "../../hierarchy";
+import { StoryMetaInterface } from "../../models";
+
+export const meta: StoryMetaInterface = {
+    components: [ "ProductBrand", "Logo" ],
+    description: "Component to display product brand on the portals.",
+    stories: [
+        {
+            description: "Default product brand",
+            title: "Default"
+        }
+    ],
+    title: StoryCategories.COMPONENTS + "/Product Brand"
+};
