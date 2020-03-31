@@ -24,3 +24,4 @@ export * from "./token-constants";
 export * from "./ui-constants";
 export * from "./user-constants";
 export * from "./role-constants";
+export * from "./identity-provider-management-constants";

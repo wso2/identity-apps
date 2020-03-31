@@ -16,6 +16,8 @@
  * under the License.
  */
 
-export * from "./general-details-form";
-export * from "./advanced-configurations-form";
-export * from "./authenticator-form-factory";
+export * from "./identity-provider-list";
+export * from "./identity-provider-edit";
+export * from "./general-idp-settings";
+export * from "./advance-idp-settings";
+export * from "./settings-authenticator";

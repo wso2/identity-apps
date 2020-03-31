@@ -162,8 +162,8 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                                         placeholder={ "Value should be the certificate in PEM format." }
                                         type="textarea"
                                         value={ config?.certificate && config?.certificate.certificates
-                                            && config?.certificate?.certificates.length > 0 &&
-                                            _.first(config.certificate?.certificates) }
+                                        && config?.certificate?.certificates.length > 0 &&
+                                        _.first(config.certificate?.certificates) }
                                     />
                                 ) : (
                                     <Field

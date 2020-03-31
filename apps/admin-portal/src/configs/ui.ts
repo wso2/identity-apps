@@ -213,7 +213,9 @@ export const IdPIcons = {
     facebook: FacebookIdPIcon,
     github: GithubIdPIcon,
     google: GoogleIdPIcon,
-    twitter: TwitterIdPIcon
+    twitter: TwitterIdPIcon,
+    saml: SamlLogo,
+    oidc: OIDCLogo
 };
 
 export const IdPCapabilityIcons = {

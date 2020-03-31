@@ -29,12 +29,7 @@ import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-compone
 
 import { createIdentityProvider, getFederatedAuthenticatorMetadata } from "../../../api";
 import { history } from "../../../helpers";
-import {
-    AuthenticatorProperty,
-    FederatedAuthenticatorMetaInterface,
-    IdentityProviderInterface,
-    IdentityProviderTemplateListItemInterface
-} from "../../../models";
+import { AuthenticatorProperty, FederatedAuthenticatorMetaInterface, IdentityProviderInterface } from "../../../models";
 import { AppState, store } from "../../../store";
 import { IdentityProviderConstants } from "../../../constants";
 import { IdentityProviderWizardStepIcons } from "../../../configs";
@@ -49,7 +44,7 @@ interface IdentityProviderCreateWizardPropsInterface {
     currentStep?: number;
     title: string;
     closeWizard: () => void;
-    template: IdentityProviderTemplateListItemInterface;
+    template: IdentityProviderInterface;
     subTitle?: string;
 }
 
@@ -334,7 +329,11 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * Called when `availableAuthenticators` are changed.
      */
     useEffect(() => {
-        const availableAuthenticator = _.find(availableAuthenticators, { "name": template.authenticator.name });
+        // todo Handle multiple authenticators in the template.
+        const availableAuthenticator = _.find(availableAuthenticators, {
+            authenticatorId: template
+                .federatedAuthenticators?.authenticators[0]?.authenticatorId
+        });
         if (availableAuthenticator) {
             getAuthenticatorMetadata(availableAuthenticator.authenticatorId);
         }
@@ -382,7 +381,6 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         if (partiallyCompletedStep === undefined) {
             return;
         }
-
         setCurrentWizardStep(currentWizardStep - 1);
         setPartiallyCompletedStep(undefined);
     }, [partiallyCompletedStep]);

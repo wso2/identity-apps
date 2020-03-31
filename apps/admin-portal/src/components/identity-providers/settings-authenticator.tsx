@@ -73,14 +73,14 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
     const dispatch = useDispatch();
 
-    const [ authenticatorMeta, setAuthenticatorMeta ] = useState<FederatedAuthenticatorMetaInterface>({
+    const [authenticatorMeta, setAuthenticatorMeta] = useState<FederatedAuthenticatorMetaInterface>({
         name: SupportedAuthenticators.NONE,
         displayName: "",
         authenticatorId: "",
         properties: []
     });
 
-    const [ authenticatorDetails, setAuthenticatorDetails ] = useState<FederatedAuthenticatorListItemInterface>({
+    const [authenticatorDetails, setAuthenticatorDetails] = useState<FederatedAuthenticatorListItemInterface>({
         name: "",
         isDefault: false,
         isEnabled: false,

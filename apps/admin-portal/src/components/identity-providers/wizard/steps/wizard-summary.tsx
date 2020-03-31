@@ -101,9 +101,9 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                     </div>
                 </Grid.Column>
             </Grid.Row>
-            
+
             <Divider horizontal>Authenticator details</Divider>
-            
+
             {authenticatorSummary && (
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
