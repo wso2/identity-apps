@@ -121,7 +121,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
      * @param {React.MouseEvent<HTMLAnchorElement>} event.
      * @param {data} data.
      */
-    const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+    const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
         setListItemLimit(data.value as number);
     };
 
