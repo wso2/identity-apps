@@ -23,7 +23,7 @@ import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { getADialect, updateADialect, addDialect } from "../../api";
 import { ClaimDialect, AlertLevels } from "../../models";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../../store/actions";
+import { addAlert } from "@wso2is/core/store";
 
 /**
  * Prop types of `AddEditDialect` component
