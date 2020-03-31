@@ -26,12 +26,12 @@ export const meta: StoryMetaInterface = {
     stories: [
         {
             description: "Default section without any action.",
-            title: "Default",
+            title: "Default"
         },
         {
             description: "Section with a primary action.",
-            title: "With action",
+            title: "With action"
         }
     ],
-    title: `${ StoryCategories.COMPONENTS }/Section`,
+    title: `${ StoryCategories.COMPONENTS }/Section`
 };

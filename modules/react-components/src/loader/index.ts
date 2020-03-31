@@ -17,4 +17,4 @@
  */
 
 export * from "./content-loader";
-export * from "./global-loader";
+export * from "./top-loading-bar";

@@ -87,7 +87,7 @@ export const devPortal: DevPortalNS = {
                 placeholder: "Search by name",
                 popups: {
                     clear: "clear search",
-                    dropdown: "show options"
+                    dropdown: "Show options"
                 },
                 resultsIndicator: 'Showing results for the query "{{query}}"'
             }
@@ -726,7 +726,7 @@ export const devPortal: DevPortalNS = {
                 placeholder: "Search by role name",
                 popups: {
                     clear: "clear search",
-                    dropdown: "show options"
+                    dropdown: "Show options"
                 },
                 resultsIndicator: "Showing results for the query \"{{query}}\""
             }

@@ -19,9 +19,10 @@
 import { Field, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Form, Grid } from "semantic-ui-react";
+import { Divider, Form, Grid } from "semantic-ui-react";
 import { buildSearchQuery } from "../../utils";
 import { AdvancedSearch } from "@wso2is/react-components";
+import { AdvancedSearchIcons } from "../../configs";
 
 /**
  * Filter attribute field identifier.
@@ -143,6 +144,7 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (
         <AdvancedSearch
             aligned="left"
             clearButtonPopupLabel={ t("devPortal:components.users.search.popups.clear") }
+            clearIcon={ AdvancedSearchIcons.clear }
             defaultSearchStrategy={ DEFAULT_SEARCH_STRATEGY }
             dropdownTriggerPopupLabel={ t("devPortal:components.users.search.popups.dropdown") }
             hintActionKeys={ t("devPortal:components.users.search.hints.querySearch.actionKeys") }
@@ -217,10 +219,7 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
-                            <Field
-                                hidden={ true }
-                                type="divider"
-                            />
+                            <Divider hidden />
                             <Form.Group inline={ true }>
                                 <Field
                                     size="small"

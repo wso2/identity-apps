@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import classNames from "classnames";
 import React, { Children, cloneElement, PropsWithChildren, useEffect, useState } from "react";
+import classNames from "classnames";
 import { Divider } from "semantic-ui-react";
 import { Step } from "./step";
 
 /**
  * Steps component prop types.
  */
-interface StepsPropsInterface {
+export interface StepsPropsInterface {
     /**
      * Currently active step.
      */
@@ -51,6 +51,7 @@ interface StepsPropsInterface {
  * Steps component.
  *
  * @param {React.PropsWithChildren<StepsPropsInterface>} props - Props injected to the component.
+ *
  * @return {JSX.Element}
  */
 export const Steps: React.FunctionComponent<PropsWithChildren<StepsPropsInterface>> & StepsSubComponentsInterface = (
@@ -95,7 +96,7 @@ export const Steps: React.FunctionComponent<PropsWithChildren<StepsPropsInterfac
 
                     const childProps = {
                         stepNumber: `${ stepNumber + 1 }`,
-                        ...child.props,
+                        ...child.props
                     };
 
                     if (!child.props.status) {
@@ -120,7 +121,7 @@ export const Steps: React.FunctionComponent<PropsWithChildren<StepsPropsInterfac
 /**
  * Interface for the steps sub components.
  */
-interface StepsSubComponentsInterface {
+export interface StepsSubComponentsInterface {
     Group: typeof Steps;
     Step: typeof Step;
 }

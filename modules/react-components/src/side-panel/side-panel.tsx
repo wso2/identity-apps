@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { UIConstants } from "@wso2is/core/constants";
 import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
-import classNames from "classnames";
-import _ from "lodash";
-import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { Container, Responsive, Sidebar } from "semantic-ui-react";
+import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
+import _ from "lodash";
+import classNames from "classnames";
 import { SidePanelItems } from "./side-panel-items";
+import { UIConstants } from "@wso2is/core/constants";
 
 /**
  * Common side panel base component Prop types.
@@ -47,7 +47,7 @@ export interface CommonSidePanelPropsInterface {
 /**
  * Side panel base component Prop types.
  */
-interface SidePanelPropsInterface extends CommonSidePanelPropsInterface {
+export interface SidePanelPropsInterface extends CommonSidePanelPropsInterface {
     bordered?: "left" | "right" | "top" | "bottom" | boolean;
     fluid?: boolean;
     mobileSidePanelVisibility: boolean;
@@ -59,6 +59,7 @@ interface SidePanelPropsInterface extends CommonSidePanelPropsInterface {
  * Side panel base component.
  *
  * @param {SidePanelPropsInterface} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
 export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelPropsInterface>> = (
@@ -99,11 +100,19 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
     };
 
     /**
+     * Update items when the routes prop changes
+     */
+    useEffect(() => {
+        setItems(routes);
+    }, [ routes ]);
+
+    /**
      * Evaluate if the child item section should be extended or not. If so, adds
      * `open` attribute to the route section.
      *
-     * @param {RouteInterface[] | ChildRouteInterface[]} routesArray
-     * @param {RouteInterface | ChildRouteInterface}route
+     * @param {RouteInterface[] | ChildRouteInterface[]} routesArray - Array of routes.
+     * @param {RouteInterface | ChildRouteInterface} route - Evaluating route.
+     *
      * @return {RouteInterface[]} Modified set of routes.
      */
     const evaluateSidePanelItemExtension = (routesArray: RouteInterface[] | ChildRouteInterface[],
@@ -128,13 +137,6 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
         setItems(evaluateSidePanelItemExtension(routes, route));
         onSidePanelItemClick(route);
     };
-
-    /**
-     * Update items when the routes prop changes
-     */
-    useEffect(() => {
-        setItems(routes);
-    }, [routes]);
 
     return (
         <div style={ mainLayoutStyles } className="layout-content">

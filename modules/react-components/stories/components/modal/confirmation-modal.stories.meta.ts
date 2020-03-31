@@ -26,20 +26,20 @@ export const meta: StoryMetaInterface = {
     stories: [
         {
             description: "Default confirmation modal",
-            title: "Default",
+            title: "Default"
         },
         {
             description: "Confirmation modal with text input assertion.",
-            title: "Text Input Assertion",
+            title: "Text Input Assertion"
         },
         {
             description: "Confirmation modal with checkbox assertion.",
-            title: "Checkbox Assertion",
+            title: "Checkbox Assertion"
         },
         {
             description: "Confirmation modal with animations.",
-            title: "Animated",
+            title: "Animated"
         }
     ],
-    title: `${ StoryCategories.COMPONENTS }/Confirmation Modal`,
+    title: `${ StoryCategories.COMPONENTS }/Confirmation Modal`
 };

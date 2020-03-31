@@ -214,7 +214,7 @@ export const RolesPage = (): ReactElement => {
     return (
         <PageLayout
             title="Roles"
-            description="Create and manage roles, assign permissions for roles."
+            description="Create and Manage Roles, Assign Permissions for Roles."
             showBottomDivider={ true } 
         >
             <ListLayout

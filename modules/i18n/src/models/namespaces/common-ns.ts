@@ -43,6 +43,7 @@ export interface CommonNS {
     delete: string;
     description: string;
     deviceModel: string;
+    done: string;
     edit: string;
     endsWith: string;
     equals: string;
@@ -50,6 +51,7 @@ export interface CommonNS {
     goBackHome: string;
     help: string;
     hidePassword: string;
+    identityProviders: string;
     initiator: string;
     ipAddress: string;
     lastAccessed: string;
@@ -57,6 +59,7 @@ export interface CommonNS {
     loginTime: string;
     logout: string;
     more: string;
+    myAccount: string;
     name: string;
     operatingSystem: string;
     operations: string;
@@ -91,4 +94,5 @@ export interface CommonNS {
     type: string;
     update: string;
     user: string;
+    verify: string;
 }

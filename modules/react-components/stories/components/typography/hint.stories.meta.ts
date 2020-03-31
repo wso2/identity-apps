@@ -25,13 +25,13 @@ export const meta: StoryMetaInterface = {
     description: "Component to render UI hints.",
     stories: [
         {
-            description: "Default Hint.",
-            title: "Default",
+            description: "Default Hint component appearance.",
+            title: "Default"
         },
         {
             description: "Hint with an icon.",
-            title: "With Icon",
+            title: "With Icon"
         }
     ],
-    title: `${ StoryCategories.COMPONENTS }/Hint`,
+    title: `${ StoryCategories.COMPONENTS }/Hint`
 };

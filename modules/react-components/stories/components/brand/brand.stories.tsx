@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -14,51 +14,39 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
+import { Logo, ProductBrand } from "../../../src";
 import React, { ReactElement } from "react";
-import { Hint } from "../../../src";
-import { meta } from "./hint.stories.meta";
+import { Logo as LogoImage } from "@wso2is/theme";
+import { meta } from "./brand.stories.meta";
+import { withKnobs } from "@storybook/addon-knobs";
 
 export default {
+    decorators: [ withKnobs ],
     parameters: {
-        component: Hint,
+        component: ProductBrand,
         componentSubtitle: meta.description
     },
-    title: "Components API/Components/Hint"
+    title: "Components API/Components/Product Brand"
 };
 
 /**
- * Story to display the default hint.
+ * Story to display the default product brand.
  *
  * @return {React.ReactElement}
  */
-export const DefaultHint = (): ReactElement => (
-    <Hint>This is a default hint</Hint>
+export const DefaultProductBrand = (): ReactElement => (
+    <ProductBrand
+        name="Developer Portal"
+        logo={ <Logo image={ LogoImage } /> }
+    />
 );
 
-DefaultHint.story = {
+DefaultProductBrand.story = {
     parameters: {
         docs: {
             storyDescription: meta.stories[ 0 ].description
-        }
-    }
-};
-
-/**
- * Story to display a hint with an icon.
- *
- * @return {React.ReactElement}
- */
-export const HintWithIcon = (): ReactElement => (
-    <Hint icon="info circle">This is an example of a hint with an icon.</Hint>
-);
-
-HintWithIcon.story = {
-    parameters: {
-        docs: {
-            storyDescription: meta.stories[ 1 ].description
         }
     }
 };
