@@ -93,6 +93,7 @@ export const RolesPage = (): ReactElement => {
         getRolesList(userStore).then((response)=> {
             if (response.status === 200) {
                 const roleResources = response.data.Resources
+
                 if (roleResources && roleResources instanceof Array) {
                     const updatedResources = roleResources.filter((role: RolesInterface) => {
                         return role.displayName.includes(APPLICATION_DOMAIN) || 
