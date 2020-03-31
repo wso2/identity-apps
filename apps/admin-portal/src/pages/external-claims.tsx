@@ -16,21 +16,22 @@
  * under the License.
  */
 
-import React, { useContext, useEffect, useState } from "react";
-import { PageLayout } from "../layouts";
-import { ListLayout } from "../layouts";
-import { PrimaryButton } from "@wso2is/react-components";
-import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
-import { ClaimsList, ListType, AddExternalClaims, EditExternalClaims, ExternalClaimsSearch } from "../components";
-import { ExternalClaim, ClaimDialect, AlertLevels, AppConfigInterface } from "../models";
-import { getAllExternalClaims, getADialect } from "../api";
-import { DEFAULT_USER_LIST_ITEM_LIMIT, CLAIM_DIALECTS_PATH } from "../constants";
-import { AppConfig, history } from "../helpers";
-import { useDispatch } from "react-redux";
+import { AddExternalClaims, ClaimsList, EditExternalClaims, ExternalClaimsSearch, ListType } from "../components";
+import { AlertLevels, ClaimDialect, ExternalClaim } from "../models";
+import { CLAIM_DIALECTS_PATH, DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
+import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { filterList, sortList } from "../utils";
+import { getADialect, getAllExternalClaims } from "../api";
+import React, { useEffect, useState } from "react";
+
 import { addAlert } from "../store/actions";
 import { EmptyPlaceholder } from "../components/shared";
 import { EmptyPlaceholderIllustrations } from "../configs";
-import { filterList, sortList } from "../utils";
+import { history } from "../helpers";
+import { ListLayout } from "../layouts";
+import { PageLayout } from "../layouts";
+import { PrimaryButton } from "@wso2is/react-components";
+import { useDispatch } from "react-redux";
 
 /**
  * This lists the external claims.
@@ -57,17 +58,17 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
         }
     ];
 
-    const [claims, setClaims] = useState<ExternalClaim[]>(null);
-    const [offset, setOffset] = useState(0);
-    const [listItemLimit, setListItemLimit] = useState<number>(0);
-    const [dialect, setDialect] = useState<ClaimDialect>(null);
-    const [addClaim, setAddClaim] = useState(false);
-    const [editClaim, setEditClaim] = useState(false);
-    const [editClaimID, setEditClaimID] = useState("");
-    const [filteredClaims, setFilteredClaims] = useState<ExternalClaim[]>(null);
-    const [sortBy, setSortBy] = useState(SORT_BY[0]);
-    const [sortOrder, setSortOrder] = useState(true);
-    const [isLoading, setIsLoading] = useState(false);
+    const [ claims, setClaims ] = useState<ExternalClaim[]>(null);
+    const [ offset, setOffset ] = useState(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ dialect, setDialect ] = useState<ClaimDialect>(null);
+    const [ addClaim, setAddClaim ] = useState(false);
+    const [ editClaim, setEditClaim ] = useState(false);
+    const [ editClaimID, setEditClaimID ] = useState("");
+    const [ filteredClaims, setFilteredClaims ] = useState<ExternalClaim[]>(null);
+    const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
+    const [ sortOrder, setSortOrder ] = useState(true);
+    const [ isLoading, setIsLoading ] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -104,7 +105,12 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
      * @param {string} filter.
      */
     const getExternalClaims = (limit?: number, offset?: number, sort?: string, filter?: string) => {
-        dialectID && getAllExternalClaims(dialectID, { limit, offset, sort, filter }).then(response => {
+        dialectID && getAllExternalClaims(dialectID, {
+            filter,
+            limit,
+            offset,
+            sort
+        }).then(response => {
             setClaims(response);
             setFilteredClaims(response);
         }).catch(error => {
@@ -120,11 +126,11 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
 
     useEffect(() => {
         getExternalClaims();
-    }, [dialectID]);
+    }, [ dialectID ]);
 
     useEffect(() => {
         setFilteredClaims(sortList(filteredClaims, sortBy.value, sortOrder));
-    }, [sortBy, sortOrder]);
+    }, [ sortBy, sortOrder ]);
 
     /**
      * Slices and returns a portion of the list.
@@ -165,7 +171,7 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
      * @param {DropdownProps} data.
      */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-        setSortBy(SORT_BY.filter(option => option.value === data.value)[0]);
+        setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
     };
 
     /**
@@ -179,7 +185,7 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
 
     return (
         <>
-            {addClaim
+            { addClaim
                 ? <AddExternalClaims
                     open={ addClaim }
                     onClose={ () => { setAddClaim(false) } }
@@ -211,7 +217,7 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                     text: "Go back to Claim Dialects"
                 } }
             >
-                {claims?.length > 0
+                { claims?.length > 0
                     ? (
                         <ListLayout
                             advancedSearch={ <ExternalClaimsSearch onFilter={ (query) => {
@@ -223,9 +229,9 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                                     setFilteredClaims(filteredList);
                                 } catch (error) {
                                     dispatch(addAlert({
-                                        message: "Filter query format incorrect",
                                         description: error?.message,
-                                        level: AlertLevels.ERROR
+                                        level: AlertLevels.ERROR,
+                                        message: "Filter query format incorrect"
                                     }));
                                 }
                             } } /> }
@@ -276,11 +282,11 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                                 </PrimaryButton>
                             }
                             title="Create an External Claim"
-                            subtitle={ ["Currently, there is no External Claim available for this dialect."] }
+                            subtitle={ [ "Currently, there is no External Claim available for this dialect." ] }
                             image={ EmptyPlaceholderIllustrations.emptyList }
                             imageSize="tiny"
                         />
-                    )}
+                    ) }
             </PageLayout>
         </>
     );
