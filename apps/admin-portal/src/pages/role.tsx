@@ -129,7 +129,6 @@ export const RolesPage = (): ReactElement => {
                         storeOptions.push(storeOption);
                     }
                 );
-                console.log(storeOption);
                 setUserStoresList(storeOptions);
             });
 

@@ -186,7 +186,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 name: "Role-Edit",
                 path: "/roles/:id",
                 protected: true,
-                showOnSidePanel: false,
+                showOnSidePanel: false
             },
             {
                 component: UserEditPage,
@@ -232,7 +232,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         component: ClaimDialectsPage,
         exact: true,
         icon: "claims",
-        id: "claims",
+        id: "claimDialects",
         level: 2,
         name: "Claim Dialects",
         path: CLAIM_DIALECTS_PATH,

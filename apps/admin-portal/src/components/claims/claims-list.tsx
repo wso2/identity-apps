@@ -16,11 +16,11 @@
 * under the License.
 */
 
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components"
-import { AlertLevels, Claim, ClaimDialect, ExternalClaim } from "../../models";
+import { AlertLevels, AppConfigInterface, Claim, ClaimDialect, ExternalClaim } from "../../models";
 import { List, Modal } from "semantic-ui-react";
-import { history } from "../../helpers";
+import { AppConfig, history } from "../../helpers";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
@@ -78,6 +78,8 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
     const [deleteID, setDeleteID] = useState<string>(null);
 
     const dispatch = useDispatch();
+
+    const appConfig: AppConfigInterface = useContext(AppConfig);
 
     const claimURIText = useRef([]);
     const copyButton = useRef([]);
@@ -297,12 +299,13 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
             <ResourceList>
                 {
                     isLocalClaim(list)
-                        ? list?.map((claim: Claim, index: number) => {
+                        ? appConfig?.claimDialects?.features?.localClaims?.permissions?.read
+                        && list?.map((claim: Claim, index: number) => {
                             return (
                                 <ResourceList.Item
                                     key={ index }
                                     actions={ [
-                                        {
+                                        appConfig?.claimDialects?.features?.localClaims?.permissions?.update && {
                                             icon: "pencil alternate",
                                             onClick: () => {
                                                 history.push(`${EDIT_LOCAL_CLAIMS_PATH}/${claim?.id}`)
@@ -310,7 +313,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                             popupText: "Edit",
                                             type: "button"
                                         },
-                                        {
+                                        appConfig?.claimDialects?.features?.localClaims?.permissions?.delete && {
                                             icon: "trash alternate",
                                             onClick: () => { initDelete(ListType.LOCAL, claim?.id) },
                                             popupText: "Delete",
@@ -345,7 +348,8 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                             )
                         })
                         : isDialect(list)
-                            ? list?.map((dialect: ClaimDialect, index: number) => {
+                            ? appConfig?.claimDialects?.permissions?.read
+                            && list?.map((dialect: ClaimDialect, index: number) => {
                                 return (
                                     <ResourceList.Item
                                         key={ index }
@@ -364,7 +368,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                             </Image>
                                         }
                                         actions={ [
-                                            {
+                                            appConfig?.claimDialects?.features?.externalClaims?.permissions?.read && {
                                                 icon: "arrow right",
                                                 onClick: () => {
                                                     history.push(`${EXTERNAL_CLAIMS_PATH}/${dialect.id}`);
@@ -372,7 +376,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                                 popupText: "View Claims belonging to this dialect",
                                                 type: "button"
                                             },
-                                            {
+                                            appConfig?.claimDialects?.permissions?.update && {
                                                 icon: "pencil alternate",
                                                 onClick: () => {
                                                     openEdit(dialect.id);
@@ -380,7 +384,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                                 popupText: "Edit",
                                                 type: "button"
                                             },
-                                            {
+                                            appConfig?.claimDialects?.permissions?.delete && {
                                                 icon: "trash alternate",
                                                 onClick: () => { initDelete(ListType.DIALECT, dialect?.id) },
                                                 popupText: "Delete",
@@ -392,12 +396,13 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                     />
                                 );
                             })
-                            : list?.map((claim: ExternalClaim, index: number) => {
+                            : appConfig?.claimDialects?.features?.externalClaims?.permissions?.read
+                            && list?.map((claim: ExternalClaim, index: number) => {
                                 return (
                                     <ResourceList.Item
                                         key={ index }
                                         actions={ [
-                                            {
+                                            appConfig?.claimDialects?.features?.externalClaims?.permissions?.update && {
                                                 icon: "pencil alternate",
                                                 onClick: () => {
                                                     openEdit(claim?.id);
@@ -405,7 +410,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                                 popupText: "Edit",
                                                 type: "button"
                                             },
-                                            {
+                                            appConfig?.claimDialects?.features?.externalClaims?.permissions?.delete && {
                                                 icon: "trash alternate",
                                                 onClick: () => { initDelete(ListType.EXTERNAL, claim?.id) },
                                                 popupText: "Delete",

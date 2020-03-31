@@ -17,7 +17,7 @@
  */
 
 import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getUserStores } from "../api";
@@ -25,9 +25,10 @@ import { AddUserStore, UserStoresList, UserStoresSearch } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
-import { AlertLevels, QueryParams, UserStoreListItem } from "../models";
+import { AlertLevels, AppConfigInterface, QueryParams, UserStoreListItem } from "../models";
 import { addAlert } from "../store/actions";
 import { filterList, sortList } from "../utils";
+import { AppConfig } from "../helpers";
 
 /**
  * This renders the User Stores page.
@@ -62,6 +63,8 @@ export const UserStores = (): React.ReactElement => {
     const [sortOrder, setSortOrder] = useState(true);
 
     const dispatch = useDispatch();
+
+    const appConfig: AppConfigInterface = useContext(AppConfig);
 
     /**
      * Fetches all user stores.
@@ -196,7 +199,7 @@ export const UserStores = (): React.ReactElement => {
                                 onSortStrategyChange={ handleSortStrategyChange }
                                 onSortOrderChange={ handleSortOrderChange }
                                 rightActionPanel={
-                                    (
+                                   appConfig?.userStores?.permissions?.create &&  (
                                         <PrimaryButton
                                             onClick={ () => {
                                                 setOpenModal(true);
