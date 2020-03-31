@@ -69,7 +69,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
      * @param {string} sort.
      * @param {string} filter.
      */
-    const getDialect = (limit?: number, offset?: number, sort?: string, filter?: string) => {
+    const getDialect = (limit?: number, offset?: number, sort?: string, filter?: string): void => {
         getDialects({
             limit, offset, sort, filter
         }).then((response: ClaimDialect[]) => {
