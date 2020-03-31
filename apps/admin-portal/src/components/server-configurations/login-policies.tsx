@@ -17,7 +17,7 @@
  */
 
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
-import { Button, Container, Divider, Form, Grid, Modal } from "semantic-ui-react";
+import { Divider, Form, Grid } from "semantic-ui-react";
 import { EditSection, Hint, Section } from "@wso2is/react-components";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import { getAllLoginPoliciesConfigurations, updateAccountLockingConfigurations } from "../../api";
@@ -54,27 +54,12 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 		[LOGIN_POLICIES_FORM_IDENTIFIER]: false
 	});
 
-	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 	const [loginPoliciesConfigs, setLoginPoliciesConfigs] = useState<LoginPoliciesInterface>({});
 	const [reset] = useTrigger();
 
 	const dispatch = useDispatch();
 
 	const { t } = useTranslation();
-
-	/**
-	 * Handles the `onSubmit` event of the forms.
-	 */
-	const handleSubmit = (): void => {
-		setShowConfirmationModal(true);
-	};
-
-	/**
-	 * Handle the confirmation modal close event.
-	 */
-	const handleConfirmationModalClose = (): void => {
-		setShowConfirmationModal(false);
-	};
 
 	/**
 	 * Handles the onClick event of the cancel button.
@@ -123,8 +108,6 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 		updateAccountLockingConfigurations(data)
 			.then(() => {
 				dispatch(addAlert(successNotification));
-				handleConfirmationModalClose();
-				hideFormEditView(LOGIN_POLICIES_FORM_IDENTIFIER);
 			})
 			.catch((error) => {
 				// Axios throws a generic `Network Error` for 401 status.
@@ -169,7 +152,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 		makeLoginPoliciesPatchCall(data, successNotification);
 	};
 
-	const saveLoginPoliciesAdvancedConfigs = () => {
+	const saveLoginPoliciesAdvancedConfigs = (loginPoliciesConfigs) => {
 		const data = {
 			"operation": "UPDATE",
 			"properties": [
@@ -297,26 +280,6 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 		return response.properties.find(prop => prop.name === key).value === "true" ? [key] : [];
 	};
 
-	const confirmationModal = (
-		<Modal size="mini" open={ showConfirmationModal } onClose={ handleConfirmationModalClose } dimmer="blurring">
-			<Modal.Content>
-				<Container>
-					<h3>{ t("devPortal:components.serverConfigs.loginPolicies.confirmation.heading") }</h3>
-				</Container>
-				<Divider hidden={ true }/>
-				<p>{ t("devPortal:components.serverConfigs.loginPolicies.confirmation.message") }</p>
-			</Modal.Content>
-			<Modal.Actions>
-				<Button className="link-button" onClick={ handleConfirmationModalClose }>
-					{ t("common:cancel") }
-				</Button>
-				<Button primary={ true } onClick={ saveLoginPoliciesAdvancedConfigs }>
-					{ t("common:continue") }
-				</Button>
-			</Modal.Actions>
-		</Modal>
-	);
-
 	const showLoginPoliciesSummary = (
 		<EditSection>
 			<Forms>
@@ -372,14 +335,14 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 		<EditSection>
 			<Forms
 				onSubmit={ (values) => {
-					setLoginPoliciesConfigs(getFormValues(values));
-					handleSubmit();
+					saveLoginPoliciesAdvancedConfigs(getFormValues(values));
 				} }
 				resetState={ reset }
 			>
 				<Grid>
 					<Grid.Row columns={ 1 }>
 						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Divider/>
 							<h4>Account Locking</h4>
 							<Field
 								label={ t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
@@ -463,17 +426,11 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 								{ t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
 									"form.accountLockInternalNotificationManagement.hint") }
 							</Hint>
-							<Field
-								name=""
-								required={ false }
-								requiredErrorMessage=""
-								hidden={ true }
-								type="divider"
-							/>
 						</Grid.Column>
 					</Grid.Row>
 					<Grid.Row columns={ 1 }>
 						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Divider/>
 							<h4>Account Disabling</h4>
 							<Field
 								name={ ServerConfigurationsConstants.ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT }
@@ -496,15 +453,9 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 							</Hint>
 						</Grid.Column>
 					</Grid.Row>
-					<Field
-						name=""
-						required={ false }
-						requiredErrorMessage=""
-						hidden={ true }
-						type="divider"
-					/>
 					<Grid.Row columns={ 1 }>
 						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Divider/>
 							<h4>Captcha for SSO Login</h4>
 							<Field
 								name={ ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE }
@@ -590,7 +541,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 									} }
 									size="small"
 									type="button"
-									value={ t("common:cancel").toString() }
+									value={ t("common:close").toString() }
 								/>
 							</Form.Group>
 						</Grid.Column>
@@ -616,7 +567,6 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 		>
 			{ showLoginPoliciesSummary }
 			{ showAdvancedLoginPoliciesView }
-			{ confirmationModal }
 		</Section>
 	);
 };

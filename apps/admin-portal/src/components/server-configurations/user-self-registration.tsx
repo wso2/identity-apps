@@ -17,9 +17,9 @@
  */
 
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
-import { Button, Container, Divider, Form, Grid, Modal } from "semantic-ui-react";
 import { EditSection, Hint, Section } from "@wso2is/react-components";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
+import { Divider, Form, Grid } from "semantic-ui-react";
 import { getSelfSignUpConfigurations, updateSelfSignUpConfigurations } from "../../api";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
@@ -56,26 +56,11 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 	});
 
 	const [selfSignUpConfigs, setSelfSignUpConfigs] = useState<SelfSignUpConfigurationsInterface>({});
-	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 	const [reset] = useTrigger();
 
 	const dispatch = useDispatch();
 
 	const { t } = useTranslation();
-
-	/**
-	 * Handles the `onSubmit` event of the forms.
-	 */
-	const handleSubmit = (): void => {
-		setShowConfirmationModal(true);
-	};
-
-	/**
-	 * Handle the confirmation modal close event.
-	 */
-	const handleConfirmationModalClose = (): void => {
-		setShowConfirmationModal(false);
-	};
 
 	/**
 	 * Handles the onClick event of the cancel button.
@@ -128,8 +113,8 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		updateSelfSignUpConfigurations(data)
 			.then(() => {
 				dispatch(addAlert(successNotification));
-				handleConfirmationModalClose();
-				hideFormEditView(USER_SELF_REGISTRATION_FORM_IDENTIFIER);
+				// handleConfirmationModalClose();
+				// hideFormEditView(USER_SELF_REGISTRATION_FORM_IDENTIFIER);
 			})
 			.catch((error) => {
 				// Axios throws a generic `Network Error` for 401 status.
@@ -160,7 +145,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 			description: "",
 			level: AlertLevels.SUCCESS,
 			message: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
-				"updateEnable.success.message")
+				"updateConfigurations.success.message")
 		};
 		switch (key) {
 			case ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE:
@@ -183,7 +168,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		makeSelfRegistrationPatchCall(data, successNotification);
 	};
 
-	const saveSelfRegistrationAdvancedConfigs = () => {
+	const saveSelfRegistrationAdvancedConfigs = (selfSignUpConfigs) => {
 		const data = {
 			"operation": "UPDATE",
 			"properties": [
@@ -238,26 +223,6 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 	const extractArrayValue = (response, key) => {
 		return response.properties.find(prop => prop.name === key).value === "true" ? [key] : [];
 	};
-
-	const confirmationModal = (
-		<Modal size="mini" open={ showConfirmationModal } onClose={ handleConfirmationModalClose } dimmer="blurring">
-			<Modal.Content>
-				<Container>
-					<h3>{ t("devPortal:components.serverConfigs.selfRegistration.confirmation.heading") }</h3>
-				</Container>
-				<Divider hidden={ true }/>
-				<p>{ t("devPortal:components.serverConfigs.selfRegistration.confirmation.message") }</p>
-			</Modal.Content>
-			<Modal.Actions>
-				<Button className="link-button" onClick={ handleConfirmationModalClose }>
-					{ t("common:cancel") }
-				</Button>
-				<Button primary={ true } onClick={ saveSelfRegistrationAdvancedConfigs }>
-					{ t("common:continue") }
-				</Button>
-			</Modal.Actions>
-		</Modal>
-	);
 
 	const getFormValues = (values) => {
 		return {
@@ -373,14 +338,14 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		<EditSection>
 			<Forms
 				onSubmit={ (values) => {
-					setSelfSignUpConfigs(getFormValues(values));
-					handleSubmit();
+					saveSelfRegistrationAdvancedConfigs(getFormValues(values));
 				} }
 				resetState={ reset }
 			>
 				<Grid>
 					<Grid.Row columns={ 1 }>
 						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Divider/>
 							<Field
 								label={ t("devPortal:components.serverConfigs.selfRegistration.form." +
 									"verificationLinkExpiryTime.label") }
@@ -458,7 +423,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 									} }
 									size="small"
 									type="button"
-									value={ t("common:cancel").toString() }
+									value={ t("common:close").toString() }
 								/>
 							</Form.Group>
 						</Grid.Column>
@@ -484,7 +449,6 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		>
 			{ userSelfRegistrationSummary }
 			{ showUserSelfRegistrationView }
-			{ confirmationModal }
 		</Section>
 	);
 };

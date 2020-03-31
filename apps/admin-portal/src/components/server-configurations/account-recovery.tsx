@@ -17,7 +17,7 @@
  */
 
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
-import { Button, Container, Divider, Form, Grid, Modal } from "semantic-ui-react";
+import { Divider, Form, Grid } from "semantic-ui-react";
 import { EditSection, Hint, Section } from "@wso2is/react-components";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import { getAccountRecoveryConfigurations, updateAccountRecoveryConfigurations } from "../../api";
@@ -54,27 +54,12 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		[ACCOUNT_RECOVERY_FORM_IDENTIFIER]: false
 	});
 
-	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 	const [accountRecoveryConfigs, setAccountRecoveryConfigs] = useState<AccountRecoveryConfigurationsInterface>({});
 	const [reset] = useTrigger();
 
 	const dispatch = useDispatch();
 
-	const {t} = useTranslation();
-
-	/**
-	 * Handles the `onSubmit` event of the forms.
-	 */
-	const handleSubmit = (): void => {
-		setShowConfirmationModal(true);
-	};
-
-	/**
-	 * Handle the confirmation modal close event.
-	 */
-	const handleConfirmationModalClose = (): void => {
-		setShowConfirmationModal(false);
-	};
+	const { t } = useTranslation();
 
 	/**
 	 * Handles the onClick event of the cancel button.
@@ -123,8 +108,6 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		updateAccountRecoveryConfigurations(data)
 			.then(() => {
 				dispatch(addAlert(successNotification));
-				handleConfirmationModalClose();
-				hideFormEditView(ACCOUNT_RECOVERY_FORM_IDENTIFIER);
 			})
 			.catch((error) => {
 				// Axios throws a generic `Network Error` for 401 status.
@@ -177,7 +160,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		makeAccountRecoveryPatchCall(data, successNotification);
 	};
 
-	const saveAccountRecoveryAdvancedConfigs = () => {
+	const saveAccountRecoveryAdvancedConfigs = (accountRecoveryConfigs) => {
 		const data = {
 			"operation": "UPDATE",
 			"properties": [
@@ -337,26 +320,6 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		return response.properties.find(prop => prop.name === key).value === "true" ? [key] : [];
 	};
 
-	const confirmationModal = (
-		<Modal size="mini" open={ showConfirmationModal } onClose={ handleConfirmationModalClose } dimmer="blurring">
-			<Modal.Content>
-				<Container>
-					<h3>{ t("devPortal:components.serverConfigs.accountRecovery.confirmation.heading") }</h3>
-				</Container>
-				<Divider hidden={ true }/>
-				<p>{ t("devPortal:components.serverConfigs.accountRecovery.confirmation.message") }</p>
-			</Modal.Content>
-			<Modal.Actions>
-				<Button className="link-button" onClick={ handleConfirmationModalClose }>
-					{ t("common:cancel") }
-				</Button>
-				<Button primary={ true } onClick={ saveAccountRecoveryAdvancedConfigs }>
-					{ t("common:continue") }
-				</Button>
-			</Modal.Actions>
-		</Modal>
-	);
-
 	const showAccountRecoverySummary = (
 		<EditSection>
 			<Forms>
@@ -459,14 +422,14 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		<EditSection>
 			<Forms
 				onSubmit={ (values) => {
-					setAccountRecoveryConfigs(getFormValues(values));
-					handleSubmit();
+					saveAccountRecoveryAdvancedConfigs(getFormValues(values));
 				} }
 				resetState={ reset }
 			>
 				<Grid>
 					<Grid.Row columns={ 1 }>
 						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Divider/>
 							<h4>Password Recovery</h4>
 							<Field
 								name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE }
@@ -548,6 +511,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 					</Grid.Row>
 					<Grid.Row columns={ 1 }>
 						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Divider/>
 							<h4>Other Settings</h4>
 							<Field
 								name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_FORCED_ENABLE }
@@ -748,7 +712,6 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		>
 			{ showAccountRecoverySummary }
 			{ showUserAccountRecoveryView }
-			{ confirmationModal }
 		</Section>
 	);
 };
