@@ -204,9 +204,9 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
             submitState={ triggerSubmit }
         >
             <Grid>
-                {getAuthenticatorPropertyFields().sort((a, b) => {
+                { getAuthenticatorPropertyFields().sort((a, b) => {
                     return Number(a.key) - Number(b.key);
-                })}
+                }) }
                 {enableSubmitButton ? getSubmitButton() : null}
             </Grid>
         </Forms>
