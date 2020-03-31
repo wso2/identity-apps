@@ -232,7 +232,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                             history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
                         } }
                     >
-                        <Icon name="add"/>Add application
+                        <Icon name="add"/>Add Application
                     </PrimaryButton>
                 ) }
                 image={ EmptyPlaceholderIllustrations.newList }
@@ -269,7 +269,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                                     history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
                                 } }
                             >
-                                <Icon name="add"/>Add application
+                                <Icon name="add"/>Add Application
                             </PrimaryButton>
                         )
                 }

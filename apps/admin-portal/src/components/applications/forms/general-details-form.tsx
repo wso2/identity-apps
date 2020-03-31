@@ -120,7 +120,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="name"
-                            label="Application Name"
+                            label="Name"
                             required={ true }
                             requiredErrorMessage="Application name is required"
                             placeholder={ name }
@@ -146,7 +146,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="imageUrl"
-                            label="Application Image"
+                            label="Application image"
                             required={ false }
                             requiredErrorMessage=""
                             placeholder="Enter a image url for the application"

@@ -268,7 +268,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                         <Field
                                             name="clientSecret"
-                                            label="Client Secret"
+                                            label="Client secret"
                                             hidePassword="Hide secret"
                                             showPassword="Show secret"
                                             required={ false }
@@ -306,7 +306,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             labelName={ "Callback URL" }
                             required={ true }
                             value={ buildCallBackURLWithSeparator(initialValues.callbackURLs?.toString()) }
-                            placeholder={ "Enter callbackUrl" }
+                            placeholder={ "Enter callback URL" }
                             validationErrorMsg={ "Please add valid URL." }
                             validation={ (value: string) => {
                                 if (FormValidation.url(value)) {
@@ -323,7 +323,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="allowedOrigins"
-                                    label="Allowed Origins"
+                                    label="Allowed origins"
                                     validation={ (value: string, validation: Validation) => {
                                         if (!FormValidation.url(value)) {
                                             validation.isValid = false;
@@ -353,7 +353,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     value={ initialValues.publicClient ? ["supportPublicClients"] : [] }
                                     children={ [
                                         {
-                                            label: "Public Client",
+                                            label: "Public client",
                                             value: "supportPublicClients"
                                         }
                                     ] }
@@ -474,7 +474,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     value={ initialValues.refreshToken?.renewRefreshToken ? ["refreshToken"] : [] }
                                     children={ [
                                         {
-                                            label: "Renew Refresh Token",
+                                            label: "Renew refresh token",
                                             value: "refreshToken"
                                         },
                                     ] }
@@ -486,7 +486,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                 <Field
                                     name="expiryInSeconds"
-                                    label="Refresh Token Expiry Time"
+                                    label="Refresh token expiry time"
                                     required={ true }
                                     requiredErrorMessage="Please fill the refresh token expiry time"
                                     placeholder="Enter the refresh token expiry time"
@@ -589,7 +589,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                 <Field
                                     name="idExpiryInSeconds"
-                                    label="Id Token Expiry Time"
+                                    label="Id token expiry time"
                                     required={ true }
                                     requiredErrorMessage="Please fill the ID token expiry time"
                                     placeholder="Enter the ID token expiry time"
@@ -612,10 +612,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Divider hidden/>
                                 <Field
                                     name="backChannelLogoutUrl"
-                                    label="Back Channel Logout Url"
+                                    label="Back channel logout URL"
                                     required={ false }
-                                    requiredErrorMessage="Please fill the Back Channel Logout Url"
-                                    placeholder="Enter the Back Channel Logout Url"
+                                    requiredErrorMessage="Please fill the Back Channel Logout URL"
+                                    placeholder="Enter the Back Channel Logout URL"
                                     type="text"
                                     value={ initialValues.logout?.backChannelLogoutUrl }
                                 />
@@ -625,10 +625,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="frontChannelLogoutUrl"
-                                    label="Front Channel Logout Url"
+                                    label="Front channel logout URL"
                                     required={ false }
-                                    requiredErrorMessage="Please fill the Front Channel Logout Url"
-                                    placeholder="Enter the Front Channel Logout Url"
+                                    requiredErrorMessage="Please fill the Front Channel Logout URL"
+                                    placeholder="Enter the Front Channel Logout URL"
                                     type="text"
                                     value={ initialValues.logout?.frontChannelLogoutUrl }
                                 />
@@ -646,7 +646,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         ["EnableRequestObjectSignatureValidation"] : [] }
                                     children={ [
                                         {
-                                            label: "Enable Request Object Signature Validation",
+                                            label: "Enable request object signature validation",
                                             value: "EnableRequestObjectSignatureValidation"
                                         }
                                     ] }
