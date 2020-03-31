@@ -95,8 +95,8 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
             ]
         },
         {
-            description: "Allow users from a generic identity provider to access your applications via OpenID Connect.",
-            displayName: "OpenID Connect Identity Provider",
+            description: "Allow users from an OIDC IdP to access your applications.",
+            displayName: "OpenID Connect",
             id: SupportedQuickStartTemplates.OIDC,
             image: InboundProtocolLogos?.oidc,
             authenticator: { name: SupportedAuthenticators.OIDC },
@@ -110,8 +110,8 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
             ]
         },
         {
-            description: "Allow users from a generic identity provider to access your applications via SAML.",
-            displayName: "SAML Identity Provider",
+            description: "Allow users from a SAML IdP to access your applications.",
+            displayName: "SAML",
             id: SupportedQuickStartTemplates.SAML,
             image: InboundProtocolLogos?.saml,
             authenticator: { name: SupportedAuthenticators.SAML },

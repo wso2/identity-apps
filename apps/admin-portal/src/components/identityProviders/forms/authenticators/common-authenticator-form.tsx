@@ -33,6 +33,15 @@ enum CommonAuthenticatorConstants {
 }
 
 /**
+ * Each field type.
+ */
+enum FieldType {
+    CHECKBOX = "CheckBox",
+    TEXT = "Text",
+    CONFIDENTIAL = "Confidential",
+}
+
+/**
  * Google authenticator configurations form.
  *
  * @param {AuthenticatorFormPropsInterface} props
@@ -83,6 +92,22 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
         };
     };
 
+    const getConfidentialField = (eachProp: AuthenticatorProperty,
+                              propertyMetadata: FederatedAuthenticatorMetaPropertyInterface) => {
+        return (
+            <Field
+                showPassword="Show Secret"
+                hidePassword="Hide Secret"
+                label={ propertyMetadata?.displayName }
+                name={ eachProp?.key }
+                placeholder={ propertyMetadata?.description }
+                required={ propertyMetadata?.isMandatory }
+                requiredErrorMessage={ "This is required" }
+                type="password"
+            />
+        );
+    };
+
     const getCheckboxField = (eachProp: AuthenticatorProperty,
                               propertyMetadata: FederatedAuthenticatorMetaPropertyInterface) => {
         return (
@@ -121,25 +146,37 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
         );
     };
 
-    function getPropertyField(eachProp) {
-        const propertyMetadata = metadata.properties?.find(metaProperty => metaProperty.key === eachProp.key);
-        switch (propertyMetadata?.type?.toUpperCase()) {
+    const getFieldType = (propertyMetadata) => {
+        if (propertyMetadata?.type?.toUpperCase() === CommonAuthenticatorConstants.BOOLEAN) {
+            return FieldType.CHECKBOX;
+        } else if (propertyMetadata?.isConfidential) {
+            return FieldType.CONFIDENTIAL;
+        }
+        return FieldType.TEXT;
+    };
+
+    const getPropertyField = (eachProp, propertyMetadata) => {
+        switch (getFieldType(propertyMetadata)) {
             // TODO Identify URLs, and generate a Field which supports URL validation.
-            case CommonAuthenticatorConstants.BOOLEAN : {
+            case FieldType.CHECKBOX : {
                 return getCheckboxField(eachProp, propertyMetadata);
+            }
+            case FieldType.CONFIDENTIAL : {
+                return getConfidentialField(eachProp, propertyMetadata);
             }
             default: {
                 return getTextField(eachProp, propertyMetadata);
             }
         }
-    }
+    };
 
-    const getAuthenticatorPropertyFields = () => {
+    const getAuthenticatorPropertyFields = (): ReactElement[] => {
         return initialValues.properties?.map((eachProp: AuthenticatorProperty) => {
+            const propertyMetadata = metadata.properties?.find(metaProperty => metaProperty.key === eachProp.key);
             return (
-                <Grid.Row columns={ 1 } key={ eachProp?.key }>
+                <Grid.Row columns={ 1 } key={ propertyMetadata?.displayOrder }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        {getPropertyField(eachProp)}
+                        {getPropertyField(eachProp, propertyMetadata)}
                     </Grid.Column>
                 </Grid.Row>
 
@@ -167,7 +204,9 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
             submitState={ triggerSubmit }
         >
             <Grid>
-                {getAuthenticatorPropertyFields()}
+                { getAuthenticatorPropertyFields().sort((a, b) => {
+                    return Number(a.key) - Number(b.key);
+                }) }
                 {enableSubmitButton ? getSubmitButton() : null}
             </Grid>
         </Forms>
