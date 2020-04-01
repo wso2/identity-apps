@@ -69,7 +69,7 @@ export const Title = (props: TitleProps) => {
         <div className={ classNames(classes, "product-title") } style={ style }>
             <Logo />
             <h1 className={ classNames(classes, "product-title-text") } style={ style }>
-                { config?.deployment?.applicationName }
+                { config.deployment.applicationName }
             </h1>
             { children }
         </div>

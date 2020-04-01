@@ -108,14 +108,14 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                                 key={ index }
                                 actions={ [
                                     {
-                                        hidden: config?.deployment?.doNotDeleteIdentityProviders.includes(idp.name),
+                                        hidden: config.deployment.doNotDeleteIdentityProviders.includes(idp.name),
                                         icon: "pencil alternate",
                                         onClick: (): void => handleIdentityProviderEdit(idp.id),
                                         popupText: "edit",
                                         type: "button"
                                     },
                                     {
-                                        hidden: config?.deployment?.doNotDeleteIdentityProviders.includes(idp.name),
+                                        hidden: config.deployment.doNotDeleteIdentityProviders.includes(idp.name),
                                         icon: "trash alternate",
                                         onClick: (): void => handleIdentityProviderDelete(idp.id),
                                         popupText: "delete",

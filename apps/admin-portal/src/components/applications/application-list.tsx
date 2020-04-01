@@ -134,7 +134,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         }
 
         actions.push({
-            hidden: config?.deployment?.doNotDeleteApplications.includes(app.name),
+            hidden: config.deployment.doNotDeleteApplications.includes(app.name),
             icon: "trash alternate",
             onClick: (): void => {
                 setShowDeleteConfirmationModal(true);

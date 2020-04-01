@@ -45,7 +45,7 @@ export const UnderConstruction = (): JSX.Element => {
                     <Button
                         className="link-button"
                         as={ Link }
-                        to={ config?.deployment?.appHomePath }
+                        to={ config.deployment.appHomePath }
                     >
                         { t("devPortal:placeholders.underConstruction.action") }
                     </Button>

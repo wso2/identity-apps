@@ -44,8 +44,8 @@ export const SignIn = (props) => {
         const AuthenticationCallbackUrl = getAuthenticationCallbackUrl();
         const location =
             !AuthenticationCallbackUrl
-            || AuthenticationCallbackUrl === config?.deployment?.appLoginPath
-                ? config?.deployment?.appHomePath
+            || AuthenticationCallbackUrl === config.deployment.appLoginPath
+                ? config.deployment.appHomePath
                 : AuthenticationCallbackUrl;
 
         history.push(location);

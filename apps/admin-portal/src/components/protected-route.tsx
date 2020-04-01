@@ -44,7 +44,7 @@ export const ProtectedRoute = (props: RouteProps): JSX.Element => {
      * Update existing location path in the state to recall upon page refresh or authentication callback.
      * The login path and the login error path have been skipped.
      */
-    if ((history.location.pathname !== config?.deployment?.appLoginPath)
+    if ((history.location.pathname !== config.deployment.appLoginPath)
         && (history.location.pathname !== ApplicationConstants.LOGIN_ERROR_PAGE_PATH)) {
         updateAuthenticationCallbackUrl(history.location.pathname);
     }
@@ -56,7 +56,7 @@ export const ProtectedRoute = (props: RouteProps): JSX.Element => {
                     ? Component
                         ? <Component { ...renderProps } />
                         : null
-                    : <Redirect to={ config?.deployment?.appLoginPath } />
+                    : <Redirect to={ config.deployment.appLoginPath } />
             }
             { ...rest }
         />

@@ -43,7 +43,7 @@ export const PageNotFound = (): JSX.Element => {
                 <Button
                     className="link-button"
                     as={ Link }
-                    to={ config?.deployment?.appHomePath }
+                    to={ config.deployment.appHomePath }
                 >
                     { t("devPortal:placeholders.404.action") }
                 </Button>
