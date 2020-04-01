@@ -108,16 +108,18 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         return <>
             <Divider horizontal>Authenticator details</Divider>
 
-            { authenticatorSummary && (
-                <Grid.Row className="summary-field" columns={ 2 }>
-                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                        <div className="label">Name</div>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                        <div className="value url">{ authenticatorSummary?.name }</div>
-                    </Grid.Column>
-                </Grid.Row>
-            ) }
+            {
+                authenticatorSummary && (
+                    <Grid.Row className="summary-field" columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                            <div className="label">Name</div>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                            <div className="value url">{authenticatorSummary?.name}</div>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
             {
                 authenticatorSummary?.properties && getAuthenticatorProperties()
             }
