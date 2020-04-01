@@ -23,9 +23,11 @@ import { IdentityProviderTemplateListInterface, IdentityProviderTemplateListItem
 import { IdentityProviderCreateWizard } from "../components/identity-providers/wizard";
 import { QuickStartIdentityProviderTemplates } from "../components/identity-providers/templates";
 import { getIdentityProviderTemplate, getIdentityProviderTemplateList } from "../api";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
+import { AppState } from "../store";
+import { setAvailableAuthenticatorsMeta } from "../store/actions/identity-provider";
 
 /**
  * Choose the application template from this page.
@@ -39,6 +41,8 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
     const [availableTemplates, setAvailableTemplates] = useState<IdentityProviderTemplateListItemInterface[]>([]);
     
     const dispatch = useDispatch();
+
+    const availableAuthenticators = useSelector((state: AppState) => state.identityProvider.meta.authenticators);
 
     /**
      * Retrieve Identity Provider template list.
@@ -110,6 +114,9 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
      * Handles back button click.
      */
     const handleBackButtonClick = (): void => {
+        if (availableAuthenticators) {
+            dispatch(setAvailableAuthenticatorsMeta(undefined));
+        }
         history.push("/identity-providers");
     };
 

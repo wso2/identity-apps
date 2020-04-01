@@ -289,16 +289,11 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * Loads the identity provider authenticators on initial component load.
      */
     useEffect(() => {
-        if (!_.isEmpty(availableAuthenticators)) {
-            return;
-        }
-
-        // Call backend APIs to retrieve required data.
-        if (isAuthenticatorStepAvailable()) {
+        if (isAuthenticatorStepAvailable() && _.isEmpty(availableAuthenticators)) {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const authenticators = IdentityProviderManagementUtils.getAuthenticators();
         } else {
-            // If there are no data retrieval to be done, initialize the wizard.
+            // If there are no data retrieval requirements.
             setInitWizard(true);
         }
     }, []);
@@ -334,7 +329,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * Called when `availableAuthenticators` are changed.
      */
     useEffect(() => {
-        if (availableAuthenticators.find(eachAuthenticator => eachAuthenticator.authenticatorId ===
+        if (availableAuthenticators?.find(eachAuthenticator => eachAuthenticator.authenticatorId ===
             template?.federatedAuthenticators?.defaultAuthenticatorId)) {
             getAuthenticatorMetadata(template?.federatedAuthenticators?.defaultAuthenticatorId);
         }

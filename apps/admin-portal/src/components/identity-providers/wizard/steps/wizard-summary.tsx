@@ -82,26 +82,28 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         });
     };
 
-    return (
-        <Grid className="wizard-summary">
-            <Grid.Row>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
-                    <div className="general-details">
-                        <AppAvatar
-                            name={ identityProvider?.name }
-                            image={ identityProvider?.image }
-                            size="tiny"
-                        />
-                        {identityProvider?.name && (
-                            <Heading size="small" className="name">{identityProvider.name}</Heading>
-                        )}
-                        {identityProvider?.description && (
-                            <div className="description">{identityProvider.description}</div>
-                        )}
-                    </div>
-                </Grid.Column>
-            </Grid.Row>
+    const getGeneralDetailsComponent = () => {
+        return <Grid.Row>
+            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
+                <div className="general-details">
+                    <AppAvatar
+                        name={ identityProvider?.name }
+                        image={ identityProvider?.image }
+                        size="tiny"
+                    />
+                    {identityProvider?.name && (
+                        <Heading size="small" className="name">{identityProvider.name}</Heading>
+                    )}
+                    {identityProvider?.description && (
+                        <div className="description">{identityProvider.description}</div>
+                    )}
+                </div>
+            </Grid.Column>
+        </Grid.Row>;
+    };
 
+    const getAuthenticatorComponent = () => {
+        return <>
             <Divider horizontal>Authenticator details</Divider>
 
             {authenticatorSummary && (
@@ -117,6 +119,17 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
             {
                 authenticatorSummary?.properties && getAuthenticatorProperties()
             }
+        </>;
+    };
+
+    const isAuthenticatorStepAvailable = () => {
+        return identityProvider?.federatedAuthenticators?.defaultAuthenticatorId;
+    };
+
+    return (
+        <Grid className="wizard-summary">
+            {getGeneralDetailsComponent()}
+            {isAuthenticatorStepAvailable() ? getAuthenticatorComponent() : null}
         </Grid>
     );
 };

@@ -17,13 +17,7 @@
  *
  */
 
-import {
-    AuthProtocolMetaListItemInterface,
-    FederatedAuthenticatorListItemInterface,
-    FederatedAuthenticatorMetaInterface
-} from "../models";
 import { getFederatedAuthenticatorsList } from "../api";
-import _ from "lodash";
 import { store } from "../store";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
