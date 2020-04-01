@@ -39,11 +39,11 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getUserDetails = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.users + "/" + id
+        url: store.getState().config.endpoints.users + "/" + id
     };
 
     return httpClient
@@ -84,11 +84,11 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/scim+json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.me
+        url: store.getState().config.endpoints.me
     };
 
     return httpClient
@@ -137,11 +137,11 @@ export const updateProfileInfo = (data: object): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: store.getState().config?.endpoints?.me
+        url: store.getState().config.endpoints.me
     };
 
     return httpClient
@@ -165,11 +165,11 @@ export const updateUserInfo = (userId: string, data: object): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: store.getState().config?.endpoints?.users + "/" + userId
+        url: store.getState().config.endpoints.users + "/" + userId
     };
 
     return httpClient
@@ -191,11 +191,11 @@ export const updateUserInfo = (userId: string, data: object): Promise<any> => {
 export const getProfileSchemas = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.profileSchemas
+        url: store.getState().config.endpoints.profileSchemas
     };
 
     return httpClient

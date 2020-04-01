@@ -38,11 +38,11 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getAssociations = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.associations
+        url: store.getState().config.endpoints.associations
     };
 
     return httpClient.request(requestConfig)
@@ -64,11 +64,11 @@ export const addAccountAssociation = (data: object): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config?.endpoints?.associations
+        url: store.getState().config.endpoints.associations
     };
 
     return httpClient.request(requestConfig)
@@ -89,11 +89,11 @@ export const addAccountAssociation = (data: object): Promise<any> => {
 export const removeLinkedAccount = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${ store.getState().config?.endpoints?.associations }/${ id }`
+        url: `${ store.getState().config.endpoints.associations }/${ id }`
     };
 
     return httpClient.request(requestConfig)
@@ -119,11 +119,11 @@ export const removeLinkedAccount = (id: string): Promise<any> => {
 export const removeAllLinkedAccounts = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config?.endpoints?.associations
+        url: store.getState().config.endpoints.associations
     };
 
     return httpClient.request(requestConfig)
@@ -145,14 +145,14 @@ export const removeAllLinkedAccounts = (): Promise<any> => {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
     const requestParams = {
-        "client_id": store.getState().config?.deployment?.clientID,
+        "client_id": store.getState().config.deployment.clientID,
         "scope": [ SYSTEM_SCOPE ],
         "tenant-domain": account.tenantDomain,
         "username": account.username,
         "userstore-domain": account.userStoreDomain
     };
 
-    return SignInUtil.sendAccountSwitchRequest(requestParams, store.getState().config?.deployment?.clientHost)
+    return SignInUtil.sendAccountSwitchRequest(requestParams, store.getState().config.deployment.clientHost)
         .then((response) => {
             AuthenticateSessionUtil.initUserSession(response,
                 SignInUtil.getAuthenticatedUser(response.idToken));

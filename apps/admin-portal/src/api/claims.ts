@@ -43,11 +43,11 @@ export const addLocalClaim = (data: Claim): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config?.endpoints?.localClaims,
+        url: store.getState().config.endpoints.localClaims,
         data
     };
 
@@ -76,11 +76,11 @@ export const getAllLocalClaims = (params: ClaimsGetParams): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.localClaims,
+        url: store.getState().config.endpoints.localClaims,
         params
     };
 
@@ -109,11 +109,11 @@ export const getAClaim = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config?.endpoints?.localClaims}/${id}`
+        url: `${store.getState().config.endpoints.localClaims}/${id}`
     };
 
     return httpClient
@@ -143,11 +143,11 @@ export const updateAClaim = (id: string, data: Claim): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${store.getState().config?.endpoints?.localClaims}/${id}`,
+        url: `${store.getState().config.endpoints.localClaims}/${id}`,
         data
     };
     return httpClient
@@ -175,11 +175,11 @@ export const deleteAClaim = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${store.getState().config?.endpoints?.localClaims}/${id}`
+        url: `${store.getState().config.endpoints.localClaims}/${id}`
     };
     return httpClient
         .request(requestConfig)
@@ -205,11 +205,11 @@ export const addDialect = (dialectURI: string): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config?.endpoints?.claims,
+        url: store.getState().config.endpoints.claims,
         data: {
             dialectURI
         }
@@ -238,11 +238,11 @@ export const getADialect = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config?.endpoints?.claims}/${id}`
+        url: `${store.getState().config.endpoints.claims}/${id}`
     };
     return httpClient
         .request(requestConfig)
@@ -268,11 +268,11 @@ export const getDialects = (params: ClaimsGetParams): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.claims,
+        url: store.getState().config.endpoints.claims,
         params
     };
     return httpClient
@@ -300,11 +300,11 @@ export const updateADialect = (id: string, dialectURI: string): Promise<any> => 
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${store.getState().config?.endpoints?.claims}/${id}`,
+        url: `${store.getState().config.endpoints.claims}/${id}`,
         data: {
             dialectURI
         }
@@ -333,11 +333,11 @@ export const deleteADialect = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${store.getState().config?.endpoints?.claims}/${id}`
+        url: `${store.getState().config.endpoints.claims}/${id}`
     };
     return httpClient
         .request(requestConfig)
@@ -364,11 +364,11 @@ export const addExternalClaim = (dialectID: string, data: AddExternalClaim): Pro
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${store.getState().config?.endpoints?.externalClaims.replace("{}", dialectID)}`,
+        url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}`,
         data
     };
     return httpClient
@@ -396,11 +396,11 @@ export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams)
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config?.endpoints?.externalClaims?.replace("{}", dialectID)}`,
+        url: `${store.getState().config.endpoints.externalClaims?.replace("{}", dialectID)}`,
         params
     };
     return httpClient
@@ -430,11 +430,11 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config?.endpoints?.externalClaims.replace("{}", dialectID)}/${claimID}`
+        url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}/${claimID}`
     };
     return httpClient
         .request(requestConfig)
@@ -462,11 +462,11 @@ export const updateAnExternalClaim = (dialectID: string, claimID: string, data: 
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${store.getState().config?.endpoints?.externalClaims.replace("{}", dialectID)}/${claimID}`,
+        url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}/${claimID}`,
         data
     };
     return httpClient
@@ -494,11 +494,11 @@ export const deleteAnExternalClaim = (dialectID: string, claimID: string): Promi
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${store.getState().config?.endpoints?.externalClaims.replace("{}", dialectID)}/${claimID}`
+        url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}/${claimID}`
     };
     return httpClient
         .request(requestConfig)

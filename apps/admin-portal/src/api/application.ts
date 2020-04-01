@@ -57,11 +57,11 @@ export const getApplicationDetails = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.applications + "/" + id
+        url: store.getState().config.endpoints.applications + "/" + id
     };
 
     return httpClient.get(requestConfig.url, { headers: requestConfig.headers })
@@ -85,11 +85,11 @@ export const deleteApplication = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config?.endpoints?.applications + "/" + id
+        url: store.getState().config.endpoints.applications + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -118,11 +118,11 @@ export const updateApplicationDetails = (app: ApplicationInterface): Promise<any
         data: rest,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: store.getState().config?.endpoints?.applications + "/" + id
+        url: store.getState().config.endpoints.applications + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -150,7 +150,7 @@ export const getApplicationList = (limit: number, offset: number,
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -159,7 +159,7 @@ export const getApplicationList = (limit: number, offset: number,
             limit,
             offset
         },
-        url: store.getState().config?.endpoints?.applications
+        url: store.getState().config.endpoints.applications
     };
 
     return httpClient.request(requestConfig)
@@ -182,11 +182,11 @@ export const getAvailableInboundProtocols = (customOnly: boolean): Promise<AuthP
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.applications + "/meta/inbound-protocols?customOnly=" + customOnly
+        url: store.getState().config.endpoints.applications + "/meta/inbound-protocols?customOnly=" + customOnly
     };
 
     return httpClient.request(requestConfig)
@@ -211,11 +211,11 @@ export const getAuthProtocolMetadata = <T>(protocol: SupportedAuthProtocolMetaTy
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ store.getState().config?.endpoints?.applications}/meta/inbound-protocols/${ protocol }`
+        url: `${ store.getState().config.endpoints.applications}/meta/inbound-protocols/${ protocol }`
     };
 
     return httpClient.request(requestConfig)
@@ -251,11 +251,11 @@ export const getOIDCData = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.applications + "/" + id + "/inbound-protocols/oidc"
+        url: store.getState().config.endpoints.applications + "/" + id + "/inbound-protocols/oidc"
     };
 
     return httpClient.request(requestConfig)
@@ -283,11 +283,11 @@ export const getInboundProtocolConfig = (applicationId: string, inboundProtocolI
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ store.getState().config?.endpoints?.applications }/${ applicationId }/inbound-protocols/${
+        url: `${ store.getState().config.endpoints.applications }/${ applicationId }/inbound-protocols/${
             inboundProtocolId }`
     };
 
@@ -314,11 +314,11 @@ export const updateOIDCData = (id: string, OIDC: object): Promise<any> => {
         data: OIDC,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: store.getState().config?.endpoints?.applications + "/" + id + "/inbound-protocols/oidc"
+        url: store.getState().config.endpoints.applications + "/" + id + "/inbound-protocols/oidc"
     };
 
     return httpClient.request(requestConfig)
@@ -347,11 +347,11 @@ export const updateAuthProtocolConfig = <T>(id: string, config: any,
         data: config,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${ store.getState().config?.endpoints?.applications}/${ id }/inbound-protocols/${ protocol }`
+        url: `${ store.getState().config.endpoints.applications}/${ id }/inbound-protocols/${ protocol }`
     };
 
     return httpClient.request(requestConfig)
@@ -389,11 +389,11 @@ export const updateAdvanceConfigurations = (id: string, advancedConfigs: object)
         data: advancedConfigs,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: store.getState().config?.endpoints?.applications + "/" + id
+        url: store.getState().config.endpoints.applications + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -417,11 +417,11 @@ export const createApplication = (application: object): Promise<any> => {
         data: application,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config?.endpoints?.applications
+        url: store.getState().config.endpoints.applications
     };
 
     return httpClient.request(requestConfig)
@@ -445,11 +445,11 @@ export const updateAuthenticationSequence = (id: string, data: object): Promise<
         data,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: store.getState().config?.endpoints?.applications + "/" + id
+        url: store.getState().config.endpoints.applications + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -473,11 +473,11 @@ export const updateClaimConfiguration = (id: string, data: object): Promise<any>
         data,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: store.getState().config?.endpoints?.applications + "/" + id
+        url: store.getState().config.endpoints.applications + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -501,11 +501,11 @@ export const regenerateClientSecret = (appId: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config?.endpoints?.applications + "/" + appId +
+        url: store.getState().config.endpoints.applications + "/" + appId +
             "/inbound-protocols/oidc/regenerate-secret"
     };
 
@@ -530,11 +530,11 @@ export const revokeClientSecret = (appId: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config?.endpoints?.applications + "/" + appId + "/inbound-protocols/oidc/revoke"
+        url: store.getState().config.endpoints.applications + "/" + appId + "/inbound-protocols/oidc/revoke"
     };
 
     return httpClient.request(requestConfig)
@@ -557,11 +557,11 @@ export const getAdaptiveAuthTemplates = (): Promise<AdaptiveAuthTemplatesListInt
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ store.getState().config?.endpoints?.applications }/meta/adaptive-auth-templates`
+        url: `${ store.getState().config.endpoints.applications }/meta/adaptive-auth-templates`
     };
 
     return httpClient.request(requestConfig)
@@ -601,11 +601,11 @@ export const getApplicationTemplateData = (templateId: string): Promise<Applicat
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.applications + "/templates/" + templateId
+        url: store.getState().config.endpoints.applications + "/templates/" + templateId
     };
 
     return httpClient.request(requestConfig)
@@ -646,7 +646,7 @@ export const getApplicationTemplateList = (limit?: number, offset?: number,
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -655,7 +655,7 @@ export const getApplicationTemplateList = (limit?: number, offset?: number,
             limit,
             offset
         },
-        url: store.getState().config?.endpoints?.applications + "/templates"
+        url: store.getState().config.endpoints.applications + "/templates"
     };
 
     return httpClient.request(requestConfig)

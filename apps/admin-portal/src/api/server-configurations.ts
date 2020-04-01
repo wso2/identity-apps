@@ -29,7 +29,7 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getConfigurations = (url: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -49,7 +49,7 @@ export const updateConfigurations = (data: object, url: string): Promise<any> =>
     const requestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
@@ -71,7 +71,7 @@ export const updateConfigurations = (data: object, url: string): Promise<any> =>
  * @returns {Promise<any>} a promise containing the configurations.
  */
 export const getSelfSignUpConfigurations = (): Promise<any> => {
-    return getConfigurations(store.getState().config?.endpoints?.selfSignUp);
+    return getConfigurations(store.getState().config.endpoints.selfSignUp);
 };
 
 /**
@@ -82,7 +82,7 @@ export const getSelfSignUpConfigurations = (): Promise<any> => {
  * @returns {Promise<any>} a promise containing the response.
  */
 export const updateSelfSignUpConfigurations = (data: object): Promise<any> => {
-    return updateConfigurations(data, store.getState().config?.endpoints?.selfSignUp);
+    return updateConfigurations(data, store.getState().config.endpoints.selfSignUp);
 };
 
 /**
@@ -91,7 +91,7 @@ export const updateSelfSignUpConfigurations = (data: object): Promise<any> => {
  * @returns {Promise<any>} a promise containing the configurations.
  */
 export const getAccountRecoveryConfigurations = (): Promise<any> => {
-    return getConfigurations(store.getState().config?.endpoints?.accountRecovery);
+    return getConfigurations(store.getState().config.endpoints.accountRecovery);
 };
 
 /**
@@ -102,5 +102,5 @@ export const getAccountRecoveryConfigurations = (): Promise<any> => {
  * @returns {Promise<any>} a promise containing the response.
  */
 export const updateAccountRecoveryConfigurations = (data: object): Promise<any> => {
-    return updateConfigurations(data, store.getState().config?.endpoints?.accountRecovery);
+    return updateConfigurations(data, store.getState().config.endpoints.accountRecovery);
 };

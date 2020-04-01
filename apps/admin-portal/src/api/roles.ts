@@ -35,14 +35,14 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getRolesList = (domain: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
         params: {
             domain
         },
-        url: store.getState().config?.endpoints?.groups
+        url: store.getState().config.endpoints.groups
     };
 
     return httpClient.request(requestConfig)
@@ -62,11 +62,11 @@ export const getRolesList = (domain: string): Promise<any> => {
 export const getRoleById = (roleId: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.groups + "/" + roleId
+        url: store.getState().config.endpoints.groups + "/" + roleId
     };
 
     return httpClient.request(requestConfig).then((response) => {
@@ -86,11 +86,11 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
     const requestConfig = {
         data: roleData,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: store.getState().config?.endpoints?.groups + "/" + roleId
+        url: store.getState().config.endpoints.groups + "/" + roleId
     };
 
     return httpClient.request(requestConfig).then((response) => {
@@ -109,11 +109,11 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
     const requestConfig = {
         data: searchData,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config?.endpoints?.groups + "/.search"
+        url: store.getState().config.endpoints.groups + "/.search"
     };
 
     return httpClient.request(requestConfig).then((response) => {
@@ -133,11 +133,11 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
 export const deleteRoleById = (roleId: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config?.endpoints?.groups + "/" + roleId
+        url: store.getState().config.endpoints.groups + "/" + roleId
     };
 
     return httpClient.request(requestConfig).then((response) => {
@@ -156,11 +156,11 @@ export const createRole = (data: CreateRoleInterface): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config?.endpoints?.groups
+        url: store.getState().config.endpoints.groups
     };
 
     return httpClient.request(requestConfig).then((response) => {
@@ -180,11 +180,11 @@ export const updateRolePermissions = (roleId: string, data: any): Promise<any> =
     const requestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: store.getState().config?.endpoints?.groups + "/" + roleId + "/permissions"
+        url: store.getState().config.endpoints.groups + "/" + roleId + "/permissions"
     };
 
     return httpClient.request(requestConfig).then((response) => {
@@ -202,11 +202,11 @@ export const updateRolePermissions = (roleId: string, data: any): Promise<any> =
 export const getPermissionList = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.permission
+        url: store.getState().config.endpoints.permission
     };
 
     return httpClient.request(requestConfig).then((response) => {
@@ -224,11 +224,11 @@ export const getPermissionList = (): Promise<any> => {
 export const getPermissionsForRole = (roleId: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.groups + "/" + roleId + "/permissions"
+        url: store.getState().config.endpoints.groups + "/" + roleId + "/permissions"
     };
 
     return httpClient.request(requestConfig).then((response) => {

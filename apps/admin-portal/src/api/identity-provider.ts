@@ -49,11 +49,11 @@ export const createIdentityProvider = (identityProvider: object): Promise<any> =
         data: identityProvider,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config?.endpoints?.identityProviders
+        url: store.getState().config.endpoints.identityProviders
     };
 
     return httpClient.request(requestConfig)
@@ -81,7 +81,7 @@ export const getIdentityProviderList = (limit?: number, offset?: number,
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -90,7 +90,7 @@ export const getIdentityProviderList = (limit?: number, offset?: number,
             limit,
             offset
         },
-        url: store.getState().config?.endpoints?.identityProviders
+        url: store.getState().config.endpoints.identityProviders
     };
 
     return httpClient.request(requestConfig)
@@ -114,11 +114,11 @@ export const getIdentityProviderDetail = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.identityProviders + "/" + id
+        url: store.getState().config.endpoints.identityProviders + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -142,11 +142,11 @@ export const deleteIdentityProvider = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config?.endpoints?.identityProviders + "/" + id
+        url: store.getState().config.endpoints.identityProviders + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -183,11 +183,11 @@ export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): P
         data: replaceOps,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: store.getState().config?.endpoints?.identityProviders + "/" + id
+        url: store.getState().config.endpoints.identityProviders + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -219,11 +219,11 @@ export const updateFederatedAuthenticator = (
         data: rest,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: store.getState().config?.endpoints?.identityProviders + "/" + idpId +
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId +
             "/federated-authenticators/" + authenticatorId
     };
 
@@ -250,11 +250,11 @@ export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId:
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.identityProviders + "/" + idpId +
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId +
             "/federated-authenticators/" + authenticatorId
     };
 
@@ -282,11 +282,11 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.identityProviders + "/meta/federated-authenticators/" + id
+        url: store.getState().config.endpoints.identityProviders + "/meta/federated-authenticators/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -310,11 +310,11 @@ export const getFederatedAuthenticatorsList = (): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.identityProviders + "/meta/federated-authenticators"
+        url: store.getState().config.endpoints.identityProviders + "/meta/federated-authenticators"
     };
 
     return httpClient.request(requestConfig)
@@ -340,11 +340,11 @@ export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Prom
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.identityProviders + "/meta/federated-authenticators/" +
+        url: store.getState().config.endpoints.identityProviders + "/meta/federated-authenticators/" +
             authenticatorId
     };
 
@@ -375,7 +375,7 @@ export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -384,7 +384,7 @@ export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
             limit,
             offset
         },
-        url: store.getState().config?.endpoints?.identityProviders + "/templates"
+        url: store.getState().config.endpoints.identityProviders + "/templates"
     };
 
     return httpClient.request(requestConfig)
@@ -422,11 +422,11 @@ export const getIdentityProviderTemplate = (templateId: string): Promise<Identit
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config?.deployment?.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config?.endpoints?.identityProviders + "/templates/" + templateId
+        url: store.getState().config.endpoints.identityProviders + "/templates/" + templateId
     };
 
     return httpClient.request(requestConfig)
