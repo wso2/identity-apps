@@ -62,7 +62,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                             <Grid.Column width={ 7 }>
                                                 <Segment className="transfer-segment">
                                                     <TransferListSearch 
-                                                        placeholderString={ searchPlaceholder } 
+                                                        placeholder={ searchPlaceholder } 
                                                         handleListSearch={ handleListSearch }
                                                     />
                                                     { list }
@@ -95,7 +95,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                 <Grid.Column width={ 7 } className="transfer-list-assigned-column">
                                                     <Segment className="transfer-segment">
                                                         <TransferListSearch 
-                                                            placeholderString={ searchPlaceholder } 
+                                                            placeholder={ searchPlaceholder } 
                                                             handleListSearch={ handleListSearch }
                                                         />
                                                         { list }
