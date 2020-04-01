@@ -20,11 +20,11 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AppAvatar, ResourceList } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { history } from "../../helpers";
 import { deleteIdentityProvider } from "../../api";
-import { IdentityProviderListResponseInterface } from "../../models";
-import { GlobalConfig } from "../../configs";
+import { ConfigReducerStateInterface, IdentityProviderListResponseInterface } from "../../models";
+import { AppState } from "../../store";
 
 /**
  * Proptypes for the identity provider list component.
@@ -50,6 +50,8 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     } = props;
 
     const dispatch = useDispatch();
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     /**
      * Redirects to the identity provider edit page when the edit button is clicked.
@@ -106,14 +108,14 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                                 key={ index }
                                 actions={ [
                                     {
-                                        hidden: GlobalConfig.doNotDeleteIdentityProviders.includes(idp.name),
+                                        hidden: config.deployment.doNotDeleteIdentityProviders.includes(idp.name),
                                         icon: "pencil alternate",
                                         onClick: (): void => handleIdentityProviderEdit(idp.id),
                                         popupText: "edit",
                                         type: "button"
                                     },
                                     {
-                                        hidden: GlobalConfig.doNotDeleteIdentityProviders.includes(idp.name),
+                                        hidden: config.deployment.doNotDeleteIdentityProviders.includes(idp.name),
                                         icon: "trash alternate",
                                         onClick: (): void => handleIdentityProviderDelete(idp.id),
                                         popupText: "delete",

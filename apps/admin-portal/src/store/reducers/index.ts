@@ -18,4 +18,7 @@
 
 export * from "./authenticate";
 export * from "./application";
+export * from "./config";
 export * from "./global";
+export * from "./identity-provider";
+export * from "./loaders";

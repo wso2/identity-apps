@@ -16,42 +16,8 @@
  * under the License.
  */
 
-/**
- * CRUD permissions interface.
- */
-export interface CRUDPermissionsInterface {
-    /**
-     * Create permission.
-     */
-    create: boolean;
-    /**
-     * Read permission.
-     */
-    read: boolean;
-    /**
-     * Update permission.
-     */
-    update: boolean;
-    /**
-     * Delete permission.
-     */
-    delete: boolean;
-}
+import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "./config";
+import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
 
-/**
- * Common config interface for features.
- */
-export interface FeatureConfigInterface<T = {}> {
-    /**
-     * If the feature is enabled or not.
-     */
-    enabled: boolean;
-    /**
-     * CRUD permissions for the feature.
-     */
-    permissions?: CRUDPermissionsInterface;
-    /**
-     * Sub features.
-     */
-    features?: T;
-}
+export type ConfigReducerStateInterface = CommonConfigReducerStateInterface<RuntimeConfigInterface,
+    ServiceResourceEndpointsInterface>;

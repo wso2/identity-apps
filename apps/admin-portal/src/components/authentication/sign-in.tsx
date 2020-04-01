@@ -18,18 +18,21 @@
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GlobalConfig } from "../../configs";
 import { USER_DENIED_CONSENT } from "../../constants";
 import { history } from "../../helpers";
 import { AppState } from "../../store";
 import { handleSignIn } from "../../store/actions";
+import { ConfigReducerStateInterface } from "../../models";
 
 /**
  * This component handles the sign-in function
  */
 export const SignIn = (props) => {
+
     const dispatch = useDispatch();
+
     const isAuth = useSelector((state: AppState) => state.authenticationInformation.isAuth);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const error = new URLSearchParams(props.location.search).get("error_description");
 
@@ -40,8 +43,9 @@ export const SignIn = (props) => {
     const loginSuccessRedirect = () => {
         const AuthenticationCallbackUrl = getAuthenticationCallbackUrl();
         const location =
-            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === GlobalConfig.appLoginPath
-                ? GlobalConfig.appHomePath
+            !AuthenticationCallbackUrl
+            || AuthenticationCallbackUrl === config.deployment.appLoginPath
+                ? config.deployment.appHomePath
                 : AuthenticationCallbackUrl;
 
         history.push(location);

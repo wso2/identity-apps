@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AlertLevels, ProfileSchema } from "../../models";
+import { AuthAction, authenticateActionTypes } from "./types";
 import {
     AuthenticateSessionUtil,
     AuthenticateTokenKeys,
@@ -24,18 +26,15 @@ import {
     SignInUtil,
     SignOutUtil
 } from "@wso2is/authentication";
-import _ from "lodash";
-import { getProfileSchemas } from "../../api";
-import { getProfileInfo } from "@wso2is/core/api";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../../configs";
-import { history } from "../../helpers";
-import { AlertLevels, ProfileSchema } from "../../models";
-import { store } from "../index";
-import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
-import { authenticateActionTypes, AuthAction } from "./types";
-import { SYSTEM_SCOPE } from "../../constants";
+import _ from "lodash";
+import { addAlert } from "@wso2is/core/store";
+import { getProfileInfo } from "@wso2is/core/api";
+import { getProfileSchemas } from "../../api";
+import { history } from "../../helpers";
 import { I18n } from "@wso2is/i18n";
+import { store } from "../index";
+import { SYSTEM_SCOPE } from "../../constants";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
@@ -167,14 +166,14 @@ export const getProfileInformation = () => (dispatch): void => {
  */
 export const handleSignOut = () => (dispatch): void => {
     if (sessionStorage.length === 0) {
-        history.push(GlobalConfig.appLoginPath);
+        history.push(store.getState().config.deployment.appLoginPath);
     } else {
-        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl, () => {
+        SignOutUtil.sendSignOutRequest(store.getState().config.deployment.loginCallbackUrl, () => {
                 dispatch(setSignOut());
                 AuthenticateSessionUtil.endAuthenticatedSession();
                 OPConfigurationUtil.resetOPConfiguration();
             }).catch(() => {
-                history.push(GlobalConfig.appLoginPath);
+                history.push(store.getState().config.deployment.appLoginPath);
             });
     }
 };
@@ -184,14 +183,14 @@ export const handleSignOut = () => (dispatch): void => {
  */
 export const handleSignIn = (consentDenied = false) => (dispatch): void => {
     const requestParams: OIDCRequestParamsInterface = {
-        clientHost: GlobalConfig.clientHost,
-        clientId: GlobalConfig.clientID,
+        clientHost: store.getState().config.deployment.clientHost,
+        clientId: store.getState().config.deployment.clientID,
         clientSecret: null,
         enablePKCE: true,
-        redirectUri: GlobalConfig.loginCallbackUrl,
+        redirectUri: store.getState().config.deployment.loginCallbackUrl,
         scope: [ SYSTEM_SCOPE ],
-        serverOrigin: GlobalConfig.serverOrigin,
-        tenant: GlobalConfig.tenant
+        serverOrigin: store.getState().config.deployment.serverOrigin,
+        tenant: store.getState().config.deployment.tenant
     };
 
     const sendSignInRequest = (): void => {
@@ -231,17 +230,17 @@ export const handleSignIn = (consentDenied = false) => (dispatch): void => {
         dispatch(setSignIn());
         dispatch(getProfileInformation());
     } else {
-        OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false)
+        OPConfigurationUtil.initOPConfiguration(store.getState().config.endpoints.wellKnown, false)
             .then(() => {
                 sendSignInRequest();
             })
             .catch(() => {
-                OPConfigurationUtil.setAuthorizeEndpoint(ServiceResourcesEndpoint.authorize);
-                OPConfigurationUtil.setTokenEndpoint(ServiceResourcesEndpoint.token);
-                OPConfigurationUtil.setRevokeTokenEndpoint(ServiceResourcesEndpoint.revoke);
-                OPConfigurationUtil.setEndSessionEndpoint(ServiceResourcesEndpoint.logout);
-                OPConfigurationUtil.setJwksUri(ServiceResourcesEndpoint.jwks);
-                OPConfigurationUtil.setIssuer(ServiceResourcesEndpoint.issuer);
+                OPConfigurationUtil.setAuthorizeEndpoint(store.getState().config.endpoints.authorize);
+                OPConfigurationUtil.setTokenEndpoint(store.getState().config.endpoints.token);
+                OPConfigurationUtil.setRevokeTokenEndpoint(store.getState().config.endpoints.revoke);
+                OPConfigurationUtil.setEndSessionEndpoint(store.getState().config.endpoints.logout);
+                OPConfigurationUtil.setJwksUri(store.getState().config.endpoints.jwks);
+                OPConfigurationUtil.setIssuer(store.getState().config.endpoints.issuer);
                 OPConfigurationUtil.setOPConfigInitiated();
 
                 sendSignInRequest();

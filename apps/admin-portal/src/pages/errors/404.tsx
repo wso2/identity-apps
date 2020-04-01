@@ -21,7 +21,10 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import { EmptyPlaceholder } from "../../components/shared";
-import { EmptyPlaceholderIllustrations, GlobalConfig } from "../../configs";
+import { EmptyPlaceholderIllustrations } from "../../configs";
+import { ConfigReducerStateInterface } from "../../models";
+import { useSelector } from "react-redux";
+import { AppState } from "../../store";
 
 /**
  * 404 error page.
@@ -29,14 +32,18 @@ import { EmptyPlaceholderIllustrations, GlobalConfig } from "../../configs";
  * @return {JSX.Element}
  */
 export const PageNotFound = (): JSX.Element => {
+
     const { t } = useTranslation();
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
     return (
         <EmptyPlaceholder
             action={ (
                 <Button
                     className="link-button"
                     as={ Link }
-                    to={ GlobalConfig.appHomePath }
+                    to={ config.deployment.appHomePath }
                 >
                     { t("devPortal:placeholders.404.action") }
                 </Button>

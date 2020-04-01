@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { AxiosHttpClient } from "@wso2is/http";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { HttpMethods, UserListInterface } from "../models";
+import { AxiosHttpClient } from "@wso2is/http";
+import { store } from "../store";
 
 /**
  * Initialize an axios Http client.
@@ -35,7 +35,7 @@ export const getUsersList = (count: number, startIndex: number, filter: string, 
     Promise<UserListInterface> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -46,7 +46,7 @@ export const getUsersList = (count: number, startIndex: number, filter: string, 
             startIndex,
             attributes
         },
-        url: ServiceResourcesEndpoint.users
+        url: store.getState().config.endpoints.users
     };
 
     return httpClient.request(requestConfig)
@@ -67,11 +67,11 @@ export const getUsersList = (count: number, startIndex: number, filter: string, 
 export const getUserStoreList = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.userStores
+        url: store.getState().config.endpoints.userStores
     };
 
     return httpClient.request(requestConfig)
@@ -95,11 +95,11 @@ export const addUser = (data: object): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.users
+        url: store.getState().config.endpoints.users
     };
 
     return httpClient.request(requestConfig)
@@ -122,11 +122,11 @@ export const addUser = (data: object): Promise<any> => {
 export const deleteUser = (userId: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/scim+json"
         },
         method: HttpMethods.DELETE,
-        url: ServiceResourcesEndpoint.users + "/" + userId
+        url: store.getState().config.endpoints.users + "/" + userId
     };
 
     return httpClient.request(requestConfig)
@@ -154,7 +154,7 @@ export const addUserRole = (data: object, groupId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.groups + "/" + groupId
+        url: store.getState().config.endpoints.groups + "/" + groupId
     };
 
     return httpClient.request(requestConfig)
@@ -181,7 +181,7 @@ export const updateUserRoles = (data: object): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.bulk
+        url: store.getState().config.endpoints.bulk
     };
 
     return httpClient.request(requestConfig)

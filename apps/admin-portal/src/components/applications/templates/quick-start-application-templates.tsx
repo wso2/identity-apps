@@ -18,9 +18,7 @@
 
 import React, { FunctionComponent, SyntheticEvent } from "react";
 import { ApplicationTemplateListItemInterface } from "../../../models";
-// Importing the following from the `configs` index causes a circular dependency due to `GlobalConfig` being exported
-// from the index as well. TODO: Revert the import after this issue is fixed.
-import { EmptyPlaceholderIllustrations } from "../../../configs/ui";
+import { EmptyPlaceholderIllustrations } from "../../../configs";
 import { ApplicationTemplateCard } from "./application-template-card";
 import { EmptyPlaceholder } from "@wso2is/react-components";
 

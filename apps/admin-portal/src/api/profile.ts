@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { SignInUtil } from "@wso2is/authentication";
-import { AxiosHttpClient } from "@wso2is/http";
-import axios from "axios";
-import { isEmpty } from "lodash";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { BasicProfileInterface, HttpMethods, ProfileSchema } from "../models";
+import _ from "lodash";
+import axios from "axios";
+import { AxiosHttpClient } from "@wso2is/http";
+import { SignInUtil } from "@wso2is/authentication";
+import { store } from "../store";
 
 /**
  * Get an axios instance.
@@ -39,11 +39,11 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getUserDetails = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.users + "/" + id
+        url: store.getState().config.endpoints.users + "/" + id
     };
 
     return httpClient
@@ -84,18 +84,18 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/scim+json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.me
+        url: store.getState().config.endpoints.me
     };
 
     return httpClient
         .request(requestConfig)
         .then(async (response) => {
             let gravatar = "";
-            if (isEmpty(response.data.userImage)) {
+            if (_.isEmpty(response.data.userImage)) {
                 try {
                     gravatar = await getGravatarImage(
                         typeof response.data.emails[0] === "string"
@@ -137,11 +137,11 @@ export const updateProfileInfo = (data: object): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.me
+        url: store.getState().config.endpoints.me
     };
 
     return httpClient
@@ -165,11 +165,11 @@ export const updateUserInfo = (userId: string, data: object): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.users + "/" + userId
+        url: store.getState().config.endpoints.users + "/" + userId
     };
 
     return httpClient
@@ -191,11 +191,11 @@ export const updateUserInfo = (userId: string, data: object): Promise<any> => {
 export const getProfileSchemas = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.profileSchemas
+        url: store.getState().config.endpoints.profileSchemas
     };
 
     return httpClient

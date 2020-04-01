@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { FeatureConfigInterface } from "@wso2is/core/models";
+import { CommonDeploymentConfigInterface, FeatureConfigInterface } from "@wso2is/core/models";
+import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 
 /**
  * Application configuration interface.
@@ -100,4 +101,91 @@ export interface ClaimDialectsConfigInterface {
      * External claims configuration feature.
      */
     externalClaims: FeatureConfigInterface;
+}
+
+/**
+ * Deployment config interface for dev portal.
+ */
+export interface DeploymentConfigInterface extends CommonDeploymentConfigInterface {
+    /**
+     * Base name of the user portal.
+     * ex: `/user-portal` ot `/t/wos2.com/user-portal`
+     */
+    userPortalBaseName: string;
+    /**
+     * User portal host.
+     * ex: `https://localhost:9000`
+     */
+    userPortalClientHost: string;
+}
+
+/**
+ * Runtime config interface.
+ *
+ * @remarks
+ * Different config type i.e deployment, features, ui, etc. can be grouped under
+ * runtime config. So, that the all the configs can be handled through one file.
+ * TODO: Group the different configs rather than having them in a flat structure.
+ * Proposed structure:
+ * {
+ *     "deployment": DeploymentConfigInterface,
+ *     "i18n": I18nModuleOptionsInterface,
+ *     "ui": <UI_CONFIGS>
+ * }
+ */
+export interface RuntimeConfigInterface extends DeploymentConfigInterface {
+    /**
+     * Copyright text for the footer.
+     */
+    copyrightText: string;
+    /**
+     * Application(SPs) that shouldn't be allowed to delete.
+     */
+    doNotDeleteApplications?: string[];
+    /**
+     * Application(SPs) that shouldn't be allowed to delete.
+     */
+    doNotDeleteIdentityProviders?: string[];
+    /**
+     * i18n module options.
+     */
+    i18nModuleOptions?: I18nModuleOptionsInterface;
+    /**
+     * Title text.
+     * ex: `WSO2 Identity Server`
+     */
+    titleText?: string;
+}
+
+/**
+ * Service resource endpoints config.
+ */
+export interface ServiceResourceEndpointsInterface {
+    applications: string;
+    associations: string;
+    authorize: string;
+    bulk: string;
+    challenges: string;
+    challengeAnswers: string;
+    consents: string;
+    groups: string;
+    claims: string;
+    externalClaims: string;
+    identityProviders: string;
+    issuer: string;
+    jwks: string;
+    localClaims: string;
+    logout: string;
+    me: string;
+    permission: string;
+    profileSchemas: string;
+    sessions: string;
+    token: string;
+    user: string;
+    users: string;
+    userStores: string;
+    revoke: string;
+    wellKnown: string;
+    selfSignUp: string;
+    accountRecovery: string;
 }

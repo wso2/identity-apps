@@ -17,6 +17,7 @@
  */
 
 export * from "./authenticate";
+export * from "./config";
 export * from "./global";
 export * from "./loaders";
 export * from "./profile";

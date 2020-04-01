@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,14 @@
  * under the License.
  */
 
-import { Config } from "../configs";
-import { createBrowserHistory } from "history";
+import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "../../models";
+import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
 
-export const history = createBrowserHistory({ basename: Config.getRuntimeConfig().appBaseName });
+/**
+ * Initial state for the common config reducer.
+ */
+export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<RuntimeConfigInterface,
+    ServiceResourceEndpointsInterface> = {
+    deployment: null,
+    endpoints: null
+};

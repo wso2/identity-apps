@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { DefaultAppIcon } from "@wso2is/core/configs";
+import { GenericAppIcon } from "../../configs";
 import classNames from "classnames";
 import * as React from "react";
 import { Image, Placeholder, SemanticSIZES } from "semantic-ui-react";
@@ -191,7 +191,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
     return (
         <Image
             className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
-            src={ avatarType === "user" ? UserImageDummy : DefaultAppIcon.default }
+            src={ avatarType === "user" ? UserImageDummy : GenericAppIcon.default }
             bordered={ bordered }
             floated={ floated }
             verticalAlign="middle"

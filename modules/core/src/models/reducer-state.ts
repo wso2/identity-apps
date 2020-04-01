@@ -87,3 +87,11 @@ export interface CommonProfileReducerStateInterface {
     profileInfo: ProfileInfoInterface;
     profileSchemas: ProfileSchemaInterface[];
 }
+
+/**
+ * Interface for common config reducer state.
+ */
+export interface CommonConfigReducerStateInterface<T, S> {
+    deployment?: T;
+    endpoints?: S;
+}

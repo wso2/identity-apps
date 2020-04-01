@@ -23,7 +23,7 @@ import * as ReactDOM from "react-dom";
 import axios from "axios";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
-import { GlobalConfig } from "./configs";
+import { Config } from "./configs";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
 import {
     I18n,
@@ -35,29 +35,30 @@ import {
 import { store } from "./store";
 import { setSupportedI18nLanguages } from "./store/actions";
 import { StringUtils } from "@wso2is/core/utils";
+import { Provider } from "react-redux";
 
 // Set the runtime config in the context.
-ContextUtils.setRuntimeConfig(GlobalConfig);
+ContextUtils.setRuntimeConfig(Config.getRuntimeConfig());
 
 // Set up the Http client.
 HttpUtils.setupHttpClient(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
 
 // Set up the i18n module.
 I18n.init({
-    ...GlobalConfig?.i18nModuleOptions?.initOptions,
-    debug: GlobalConfig?.debug
+    ...Config.getRuntimeConfig().i18nModuleOptions?.initOptions,
+    debug: Config.getRuntimeConfig().debug
     },
-    GlobalConfig?.i18nModuleOptions?.overrideOptions,
-    GlobalConfig?.i18nModuleOptions?.langAutoDetectEnabled,
-    GlobalConfig?.i18nModuleOptions?.xhrBackendPluginEnabled)
+    Config.getRuntimeConfig().i18nModuleOptions?.overrideOptions,
+    Config.getRuntimeConfig().i18nModuleOptions?.langAutoDetectEnabled,
+    Config.getRuntimeConfig().i18nModuleOptions?.xhrBackendPluginEnabled)
     .then(() => {
 
         // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
         // will fail. This constructs the path without the tenant, therefore it'll look for the file in
         // `https://localhost:9443/admin-portal/resources/i18n/meta.json` rather than looking for the file in
         // `https://localhost:9443/t/wso2.com/admin-portal/resources/i18n/meta.json`.
-        const metaPath = `/${ StringUtils.removeSlashesFromPath(GlobalConfig.appBaseNameWithoutTenant) }/${
-            StringUtils.removeSlashesFromPath(GlobalConfig.i18nModuleOptions.resourcePath) }/meta.json`;
+        const metaPath = `/${ StringUtils.removeSlashesFromPath(Config.getRuntimeConfig().appBaseNameWithoutTenant) }/${
+            StringUtils.removeSlashesFromPath(Config.getRuntimeConfig().i18nModuleOptions.resourcePath) }/meta.json`;
 
         // Fetch the meta file to get the supported languages.
         axios.get(metaPath)
@@ -81,11 +82,13 @@ I18n.init({
 
 ReactDOM.render(
     (
-        <ThemeProvider>
-            <BrowserRouter>
-                <App/>
-            </BrowserRouter>
-        </ThemeProvider>
+        <Provider store={ store }>
+            <ThemeProvider>
+                <BrowserRouter>
+                    <App/>
+                </BrowserRouter>
+            </ThemeProvider>
+        </Provider>
     ),
     document.getElementById("root")
 );

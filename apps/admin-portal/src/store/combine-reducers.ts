@@ -16,10 +16,17 @@
  * under the License.
  */
 
+import {
+    applicationReducer,
+    authenticateReducer,
+    commonConfigReducerInitialState,
+    globalReducer,
+    identityProviderReducer,
+    LoadersReducer
+} from "./reducers";
+import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "../models";
 import { combineReducers } from "redux";
-import { applicationReducer, authenticateReducer, globalReducer } from "./reducers";
-import { LoadersReducer } from "./reducers/loaders";
-import { identityProviderReducer } from "./reducers/identity-provider";
+import { commonConfigReducer } from "@wso2is/core/store";
 
 /**
  * Combines all the reducers.
@@ -27,9 +34,11 @@ import { identityProviderReducer } from "./reducers/identity-provider";
  * @type {Reducer<any>} Root reducer to be used when creating the store.
  */
 export const reducers = combineReducers({
-    identityProvider: identityProviderReducer,
     application: applicationReducer,
     authenticationInformation: authenticateReducer,
+    config: commonConfigReducer<RuntimeConfigInterface, ServiceResourceEndpointsInterface>(
+        commonConfigReducerInitialState),
     global: globalReducer,
+    identityProvider: identityProviderReducer,
     loaders: LoadersReducer
 });

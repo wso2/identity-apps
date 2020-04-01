@@ -69,6 +69,10 @@ export const initializeAlertSystem = (alertSystem: any): InitializeAlertSystemAc
 
 /**
  * Dispatches an action to add a new alert.
+ *
+ * @deprecated
+ * Import this function from `@wso2is/core/store`.
+ *
  * @param {AlertInterface} alert - Alert
  * @return {AddAlertAction}
  */

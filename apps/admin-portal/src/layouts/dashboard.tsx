@@ -17,8 +17,7 @@
  */
 
 import { getProfileInfo } from "@wso2is/core/api";
-import { AuthReducerStateInterface, ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
-import { ContextUtils } from "@wso2is/core/utils";
+import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import { Footer, Header, Logo, ProductBrand, SidePanel } from "@wso2is/react-components";
 import classNames from "classnames";
 import _ from "lodash";
@@ -36,10 +35,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Button, Image, Responsive } from "semantic-ui-react";
 import { ProtectedRoute } from "../components";
-import { GlobalConfig, LogoImage, routes, SidePanelIcons, SidePanelMiscIcons } from "../configs";
+import { LogoImage, routes, SidePanelIcons, SidePanelMiscIcons } from "../configs";
 import { UIConstants } from "../constants";
 import { AppConfig, history } from "../helpers";
-import { AppConfigInterface } from "../models";
+import { AppConfigInterface, AuthStateInterface, ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
 import { BaseLayout } from "./base";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
@@ -68,10 +67,11 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const profileDetails: AuthReducerStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(routes);
     const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(routes[0]);
@@ -315,11 +315,11 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                             name={ state.productName && state.productName !== "" ?
                                 state.productName
                                 :
-                                ContextUtils.getRuntimeConfig().applicationName
+                                config.deployment.applicationName
                             }
                         />
                     ) }
-                    brandLink={ ContextUtils.getRuntimeConfig().appHomePath }
+                    brandLink={ config.deployment.appHomePath }
                     basicProfileInfo={ profileDetails }
                     fluid={ !isMobileViewport ? fluid : false }
                     isProfileInfoLoading={ isProfileInfoLoading }
@@ -329,8 +329,8 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                             primary
                             onClick={
                                 (): void => {
-                                    window.open(
-                                        `${GlobalConfig.userPortalClientHost}/${GlobalConfig.userPortalBaseName}`
+                                    window.open(config.deployment.userPortalClientHost + "/"
+                                        + config.deployment.userPortalBaseName
                                     );
                                 }
                             }
@@ -374,8 +374,8 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     copyright={ state.copyrightText && state.copyrightText !== "" ?
                         state.copyrightText
                         :
-                        ContextUtils.getRuntimeConfig().copyrightText
-                            ? ContextUtils.getRuntimeConfig().copyrightText
+                        config.deployment.copyrightText
+                            ? config.deployment.copyrightText
                             : null
                     }
                     fixed="bottom"

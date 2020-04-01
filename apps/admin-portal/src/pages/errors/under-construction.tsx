@@ -21,8 +21,11 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import { EmptyPlaceholder } from "../../components/shared";
-import { EmptyPlaceholderIllustrations, GlobalConfig } from "../../configs";
+import { EmptyPlaceholderIllustrations } from "../../configs";
 import { ErrorPageLayout } from "../../layouts";
+import { ConfigReducerStateInterface } from "../../models";
+import { useSelector } from "react-redux";
+import { AppState } from "../../store";
 
 /**
  * Page under construction component.
@@ -30,7 +33,11 @@ import { ErrorPageLayout } from "../../layouts";
  * @return {JSX.Element}
  */
 export const UnderConstruction = (): JSX.Element => {
+
     const { t } = useTranslation();
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
     return (
         <ErrorPageLayout>
             <EmptyPlaceholder
@@ -38,7 +45,7 @@ export const UnderConstruction = (): JSX.Element => {
                     <Button
                         className="link-button"
                         as={ Link }
-                        to={ GlobalConfig.appHomePath }
+                        to={ config.deployment.appHomePath }
                     >
                         { t("devPortal:placeholders.underConstruction.action") }
                     </Button>

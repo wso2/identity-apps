@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { AddExternalClaim, Claim, ClaimsGetParams, HttpMethods } from "../models";
 import { AxiosHttpClient } from "@wso2is/http";
+import { store } from "../store";
 
 /**
  * The error code that is returned when there is no item in the list
@@ -34,20 +34,20 @@ const httpClient = AxiosHttpClient.getInstance();
 
 /**
  * Add a local claim.
- * 
+ *
  * @param {Claim} data Adds this data.
- * 
+ *
  * @return {Promise<any>} response
  */
 export const addLocalClaim = (data: Claim): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.localClaims,
+        url: store.getState().config.endpoints.localClaims,
         data
     };
 
@@ -67,20 +67,20 @@ export const addLocalClaim = (data: Claim): Promise<any> => {
 
 /**
  * Fetch all local claims.
- * 
+ *
  * @param {ClaimsGetParams} params limit, offset, sort, attributes, filter.
- * 
+ *
  * @return {Promise<any>} response.
  */
 export const getAllLocalClaims = (params: ClaimsGetParams): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.localClaims,
+        url: store.getState().config.endpoints.localClaims,
         params
     };
 
@@ -100,20 +100,20 @@ export const getAllLocalClaims = (params: ClaimsGetParams): Promise<any> => {
 
 /**
  * Gets the local claim with the given ID.
- * 
+ *
  * @param {string} id The id of the local claim.
- * 
+ *
  * @return {Promise<any>} response.
  */
 export const getAClaim = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ServiceResourcesEndpoint.localClaims}/${id}`
+        url: `${store.getState().config.endpoints.localClaims}/${id}`
     };
 
     return httpClient
@@ -132,22 +132,22 @@ export const getAClaim = (id: string): Promise<any> => {
 
 /**
  * Update a Local Claim ID with the given data.
- * 
+ *
  * @param {string} id Local Claim ID.
- * 
+ *
  * @param {Claim} data Updates with this data.
- * 
+ *
  * @return {Promise<any>} response.
  */
 export const updateAClaim = (id: string, data: Claim): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${ServiceResourcesEndpoint.localClaims}/${id}`,
+        url: `${store.getState().config.endpoints.localClaims}/${id}`,
         data
     };
     return httpClient
@@ -166,20 +166,20 @@ export const updateAClaim = (id: string, data: Claim): Promise<any> => {
 
 /**
  * Deletes the local claim with the given ID.
- * 
+ *
  * @param {string} id Local Claim ID.
- * 
+ *
  * @return {Promise<any>} response.
  */
 export const deleteAClaim = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${ServiceResourcesEndpoint.localClaims}/${id}`
+        url: `${store.getState().config.endpoints.localClaims}/${id}`
     };
     return httpClient
         .request(requestConfig)
@@ -196,20 +196,20 @@ export const deleteAClaim = (id: string): Promise<any> => {
 
 /**
  * Add a claim dialect.
- * 
+ *
  * @param {string} dialectURI Adds this dialect URI.
- * 
+ *
  * @return {Promise<any>} response.
  */
 export const addDialect = (dialectURI: string): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.claims,
+        url: store.getState().config.endpoints.claims,
         data: {
             dialectURI
         }
@@ -229,20 +229,20 @@ export const addDialect = (dialectURI: string): Promise<any> => {
 
 /**
  * Get the Claim Dialect with the given ID.
- * 
+ *
  * @param {string} id Claim Dialect ID.
- * 
+ *
  * @return {Promise<any>} response.
  */
 export const getADialect = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ServiceResourcesEndpoint.claims}/${id}`
+        url: `${store.getState().config.endpoints.claims}/${id}`
     };
     return httpClient
         .request(requestConfig)
@@ -259,20 +259,20 @@ export const getADialect = (id: string): Promise<any> => {
 
 /**
  * Get all the claim dialects.
- * 
+ *
  * @param {ClientGetParams} params sort, filter, offset, attributes, limit.
- * 
+ *
  * @return {Promise<any>} response.
  */
 export const getDialects = (params: ClaimsGetParams): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.claims,
+        url: store.getState().config.endpoints.claims,
         params
     };
     return httpClient
@@ -290,21 +290,21 @@ export const getDialects = (params: ClaimsGetParams): Promise<any> => {
 
 /**
  * Update the claim dialect with the given ID.
- * 
+ *
  * @param {string} id Claim Dialect ID.
  * @param {string} data Updates with this data.
- * 
+ *
  * @return {Promise<any>} response.
  */
 export const updateADialect = (id: string, dialectURI: string): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${ServiceResourcesEndpoint.claims}/${id}`,
+        url: `${store.getState().config.endpoints.claims}/${id}`,
         data: {
             dialectURI
         }
@@ -324,20 +324,20 @@ export const updateADialect = (id: string, dialectURI: string): Promise<any> => 
 
 /**
  * Delete the claim dialect with the given ID.
- * 
+ *
  * @param {string} id Claim Dialect ID.
- * 
+ *
  * @return {Promise<any>} response.
  */
 export const deleteADialect = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${ServiceResourcesEndpoint.claims}/${id}`
+        url: `${store.getState().config.endpoints.claims}/${id}`
     };
     return httpClient
         .request(requestConfig)
@@ -354,20 +354,21 @@ export const deleteADialect = (id: string): Promise<any> => {
 
 /**
  * Create an external claim.
+ *
  * @param {string} dialectID Claim Dialect ID.
  * @param {AddExternalClaim} data Adds this data.
- * 
+ *
  * @return {Promise<any>} response.
  */
 export const addExternalClaim = (dialectID: string, data: AddExternalClaim): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${ServiceResourcesEndpoint.externalClaims.replace("{}", dialectID)}`,
+        url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}`,
         data
     };
     return httpClient
@@ -385,21 +386,21 @@ export const addExternalClaim = (dialectID: string, data: AddExternalClaim): Pro
 
 /**
  * Get all the external claims.
- * 
+ *
  * @param {string } dialectID Claim Dialect ID.
  * @param {ClaimsGetParams} params limit, offset, filter, attributes, sort.
- * 
+ *
  * @return {Promise<any>} response.
  */
 export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ServiceResourcesEndpoint.externalClaims?.replace("{}", dialectID)}`,
+        url: `${store.getState().config.endpoints.externalClaims?.replace("{}", dialectID)}`,
         params
     };
     return httpClient
@@ -419,21 +420,21 @@ export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams)
 
 /**
  * Gets the external claim with the given ID for the given dialect.
- * 
+ *
  * @param {string} dialectID Claim Dialect ID.
  * @param {string} claimID External Claim ID.
- * 
+ *
  * @return {Promise<any>} response.
  */
 export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ServiceResourcesEndpoint.externalClaims.replace("{}", dialectID)}/${claimID}`
+        url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}/${claimID}`
     };
     return httpClient
         .request(requestConfig)
@@ -450,22 +451,22 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
 
 /**
  * Update an external claim.
- * 
+ *
  * @param {string} dialectID Dialect ID.
  * @param {string} claimID External Claim ID.
  * @param {AddExternalClaim} data Updates with this data.
- * 
+ *
  * @return {Promise<any>} response.
  */
 export const updateAnExternalClaim = (dialectID: string, claimID: string, data: AddExternalClaim): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${ServiceResourcesEndpoint.externalClaims.replace("{}", dialectID)}/${claimID}`,
+        url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}/${claimID}`,
         data
     };
     return httpClient
@@ -483,21 +484,21 @@ export const updateAnExternalClaim = (dialectID: string, claimID: string, data: 
 
 /**
  * Delete an external claim.
- * 
+ *
  * @param {string} dialectID Dialect ID.
  * @param {string} claimID Claim ID.
- * 
+ *
  * @return {Promise<any>} response.
  */
 export const deleteAnExternalClaim = (dialectID: string, claimID: string): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${ServiceResourcesEndpoint.externalClaims.replace("{}", dialectID)}/${claimID}`
+        url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}/${claimID}`
     };
     return httpClient
         .request(requestConfig)
