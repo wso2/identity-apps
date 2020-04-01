@@ -129,7 +129,7 @@ export const ConnectionDetails = (
                                 })
                         }
                     </Forms>
-                    <Divider hidden/>
+                    <Divider hidden />
                     {
                         type?.typeId === "SkRCQ1VzZXJTdG9yZU1hbmFnZXI" && (
                             <PrimaryButton
