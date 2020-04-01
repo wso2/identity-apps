@@ -98,7 +98,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                     value={ initialValues?.audience }
                                     readOnly
                                 />
-                                {/* eslint-disable-next-line react/no-unescaped-entities */}
+                                {/* eslint-disable-next-line react/no-unescaped-entities */ }
                                 <Hint>The trusted relying party's endpoint address.</Hint>
                             </Grid.Column>
                         </Grid.Row>

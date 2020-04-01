@@ -21,7 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Grid } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import { MetadataPropertyInterface, SupportedAuthProtocolMetaTypes, WSTrustMetaDataInterface } from "../../../models";
 import { getAuthProtocolMetadata } from "../../../api";
 import { useDispatch } from "react-redux";
@@ -167,5 +167,5 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
                     </Grid.Row>
                 </Grid>
             </Forms> : <div/>
-    );
+    )
 };
