@@ -17,16 +17,16 @@
  */
 
 import { AddEditDialect, DialectSearch } from "../components";
-import { AlertLevels, ClaimDialect } from "../models";
+import { AlertLevels, AppConfigInterface, ClaimDialect } from "../models";
+import { AppConfig, history } from "../helpers";
 import { ClaimsAvatarBackground, ClaimsList, ListType } from "../components";
 import { DEFAULT_USER_LIST_ITEM_LIMIT, LOCAL_CLAIMS_PATH } from "../constants";
 import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
 import { filterList, sortList } from "../utils";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { addAlert } from "@wso2is/core/store";
 import { getDialects } from "../api";
-import { history } from "../helpers";
 import { ListLayout } from "../layouts";
 import { PageLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
@@ -50,15 +50,15 @@ export const ClaimDialectsPage = (): React.ReactElement => {
         }
     ];
 
-    const [dialects, setDialects] = useState<ClaimDialect[]>(null);
-    const [offset, setOffset] = useState(0);
-    const [listItemLimit, setListItemLimit] = useState<number>(0);
-    const [addEditClaim, setAddEditClaim] = useState(false);
-    const [dialectID, setDialectID] = useState<string>(null);
-    const [filteredDialects, setFilteredDialects] = useState<ClaimDialect[]>(null);
-    const [sortBy, setSortBy] = useState(SORT_BY[0]);
-    const [sortOrder, setSortOrder] = useState(true);
-    const [localURI, setLocalURI] = useState("");
+    const [ dialects, setDialects ] = useState<ClaimDialect[]>(null);
+    const [ offset, setOffset ] = useState(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ addEditClaim, setAddEditClaim ] = useState(false);
+    const [ dialectID, setDialectID ] = useState<string>(null);
+    const [ filteredDialects, setFilteredDialects ] = useState<ClaimDialect[]>(null);
+    const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
+    const [ sortOrder, setSortOrder ] = useState(true);
+    const [ localURI, setLocalURI ] = useState("");
 
     const appConfig: AppConfigInterface = useContext(AppConfig);
 
@@ -106,7 +106,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
 
     useEffect(() => {
         setFilteredDialects(sortList(filteredDialects, sortBy.value, sortOrder));
-    }, [sortBy, sortOrder]);
+    }, [ sortBy, sortOrder ]);
 
     /**
      * This slices a portion of the list to display.
@@ -127,7 +127,9 @@ export const ClaimDialectsPage = (): React.ReactElement => {
      * @param {React.MouseEvent<HTMLAnchorElement>} event.
      * @param {data} data.
      */
-    const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
+    const handleItemsPerPageDropdownChange = (
+        event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps
+    ): void => {
         setListItemLimit(data.value as number);
     };
 
@@ -148,7 +150,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
      * @param {DropdownProps} data.
      */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-        setSortBy(SORT_BY.filter(option => option.value === data.value)[0]);
+        setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
     };
 
     /**
@@ -193,16 +195,16 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                                                     centered
                                                     size="mini"
                                                 >
-                                                    <ClaimsAvatarBackground primary/>
+                                                    <ClaimsAvatarBackground primary />
                                                     <span className="claims-letter">
-                                                L
+                                                        L
                                             </span>
                                                 </Image>
                                                 <List.Header>
                                                     Local Dialect
                                                 </List.Header>
                                                 <List.Description>
-                                                    {localURI}
+                                                    { localURI }
                                                 </List.Description>
                                             </Grid.Column>
                                             <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
@@ -228,7 +230,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                         </Segment>
                     )
                 }
-                <Divider hidden/>
+                <Divider hidden />
                 <ListLayout
                     advancedSearch={
                         <DialectSearch onFilter={ (query) => {
@@ -243,7 +245,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                                     message: "Filter query format incorrect"
                                 }));
                             }
-                        } }/>
+                        } } />
                     }
                     currentListSize={ listItemLimit }
                     listItemLimit={ listItemLimit }
@@ -258,7 +260,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                                     setAddEditClaim(true);
                                 } }
                             >
-                                <Icon name="add"/>Add a dialect
+                                <Icon name="add" />Add a dialect
                             </PrimaryButton>
                         )
                     }

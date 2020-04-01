@@ -17,17 +17,17 @@
  */
 
 import { AddExternalClaims, ClaimsList, EditExternalClaims, ExternalClaimsSearch, ListType } from "../components";
-import { AlertLevels, ClaimDialect, ExternalClaim } from "../models";
+import { AlertLevels, AppConfigInterface, ClaimDialect, ExternalClaim } from "../models";
+import { AppConfig, history } from "../helpers";
 import { CLAIM_DIALECTS_PATH, DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { filterList, sortList } from "../utils";
 import { getADialect, getAllExternalClaims } from "../api";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { addAlert } from "../store/actions";
 import { EmptyPlaceholder } from "../components/shared";
 import { EmptyPlaceholderIllustrations } from "../configs";
-import { history } from "../helpers";
 import { ListLayout } from "../layouts";
 import { PageLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
