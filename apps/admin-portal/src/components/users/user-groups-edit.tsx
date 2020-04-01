@@ -18,15 +18,6 @@
 
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { AlertInterface, BasicProfileInterface } from "../../models";
-import { useTranslation } from "react-i18next";
-import {
-    EmptyPlaceholder,
-    Heading,
-    LinkButton,
-    PrimaryButton,
-    TransferComponent,
-    TransferList, TransferListItem
-} from "@wso2is/react-components";
 import {
     Button,
     Checkbox,
@@ -40,31 +31,24 @@ import {
     Segment,
     Table
 } from "semantic-ui-react";
-import { getRolesList, updateUserRoles } from "../../api";
-import _ from "lodash";
-import { AlertLevels } from "@wso2is/core/dist/src/models/global";
+import { Heading, TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
+import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { RolesMemberInterface } from "../../models/roles";
+import _ from "lodash";
+import { getRolesList } from "../../api";
+import { updateUserRoles } from "../../api/users";
+import { EmptyPlaceholder } from "@wso2is/react-components";
 import { EmptyPlaceholderIllustrations } from "../../configs/ui";
+import { AlertLevels } from "@wso2is/core/dist/src/models/global";
 
-interface UserRolesPropsInterface {
+interface UserGroupsPropsInterface {
     user: BasicProfileInterface;
     onAlertFired: (alert: AlertInterface) => void;
     handleUserUpdate: (userId: string) => void;
 }
 
-/**
- * Enum for role types.
- * @readonly
- * @enum { string }
- */
-enum RoleTypes {
-    APPLICATION = "Application",
-    INTERNAL= "Internal",
-    PRIMARY = "Primary"
-}
-
-export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
-    props: UserRolesPropsInterface
+export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
+    props: UserGroupsPropsInterface
 ): ReactElement => {
 
     const {
@@ -74,50 +58,24 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     } = props;
 
     const [ showAddNewRoleModal, setAddNewRoleModalView ] = useState(false);
-    const [ roleList, setRoleList ] = useState<any>([]);
-    const [ tempRoleList, setTempRoleList ] = useState([]);
-    const [ initialRoleList, setInitialRoleList ] = useState([]);
-    const [ initialTempRoleList, setInitialTempRoleList ] = useState([]);
-
-    // The following constants holds the state of application and internal roles
-    // that are currently in the system.
-    const [ applicationRoles, setApplicationRoles ] = useState(undefined);
-    const [ internalRoles, setInternalRoles ] = useState(undefined);
-
-    // The following constant holds the state of role already assigned roles.
-    const [ primaryRolesList, setPrimaryRolesList ] = useState(undefined);
-
+    const [ groupList, setGroupList ] = useState<any>([]);
+    const [ tempGroupList, setTempGroupList ] = useState([]);
+    const [ initialGroupList, setInitialGroupList ] = useState([]);
+    const [ initialTempGroupList, setInitialTempGroupList ] = useState([]);
+    const [ primaryGroups, setPrimaryGroups ] = useState(undefined);
+    const [ primaryGroupsList, setPrimaryGroupsList ] = useState<Map<string, string>>(undefined);
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesMemberInterface[]>([]);
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<RolesMemberInterface[]>([]);
     const [ isSelectUnassignedRolesAllRolesChecked, setIsSelectUnassignedAllRolesChecked ] = useState(false);
     const [ isSelectAssignedAllRolesChecked, setIsSelectAssignedAllRolesChecked ] = useState(false);
-
-    const [ assignedRoles, setAssignedRoles ] = useState([]);
-
-    const { t } = useTranslation();
-
-    useEffect(() => {
-        if (isSelectAssignedAllRolesChecked) {
-            setCheckedAssignedListItems(tempRoleList);
-        } else {
-            setCheckedAssignedListItems([])
-        }
-    }, [ isSelectAssignedAllRolesChecked ]);
-
-    useEffect(() => {
-        if (isSelectUnassignedRolesAllRolesChecked) {
-            setCheckedUnassignedListItems(roleList);
-        } else {
-            setCheckedUnassignedListItems([])
-        }
-    }, [ isSelectUnassignedRolesAllRolesChecked ]);
+    const [ assignedGroups, setAssignedGroups ] = useState([]);
 
     useEffect(() => {
         if (!(user)) {
             return;
         }
-        setAssignedRoles(user.groups);
         mapUserRoles();
+        setAssignedGroups(user.groups);
     }, []);
 
     /**
@@ -129,22 +87,30 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             return;
         }
         mapUserRoles();
-        setAssignedRoles(user.groups);
+        setAssignedGroups(user.groups);
     }, [ user ]);
 
     useEffect(() => {
-        getRolesList("Application")
+        getRolesList("Primary")
             .then((response) => {
-                setApplicationRoles(response.data.Resources);
+                setPrimaryGroups(response.data.Resources);
             });
     }, []);
 
-    useEffect(() => {
-        getRolesList("Internal")
-            .then((response) => {
-                setInternalRoles(response.data.Resources);
+    const mapUserRoles = () => {
+        const groupsMap = new Map<string, string> ();
+
+        if (user.groups && user.groups instanceof Array) {
+            _.forEachRight (user.groups, (group) => {
+                const groupName = group.display.split("/");
+
+                if (groupName.length === 1) {
+                    groupsMap.set(group.display, group.value);
+                }
             });
-    }, []);
+            setPrimaryGroupsList(groupsMap);
+        }
+    };
 
     /**
      * The following function remove already assigned roles from the initial roles.
@@ -153,53 +119,155 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
      * @param roleList
      */
     const removeExistingRoles = () => {
-        const roleListCopy = _.concat(applicationRoles, internalRoles);
+        const groupListCopy = [ ...primaryGroups ];
 
-        const addedRoles = [];
-            _.forEachRight(roleListCopy, (role) => {
-                if (primaryRolesList.has(role.displayName)) {
-                    addedRoles.push(role);
-                    roleListCopy.splice(roleListCopy.indexOf(role), 1);
-                }
-            });
-            setTempRoleList(addedRoles);
-            setInitialTempRoleList(addedRoles);
-            setRoleList(roleListCopy);
-            setInitialRoleList(roleListCopy);
+        const addedGroups = [];
+        _.forEachRight(groupListCopy, (group) => {
+            if (primaryGroupsList.has(group.displayName)) {
+                addedGroups.push(group);
+                groupListCopy.splice(groupListCopy.indexOf(group), 1);
+            }
+        });
+        setTempGroupList(addedGroups);
+        setInitialTempGroupList(addedGroups);
+        setGroupList(groupListCopy);
+        setInitialGroupList(groupListCopy);
     };
 
     /**
-     * The following function maps the role list of the user
-     * the role map available. This is required as the format of the role
-     * object differs from Users endpoint to Groups endpoint.
+     * The following function enables the user to select all the roles at once.
      */
-    const mapUserRoles = () => {
-        const rolesMap = new Map<string, string> ();
+    const selectAllUnAssignedList = () => {
+        setIsSelectUnassignedAllRolesChecked(!isSelectUnassignedRolesAllRolesChecked);
+    };
 
-        if (user.groups && user.groups instanceof Array) {
-            _.forEachRight (user.groups, (group) => {
-                const role = group.display.split("/");
+    /**
+     * The following function enables the user to deselect all the roles at once.
+     */
+    const selectAllAssignedList = () => {
+        setIsSelectAssignedAllRolesChecked(!isSelectAssignedAllRolesChecked);
+    };
 
-                if (role.length > 1) {
-                    rolesMap.set(group.display, group.value);
-                }
-            });
-            setPrimaryRolesList(rolesMap);
+    /**
+     * The following method handles the onChange event of the
+     * checkbox field of an unassigned item.
+     */
+    const handleUnassignedItemCheckboxChange = (group) => {
+        const checkedGroups = [ ...checkedUnassignedListItems ];
+
+        if (checkedGroups?.includes(group)) {
+            checkedGroups.splice(checkedGroups.indexOf(group), 1);
+            setCheckedUnassignedListItems(checkedGroups);
+        } else {
+            checkedGroups.push(group);
+            setCheckedUnassignedListItems(checkedGroups);
         }
     };
 
-    const handelAddNewRoleModalClose = () => {
+    /**
+     * The following method handles the onChange event of the
+     * checkbox field of an assigned item.
+     */
+    const handleAssignedItemCheckboxChange = (group) => {
+        const checkedGroups = [ ...checkedAssignedListItems ];
+
+        if (checkedGroups?.includes(group)) {
+            checkedGroups.splice(checkedGroups.indexOf(group), 1);
+            setCheckedAssignedListItems(checkedGroups);
+        } else {
+            checkedGroups.push(group);
+            setCheckedAssignedListItems(checkedGroups);
+        }
+    };
+
+    const addGroups = () => {
+        const addedRoles = [ ...tempGroupList ];
+        if (checkedUnassignedListItems?.length > 0) {
+            checkedUnassignedListItems.map((role) => {
+                if (!(tempGroupList?.includes(role))) {
+                    addedRoles.push(role);
+                }
+            });
+        }
+        setTempGroupList(addedRoles);
+        setInitialTempGroupList(addedRoles);
+        setGroupList(groupList.filter(x => !addedRoles?.includes(x)));
+        setInitialGroupList(groupList.filter(x => !addedRoles?.includes(x)));
+        setIsSelectUnassignedAllRolesChecked(false);
+    };
+
+    const removeGroups = () => {
+        const removedRoles = [ ...groupList ];
+        if (checkedAssignedListItems?.length > 0) {
+            checkedAssignedListItems.map((role) => {
+                if (!(groupList?.includes(role))) {
+                    removedRoles.push(role);
+                }
+            });
+        }
+        setGroupList(removedRoles);
+        setInitialGroupList(removedRoles);
+        setTempGroupList(tempGroupList?.filter(x => !removedRoles?.includes(x)));
+        setInitialTempGroupList(tempGroupList?.filter(x => !removedRoles?.includes(x)));
+        setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles?.includes(x)));
+        setIsSelectAssignedAllRolesChecked(false);
+    };
+
+    const handleOpenAddNewGroupModal = () => {
+        removeExistingRoles();
+        setAddNewRoleModalView(true);
+    };
+
+    const handleCloseAddNewGroupModal = () => {
         setAddNewRoleModalView(false);
+    };
+
+    const handleUnselectedListSearch = (e, { value }) => {
+        let isMatch = false;
+        const filteredGroupList = [];
+
+        if (!_.isEmpty(value)) {
+            const re = new RegExp(_.escapeRegExp(value), 'i');
+
+            groupList && groupList.map((role) => {
+                isMatch = re.test(role.displayName);
+                if (isMatch) {
+                    filteredGroupList.push(role);
+                    setGroupList(filteredGroupList);
+                }
+            });
+        } else {
+            setGroupList(initialGroupList);
+        }
+    };
+
+    const handleSelectedListSearch = (e, { value }) => {
+        let isMatch = false;
+        const filteredGroupList = [];
+
+        if (!_.isEmpty(value)) {
+            const re = new RegExp(_.escapeRegExp(value), 'i');
+
+            tempGroupList && tempGroupList?.map((role) => {
+                isMatch = re.test(role.displayName);
+                if (isMatch) {
+                    filteredGroupList.push(role);
+                    setTempGroupList(filteredGroupList);
+                }
+            });
+        } else {
+            setTempGroupList(initialTempGroupList);
+        }
     };
 
     /**
      * This function handles assigning the roles to the user.
      */
-    const updateUserRole = (user: any, roles: any) => {
-        const roleIds = [];
+    const updateUserGroup = (user: any, groups: any) => {
+        const groupIds = [];
 
-        roles.map((role) => {
-            roleIds.push(role.id);
+        groups.map((group) => {
+            groupIds.push(group.id);
         });
 
         const bulkRemoveData: any = {
@@ -247,12 +315,12 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         const addOperations = [];
         let removedIds = [];
 
-        removedIds = [ ...primaryRolesList?.values()];
+        removedIds = [ ...primaryGroupsList?.values()];
 
-        if (roleIds?.length > 0) {
-            roleIds.map((roleId) => {
-                if (removedIds?.includes(roleId)) {
-                    removedIds.splice(removedIds.indexOf(roleId), 1);
+        if (groupIds?.length > 0) {
+            groupIds.map((groupId) => {
+                if (removedIds?.includes(groupId)) {
+                    removedIds.splice(removedIds.indexOf(groupId), 1);
                 }
             });
         }
@@ -273,22 +341,22 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             updateUserRoles(bulkRemoveData)
                 .then(() => {
                     onAlertFired({
-                        description: "Removing assigned roles for the user successful",
+                        description: "Removing assigned groups for the user successful",
                         level: AlertLevels.SUCCESS,
-                        message: "Update user roles successful"
+                        message: "Update user groups successful"
                     });
-                    handelAddNewRoleModalClose();
+                    handleCloseAddNewGroupModal();
                     handleUserUpdate(user.id);
                 })
                 .catch((error) => {
                     onAlertFired({
-                        description: "An error occurred while updating user roles",
+                        description: "An error occurred while updating user groups",
                         level: AlertLevels.ERROR,
                         message: "Something went wrong"
                     });
                 });
         } else {
-            roleIds.map((id) => {
+            groupIds.map((id) => {
                 addOperation = {
                     ...addOperation,
                     ...{ path: "/Groups/" + id }
@@ -303,16 +371,16 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             updateUserRoles(bulkAddData)
                 .then(() => {
                     onAlertFired({
-                        description: "Assigning new roles for the user successful",
+                        description: "Assigning new groups for the user successful",
                         level: AlertLevels.SUCCESS,
-                        message: "Update user roles successful"
+                        message: "Update user groups successful"
                     });
-                    handelAddNewRoleModalClose();
+                    handleCloseAddNewGroupModal();
                     handleUserUpdate(user.id);
                 })
                 .catch((error) => {
                     onAlertFired({
-                        description: "An error occurred while updating user roles",
+                        description: "An error occurred while updating user groups",
                         level: AlertLevels.ERROR,
                         message: "Something went wrong"
                     });
@@ -320,182 +388,40 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         }
     };
 
-    const handleUnselectedListSearch = (e, { value }) => {
-        let isMatch = false;
-        const filteredRoleList = [];
-
-        if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
-
-            roleList && roleList.map((role) => {
-                isMatch = re.test(role.displayName);
-                if (isMatch) {
-                    filteredRoleList.push(role);
-                    setRoleList(filteredRoleList);
-                }
-            });
-        } else {
-            setRoleList(initialRoleList);
-        }
-    };
-
-    const handleSelectedListSearch = (e, { value }) => {
-        let isMatch = false;
-        const filteredRoleList = [];
-
-        if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
-
-            tempRoleList && tempRoleList?.map((role) => {
-                isMatch = re.test(role.displayName);
-                if (isMatch) {
-                    filteredRoleList.push(role);
-                    setTempRoleList(filteredRoleList);
-                }
-            });
-        } else {
-            setTempRoleList(initialTempRoleList);
-        }
-    };
-
-    /**
-     * The following method handles the onChange event of the
-     * checkbox field of an unassigned item.
-     */
-    const handleUnassignedItemCheckboxChange = (role) => {
-        const checkedRoles = [ ...checkedUnassignedListItems ];
-
-        if (checkedRoles?.includes(role)) {
-            checkedRoles.splice(checkedRoles.indexOf(role), 1);
-            setCheckedUnassignedListItems(checkedRoles);
-        } else {
-            checkedRoles.push(role);
-            setCheckedUnassignedListItems(checkedRoles);
-        }
-    };
-
-    /**
-     * The following method handles the onChange event of the
-     * checkbox field of an assigned item.
-     */
-    const handleAssignedItemCheckboxChange = (role) => {
-        const checkedRoles = [ ...checkedAssignedListItems ];
-
-        if (checkedRoles?.includes(role)) {
-            checkedRoles.splice(checkedRoles.indexOf(role), 1);
-            setCheckedAssignedListItems(checkedRoles);
-        } else {
-            checkedRoles.push(role);
-            setCheckedAssignedListItems(checkedRoles);
-        }
-    };
-
-    /**
-     * The following function enables the user to select all the roles at once.
-     */
-    const selectAllUnAssignedList = () => {
-        setIsSelectUnassignedAllRolesChecked(!isSelectUnassignedRolesAllRolesChecked);
-    };
-
-    /**
-     * The following function enables the user to deselect all the roles at once.
-     */
-    const selectAllAssignedList = () => {
-        setIsSelectAssignedAllRolesChecked(!isSelectAssignedAllRolesChecked);
-    };
-
-    const addRoles = () => {
-        const addedRoles = [ ...tempRoleList ];
-        if (checkedUnassignedListItems?.length > 0) {
-            checkedUnassignedListItems.map((role) => {
-                if (!(tempRoleList?.includes(role))) {
-                    addedRoles.push(role);
-                }
-            });
-        }
-        setTempRoleList(addedRoles);
-        setInitialTempRoleList(addedRoles);
-        setRoleList(roleList.filter(x => !addedRoles?.includes(x)));
-        setInitialRoleList(roleList.filter(x => !addedRoles?.includes(x)));
-        setIsSelectUnassignedAllRolesChecked(false);
-    };
-
-    const removeRoles = () => {
-        const removedRoles = [ ...roleList ];
-        if (checkedAssignedListItems?.length > 0) {
-            checkedAssignedListItems.map((role) => {
-                if (!(roleList?.includes(role))) {
-                    removedRoles.push(role);
-                }
-            });
-        }
-        setRoleList(removedRoles);
-        setInitialRoleList(removedRoles);
-        setTempRoleList(tempRoleList?.filter(x => !removedRoles?.includes(x)));
-        setInitialTempRoleList(tempRoleList?.filter(x => !removedRoles?.includes(x)));
-        setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles?.includes(x)));
-        setIsSelectAssignedAllRolesChecked(false);
-    };
-
-    const handleOpenAddNewGroupModal = () => {
-        removeExistingRoles();
-        setAddNewRoleModalView(true);
-    };
-
-    const handleCloseAddNewGroupModal = () => {
-        setAddNewRoleModalView(false);
-    };
-
-    /**
-     * The following method handles creating a label for the list item.
-     *
-     * @param roleName: string
-     */
-    const createItemLabel = (roleName: string) => {
-        const role = roleName.split("/");
-        if (role.length > 0) {
-            if (role[0] == "Application") {
-                return { labelText: "Application", labelColor: null, name: "application-label" };
-            } else {
-                return { labelText: "Internal", labelColor: null, name: "internal-label" };
-            }
-        }
-    };
-
     const addNewGroupModal = () => (
         <Modal open={ showAddNewRoleModal } size="small" className="user-roles">
             <Modal.Header>
-                Update User Roles
+                Update User Groups
                 <Heading subHeading ellipsis as="h6">
-                    Add new roles or remove existing roles assigned to the user.
+                    Add new groups or remove existing group assigned to the user.
                 </Heading>
             </Modal.Header>
             <Modal.Content image>
                 <TransferComponent
-                    addItems={ addRoles }
-                    removeItems={ removeRoles }
+                    addItems={ addGroups }
+                    removeItems={ removeGroups }
                     handleUnelectedListSearch={ handleUnselectedListSearch }
                     handleSelectedListSearch={ handleSelectedListSearch }
                 >
                     <TransferList
-                        isListEmpty={ !(roleList.length > 0) }
+                        isListEmpty={ !(groupList.length > 0) }
                         listType="unselected"
                         listHeaders={ [ "Name", "Type" ] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
                     >
                         {
-                            roleList?.map((role, index)=> {
+                            groupList?.map((role, index)=> {
                                 const roleName = role.displayName?.split("/");
-                                if (roleName.length > 1) {
+                                if (roleName.length === 1) {
                                     return (
                                         <TransferListItem
                                             handleItemChange={ () => handleUnassignedItemCheckboxChange(role) }
                                             key={ index }
-                                            listItem={ roleName[1] }
+                                            listItem={ role.displayName }
                                             listItemId={ role.id }
                                             listItemIndex={ index }
-                                            listItemTypeLabel={ createItemLabel(role?.displayName) }
+                                            listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
                                             isItemChecked={ checkedUnassignedListItems.includes(role) }
                                             showSecondaryActions={ false }
                                         />
@@ -505,24 +431,24 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                         }
                     </TransferList>
                     <TransferList
-                        isListEmpty={ !(tempRoleList.length > 0) }
+                        isListEmpty={ !(tempGroupList.length > 0) }
                         listType="selected"
                         listHeaders={ [ "Name", "Type" ] }
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
                     >
                         {
-                            tempRoleList?.map((role, index)=> {
+                            tempGroupList?.map((role, index)=> {
                                 const userGroup = role.displayName.split("/");
-                                if (userGroup.length > 1) {
+                                if (userGroup.length === 1) {
                                     return (
                                         <TransferListItem
                                             handleItemChange={ () => handleAssignedItemCheckboxChange(role) }
                                             key={ index }
-                                            listItem={ userGroup[1] }
+                                            listItem={ role.displayName }
                                             listItemId={ role.id }
                                             listItemIndex={ index }
-                                            listItemTypeLabel={ createItemLabel(role?.displayName) }
+                                            listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
                                             isItemChecked={ checkedAssignedListItems.includes(role) }
                                             showSecondaryActions={ false }
                                         />
@@ -535,7 +461,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             </Modal.Content>
             <Modal.Actions>
                 <PrimaryButton
-                    onClick={ () => updateUserRole(user, tempRoleList) }
+                    onClick={ () => updateUserGroup(user, tempGroupList) }
                 >
                     Save
                 </PrimaryButton>
@@ -548,34 +474,34 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         </Modal>
     );
 
-    const handleAssignedRoleListSearch = (e, { value }) => {
+    const handleAssignedGroupListSearch = (e, { value }) => {
         let isMatch = false;
-        const filteredRoleList = [];
+        const filteredGroupList = [];
 
         if (!_.isEmpty(value)) {
             const re = new RegExp(_.escapeRegExp(value), 'i');
 
-            assignedRoles && assignedRoles?.map((role) => {
-                const groupName = role.display.split("/");
-                if (groupName.length > 1) {
-                    isMatch = re.test(role.display);
+            assignedGroups && assignedGroups?.map((group) => {
+                const groupName = group.display.split("/");
+                if (groupName.length === 1) {
+                    isMatch = re.test(group.display);
                     if (isMatch) {
-                        filteredRoleList.push(role);
-                        setAssignedRoles(filteredRoleList);
+                        filteredGroupList.push(group);
+                        setAssignedGroups(filteredGroupList);
                     }
                 }
             });
         } else {
-            setAssignedRoles(user.groups);
+            setAssignedGroups(user.groups);
         }
     };
 
     return (
         <>
             <Heading as="h4">
-                Assigned Roles
+                Assigned Groups
                 <Heading subHeading ellipsis as="h6">
-                    Add or remove the roles user is assigned  with and note that this will affect performing certain tasks.
+                    Add or remove the groups user is assigned with and note that this will affect performing certain tasks.
                 </Heading>
             </Heading>
             <Divider hidden/>
@@ -583,15 +509,15 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 <Grid.Row>
                     <Grid.Column computer={ 8 }>
                         {
-                            primaryRolesList?.size > 0 ? (
+                            primaryGroupsList?.size > 0 ? (
                             <Segment.Group fluid>
                                 <Segment className="user-role-edit-header-segment">
                                     <Grid.Row>
                                         <Grid.Column>
                                             <Input
                                                 icon={ <Icon name="search"/> }
-                                                onChange={ handleAssignedRoleListSearch }
-                                                placeholder="Search roles"
+                                                onChange={ handleAssignedGroupListSearch }
+                                                placeholder="Search groups"
                                                 floated="left"
                                                 size="small"
                                             />
@@ -615,32 +541,18 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             </Table.Header>
                                             <Table.Body>
                                                 {
-                                                    assignedRoles?.map((group) => {
+                                                    assignedGroups?.map((group) => {
                                                         const userGroup = group.display.split("/");
-                                                        if (userGroup.length > 1) {
+                                                        if (userGroup.length === 1) {
                                                             return (
                                                                 <Table.Row>
                                                                     <Table.Cell>
                                                                         <Checkbox checked disabled/>
                                                                     </Table.Cell>
-                                                                    {
-                                                                        userGroup[0] == "Application" ? (
-                                                                            <Table.Cell>
-                                                                                <Label className="application-label">
-                                                                                    { userGroup[0] }
-                                                                                </Label>
-                                                                            </Table.Cell>
-                                                                        ) : (
-                                                                            <Table.Cell>
-                                                                                <Label className="internal-label">
-                                                                                    { userGroup[0] }
-                                                                                </Label>
-                                                                            </Table.Cell>
-                                                                        )
-                                                                    }
-                                                                    <Table.Cell width={ 8 }>
-                                                                        { userGroup[1] }
+                                                                    <Table.Cell>
+                                                                        <Label color="olive">Primary</Label>
                                                                     </Table.Cell>
+                                                                    <Table.Cell>{ group.display }</Table.Cell>
                                                                     <Table.Cell textAlign="center">
                                                                         <Popup
                                                                             content="View permissions"
@@ -660,14 +572,14 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                             ) : (
                                 <Segment>
                                     <EmptyPlaceholder
-                                        title="No Roles Assigned"
+                                        title="No Groups Assigned"
                                         subtitle={ [
-                                            "There are no Roles assigned to the user at the moment.",
+                                            "There are no groups assigned to the user at the moment.",
                                             "This might restrict user from performing certain",
-                                            "tasks bound to the roles created by the admin."
+                                            "tasks like accessing certain applications."
                                         ] }
                                         action={
-                                            <PrimaryButton onClick={ handleOpenAddNewGroupModal } icon="plus">
+                                            <PrimaryButton icon="plus" onClick={ handleOpenAddNewGroupModal }>
                                                 Assign Group
                                             </PrimaryButton>
                                         }
@@ -679,8 +591,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                         }
                     </Grid.Column>
                 </Grid.Row>
-                { addNewGroupModal() }
             </Grid>
+            { addNewGroupModal() }
         </>
-    );
+    )
 };
