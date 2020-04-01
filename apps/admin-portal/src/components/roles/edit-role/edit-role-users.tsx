@@ -56,10 +56,9 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
     };
 
     const onUserUpdate = (userList: any) => {
-        const selectedUsers = userList.users;
         const newUsers: CreateRoleMemberInterface[] = [];
         
-        selectedUsers.forEach(selectedUser => {
+        userList?.forEach(selectedUser => {
             newUsers.push({
                 value: selectedUser.id,
                 display: selectedUser.userName
