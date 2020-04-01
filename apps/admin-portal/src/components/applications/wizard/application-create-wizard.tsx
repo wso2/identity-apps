@@ -38,6 +38,8 @@ import { ApplicationConstants } from "../../../constants";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { WizardSummary } from "./wizard-summary";
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
+import { WSTrustProtocolSettingsWizardForm } from "./ws-trust-protocol-settings-wizard-form";
+import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
 
 /**
  * Proptypes for the application creation wizard component.
@@ -324,6 +326,28 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                         SupportedAuthProtocolTypes.SAML) {
                         return (
                             <SAMLProtocolSettingsWizardForm
+                                triggerSubmit={ submitOAuth }
+                                initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
+                                templateValues={ templateSettings }
+                                onSubmit={ (values): void => handleWizardFormSubmit(values,
+                                    WizardStepsFormTypes.PROTOCOL_SETTINGS) }
+                            />
+                        )
+                    } else if (wizardState[WizardStepsFormTypes.PROTOCOL_SELECTION] ===
+                        SupportedAuthProtocolTypes.WS_TRUST) {
+                        return (
+                            <WSTrustProtocolSettingsWizardForm
+                                triggerSubmit={ submitOAuth }
+                                initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
+                                templateValues={ templateSettings }
+                                onSubmit={ (values): void => handleWizardFormSubmit(values,
+                                    WizardStepsFormTypes.PROTOCOL_SETTINGS) }
+                            />
+                        )
+                    } else if (wizardState[WizardStepsFormTypes.PROTOCOL_SELECTION] ===
+                        SupportedAuthProtocolTypes.WS_FEDERATION) {
+                        return (
+                            <PassiveStsProtocolSettingsWizardForm
                                 triggerSubmit={ submitOAuth }
                                 initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
                                 templateValues={ templateSettings }
