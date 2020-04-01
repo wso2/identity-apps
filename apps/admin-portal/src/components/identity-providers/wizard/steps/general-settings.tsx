@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, {FunctionComponent, useEffect} from "react";
+import React, { FunctionComponent } from "react";
 import { GeneralDetailsForm } from "../../forms";
 import { IdentityProviderInterface } from "../../../../models";
 

@@ -387,7 +387,6 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     title: "Authenticator"
                 }
             ];
-
         }
 
         STEPS = [
