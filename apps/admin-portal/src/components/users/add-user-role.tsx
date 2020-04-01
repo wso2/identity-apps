@@ -180,6 +180,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
             submitState={ triggerSubmit }
         >
             <TransferComponent
+                searchPlaceholder="Search roles"
                 addItems={ addRoles }
                 removeItems={ removeRoles }
                 handleListSearch={ handleSearchFieldChange }
