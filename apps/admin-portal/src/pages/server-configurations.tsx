@@ -19,7 +19,7 @@
 import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
 import { PageLayout } from "../layouts";
-import { Grid } from "semantic-ui-react";
+import { Divider, Grid } from "semantic-ui-react";
 import { AlertInterface } from "../../../user-portal/src/models";
 import { addAlert } from "../../../user-portal/src/store/actions";
 import { AccountRecovery, UserSelfRegistration } from "../components";
@@ -50,9 +50,11 @@ export const ServerConfigurationsPage: FunctionComponent<{}> = (): ReactElement 
 		>
 			<Grid>
 				<Grid.Row>
-					<Grid.Column width={ 16 }>
+					<Grid.Column width={ 10 }>
 						<UserSelfRegistration onAlertFired={ handleAlerts }/>
+						<Divider hidden={ true } />
 						<AccountRecovery onAlertFired={ handleAlerts }/>
+						<Divider hidden={ true } />
 						<LoginPolicies onAlertFired={ handleAlerts }/>
 					</Grid.Column>
 				</Grid.Row>

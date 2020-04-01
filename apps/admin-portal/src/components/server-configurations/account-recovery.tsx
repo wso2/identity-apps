@@ -467,7 +467,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 									"validations.empty") }
 								type="number"
 								value={ accountRecoveryConfigs.passwordRecoveryMinAnswers }
-								width={ 5 }
+								width={ 9 }
 								hidden={ accountRecoveryConfigs.enableSecurityQuestionPasswordRecovery.length == 0 }
 							/>
 							<Hint hidden={ accountRecoveryConfigs.enableSecurityQuestionPasswordRecovery.length == 0 }>
@@ -546,7 +546,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 									"otherSettings.form.reCaptchaMaxFailedAttempts.validations.empty") }
 								type="number"
 								value={ accountRecoveryConfigs.reCaptchaMaxFailedAttempts }
-								width={ 5 }
+								width={ 9 }
 							/>
 						</Grid.Column>
 					</Grid.Row>
@@ -615,7 +615,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 									"otherSettings.form.recoveryLinkExpiryTime.validations.empty") }
 								type="number"
 								value={ accountRecoveryConfigs.recoveryLinkExpiryTime }
-								width={ 5 }
+								width={ 9 }
 							/>
 							<Hint>
 								{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
@@ -636,7 +636,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 									"otherSettings.form.smsOTPExpiryTime.validations.empty") }
 								type="number"
 								value={ accountRecoveryConfigs.smsOTPExpiryTime }
-								width={ 5 }
+								width={ 9 }
 							/>
 							<Hint>
 								{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
@@ -700,7 +700,6 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		<Section
 			description={ t("devPortal:components.serverConfigs.accountRecovery.description") }
 			header={ t("devPortal:components.serverConfigs.accountRecovery.heading") }
-			icon={ SettingsSectionIcons.profileExport }
 			iconMini={ SettingsSectionIcons.profileExportMini }
 			iconSize="auto"
 			iconStyle="colored"

@@ -734,14 +734,14 @@ export const devPortal: DevPortalNS = {
         serverConfigs: {
             accountRecovery: {
                 actionTitles: {
-                    config: "Advanced Configurations"
+                    config: "More"
                 },
                 confirmation: {
                     heading: "Confirmation",
                     message: "Do you wish to save the configurations related to user account recovery?"
                 },
                 description: "Configure how account recovery should happen with your users.",
-                heading: "Account Recovery",
+                heading: "Manage Accounts",
                 notifications: {
                     updateConfigurations: {
                         error: {
@@ -911,7 +911,7 @@ export const devPortal: DevPortalNS = {
                     heading: "Account Locking"
                 },
                 actionTitles: {
-                    config: "Advanced Configurations"
+                    config: "More"
                 },
                 confirmation: {
                     heading: "Confirmation",
@@ -967,7 +967,7 @@ export const devPortal: DevPortalNS = {
             },
             selfRegistration: {
                 actionTitles: {
-                    config: "Advanced Configurations"
+                    config: "More"
                 },
                 confirmation: {
                     heading: "Confirmation",
@@ -976,7 +976,8 @@ export const devPortal: DevPortalNS = {
                 description: "Configure how the user self registration should happen with your users.",
                 form: {
                     callbackURLRegex: {
-                        label: "User self registration callback URL regex",
+                        hint: "This prefix will be used to validate the callback URL.",
+                        label: "User self registration callback URL prefix",
                         placeholder: "https://localhost:9443/authenticationendpoint/login.do",
                         validations: {
                             empty: "User self registration callback URL regex is required."

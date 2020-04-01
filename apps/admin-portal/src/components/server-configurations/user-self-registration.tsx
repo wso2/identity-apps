@@ -357,7 +357,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 									"verificationLinkExpiryTime.validations.empty") }
 								type="number"
 								value={ selfSignUpConfigs.verificationCodeExpiryTime }
-								width={ 4 }
+								width={ 9 }
 							/>
 							<Hint>
 								{ t("devPortal:components.serverConfigs.selfRegistration.form." +
@@ -378,7 +378,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 									"smsOTPExpiryTime.validations.empty") }
 								type="number"
 								value={ selfSignUpConfigs.smsOTPExpiryTime }
-								width={ 4 }
+								width={ 9 }
 							/>
 							<Hint>
 								{ t("devPortal:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.hint") }
@@ -400,6 +400,10 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 								value={ selfSignUpConfigs.callbackRegex }
 								width={ 9 }
 							/>
+							<Hint>
+								{ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"callbackURLRegex.hint") }
+							</Hint>
 						</Grid.Column>
 					</Grid.Row>
 					<Grid.Row columns={ 1 }>
@@ -437,7 +441,6 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		<Section
 			description={ t("devPortal:components.serverConfigs.selfRegistration.description") }
 			header={ t("devPortal:components.serverConfigs.selfRegistration.heading") }
-			icon={ SettingsSectionIcons.federatedAssociations }
 			iconMini={ SettingsSectionIcons.federatedAssociationsMini }
 			iconSize="auto"
 			iconStyle="colored"

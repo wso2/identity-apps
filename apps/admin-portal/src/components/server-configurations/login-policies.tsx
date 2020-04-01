@@ -374,7 +374,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 									"accountLock.form.maxFailedLoginAttemptsToAccountLock.validations.empty") }
 								type="number"
 								value={ loginPoliciesConfigs.maxFailedLoginAttemptsToAccountLock }
-								width={ 5 }
+								width={ 9 }
 							/>
 							<Hint>
 								{ t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
@@ -395,7 +395,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 									"accountLock.form.accountLockTime.validations.empty") }
 								type="number"
 								value={ loginPoliciesConfigs.accountLockTime }
-								width={ 5 }
+								width={ 9 }
 							/>
 							<Hint>
 								{ t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
@@ -416,7 +416,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 									"accountLock.form.accountLockTimeIncrementFactor.validations.empty") }
 								type="number"
 								value={ loginPoliciesConfigs.accountLockTimeIncrementFactor }
-								width={ 5 }
+								width={ 9 }
 							/>
 							<Hint>
 								{ t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
@@ -513,7 +513,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 									"reCaptcha.form.maxFailedLoginAttemptsToReCaptcha.validations.empty") }
 								type="number"
 								value={ loginPoliciesConfigs.maxFailedLoginAttemptsToReCaptcha }
-								width={ 5 }
+								width={ 9 }
 							/>
 							<Hint>
 								{ t("devPortal:components.serverConfigs.loginPolicies.reCaptcha." +
@@ -556,7 +556,6 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 		<Section
 			description={ t("devPortal:components.serverConfigs.loginPolicies.description") }
 			header={ t("devPortal:components.serverConfigs.loginPolicies.heading") }
-			icon={ SettingsSectionIcons.profileExport }
 			iconMini={ SettingsSectionIcons.profileExportMini }
 			iconSize="auto"
 			iconStyle="colored"

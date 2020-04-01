@@ -440,6 +440,7 @@ export interface DevPortalNS {
                         };
                     };
                     callbackURLRegex: {
+                        hint: string;
                         label: string;
                         placeholder: string;
                         validations: {
