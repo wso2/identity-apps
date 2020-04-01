@@ -21,7 +21,9 @@ import { Divider, Grid, Message } from "semantic-ui-react";
 import { Field, Forms, FormValue } from "@wso2is/forms";
 import { getAType, testConnection } from "../../../api";
 import React, { useEffect, useState } from "react";
+
 import { addAlert } from "@wso2is/core/store";
+import { JDBC_ID } from "../../../constants";
 import { PrimaryButton } from "@wso2is/react-components";
 import { useDispatch } from "react-redux";
 
@@ -131,7 +133,7 @@ export const ConnectionDetails = (
                     </Forms>
                     <Divider hidden />
                     {
-                        type?.typeId === "SkRCQ1VzZXJTdG9yZU1hbmFnZXI" && (
+                        type?.typeId === JDBC_ID && (
                             <PrimaryButton
                                 onClick={
                                     () => {

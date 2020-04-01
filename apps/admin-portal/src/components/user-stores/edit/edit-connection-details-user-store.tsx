@@ -24,6 +24,7 @@ import React, { useEffect, useState } from "react";
 
 import { addAlert } from "@wso2is/core/store";
 import { Grid } from "semantic-ui-react";
+import { JDBC_ID } from "../../../constants";
 import { useDispatch } from "react-redux";
 
 /**
@@ -199,7 +200,7 @@ const EditConnectionDetails = (
                     <LinkButton
                         onClick={
                             () => {
-                                if (type.typeId === "SkRCQ1VzZXJTdG9yZU1hbmFnZXI") {
+                                if (type.typeId === JDBC_ID) {
                                     const testData: TestConnection = {
                                         connectionPassword: formValue?.get("password").toString(),
                                         connectionURL: formValue?.get("url").toString(),
