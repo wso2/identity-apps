@@ -114,6 +114,8 @@
     <filter-mapping>
         <filter-name>AuthenticationEndpointFilter</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
     <filter>
