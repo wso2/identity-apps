@@ -31,6 +31,7 @@ interface AddUserRoleProps {
     onSubmit: (values: any) => void;
     handleRoleListChange: (roles: any) => void;
     handleTempListChange: (roles: any) => void;
+    handleInitialTempListChange: (groups: any) => void;
 }
 
 /**
@@ -45,7 +46,8 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         triggerSubmit,
         onSubmit,
         handleRoleListChange,
-        handleTempListChange
+        handleTempListChange,
+        handleInitialTempListChange
     } = props;
 
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesInterface[]>([]);
@@ -83,7 +85,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         setIsSelectAssignedAllRolesChecked(!isSelectAssignedAllRolesChecked);
     };
 
-    const handleSearchFieldChange = (e, { value }) => {
+    const handleUnselectedListSearch = (e, { value }) => {
         let isMatch = false;
         const filteredRoleList = [];
 
@@ -98,7 +100,26 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                 }
             });
         } else {
-            handleRoleListChange(initialValues?.initialRoleList);
+            handleRoleListChange(initialValues?.initialTempRoleList);
+        }
+    };
+
+    const handleSelectedListSearch = (e, { value }) => {
+        let isMatch = false;
+        const filteredRoleList = [];
+
+        if (!_.isEmpty(value)) {
+            const re = new RegExp(_.escapeRegExp(value), 'i');
+
+            initialValues.tempRoleList && initialValues.tempRoleList.map((role) => {
+                isMatch = re.test(role.displayName);
+                if (isMatch) {
+                    filteredRoleList.push(role);
+                    handleTempListChange(filteredRoleList);
+                }
+            });
+        } else {
+            handleTempListChange(initialValues?.initialTempRoleList);
         }
     };
 
@@ -112,6 +133,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
             });
         }
         handleTempListChange(addedRoles);
+        handleInitialTempListChange(addedRoles);
         handleRoleListChange(initialValues?.roleList.filter(x => !addedRoles?.includes(x)));
         setIsSelectUnassignedAllRolesChecked(false);
     };
@@ -127,6 +149,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         }
         handleRoleListChange(removedRoles);
         handleTempListChange(initialValues?.tempRoleList?.filter(x => !removedRoles?.includes(x)));
+        handleInitialTempListChange(initialValues?.tempRoleList?.filter(x => !removedRoles?.includes(x)));
         setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles?.includes(x)));
         setIsSelectAssignedAllRolesChecked(false);
     };
@@ -183,7 +206,8 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                 searchPlaceholder="Search roles"
                 addItems={ addRoles }
                 removeItems={ removeRoles }
-                handleListSearch={ handleSearchFieldChange }
+                handleUnelectedListSearch={ handleUnselectedListSearch }
+                handleSelectedListSearch={ handleSelectedListSearch }
             >
                 <TransferList
                     isListEmpty={ !(initialValues?.roleList?.length > 0) }

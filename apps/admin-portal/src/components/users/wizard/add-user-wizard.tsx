@@ -90,39 +90,17 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ roleList, setRoleList ] = useState([]);
     const [ tempRoleList, setTempRoleList ] = useState([]);
     const [ initialRoleList, setInitialRoleList ] = useState([]);
+    const [ initialTempRoleList, setInitialTempRoleList ] = useState([]);
 
     const [ groupList, setGroupsList ] = useState([]);
     const [ tempGroupList, setTempGroupList ] = useState([]);
     const [ initialGroupList, setInitialGroupList ] = useState([]);
+    const [ initialTempGroupList, setInitialTempGroupList ] = useState([]);
 
     const [ applicationRoles, setApplicationRoles ] = useState([]);
     const [ internalRoles, setInternalRoles ] = useState([]);
     const [ isInternalRolesSet, setIsInternalRolesSet ] = useState(false);
     const [ isApplicationRolesSet, setIsApplicationRolesSet ] = useState(false);
-
-    const getGroupListForDomain = (domain: string) => {
-        getRolesList(domain)
-            .then((response) => {
-                setGroupsList(response.data.Resources);
-                setInitialGroupList(response.data.Resources);
-            });
-    };
-
-    const handleRoleListChange = (roleList) => {
-        setRoleList(roleList);
-    };
-
-    const handleAddedListChange = (newRoleList) => {
-        setTempRoleList(newRoleList);
-    };
-
-    const handleGroupListChange = (groupList) => {
-        setGroupsList(groupList);
-    };
-
-    const handleAddedGroupListChange = (newGroupList) => {
-        setTempGroupList(newGroupList);
-    };
 
     useEffect(() => {
         if (applicationRoles.length === 0) {
@@ -170,6 +148,38 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             getGroupListForDomain(wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain);
         }
     }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain ]);
+
+    const getGroupListForDomain = (domain: string) => {
+        getRolesList(domain)
+            .then((response) => {
+                setGroupsList(response.data.Resources);
+                setInitialGroupList(response.data.Resources);
+            });
+    };
+
+    const handleRoleListChange = (roleList) => {
+        setRoleList(roleList);
+    };
+
+    const handleAddedListChange = (newRoleList) => {
+        setTempRoleList(newRoleList);
+    };
+
+    const handleAddedRoleInitialListChange = (newRoleList) => {
+        setInitialTempRoleList(newRoleList);
+    };
+
+    const handleGroupListChange = (groupList) => {
+        setGroupsList(groupList);
+    };
+
+    const handleAddedGroupListChange = (newGroupList) => {
+        setTempGroupList(newGroupList);
+    };
+
+    const handleAddedGroupInitialListChange = (newGroupList) => {
+        setInitialTempGroupList(newGroupList);
+    };
 
     const navigateToNext = () => {
         switch (currentWizardStep) {
@@ -470,9 +480,17 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 <AddUserGroup
                     triggerSubmit={ submitGroupList }
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
-                    initialValues={ { initialGroupList: initialGroupList, groupList: groupList, tempGroupList: tempGroupList } }
+                    initialValues={
+                        {
+                            initialGroupList: initialGroupList,
+                            groupList: groupList,
+                            tempGroupList: tempGroupList,
+                            initialTempGroupList: initialTempGroupList
+                        }
+                    }
                     handleGroupListChange={ (groups) => handleGroupListChange(groups) }
                     handleTempListChange={ (groups) => handleAddedGroupListChange(groups) }
+                    handleInitialTempListChange={ (groups) => handleAddedGroupInitialListChange(groups) }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
@@ -487,11 +505,13 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         {
                             initialRoleList: initialRoleList,
                             roleList: roleList,
-                            tempRoleList: tempRoleList
+                            tempRoleList: tempRoleList,
+                            initialTempRoleList: initialTempRoleList
                         }
                     }
                     handleRoleListChange={ (roles) => handleRoleListChange(roles) }
                     handleTempListChange={ (roles) => handleAddedListChange(roles) }
+                    handleInitialTempListChange={ (roles) => handleAddedRoleInitialListChange(roles) }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,

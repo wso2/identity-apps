@@ -24,7 +24,8 @@ import { TransferListSearch } from "./transfer-list-search";
  * Proptypes transfer component.
  */
 export interface TransferComponentPropsInterface {
-    handleListSearch: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string; }) => void;
+    handleUnelectedListSearch: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string; }) => void;
+    handleSelectedListSearch: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string; }) => void;
     addItems: () => void;
     removeItems: () => void;
     searchPlaceholder: string;
@@ -44,7 +45,8 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         addItems,
         removeItems,
         children,
-        handleListSearch,
+        handleUnelectedListSearch,
+        handleSelectedListSearch,
         searchPlaceholder
     } = props;
 
@@ -61,9 +63,9 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                             list.props.listType === "unselected" && (
                                             <Grid.Column width={ 7 }>
                                                 <Segment className="transfer-segment">
-                                                    <TransferListSearch 
-                                                        placeholder={ searchPlaceholder } 
-                                                        handleListSearch={ handleListSearch }
+                                                    <TransferListSearch
+                                                        handleListSearch={ handleUnelectedListSearch }
+                                                        placeholder={ searchPlaceholder }
                                                     />
                                                     { list }
                                                 </Segment>
@@ -94,9 +96,9 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                             list.props.listType === "selected" && (
                                                 <Grid.Column width={ 7 } className="transfer-list-assigned-column">
                                                     <Segment className="transfer-segment">
-                                                        <TransferListSearch 
-                                                            placeholder={ searchPlaceholder } 
-                                                            handleListSearch={ handleListSearch }
+                                                        <TransferListSearch
+                                                            handleListSearch={ handleSelectedListSearch }
+                                                            placeholder={ searchPlaceholder }
                                                         />
                                                         { list }
                                                     </Segment>

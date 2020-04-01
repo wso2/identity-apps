@@ -31,6 +31,7 @@ interface AddUserGroupPropsInterface {
     onSubmit: (values: any) => void;
     handleGroupListChange: (groups: any) => void;
     handleTempListChange: (groups: any) => void;
+    handleInitialTempListChange: (groups: any) => void;
 }
 
 /**
@@ -46,7 +47,8 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         triggerSubmit,
         onSubmit,
         handleGroupListChange,
-        handleTempListChange
+        handleTempListChange,
+        handleInitialTempListChange
     } = props;
 
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesInterface[]>([]);
@@ -78,14 +80,14 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
      * @param e
      * @param value
      */
-    const handleSearchFieldChange = (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => {
+    const handleUnselectedListSearch = (e, { value }) => {
         let isMatch = false;
         const filteredGroupList = [];
 
         if (!_.isEmpty(value)) {
             const re = new RegExp(_.escapeRegExp(value), 'i');
 
-            initialValues?.groupList && initialValues.groupList?.map((group) => {
+            initialValues.groupList && initialValues.groupList.map((group) => {
                 isMatch = re.test(group.displayName);
                 if (isMatch) {
                     filteredGroupList.push(group);
@@ -94,6 +96,25 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
             });
         } else {
             handleGroupListChange(initialValues?.initialGroupList);
+        }
+    };
+
+    const handleSelectedListSearch = (e, { value }) => {
+        let isMatch = false;
+        const filteredGroupList = [];
+
+        if (!_.isEmpty(value)) {
+            const re = new RegExp(_.escapeRegExp(value), 'i');
+
+            initialValues.tempGroupList && initialValues.tempGroupList.map((group) => {
+                isMatch = re.test(group.displayName);
+                if (isMatch) {
+                    filteredGroupList.push(group);
+                    handleTempListChange(filteredGroupList);
+                }
+            });
+        } else {
+            handleTempListChange(initialValues?.initialTempGroupList);
         }
     };
 
@@ -119,6 +140,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
             });
         }
         handleTempListChange(addedGroups);
+        handleInitialTempListChange(addedGroups);
         handleGroupListChange(initialValues.groupList.filter(x => !addedGroups.includes(x)));
         setIsSelectUnassignedAllChecked(false);
     };
@@ -138,6 +160,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         }
         handleGroupListChange(removedGroups);
         handleTempListChange(initialValues?.tempGroupList?.filter(x => !removedGroups.includes(x)));
+        handleInitialTempListChange(initialValues?.tempGroupList?.filter(x => !removedGroups.includes(x)));
         setCheckedAssignedListItems(checkedAssignedListItems?.filter(x => !removedGroups.includes(x)))
         setIsSelectAssignedAllChecked(false);
     };
@@ -185,7 +208,8 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                 searchPlaceholder="Search groups"
                 addItems={ addGroups }
                 removeItems={ removeGroups }
-                handleListSearch={ handleSearchFieldChange }
+                handleUnelectedListSearch={ handleUnselectedListSearch }
+                handleSelectedListSearch={ handleSelectedListSearch }
             >
                 <TransferList
                     isListEmpty={ !(initialValues?.groupList?.length > 0) }
