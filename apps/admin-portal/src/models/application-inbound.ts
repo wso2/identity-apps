@@ -132,8 +132,8 @@ export const emptyOIDCConfig: OIDCDataInterface = ({
 export enum SupportedAuthProtocolTypes {
     SAML = "saml",
     OIDC = "oidc",
-    // WS_FEDERATION = "passive-sts",
-    // WS_TRUST = "ws-trust"
+    WS_FEDERATION = "passive-sts",
+    WS_TRUST = "ws-trust"
 }
 
 /**
@@ -258,7 +258,7 @@ export interface SAML2ConfigurationInterface {
 }
 
 /**
- * SAML metadata interface
+ * SAML metadata interface.
  */
 export interface SAMLMetaDataInterface {
     defaultNameIdFormat?: string;
@@ -267,4 +267,68 @@ export interface SAMLMetaDataInterface {
     responseDigestAlgorithm?: MetadataPropertyInterface;
     assertionEncryptionAlgorithm?: MetadataPropertyInterface;
     keyEncryptionAlgorithm?: MetadataPropertyInterface;
+}
+
+/**
+ * WS Trust configuration interface.
+ */
+export interface WSTrustConfigurationInterface {
+    audience: string;
+    certificateAlias: string;
+}
+
+/**
+ * WS Trust metadata interface.
+ */
+export interface WSTrustMetaDataInterface {
+    certificateAlias: MetadataPropertyInterface;
+}
+
+/**
+ * Passive Sts interface.
+ */
+export interface PassiveStsConfigurationInterface {
+    realm: string;
+    replyTo: string;
+}
+
+export enum customTypeEnum {
+    STRING = "STRING",
+    BOOLEAN = "BOOLEAN",
+    INTEGER = "INTEGER"
+}
+
+export interface CustomInboundProtocolPropertyInterface {
+    name: string;
+    displayName: string;
+    type: customTypeEnum;
+    required: boolean;
+    availableValues: string[];
+    defaultValue: string;
+    validationRegex: string;
+    displayOrder: number;
+    isConfidential: boolean;
+}
+
+/**
+ *  Custom protocol meta data interface.
+ */
+export interface CustomInboundProtocolMetaDataInterface {
+    displayName: string;
+    properties: CustomInboundProtocolPropertyInterface[];
+}
+
+interface PropertyModelInterface {
+    key: string;
+    value: string;
+    friendlyName: string;
+}
+
+/**
+ * Custom Inbound protocol configurations
+ */
+export interface CustomInboundProtocolConfigurationInterface {
+    name: string;
+    configName: string;
+    properties: PropertyModelInterface[];
 }
