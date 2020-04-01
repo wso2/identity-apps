@@ -101,7 +101,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
 
         return {
             manualConfiguration: {
-                issuer: values.get("issuer"),
+                issuer: values.get("issuer") || initialValues?.issuer,
                 assertionConsumerUrls: assertionConsumerUrls.split(","),
                 serviceProviderQualifier: values.get("applicationQualifier"),
                 defaultAssertionConsumerUrl: values.get("defaultAssertionConsumerUrl"),

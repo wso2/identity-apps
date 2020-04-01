@@ -35,8 +35,7 @@ interface InboundWSTrustFormPropsInterface {
  * Inbound WS Trust protocol configurations form.
  *
  * @param {InboundWSTrustFormPropsInterface} props
- * @return {JSX.Element}
- * @constructor
+ * @return {ReactElement}
  */
 export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterface> = (
     props: InboundWSTrustFormPropsInterface

@@ -218,13 +218,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         };
 
         // If the app is newly created do not add `clientId` & `clientSecret`.
-        if (!values.get("clientId") || !values.get("clientSecret")) {
+        if (!initialValues?.clientId || !values.get("clientSecret")) {
             return formValues;
         }
 
         return {
             ...formValues,
-            clientId: values.get("clientId"),
+            clientId: initialValues?.clientId,
             clientSecret: values.get("clientSecret"),
         };
     };

@@ -35,8 +35,7 @@ interface InboundPassiveStsFormPropsInterface {
  * Inbound Passive Sts protocol configurations form.
  *
  * @param {InboundPassiveStsFormPropsInterface} props
- * @return {JSX.Element}
- * @constructor
+ * @return {ReactElement}
  */
 export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormPropsInterface> = (
     props: InboundPassiveStsFormPropsInterface
@@ -78,6 +77,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                             placeholder="Enter realm."
                             type="text"
                             value={ initialValues?.realm }
+                            readOnly
                         />
                         <Hint>Enter realm identifier for passive sts</Hint>
                     </Grid.Column>
