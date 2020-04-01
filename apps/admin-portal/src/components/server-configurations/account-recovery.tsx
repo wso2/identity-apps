@@ -321,101 +321,106 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 	};
 
 	const showAccountRecoverySummary = (
-		<EditSection>
-			<Forms>
-				<Field
-					name={ ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE }
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery." +
-								"usernameRecovery.form.enable.label"),
-							value: ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE
-						}
-					] }
-					value={ accountRecoveryConfigs.enableUsernameRecovery }
-					listen={
-						(values) => {
-							const value = values.get(ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE).length > 0
-								? "true" : "false";
-							saveAccountRecoveryConfigs(ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE, value);
-						}
-					}
-					toggle
-				/>
-				<Field
-					name={ ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA }
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery." +
-								"usernameRecovery.form.enableReCaptcha.label"),
-							value: ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA
-						}
-					] }
-					value={ accountRecoveryConfigs.enableReCaptchaForUsernameRecovery }
-					listen={
-						(values) => {
-							const value = values.get(ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA).
-								length > 0 ? "true" : "false";
-							saveAccountRecoveryConfigs(ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA,
-								value);
-						}
-					}
-					toggle
-				/>
-				<Field
-					name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE }
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery." +
-								"passwordRecovery.form.enableNotificationBasedRecovery.label"),
-							value: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE
-						}
-					] }
-					value={ accountRecoveryConfigs.enableNotificationPasswordRecovery }
-					listen={
-						(values) => {
-							const value = values.get(ServerConfigurationsConstants.
-								PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE).length > 0 ? "true" : "false";
-							saveAccountRecoveryConfigs(ServerConfigurationsConstants.
-								PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE, value);
-						}
-					}
-					toggle
-				/>
-				<Field
-					name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA }
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery." +
-								"passwordRecovery.form.enableReCaptchaForNotificationBasedRecovery.label"),
-							value: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA
-						}
-					] }
-					value={ accountRecoveryConfigs.enableReCaptchaForNotificationPasswordRecovery }
-					listen={
-						(values) => {
-							const value = values.get(ServerConfigurationsConstants.
-								PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA).length > 0 ? "true" : "false";
-							saveAccountRecoveryConfigs(ServerConfigurationsConstants.
-								PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA, value);
-						}
-					}
-					toggle
-				/>
-			</Forms>
-		</EditSection>
+		<Forms>
+			<Grid padded={ true }>
+				<Grid.Row columns={ 1 }>
+					<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+						<Field
+							name={ ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE }
+							required={ false }
+							requiredErrorMessage=""
+							type="checkbox"
+							children={ [
+								{
+									label: t("devPortal:components.serverConfigs.accountRecovery." +
+										"usernameRecovery.form.enable.label"),
+									value: ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE
+								}
+							] }
+							value={ accountRecoveryConfigs.enableUsernameRecovery }
+							listen={
+								(values) => {
+									const value = values.get(ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE).
+										length > 0 ? "true" : "false";
+									saveAccountRecoveryConfigs(ServerConfigurationsConstants.
+										USERNAME_RECOVERY_ENABLE, value);
+								}
+							}
+							toggle
+						/>
+						<Field
+							name={ ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA }
+							required={ false }
+							requiredErrorMessage=""
+							type="checkbox"
+							children={ [
+								{
+									label: t("devPortal:components.serverConfigs.accountRecovery." +
+										"usernameRecovery.form.enableReCaptcha.label"),
+									value: ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA
+								}
+							] }
+							value={ accountRecoveryConfigs.enableReCaptchaForUsernameRecovery }
+							listen={
+								(values) => {
+									const value = values.get(ServerConfigurationsConstants.
+										USERNAME_RECOVERY_RE_CAPTCHA).length > 0 ? "true" : "false";
+									saveAccountRecoveryConfigs(ServerConfigurationsConstants.
+											USERNAME_RECOVERY_RE_CAPTCHA, value);
+								}
+							}
+							toggle
+						/>
+						<Field
+							name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE }
+							required={ false }
+							requiredErrorMessage=""
+							type="checkbox"
+							children={ [
+								{
+									label: t("devPortal:components.serverConfigs.accountRecovery." +
+										"passwordRecovery.form.enableNotificationBasedRecovery.label"),
+									value: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE
+								}
+							] }
+							value={ accountRecoveryConfigs.enableNotificationPasswordRecovery }
+							listen={
+								(values) => {
+									const value = values.get(ServerConfigurationsConstants.
+										PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE).length > 0 ? "true" : "false";
+									saveAccountRecoveryConfigs(ServerConfigurationsConstants.
+										PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE, value);
+								}
+							}
+							toggle
+						/>
+						<Field
+							name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA }
+							required={ false }
+							requiredErrorMessage=""
+							type="checkbox"
+							children={ [
+								{
+									label: t("devPortal:components.serverConfigs.accountRecovery." +
+										"passwordRecovery.form.enableReCaptchaForNotificationBasedRecovery.label"),
+									value: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA
+								}
+							] }
+							value={ accountRecoveryConfigs.enableReCaptchaForNotificationPasswordRecovery }
+							listen={
+								(values) => {
+									const value = values.get(ServerConfigurationsConstants.
+										PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA).length > 0 ? "true" : "false";
+									saveAccountRecoveryConfigs(ServerConfigurationsConstants.
+										PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA, value);
+								}
+							}
+							toggle
+						/>
+					</Grid.Column>
+				</Grid.Row>
+			</Grid>
+		</Forms>
 	);
 
 	const showUserAccountRecoveryView = editingForm[ACCOUNT_RECOVERY_FORM_IDENTIFIER] && (

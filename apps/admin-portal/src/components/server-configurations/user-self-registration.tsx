@@ -237,101 +237,107 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 	};
 
 	const userSelfRegistrationSummary = (
-		<EditSection>
-			<Forms>
-				<Field
-					name={ ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE }
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.selfRegistration.form." +
-								"enable.label"),
-							value: ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE
-						}
-					] }
-					value={ selfSignUpConfigs.enable }
-					listen={
-						(values) => {
-							const value = values.get(ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE).length > 0
-								? "true" : "false";
-							saveSelfRegistrationConfigs(ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE, value);
-						}
-					}
-					toggle
-				/>
-				<Field
-					name={ ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION }
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.selfRegistration.form." +
-								"enableAccountLockOnCreation.label"),
-							value: ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION
-						}
-					] }
-					value={ selfSignUpConfigs.accountLockOnCreation }
-					listen={
-						(values) => {
-							const value = values.get(ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION).length > 0
-								? "true" : "false";
-							saveSelfRegistrationConfigs(ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION, value);
-						}
-					}
-					toggle
-				/>
-				<Field
-					name={ ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED }
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.selfRegistration.form." +
-								"internalNotificationManagement.label"),
-							value: ServerConfigurationsConstants.
-								SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED
-						}
-					] }
-					value={ selfSignUpConfigs.internalNotificationManagement }
-					listen={
-						(values) => {
-							const value = values.get(ServerConfigurationsConstants.
-								SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED).length > 0 ? "true" : "false";
-							saveSelfRegistrationConfigs(ServerConfigurationsConstants.
-									SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED, value);
-						}
-					}
-					toggle
-				/>
-				<Field
-					name={ ServerConfigurationsConstants.RE_CAPTCHA }
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.selfRegistration.form." +
-								"enableReCaptcha.label"),
-							value: ServerConfigurationsConstants.RE_CAPTCHA
-						}
-					] }
-					value={ selfSignUpConfigs.reCaptcha }
-					listen={
-						(values) => {
-							const value = (values.get(ServerConfigurationsConstants.RE_CAPTCHA) &&
-								values.get(ServerConfigurationsConstants.RE_CAPTCHA).length > 0)
-								? "true" : "false";
-							saveSelfRegistrationConfigs(ServerConfigurationsConstants.RE_CAPTCHA, value);
-						}
-					}
-					toggle
-				/>
-			</Forms>
-		</EditSection>
+		<Forms>
+			<Grid padded={ true }>
+				<Grid.Row columns={ 1 }>
+					<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+						<Field
+							name={ ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE }
+							required={ false }
+							requiredErrorMessage=""
+							type="checkbox"
+							children={ [
+								{
+									label: t("devPortal:components.serverConfigs.selfRegistration.form." +
+										"enable.label"),
+									value: ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE
+								}
+							] }
+							value={ selfSignUpConfigs.enable }
+							listen={
+								(values) => {
+									const value = values.get(ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE).
+										length > 0 ? "true" : "false";
+									saveSelfRegistrationConfigs(ServerConfigurationsConstants.
+										SELF_REGISTRATION_ENABLE, value);
+								}
+							}
+							toggle
+						/>
+						<Field
+							name={ ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION }
+							required={ false }
+							requiredErrorMessage=""
+							type="checkbox"
+							children={ [
+								{
+									label: t("devPortal:components.serverConfigs.selfRegistration.form." +
+										"enableAccountLockOnCreation.label"),
+									value: ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION
+								}
+							] }
+							value={ selfSignUpConfigs.accountLockOnCreation }
+							listen={
+								(values) => {
+									const value = values.get(ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION).
+										length > 0 ? "true" : "false";
+									saveSelfRegistrationConfigs(ServerConfigurationsConstants.
+										ACCOUNT_LOCK_ON_CREATION, value);
+								}
+							}
+							toggle
+						/>
+						<Field
+							name={ ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED }
+							required={ false }
+							requiredErrorMessage=""
+							type="checkbox"
+							children={ [
+								{
+									label: t("devPortal:components.serverConfigs.selfRegistration.form." +
+										"internalNotificationManagement.label"),
+									value: ServerConfigurationsConstants.
+										SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED
+								}
+							] }
+							value={ selfSignUpConfigs.internalNotificationManagement }
+							listen={
+								(values) => {
+									const value = values.get(ServerConfigurationsConstants.
+										SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED).length > 0 ? "true" : "false";
+									saveSelfRegistrationConfigs(ServerConfigurationsConstants.
+										SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED, value);
+								}
+							}
+							toggle
+						/>
+						<Field
+							name={ ServerConfigurationsConstants.RE_CAPTCHA }
+							required={ false }
+							requiredErrorMessage=""
+							type="checkbox"
+							children={ [
+								{
+									label: t("devPortal:components.serverConfigs.selfRegistration.form." +
+										"enableReCaptcha.label"),
+									value: ServerConfigurationsConstants.RE_CAPTCHA
+								}
+							] }
+							value={ selfSignUpConfigs.reCaptcha }
+							listen={
+								(values) => {
+									const value = (values.get(ServerConfigurationsConstants.RE_CAPTCHA) &&
+										values.get(ServerConfigurationsConstants.RE_CAPTCHA).length > 0)
+										? "true" : "false";
+									saveSelfRegistrationConfigs(ServerConfigurationsConstants.RE_CAPTCHA, value);
+								}
+							}
+							toggle
+						/>
+					</Grid.Column>
+				</Grid.Row>
+			</Grid>
+		</Forms>
 	);
 
 	const showUserSelfRegistrationView = editingForm[USER_SELF_REGISTRATION_FORM_IDENTIFIER] && (

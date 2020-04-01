@@ -300,54 +300,59 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 	};
 
 	const showLoginPoliciesSummary = (
-		<EditSection>
-			<Forms>
-				<Field
-					name={ ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE }
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.loginPolicies." +
-								"accountLock.form.accountLockEnable.label"),
-							value: ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE
-						}
-					] }
-					value={ loginPoliciesConfigs.accountLockEnable }
-					listen={
-						(values) => {
-							const value = values.get(ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE).length > 0
-								? "true" : "false";
-							saveLoginPoliciesConfigs(ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE, value);
-						}
-					}
-					toggle
-				/>
-				<Field
-					name={ ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE }
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.loginPolicies." +
-								"accountDisable.form.accountDisablingEnable.label"),
-							value: ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE
-						}
-					] }
-					value={ loginPoliciesConfigs.accountDisablingEnable }
-					listen={
-						(values) => {
-							const value = values.get(ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE).length > 0
-								? "true" : "false";
-							saveLoginPoliciesConfigs(ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE, value);
-						}
-					}
-					toggle
-				/>
-			</Forms>
-		</EditSection>
+		<Forms>
+			<Grid padded={ true }>
+				<Grid.Row columns={ 1 }>
+					<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+						<Field
+							name={ ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE }
+							required={ false }
+							requiredErrorMessage=""
+							type="checkbox"
+							children={ [
+								{
+									label: t("devPortal:components.serverConfigs.loginPolicies." +
+										"accountLock.form.accountLockEnable.label"),
+									value: ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE
+								}
+							] }
+							value={ loginPoliciesConfigs.accountLockEnable }
+							listen={
+								(values) => {
+									const value = values.get(ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE).
+										length > 0 ? "true" : "false";
+									saveLoginPoliciesConfigs(ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE, value);
+								}
+							}
+							toggle
+						/>
+						<Field
+							name={ ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE }
+							required={ false }
+							requiredErrorMessage=""
+							type="checkbox"
+							children={ [
+								{
+									label: t("devPortal:components.serverConfigs.loginPolicies." +
+										"accountDisable.form.accountDisablingEnable.label"),
+									value: ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE
+								}
+							] }
+							value={ loginPoliciesConfigs.accountDisablingEnable }
+							listen={
+								(values) => {
+									const value = values.get(ServerConfigurationsConstants.
+										ACCOUNT_DISABLING_ENABLE).length > 0 ? "true" : "false";
+									saveLoginPoliciesConfigs(ServerConfigurationsConstants.
+										ACCOUNT_DISABLING_ENABLE, value);
+								}
+							}
+							toggle
+						/>
+					</Grid.Column>
+				</Grid.Row>
+			</Grid>
+		</Forms>
 	);
 
 	const showAdvancedLoginPoliciesView = editingForm[LOGIN_POLICIES_FORM_IDENTIFIER] && (
