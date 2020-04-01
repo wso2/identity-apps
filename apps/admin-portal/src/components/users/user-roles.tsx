@@ -668,7 +668,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                         ] }
                                         action={
                                             <PrimaryButton onClick={ handleOpenAddNewGroupModal } icon="plus">
-                                                Assign Group
+                                                Assign Role
                                             </PrimaryButton>
                                         }
                                         image={ EmptyPlaceholderIllustrations.emptyList }

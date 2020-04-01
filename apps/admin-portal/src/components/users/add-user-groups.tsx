@@ -53,24 +53,24 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
 
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesInterface[]>([]);
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<RolesInterface[]>([]);
-    const [ isSelectUnassignedAllChecked, setIsSelectUnassignedAllChecked ] = useState(false);
-    const [ isSelectAssignedAllChecked, setIsSelectAssignedAllChecked ] = useState(false);
+    const [ isSelectUnassignedGroupsAllRolesChecked, setIsSelectUnassignedAllGroupsChecked ] = useState(false);
+    const [ isSelectAssignedAllGroupsChecked, setIsSelectAssignedAllGroupsChecked ] = useState(false);
 
     useEffect(() => {
-        if (isSelectAssignedAllChecked) {
+        if (isSelectAssignedAllGroupsChecked) {
             setCheckedAssignedListItems(initialValues?.tempGroupList);
         } else {
             setCheckedAssignedListItems([])
         }
-    }, [ isSelectAssignedAllChecked ]);
+    }, [ isSelectAssignedAllGroupsChecked ]);
 
     useEffect(() => {
-        if (setIsSelectUnassignedAllChecked) {
+        if (isSelectUnassignedGroupsAllRolesChecked) {
             setCheckedUnassignedListItems(initialValues?.groupList);
         } else {
             setCheckedUnassignedListItems([])
         }
-    }, [ isSelectUnassignedAllChecked ]);
+    }, [ isSelectUnassignedGroupsAllRolesChecked ]);
 
     /**
      * The following method handles the onChange event of the
@@ -118,12 +118,18 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         }
     };
 
-     const selectAllUnAssignedList = () => {
-         setIsSelectUnassignedAllChecked(!isSelectUnassignedAllChecked);
-     };
+    /**
+     * The following function enables the user to select all the roles at once.
+     */
+    const selectAllUnAssignedList = () => {
+        setIsSelectUnassignedAllGroupsChecked(!isSelectUnassignedGroupsAllRolesChecked);
+    };
 
+    /**
+     * The following function enables the user to deselect all the roles at once.
+     */
     const selectAllAssignedList = () => {
-        setIsSelectAssignedAllChecked(!isSelectAssignedAllChecked);
+        setIsSelectAssignedAllGroupsChecked(!isSelectAssignedAllGroupsChecked);
     };
 
     /**
@@ -142,7 +148,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         handleTempListChange(addedGroups);
         handleInitialTempListChange(addedGroups);
         handleGroupListChange(initialValues.groupList.filter(x => !addedGroups.includes(x)));
-        setIsSelectUnassignedAllChecked(false);
+        setIsSelectUnassignedAllGroupsChecked(false);
     };
 
     /**
@@ -162,7 +168,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         handleTempListChange(initialValues?.tempGroupList?.filter(x => !removedGroups.includes(x)));
         handleInitialTempListChange(initialValues?.tempGroupList?.filter(x => !removedGroups.includes(x)));
         setCheckedAssignedListItems(checkedAssignedListItems?.filter(x => !removedGroups.includes(x)))
-        setIsSelectAssignedAllChecked(false);
+        setIsSelectAssignedAllGroupsChecked(false);
     };
 
     /**
@@ -216,7 +222,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                     listType="unselected"
                     listHeaders={ [ "Name", "Type" ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
-                    isHeaderCheckboxChecked={ isSelectUnassignedAllChecked }
+                    isHeaderCheckboxChecked={ isSelectUnassignedGroupsAllRolesChecked }
                 >
                     {
                         initialValues?.groupList?.map((group, index)=> {
@@ -240,7 +246,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                     listType="selected"
                     listHeaders={ [ "Name", "Type" ] }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
-                    isHeaderCheckboxChecked={ isSelectAssignedAllChecked }
+                    isHeaderCheckboxChecked={ isSelectAssignedAllGroupsChecked }
                 >
                     {
                         initialValues?.tempGroupList?.map((group, index)=> {

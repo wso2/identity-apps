@@ -100,7 +100,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                 }
             });
         } else {
-            handleRoleListChange(initialValues?.initialTempRoleList);
+            handleRoleListChange(initialValues?.initialRoleList);
         }
     };
 
