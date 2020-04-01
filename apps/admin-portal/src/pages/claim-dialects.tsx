@@ -198,7 +198,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                                                     <ClaimsAvatarBackground primary />
                                                     <span className="claims-letter">
                                                         L
-                                            </span>
+                                                    </span>
                                                 </Image>
                                                 <List.Header>
                                                     Local Dialect
