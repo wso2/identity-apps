@@ -16,28 +16,35 @@
  * under the License.
  */
 
-import React, { useContext, useEffect, useState, Suspense, ReactElement } from "react";
-import { ThemeContext } from "@wso2is/react-components";
-import { I18nextProvider } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Route, Router, Switch } from "react-router-dom";
-import { ProtectedRoute } from "./components";
-import { baseRoutes, Config } from "./configs";
-import { AppConfig, history } from "./helpers";
 import {
     AppConfigInterface,
     ConfigReducerStateInterface,
     RuntimeConfigInterface,
     ServiceResourceEndpointsInterface
 } from "./models";
-import { ContentLoader } from "@wso2is/react-components";
-import { I18n } from "@wso2is/i18n";
-import { getAppConfig } from "@wso2is/core/api";
-import { ApplicationConstants } from "./constants";
-import { Helmet } from "react-helmet";
+import { ProtectedRoute } from "./components";
+/**
+ * @remarks
+ * Always keep the `Config` & `history` import at the top of the order, to avoid
+ * potential circular dependencies.
+ */
+// eslint-disable-next-line sort-imports
+import { baseRoutes, Config } from "./configs";
+// eslint-disable-next-line sort-imports
+import { AppConfig, history } from "./helpers";
+import React, { ReactElement, Suspense, useContext, useEffect, useState } from "react";
+import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { setDeploymentConfigs, setServiceResourceEndpoints } from "@wso2is/core/store";
-import { AppState } from "./store";
+import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
+import { ApplicationConstants } from "./constants";
+import { AppState } from "./store";
+import { ContentLoader } from "@wso2is/react-components";
+import { getAppConfig } from "@wso2is/core/api";
+import { Helmet } from "react-helmet";
+import { I18n } from "@wso2is/i18n";
+import { I18nextProvider } from "react-i18next";
+import { ThemeContext } from "@wso2is/react-components";
 
 /**
  * Main App component.
@@ -46,20 +53,42 @@ import _ from "lodash";
  */
 export const App = (): ReactElement => {
 
-    const [ appConfig, setAppConfig ] = useState<AppConfigInterface>(null);
-
     const { state } = useContext(ThemeContext);
 
     const dispatch = useDispatch();
 
+    const [ appConfig, setAppConfig ] = useState<AppConfigInterface>(null);
+    const [ isAppLoading, setAppLoadingStatus ] = useState<boolean>(false);
+
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
+    /**
+     * Set the deployment configs in redux state.
+     */
+    useEffect(() => {
+        // Replace `RuntimeConfigInterface` with the proper deployment config interface,
+        // once runtime config is refactored.
+        dispatch(setDeploymentConfigs<RuntimeConfigInterface>(Config.getRuntimeConfig()));
+        dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
+    }, []);
+
+    /**
+     * Set the app loading status based on the availability of configs.
+     */
+    useEffect(() => {
+        if (config?.deployment && !_.isEmpty(config.deployment) && config?.endpoints && !_.isEmpty(config.endpoints)) {
+            setAppLoadingStatus(false);
+        }
+
+        setAppLoadingStatus(true);
+    }, [ config ]);
 
     /**
      * Obtain app.config.json from the server root when the app mounts.
      */
     useEffect(() => {
         if (!config?.deployment || _.isEmpty(config.deployment)) {
-           return;
+            return;
         }
 
         // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
@@ -74,22 +103,12 @@ export const App = (): ReactElement => {
             .catch(() => {
                 // TODO: Log the error here.
             });
-    }, [ config?.deployment ]);
-
-    /**
-     * Set the deployment configs in redux state.
-     */
-    useEffect(() => {
-        // Replace `RuntimeConfigInterface` with the proper deployment config interface,
-        // once runtime config is refactored.
-        dispatch(setDeploymentConfigs<RuntimeConfigInterface>(Config.getRuntimeConfig()));
-        dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
-    }, []);
+    }, [ config ]);
 
     return (
         <>
             {
-                config?.deployment && !_.isEmpty(config.deployment)
+                isAppLoading
                     ? (
                         <Router history={ history }>
                             <div className="container-fluid">
