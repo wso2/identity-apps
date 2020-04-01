@@ -304,7 +304,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
     };
 
-    const changeDialect = (dialectURI: string) => {
+    const changeSelectedDialect = (dialectURI: string) => {
         if (dialectURI !== null) {
             const selectedId = findDialectID(dialectURI);
             let isLocalDialect = true;
@@ -500,18 +500,19 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         findLocalClaimDialectURI();
     }, []);
 
+    // Set the dialects for inbound protocols
     useEffect(() => {
         if (isEmpty(dialect)) {
             return
         }
         //TODO  move this logic to backend
         setIsClaimRequestLoading(true);
-        if (selectedInboundProtocol?.id === SupportedAuthProtocolTypes.SAML) {
+        if (selectedInboundProtocol?.id === SupportedAuthProtocolTypes.OIDC) {
             setIsClaimRequestLoading(false);
-            changeDialect(localDialectURI);
-        } else if (selectedInboundProtocol?.id === SupportedAuthProtocolTypes.OIDC) {
+            changeSelectedDialect("http://wso2.org/oidc/claim")
+        } else {
             setIsClaimRequestLoading(false);
-            changeDialect("http://wso2.org/oidc/claim");
+            changeSelectedDialect(localDialectURI);
         }
     }, [selectedInboundProtocol, dialect]);
 
