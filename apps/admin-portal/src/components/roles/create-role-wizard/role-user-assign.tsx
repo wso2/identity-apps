@@ -207,6 +207,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
     const addUser = () => {
         const addedRoles = [ ...tempUserList ];
+
         if (checkedUnassignedListItems?.length > 0) {
             checkedUnassignedListItems.map((user) => {
                 if (!(tempUserList.includes(user))) {
@@ -220,6 +221,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
     const removeUser = () => {
         const removedUsers = [ ...tempUserList ];
+        
         if (checkedAssignedListItems?.length > 0) {
             checkedAssignedListItems.map((role) => {
                 removedUsers.splice(tempUserList.indexOf(role), 1);
