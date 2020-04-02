@@ -27,6 +27,7 @@ export interface TransferComponentPropsInterface {
     handleListSearch: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string; }) => void;
     addItems: () => void;
     removeItems: () => void;
+    searchPlaceholder: string;
 }
 
 /**
@@ -43,7 +44,8 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         addItems,
         removeItems,
         children,
-        handleListSearch
+        handleListSearch,
+        searchPlaceholder
     } = props;
 
     return (
@@ -59,7 +61,10 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                             list.props.listType === "unselected" && (
                                             <Grid.Column width={ 7 }>
                                                 <Segment className="transfer-segment">
-                                                    <TransferListSearch handleListSearch={ handleListSearch }/>
+                                                    <TransferListSearch 
+                                                        placeholder={ searchPlaceholder } 
+                                                        handleListSearch={ handleListSearch }
+                                                    />
                                                     { list }
                                                 </Segment>
                                             </Grid.Column>
@@ -89,7 +94,10 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                             list.props.listType === "selected" && (
                                                 <Grid.Column width={ 7 } className="transfer-list-assigned-column">
                                                     <Segment className="transfer-segment">
-                                                        <TransferListSearch handleListSearch={ handleListSearch }/>
+                                                        <TransferListSearch 
+                                                            placeholder={ searchPlaceholder } 
+                                                            handleListSearch={ handleListSearch }
+                                                        />
                                                         { list }
                                                     </Segment>
                                                 </Grid.Column>

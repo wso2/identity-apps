@@ -16,13 +16,13 @@
  * under the License.
  */
 import React, { ReactElement, useState, FunctionComponent, useEffect } from "react";
-import { Grid, Input, Icon, Segment, List, Label, Message, Button } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import { Forms } from "@wso2is/forms";
 import _ from "lodash";
 import { UserBasicInterface, RolesMemberInterface } from "../../../models";
 import { getUsersList } from "../../../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../../../constants";
-import { UserAvatar } from "@wso2is/react-components";
+import { TransferComponent, TransferList, TransferListItem, Button } from "@wso2is/react-components";
 
 /**
  * Proptypes for the application consents list component.
@@ -45,11 +45,47 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     } = props;
 
     const [ tempUserList, setTempUserList ] = useState([]);
-    const [ duplicationError, setError ] = useState(undefined);
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
+    
+    const [ isSelectAllUnAssignedUsers, setIsSelectAllUnAssignedUsers ] = useState<boolean>(false);
+    const [ isSelectAllAssignedUsers, setIsSelectAllAssignedUsers ] = useState<boolean>(false);
+    
+    const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<UserBasicInterface[]>([]);
+    const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<UserBasicInterface[]>([]);
+    
+
+    useEffect(() => {
+        if (isSelectAllUnAssignedUsers) {
+            setCheckedUnassignedListItems(usersList);
+        } else {
+            setCheckedUnassignedListItems([])
+        }
+    }, [ isSelectAllUnAssignedUsers ]);
+
+    useEffect(() => {
+        if (isSelectAllAssignedUsers) {
+            setCheckedAssignedListItems(tempUserList);
+        } else {
+            setCheckedAssignedListItems([])
+        }
+    }, [ isSelectAllAssignedUsers ]);
+
+    /**
+     * Select all un-assigned users
+     */
+    const selectAllUnAssignedList = () => {
+        setIsSelectAllUnAssignedUsers(!isSelectAllUnAssignedUsers);
+    };
+
+    /**
+     * Select all assigned users
+     */
+    const selectAllAssignedList = () => {
+        setIsSelectAllAssignedUsers(!isSelectAllAssignedUsers);
+    };
 
     const getList = (limit: number, offset: number, filter: string, attribute: string) => {
         getUsersList(limit, offset, filter, attribute, null)
@@ -126,18 +162,15 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         }
     }, [ listOffset, listItemLimit ]);
 
-    const handleRemoveRoleItem = (role: any) => {
-        const userRolesCopy = [ ...tempUserList ];
-        userRolesCopy.splice(tempUserList.indexOf(role), 1);
-        setTempUserList(userRolesCopy);
-    };
+    const handleUnassignedItemCheckboxChange = (role) => {
+        const checkedRoles = [ ...checkedUnassignedListItems ];
 
-    const addRole = (role: any) => {
-        if (!(tempUserList.includes(role))) {
-            setTempUserList([ ...tempUserList, role ]);
-            setError(undefined);
+        if (checkedRoles.includes(role)) {
+            checkedRoles.splice(checkedRoles.indexOf(role), 1);
+            setCheckedUnassignedListItems(checkedRoles);
         } else {
-            setError("You have already added the role:" + " " + role.displayName);
+            checkedRoles.push(role);
+            setCheckedUnassignedListItems(checkedRoles);
         }
     };
 
@@ -159,7 +192,45 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
             setUsersList(usersList);
         }
     };
-    
+
+    const handleAssignedItemCheckboxChange = (role) => {
+        const checkedRoles = [ ...checkedAssignedListItems ];
+
+        if (checkedRoles.includes(role)) {
+            checkedRoles.splice(checkedRoles.indexOf(role), 1);
+            setCheckedAssignedListItems(checkedRoles);
+        } else {
+            checkedRoles.push(role);
+            setCheckedAssignedListItems(checkedRoles);
+        }
+    };
+
+    const addUser = () => {
+        const addedRoles = [ ...tempUserList ];
+
+        if (checkedUnassignedListItems?.length > 0) {
+            checkedUnassignedListItems.map((user) => {
+                if (!(tempUserList.includes(user))) {
+                    addedRoles.push(user);
+                }
+            });
+        }
+        setTempUserList(addedRoles);
+        setIsSelectAllUnAssignedUsers(false);
+    };
+
+    const removeUser = () => {
+        const removedUsers = [ ...tempUserList ];
+        
+        if (checkedAssignedListItems?.length > 0) {
+            checkedAssignedListItems.map((role) => {
+                removedUsers.splice(tempUserList.indexOf(role), 1);
+                setCheckedAssignedListItems(removedUsers.splice(tempUserList.indexOf(role), 1));
+                setTempUserList(removedUsers);
+            });
+        }
+    };
+
     return (
         <Forms
             onSubmit={ () => {
@@ -169,98 +240,69 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         >
             <Grid>
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column>
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <label>Available Users list</label>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Input
-                                    icon={ <Icon name="search"/> }
-                                    fluid
-                                    onChange={ handleSearchFieldChange }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 2 }>
-                           <Grid.Column>
-                               <Segment className={ "user-role-list-segment" }>
-                                   <List className={ "user-role-list" }>
-                                       { usersList && usersList.map((user, index): ReactElement =>{
-                                             return (
-                                                <List.Item
-                                                    key={ index }
-                                                    className={ "user-role-list-item" }
-                                                    onClick={ () => addRole(user) }
-                                                >
-                                                    <UserAvatar
-                                                        name={ user.userName }
-                                                        size="mini"
-                                                        floated="left"
-                                                        image={ user.profileUrl }
-                                                    />
-                                                    { user.userName }
-                                                    <Icon name="add" />
-                                                </List.Item>
-                                             )
-                                         })
-                                       }
-                                   </List>
-                               </Segment>
-                           </Grid.Column>
-                        </Grid.Row>
-                    </Grid.Column>
-                    <Grid.Column>
-                        <Grid.Row columns={ 1 } className={ "urlComponentLabelRow" }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <label>Added Users</label>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Segment className={ "user-assigned-roles-segment" }>
-                                    {
-                                        tempUserList && tempUserList.map((user, index): ReactElement => {
-                                            return (
-                                                <Label key={ index }>
-                                                    <UserAvatar
-                                                        name={ user.userName }
-                                                        size="mini"
-                                                        floated="left"
-                                                        image={ user.profileUrl }
-                                                    />
-                                                    { user.userName }
-                                                    <Icon
-                                                        name="delete"
-                                                        onClick={ () => handleRemoveRoleItem(user) }
-                                                    />
-                                                </Label>
-                                            );
-                                        })
-                                    }
-                                </Segment>
-                                {
-                                    duplicationError && (
-                                        <Message negative>
-                                            <p>
-                                                { duplicationError }
-                                            </p>
-                                        </Message>
+                    <TransferComponent
+                        searchPlaceholder="Search users"
+                        addItems={ addUser }
+                        removeItems={ removeUser }
+                        handleListSearch={ handleSearchFieldChange }
+                    >
+                        <TransferList
+                            isListEmpty={ !(usersList?.length > 0) }
+                            listType="unselected"
+                            listHeaders={ [ "Name" ] }
+                            handleHeaderCheckboxChange={ selectAllUnAssignedList }
+                            isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
+                        >
+                            {
+                                usersList?.map((user, index)=> {
+                                    return (
+                                        <TransferListItem
+                                            handleItemChange={ () => handleUnassignedItemCheckboxChange(user)  }
+                                            key={ index }
+                                            listItem={ user.userName }
+                                            listItemId={ user.id }
+                                            listItemIndex={ index }
+                                            isItemChecked={ checkedUnassignedListItems?.includes(user) }
+                                            showSecondaryActions={ false }
+                                        />
                                     )
-                                }
-                            </Grid.Column>
-                        </Grid.Row>
+                                })
+                            }
+                        </TransferList>
+                        <TransferList
+                            isListEmpty={ !(tempUserList?.length > 0) }
+                            listType="selected"
+                            listHeaders={ [ "Name" ] }
+                            handleHeaderCheckboxChange={ selectAllAssignedList }
+                            isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
+                        >
+                            {
+                                tempUserList?.map((user, index)=> {
+                                    return (
+                                        <TransferListItem
+                                            handleItemChange={ () => handleAssignedItemCheckboxChange(user) }
+                                            key={ index }
+                                            listItem={ user.userName }
+                                            listItemId={ user.id }
+                                            listItemIndex={ index }
+                                            isItemChecked={ checkedAssignedListItems?.includes(user) }
+                                            showSecondaryActions={ false }
+                                        />
+                                    )
+                                })
+                            }
+                        </TransferList>
+                    </TransferComponent>
+                </Grid.Row>
+            { isEdit && 
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Button primary type="submit" size="small" className="form-button">
+                            Update
+                        </Button>
                     </Grid.Column>
                 </Grid.Row>
-                { isEdit && 
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Button primary type="submit" size="small" className="form-button">
-                                Update
-                            </Button>
-                        </Grid.Column>
-                    </Grid.Row>
-                }
+            }
             </Grid>
         </Forms>
     )

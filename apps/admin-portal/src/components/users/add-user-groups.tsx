@@ -182,6 +182,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
             submitState={ triggerSubmit }
         >
             <TransferComponent
+                searchPlaceholder="Search groups"
                 addItems={ addGroups }
                 removeItems={ removeGroups }
                 handleListSearch={ handleSearchFieldChange }
