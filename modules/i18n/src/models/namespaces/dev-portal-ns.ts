@@ -218,6 +218,21 @@ export interface DevPortalNS {
                     heading: string;
                     message: string;
                 };
+                addUserWizard: {
+                    title: string;
+                    subTitle: string;
+                    steps: {
+                        title: string;
+                        basicDetails: string;
+                        roles: string;
+                        groups: string;
+                        summary: string;
+                    }
+                    buttons: {
+                        next: string;
+                        previous: string;
+                    }
+                }
             };
             profile: {
                 fields: {
