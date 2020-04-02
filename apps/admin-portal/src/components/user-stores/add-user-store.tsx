@@ -16,17 +16,18 @@
 * under the License.
 */
 
-import React, { useState } from "react";
-import { Modal, Grid, Icon } from "semantic-ui-react";
-import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
-import { FormValue, useTrigger } from "@wso2is/forms";
-import { ApplicationWizardStepIcons } from "../../configs";
+import { AlertLevels, Type, UserStorePostData } from "../../models";
 import { BasicDetailsUserStore, ConnectionDetails } from "./wizards";
-import { SummaryUserStores } from "./wizards";
-import { Type, UserStorePostData, AlertLevels } from "../../models";
-import { addUserStore } from "../../api";
-import { useDispatch } from "react-redux";
+import { FormValue, useTrigger } from "@wso2is/forms";
+import { Grid, Icon, Modal } from "semantic-ui-react";
+import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import React, { useState } from "react";
+
 import { addAlert } from "../../store/actions";
+import { addUserStore } from "../../api";
+import { ApplicationWizardStepIcons } from "../../configs";
+import { SummaryUserStores } from "./wizards";
+import { useDispatch } from "react-redux";
 
 /**
  * Prop types of the `AddUserStore` component
@@ -69,22 +70,22 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
     const handleSubmit = () => {
         addUserStore(userStore).then(() => {
             dispatch(addAlert({
-                message: "User Store added successfully!",
                 description: "The user store has been added successfully!",
-                level: AlertLevels.SUCCESS
+                level: AlertLevels.SUCCESS,
+                message: "User Store added successfully!"
             }))
             dispatch(addAlert({
-                message: "Updating User Store list takes time",
                 description: "It may take a while for the user store list to be updated. " +
                     "Refresh in a few seconds to get the updated user store list.",
-                level: AlertLevels.WARNING
+                level: AlertLevels.WARNING,
+                message: "Updating User Store list takes time"
             }));
             onClose();
         }).catch(error => {
                 dispatch(addAlert({
-                    message: error?.message ?? "Something went wrong!",
                     description: error?.description ?? "There was an error while creating the user store",
-                    level: AlertLevels.ERROR
+                    level: AlertLevels.ERROR,
+                    message: error?.message ?? "Something went wrong!"
                 }))
             })
     };
@@ -109,7 +110,6 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
 
         const data = new Map([...Array.from(basicDetailsData ?? []), ...Array.from(values ?? [])]);
         const userStore: UserStorePostData = {
-            typeId: data.get("type")?.toString(),
             description: data.get("description")?.toString(),
             name: data.get("name")?.toString(),
             properties: type?.properties?.Mandatory?.map(property => {
@@ -117,7 +117,8 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
                     name: property.name,
                     value: data.get(property.name)?.toString()
                 }
-            })
+            }),
+            typeId: data.get("type")?.toString()
         };
 
         setUserStore(userStore);
@@ -136,8 +137,8 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
                     values={ basicDetailsData }
                 />
             ),
-            title: "Basic User Store Details",
-            icon: ApplicationWizardStepIcons.general
+            icon: ApplicationWizardStepIcons.general,
+            title: "Basic User Store Details"
         },
         {
             content: (
@@ -148,8 +149,8 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
                     typeId={ basicDetailsData?.get("type").toString() }
                 />
             ),
-            title: "Connection Details",
-            icon: ApplicationWizardStepIcons.general
+            icon: ApplicationWizardStepIcons.general,
+            title: "Connection Details"
         },
         {
             content: (
@@ -226,7 +227,7 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             {currentWizardStep < STEPS.length - 1 && (
                                 <PrimaryButton floated="right" onClick={ next }>
-                                    Next Step <Icon name="arrow right" />
+                                    Next <Icon name="arrow right" />
                                 </PrimaryButton>
                             )}
                             {currentWizardStep === STEPS.length - 1 && (
@@ -235,7 +236,7 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
                             )}
                             {currentWizardStep > 0 && (
                                 <LinkButton floated="right" onClick={ previous }>
-                                    <Icon name="arrow left" /> Previous step
+                                    <Icon name="arrow left" /> Previous
                                 </LinkButton>
                             )}
                         </Grid.Column>

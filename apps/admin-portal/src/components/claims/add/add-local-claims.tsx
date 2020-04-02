@@ -16,17 +16,18 @@
 * under the License.
 */
 
-import React, { useState } from "react";
-import { Modal, Grid, Icon } from "semantic-ui-react";
-import { useTrigger, FormValue } from "@wso2is/forms";
-import { addLocalClaim } from "../../../api";
-import { Steps, PrimaryButton, LinkButton } from "@wso2is/react-components";
-import { ApplicationWizardStepIcons } from "../../../configs";
+import { AlertLevels, Claim } from "../../../models";
 import { BasicDetailsLocalClaims, MappedAttributes, SummaryLocalClaims } from "../wizard";
-import { Claim, AlertLevels } from "../../../models";
-import { useDispatch } from "react-redux";
+import { FormValue, useTrigger } from "@wso2is/forms";
+import { Grid, Icon, Modal } from "semantic-ui-react";
+import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import React, { useState } from "react";
+
 import { addAlert } from "@wso2is/core/store";
+import { addLocalClaim } from "../../../api";
+import { ApplicationWizardStepIcons } from "../../../configs";
 import { KeyValue } from "../dynamic-fields";
+import { useDispatch } from "react-redux";
 
 /**
  * Prop types for `AddLocalClaims` component
@@ -130,8 +131,8 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
                     claimURIBase={ claimURIBase }
                 />
             ),
-            title: "Basic Local Claim Details",
-            icon: ApplicationWizardStepIcons.general
+            icon: ApplicationWizardStepIcons.general,
+            title: "Basic Local Claim Details"
         },
         {
             content: (
@@ -141,8 +142,8 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
                     values={ mappedAttributesData }
                 />
             ),
-            title: "Mapped Attributes",
-            icon: ApplicationWizardStepIcons.general
+            icon: ApplicationWizardStepIcons.general,
+            title: "Mapped Attributes"
         },
         {
             content: (
@@ -215,7 +216,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             {currentWizardStep < STEPS.length - 1 && (
                                 <PrimaryButton floated="right" onClick={ next }>
-                                    Next Step <Icon name="arrow right" />
+                                    Next <Icon name="arrow right" />
                                 </PrimaryButton>
                             )}
                             {currentWizardStep === STEPS.length - 1 && (
@@ -224,7 +225,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
                             )}
                             {currentWizardStep > 0 && (
                                 <LinkButton floated="right" onClick={ previous }>
-                                    <Icon name="arrow left" /> Previous step
+                                    <Icon name="arrow left" /> Previous
                                 </LinkButton>
                             )}
                         </Grid.Column>
