@@ -471,6 +471,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             </Modal.Header>
             <Modal.Content image>
                 <TransferComponent
+                    searchPlaceholder="Search roles"
                     addItems={ addRoles }
                     removeItems={ removeRoles }
                     handleUnelectedListSearch={ handleUnselectedListSearch }

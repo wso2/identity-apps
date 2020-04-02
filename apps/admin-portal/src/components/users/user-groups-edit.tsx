@@ -418,6 +418,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             </Modal.Header>
             <Modal.Content image>
                 <TransferComponent
+                    searchPlaceholder="Search groups"
                     addItems={ addGroups }
                     removeItems={ removeGroups }
                     handleUnelectedListSearch={ handleUnselectedListSearch }

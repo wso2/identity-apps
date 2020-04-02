@@ -244,7 +244,9 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         searchPlaceholder="Search users"
                         addItems={ addUser }
                         removeItems={ removeUser }
-                        handleListSearch={ handleSearchFieldChange }
+                        // TODO: Add two methods to handle the search of each list.
+                        handleUnelectedListSearch={ handleSearchFieldChange }
+                        handleSelectedListSearch={ handleSearchFieldChange }
                     >
                         <TransferList
                             isListEmpty={ !(usersList?.length > 0) }
