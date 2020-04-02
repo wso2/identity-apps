@@ -156,7 +156,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
      */
     const generateUniqueIdpName = (initialIdpName: string, idpList: string[]): string => {
         let idpName = initialIdpName;
-        for (let i = 1; ; i++) {
+        for (let i = 2; ; i++) {
             if (!idpList?.includes(idpName)) {
                 break;
             }
