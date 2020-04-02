@@ -192,4 +192,6 @@ export interface ServiceResourceEndpointsInterface {
     accountLocking: string;
     accountDisabling: string;
     captchaForSSOLogin: string;
+    passwordHistory: string;
+    passwordPolicy: string;
 }

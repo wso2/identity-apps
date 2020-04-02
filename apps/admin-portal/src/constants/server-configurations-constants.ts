@@ -85,7 +85,32 @@ export class ServerConfigurationsConstants {
 	public static readonly CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID: string = "c3NvLmxvZ2luLnJlY2FwdGNoYQ";
 
 	/**
-	 * Self registration API Keywords constants.
+	 * UUID of the identity governance login policies category.
+	 *
+	 * @constant
+	 * @type {string}
+	 */
+
+	public static readonly IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID: string = "UGFzc3dvcmQgUG9saWNpZXM";
+
+	/**
+	 * UUID of the identity governance captcha for sso login connector.
+	 *
+	 * @constant
+	 * @type {string}
+	 */
+	public static readonly PASSWORD_HISTORY_CONNECTOR_ID: string = "cGFzc3dvcmRIaXN0b3J5";
+
+	/**
+	 * UUID of the identity governance captcha for sso login connector.
+	 *
+	 * @constant
+	 * @type {string}
+	 */
+	public static readonly PASSWORD_POLICY_CONNECTOR_ID: string = "cGFzc3dvcmRQb2xpY3k";
+
+	/**
+	 * Self registration API Keyword constants.
 	 */
 	public static readonly SELF_REGISTRATION_ENABLE: string = "SelfRegistration.Enable";
 	public static readonly ACCOUNT_LOCK_ON_CREATION: string = "SelfRegistration.LockOnCreation";
@@ -97,7 +122,7 @@ export class ServerConfigurationsConstants {
 	public static readonly CALLBACK_REGEX: string = "SelfRegistration.CallbackRegex";
 
 	/**
-	 * Account recovery API Keywords constants.
+	 * Account recovery API Keyword constants.
 	 */
 	public static readonly USERNAME_RECOVERY_ENABLE: string = "Recovery.Notification.Username.Enable";
 	public static readonly USERNAME_RECOVERY_RE_CAPTCHA: string = "Recovery.ReCaptcha.Username.Enable";
@@ -123,7 +148,7 @@ export class ServerConfigurationsConstants {
 		"Recovery.Question.Password.Forced.Enable";
 
 	/**
-	 * Login policies - account locking API Keywords constants.
+	 * Login policies - account locking API Keyword constants.
 	 */
 	public static readonly ACCOUNT_LOCK_ENABLE: string = "account.lock.handler.enable";
 	public static readonly MAX_FAILED_LOGIN_ATTEMPTS_TO_ACCOUNT_LOCK: string =
@@ -134,18 +159,29 @@ export class ServerConfigurationsConstants {
 		"account.lock.handler.notification.manageInternally";
 
 	/**
-	 * Login policies - account disabling API Keywords constants.
+	 * Login policies - account disabling API Keyword constants.
 	 */
 	public static readonly ACCOUNT_DISABLING_ENABLE: string = "account.disable.handler.enable";
 	public static readonly ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT: string =
 		"account.disable.handler.notification.manageInternally";
 
 	/**
-	 * Login policies - captcha for sso login API Keywords constants.
+	 * Login policies - captcha for sso login API Keyword constants.
 	 */
 	public static readonly RE_CAPTCHA_ALWAYS_ENABLE: string = "sso.login.recaptcha.enable.always";
 	public static readonly RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE: string =
 		"sso.login.recaptcha.enable";
 	public static readonly MAX_FAILED_LOGIN_ATTEMPTS_TO_RE_CAPTCHA: string =
 		"sso.login.recaptcha.on.max.failed.attempts";
+
+	/**
+	 * Login policies - API Keyword constants.
+	 */
+	public static readonly ENABLE_PASSWORD_HISTORY: string = "passwordHistory.enable";
+	public static readonly PASSWORD_HISTORY_COUNT: string = "passwordHistory.count";
+	public static readonly ENABLE_PASSWORD_POLICY: string = "passwordPolicy.enable";
+	public static readonly PASSWORD_POLICY_MIN_LENGTH: string = "passwordPolicy.min.length";
+	public static readonly PASSWORD_POLICY_MAX_LENGTH: string = "passwordPolicy.max.length";
+	public static readonly PASSWORD_POLICY_PATTERN: string = "passwordPolicy.pattern";
+	public static readonly PASSWORD_POLICY_ERROR_MESSAGE: string = "passwordPolicy.errorMsg";
 }
