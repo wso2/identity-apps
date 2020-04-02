@@ -33,6 +33,7 @@ export const common: CommonNS = {
     challengeQuestionNumber: "Challenge Question {{number}}",
     change: "Change",
     claim: "Claim",
+    close: "Close",
     completed: "Completed",
     configure: "Configure",
     contains: "Contains",

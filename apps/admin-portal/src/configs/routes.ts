@@ -269,12 +269,23 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: false
     },
     {
-        component: ServerConfigurationsPage,
+        children: [
+            {
+                component: ServerConfigurationsPage,
+                exact: true,
+                icon: "serverConfigurations",
+                id: "serverConfigurations",
+                level: 2,
+                name: "Server Configurations",
+                path: "/server-configurations",
+                protected: true,
+                showOnSidePanel: true
+            }
+        ],
         exact: true,
         icon: "serverConfigurations",
         id: "serverConfigurations",
-        name: "Server Configurations",
-        path: "/server-configurations",
+        name: "Settings",
         protected: true,
         showOnSidePanel: true
     },
