@@ -16,10 +16,10 @@
 * under the License.
 */
 
-import React, { useEffect, useState } from "react";
-import { Grid, } from "semantic-ui-react";
-import { FormValue } from "@wso2is/forms";
-import { UserStorePostData, TypeProperty, UserStoreProperty } from "../../../models";
+import { TypeProperty, UserStorePostData, UserStoreProperty } from "../../../models";
+
+import { Grid } from "semantic-ui-react";
+import React from "react";
 
 /**
  * Prop types of the `SummaryUserStores` component

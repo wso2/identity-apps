@@ -16,11 +16,12 @@
 * under the License.
 */
 
-import React, { useState, useEffect } from "react";
-import { Forms, FormValue, Field } from "@wso2is/forms";
-import { TypeResponse, AlertLevels } from "../../../models";
-import { getTypes } from "../../../api";
+import { AlertLevels, TypeResponse } from "../../../models";
+import { Field, Forms, FormValue } from "@wso2is/forms";
+import React, { useEffect, useState } from "react";
+
 import { addAlert } from "@wso2is/core/store";
+import { getTypes } from "../../../api";
 import { useDispatch } from "react-redux";
 
 /**
@@ -106,8 +107,8 @@ export const BasicDetailsUserStore = (
                 children={
                     types?.map(type => {
                         return {
-                            text: type.typeName,
                             key: type.typeId,
+                            text: type.typeName,
                             value: type.typeId
                         }
                     })

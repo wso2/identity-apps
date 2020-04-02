@@ -16,20 +16,21 @@
 * under the License.
 */
 
-import React, { useEffect, useState } from "react"
-import { PageLayout } from "../layouts"
-import { getAClaim } from "../api";
-import { Claim, AlertLevels } from "../models";
-import { ResourceTab } from "@wso2is/react-components";
+import { AlertLevels, Claim } from "../models";
 import {
-    EditBasicDetailsLocalClaims,
     EditAdditionalPropertiesLocalClaims,
+    EditBasicDetailsLocalClaims,
     EditMappedAttributesLocalClaims
 } from "../components";
-import { history } from "../helpers";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react"
+
 import { addAlert } from "../store/actions";
+import { getAClaim } from "../api";
+import { history } from "../helpers";
 import { LOCAL_CLAIMS_PATH } from "../constants";
+import { PageLayout } from "../layouts"
+import { ResourceTab } from "@wso2is/react-components";
+import { useDispatch } from "react-redux";
 
 /**
  * This renders the edit local claims page
@@ -100,7 +101,7 @@ export const LocalClaimsEditPage = (props): React.ReactElement => {
     return (
         <PageLayout
             title={ claim?.displayName }
-            description={ "Edit Local Claim" }
+            description={ "Edit local claim" }
             backButton={ {
                 onClick: () => {
                     history.push(LOCAL_CLAIMS_PATH);

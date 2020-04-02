@@ -16,20 +16,21 @@
  * under the License.
  */
 
-import React, { useContext, useEffect, useState } from "react";
-import { PageLayout } from "../layouts";
-import { ListLayout } from "../layouts";
-import { PrimaryButton } from "@wso2is/react-components";
-import { Icon, DropdownProps, PaginationProps, DropdownItemProps } from "semantic-ui-react";
-import { ClaimsList, ListType, LocalClaimsSearch } from "../components";
-import { Claim, ClaimsGetParams, AlertLevels, AppConfigInterface } from "../models";
-import { getAllLocalClaims, getADialect } from "../api";
-import { DEFAULT_USER_LIST_ITEM_LIMIT, CLAIM_DIALECTS_PATH } from "../constants";
-import { AddLocalClaims } from "../components";
-import { useDispatch } from "react-redux";
-import { addAlert } from "../store/actions";
+import { AlertLevels, AppConfigInterface, Claim, ClaimsGetParams } from "../models";
 import { AppConfig, history } from "../helpers";
+import { CLAIM_DIALECTS_PATH, DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
+import { ClaimsList, ListType, LocalClaimsSearch } from "../components";
+import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { filterList, sortList } from "../utils";
+import { getADialect, getAllLocalClaims } from "../api";
+import React, { useContext, useEffect, useState } from "react";
+
+import { addAlert } from "../store/actions";
+import { AddLocalClaims } from "../components";
+import { ListLayout } from "../layouts";
+import { PageLayout } from "../layouts";
+import { PrimaryButton } from "@wso2is/react-components";
+import { useDispatch } from "react-redux";
 
 /**
  * This returns the list of local claims.
@@ -43,13 +44,13 @@ export const LocalClaimsPage = (): React.ReactElement => {
      */
     const SORT_BY = [
         {
-            text: "Name",
             key: 0,
+            text: "Name",
             value: "displayName"
         },
         {
-            text: "Claim URI",
             key: 1,
+            text: "Claim URI",
             value: "claimURI"
         }
     ];
@@ -77,10 +78,10 @@ export const LocalClaimsPage = (): React.ReactElement => {
     */
     const getLocalClaims = (limit?: number, sort?: string, offset?: number, filter?: string) => {
         const params: ClaimsGetParams = {
+            filter: filter || null,
             limit: limit || null,
-            sort: sort || null,
             offset: offset || null,
-            filter: filter || null
+            sort: sort || null
         };
 
         getAllLocalClaims(params).then(response => {
@@ -183,7 +184,7 @@ export const LocalClaimsPage = (): React.ReactElement => {
             }
             <PageLayout
                 title="Local Claims"
-                description="View, edit and add the Local Claims"
+                description="View, edit and add the local claims"
                 showBottomDivider={ true }
                 backButton={ {
                     onClick: () => { history.push(CLAIM_DIALECTS_PATH) },
@@ -202,9 +203,9 @@ export const LocalClaimsPage = (): React.ReactElement => {
                                     setFilteredClaims(filteredClaims);
                                 } catch (error) {
                                     dispatch(addAlert({
-                                        message: "Filter query format incorrect",
                                         description: error?.message,
-                                        level: AlertLevels.ERROR
+                                        level: AlertLevels.ERROR,
+                                        message: "Filter query format incorrect"
                                     }));
                                 }
                             } }

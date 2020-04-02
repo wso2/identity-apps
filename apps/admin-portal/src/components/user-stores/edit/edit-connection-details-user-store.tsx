@@ -16,14 +16,16 @@
 * under the License.
 */
 
+import { AlertLevels, TestConnection, Type, UserStore, UserStoreProperty } from "../../../models";
+import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
+import { LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { patchUserStore, testConnection } from "../../../api";
 import React, { useEffect, useState } from "react";
-import { UserStore, Type, AlertLevels, UserStoreProperty, TestConnection } from "../../../models";
-import { testConnection, patchUserStore } from "../../../api";
-import { useDispatch } from "react-redux";
+
 import { addAlert } from "@wso2is/core/store";
 import { Grid } from "semantic-ui-react";
-import { Forms, Field, useTrigger, FormValue } from "@wso2is/forms";
-import { PrimaryButton } from "@wso2is/react-components";
+import { JDBC_ID } from "../../../constants";
+import { useDispatch } from "react-redux";
 
 /**
  * Type of the property object
@@ -61,17 +63,19 @@ const EditConnectionDetails = (
 
     const { userStore, update, id, type } = props;
 
-    const [properties, setProperties] = useState<Property[]>([]);
+    const [ properties, setProperties ] = useState<Property[]>([]);
+    const [ formValue, setFormValue ] = useState<Map<string, FormValue>>(null);
 
     const dispatch = useDispatch();
 
-    const [submit, setSubmit] = useTrigger();
+    const [ submit, setSubmit ] = useTrigger();
 
 
 
     useEffect(() => {
         if (type) {
             const mandatory = [];
+            const tempFormValue = new Map<string, FormValue>();
 
             for (const property of type.properties.Mandatory) {
                 const mandatoryProperty = userStore.properties.find((value: UserStoreProperty) => {
@@ -81,17 +85,19 @@ const EditConnectionDetails = (
                 if (mandatoryProperty) {
                     const tempProperty = { ...mandatoryProperty, description: property.description }
                     mandatory.push(tempProperty);
+                    tempFormValue.set(mandatoryProperty.name, mandatoryProperty.value);
                 } else {
                     mandatory.push({
-                        name: property.name,
                         description: property.description,
+                        name: property.name,
                         value: property.defaultValue
                     });
                 }
             }
             setProperties(mandatory);
+            setFormValue(tempFormValue);
         }
-    }, [type]);
+    }, [ type ]);
 
     const isBoolean = (value: string): boolean => {
         return value === "true" || value === "false" || value === "True" || value === "False";
@@ -103,49 +109,34 @@ const EditConnectionDetails = (
                 <Grid.Column width={ 8 }>
                     <Forms
                         submitState={ submit }
+                        onChange={ (isPure: boolean, values: Map<string, FormValue>) => {
+                            setFormValue(values);
+                        } }
                         onSubmit={ (values: Map<string, FormValue>) => {
-                            
+
                             const data = properties.map((property: Property) => {
                                 return {
                                     operation: "REPLACE",
-                                    value: values.get(property.name).toString(),
-                                    path:`/properties/${property.name}`
+                                    path: `/properties/${property.name}`,
+                                    value: values.get(property.name).toString()
                                 }
                             });
 
-                            if (type.typeId === "SkRCQ1VzZXJTdG9yZU1hbmFnZXI") {
-                                const testData: TestConnection = {
-                                    driverName: values.get("driverName").toString(),
-                                    connectionURL: values.get("url").toString(),
-                                    username: values.get("userName").toString(),
-                                    connectionPassword: values.get("password").toString()
-                                };
-                                testConnection(testData).then(() => {
-                                    patchUserStore(id, data).then(() => {
-                                        dispatch(addAlert({
-                                            message: "User Store updated successfully!",
-                                            description: "This user store has been updated successfully!",
-                                            level: AlertLevels.SUCCESS
-                                        }));
-                                        update();
-                                    }).catch(error => {
-                                        dispatch(addAlert({
-                                            message: error?.message || "Something went wrong",
-                                            description: error?.description
-                                                || "An error occurred while updating the user store.",
-                                            level: AlertLevels.ERROR
-                                        }));
-                                    })
-                                }).catch((error) => {
-                                    dispatch(addAlert({
-                                        message: error?.message || "Something went wrong",
-                                        description: error?.description
-                                            || "An error occurred while testing the connection to the user store",
-                                        level: AlertLevels.ERROR
-                                    }));
-                                })
-                            }
-                            
+                            patchUserStore(id, data).then(() => {
+                                dispatch(addAlert({
+                                    description: "This user store has been updated successfully!",
+                                    level: AlertLevels.SUCCESS,
+                                    message: "User Store updated successfully!"
+                                }));
+                                update();
+                            }).catch(error => {
+                                dispatch(addAlert({
+                                    description: error?.description
+                                        || "An error occurred while updating the user store.",
+                                    level: AlertLevels.ERROR,
+                                    message: error?.message || "Something went wrong"
+                                }));
+                            });
                         } }
                     >
                         {
@@ -158,9 +149,9 @@ const EditConnectionDetails = (
                                             type="password"
                                             key={ index }
                                             required={ true }
-                                            label={ property.description.split("#")[0] }
+                                            label={ property.description.split("#")[ 0 ] }
                                             requiredErrorMessage={
-                                                `${property.description.split("#")[0]} is  required`
+                                                `${property.description.split("#")[ 0 ]} is  required`
                                             }
                                             showPassword="Show Password"
                                             hidePassword="Hide Password"
@@ -174,9 +165,9 @@ const EditConnectionDetails = (
                                             type="toggle"
                                             key={ index }
                                             required={ true }
-                                            label={ property.description.split("#")[0] }
+                                            label={ property.description.split("#")[ 0 ] }
                                             requiredErrorMessage={
-                                                `${property.description.split("#")[0]} is  required`
+                                                `${property.description.split("#")[ 0 ]} is  required`
                                             }
                                         />
                                     );
@@ -188,9 +179,9 @@ const EditConnectionDetails = (
                                             type="text"
                                             key={ index }
                                             required={ true }
-                                            label={ property.description.split("#")[0] }
+                                            label={ property.description.split("#")[ 0 ] }
                                             requiredErrorMessage={
-                                                `${property.description.split("#")[0]} is  required`
+                                                `${property.description.split("#")[ 0 ]} is  required`
                                             }
                                         />
                                     );
@@ -203,9 +194,39 @@ const EditConnectionDetails = (
             </Grid.Row>
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 8 }>
-                    <PrimaryButton onClick={ ()=>{setSubmit()} }>
+                    <PrimaryButton onClick={ () => { setSubmit() } }>
                         Update
                     </PrimaryButton>
+                    <LinkButton
+                        onClick={
+                            () => {
+                                if (type.typeId === JDBC_ID) {
+                                    const testData: TestConnection = {
+                                        connectionPassword: formValue?.get("password").toString(),
+                                        connectionURL: formValue?.get("url").toString(),
+                                        driverName: formValue?.get("driverName").toString(),
+                                        username: formValue?.get("userName").toString()
+                                    };
+                                    testConnection(testData).then(() => {
+                                        dispatch(addAlert({
+                                            description: "The connection is healthy",
+                                            level: AlertLevels.SUCCESS,
+                                            message: "Connection successful!"
+                                        }));
+                                    }).catch((error) => {
+                                        dispatch(addAlert({
+                                            description: error?.description
+                                                || "An error occurred while testing the connection to the user store",
+                                            level: AlertLevels.ERROR,
+                                            message: error?.message || "Something went wrong"
+                                        }));
+                                    })
+                                }
+                            }
+                        }
+                    >
+                        Test Connection
+                    </LinkButton>
                 </Grid.Column>
             </Grid.Row>
         </Grid>

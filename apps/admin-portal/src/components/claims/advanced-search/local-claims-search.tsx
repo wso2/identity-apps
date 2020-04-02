@@ -94,7 +94,7 @@ export const LocalClaimsSearch: FunctionComponent<LocalClaimsSearchPropsInterfac
         { value: "sw", text: t("common:startsWith") },
         { value: "ew", text: t("common:endsWith") },
         { value: "co", text: t("common:contains") },
-        { value: "eq", text: t("common:equals") },
+        { value: "eq", text: t("common:equals") }
     ];
 
     /**
@@ -225,7 +225,7 @@ export const LocalClaimsSearch: FunctionComponent<LocalClaimsSearchPropsInterfac
                                             placeholder={
                                                 filterAttribute === "displayName"
                                                     ? "E.g. Local, Country etc."
-                                                    : "E.g. http://wso2.org/claims/local"
+                                                    : "E.g. local, identity/accountState"
                                             }
                                             required={ true }
                                             requiredErrorMessage={ t("devPortal:components.applications.search." +

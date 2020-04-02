@@ -16,12 +16,15 @@
 * under the License.
 */
 
-import React, { useEffect, useState } from "react";
-import { Field, FormValue, Forms } from "@wso2is/forms";
-import { TypeProperty, Type, AlertLevels, TestConnection } from "../../../models";
-import { Grid, Message } from "semantic-ui-react";
+import { AlertLevels, TestConnection, Type, TypeProperty } from "../../../models";
+import { Divider, Grid, Message } from "semantic-ui-react";
+import { Field, Forms, FormValue } from "@wso2is/forms";
 import { getAType, testConnection } from "../../../api";
+import React, { useEffect, useState } from "react";
+
 import { addAlert } from "@wso2is/core/store";
+import { JDBC_ID } from "../../../constants";
+import { PrimaryButton } from "@wso2is/react-components";
 import { useDispatch } from "react-redux";
 
 /**
@@ -57,8 +60,11 @@ export const ConnectionDetails = (
 
     const { submitState, onSubmit, values, typeId } = props;
 
-    const [type, setType] = useState<Type>(null);
-    const [connectionFailed, setConnectionFailed] = useState(false);
+    const [ type, setType ] = useState<Type>(null);
+    const [ connectionFailed, setConnectionFailed ] = useState(false);
+    const [ connectionSuccessful, setConnectionSuccessful ] = useState(false);
+    const [ formValue, setFormValue ] = useState<Map<string, FormValue>>(null);
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -73,79 +79,106 @@ export const ConnectionDetails = (
                 }))
             })
         }
-    }, [typeId]);
-    
+    }, [ typeId ]);
+
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
                 <Grid.Column>
                     <Forms
                         onSubmit={ (values: Map<string, FormValue>) => {
-                            if (type.typeId === "SkRCQ1VzZXJTdG9yZU1hbmFnZXI") {
-                                const testData: TestConnection = {
-                                    driverName: values.get("driverName").toString(),
-                                    connectionURL: values.get("url").toString(),
-                                    username: values.get("userName").toString(),
-                                    connectionPassword: values.get("password").toString()
-                                };
-                                testConnection(testData).then(() => {
-                                    onSubmit(values,type);
-                                }).catch(() => {
-                                    setConnectionFailed(true);
-                                })
-                            }
+                            onSubmit(values, type);
                         } }
                         submitState={ submitState }
+                        onChange={ (isPure, values) => {
+                            setFormValue(values);
+                        } }
                     >
-                    {
-                        type?.properties?.Mandatory?.map(
-                            (selectedTypeDetail: TypeProperty, index: number) => {
-                                const name = selectedTypeDetail.description.split("#")[0];
-                                const isPassword = selectedTypeDetail.name === "password";
-                                return (
-                                    !isPassword
-                                        ? (
-                                            <Field
-                                                key={ index }
-                                                label={ name }
-                                                name={ selectedTypeDetail.name }
-                                                type="text"
-                                                required={ true }
-                                                requiredErrorMessage={ name + " is a required field" }
-                                                placeholder={ "Enter a " + name }
-                                                value={ values?.get(selectedTypeDetail?.name)?.toString() }
-                                            />
-                                        )
-                                        : (
-                                            <Field
-                                                key={ index }
-                                                label={ name }
-                                                name={ selectedTypeDetail.name }
-                                                type="password"
-                                                required={ true }
-                                                requiredErrorMessage={ name + " is a required field" }
-                                                placeholder={ "Enter a " + name }
-                                                showPassword="Show Password"
-                                                hidePassword='Hide Password'
-                                                value={ values?.get(selectedTypeDetail?.name)?.toString() }
-                                            />
-                                        )
-                                );
-                            })
+                        {
+                            type?.properties?.Mandatory?.map(
+                                (selectedTypeDetail: TypeProperty, index: number) => {
+                                    const name = selectedTypeDetail.description.split("#")[ 0 ];
+                                    const isPassword = selectedTypeDetail.name === "password";
+                                    return (
+                                        !isPassword
+                                            ? (
+                                                <Field
+                                                    key={ index }
+                                                    label={ name }
+                                                    name={ selectedTypeDetail.name }
+                                                    type="text"
+                                                    required={ true }
+                                                    requiredErrorMessage={ name + " is a required field" }
+                                                    placeholder={ "Enter a " + name }
+                                                    value={ values?.get(selectedTypeDetail?.name)?.toString() }
+                                                />
+                                            )
+                                            : (
+                                                <Field
+                                                    key={ index }
+                                                    label={ name }
+                                                    name={ selectedTypeDetail.name }
+                                                    type="password"
+                                                    required={ true }
+                                                    requiredErrorMessage={ name + " is a required field" }
+                                                    placeholder={ "Enter a " + name }
+                                                    showPassword="Show Password"
+                                                    hidePassword='Hide Password'
+                                                    value={ values?.get(selectedTypeDetail?.name)?.toString() }
+                                                />
+                                            )
+                                    );
+                                })
                         }
                     </Forms>
-                    {connectionFailed
+                    <Divider hidden />
+                    {
+                        type?.typeId === JDBC_ID && (
+                            <PrimaryButton
+                                onClick={
+                                    () => {
+                                        const testData: TestConnection = {
+                                            connectionPassword: formValue?.get("password").toString(),
+                                            connectionURL: formValue?.get("url").toString(),
+                                            driverName: formValue?.get("driverName").toString(),
+                                            username: formValue?.get("userName").toString()
+                                        };
+                                        testConnection(testData).then(() => {
+                                            setConnectionFailed(false);
+                                            setConnectionSuccessful(true);
+                                        }).catch(() => {
+                                            setConnectionSuccessful(false);
+                                            setConnectionFailed(true);
+                                        })
+                                    }
+                                }
+                            >
+                                Test Connection
+                            </PrimaryButton>
+                        )
+                    }
+                    { connectionFailed
                         ? (
                             <Message negative>
                                 <Message.Header>
                                     Connection failed!
                             </Message.Header>
                                 <Message.Content>
-                                    Please ensure the provided connection URL, name, password and driver name are accurate
+                                    Please ensure the provided connection URL, name, password and driver
+                                    name are accurate
                             </Message.Content>
                             </Message>
                         )
-                        : null
+                        : connectionSuccessful && (
+                            <Message positive>
+                                <Message.Header>
+                                    Connection Successful!
+                            </Message.Header>
+                                <Message.Content>
+                                    The connection is healthy.
+                            </Message.Content>
+                            </Message>
+                        )
                     }
                 </Grid.Column>
             </Grid.Row>
