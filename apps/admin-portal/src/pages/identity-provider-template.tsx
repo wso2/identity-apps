@@ -22,7 +22,7 @@ import { PageLayout } from "../layouts";
 import { IdentityProviderTemplateListInterface, IdentityProviderTemplateListItemInterface } from "../models";
 import { IdentityProviderCreateWizard } from "../components/identity-providers/wizard";
 import { QuickStartIdentityProviderTemplates } from "../components/identity-providers/templates";
-import { getIdentityProviderTemplate, getIdentityProviderTemplateList } from "../api";
+import { getIdentityProviderList, getIdentityProviderTemplate, getIdentityProviderTemplateList } from "../api";
 import { useDispatch, useSelector } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
@@ -38,8 +38,9 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateListItemInterface>(null);
-    const [availableTemplates, setAvailableTemplates] = useState<IdentityProviderTemplateListItemInterface[]>([]);
-    
+    const [ availableTemplates, setAvailableTemplates ] = useState<IdentityProviderTemplateListItemInterface[]>([]);
+    const [ possibleListOfDuplicateIdps, setPossibleListOfDuplicateIdps ] = useState<string[]>(undefined);
+
     const dispatch = useDispatch();
 
     const availableAuthenticators = useSelector((state: AppState) => state.identityProvider.meta.authenticators);
@@ -129,14 +130,59 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
         getTemplate(id);
     };
-    
+
+    const getPossibleListOfDuplicateIdps = (idpName: string) => {
+        getIdentityProviderList(null, null, "name sw " + idpName).then((response) => {
+            setPossibleListOfDuplicateIdps( response?.identityProviders?.map(eachIdp => eachIdp.name));
+        })
+    };
+
+    /**
+     * Called when template is selected.
+     */
     useEffect(() => {
         if (!selectedTemplate) {
             return;
         }
-        setSelectedTemplate(selectedTemplate);
-        setShowWizard(true);
+        getPossibleListOfDuplicateIdps(selectedTemplate?.idp?.name);
     }, [selectedTemplate]);
+
+    /**
+     * Generate the next unique name by appending 1-based index number to the provided initial value.
+     *
+     * @param initialIdpName Initial value for the IdP name.
+     * @param idpList The list of available IdPs names.
+     * @return A unique name from the provided list of names.
+     */
+    const generateUniqueIdpName = (initialIdpName: string, idpList: string[]): string => {
+        let idpName = initialIdpName;
+        for (let i = 1; ; i++) {
+            if (!idpList?.includes(idpName)) {
+                break;
+            }
+            idpName = idpName + i;
+        }
+        return idpName;
+    };
+
+    /**
+     * Called when possibleListOfDuplicateIdps is changed.
+     */
+    useEffect(() => {
+        if (!possibleListOfDuplicateIdps) {
+            return;
+        }
+
+        setSelectedTemplate({
+            ...selectedTemplate,
+            idp: {
+                ...selectedTemplate?.idp,
+                name: generateUniqueIdpName(selectedTemplate?.idp?.name, possibleListOfDuplicateIdps)
+            }
+        });
+
+        setShowWizard(true);
+    }, [possibleListOfDuplicateIdps]);
 
     return (
         <PageLayout
