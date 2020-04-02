@@ -136,7 +136,7 @@ export class Config {
             associations: `${this.getRuntimeConfig().serverHost}/api/users/v1/me/associations`,
             authorize: `${this.getRuntimeConfig().serverHost}/oauth2/authorize`,
             bulk: `${this.getRuntimeConfig().serverHost}/scim2/Bulk`,
-            captchaForSSOLogin: `${this.getRuntimeConfig()..serverHost}/api/server/v1/identity-governance/${
+            captchaForSSOLogin: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID}/connectors/${
                 ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID}`,
             challengeAnswers: `${this.getRuntimeConfig().serverHost}/api/users/v1/me/challenge-answers`,

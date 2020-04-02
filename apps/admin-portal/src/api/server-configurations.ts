@@ -111,7 +111,7 @@ export const updateAccountRecoveryConfigurations = (data: object): Promise<any> 
  * @returns {Promise<any>} a promise containing the configurations.
  */
 export const getAllLoginPoliciesConfigurations = (): Promise<any> => {
-    return getConfigurations(ServiceResourcesEndpoint.loginPolicies);
+    return getConfigurations(store.getState().config.endpoints.loginPolicies);
 };
 
 /**
@@ -122,7 +122,7 @@ export const getAllLoginPoliciesConfigurations = (): Promise<any> => {
  * @returns {Promise<any>} a promise containing the response.
  */
 export const updateAccountLockingConfigurations = (data: object): Promise<any> => {
-    return updateConfigurations(data, ServiceResourcesEndpoint.accountLocking);
+    return updateConfigurations(data, store.getState().config.endpoints.accountLocking);
 };
 
 /**
@@ -133,7 +133,7 @@ export const updateAccountLockingConfigurations = (data: object): Promise<any> =
  * @returns {Promise<any>} a promise containing the response.
  */
 export const updateAccountDisablingConfigurations = (data: object): Promise<any> => {
-    return updateConfigurations(data, ServiceResourcesEndpoint.accountDisabling);
+    return updateConfigurations(data, store.getState().config.endpoints.accountDisabling);
 };
 
 /**
@@ -144,5 +144,5 @@ export const updateAccountDisablingConfigurations = (data: object): Promise<any>
  * @returns {Promise<any>} a promise containing the response.
  */
 export const updateCaptchaForSSOLoginConfigurations = (data: object): Promise<any> => {
-    return updateConfigurations(data, ServiceResourcesEndpoint.captchaForSSOLogin);
+    return updateConfigurations(data, store.getState().config.endpoints.captchaForSSOLogin);
 };
