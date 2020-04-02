@@ -62,7 +62,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
     const [currentWizardStep, setCurrentWizardStep] = useState(0);
     const [data, setData] = useState<Claim>(null);
     const [basicDetailsData, setBasicDetailsData] = useState<Map<string, FormValue>>(null);
-    const [mappedAttributesData, setMappedAttributesData] = useState<KeyValue[]>(null);
+    const [ mappedAttributesData, setMappedAttributesData ] = useState<Map<string, FormValue>>(null);
 
     const [firstStep, setFirstStep] = useTrigger();
     const [secondStep, setSecondStep] = useTrigger();
@@ -111,7 +111,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
      * @param {Claim} dataFromForm 
      * @param {KeyValue[]} values 
      */
-    const onSubmitMappedAttributes = (dataFromForm: Claim, values: KeyValue[]) => {
+    const onSubmitMappedAttributes = (dataFromForm: Claim, values: Map<string, FormValue>) => {
         setCurrentWizardStep(2);
         const tempData = { ...data, ...dataFromForm };
         setData(tempData);

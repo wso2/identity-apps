@@ -16,11 +16,12 @@
 * under the License.
 */
 
-import React, { useState, useEffect } from "react";
-import { Grid, Message } from "semantic-ui-react";
+import { Divider, Grid } from "semantic-ui-react";
+import { Field, Forms, FormValue } from "@wso2is/forms";
+import React, { useEffect, useState } from "react";
+
 import { getUserStoreList } from "../../../api";
-import { DynamicField, KeyValue } from "..";
-import { Hint } from "@wso2is/react-components";
+import { UserStoreListItem } from "../../../models";
 
 /**
  * Prop types of `MappedAttributes` component
@@ -33,11 +34,11 @@ interface MappedAttributesPropsInterface {
     /**
      * Handles update
      */
-    onSubmit: (data: any, values: KeyValue[]) => void;
+    onSubmit: (data: any, values: Map<string, FormValue>) => void;
     /**
      * The key values to be stored
      */
-    values: KeyValue[];
+    values: Map<string, FormValue>;
 }
 
 /**
@@ -47,16 +48,17 @@ interface MappedAttributesPropsInterface {
  */
 export const MappedAttributes = (props: MappedAttributesPropsInterface): React.ReactElement => {
 
-    const { onSubmit, submitState, values } = props;
+    const { onSubmit, submitState } = props;
 
-    const [userStore, setUserStore] = useState([]);
-    const [empty, setEmpty] = useState(false);
+    const [ userStore, setUserStore ] = useState<UserStoreListItem[]>([]);
 
     useEffect(() => {
-        const userstore = [];
+        const userstore: UserStoreListItem[] = [];
         userstore.push({
+            description: "",
             id: "PRIMARY",
-            name: "PRIMARY"
+            name: "PRIMARY",
+            self: ""
         });
         getUserStoreList().then((response) => {
             userstore.push(...response.data);
@@ -68,67 +70,50 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): React.R
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
-                <Grid.Column width={ 16 }>
-                    <h5>Map Attributes</h5>
-                    <Hint>
-                        Corresponding attribute name from the underlying user store 
+                <Grid.Column width={ 14 }>
+                    <h4>Map Attributes</h4>
+                    <p>
+                        Corresponding attribute name from the underlying user store
                         which is mapped to the Claim URI value
-                    </Hint>
-                    <DynamicField
-                        data={ values }
-                        keyType="dropdown"
-                        keyData={
-                            userStore.map(store => {
-                                return {
-                                    value: store.name,
-                                    id: store.id
-                                }
-                            })
-                        }
-                        requiredField={ true }
-                        duplicateKeyErrorMsg={
-                            "This User Store has been selected twice. A User Store can only be selected once."
-                        }
-                        keyName="User Store"
-                        valueName="Attribute to map to"
-                        keyRequiredMessage="Please select a User Store"
-                        valueRequiredErrorMessage="Please enter an attribute to map to"
-                        submit={ submitState }
-                        update={ (data) => {
-                            if (data.length > 0) {
-                                setEmpty(false);
-                                const submitData = {
-                                    attributeMapping: data.map(mapping => {
-                                        return {
-                                            mappedAttribute: mapping.value,
-                                            userstore: mapping.key
-                                        }
-                                    }),
-                                }
-                                onSubmit(submitData, data);
-                            } else {
-                                setEmpty(true);
+                    </p>
+                    <Divider hidden />
+                    <Forms
+                        submitState={ submitState }
+                        onSubmit={ (values: Map<string, FormValue>) => {
+                            const submitData = {
+                                attributeMapping: Array.from(values).map(([ userstore, attribute ]) => {
+                                    return {
+                                        mappedAttribute: attribute,
+                                        userstore: userstore
+                                    }
+                                })
                             }
-
+                            onSubmit(submitData, values);
                         } }
-                        listen={ (data: KeyValue[]) => {
-                            if (data.length > 0) {
-                                setEmpty(false);
-                            }
-                        } }
-                    />
+                    >
+                        <Grid>
+                            { userStore.map((store: UserStoreListItem, index: number) => {
+                                return (
+                                    <Grid.Row columns={ 2 } key={ index }>
+                                        <Grid.Column width={ 4 }>
+                                            { store.name }
+                                        </Grid.Column>
+                                        <Grid.Column width={ 12 }>
+                                            <Field
+                                                type="text"
+                                                name={ store.name }
+                                                placeholder="Enter an attribute to map to"
+                                                required={ true }
+                                                requiredErrorMessage="Attribute name is a required field"
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }) }
+                        </Grid>
+                    </Forms>
                 </Grid.Column>
             </Grid.Row>
-            {
-                empty ? (
-                    <Grid.Row>
-                        <Message negative>
-                            The claim should be mapped to at least one attribute from a user store.
-                        </Message>
-                    </Grid.Row>
-                )
-                    : null
-            }
         </Grid>
     )
 };
