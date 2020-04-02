@@ -17,7 +17,7 @@
 */
 
 import { AttributeMapping, Claim } from "../../../models";
-import { Form, Grid, Label, Table } from "semantic-ui-react";
+import { Divider, Form, Grid, Label, List, Table } from "semantic-ui-react";
 import { CopyInputField } from "@wso2is/react-components";
 import React from "react";
 
@@ -70,9 +70,11 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
      */
     const generateLabels = (name: string): React.ReactElement => {
         return (
-            <Label basic circular>
-                { name }
-            </Label>
+            <List.Item>
+                <Label basic circular>
+                    { name }
+                </Label>
+            </List.Item>
         )
     };
 
@@ -100,9 +102,11 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
             </Grid.Row>
             <Grid.Row columns={ 1 }>
                 <Grid.Column textAlign="center">
-                    { generateLabels("Show on Profile") }
-                    { generateLabels("Required") }
-                    { generateLabels("Read Only") }
+                    <List>
+                        { generateLabels("Show this claim on user profile and user registration page") }
+                        { generateLabels("Make this claims required during user registration") }
+                        { generateLabels("Make this claim read-only") }
+                    </List>
                 </Grid.Column>
             </Grid.Row>
             { data.claimURI ? generateSummaryLine("Claim URI", showClaimURI()) : null }
