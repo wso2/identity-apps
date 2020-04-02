@@ -251,3 +251,48 @@
         }
     }
 }
+
+/***********************************
+     User Edit Section Variation
+************************************/
+
+.ui.segment {
+    &.user-role-edit-header-segment {
+        .ui.input {
+            margin-bottom: @EditRoleSegmentHeaderMarginBottom;
+            width: @EditRoleSegmentHeaderWidth;
+        }
+
+        .ui.table {
+            border-left: none;
+            border-right: none;
+        }
+
+        i {
+            margin-right: auto;
+        }
+
+        .ui.button {
+            margin-bottom: @EditRoleSegmentHeaderButtonMarginBottom;
+        }
+
+        .ui.label {
+            color: white;
+
+            &.application-label {
+                background-color: @TransferComponentSegmentApplicationLabelBackgroundColor;
+                border-color: @TransferComponentSegmentApplicationLabelBorderColor;
+
+            }
+
+            &.internal-label {
+                background-color: @TransferComponentSegmentInternalLabelBackgroundColor;
+                border-color: @TransferComponentSegmentInternalLabelBorderColor;
+            }
+        }
+    }
+
+    &.user-role-edit-footer-segment {
+        height: @EditRoleSegmentFooterHeight;
+    }
+}

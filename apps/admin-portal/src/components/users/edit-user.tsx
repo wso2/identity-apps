@@ -23,6 +23,7 @@ import { AlertInterface, BasicProfileInterface } from "../../models";
 import { addAlert } from "../../store/actions";
 import { UserProfile } from "./user-profile";
 import { UserRolesList } from "./user-roles";
+import { UserGroupsList } from "./user-groups-edit";
 
 interface EditUserPropsInterface {
     user: BasicProfileInterface;
@@ -62,6 +63,18 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             ),
         },
         {
+            menuItem: "Groups",
+            render: () => (
+                <ResourceTab.Pane attached={ false }>
+                    <UserGroupsList
+                        onAlertFired={ handleAlerts }
+                        user={ user }
+                        handleUserUpdate={ handleUserUpdate }
+                    />
+                </ResourceTab.Pane>
+            ),
+        },
+        {
             menuItem: "Roles",
             render: () => (
                 <ResourceTab.Pane attached={ false }>
@@ -72,7 +85,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                     />
                 </ResourceTab.Pane>
             ),
-        },
+        }
     ]);
 
     return (

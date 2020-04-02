@@ -385,6 +385,21 @@ export const devPortal: DevPortalNS = {
                     heading: "Warning",
                     message: "Please note that this created user will not be assigned with a role. If you wish to " +
                         "assign roles to this user please click on the button below."
+                },
+                addUserWizard: {
+                    title: "Add user",
+                    subTitle: "Follow the wizard steps to add the new user",
+                    steps: {
+                        title: "Fill the following details to create a new user.",
+                        basicDetails: "Basic user details",
+                        roles: "Assign user roles",
+                        groups: "Assign user groups",
+                        summary: "Summary",
+                    },
+                    buttons: {
+                        next: "Next",
+                        previous: "Previous"
+                    }
                 }
             },
             profile: {

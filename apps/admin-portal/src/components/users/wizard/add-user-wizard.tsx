@@ -31,6 +31,7 @@ import { AddUserWizardSummary } from "./wizard-summary";
 import { useTrigger } from "@wso2is/forms";
 import { AddUserRole } from "../add-user-role";
 import { AddUserGroup } from "../add-user-groups";
+import { RolesInterface } from "../../../models/roles";
 
 interface AddUserWizardPropsInterface {
     closeWizard: () => void;
@@ -87,42 +88,20 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
 
-    const [ roleList, setRoleList ] = useState([]);
-    const [ tempRoleList, setTempRoleList ] = useState([]);
-    const [ initialRoleList, setInitialRoleList ] = useState([]);
+    const [ roleList, setRoleList ] = useState<RolesInterface[]>([]);
+    const [ tempRoleList, setTempRoleList ] = useState<RolesInterface[]>([]);
+    const [ initialRoleList, setInitialRoleList ] = useState<RolesInterface[]>([]);
+    const [ initialTempRoleList, setInitialTempRoleList ] = useState<RolesInterface[]>([]);
 
-    const [ groupList, setGroupsList ] = useState([]);
-    const [ tempGroupList, setTempGroupList ] = useState([]);
-    const [ initialGroupList, setInitialGroupList ] = useState([]);
+    const [ groupList, setGroupsList ] = useState<RolesInterface[]>([]);
+    const [ tempGroupList, setTempGroupList ] = useState<RolesInterface[]>([]);
+    const [ initialGroupList, setInitialGroupList ] = useState<RolesInterface[]>([]);
+    const [ initialTempGroupList, setInitialTempGroupList ] = useState<RolesInterface[]>([]);
 
-    const [ applicationRoles, setApplicationRoles ] = useState([]);
-    const [ internalRoles, setInternalRoles ] = useState([]);
+    const [ applicationRoles, setApplicationRoles ] = useState<RolesInterface[]>([]);
+    const [ internalRoles, setInternalRoles ] = useState<RolesInterface[]>([]);
     const [ isInternalRolesSet, setIsInternalRolesSet ] = useState(false);
     const [ isApplicationRolesSet, setIsApplicationRolesSet ] = useState(false);
-
-    const getGroupListForDomain = (domain: string) => {
-        getRolesList(domain)
-            .then((response) => {
-                setGroupsList(response.data.Resources);
-                setInitialGroupList(response.data.Resources);
-            });
-    };
-
-    const handleRoleListChange = (roleList) => {
-        setRoleList(roleList);
-    };
-
-    const handleAddedListChange = (newRoleList) => {
-        setTempRoleList(newRoleList);
-    };
-
-    const handleGroupListChange = (groupList) => {
-        setGroupsList(groupList);
-    };
-
-    const handleAddedGroupListChange = (newGroupList) => {
-        setTempGroupList(newGroupList);
-    };
 
     useEffect(() => {
         if (applicationRoles.length === 0) {
@@ -170,6 +149,46 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             getGroupListForDomain(wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain);
         }
     }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain ]);
+
+    const getGroupListForDomain = (domain: string) => {
+        getRolesList(domain)
+            .then((response) => {
+                setGroupsList(response.data.Resources);
+                setInitialGroupList(response.data.Resources);
+            });
+    };
+
+    const handleRoleListChange = (roleList) => {
+        setRoleList(roleList);
+    };
+
+    const handleInitialRoleListChange = (roleList) => {
+        setInitialRoleList(roleList);
+    };
+
+    const handleAddedListChange = (newRoleList) => {
+        setTempRoleList(newRoleList);
+    };
+
+    const handleAddedRoleInitialListChange = (newRoleList) => {
+        setInitialTempRoleList(newRoleList);
+    };
+
+    const handleGroupListChange = (groupList) => {
+        setGroupsList(groupList);
+    };
+
+    const handleInitialGroupListChange = (groupList) => {
+        setInitialGroupList(groupList);
+    };
+
+    const handleAddedGroupListChange = (newGroupList) => {
+        setTempGroupList(newGroupList);
+    };
+
+    const handleAddedGroupInitialListChange = (newGroupList) => {
+        setInitialTempGroupList(newGroupList);
+    };
 
     const navigateToNext = () => {
         switch (currentWizardStep) {
@@ -463,20 +482,29 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Basic user details"
+            title: t("devPortal:components.user.modals.addUserWizard.steps.basicDetails")
         },
         {
             content: (
                 <AddUserGroup
                     triggerSubmit={ submitGroupList }
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
-                    initialValues={ { initialGroupList: initialGroupList, groupList: groupList, tempGroupList: tempGroupList } }
+                    initialValues={
+                        {
+                            initialGroupList: initialGroupList,
+                            groupList: groupList,
+                            tempGroupList: tempGroupList,
+                            initialTempGroupList: initialTempGroupList
+                        }
+                    }
                     handleGroupListChange={ (groups) => handleGroupListChange(groups) }
                     handleTempListChange={ (groups) => handleAddedGroupListChange(groups) }
+                    handleInitialTempListChange={ (groups) => handleAddedGroupInitialListChange(groups) }
+                    handleInitialGroupListChange={ (groups) => handleInitialGroupListChange(groups) }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Assign user groups"
+            title: t("devPortal:components.user.modals.addUserWizard.steps.groups")
         },
         {
             content: (
@@ -487,15 +515,18 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         {
                             initialRoleList: initialRoleList,
                             roleList: roleList,
-                            tempRoleList: tempRoleList
+                            tempRoleList: tempRoleList,
+                            initialTempRoleList: initialTempRoleList
                         }
                     }
                     handleRoleListChange={ (roles) => handleRoleListChange(roles) }
                     handleTempListChange={ (roles) => handleAddedListChange(roles) }
+                    handleInitialTempListChange={ (roles) => handleAddedRoleInitialListChange(roles) }
+                    handleInitialRoleListChange={ (roles) => handleInitialRoleListChange(roles) }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Assign user roles"
+            title: t("devPortal:components.user.modals.addUserWizard.steps.roles")
         },
         {
             content: (
@@ -506,7 +537,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Summary"
+            title: t("devPortal:components.user.modals.addUserWizard.steps.summary")
         }
     ];
 
@@ -521,11 +552,14 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
-                Add user
-                <Heading as="h6">Create a new user in the system</Heading>
+                { t("devPortal:components.user.modals.addUserWizard.title") }
+                <Heading as="h6">{ t("devPortal:components.user.modals.addUserWizard.subTitle") }</Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
-                <Steps.Group header="Fill the following details to create the new user." current={ currentWizardStep }>
+                <Steps.Group
+                    header={ t("devPortal:components.user.modals.addUserWizard.steps.title") }
+                    current={ currentWizardStep }
+                >
                     { STEPS.map((step, index) => (
                         <Steps.Step
                             key={ index }
@@ -542,12 +576,15 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 <Grid>
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton floated="left" onClick={ () => closeWizard() }>Cancel</LinkButton>
+                            <LinkButton floated="left" onClick={ () => closeWizard() }>
+                                { t("common:cancel") }
+                            </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
                                 <PrimaryButton floated="right" onClick={ navigateToNext }>
-                                    Next Step <Icon name="arrow right"/>
+                                    { t("devPortal:components.user.modals.addUserWizard.buttons.next") }
+                                    <Icon name="arrow right"/>
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep === STEPS.length - 1 && (
@@ -556,7 +593,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             ) }
                             { currentWizardStep > 0 && (
                                 <LinkButton floated="right" onClick={ navigateToPrevious }>
-                                    <Icon name="arrow left"/> Previous step
+                                    <Icon name="arrow left"/>
+                                    { t("devPortal:components.user.modals.addUserWizard.buttons.previous") }
                                 </LinkButton>
                             ) }
                         </Grid.Column>
