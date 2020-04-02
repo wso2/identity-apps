@@ -16,10 +16,10 @@
 * under the License.
 */
 
-import React from "react";
-import { Claim, AttributeMapping } from "../../../models";
-import { Grid, Icon, Label, Form, Table } from "semantic-ui-react";
+import { AttributeMapping, Claim } from "../../../models";
+import { Form, Grid, Label, Table } from "semantic-ui-react";
 import { CopyInputField } from "@wso2is/react-components";
+import React from "react";
 
 /**
  * Prop types of `SummaryLocalClaims` component
@@ -53,10 +53,10 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
         return (
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">{title}</div>
+                    <div className="label">{ title }</div>
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                    <div className="value url">{description}</div>
+                    <div className="value">{ description }</div>
                 </Grid.Column>
             </Grid.Row>
         )
@@ -68,11 +68,10 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
      * @param {boolean} boolean
      * @return {React.ReactElement} 
      */
-    const generateLabels = (name: string, boolean: boolean): React.ReactElement => {
+    const generateLabels = (name: string): React.ReactElement => {
         return (
-            <Label basic color={ boolean ? "olive" : "yellow" }>
-                <Icon name={ boolean ? "toggle on" : "toggle off" } />
-                {name}
+            <Label basic circular>
+                { name }
             </Label>
         )
     };
@@ -94,25 +93,25 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details">
-                        <h3>{data.displayName}</h3>
-                        <div className="description">{data.description}</div>
+                        <h3>{ data.displayName }</h3>
+                        <div className="description">{ data.description }</div>
                     </div>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
                 <Grid.Column textAlign="center">
-                    {generateLabels("Show on Profile", data.supportedByDefault)}
-                    {generateLabels("Required", data.required)}
-                    {generateLabels("Read Only", data.readOnly)}
+                    { generateLabels("Show on Profile") }
+                    { generateLabels("Required") }
+                    { generateLabels("Read Only") }
                 </Grid.Column>
             </Grid.Row>
-            {data.claimURI ? generateSummaryLine("Claim URI", showClaimURI()) : null}
-            {data.displayOrder ? generateSummaryLine("Display Order", data.displayOrder) : null}
-            {data.regEx ? generateSummaryLine("Regular Expression", data.regEx) : null}
+            { data.claimURI ? generateSummaryLine("Claim URI", showClaimURI()) : null }
+            { data.displayOrder ? generateSummaryLine("Display Order", data.displayOrder) : null }
+            { data.regEx ? generateSummaryLine("Regular Expression", data.regEx) : null }
             {
                 data.attributeMapping?.length > 0 ? generateSummaryLine("Mapped attributes",
                     (
-                        <Table basic="very">
+                        <Table>
                             <Table.Header>
                                 <Table.Row>
                                     <Table.HeaderCell>
@@ -124,18 +123,18 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
                                 </Table.Row>
                             </Table.Header>
                             <Table.Body>
-                                {data.attributeMapping.map((attribute: AttributeMapping, index: number) => {
+                                { data.attributeMapping.map((attribute: AttributeMapping, index: number) => {
                                     return (
                                         <Table.Row key={ index } columns={ 2 }>
                                             <Table.Cell>
-                                                {attribute.userstore}
+                                                { attribute.userstore }
                                             </Table.Cell>
                                             <Table.Cell>
-                                                {attribute.mappedAttribute}
+                                                { attribute.mappedAttribute }
                                             </Table.Cell>
                                         </Table.Row>
                                     )
-                                })}
+                                }) }
                             </Table.Body>
                         </Table>
                     )
