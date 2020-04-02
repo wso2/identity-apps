@@ -48,7 +48,7 @@ interface MappedAttributesPropsInterface {
  */
 export const MappedAttributes = (props: MappedAttributesPropsInterface): React.ReactElement => {
 
-    const { onSubmit, submitState } = props;
+    const { onSubmit, submitState, values } = props;
 
     const [ userStore, setUserStore ] = useState<UserStoreListItem[]>([]);
 
@@ -73,9 +73,9 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): React.R
                 <Grid.Column width={ 14 }>
                     <h4>Map Attributes</h4>
                     <p>
-                        Corresponding attribute name from the underlying user store
-                        which is mapped to the Claim URI value
+                        Enter the attribute from each userstore that you want to map to this claim.
                     </p>
+                    <Divider hidden />
                     <Divider hidden />
                     <Forms
                         submitState={ submitState }
@@ -105,6 +105,7 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): React.R
                                                 placeholder="Enter an attribute to map to"
                                                 required={ true }
                                                 requiredErrorMessage="Attribute name is a required field"
+                                                value={ values?.get(store.name).toString() }
                                             />
                                         </Grid.Column>
                                     </Grid.Row>
