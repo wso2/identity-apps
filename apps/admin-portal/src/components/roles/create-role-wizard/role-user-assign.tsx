@@ -16,13 +16,24 @@
  * under the License.
  */
 import React, { ReactElement, useState, FunctionComponent, useEffect } from "react";
-import { Grid } from "semantic-ui-react";
+import { Grid, Segment, Input, Icon, Table, Checkbox, Modal } from "semantic-ui-react";
 import { Forms } from "@wso2is/forms";
 import _ from "lodash";
 import { UserBasicInterface, RolesMemberInterface } from "../../../models";
 import { getUsersList } from "../../../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../../../constants";
-import { TransferComponent, TransferList, TransferListItem, Button } from "@wso2is/react-components";
+import { 
+    TransferComponent,
+    TransferList,
+    TransferListItem,
+    Button,
+    EmptyPlaceholder,
+    PrimaryButton,
+    Heading,
+    LinkButton,
+    UserAvatar
+} from "@wso2is/react-components";
+import { EmptyPlaceholderIllustrations } from "../../../configs";
 
 /**
  * Proptypes for the application consents list component.
@@ -44,8 +55,11 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         initialValues
     } = props;
 
-    const [ tempUserList, setTempUserList ] = useState([]);
+    const [ tempUserList, setTempUserList ] = useState<UserBasicInterface[]>([]);
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
+    const [ initialUserList, setInitialUserList ] = useState<UserBasicInterface[]>([]);
+    const [ selectedUsers, setSelectedUsers ] = useState<UserBasicInterface[]>([]);
+    const [ initialSelectedUsers, setInitialSelectedUsers ] = useState<UserBasicInterface[]>([]);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
@@ -55,6 +69,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<UserBasicInterface[]>([]);
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<UserBasicInterface[]>([]);
+
+    const [ showAddNewUserModal, setAddNewUserModalView ] = useState<boolean>(false);
     
 
     useEffect(() => {
@@ -91,6 +107,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         getUsersList(limit, offset, filter, attribute, null)
             .then((response) => {
                 setUsersList(response.Resources);
+                setInitialUserList(response.Resources);
 
                 if (assignedUsers && assignedUsers.length !== 0) {
                     const selectedUserList: UserBasicInterface[] = [];
@@ -102,6 +119,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                 }
                             });
                         });
+                        setSelectedUsers(selectedUserList);
+                        setInitialSelectedUsers(selectedUserList);
                         setTempUserList(selectedUserList);
                     }
                 }
@@ -116,6 +135,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                 }
                             });
                         });
+                        setSelectedUsers(selectedUserList);
+                        setInitialSelectedUsers(selectedUserList);
                         setTempUserList(selectedUserList);
                     }
                 }
@@ -189,7 +210,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                 }
             });
         } else {
-            setUsersList(usersList);
+            setUsersList(initialUserList);
         }
     };
 
@@ -225,87 +246,290 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         if (checkedAssignedListItems?.length > 0) {
             checkedAssignedListItems.map((role) => {
                 removedUsers.splice(tempUserList.indexOf(role), 1);
-                setCheckedAssignedListItems(removedUsers.splice(tempUserList.indexOf(role), 1));
+                setCheckedAssignedListItems(checkedAssignedListItems.splice(tempUserList.indexOf(role), 1));
                 setTempUserList(removedUsers);
             });
         }
     };
 
-    return (
-        <Forms
-            onSubmit={ () => {
-                onSubmit(tempUserList);
-            } }
-            submitState={ triggerSubmit }
-        >
-            <Grid>
-                <Grid.Row columns={ 2 }>
-                    <TransferComponent
-                        searchPlaceholder="Search users"
-                        addItems={ addUser }
-                        removeItems={ removeUser }
-                        // TODO: Add two methods to handle the search of each list.
-                        handleUnelectedListSearch={ handleSearchFieldChange }
-                        handleSelectedListSearch={ handleSearchFieldChange }
+    const handleOpenAddNewGroupModal = () => {
+        setAddNewUserModalView(true);
+    };
+
+    const handleCloseAddNewGroupModal = () => {
+        setTempUserList(selectedUsers);
+        setAddNewUserModalView(false);
+    };
+
+    const handleAssignedUserListSearch = (e, { value }) => {
+        let isMatch = false;
+        const filteredUserList: UserBasicInterface[] = [];
+
+        if (!_.isEmpty(value)) {
+            const re = new RegExp(_.escapeRegExp(value), 'i');
+
+            selectedUsers && selectedUsers.map((user) => {
+                isMatch = re.test(user.userName);
+                if (isMatch) {
+                    filteredUserList.push(user);
+                    setSelectedUsers(filteredUserList);
+                }
+            });
+        } else {
+            setSelectedUsers(initialUserList);
+        }
+    };
+
+    const handleAddUserSubmit = () => {
+        onSubmit(tempUserList);
+        setSelectedUsers(tempUserList)
+        setAddNewUserModalView(false);
+    }
+
+    const addNewUserModal = () => (
+        <Modal open={ showAddNewUserModal } size="small" className="user-roles">
+            <Modal.Header>
+                Update Role Users
+                <Heading subHeading ellipsis as="h6">
+                    Add new users or remove existing users assigned to the role.
+                </Heading>
+            </Modal.Header>
+            <Modal.Content image>
+                <TransferComponent
+                    searchPlaceholder="Search users"
+                    addItems={ addUser }
+                    removeItems={ removeUser }
+                    // TODO: Add two methods to handle the search of each list.
+                    handleUnelectedListSearch={ handleSearchFieldChange }
+                    handleSelectedListSearch={ handleSearchFieldChange }
+                >
+                    <TransferList
+                        isListEmpty={ !(usersList?.length > 0) }
+                        listType="unselected"
+                        listHeaders={ [ "Name" ] }
+                        handleHeaderCheckboxChange={ selectAllUnAssignedList }
+                        isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
                     >
-                        <TransferList
-                            isListEmpty={ !(usersList?.length > 0) }
-                            listType="unselected"
-                            listHeaders={ [ "Name" ] }
-                            handleHeaderCheckboxChange={ selectAllUnAssignedList }
-                            isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
-                        >
+                        {
+                            usersList?.map((user, index)=> {
+                                return (
+                                    <TransferListItem
+                                        handleItemChange={ () => 
+                                            handleUnassignedItemCheckboxChange(user)
+                                        }
+                                        key={ index }
+                                        listItem={ user.userName }
+                                        listItemId={ user.id }
+                                        listItemIndex={ index }
+                                        isItemChecked={ checkedUnassignedListItems?.includes(user) }
+                                        showSecondaryActions={ false }
+                                    />
+                                )
+                            })
+                        }
+                    </TransferList>
+                    <TransferList
+                        isListEmpty={ !(tempUserList?.length > 0) }
+                        listType="selected"
+                        listHeaders={ [ "Name" ] }
+                        handleHeaderCheckboxChange={ selectAllAssignedList }
+                        isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
+                    >
+                        {
+                            tempUserList?.map((user, index)=> {
+                                return (
+                                    <TransferListItem
+                                        handleItemChange={ () => 
+                                            handleAssignedItemCheckboxChange(user)
+                                        }
+                                        key={ index }
+                                        listItem={ user.userName }
+                                        listItemId={ user.id }
+                                        listItemIndex={ index }
+                                        isItemChecked={ checkedAssignedListItems?.includes(user) }
+                                        showSecondaryActions={ false }
+                                    />
+                                )
+                            })
+                        }
+                    </TransferList>
+                </TransferComponent>
+            </Modal.Content>
+            <Modal.Actions>
+                <PrimaryButton
+                    onClick={ () => { 
+                        handleAddUserSubmit()
+                    } }
+                >
+                    Save
+                </PrimaryButton>
+                <LinkButton
+                    onClick={ handleCloseAddNewGroupModal }
+                >
+                    Cancel
+                </LinkButton>
+            </Modal.Actions>
+        </Modal>
+    );
+
+    return (
+        <>
+            { isEdit ? 
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column computer={ 8 }>
                             {
-                                usersList?.map((user, index)=> {
-                                    return (
-                                        <TransferListItem
-                                            handleItemChange={ () => handleUnassignedItemCheckboxChange(user)  }
-                                            key={ index }
-                                            listItem={ user.userName }
-                                            listItemId={ user.id }
-                                            listItemIndex={ index }
-                                            isItemChecked={ checkedUnassignedListItems?.includes(user) }
-                                            showSecondaryActions={ false }
+                                selectedUsers?.length > 0 ? (
+                                    <Segment.Group fluid>
+                                        <Segment className="user-role-edit-header-segment">
+                                            <Grid.Row>
+                                                <Grid.Column>
+                                                    <Input
+                                                        icon={ <Icon name="search"/> }
+                                                        onChange={ handleAssignedUserListSearch }
+                                                        placeholder="Search users"
+                                                        floated="left"
+                                                        size="small"
+                                                    />
+                                                    <Button
+                                                        size="medium"
+                                                        icon="pencil"
+                                                        floated="right"
+                                                        onClick={ handleOpenAddNewGroupModal }
+                                                    />
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                            <Grid.Row>
+                                                <Table singleLine compact>
+                                                    <Table.Body>
+                                                        {
+                                                            selectedUsers?.map((user) => {
+                                                                return (
+                                                                    <Table.Row>
+                                                                        <Table.Cell width={ 1 }>
+                                                                            <Checkbox checked disabled/>
+                                                                        </Table.Cell>
+                                                                        <Table.Cell>
+                                                                            <UserAvatar
+                                                                                name={ user.userName }
+                                                                                size="mini"
+                                                                                floated="left"
+                                                                                image={ user.profileUrl }
+                                                                            />
+                                                                            { user.userName }
+                                                                        </Table.Cell>
+                                                                    </Table.Row>
+                                                                )
+                                                            })
+                                                        }
+                                                    </Table.Body>
+                                                </Table>
+                                            </Grid.Row>
+                                        </Segment>
+                                    </Segment.Group>
+                                ) : (
+                                    <Segment>
+                                        <EmptyPlaceholder
+                                            title="No Users Assigned"
+                                            subtitle={ [
+                                                "There are no Users assigned to the role at the moment.",
+                                            ] }
+                                            action={
+                                                <PrimaryButton onClick={ handleOpenAddNewGroupModal } icon="plus">
+                                                    Assign User
+                                                </PrimaryButton>
+                                            }
+                                            image={ EmptyPlaceholderIllustrations.emptyList }
+                                            imageSize="tiny"
                                         />
-                                    )
-                                })
+                                    </Segment>
+                                )
                             }
-                        </TransferList>
-                        <TransferList
-                            isListEmpty={ !(tempUserList?.length > 0) }
-                            listType="selected"
-                            listHeaders={ [ "Name" ] }
-                            handleHeaderCheckboxChange={ selectAllAssignedList }
-                            isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
-                        >
-                            {
-                                tempUserList?.map((user, index)=> {
-                                    return (
-                                        <TransferListItem
-                                            handleItemChange={ () => handleAssignedItemCheckboxChange(user) }
-                                            key={ index }
-                                            listItem={ user.userName }
-                                            listItemId={ user.id }
-                                            listItemIndex={ index }
-                                            isItemChecked={ checkedAssignedListItems?.includes(user) }
-                                            showSecondaryActions={ false }
-                                        />
-                                    )
-                                })
-                            }
-                        </TransferList>
-                    </TransferComponent>
-                </Grid.Row>
-            { isEdit && 
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Button primary type="submit" size="small" className="form-button">
-                            Update
-                        </Button>
-                    </Grid.Column>
-                </Grid.Row>
+                        </Grid.Column>
+                    </Grid.Row>
+                    { addNewUserModal() }
+                </Grid>
+                :
+                <Forms
+                    onSubmit={ () => {
+                        onSubmit(tempUserList);
+                    } }
+                    submitState={ triggerSubmit }
+                >
+                    <Grid>
+                        <Grid.Row columns={ 2 }>
+                            <TransferComponent
+                                searchPlaceholder="Search users"
+                                addItems={ addUser }
+                                removeItems={ removeUser }
+                                // TODO: Add two methods to handle the search of each list.
+                                handleUnelectedListSearch={ handleSearchFieldChange }
+                                handleSelectedListSearch={ handleSearchFieldChange }
+                            >
+                                <TransferList
+                                    isListEmpty={ !(usersList?.length > 0) }
+                                    listType="unselected"
+                                    listHeaders={ [ "Name" ] }
+                                    handleHeaderCheckboxChange={ selectAllUnAssignedList }
+                                    isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
+                                >
+                                    {
+                                        usersList?.map((user, index)=> {
+                                            return (
+                                                <TransferListItem
+                                                    handleItemChange={ () => 
+                                                        handleUnassignedItemCheckboxChange(user)
+                                                    }
+                                                    key={ index }
+                                                    listItem={ user.userName }
+                                                    listItemId={ user.id }
+                                                    listItemIndex={ index }
+                                                    isItemChecked={ checkedUnassignedListItems?.includes(user) }
+                                                    showSecondaryActions={ false }
+                                                />
+                                            )
+                                        })
+                                    }
+                                </TransferList>
+                                <TransferList
+                                    isListEmpty={ !(tempUserList?.length > 0) }
+                                    listType="selected"
+                                    listHeaders={ [ "Name" ] }
+                                    handleHeaderCheckboxChange={ selectAllAssignedList }
+                                    isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
+                                >
+                                    {
+                                        tempUserList?.map((user, index)=> {
+                                            return (
+                                                <TransferListItem
+                                                    handleItemChange={ () => 
+                                                        handleAssignedItemCheckboxChange(user)
+                                                    }
+                                                    key={ index }
+                                                    listItem={ user.userName }
+                                                    listItemId={ user.id }
+                                                    listItemIndex={ index }
+                                                    isItemChecked={ checkedAssignedListItems?.includes(user) }
+                                                    showSecondaryActions={ false }
+                                                />
+                                            )
+                                        })
+                                    }
+                                </TransferList>
+                            </TransferComponent>
+                        </Grid.Row>
+                    { isEdit && 
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Button primary type="submit" size="small" className="form-button">
+                                    Update
+                                </Button>
+                            </Grid.Column>
+                        </Grid.Row>
+                    }
+                    </Grid>
+                </Forms>
             }
-            </Grid>
-        </Forms>
+        </>
     )
 }
