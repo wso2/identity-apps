@@ -160,7 +160,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
             if (!idpList?.includes(idpName)) {
                 break;
             }
-            idpName = idpName + i;
+            idpName = initialIdpName + i;
         }
         return idpName;
     };
