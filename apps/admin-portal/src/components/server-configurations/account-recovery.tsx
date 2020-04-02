@@ -17,7 +17,7 @@
  */
 
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
-import { Button, Container, Divider, Form, Grid, Modal } from "semantic-ui-react";
+import { Divider, Form, Grid } from "semantic-ui-react";
 import { EditSection, Hint, Section } from "@wso2is/react-components";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import { getAccountRecoveryConfigurations, updateAccountRecoveryConfigurations } from "../../api";
@@ -30,7 +30,7 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 /**
- * Constant to store the self registration from identifier.
+ * Constant to store the account recovery from identifier.
  * @type {string}
  */
 const ACCOUNT_RECOVERY_FORM_IDENTIFIER = "accountRecoveryForm";
@@ -43,7 +43,7 @@ interface AccountRecoveryProps {
 }
 
 /**
- * User Self Registration component.
+ * User Account Recovery component.
  *
  * @param {AccountRecoveryProps} props - Props injected to the account recovery component.
  * @return {JSX.Element}
@@ -54,27 +54,12 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		[ACCOUNT_RECOVERY_FORM_IDENTIFIER]: false
 	});
 
-	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 	const [accountRecoveryConfigs, setAccountRecoveryConfigs] = useState<AccountRecoveryConfigurationsInterface>({});
 	const [reset] = useTrigger();
 
 	const dispatch = useDispatch();
 
-	const {t} = useTranslation();
-
-	/**
-	 * Handles the `onSubmit` event of the forms.
-	 */
-	const handleSubmit = (): void => {
-		setShowConfirmationModal(true);
-	};
-
-	/**
-	 * Handle the confirmation modal close event.
-	 */
-	const handleConfirmationModalClose = (): void => {
-		setShowConfirmationModal(false);
-	};
+	const { t } = useTranslation();
 
 	/**
 	 * Handles the onClick event of the cancel button.
@@ -123,15 +108,9 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		updateAccountRecoveryConfigurations(data)
 			.then(() => {
 				dispatch(addAlert(successNotification));
-				handleConfirmationModalClose();
-				hideFormEditView(ACCOUNT_RECOVERY_FORM_IDENTIFIER);
 			})
 			.catch((error) => {
-				// Axios throws a generic `Network Error` for 401 status.
-				// As a temporary solution, a check to see if a response is available has been used.
-				if (!error.response || error.response.status === 401) {
-					dispatch(addAlert(errorMessage));
-				} else if (error.response && error.response.data && error.response.data.detail) {
+				if (error.response && error.response.data && error.response.data.detail) {
 					dispatch(addAlert(errorMessage));
 				} else {
 					// Generic error message
@@ -177,7 +156,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		makeAccountRecoveryPatchCall(data, successNotification);
 	};
 
-	const saveAccountRecoveryAdvancedConfigs = () => {
+	const saveAccountRecoveryAdvancedConfigs = (accountRecoveryConfigs) => {
 		const data = {
 			"operation": "UPDATE",
 			"properties": [
@@ -337,136 +316,121 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		return response.properties.find(prop => prop.name === key).value === "true" ? [key] : [];
 	};
 
-	const confirmationModal = (
-		<Modal size="mini" open={ showConfirmationModal } onClose={ handleConfirmationModalClose } dimmer="blurring">
-			<Modal.Content>
-				<Container>
-					<h3>{ t("devPortal:components.serverConfigs.accountRecovery.confirmation.heading") }</h3>
-				</Container>
-				<Divider hidden={ true }/>
-				<p>{ t("devPortal:components.serverConfigs.accountRecovery.confirmation.message") }</p>
-			</Modal.Content>
-			<Modal.Actions>
-				<Button className="link-button" onClick={ handleConfirmationModalClose }>
-					{ t("common:cancel") }
-				</Button>
-				<Button primary={ true } onClick={ saveAccountRecoveryAdvancedConfigs }>
-					{ t("common:continue") }
-				</Button>
-			</Modal.Actions>
-		</Modal>
-	);
-
 	const showAccountRecoverySummary = (
-		<EditSection>
-			<Forms>
-				<Field
-					name={ ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE }
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery." +
-								"usernameRecovery.form.enable.label"),
-							value: ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE
-						}
-					] }
-					value={ accountRecoveryConfigs.enableUsernameRecovery }
-					listen={
-						(values) => {
-							const value = values.get(ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE).length > 0
-								? "true" : "false";
-							saveAccountRecoveryConfigs(ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE, value);
-						}
-					}
-					toggle
-				/>
-				<Field
-					name={ ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA }
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery." +
-								"usernameRecovery.form.enableReCaptcha.label"),
-							value: ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA
-						}
-					] }
-					value={ accountRecoveryConfigs.enableReCaptchaForUsernameRecovery }
-					listen={
-						(values) => {
-							const value = values.get(ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA).
-								length > 0 ? "true" : "false";
-							saveAccountRecoveryConfigs(ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA,
-								value);
-						}
-					}
-					toggle
-				/>
-				<Field
-					name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE }
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery." +
-								"passwordRecovery.form.enableNotificationBasedRecovery.label"),
-							value: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE
-						}
-					] }
-					value={ accountRecoveryConfigs.enableNotificationPasswordRecovery }
-					listen={
-						(values) => {
-							const value = values.get(ServerConfigurationsConstants.
-								PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE).length > 0 ? "true" : "false";
-							saveAccountRecoveryConfigs(ServerConfigurationsConstants.
-								PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE, value);
-						}
-					}
-					toggle
-				/>
-				<Field
-					name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA }
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery." +
-								"passwordRecovery.form.enableReCaptchaForNotificationBasedRecovery.label"),
-							value: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA
-						}
-					] }
-					value={ accountRecoveryConfigs.enableReCaptchaForNotificationPasswordRecovery }
-					listen={
-						(values) => {
-							const value = values.get(ServerConfigurationsConstants.
-								PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA).length > 0 ? "true" : "false";
-							saveAccountRecoveryConfigs(ServerConfigurationsConstants.
-								PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA, value);
-						}
-					}
-					toggle
-				/>
-			</Forms>
-		</EditSection>
+		<Forms>
+			<Grid padded={ true }>
+				<Grid.Row columns={ 1 }>
+					<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+						<Field
+							name={ ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE }
+							required={ false }
+							requiredErrorMessage=""
+							type="checkbox"
+							children={ [
+								{
+									label: t("devPortal:components.serverConfigs.accountRecovery." +
+										"usernameRecovery.form.enable.label"),
+									value: ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE
+								}
+							] }
+							value={ accountRecoveryConfigs.enableUsernameRecovery }
+							listen={
+								(values) => {
+									const value = values.get(ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE).
+										length > 0 ? "true" : "false";
+									saveAccountRecoveryConfigs(ServerConfigurationsConstants.
+										USERNAME_RECOVERY_ENABLE, value);
+								}
+							}
+							toggle
+						/>
+						<Field
+							name={ ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA }
+							required={ false }
+							requiredErrorMessage=""
+							type="checkbox"
+							children={ [
+								{
+									label: t("devPortal:components.serverConfigs.accountRecovery." +
+										"usernameRecovery.form.enableReCaptcha.label"),
+									value: ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA
+								}
+							] }
+							value={ accountRecoveryConfigs.enableReCaptchaForUsernameRecovery }
+							listen={
+								(values) => {
+									const value = values.get(ServerConfigurationsConstants.
+										USERNAME_RECOVERY_RE_CAPTCHA).length > 0 ? "true" : "false";
+									saveAccountRecoveryConfigs(ServerConfigurationsConstants.
+											USERNAME_RECOVERY_RE_CAPTCHA, value);
+								}
+							}
+							toggle
+						/>
+						<Field
+							name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE }
+							required={ false }
+							requiredErrorMessage=""
+							type="checkbox"
+							children={ [
+								{
+									label: t("devPortal:components.serverConfigs.accountRecovery." +
+										"passwordRecovery.form.enableNotificationBasedRecovery.label"),
+									value: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE
+								}
+							] }
+							value={ accountRecoveryConfigs.enableNotificationPasswordRecovery }
+							listen={
+								(values) => {
+									const value = values.get(ServerConfigurationsConstants.
+										PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE).length > 0 ? "true" : "false";
+									saveAccountRecoveryConfigs(ServerConfigurationsConstants.
+										PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE, value);
+								}
+							}
+							toggle
+						/>
+						<Field
+							name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA }
+							required={ false }
+							requiredErrorMessage=""
+							type="checkbox"
+							children={ [
+								{
+									label: t("devPortal:components.serverConfigs.accountRecovery." +
+										"passwordRecovery.form.enableReCaptchaForNotificationBasedRecovery.label"),
+									value: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA
+								}
+							] }
+							value={ accountRecoveryConfigs.enableReCaptchaForNotificationPasswordRecovery }
+							listen={
+								(values) => {
+									const value = values.get(ServerConfigurationsConstants.
+										PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA).length > 0 ? "true" : "false";
+									saveAccountRecoveryConfigs(ServerConfigurationsConstants.
+										PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA, value);
+								}
+							}
+							toggle
+						/>
+					</Grid.Column>
+				</Grid.Row>
+			</Grid>
+		</Forms>
 	);
 
 	const showUserAccountRecoveryView = editingForm[ACCOUNT_RECOVERY_FORM_IDENTIFIER] && (
 		<EditSection>
 			<Forms
 				onSubmit={ (values) => {
-					setAccountRecoveryConfigs(getFormValues(values));
-					handleSubmit();
+					saveAccountRecoveryAdvancedConfigs(getFormValues(values));
 				} }
 				resetState={ reset }
 			>
 				<Grid>
 					<Grid.Row columns={ 1 }>
 						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Divider/>
 							<h4>Password Recovery</h4>
 							<Field
 								name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE }
@@ -504,7 +468,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 									"validations.empty") }
 								type="number"
 								value={ accountRecoveryConfigs.passwordRecoveryMinAnswers }
-								width={ 5 }
+								width={ 9 }
 								hidden={ accountRecoveryConfigs.enableSecurityQuestionPasswordRecovery.length == 0 }
 							/>
 							<Hint hidden={ accountRecoveryConfigs.enableSecurityQuestionPasswordRecovery.length == 0 }>
@@ -548,6 +512,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 					</Grid.Row>
 					<Grid.Row columns={ 1 }>
 						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Divider/>
 							<h4>Other Settings</h4>
 							<Field
 								name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_FORCED_ENABLE }
@@ -582,7 +547,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 									"otherSettings.form.reCaptchaMaxFailedAttempts.validations.empty") }
 								type="number"
 								value={ accountRecoveryConfigs.reCaptchaMaxFailedAttempts }
-								width={ 5 }
+								width={ 9 }
 							/>
 						</Grid.Column>
 					</Grid.Row>
@@ -651,7 +616,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 									"otherSettings.form.recoveryLinkExpiryTime.validations.empty") }
 								type="number"
 								value={ accountRecoveryConfigs.recoveryLinkExpiryTime }
-								width={ 5 }
+								width={ 9 }
 							/>
 							<Hint>
 								{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
@@ -672,7 +637,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 									"otherSettings.form.smsOTPExpiryTime.validations.empty") }
 								type="number"
 								value={ accountRecoveryConfigs.smsOTPExpiryTime }
-								width={ 5 }
+								width={ 9 }
 							/>
 							<Hint>
 								{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
@@ -736,7 +701,6 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		<Section
 			description={ t("devPortal:components.serverConfigs.accountRecovery.description") }
 			header={ t("devPortal:components.serverConfigs.accountRecovery.heading") }
-			icon={ SettingsSectionIcons.profileExport }
 			iconMini={ SettingsSectionIcons.profileExportMini }
 			iconSize="auto"
 			iconStyle="colored"
@@ -748,7 +712,6 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		>
 			{ showAccountRecoverySummary }
 			{ showUserAccountRecoveryView }
-			{ confirmationModal }
 		</Section>
 	);
 };

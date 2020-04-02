@@ -123,6 +123,12 @@ export class Config {
      */
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
+            accountDisabling: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID}/connectors/${
+                ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID}`,
+            accountLocking: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID}/connectors/${
+                ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID}`,
             accountRecovery: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID}/connectors/${
                 ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID}`,
@@ -130,6 +136,9 @@ export class Config {
             associations: `${this.getRuntimeConfig().serverHost}/api/users/v1/me/associations`,
             authorize: `${this.getRuntimeConfig().serverHost}/oauth2/authorize`,
             bulk: `${this.getRuntimeConfig().serverHost}/scim2/Bulk`,
+            captchaForSSOLogin: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID}/connectors/${
+                ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID}`,
             challengeAnswers: `${this.getRuntimeConfig().serverHost}/api/users/v1/me/challenge-answers`,
             challenges: `${this.getRuntimeConfig().serverHost}/api/users/v1/me/challenges`,
             claims: `${this.getRuntimeConfig().serverHost}/api/server/v1/claim-dialects`,
@@ -140,6 +149,8 @@ export class Config {
             issuer: `${this.getRuntimeConfig().serverHost}/oauth2/token`,
             jwks: `${this.getRuntimeConfig().serverHost}/oauth2/jwks`,
             localClaims: `${this.getRuntimeConfig().serverHost}/api/server/v1/claim-dialects/local/claims`,
+            loginPolicies: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID}`,
             logout: `${this.getRuntimeConfig().serverHost}/oidc/logout`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${this.getRuntimeConfig().serverHost}/scim2/Me`,

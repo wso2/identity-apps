@@ -58,3 +58,12 @@
 @TransferComponentSegmentApplicationLabelBorderColor: #8E95B6;
 @TransferComponentSegmentInternalLabelBackgroundColor: #8DC1D4;
 @TransferComponentSegmentInternalLabelBorderColor: #7CB5CA;
+
+/*************************************
+    User edit section Variation
+*************************************/
+
+@EditRoleSegmentHeaderMarginBottom: 0.4em !important;
+@EditRoleSegmentHeaderWidth: 270px !important;
+@EditRoleSegmentHeaderButtonMarginBottom: 0.4em !important;
+@EditRoleSegmentFooterHeight: 60px !important;

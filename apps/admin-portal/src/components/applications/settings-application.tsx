@@ -117,7 +117,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
      */
     const handleInboundProtocolSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
         // Return if the already selected protocol is clicked again.
-        if (selectedInboundProtocol.name === id) {
+        if (selectedInboundProtocol?.name === id) {
             return;
         }
 
@@ -196,6 +196,35 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                         type={ SupportedAuthProtocolTypes.SAML }
                     />
                 );
+            case SupportedAuthProtocolTypes.WS_TRUST:
+                return (
+                    <InboundFormFactory
+                        metadata={ authProtocolMeta[selectedInboundProtocol.name] }
+                        initialValues={
+                            selectedInboundProtocolConfig
+                            && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+                                selectedInboundProtocol.name)
+                                ? selectedInboundProtocolConfig[selectedInboundProtocol.name]
+                                : undefined
+                        }
+                        onSubmit={ handleInboundConfigFormSubmit }
+                        type={ SupportedAuthProtocolTypes.WS_TRUST }
+                    />
+                );
+            case SupportedAuthProtocolTypes.WS_FEDERATION:
+                return (
+                    <InboundFormFactory
+                        initialValues={
+                            selectedInboundProtocolConfig
+                            && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+                                selectedInboundProtocol.id)
+                                ? selectedInboundProtocolConfig[selectedInboundProtocol.id]
+                                : undefined
+                        }
+                        onSubmit={ handleInboundConfigFormSubmit }
+                        type={ SupportedAuthProtocolTypes.WS_FEDERATION }
+                    />
+                );
             default:
                 return null;
         }
@@ -214,6 +243,11 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
         }
 
         if (!selectedInboundProtocol) {
+            return;
+        }
+
+        if (!Object.values(SupportedAuthProtocolMetaTypes).includes(
+            selectedInboundProtocol.name as SupportedAuthProtocolMetaTypes)) {
             return;
         }
 

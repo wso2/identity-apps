@@ -218,6 +218,21 @@ export interface DevPortalNS {
                     heading: string;
                     message: string;
                 };
+                addUserWizard: {
+                    title: string;
+                    subTitle: string;
+                    steps: {
+                        title: string;
+                        basicDetails: string;
+                        roles: string;
+                        groups: string;
+                        summary: string;
+                    }
+                    buttons: {
+                        next: string;
+                        previous: string;
+                    }
+                }
             };
             profile: {
                 fields: {
@@ -440,6 +455,7 @@ export interface DevPortalNS {
                         };
                     };
                     callbackURLRegex: {
+                        hint: string;
                         label: string;
                         placeholder: string;
                         validations: {
@@ -482,10 +498,6 @@ export interface DevPortalNS {
                     };
                 };
                 usernameRecovery: {
-                    actionTitles: {
-                        config: string;
-                    };
-                    description: string;
                     heading: string;
                     form: {
                         enable: {
@@ -497,10 +509,6 @@ export interface DevPortalNS {
                     };
                 };
                 passwordRecovery: {
-                    actionTitles: {
-                        config: string;
-                    };
-                    description: string;
                     heading: string;
                     form: {
                         enableNotificationBasedRecovery: {
@@ -527,6 +535,7 @@ export interface DevPortalNS {
                     };
                 };
                 otherSettings: {
+                    heading: string;
                     form: {
                         enableForcedChallengeQuestions: {
                             label: string;
@@ -572,6 +581,90 @@ export interface DevPortalNS {
                             validations: {
                                 empty: string;
                             };
+                        };
+                    };
+                };
+            };
+            loginPolicies: {
+                actionTitles: {
+                    config: string;
+                };
+                description: string;
+                heading: string;
+                confirmation: {
+                    heading: string;
+                    message: string;
+                };
+                notifications: {
+                    updateConfigurations: Notification;
+                    accountLockEnable: {
+                        success: {
+                            description: string;
+                        };
+                    };
+                    accountDisablingEnable: {
+                        success: {
+                            description: string;
+                        };
+                    };
+                };
+                accountLock: {
+                    heading: string;
+                    form: {
+                        accountLockEnable: {
+                            label: string;
+                            hint: string;
+                        };
+                        maxFailedLoginAttemptsToAccountLock: {
+                            label: string;
+                            hint: string;
+                            placeholder: string;
+                        };
+                        accountLockTime: {
+                            label: string;
+                            hint: string;
+                            placeholder: string;
+                        };
+                        accountLockTimeIncrementFactor: {
+                            label: string;
+                            hint: string;
+                            placeholder: string;
+                        };
+                        accountLockInternalNotificationManagement: {
+                            label: string;
+                            hint: string;
+                        };
+                    };
+                };
+                accountDisable: {
+                    heading: string;
+                    form: {
+                        accountDisablingEnable: {
+                            label: string;
+                            hint: string;
+                        };
+                        accountDisableInternalNotificationManagement: {
+                            label: string;
+                            hint: string;
+                        };
+                    };
+                };
+                reCaptcha: {
+                    heading: string;
+                    form: {
+                        reCaptchaPreference: {
+                            label: string;
+                            reCaptchaAlwaysEnable: {
+                                label: string;
+                            };
+                            reCaptchaAfterMaxFailedAttemptsEnable: {
+                                label: string;
+                            };
+                        };
+                        maxFailedLoginAttemptsToReCaptcha: {
+                            label: string;
+                            hint: string;
+                            placeholder: string;
                         };
                     };
                 };

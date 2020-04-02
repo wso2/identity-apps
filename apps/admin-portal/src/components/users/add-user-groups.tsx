@@ -31,6 +31,8 @@ interface AddUserGroupPropsInterface {
     onSubmit: (values: any) => void;
     handleGroupListChange: (groups: any) => void;
     handleTempListChange: (groups: any) => void;
+    handleInitialTempListChange: (groups: any) => void;
+    handleInitialGroupListChange: (groups: any) => void;
 }
 
 /**
@@ -46,46 +48,48 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         triggerSubmit,
         onSubmit,
         handleGroupListChange,
-        handleTempListChange
+        handleTempListChange,
+        handleInitialTempListChange,
+        handleInitialGroupListChange
     } = props;
 
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesInterface[]>([]);
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<RolesInterface[]>([]);
-    const [ isSelectUnassignedAllChecked, setIsSelectUnassignedAllChecked ] = useState(false);
-    const [ isSelectAssignedAllChecked, setIsSelectAssignedAllChecked ] = useState(false);
+    const [ isSelectUnassignedGroupsAllRolesChecked, setIsSelectUnassignedAllGroupsChecked ] = useState(false);
+    const [ isSelectAssignedAllGroupsChecked, setIsSelectAssignedAllGroupsChecked ] = useState(false);
 
     useEffect(() => {
-        if (isSelectAssignedAllChecked) {
+        if (isSelectAssignedAllGroupsChecked) {
             setCheckedAssignedListItems(initialValues?.tempGroupList);
         } else {
             setCheckedAssignedListItems([])
         }
-    }, [ isSelectAssignedAllChecked ]);
+    }, [ isSelectAssignedAllGroupsChecked ]);
 
     useEffect(() => {
-        if (setIsSelectUnassignedAllChecked) {
+        if (isSelectUnassignedGroupsAllRolesChecked) {
             setCheckedUnassignedListItems(initialValues?.groupList);
         } else {
             setCheckedUnassignedListItems([])
         }
-    }, [ isSelectUnassignedAllChecked ]);
+    }, [ isSelectUnassignedGroupsAllRolesChecked ]);
 
     /**
      * The following method handles the onChange event of the
      * search field. It matches the string pattern of the user
      * input value with the elements of the user list.
      *
-     * @param e
-     * @param value
+     * @param e - Click event.
+     * @param value - Input value of the field
      */
-    const handleSearchFieldChange = (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => {
+    const handleUnselectedListSearch = (e, { value }) => {
         let isMatch = false;
         const filteredGroupList = [];
 
         if (!_.isEmpty(value)) {
             const re = new RegExp(_.escapeRegExp(value), 'i');
 
-            initialValues?.groupList && initialValues.groupList?.map((group) => {
+            initialValues.groupList && initialValues.groupList.map((group) => {
                 isMatch = re.test(group.displayName);
                 if (isMatch) {
                     filteredGroupList.push(group);
@@ -97,12 +101,37 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         }
     };
 
-     const selectAllUnAssignedList = () => {
-         setIsSelectUnassignedAllChecked(!isSelectUnassignedAllChecked);
-     };
+    const handleSelectedListSearch = (e, { value }) => {
+        let isMatch = false;
+        const filteredGroupList = [];
 
+        if (!_.isEmpty(value)) {
+            const re = new RegExp(_.escapeRegExp(value), 'i');
+
+            initialValues.tempGroupList && initialValues.tempGroupList.map((group) => {
+                isMatch = re.test(group.displayName);
+                if (isMatch) {
+                    filteredGroupList.push(group);
+                    handleTempListChange(filteredGroupList);
+                }
+            });
+        } else {
+            handleTempListChange(initialValues?.initialTempGroupList);
+        }
+    };
+
+    /**
+     * The following function enables the user to select all the roles at once.
+     */
+    const selectAllUnAssignedList = () => {
+        setIsSelectUnassignedAllGroupsChecked(!isSelectUnassignedGroupsAllRolesChecked);
+    };
+
+    /**
+     * The following function enables the user to deselect all the roles at once.
+     */
     const selectAllAssignedList = () => {
-        setIsSelectAssignedAllChecked(!isSelectAssignedAllChecked);
+        setIsSelectAssignedAllGroupsChecked(!isSelectAssignedAllGroupsChecked);
     };
 
     /**
@@ -119,8 +148,10 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
             });
         }
         handleTempListChange(addedGroups);
+        handleInitialTempListChange(addedGroups);
         handleGroupListChange(initialValues.groupList.filter(x => !addedGroups.includes(x)));
-        setIsSelectUnassignedAllChecked(false);
+        handleInitialGroupListChange(initialValues.groupList.filter(x => !addedGroups.includes(x)));
+        setIsSelectUnassignedAllGroupsChecked(false);
     };
 
     /**
@@ -137,9 +168,11 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
             });
         }
         handleGroupListChange(removedGroups);
+        handleInitialGroupListChange(removedGroups);
         handleTempListChange(initialValues?.tempGroupList?.filter(x => !removedGroups.includes(x)));
+        handleInitialTempListChange(initialValues?.tempGroupList?.filter(x => !removedGroups.includes(x)));
         setCheckedAssignedListItems(checkedAssignedListItems?.filter(x => !removedGroups.includes(x)))
-        setIsSelectAssignedAllChecked(false);
+        setIsSelectAssignedAllGroupsChecked(false);
     };
 
     /**
@@ -185,14 +218,15 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                 searchPlaceholder="Search groups"
                 addItems={ addGroups }
                 removeItems={ removeGroups }
-                handleListSearch={ handleSearchFieldChange }
+                handleUnelectedListSearch={ handleUnselectedListSearch }
+                handleSelectedListSearch={ handleSelectedListSearch }
             >
                 <TransferList
                     isListEmpty={ !(initialValues?.groupList?.length > 0) }
                     listType="unselected"
                     listHeaders={ [ "Name", "Type" ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
-                    isHeaderCheckboxChecked={ isSelectUnassignedAllChecked }
+                    isHeaderCheckboxChecked={ isSelectUnassignedGroupsAllRolesChecked }
                 >
                     {
                         initialValues?.groupList?.map((group, index)=> {
@@ -216,7 +250,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                     listType="selected"
                     listHeaders={ [ "Name", "Type" ] }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
-                    isHeaderCheckboxChecked={ isSelectAssignedAllChecked }
+                    isHeaderCheckboxChecked={ isSelectAssignedAllGroupsChecked }
                 >
                     {
                         initialValues?.tempGroupList?.map((group, index)=> {

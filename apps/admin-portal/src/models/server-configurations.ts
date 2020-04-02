@@ -48,3 +48,15 @@ export interface AccountRecoveryConfigurationsInterface {
 	recoveryLinkExpiryTime?: string;
 	smsOTPExpiryTime?: string;
 }
+
+export interface LoginPoliciesInterface {
+	accountLockEnable?: string[];
+	accountLockTime?: string;
+	accountLockTimeIncrementFactor?: string;
+	accountLockInternalNotificationManagement?: string[];
+	accountDisablingEnable?: string[];
+	accountDisableInternalNotificationManagement?: string[];
+	maxFailedLoginAttemptsToAccountLock?: string;
+	maxFailedLoginAttemptsToReCaptcha?: string;
+	reCaptchaPreference?: string;
+}
