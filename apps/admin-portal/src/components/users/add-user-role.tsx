@@ -32,6 +32,7 @@ interface AddUserRoleProps {
     handleRoleListChange: (roles: any) => void;
     handleTempListChange: (roles: any) => void;
     handleInitialTempListChange: (groups: any) => void;
+    handleInitialRoleListChange: (groups: any) => void;
 }
 
 /**
@@ -47,7 +48,8 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         onSubmit,
         handleRoleListChange,
         handleTempListChange,
-        handleInitialTempListChange
+        handleInitialTempListChange,
+        handleInitialRoleListChange
     } = props;
 
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesInterface[]>([]);
@@ -135,6 +137,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         handleTempListChange(addedRoles);
         handleInitialTempListChange(addedRoles);
         handleRoleListChange(initialValues?.roleList.filter(x => !addedRoles?.includes(x)));
+        handleInitialRoleListChange(initialValues?.roleList.filter(x => !addedRoles?.includes(x)));
         setIsSelectUnassignedAllRolesChecked(false);
     };
 
@@ -148,6 +151,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
             });
         }
         handleRoleListChange(removedRoles);
+        handleInitialRoleListChange(removedRoles);
         handleTempListChange(initialValues?.tempRoleList?.filter(x => !removedRoles?.includes(x)));
         handleInitialTempListChange(initialValues?.tempRoleList?.filter(x => !removedRoles?.includes(x)));
         setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles?.includes(x)));

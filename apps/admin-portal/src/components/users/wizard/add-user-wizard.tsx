@@ -31,7 +31,7 @@ import { AddUserWizardSummary } from "./wizard-summary";
 import { useTrigger } from "@wso2is/forms";
 import { AddUserRole } from "../add-user-role";
 import { AddUserGroup } from "../add-user-groups";
-import {RolesInterface} from "../../../models/roles";
+import { RolesInterface } from "../../../models/roles";
 
 interface AddUserWizardPropsInterface {
     closeWizard: () => void;
@@ -162,6 +162,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setRoleList(roleList);
     };
 
+    const handleInitialRoleListChange = (roleList) => {
+        setInitialRoleList(roleList);
+    };
+
     const handleAddedListChange = (newRoleList) => {
         setTempRoleList(newRoleList);
     };
@@ -172,6 +176,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const handleGroupListChange = (groupList) => {
         setGroupsList(groupList);
+    };
+
+    const handleInitialGroupListChange = (groupList) => {
+        setInitialGroupList(groupList);
     };
 
     const handleAddedGroupListChange = (newGroupList) => {
@@ -492,6 +500,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     handleGroupListChange={ (groups) => handleGroupListChange(groups) }
                     handleTempListChange={ (groups) => handleAddedGroupListChange(groups) }
                     handleInitialTempListChange={ (groups) => handleAddedGroupInitialListChange(groups) }
+                    handleInitialGroupListChange={ (groups) => handleInitialGroupListChange(groups) }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
@@ -513,6 +522,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     handleRoleListChange={ (roles) => handleRoleListChange(roles) }
                     handleTempListChange={ (roles) => handleAddedListChange(roles) }
                     handleInitialTempListChange={ (roles) => handleAddedRoleInitialListChange(roles) }
+                    handleInitialRoleListChange={ (roles) => handleInitialRoleListChange(roles) }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,

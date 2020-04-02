@@ -32,6 +32,7 @@ interface AddUserGroupPropsInterface {
     handleGroupListChange: (groups: any) => void;
     handleTempListChange: (groups: any) => void;
     handleInitialTempListChange: (groups: any) => void;
+    handleInitialGroupListChange: (groups: any) => void;
 }
 
 /**
@@ -48,7 +49,8 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         onSubmit,
         handleGroupListChange,
         handleTempListChange,
-        handleInitialTempListChange
+        handleInitialTempListChange,
+        handleInitialGroupListChange
     } = props;
 
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesInterface[]>([]);
@@ -148,6 +150,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         handleTempListChange(addedGroups);
         handleInitialTempListChange(addedGroups);
         handleGroupListChange(initialValues.groupList.filter(x => !addedGroups.includes(x)));
+        handleInitialGroupListChange(initialValues.groupList.filter(x => !addedGroups.includes(x)));
         setIsSelectUnassignedAllGroupsChecked(false);
     };
 
@@ -165,6 +168,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
             });
         }
         handleGroupListChange(removedGroups);
+        handleInitialGroupListChange(removedGroups);
         handleTempListChange(initialValues?.tempGroupList?.filter(x => !removedGroups.includes(x)));
         handleInitialTempListChange(initialValues?.tempGroupList?.filter(x => !removedGroups.includes(x)));
         setCheckedAssignedListItems(checkedAssignedListItems?.filter(x => !removedGroups.includes(x)))
