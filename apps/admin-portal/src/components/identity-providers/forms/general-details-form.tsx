@@ -19,8 +19,9 @@
 import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Button, Grid } from "semantic-ui-react";
-import { AlertLevels, IdentityProviderInterface } from "../../../models";
+import { IdentityProviderInterface } from "../../../models";
 import { FormValidation } from "@wso2is/validation";
+import { AlertLevels } from "@wso2is/core/models";
 import { getIdentityProviderList } from "../../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
@@ -109,7 +110,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 setIsNameValid(response?.totalResults === 0);
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
+                if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
@@ -190,7 +191,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="image"
-                            label="Identity Provider Image"
+                            label="Identity Provider Image URL"
                             required={ false }
                             requiredErrorMessage=""
                             placeholder="Enter a image url for the identity provider"
