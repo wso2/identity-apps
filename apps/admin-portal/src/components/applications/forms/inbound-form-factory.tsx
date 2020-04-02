@@ -20,12 +20,14 @@ import React, { FunctionComponent } from "react";
 import { SupportedAuthProtocolTypes } from "../../../models";
 import { InboundOIDCForm } from "./inbound-oidc-form";
 import { InboundSAMLForm } from "./inbound-saml-form";
+import { InboundWSTrustForm } from "./inbound-ws-trust-form";
+import { InboundPassiveStsForm } from "./inbound-passive-sts-form";
 
 /**
  * Proptypes for the inbound form factory component.
  */
 interface InboundFormFactoryInterface {
-    metadata: any;
+    metadata?: any;
     initialValues: any;
     onSubmit: (values: any) => void;
     type: SupportedAuthProtocolTypes;
@@ -50,9 +52,13 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
 
     switch (type) {
         case SupportedAuthProtocolTypes.OIDC:
-            return <InboundOIDCForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit } />;
+            return <InboundOIDCForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit }/>;
         case SupportedAuthProtocolTypes.SAML:
             return <InboundSAMLForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit }/>;
+        case SupportedAuthProtocolTypes.WS_TRUST:
+            return <InboundWSTrustForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit }/>;
+        case SupportedAuthProtocolTypes.WS_FEDERATION:
+            return <InboundPassiveStsForm initialValues={ initialValues } onSubmit={ onSubmit }/>;
         default:
             return null;
     }

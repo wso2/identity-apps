@@ -170,6 +170,57 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                     </Grid.Row>
                 )
             }
+            {
+                summary?.inboundProtocolConfiguration?.wsTrust?.audience && (
+                    <Grid.Row className="summary-field" columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                            <div className="label">Audience</div>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                            <div
+                                className="value url">{ summary?.inboundProtocolConfiguration?.wsTrust?.audience }</div>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
+            {
+                summary?.inboundProtocolConfiguration?.wsTrust?.certificateAlias && (
+                    <Grid.Row className="summary-field" columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                            <div className="label">Certificate alias</div>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                            <div className="value">{ summary?.inboundProtocolConfiguration?.wsTrust
+                                .certificateAlias }</div>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
+            {
+                summary?.inboundProtocolConfiguration?.passiveSts.realm && (
+                    <Grid.Row className="summary-field" columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                            <div className="label">Realm</div>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                            <div className="value">{ summary?.inboundProtocolConfiguration?.passiveSts.realm }</div>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
+            {
+                summary?.inboundProtocolConfiguration?.passiveSts.replyTo && (
+                    <Grid.Row className="summary-field" columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                            <div className="label">Audience</div>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                            <div className="value url">{ summary?.inboundProtocolConfiguration?.passiveSts
+                                .replyTo }</div>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
         </Grid>
     );
 };

@@ -45,7 +45,7 @@ export const InboundProtocolsMeta: AuthProtocolMetaListItemInterface[] = [
     },
     {
         displayName: "WS-Federation",
-        enabled: false,
+        enabled: true,
         id: "passive-sts",
         logo: "wsFed",
         name: "ws-federation",
@@ -53,7 +53,7 @@ export const InboundProtocolsMeta: AuthProtocolMetaListItemInterface[] = [
     },
     {
         displayName: "WS-Trust",
-        enabled: false,
+        enabled: true,
         id: "ws-trust",
         logo: "wsTrust",
         name: "ws-trust",
