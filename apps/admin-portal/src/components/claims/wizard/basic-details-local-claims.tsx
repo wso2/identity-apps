@@ -16,9 +16,9 @@
 * under the License.
 */
 
-import React, { useState } from "react";
-import { Forms, FormValue, Field } from "@wso2is/forms";
-import { Grid, Label, Divider } from "semantic-ui-react";
+import React, { useEffect, useState } from "react";
+import { Field, Forms, FormValue } from "@wso2is/forms";
+import { Divider, Grid, GridColumn, Label, Popup } from "semantic-ui-react";
 import { Hint } from "@wso2is/react-components";
 
 /**
@@ -52,7 +52,16 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
 
     const { submitState, onSubmit, values, claimURIBase } = props;
 
-    const [claimID, setClaimID] = useState<string>(null);
+    const [ claimID, setClaimID ] = useState<string>(null);
+    const [ isShow, setIsShow ] = useState(false);
+    const [ isShowNameHint, setIsShowNameHint ] = useState(false);
+    const [ isShowClaimIDHint, setIsShowClaimIDHint ] = useState(false);
+    const [ isShowRegExHint, setIsShowRegExHint ] = useState(false);
+
+    useEffect(() => {
+        setIsShow(values?.get("supportedByDefault").length > 0)
+        setClaimID(values?.get("claimURI").toString())
+    }, [ values ]);
 
     return (
         <Forms
@@ -60,12 +69,12 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                 const data = {
                     claimURI: claimURIBase + "/" + values.get("claimURI").toString(),
                     description: values.get("description").toString(),
-                    displayOrder: parseInt(values.get("displayOrder").toString()),
-                    regEx: values.get("regularExpression").toString(),
-                    displayName: values.get("name").toString() ?? "0",
+                    displayName: values.get("name").toString(),
+                    displayOrder: values.get("displayOrder") ? parseInt(values.get("displayOrder").toString()) : "0",
                     readOnly: values.get("readOnly").length > 0,
+                    regEx: values.get("regularExpression").toString(),
                     required: values.get("required").length > 0,
-                    supportedByDefault: values.get("supportedByDefault").length > 0,
+                    supportedByDefault: values.get("supportedByDefault").length > 0
                 }
                 onSubmit(data, values);
             } }
@@ -73,8 +82,14 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
         >
             <Grid>
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column>
+                    <Grid.Column width={ 8 }>
                         <Field
+                            onMouseOver={ () => {
+                                setIsShowNameHint(true);
+                            } }
+                            onMouseOut={ () => {
+                                setIsShowNameHint(false);
+                            } }
                             type="text"
                             name="name"
                             label="Name"
@@ -83,20 +98,18 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             placeholder="Enter a name for the claim"
                             value={ values?.get("name")?.toString() }
                         />
-                        <Hint>
-                            Name of the claim displayed on the profile page and the self-registration page
-                        </Hint>
-                        <Divider hidden/>
-                        <Field
-                            type="textarea"
-                            name="description"
-                            label="Description"
-                            required={ true }
-                            requiredErrorMessage="Description is required"
-                            placeholder="Enter a description"
-                            value={ values?.get("description")?.toString() }
+                        <Popup
+                            content="Name of the claim that will be shown on the user profile and user registration page"
+                            inverted
+                            open={ isShowNameHint }
+                            trigger={ <span></span> }
+                            onClose={ () => {
+                                setIsShowNameHint(false);
+                            } }
+                            position="bottom left"
                         />
-                        <Divider hidden />
+                    </Grid.Column>
+                    <Grid.Column width={ 8 }>
                         <Field
                             type="text"
                             name="claimURI"
@@ -108,13 +121,47 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             listen={ (values: Map<string, FormValue>) => {
                                 setClaimID(values.get("claimURI").toString())
                             } }
+                            onMouseOver={ () => {
+                                setIsShowClaimIDHint(true);
+                            } }
+                            onMouseOut={ () => {
+                                setIsShowClaimIDHint(false);
+                            } }
                         />
-                        {claimID ? <Label><em>Claim URI</em>: {claimURIBase + "/" + claimID}</Label> : null}
-                        <Hint>
-                            A unique ID for the claim. The ID will be appended to the dialect URI to create a claim URI
-                        </Hint>
+                        <Popup
+                            content={ "A unique ID for the claim." +
+                                " The ID will be appended to the dialect URI to create a claim URI" }
+                            inverted
+                            open={ isShowClaimIDHint }
+                            trigger={ <span></span> }
+                            onClose={ () => {
+                                setIsShowClaimIDHint(false);
+                            } }
+                            position="bottom left"
+                        />
+                        {
+                            claimID
+                                ? <Label>
+                                    <em>Claim URI</em>:&nbsp;
+                                        { claimURIBase + "/" + claimID }
+                                </Label>
+                                : null
+                        }
                     </Grid.Column>
-                    <Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column width={ 8 }>
+                        <Field
+                            type="textarea"
+                            name="description"
+                            label="Description"
+                            required={ true }
+                            requiredErrorMessage="Description is required"
+                            placeholder="Enter a description"
+                            value={ values?.get("description")?.toString() }
+                        />
+                    </Grid.Column>
+                    <Grid.Column width={ 8 }>
                         <Field
                             type="text"
                             name="regularExpression"
@@ -123,25 +170,23 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             requiredErrorMessage=""
                             placeholder="Regular expression to validate the claim"
                             value={ values?.get("regularExpression")?.toString() }
+                            onMouseOver={ () => {
+                                setIsShowRegExHint(true);
+                            } }
+                            onMouseOut={ () => {
+                                setIsShowRegExHint(false);
+                            } }
                         />
-                        <Hint>
-                            Regular Expression used to validate inputs
-                        </Hint>
-                        <Divider hidden />
-                        <Field
-                            type="number"
-                            min="0"
-                            name="displayOrder"
-                            label="Display Order"
-                            required={ false }
-                            requiredErrorMessage="Display Order is required"
-                            placeholder="Enter the display order"
-                            value={ values?.get("displayOrder")?.toString() ?? "0" }
+                        <Popup
+                            content="This regular expression is used to validate the value this claim can take"
+                            inverted
+                            open={ isShowRegExHint }
+                            trigger={ <span></span> }
+                            onClose={ () => {
+                                setIsShowRegExHint(false);
+                            } }
+                            position="bottom left"
                         />
-                        <Hint>
-                            Integer value to specify the order in which the claim is displayed among 
-                            other claims under the same dialect
-                        </Hint>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
@@ -153,48 +198,69 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             requiredErrorMessage=""
                             children={ [
                                 {
-                                    value: "Support",
-                                    label: "Show on Profile"
-                                }] }
+                                    label: "Show this claim on user profile and user registration page",
+                                    value: "Support"
+                                } ] }
                             value={ values?.get("supportedByDefault") as string[] }
+                            listen={ (values: Map<string, FormValue>) => {
+                                setIsShow(values?.get("supportedByDefault").length > 0);
+                            } }
                         />
-                        <Hint>
-                            Specifies if the claim will be prompted during user registration 
-                            and displayed on the user profile
-                        </Hint>
-                        <Divider hidden/>
+                    </Grid.Column>
+                </Grid.Row>
+                {
+                    isShow && (
+                        <Grid.Row columns={ 16 }>
+                            <Grid.Column width={ 8 }>
+                                <Field
+                                    type="number"
+                                    min="0"
+                                    name="displayOrder"
+                                    label="Display Order"
+                                    required={ false }
+                                    requiredErrorMessage="Display Order is required"
+                                    placeholder="Enter the display order"
+                                    value={ values?.get("displayOrder")?.toString() ?? "0" }
+                                />
+                                <Hint>
+                                    Integer value to specify the order in which the claim is displayed among
+                                    other claims under the same dialect
+                                    </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 16 }>
                         <Field
                             type="checkbox"
                             name="required"
                             required={ false }
                             requiredErrorMessage=""
-                            children={ [{
-                                value: "Required",
-                                label: "Required"
-                            }] }
+                            children={ [ {
+                                label: "Make this claims required during user registration",
+                                value: "Required"
+                            } ] }
                             value={ values?.get("required") as string[] }
                         />
-                        <Hint>
-                            Specifies if the claim is required for user registration
-                        </Hint>
-                        <Divider hidden />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row column={ 1 }>
+                    <Grid.Column>
                         <Field
                             type="checkbox"
                             name="readOnly"
                             required={ false }
                             requiredErrorMessage=""
-                            children={ [{
-                                value: "ReadOnly",
-                                label: "Read Only"
-                            }] }
+                            children={ [ {
+                                label: "Make this claim read-only",
+                                value: "ReadOnly"
+                            } ] }
                             value={ values?.get("readOnly") as string[] }
                         />
-                        <Hint>
-                            Specifies if the claim is read-only
-                        </Hint>
                     </Grid.Column>
                 </Grid.Row>
-            </Grid>
-        </Forms>
+            </Grid >
+        </Forms >
     )
 };
