@@ -17,9 +17,9 @@
  */
 
 import { EmptyPlaceholder, IdentityProviderTemplateCard } from "@wso2is/react-components";
+import { EmptyPlaceholderIllustrations, IdPIcons } from "../../../configs";
 import React, { FunctionComponent, SyntheticEvent } from "react";
 import { IdentityProviderTemplateListItemInterface } from "../../../models";
-import { EmptyPlaceholderIllustrations, IdPIcons } from "../../../configs";
 
 /**
  * Proptypes for the quick start templates component.
@@ -49,11 +49,10 @@ const getPredefinedIdpImage = (image) => {
  * Quick start application templates component.
  *
  * @param {QuickStartApplicationTemplatesPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {FunctionComponent}
  */
-export const QuickStartIdentityProviderTemplates: FunctionComponent<QuickStartIdentityProviderTemplatesPropsInterface> = (
-    props: QuickStartIdentityProviderTemplatesPropsInterface
-): JSX.Element => {
+export const QuickStartIdentityProviderTemplates: FunctionComponent<QuickStartIdentityProviderTemplatesPropsInterface>
+    = (props: QuickStartIdentityProviderTemplatesPropsInterface): JSX.Element => {
 
     const {
         onTemplateSelect,

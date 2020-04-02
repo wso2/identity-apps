@@ -59,6 +59,15 @@ enum WizardConstants {
 }
 
 /**
+ * Constants for wizard steps.
+ */
+enum WizardSteps {
+    GENERAL_DETAILS = "GeneralDetails",
+    AUTHENTICATOR = "Authenticator",
+    SUMMARY = "Summary"
+}
+
+/**
  * Interface for the wizard state.
  */
 interface WizardStateInterface {
@@ -73,6 +82,8 @@ interface WizardStepInterface {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     icon: any;
     title: string;
+    submitCallback: any;
+    name: WizardSteps;
 }
 
 /**
@@ -93,13 +104,14 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         template
     } = props;
 
+    const [initWizard, setInitWizard] = useState<boolean>(false);
     const [wizardSteps, setWizardSteps] = useState<WizardStepInterface[]>(undefined);
     const [isSelectionHidden, setIsSelectionHidden] = useState<boolean>(false);
     const [wizardState, setWizardState] = useState<WizardStateInterface>(undefined);
     const [partiallyCompletedStep, setPartiallyCompletedStep] = useState<number>(undefined);
     const [currentWizardStep, setCurrentWizardStep] = useState<number>(currentStep);
-    const [authenticatorMetadata, setAuthenticatorMetadata] = useState<FederatedAuthenticatorMetaInterface>(
-        undefined);
+    const [defaultAuthenticatorMetadata, setDefaultAuthenticatorMetadata] =
+        useState<FederatedAuthenticatorMetaInterface>(undefined);
 
     const dispatch = useDispatch();
 
@@ -166,14 +178,14 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
             step = currentWizardStep + 1;
         }
 
-        switch (step) {
-            case 0:
+        switch (wizardSteps[step]?.name) {
+            case WizardSteps.GENERAL_DETAILS:
                 setSubmitGeneralSettings();
                 break;
-            case 1:
+            case WizardSteps.AUTHENTICATOR:
                 setSubmitAuthenticator();
                 break;
-            case 2:
+            case WizardSteps.SUMMARY:
                 setFinishSubmit();
                 break;
             default:
@@ -231,15 +243,15 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      *
      * @return {React.ReactElement} Step content.
      */
-    const resolveStepContent = (): ReactElement => {
-        let step = currentWizardStep;
+    const resolveStepContent = (currentStep: number): ReactElement => {
+        let step = currentStep;
 
         if (isSelectionHidden) {
-            step = currentWizardStep + 1;
+            step = currentStep + 1;
         }
 
-        switch (step) {
-            case 0: {
+        switch (wizardSteps[step]?.name) {
+            case WizardSteps.GENERAL_DETAILS: {
                 return (
                     <GeneralSettings
                         triggerSubmit={ submitGeneralSettings }
@@ -249,10 +261,10 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     />
                 );
             }
-            case 1: {
+            case WizardSteps.AUTHENTICATOR: {
                 return (
                     <AuthenticatorSettings
-                        metadata={ authenticatorMetadata }
+                        metadata={ defaultAuthenticatorMetadata }
                         initialValues={ wizardState[WizardConstants.IDENTITY_PROVIDER] }
                         onSubmit={ (values): void => handleWizardFormSubmit(
                             values, WizardConstants.IDENTITY_PROVIDER) }
@@ -260,10 +272,10 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     />
                 )
             }
-            case 2: {
+            case WizardSteps.SUMMARY: {
                 return (
                     <WizardSummary
-                        authenticatorMetadata={ authenticatorMetadata }
+                        authenticatorMetadata={ defaultAuthenticatorMetadata }
                         triggerSubmit={ finishSubmit }
                         identityProvider={ generateWizardSummary() }
                         onSubmit={ handleWizardFormFinish }
@@ -273,29 +285,17 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         }
     };
 
-    const STEPS: WizardStepInterface[] = [
-        {
-            icon: IdentityProviderWizardStepIcons.general,
-            title: "General settings"
-        },
-        {
-            icon: IdentityProviderWizardStepIcons.authenticator,
-            title: "Authenticator"
-        },
-        {
-            icon: IdentityProviderWizardStepIcons.summary,
-            title: "Summary"
-        }
-    ];
-
     /**
      * Loads the identity provider authenticators on initial component load.
      */
     useEffect(() => {
-        if (!_.isEmpty(availableAuthenticators)) {
-            return;
+        if (isAuthenticatorStepAvailable() && _.isEmpty(availableAuthenticators)) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const authenticators = IdentityProviderManagementUtils.getAuthenticators();
+        } else {
+            // If there are no data retrieval requirements.
+            setInitWizard(true);
         }
-        IdentityProviderManagementUtils.getAuthenticators();
     }, []);
 
     /**
@@ -306,7 +306,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     const getAuthenticatorMetadata = (authenticatorId: string): Promise<void> => {
         return getFederatedAuthenticatorMetadata(authenticatorId)
             .then((response) => {
-                setAuthenticatorMetadata(response);
+                setDefaultAuthenticatorMetadata(response);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -329,49 +329,120 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * Called when `availableAuthenticators` are changed.
      */
     useEffect(() => {
-        // todo Handle multiple authenticators in the template.
-        const availableAuthenticator = _.find(availableAuthenticators, {
-            authenticatorId: template
-                .federatedAuthenticators?.authenticators[0]?.authenticatorId
-        });
-        if (availableAuthenticator) {
-            getAuthenticatorMetadata(availableAuthenticator.authenticatorId);
+        if (availableAuthenticators?.find(eachAuthenticator => eachAuthenticator.authenticatorId ===
+            template?.federatedAuthenticators?.defaultAuthenticatorId)) {
+            getAuthenticatorMetadata(template?.federatedAuthenticators?.defaultAuthenticatorId);
         }
     }, [availableAuthenticators]);
 
-    const getAuthenticatorProperties = () => {
-        return authenticatorMetadata?.properties.map(
+    /**
+     * Validate and get federate authenticators.
+     */
+    const getValidatedAuthenticators = () => {
+        const defaultAuthenticatorPropertiesFromMetadata = defaultAuthenticatorMetadata?.properties.map(
             (eachProp): AuthenticatorProperty => {
                 return {
                     key: eachProp?.key,
                     value: eachProp?.defaultValue
                 }
             });
+
+        // For the default authenticator, update values of it's properties with the corresponding value from the
+        // template, if any.
+        // todo Need to do the same for rest of the configured authenticators in the template.
+        const authenticatorsInTemplate = template?.federatedAuthenticators.authenticators;
+        return {
+            authenticators: authenticatorsInTemplate.map((authenticator) => {
+                return authenticator.authenticatorId === template.federatedAuthenticators.defaultAuthenticatorId ?
+                    {
+                        ...authenticator,
+                        properties: _.merge(defaultAuthenticatorPropertiesFromMetadata, authenticator.properties)
+                    } : authenticator;
+            }),
+            defaultAuthenticatorId: template.federatedAuthenticators.defaultAuthenticatorId
+        };
+    };
+
+    const isAuthenticatorStepAvailable = () => {
+        return template?.federatedAuthenticators?.defaultAuthenticatorId;
+    };
+
+    const getWizardSteps = () => {
+        let STEPS: WizardStepInterface[] = [
+            {
+                icon: IdentityProviderWizardStepIcons.general,
+                name: WizardSteps.GENERAL_DETAILS,
+                submitCallback: setSubmitGeneralSettings,
+                title: "General settings"
+            }
+        ];
+
+        if (isAuthenticatorStepAvailable()) {
+            STEPS = [
+                ...STEPS,
+                {
+                    icon: IdentityProviderWizardStepIcons.authenticator,
+                    name: WizardSteps.AUTHENTICATOR,
+                    submitCallback: setSubmitAuthenticator,
+                    title: "Authenticator"
+                }
+            ];
+        }
+
+        STEPS = [
+            ...STEPS,
+            {
+                icon: IdentityProviderWizardStepIcons.summary,
+                name: WizardSteps.SUMMARY,
+                submitCallback: setFinishSubmit,
+                title: "Summary"
+            }
+        ];
+        return STEPS;
+    };
+
+    const initializeWizard = () => {
+        // Each of the IdP attributes which require validation or any modification prior initializing, are stored in
+        // this object.
+        let validatedIdpAttributes = {};
+
+        if (isAuthenticatorStepAvailable()) {
+            validatedIdpAttributes = {
+                ...validatedIdpAttributes,
+                federatedAuthenticators: getValidatedAuthenticators()
+            };
+        }
+
+        setWizardState(_.merge(wizardState, {
+            [WizardConstants.IDENTITY_PROVIDER]: {
+                ...template,
+                ...validatedIdpAttributes
+            }
+        }));
+        setWizardSteps(getWizardSteps());
     };
 
     /**
-     * Called when `authenticatorMetadata` is changed.
+     * Called when required backend data are gathered.
      */
     useEffect(() => {
-        if (authenticatorMetadata) {
-            const identityProvider: IdentityProviderInterface = {
-                federatedAuthenticators: {
-                    authenticators: [{
-                        authenticatorId: authenticatorMetadata?.authenticatorId,
-                        name: authenticatorMetadata?.name,
-                        properties: getAuthenticatorProperties()
-                    }],
-                    defaultAuthenticatorId: authenticatorMetadata?.authenticatorId
-                }
-            };
-
-            setWizardState(_.merge(wizardState, {
-                [WizardConstants.IDENTITY_PROVIDER]: identityProvider
-            }));
-
-            setWizardSteps(STEPS);
+        if (!initWizard) {
+            return;
         }
-    }, [authenticatorMetadata]);
+
+        initializeWizard();
+
+        setInitWizard(false);
+    }, [initWizard]);
+
+    /**
+     * Called to initialize the wizard, once all the data gathered from the backend.
+     */
+    useEffect(() => {
+        if (defaultAuthenticatorMetadata) {
+            setInitWizard(true);
+        }
+    }, [defaultAuthenticatorMetadata]);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -411,7 +482,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                         ))}
                     </Steps.Group>
                 </Modal.Content>
-                <Modal.Content className="content-container" scrolling>{resolveStepContent()}</Modal.Content>
+                <Modal.Content className="content-container" scrolling>{resolveStepContent(currentWizardStep)}</Modal.Content>
                 <Modal.Actions>
                     <Grid>
                         <Grid.Row column={ 1 }>
