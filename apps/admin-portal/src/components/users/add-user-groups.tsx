@@ -77,8 +77,8 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
      * search field. It matches the string pattern of the user
      * input value with the elements of the user list.
      *
-     * @param e
-     * @param value
+     * @param e - Click event.
+     * @param value - Input value of the field
      */
     const handleUnselectedListSearch = (e, { value }) => {
         let isMatch = false;

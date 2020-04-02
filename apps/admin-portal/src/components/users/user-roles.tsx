@@ -121,8 +121,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     }, []);
 
     /**
-     * The following useEffect will be triggered when the
-     * roles are updated.
+     * The following useEffect will be triggered when the roles are updated.
      */
     useEffect(() => {
         if (!(user)) {

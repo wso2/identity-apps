@@ -68,7 +68,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<RolesMemberInterface[]>([]);
     const [ isSelectUnassignedRolesAllRolesChecked, setIsSelectUnassignedAllRolesChecked ] = useState(false);
     const [ isSelectAssignedAllRolesChecked, setIsSelectAssignedAllRolesChecked ] = useState(false);
-    const [ assignedGroups, setAssignedGroups ] = useState([]);
+    const [ assignedGroups, setAssignedGroups ] = useState<RolesMemberInterface[]>([]);
 
     useEffect(() => {
         if (!(user)) {
@@ -77,6 +77,22 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         mapUserRoles();
         setAssignedGroups(user.groups);
     }, []);
+
+    useEffect(() => {
+        if (isSelectAssignedAllRolesChecked) {
+            setCheckedAssignedListItems(tempGroupList);
+        } else {
+            setCheckedAssignedListItems([])
+        }
+    }, [ isSelectAssignedAllRolesChecked ]);
+
+    useEffect(() => {
+        if (isSelectUnassignedRolesAllRolesChecked) {
+            setCheckedUnassignedListItems(groupList);
+        } else {
+            setCheckedUnassignedListItems([])
+        }
+    }, [ isSelectUnassignedRolesAllRolesChecked ]);
 
     /**
      * The following useEffect will be triggered when the
@@ -114,9 +130,6 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
     /**
      * The following function remove already assigned roles from the initial roles.
-     *
-     * @param domain
-     * @param roleList
      */
     const removeExistingRoles = () => {
         const groupListCopy = [ ...primaryGroups ];
@@ -167,6 +180,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     /**
      * The following method handles the onChange event of the
      * checkbox field of an assigned item.
+     *
+     * @param - The selected group
      */
     const handleAssignedItemCheckboxChange = (group) => {
         const checkedGroups = [ ...checkedAssignedListItems ];
@@ -182,6 +197,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
     const addGroups = () => {
         const addedRoles = [ ...tempGroupList ];
+
         if (checkedUnassignedListItems?.length > 0) {
             checkedUnassignedListItems.map((role) => {
                 if (!(tempGroupList?.includes(role))) {
@@ -198,6 +214,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
     const removeGroups = () => {
         const removedRoles = [ ...groupList ];
+
         if (checkedAssignedListItems?.length > 0) {
             checkedAssignedListItems.map((role) => {
                 if (!(groupList?.includes(role))) {
@@ -262,6 +279,9 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
     /**
      * This function handles assigning the roles to the user.
+     *
+     * @param user - User object
+     * @param groups - Assigned groups
      */
     const updateUserGroup = (user: any, groups: any) => {
         const groupIds = [];
@@ -378,7 +398,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                     handleCloseAddNewGroupModal();
                     handleUserUpdate(user.id);
                 })
-                .catch((error) => {
+                .catch(() => {
                     onAlertFired({
                         description: "An error occurred while updating user groups",
                         level: AlertLevels.ERROR,
