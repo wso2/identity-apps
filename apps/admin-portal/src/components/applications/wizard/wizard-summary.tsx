@@ -197,7 +197,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                 )
             }
             {
-                summary?.inboundProtocolConfiguration?.passiveSts.realm && (
+                summary?.inboundProtocolConfiguration?.passiveSts?.realm && (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">Realm</div>
@@ -209,7 +209,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                 )
             }
             {
-                summary?.inboundProtocolConfiguration?.passiveSts.replyTo && (
+                summary?.inboundProtocolConfiguration?.passiveSts?.replyTo && (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">Audience</div>
