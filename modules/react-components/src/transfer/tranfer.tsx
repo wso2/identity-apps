@@ -45,9 +45,9 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         addItems,
         removeItems,
         children,
+        searchPlaceholder,
         handleUnelectedListSearch,
-        handleSelectedListSearch,
-        searchPlaceholder
+        handleSelectedListSearch
     } = props;
 
     return (
