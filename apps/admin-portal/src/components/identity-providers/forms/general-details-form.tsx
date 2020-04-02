@@ -17,10 +17,13 @@
  */
 
 import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { Button, Grid } from "semantic-ui-react";
-import { IdentityProviderInterface } from "../../../models";
+import { AlertLevels, IdentityProviderInterface } from "../../../models";
 import { FormValidation } from "@wso2is/validation";
+import { getIdentityProviderList } from "../../../api";
+import { useDispatch } from "react-redux";
+import { addAlert } from "../../../store/actions";
 
 /**
  * Proptypes for the identity provider general details form component.
@@ -84,6 +87,45 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     } = props;
 
     const [isEnable, setIsEnable] = useState<boolean>(isEnabled);
+    const [isNameValid, setIsNameValid] = useState<boolean>(true);
+    const [modifiedName, setModifiedName] = useState<string>(name);
+
+    const dispatch = useDispatch();
+
+    /**
+     * Called when name field is modified.
+     */
+    useEffect(() => {
+        setIsNameValid(false);
+        validateIdpName(modifiedName);
+    }, [modifiedName]);
+
+    /**
+     * Retrieves the list of identity providers.
+     */
+    const validateIdpName = (idpName: string) => {
+        return getIdentityProviderList(null, null, "name eq " + idpName)
+            .then((response) => {
+                setIsNameValid(response?.totalResults === 0);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "An error occurred while retrieving identity providers"
+                    }));
+
+                    return;
+                }
+                dispatch(addAlert({
+                    description: "An error occurred while retrieving identity providers",
+                    level: AlertLevels.ERROR,
+                    message: "Retrieval Error"
+                }));
+                return;
+            })
+    };
 
     /**
      * Prepare form values for submitting.
@@ -106,6 +148,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 onSubmit(updateConfigurations(values))
             } }
             submitState={ triggerSubmit }
+            onChange={ (isPure, values) => {
+                setModifiedName(values.get("name").toString());
+            } }
         >
             <Grid>
                 <Grid.Row columns={ 1 }>
@@ -117,6 +162,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             requiredErrorMessage="Identity Provider name is required"
                             placeholder={ name }
                             type="text"
+                            validation={ (value: string, validation: Validation) => {
+                                if (isNameValid === false) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push("An identity provider already exists with this " +
+                                        "name");
+                                }
+                            } }
                             value={ name }
                         />
                     </Grid.Column>
@@ -153,40 +205,43 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         />
                     </Grid.Column>
                 </Grid.Row>
-                {!simplify ? (
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                name="isEnable"
-                                required={ false }
-                                requiredErrorMessage=""
-                                type="checkbox"
-                                children={ [
-                                    {
-                                        label: "Enable",
-                                        value: "isEnable"
-                                    }
-                                ] }
-                                value={ isEnable ? ["isEnable"] : [] }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>) : null}
-                {!simplify ?
-                    (
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Button primary type="submit" size="small" className="form-button">
-                                    Update
-                                </Button>
-                            </Grid.Column>
-                        </Grid.Row>
-                    ) : null}
+
+                {
+                    !simplify ? (
+                        <>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Field
+                                        name="isEnable"
+                                        required={ false }
+                                        requiredErrorMessage=""
+                                        type="checkbox"
+                                        children={ [
+                                            {
+                                                label: "Enable",
+                                                value: "isEnable"
+                                            }
+                                        ] }
+                                        value={ isEnable ? ["isEnable"] : [] }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Button primary type="submit" size="small" className="form-button">
+                                        Update
+                                    </Button>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </>
+                    ) : null
+                }
             </Grid>
         </Forms>
     );
 };
 
 GeneralDetailsForm.defaultProps = {
-    triggerSubmit: false,
-    simplify: false
+    simplify: false,
+    triggerSubmit: false
 };
