@@ -113,16 +113,9 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		updateSelfSignUpConfigurations(data)
 			.then(() => {
 				dispatch(addAlert(successNotification));
-				// handleConfirmationModalClose();
-				// hideFormEditView(USER_SELF_REGISTRATION_FORM_IDENTIFIER);
 			})
 			.catch((error) => {
-				// Axios throws a generic `Network Error` for 401 status.
-				// As a temporary solution, a check to see if a response is available has been used.
-				if (!error.response || error.response.status === 401) {
-					dispatch(addAlert(errorMessage));
-				} else if (error.response && error.response.data && error.response.data.detail) {
-
+				if (error.response && error.response.data && error.response.data.detail) {
 					dispatch(addAlert(errorMessage));
 				} else {
 					// Generic error message

@@ -16,8 +16,11 @@
  * under the License.
  */
 
+import { ApplicationManagementConstants } from "../constants";
 import { AxiosHttpClient } from "@wso2is/http";
+import { AxiosResponse } from "axios";
 import { HttpMethods } from "../models";
+import { IdentityAppsApiException } from "@wso2is/core/dist/src/exceptions";
 import { store } from "../store";
 
 /**
@@ -38,10 +41,25 @@ export const getConfigurations = (url: string): Promise<any> => {
 
     return httpClient.request(requestConfig)
         .then((response) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.AUTH_PROTOCOL_METADATA_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.AUTH_PROTOCOL_METADATA_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 
@@ -57,11 +75,27 @@ export const updateConfigurations = (data: object, url: string): Promise<any> =>
     };
 
     return httpClient.request(requestConfig)
-        .then((response) => {
-            return Promise.resolve(response);
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.AUTH_PROTOCOL_METADATA_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.AUTH_PROTOCOL_METADATA_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 
