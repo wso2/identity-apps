@@ -16,14 +16,15 @@
 * under the License.
 */
 
-import React from "react";
 import { AlertLevels, UserStore } from "../../../models";
-import { Grid } from "semantic-ui-react";
 import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
+
+import { addAlert } from "../../../store/actions";
+import { Grid } from "semantic-ui-react";
+import { PrimaryButton } from "@wso2is/react-components";
+import React from "react";
 import { updateUserStore } from "../../../api";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../../../store/actions";
-import { PrimaryButton } from "@wso2is/react-components";
 
 /**
  * Prop types of `EditBasicDetailsUserStore` component
@@ -72,16 +73,16 @@ export const EditBasicDetailsUserStore = (
 
                             updateUserStore(id, data).then(() => {
                                 dispatch(addAlert({
-                                    message: "Userstore updated successfully!",
                                     description: "The Userstore has been updated successfully.",
-                                    level: AlertLevels.SUCCESS
+                                    level: AlertLevels.SUCCESS,
+                                    message: "Userstore updated successfully!"
                                 }));
                                 update();
                             }).catch((error) => {
                                 dispatch(addAlert({
-                                    message: error?.message ?? "Something went wrong",
                                     description: error?.description ?? "An error occurred while updating the Userstore",
-                                    level: AlertLevels.ERROR
+                                    level: AlertLevels.ERROR,
+                                    message: error?.message ?? "Something went wrong"
                                 }));
                             });
                         } }

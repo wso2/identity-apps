@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { RouteInterface } from "@wso2is/core/models";
-import { SignIn, SignOut } from "../components/authentication";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultPageLayout, ErrorPageLayout } from "../layouts";
 import {
     ApplicationEditPage,
@@ -50,6 +48,9 @@ import {
     LOCAL_CLAIMS_PATH,
     USER_STORES_PATH
 } from "../constants";
+import { SignIn, SignOut } from "../components/authentication";
+
+import { RouteInterface } from "@wso2is/core/models";
 
 /**
  * Dashboard Layout Routes array.

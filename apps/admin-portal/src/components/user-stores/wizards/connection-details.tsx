@@ -17,7 +17,7 @@
 */
 
 import { AlertLevels, TestConnection, Type, TypeProperty } from "../../../models";
-import { Button, Divider, Grid, Header, Icon, Message } from "semantic-ui-react";
+import { Button, Divider, Grid, Header, Icon } from "semantic-ui-react";
 import { Field, Forms, FormValue } from "@wso2is/forms";
 import { getAType, testConnection } from "../../../api";
 import React, { useEffect, useState } from "react";

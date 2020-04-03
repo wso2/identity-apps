@@ -16,14 +16,15 @@
 * under the License.
 */
 
-import React, { useEffect, useState } from "react";
 import { AlertLevels, Type, UserStore, UserStoreProperty } from "../../../models";
-import { patchUserStore } from "../../../api";
-import { useDispatch } from "react-redux";
+import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
+import React, { useEffect, useState } from "react";
+
 import { addAlert } from "@wso2is/core/store";
 import { Grid } from "semantic-ui-react";
-import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
+import { patchUserStore } from "../../../api";
 import { PrimaryButton } from "@wso2is/react-components";
+import { useDispatch } from "react-redux";
 
 /**
  * Type of the property object
@@ -81,8 +82,8 @@ const EditAdvancedProperties = (
                     advanced.push(tempProperty);
                 } else {
                     advanced.push({
-                        name: property.name,
                         description: property.description,
+                        name: property.name,
                         value: property.defaultValue
                     });
                 }
@@ -105,24 +106,24 @@ const EditAdvancedProperties = (
                             const data = properties.map((property: Property) => {
                                 return {
                                     operation: "REPLACE",
-                                    value: values.get(property.name).toString(),
-                                    path: `/properties/${property.name}`
+                                    path: `/properties/${property.name}`,
+                                    value: values.get(property.name).toString()
                                 }
                             });
 
                             patchUserStore(id, data).then(() => {
                                 dispatch(addAlert({
-                                    message: "Userstore updated successfully!",
                                     description: "This userstore has been updated successfully!",
-                                    level: AlertLevels.SUCCESS
+                                    level: AlertLevels.SUCCESS,
+                                    message: "Userstore updated successfully!"
                                 }));
                                 update();
                             }).catch(error => {
                                 dispatch(addAlert({
-                                    message: error?.message || "Something went wrong",
                                     description: error?.description
                                         || "An error occurred while updating the userstore.",
-                                    level: AlertLevels.ERROR
+                                    level: AlertLevels.ERROR,
+                                    message: error?.message || "Something went wrong"
                                 }));
                             })
                         }

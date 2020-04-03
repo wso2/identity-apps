@@ -16,14 +16,15 @@
 * under the License.
 */
 
-import React, { useContext, useState } from "react";
-import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components";
 import { AlertLevels, AppConfigInterface, UserStoreListItem } from "../../models";
-import { Modal } from "semantic-ui-react";
-import { deleteUserStore } from "../../api";
-import { useDispatch } from "react-redux";
-import { addAlert } from "../../store/actions";
 import { AppConfig, history } from "../../helpers";
+import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components";
+import React, { useContext, useState } from "react";
+
+import { addAlert } from "../../store/actions";
+import { deleteUserStore } from "../../api";
+import { Modal } from "semantic-ui-react";
+import { useDispatch } from "react-redux";
 
 /**
  * Prop types of the `UserStoresList` component
@@ -100,24 +101,26 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
                         deleteUserStore(deleteID)
                             .then(() => {
                                 dispatch(addAlert({
-                                    message: "Userstore deleted successfully!",
                                     description: "The userstore has been deleted successfully!",
-                                    level: AlertLevels.SUCCESS
+                                    level: AlertLevels.SUCCESS,
+                                    message: "Userstore deleted successfully!"
+                                    
                                 }));
                                 dispatch(addAlert({
-                                    message: "Updating Userstore list takes time",
                                     description: "It may take a while for the userstore list to be updated. " +
                                         "Refresh in a few seconds to get the updated userstore list.",
-                                    level: AlertLevels.WARNING
+                                    level: AlertLevels.WARNING,
+                                    message: "Updating Userstore list takes time"
                                 }));
                                 update();
                                 closeDeleteConfirm();
                             })
                             .catch(error => {
                                 dispatch(addAlert({
-                                    message: error?.message ?? "Something went wrong!",
-                                    description: error?.description ?? "There was an error while deleting the userstore",
-                                    level: AlertLevels.ERROR
+                                    description: error?.description
+                                        ?? "There was an error while deleting the userstore",
+                                    level: AlertLevels.ERROR,
+                                    message: error?.message ?? "Something went wrong!"
                                 }));
                                 closeDeleteConfirm();
                             });
