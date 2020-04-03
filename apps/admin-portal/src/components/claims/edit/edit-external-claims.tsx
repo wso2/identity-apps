@@ -16,14 +16,15 @@
 * under the License.
 */
 
-import React, { useState, useEffect } from "react";
-import { Modal, Header } from "semantic-ui-react";
-import { Claim, ExternalClaim, AlertLevels } from "../../../models";
-import { LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { AlertLevels, Claim, ExternalClaim } from "../../../models";
+import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
 import { getAllLocalClaims, getAnExternalClaim, updateAnExternalClaim } from "../../../api";
-import { Forms, Field, FormValue, useTrigger } from "@wso2is/forms";
-import { useDispatch } from "react-redux";
+import { Header, Modal } from "semantic-ui-react";
+import { LinkButton, PrimaryButton } from "@wso2is/react-components";
+import React, { useEffect, useState } from "react";
+
 import { addAlert } from "@wso2is/core/store";
+import { useDispatch } from "react-redux";
 
 /**
  * Prop types of `EditExternalClaims` component
@@ -155,8 +156,8 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                             localClaims?.map((claim: Claim, index) => {
                                 return {
                                     key: index,
-                                    value: claim?.claimURI,
-                                    text: claim?.displayName
+                                    text: claim?.displayName,
+                                    value: claim?.claimURI
                                 }
                             })
                         }

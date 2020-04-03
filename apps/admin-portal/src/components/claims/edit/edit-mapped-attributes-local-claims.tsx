@@ -16,15 +16,16 @@
 * under the License.
 */
 
-import React, { useEffect, useState } from "react";
 import { AlertLevels, Claim } from "../../../models";
-import { Grid, Message } from "semantic-ui-react";
-import { useTrigger } from "@wso2is/forms";
-import { getUserStoreList, updateAClaim } from "../../../api";
-import { useDispatch } from "react-redux";
-import { addAlert } from "@wso2is/core/store";
 import { DynamicField, KeyValue } from "../dynamic-fields";
+import { getUserStoreList, updateAClaim } from "../../../api";
+import { Grid, Message } from "semantic-ui-react";
 import { Hint, PrimaryButton } from "@wso2is/react-components";
+import React, { useEffect, useState } from "react";
+
+import { addAlert } from "@wso2is/core/store";
+import { useDispatch } from "react-redux";
+import { useTrigger } from "@wso2is/forms";
 
 /**
  * Prop types of `EditMappedAttributesLocalClaims` component
@@ -51,12 +52,12 @@ export const EditMappedAttributesLocalClaims = (
     props: EditMappedAttributesLocalClaimsPropsInterface
 ): React.ReactElement => {
 
-    const [userStore, setUserStore] = useState([]);
-    const [empty, setEmpty] = useState(false);
+    const [ userStore, setUserStore ] = useState([]);
+    const [ empty, setEmpty ] = useState(false);
 
     const { claim, update } = props;
     const dispatch = useDispatch();
-    const [submit, setSubmit] = useTrigger();
+    const [ submit, setSubmit ] = useTrigger();
 
     useEffect(() => {
         const userstore = [];
@@ -95,8 +96,8 @@ export const EditMappedAttributesLocalClaims = (
                         keyData={
                             userStore.map(store => {
                                 return {
-                                    value: store.name,
-                                    id: store.id
+                                    id: store.id,
+                                    value: store.name
                                 }
                             })
                         }

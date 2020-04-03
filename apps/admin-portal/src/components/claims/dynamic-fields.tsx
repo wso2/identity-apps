@@ -16,9 +16,9 @@
 * under the License.
 */
 
-import React, { useState, useEffect, useRef } from "react";
-import { Grid, Label, Icon, Popup, Button, List, Divider } from "semantic-ui-react";
-import { Forms, Field, useTrigger, FormValue, Validation } from "@wso2is/forms";
+import { Button, Divider, Label, List, Popup } from "semantic-ui-react";
+import { Field, Forms, FormValue, useTrigger, Validation } from "@wso2is/forms";
+import React, { useEffect, useRef, useState } from "react";
 
 /**
  * Type of key-value object
@@ -206,9 +206,9 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                             ? (
                                                                 keyData?.map((key: KeyData) => {
                                                                     return {
+                                                                        key: key.id,
                                                                         text: key.value,
-                                                                        value: key.value,
-                                                                        key: key.id
+                                                                        value: key.value
                                                                     }
                                                                 })
                                                             )
@@ -325,9 +325,9 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                                                 keyData?.map(
                                                                                     (key: KeyData) => {
                                                                                         return {
+                                                                                            key: key.id,
                                                                                             text: key.value,
-                                                                                            value: key.value,
-                                                                                            key: key.id
+                                                                                            value: key.value
                                                                                         }
                                                                                     })
                                                                             )
@@ -504,6 +504,6 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
 
 // Set default props
 DynamicField.defaultProps = {
-    requiredField: false,
-    duplicateKeyErrorMsg: "This is key is already selected. Please choose another key."
+    duplicateKeyErrorMsg: "This is key is already selected. Please choose another key.",
+    requiredField: false
 };
