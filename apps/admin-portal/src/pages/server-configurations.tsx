@@ -24,6 +24,7 @@ import { AlertInterface } from "../../../user-portal/src/models";
 import { addAlert } from "../../../user-portal/src/store/actions";
 import { AccountRecovery, UserSelfRegistration } from "../components";
 import { LoginPolicies } from "../components/server-configurations/login-policies";
+import { PasswordPolicies } from "../components/server-configurations/password-policies";
 
 /**
  * Governance Features page.
@@ -56,6 +57,8 @@ export const ServerConfigurationsPage: FunctionComponent<{}> = (): ReactElement 
 						<AccountRecovery onAlertFired={ handleAlerts }/>
 						<Divider hidden={ true } />
 						<LoginPolicies onAlertFired={ handleAlerts }/>
+						<Divider hidden={ true } />
+						<PasswordPolicies onAlertFired={ handleAlerts }/>
 					</Grid.Column>
 				</Grid.Row>
 			</Grid>

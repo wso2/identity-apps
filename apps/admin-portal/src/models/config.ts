@@ -189,6 +189,7 @@ export interface ServiceResourceEndpointsInterface {
     selfSignUp: string;
     accountRecovery: string;
     loginPolicies: string;
+    passwordPolicies: string;
     accountLocking: string;
     accountDisabling: string;
     captchaForSSOLogin: string;

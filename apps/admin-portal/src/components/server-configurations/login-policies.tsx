@@ -105,7 +105,6 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 	 * Calls the API and update the login policies configurations.
 	 */
 	const makeLoginPoliciesPatchCall = (data, successNotification) => {
-		console.log(data)
 		updateAllLoginPolicies(data)
 			.then(() => {
 				dispatch(addAlert(successNotification));

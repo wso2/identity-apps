@@ -157,6 +157,8 @@ export class Config {
             passwordHistory: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID}/connectors/${
                 ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID}`,
+            passwordPolicies: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID}`,
             passwordPolicy: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID}/connectors/${
                 ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID}`,

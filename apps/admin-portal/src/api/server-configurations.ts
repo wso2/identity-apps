@@ -160,3 +160,25 @@ export const updateAllLoginPolicies = (data: object): Promise<any> => {
     // API calls per each connector if the UI design permits it.
     return updateConfigurations(data, store.getState().config.endpoints.accountLocking);
 };
+
+/**
+ * Retrieve all password policies.
+ *
+ * @returns {Promise<any>} a promise containing the configurations.
+ */
+export const getAllPasswordPolicies = (): Promise<any> => {
+    return getConfigurations(store.getState().config.endpoints.passwordPolicies);
+};
+
+/**
+ * Update password policies.
+ *
+ * @param data request payload
+ *
+ * @returns {Promise<any>} a promise containing the response.
+ */
+export const updateAllPasswordPolicies = (data: object): Promise<any> => {
+    // Todo: API allows to update any property without looking at the connector ID. Would be better to have different
+    // API calls per each connector if the UI design permits it.
+    return updateConfigurations(data, store.getState().config.endpoints.passwordHistory);
+};

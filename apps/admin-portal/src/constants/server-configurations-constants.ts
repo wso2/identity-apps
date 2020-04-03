@@ -177,9 +177,9 @@ export class ServerConfigurationsConstants {
 	/**
 	 * Login policies - API Keyword constants.
 	 */
-	public static readonly ENABLE_PASSWORD_HISTORY: string = "passwordHistory.enable";
+	public static readonly PASSWORD_HISTORY_ENABLE: string = "passwordHistory.enable";
 	public static readonly PASSWORD_HISTORY_COUNT: string = "passwordHistory.count";
-	public static readonly ENABLE_PASSWORD_POLICY: string = "passwordPolicy.enable";
+	public static readonly PASSWORD_POLICY_ENABLE: string = "passwordPolicy.enable";
 	public static readonly PASSWORD_POLICY_MIN_LENGTH: string = "passwordPolicy.min.length";
 	public static readonly PASSWORD_POLICY_MAX_LENGTH: string = "passwordPolicy.max.length";
 	public static readonly PASSWORD_POLICY_PATTERN: string = "passwordPolicy.pattern";
