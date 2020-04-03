@@ -22,7 +22,13 @@ import {
     FederatedAuthenticatorMetaPropertyInterface
 } from "../../../../models";
 import { Button, Grid } from "semantic-ui-react";
-import { getCheckboxField, getConfidentialField, getTextField, getURLField } from "./form-fields-helper";
+import {
+    getCheckboxField,
+    getConfidentialField,
+    getQueryParamsField,
+    getTextField,
+    getURLField
+} from "./form-fields-helper";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Forms } from "@wso2is/forms";
 
@@ -123,7 +129,7 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
                 return getURLField(eachProp, propertyMetadata);
             }
             case FieldType.QUERY_PARAMS : {
-                return getTextField(eachProp, propertyMetadata);
+                return getQueryParamsField(eachProp, propertyMetadata);
             }
             default: {
                 return getTextField(eachProp, propertyMetadata);
