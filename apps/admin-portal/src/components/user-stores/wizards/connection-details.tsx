@@ -98,7 +98,9 @@ export const ConnectionDetails = (
                             type?.properties?.Mandatory?.map(
                                 (selectedTypeDetail: TypeProperty, index: number) => {
                                     const name = selectedTypeDetail.description.split("#")[ 0 ];
-                                    const isPassword = selectedTypeDetail.name === "password";
+                                    const isPassword = selectedTypeDetail.name
+                                        .toLocaleLowerCase()
+                                        .includes("password");
                                     return (
                                         !isPassword
                                             ? (
@@ -110,7 +112,10 @@ export const ConnectionDetails = (
                                                     required={ true }
                                                     requiredErrorMessage={ name + " is a required field" }
                                                     placeholder={ "Enter a " + name }
-                                                    value={ values?.get(selectedTypeDetail?.name)?.toString() }
+                                                    value={
+                                                        values?.get(selectedTypeDetail?.name)?.toString()
+                                                        ?? selectedTypeDetail.defaultValue
+                                                    }
                                                 />
                                             )
                                             : (
@@ -124,7 +129,10 @@ export const ConnectionDetails = (
                                                     placeholder={ "Enter a " + name }
                                                     showPassword="Show Password"
                                                     hidePassword='Hide Password'
-                                                    value={ values?.get(selectedTypeDetail?.name)?.toString() }
+                                                    value={
+                                                        values?.get(selectedTypeDetail?.name)?.toString()
+                                                        ?? selectedTypeDetail.defaultValue
+                                                    }
                                                 />
                                             )
                                     );
