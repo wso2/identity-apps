@@ -19,7 +19,7 @@
 import { AlertLevels, AppConfigInterface, Claim, ClaimDialect, ExternalClaim, UserStoreListItem } from "../../models";
 import { AppConfig, history } from "../../helpers";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim, getUserStores } from "../../api";
-import { EDIT_LOCAL_CLAIMS_PATH, EXTERNAL_CLAIMS_PATH } from "../../constants";
+import { EDIT_EXTERNAL_DIALECT, EDIT_LOCAL_CLAIMS_PATH } from "../../constants";
 import { Icon, List, Modal, Popup } from "semantic-ui-react";
 import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components"
 import React, { useContext, useEffect, useRef, useState } from "react";
@@ -444,18 +444,10 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                             </Image>
                                         }
                                         actions={ [
-                                            appConfig?.claimDialects?.features?.externalClaims?.permissions?.read && {
-                                                icon: "arrow right",
-                                                onClick: () => {
-                                                    history.push(`${EXTERNAL_CLAIMS_PATH}/${dialect.id}`);
-                                                },
-                                                popupText: "View Claims belonging to this dialect",
-                                                type: "button"
-                                            },
                                             appConfig?.claimDialects?.permissions?.update && {
                                                 icon: "pencil alternate",
                                                 onClick: () => {
-                                                    openEdit(dialect.id);
+                                                    history.push(`${EDIT_EXTERNAL_DIALECT}/${dialect.id}`)
                                                 },
                                                 popupText: "Edit",
                                                 type: "button"
