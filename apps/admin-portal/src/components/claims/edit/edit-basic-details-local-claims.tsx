@@ -16,14 +16,15 @@
 * under the License.
 */
 
-import React from "react";
 import { AlertLevels, Claim } from "../../../models";
+import { Divider, Form, Grid, Popup } from "semantic-ui-react";
 import { Field, Forms } from "@wso2is/forms";
-import { Divider, Form, Grid } from "semantic-ui-react";
+import React, { useState } from "react";
+
+import { addAlert } from "@wso2is/core/store";
+import { CopyInputField } from "@wso2is/react-components";
 import { updateAClaim } from "../../../api";
 import { useDispatch } from "react-redux";
-import { addAlert } from "@wso2is/core/store";
-import { CopyInputField, Hint } from "@wso2is/react-components";
 
 /**
  * Prop types for `EditBasicDetailsLocalClaims` component
@@ -50,6 +51,10 @@ export const EditBasicDetailsLocalClaims = (
 
     const dispatch = useDispatch();
 
+    const [ isShowNameHint, setIsShowNameHint ] = useState(false);
+    const [ isShowRegExHint, setIsShowRegExHint ] = useState(false);
+    const [ isShowDisplayOrderHint, setIsShowDisplayOrderHint ] = useState(false);
+
     const { claim, update } = props;
 
     return (
@@ -69,16 +74,16 @@ export const EditBasicDetailsLocalClaims = (
             <Forms
                 onSubmit={ (values) => {
                     const data: Claim = {
+                        attributeMapping: claim.attributeMapping,
                         claimURI: claim.claimURI,
                         description: values.get("description").toString(),
-                        displayOrder: parseInt(values.get("displayOrder").toString()),
-                        regEx: values.get("regularExpression").toString(),
                         displayName: values.get("name").toString(),
-                        attributeMapping: claim.attributeMapping,
+                        displayOrder: parseInt(values.get("displayOrder").toString()),
                         properties: claim.properties,
-                        supportedByDefault: values.get("supportedByDefault").length > 0,
                         readOnly: values.get("readOnly").length > 0,
-                        required: values.get("required").length > 0
+                        regEx: values.get("regularExpression").toString(),
+                        required: values.get("required").length > 0,
+                        supportedByDefault: values.get("supportedByDefault").length > 0
 
                     }
                     updateAClaim(claim.id, data).then(() => {
@@ -105,6 +110,12 @@ export const EditBasicDetailsLocalClaims = (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                             <Field
+                                onMouseOver={ () => {
+                                    setIsShowNameHint(true);
+                                } }
+                                onMouseOut={ () => {
+                                    setIsShowNameHint(false);
+                                } }
                                 type="text"
                                 name="name"
                                 label="Name"
@@ -113,9 +124,17 @@ export const EditBasicDetailsLocalClaims = (
                                 placeholder="Enter a name for the claim"
                                 value={ claim?.displayName }
                             />
-                            <Hint>
-                                Name of the claim displayed on the profile page and the self-registration page
-                            </Hint>
+                            <Popup
+                                content={ "Name of the claim that will be shown on the user profile " +
+                                    "and user registration page" }
+                                inverted
+                                open={ isShowNameHint }
+                                trigger={ <span></span> }
+                                onClose={ () => {
+                                    setIsShowNameHint(false);
+                                } }
+                                position="bottom left"
+                            />
                             <Divider hidden />
                             <Field
                                 type="textarea"
@@ -134,8 +153,23 @@ export const EditBasicDetailsLocalClaims = (
                                 requiredErrorMessage=""
                                 placeholder="Regular expression to validate the claim"
                                 value={ claim?.regEx }
+                                onMouseOver={ () => {
+                                    setIsShowRegExHint(true);
+                                } }
+                                onMouseOut={ () => {
+                                    setIsShowRegExHint(false);
+                                } }
                             />
-                            <Hint>Regular Expression used to validate inputs</Hint>
+                            <Popup
+                                content="This regular expression is used to validate the value this claim can take"
+                                inverted
+                                open={ isShowRegExHint }
+                                trigger={ <span></span> }
+                                onClose={ () => {
+                                    setIsShowRegExHint(false);
+                                } }
+                                position="bottom left"
+                            />
                             <Divider hidden />
                             <Field
                                 type="number"
@@ -146,47 +180,59 @@ export const EditBasicDetailsLocalClaims = (
                                 requiredErrorMessage=""
                                 placeholder="Enter the display order"
                                 value={ claim?.displayOrder.toString() }
+                                onMouseOver={ () => {
+                                    setIsShowDisplayOrderHint(true);
+                                } }
+                                onMouseOut={ () => {
+                                    setIsShowDisplayOrderHint(false);
+                                } }
                             />
-                            <Hint>
-                                Integer value to specify the order in which the claim is displayed among 
-                                other claims under the same dialect
-                            </Hint>
+                            <Popup
+                                content="This regular expression is used to validate the value this claim can take"
+                                inverted
+                                open={ isShowDisplayOrderHint }
+                                trigger={ <span></span> }
+                                onClose={ () => {
+                                    setIsShowDisplayOrderHint(false);
+                                } }
+                                position="bottom left"
+                            />
                             <Divider hidden={ true } />
                             <Field
                                 type="checkbox"
                                 name="supportedByDefault"
                                 required={ false }
                                 requiredErrorMessage=""
-                                children={ [{ value: "Support", label: "Show on Profile" }] }
-                                value={ claim?.supportedByDefault ? ["Support"] : [] }
+                                children={ [ {
+                                    label: "Show this claim on user profile and user registration page",
+                                    value: "Support"
+                                } ] }
+                                value={ claim?.supportedByDefault ? [ "Support" ] : [] }
                             />
-                            <Hint>
-                                Specifies if the claim will be prompted during user registration and displayed on the user profile
-                            </Hint>
                             <Divider hidden />
                             <Field
                                 type="checkbox"
                                 name="required"
                                 required={ false }
                                 requiredErrorMessage=""
-                                children={ [{ value: "Required", label: "Required" }] }
-                                value={ claim?.required ? ["Required"] : [] }
+                                children={ [ {
+                                    label: "Make this claims required during user registration",
+                                    value: "Required"
+                                } ] }
+                                value={ claim?.required ? [ "Required" ] : [] }
                             />
-                            <Hint>
-                                Specifies if the claim is required for user registration
-                            </Hint>
                             <Divider hidden />
                             <Field
                                 type="checkbox"
                                 name="readOnly"
                                 required={ false }
                                 requiredErrorMessage=""
-                                children={ [{ value: "ReadOnly", label: "Read Only" }] }
-                                value={ claim?.readOnly ? ["ReadOnly"] : [] }
+                                children={ [ {
+                                    label: "Make this claim read-only",
+                                    value: "ReadOnly"
+                                } ] }
+                                value={ claim?.readOnly ? [ "ReadOnly" ] : [] }
                             />
-                            <Hint>
-                                Specifies if the claim is read-only
-                            </Hint>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row columns={ 1 }>
