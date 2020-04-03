@@ -136,6 +136,45 @@
         border: @inputAddOnBorder;
         border-left: 0;
     }
+
+    &.test-button {
+        color: @primaryColor !important;
+        border-color: @primaryColor;
+        box-shadow: 0 0 0 1px @primaryColor inset;
+
+        &:hover, &:focus {
+            box-shadow: 0 0 0 1px @primaryColor inset;
+            color: @primaryColor !important;
+
+            i {
+                color: @primaryColor;
+            }
+        }
+
+        i {
+            color: @primaryColor;
+
+            &:hover {
+                color: @primaryColor;
+            }
+        }
+
+        &.red {
+            color: @red !important;
+
+            &:hover {
+                color: @red !important;
+            }
+        }
+
+        &.green {
+            color: @green !important;
+
+            &:hover {
+                color: @green !important;
+            }
+        }
+    }
 }
 
 .ui.labeled.icon.button {
