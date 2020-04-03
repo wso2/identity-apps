@@ -17,14 +17,13 @@
 */
 
 import { AlertLevels, TestConnection, Type, TypeProperty } from "../../../models";
-import { Divider, Grid, Message } from "semantic-ui-react";
+import { Button, Divider, Grid, Header, Icon, Message } from "semantic-ui-react";
 import { Field, Forms, FormValue } from "@wso2is/forms";
 import { getAType, testConnection } from "../../../api";
 import React, { useEffect, useState } from "react";
 
 import { addAlert } from "@wso2is/core/store";
-import { JDBC_ID } from "../../../constants";
-import { PrimaryButton } from "@wso2is/react-components";
+import { JDBC } from "../../../constants";
 import { useDispatch } from "react-redux";
 
 /**
@@ -64,6 +63,7 @@ export const ConnectionDetails = (
     const [ connectionFailed, setConnectionFailed ] = useState(false);
     const [ connectionSuccessful, setConnectionSuccessful ] = useState(false);
     const [ formValue, setFormValue ] = useState<Map<string, FormValue>>(null);
+    const [ isTesting, setIsTesting ] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -73,13 +73,67 @@ export const ConnectionDetails = (
                 setType(response);
             }).catch(error => {
                 dispatch(addAlert({
-                    description: error?.description,
+                    description: error?.description || "An error occurred while fetching the userstore type metadata.",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }))
             })
         }
     }, [ typeId ]);
+
+    /**
+     * Enum containing the icons a test connection button can have 
+     */
+    enum TestButtonIcon {
+        TESTING = "spinner",
+        FAILED = "remove",
+        SUCCESSFUL = "check",
+        INITIAL = "bolt"
+    }
+
+    /**
+     * This returns of the icon for the test button.
+     * 
+     * @returns {TestButtonIcon} The icon of the test button.
+     */
+    const findTestButtonIcon = (): TestButtonIcon => {
+        if (isTesting) {
+            return TestButtonIcon.TESTING
+        } else if (connectionSuccessful) {
+            return TestButtonIcon.SUCCESSFUL
+        } else if (connectionFailed) {
+            return TestButtonIcon.FAILED
+        } else {
+            return TestButtonIcon.INITIAL
+        }
+    };
+
+    /**
+     * Enum containing the colors the test button can have
+     */
+    enum TestButtonColor {
+        TESTING,
+        INITIAL,
+        SUCCESSFUL,
+        FAILED
+    }
+
+    /**
+     * This finds the right color for the test button
+     * 
+     * @return {TestButtonColor} The color of the test button.
+     */
+    const findTestButtonColor = (): TestButtonColor => {
+        if (isTesting) {
+            return TestButtonColor.TESTING
+        } else if (connectionSuccessful) {
+            return TestButtonColor.SUCCESSFUL
+        } else if (connectionFailed) {
+            return TestButtonColor.FAILED
+        } else {
+            return TestButtonColor.INITIAL
+        }
+    }
 
     return (
         <Grid>
@@ -141,10 +195,13 @@ export const ConnectionDetails = (
                     </Forms>
                     <Divider hidden />
                     {
-                        type?.typeId === JDBC_ID && (
-                            <PrimaryButton
+                        type?.typeName.includes(JDBC) && (
+                            <Button
+                                className="test-button"
+                                basic
                                 onClick={
                                     () => {
+                                        setIsTesting(true);
                                         const testData: TestConnection = {
                                             connectionPassword: formValue?.get("password").toString(),
                                             connectionURL: formValue?.get("url").toString(),
@@ -152,40 +209,46 @@ export const ConnectionDetails = (
                                             username: formValue?.get("userName").toString()
                                         };
                                         testConnection(testData).then(() => {
+                                            setIsTesting(false);
                                             setConnectionFailed(false);
                                             setConnectionSuccessful(true);
                                         }).catch(() => {
+                                            setIsTesting(false);
                                             setConnectionSuccessful(false);
                                             setConnectionFailed(true);
                                         })
                                     }
                                 }
+                                color={
+                                    findTestButtonColor() === TestButtonColor.SUCCESSFUL
+                                        ? "green"
+                                        : findTestButtonColor() === TestButtonColor.FAILED
+                                            ? "red"
+                                            : null
+                                }
                             >
+                                <Icon
+                                    size="small"
+                                    loading={ isTesting }
+                                    name={ findTestButtonIcon() }
+                                    color={
+                                        findTestButtonColor() === TestButtonColor.SUCCESSFUL
+                                            ? "green"
+                                            : findTestButtonColor() === TestButtonColor.FAILED
+                                                ? "red"
+                                                : null
+                                    }
+                                />
                                 Test Connection
-                            </PrimaryButton>
+                            </Button>
                         )
                     }
                     { connectionFailed
-                        ? (
-                            <Message negative>
-                                <Message.Header>
-                                    Connection failed!
-                            </Message.Header>
-                                <Message.Content>
-                                    Please ensure the provided connection URL, name, password and driver
-                                    name are accurate
-                            </Message.Content>
-                            </Message>
-                        )
-                        : connectionSuccessful && (
-                            <Message positive>
-                                <Message.Header>
-                                    Connection Successful!
-                            </Message.Header>
-                                <Message.Content>
-                                    The connection is healthy.
-                            </Message.Content>
-                            </Message>
+                        && (
+                            <Header as="h6" color="red">
+                                Please ensure the provided connection URL, name, password and driver
+                                name are accurate
+                            </Header>
                         )
                     }
                 </Grid.Column>
