@@ -16,18 +16,19 @@
 * under the License.
 */
 
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components"
-import { AlertLevels, AppConfigInterface, AttributeMapping, Claim, ClaimDialect, ExternalClaim, UserStore, UserStoreListItem } from "../../models";
-import { Icon, List, Modal, Popup } from "semantic-ui-react";
+import { AlertLevels, AppConfigInterface, Claim, ClaimDialect, ExternalClaim, UserStoreListItem } from "../../models";
 import { AppConfig, history } from "../../helpers";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim, getUserStores } from "../../api";
-import { useDispatch } from "react-redux";
-import { addAlert } from "@wso2is/core/store";
-import { CopyInputField } from "@wso2is/react-components";
 import { EDIT_LOCAL_CLAIMS_PATH, EXTERNAL_CLAIMS_PATH } from "../../constants";
+import { Icon, List, Modal, Popup } from "semantic-ui-react";
+import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components"
+import React, { useContext, useEffect, useRef, useState } from "react";
+
+import { addAlert } from "@wso2is/core/store";
 import { ClaimsAvatarBackground } from ".";
+import { CopyInputField } from "@wso2is/react-components";
 import { Image } from "semantic-ui-react";
+import { useDispatch } from "react-redux";
 
 /**
  * Enum containing the list types
