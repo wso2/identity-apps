@@ -23,4 +23,4 @@
   * 
   * @type {string}
   */
-export const JDBC_ID = "SkRCQ1VzZXJTdG9yZU1hbmFnZXI";
+export const JDBC = "JDBC";
