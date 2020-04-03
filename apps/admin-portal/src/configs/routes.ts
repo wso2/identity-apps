@@ -23,7 +23,6 @@ import {
     ApplicationTemplateSelectPage,
     ClaimDialectsPage,
     CustomizePage,
-    ExternalClaimsPage,
     GroupsPage,
     HomePage,
     IdentityProviderEditPage,
@@ -43,13 +42,14 @@ import {
 } from "../pages";
 import {
     CLAIM_DIALECTS_PATH,
+    EDIT_EXTERNAL_DIALECT,
     EDIT_LOCAL_CLAIMS_PATH,
-    EXTERNAL_CLAIMS_PATH,
     LOCAL_CLAIMS_PATH,
     USER_STORES_PATH
 } from "../constants";
 import { SignIn, SignOut } from "../components/authentication";
 
+import { ExternalDialectEditPage } from "./../pages/external-dialect-edit";
 import { RouteInterface } from "@wso2is/core/models";
 
 /**
@@ -219,13 +219,13 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: false
     },
     {
-        component: ExternalClaimsPage,
+        component: ExternalDialectEditPage,
         exact: true,
         icon: "childIcon",
-        id: "externalClaims",
+        id: "editExternalDialect",
         level: 2,
-        name: "External Claims",
-        path: `${EXTERNAL_CLAIMS_PATH}/:id`,
+        name: "Edit External Dialect",
+        path: `${EDIT_EXTERNAL_DIALECT}/:id`,
         protected: true,
         showOnSidePanel: false
     },
