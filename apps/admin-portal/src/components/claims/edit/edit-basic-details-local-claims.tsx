@@ -18,7 +18,7 @@
 
 import { AlertLevels, Claim } from "../../../models";
 import { Divider, Form, Grid, Popup } from "semantic-ui-react";
-import { Field, Forms } from "@wso2is/forms";
+import { Field, Forms, FormValue } from "@wso2is/forms";
 import React, { useState } from "react";
 
 import { addAlert } from "@wso2is/core/store";
@@ -54,6 +54,7 @@ export const EditBasicDetailsLocalClaims = (
     const [ isShowNameHint, setIsShowNameHint ] = useState(false);
     const [ isShowRegExHint, setIsShowRegExHint ] = useState(false);
     const [ isShowDisplayOrderHint, setIsShowDisplayOrderHint ] = useState(false);
+    const [ isShowDisplayOrder, setIsShowDisplayOrder ] = useState(false);
 
     const { claim, update } = props;
 
@@ -172,33 +173,6 @@ export const EditBasicDetailsLocalClaims = (
                             />
                             <Divider hidden />
                             <Field
-                                type="number"
-                                min="0"
-                                name="displayOrder"
-                                label="Display Order"
-                                required={ false }
-                                requiredErrorMessage=""
-                                placeholder="Enter the display order"
-                                value={ claim?.displayOrder.toString() }
-                                onMouseOver={ () => {
-                                    setIsShowDisplayOrderHint(true);
-                                } }
-                                onMouseOut={ () => {
-                                    setIsShowDisplayOrderHint(false);
-                                } }
-                            />
-                            <Popup
-                                content="This regular expression is used to validate the value this claim can take"
-                                inverted
-                                open={ isShowDisplayOrderHint }
-                                trigger={ <span></span> }
-                                onClose={ () => {
-                                    setIsShowDisplayOrderHint(false);
-                                } }
-                                position="bottom left"
-                            />
-                            <Divider hidden={ true } />
-                            <Field
                                 type="checkbox"
                                 name="supportedByDefault"
                                 required={ false }
@@ -208,7 +182,44 @@ export const EditBasicDetailsLocalClaims = (
                                     value: "Support"
                                 } ] }
                                 value={ claim?.supportedByDefault ? [ "Support" ] : [] }
+                                listen={ (values: Map<string, FormValue>) => {
+                                    setIsShowDisplayOrder(values?.get("supportedByDefault")?.length > 0);
+                                } }
                             />
+                            {
+                                isShowDisplayOrder
+                                && (
+                                    <>
+                                        <Field
+                                            type="number"
+                                            min="0"
+                                            name="displayOrder"
+                                            label="Display Order"
+                                            required={ false }
+                                            requiredErrorMessage=""
+                                            placeholder="Enter the display order"
+                                            value={ claim?.displayOrder.toString() }
+                                            onMouseOver={ () => {
+                                                setIsShowDisplayOrderHint(true);
+                                            } }
+                                            onMouseOut={ () => {
+                                                setIsShowDisplayOrderHint(false);
+                                            } }
+                                        />
+                                        <Popup
+                                            content={ "This determines the position at which this claim is displayed" +
+                                                " in the user profile and the user registration page" }
+                                            inverted
+                                            open={ isShowDisplayOrderHint }
+                                            trigger={ <span></span> }
+                                            onClose={ () => {
+                                                setIsShowDisplayOrderHint(false);
+                                            } }
+                                            position="bottom left"
+                                        />
+                                    </>
+                                )
+                            }
                             <Divider hidden />
                             <Field
                                 type="checkbox"
