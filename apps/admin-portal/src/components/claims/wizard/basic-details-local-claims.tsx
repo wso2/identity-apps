@@ -16,9 +16,10 @@
 * under the License.
 */
 
-import React, { useEffect, useState } from "react";
 import { Field, Forms, FormValue } from "@wso2is/forms";
-import { Divider, Grid, GridColumn, Label, Popup } from "semantic-ui-react";
+import { Grid, Label, Popup } from "semantic-ui-react";
+import React, { useEffect, useState } from "react";
+
 import { Hint } from "@wso2is/react-components";
 
 /**
@@ -58,6 +59,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     const [ isShowClaimIDHint, setIsShowClaimIDHint ] = useState(false);
     const [ isShowRegExHint, setIsShowRegExHint ] = useState(false);
 
+    /**
+     * Set the if show on profile is selected or not
+     * and the claim ID from the received `values` prop
+     */
     useEffect(() => {
         setIsShow(values?.get("supportedByDefault").length > 0)
         setClaimID(values?.get("claimURI").toString())
@@ -99,7 +104,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             value={ values?.get("name")?.toString() }
                         />
                         <Popup
-                            content="Name of the claim that will be shown on the user profile and user registration page"
+                            content={ "Name of the claim that will be shown on the user profile " +
+                                "and user registration page" }
                             inverted
                             open={ isShowNameHint }
                             trigger={ <span></span> }
