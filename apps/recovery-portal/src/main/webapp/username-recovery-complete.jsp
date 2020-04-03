@@ -97,7 +97,7 @@
                 onHide: function () {
                     <%
                     try {
-                        if (callback == null) {
+                        if (callback != null) {
                     %>
                     location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>";
                     <%
