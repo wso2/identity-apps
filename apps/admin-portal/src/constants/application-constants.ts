@@ -25,7 +25,7 @@
 export const APPLICATION_SETTINGS_STORAGE_KEY = "application_settings";
 
 /**
- * Primary user store identifier.
+ * Primary userstore identifier.
  * @constant
  * @type {string}
  * @default

@@ -17,8 +17,8 @@
 */
 
 import React, { useContext, useState } from "react";
-import { ResourceList, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { UserStoreListItem, AlertLevels, AppConfigInterface } from "../../models";
+import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components";
+import { AlertLevels, AppConfigInterface, UserStoreListItem } from "../../models";
 import { Modal } from "semantic-ui-react";
 import { deleteUserStore } from "../../api";
 import { useDispatch } from "react-redux";
@@ -30,7 +30,7 @@ import { AppConfig, history } from "../../helpers";
  */
 interface UserStoresListPropsInterface {
     /**
-     * The user store list
+     * The userstore list
      */
     list: UserStoreListItem[];
     /**
@@ -40,7 +40,7 @@ interface UserStoresListPropsInterface {
 }
 
 /**
- * This component renders the User Store List
+ * This component renders the Userstore List
  * @param {UserStoresListPropsInterface} props
  * @return {React.ReactElement}
  */
@@ -56,8 +56,8 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
     const appConfig: AppConfigInterface = useContext(AppConfig);
 
     /**
-     * Delete a user store
-     * @param {string} id user store id
+     * Delete a userstore
+     * @param {string} id userstore id
      */
     const initDelete = (id: string) => {
         setDeleteID(id);
@@ -88,7 +88,7 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
                     Confirm Delete
                 </Modal.Header>
                 <Modal.Content>
-                    This will completely remove the user store and the data in it.
+                    This will completely remove the userstore and the data in it.
                     Do you want to continue deleting it?
                 </Modal.Content>
                 <Modal.Actions>
@@ -100,14 +100,14 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
                         deleteUserStore(deleteID)
                             .then(() => {
                                 dispatch(addAlert({
-                                    message: "User Store deleted successfully!",
-                                    description: "The user store has been deleted successfully!",
+                                    message: "Userstore deleted successfully!",
+                                    description: "The userstore has been deleted successfully!",
                                     level: AlertLevels.SUCCESS
                                 }));
                                 dispatch(addAlert({
-                                    message: "Updating User Store list takes time",
-                                    description: "It may take a while for the user store list to be updated. " +
-                                        "Refresh in a few seconds to get the updated user store list.",
+                                    message: "Updating Userstore list takes time",
+                                    description: "It may take a while for the userstore list to be updated. " +
+                                        "Refresh in a few seconds to get the updated userstore list.",
                                     level: AlertLevels.WARNING
                                 }));
                                 update();
@@ -116,7 +116,7 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
                             .catch(error => {
                                 dispatch(addAlert({
                                     message: error?.message ?? "Something went wrong!",
-                                    description: error?.description ?? "There was an error while deleting the user store",
+                                    description: error?.description ?? "There was an error while deleting the userstore",
                                     level: AlertLevels.ERROR
                                 }));
                                 closeDeleteConfirm();

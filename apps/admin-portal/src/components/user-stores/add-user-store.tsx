@@ -45,7 +45,7 @@ interface AddUserStoreProps {
 }
 
 /**
- * This component renders the Add User Store Wizard
+ * This component renders the Add Userstore Wizard
  * @param {AddUserStoreProps} props
  * @return {React.ReactElement}
  */
@@ -65,25 +65,25 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
     const dispatch = useDispatch();
 
     /**
-     * Adds the user store
+     * Adds the userstore
      */
     const handleSubmit = () => {
         addUserStore(userStore).then(() => {
             dispatch(addAlert({
-                description: "The user store has been added successfully!",
+                description: "The userstore has been added successfully!",
                 level: AlertLevels.SUCCESS,
-                message: "User Store added successfully!"
+                message: "Userstore added successfully!"
             }))
             dispatch(addAlert({
-                description: "It may take a while for the user store list to be updated. " +
-                    "Refresh in a few seconds to get the updated user store list.",
+                description: "It may take a while for the userstore list to be updated. " +
+                    "Refresh in a few seconds to get the updated userstore list.",
                 level: AlertLevels.WARNING,
-                message: "Updating User Store list takes time"
+                message: "Updating Userstore list takes time"
             }));
             onClose();
         }).catch(error => {
                 dispatch(addAlert({
-                    description: error?.description ?? "There was an error while creating the user store",
+                    description: error?.description ?? "There was an error while creating the userstore",
                     level: AlertLevels.ERROR,
                     message: error?.message ?? "Something went wrong!"
                 }))
@@ -138,7 +138,7 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Basic User Store Details"
+            title: "Basic Userstore Details"
         },
         {
             content: (
@@ -199,11 +199,11 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
             className="wizard application-create-wizard"
         >
             <Modal.Header className="wizard-header">
-                Add a User Store
+                Add a Userstore
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group
-                    header="Fill in the following details to create a user store."
+                    header="Fill in the following details to create a userstore."
                     current={ currentWizardStep }
                 >
                     {STEPS.map((step, index) => (

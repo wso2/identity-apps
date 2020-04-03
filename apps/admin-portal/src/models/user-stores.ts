@@ -27,7 +27,7 @@ export interface QueryParams {
 }
 
 /**
- * Type of object returned in a user store list
+ * Type of object returned in a userstore list
  */
 export interface UserStoreListItem {
     id: string;
@@ -37,7 +37,7 @@ export interface UserStoreListItem {
 }
 
 /**
- * Type of a user store property
+ * Type of a userstore property
  */
 export interface UserStoreProperty {
     name: string;
@@ -45,7 +45,7 @@ export interface UserStoreProperty {
 }
 
 /**
- * Type of object that is used to add or update a user store
+ * Type of object that is used to add or update a userstore
  */
 export interface UserStorePostData {
     typeId: string;
@@ -55,7 +55,7 @@ export interface UserStorePostData {
 }
 
 /**
- * User Store object returned by retrieval 
+ * Userstore object returned by retrieval 
  */
 export interface UserStore {
     typeName: string;

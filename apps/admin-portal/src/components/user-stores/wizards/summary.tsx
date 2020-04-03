@@ -34,7 +34,7 @@ interface SummaryUserStoresPropsInterface {
      */
     properties: TypeProperty[];
     /**
-     * The type of the user store
+     * The type of the userstore
      */
     type: string;
 }
@@ -79,7 +79,7 @@ export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): React
                     </div>
                 </Grid.Column>
             </Grid.Row>
-            {type ? generateSummaryLine("User Store Type", type) : null}
+            {type ? generateSummaryLine("Userstore Type", type) : null}
             {
                 properties?.map((property: TypeProperty) => {
                     if (property.name !== "password") {

@@ -260,7 +260,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                                     setAddEditClaim(true);
                                 } }
                             >
-                                <Icon name="add" />Add a dialect
+                                <Icon name="add" />Add Dialect
                             </PrimaryButton>
                         )
                     }

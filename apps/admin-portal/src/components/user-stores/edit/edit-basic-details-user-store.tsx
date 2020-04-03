@@ -17,9 +17,9 @@
 */
 
 import React from "react";
-import { UserStore, AlertLevels } from "../../../models";
+import { AlertLevels, UserStore } from "../../../models";
 import { Grid } from "semantic-ui-react";
-import { Forms, Field, useTrigger, FormValue } from "@wso2is/forms";
+import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
 import { updateUserStore } from "../../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
@@ -30,7 +30,7 @@ import { PrimaryButton } from "@wso2is/react-components";
  */
 interface EditBasicDetailsUserStorePropsInterface {
     /**
-     * User store to be edited
+     * Userstore to be edited
      */
     userStore: UserStore;
     /**
@@ -38,7 +38,7 @@ interface EditBasicDetailsUserStorePropsInterface {
      */
     update: () => void;
     /**
-     * user store id
+     * userstore id
      */
     id: string;
 }

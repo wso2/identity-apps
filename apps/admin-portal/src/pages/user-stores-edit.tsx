@@ -18,13 +18,13 @@
 
 import React, { useEffect, useState } from "react"
 import { PageLayout } from "../layouts"
-import { getAUserStore, getAType } from "../api";
-import { AlertLevels, UserStore, Type } from "../models";
+import { getAType, getAUserStore } from "../api";
+import { AlertLevels, Type, UserStore } from "../models";
 import { ResourceTab } from "@wso2is/react-components";
 import {
     EditBasicDetailsUserStore,
-    MemoEditConnectionDetails,
     MemoEditAdvancedProperties,
+    MemoEditConnectionDetails,
     MemoEditOptionalProperties
 } from "../components";
 import { history } from "../helpers";
@@ -32,7 +32,7 @@ import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
 
 /**
- * This renders the user store edit page
+ * This renders the userstore edit page
  * @param props 
  * @return {React.ReactElement}
  */
@@ -132,12 +132,12 @@ export const UserStoresEditPage = (props): React.ReactElement => {
     return (
         <PageLayout
             title={ userStore?.name }
-            description={ "Edit User Store" }
+            description={ "Edit Userstore" }
             backButton={ {
                 onClick: () => {
                     history.push("/user-stores");
                 },
-                text: "Go back to User Stores"
+                text: "Go back to Userstores"
             } }
             titleTextAlign="left"
             bottomMargin={ false }

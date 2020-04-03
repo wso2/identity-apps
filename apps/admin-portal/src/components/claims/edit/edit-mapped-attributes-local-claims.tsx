@@ -79,7 +79,7 @@ export const EditMappedAttributesLocalClaims = (
             <Grid.Row columns={ 1 }>
                 <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                     <Hint>
-                        Corresponding attribute name from the underlying user store
+                        Corresponding attribute name from the underlying userstore
                         which is mapped to the Claim URI value
                     </Hint>
                     <DynamicField
@@ -100,13 +100,13 @@ export const EditMappedAttributesLocalClaims = (
                                 }
                             })
                         }
-                        keyName="User Store"
+                        keyName="Userstore"
                         valueName="Attribute to map to"
-                        keyRequiredMessage="Please select a User Store"
+                        keyRequiredMessage="Please select a Userstore"
                         valueRequiredErrorMessage="Please enter an attribute to map to"
                         requiredField={ true }
                         duplicateKeyErrorMsg={
-                            "This User Store has been selected twice. A User Store can only be selected once."
+                            "This userstore has been selected twice. A userstore can only be selected once."
                         }
                         submit={ submit }
                         update={ (data) => {
@@ -161,7 +161,7 @@ export const EditMappedAttributesLocalClaims = (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 8 }>
                             <Message negative>
-                                The claim should be mapped to at least one attribute from a user store.
+                                The claim should be mapped to at least one attribute from a userstore.
                             </Message>
                         </Grid.Column>
                     </Grid.Row>

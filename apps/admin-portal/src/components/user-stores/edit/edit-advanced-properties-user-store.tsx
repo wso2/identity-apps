@@ -17,12 +17,12 @@
 */
 
 import React, { useEffect, useState } from "react";
-import { UserStore, Type, AlertLevels, UserStoreProperty } from "../../../models";
+import { AlertLevels, Type, UserStore, UserStoreProperty } from "../../../models";
 import { patchUserStore } from "../../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { Grid } from "semantic-ui-react";
-import { Forms, Field, useTrigger, FormValue } from "@wso2is/forms";
+import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
 
 /**
@@ -39,7 +39,7 @@ interface Property {
  */
 interface EditAdvancedPropertiesPropsInterface {
     /**
-     * User store to be edited
+     * Userstore to be edited
      */
     userStore: UserStore;
     /**
@@ -47,7 +47,7 @@ interface EditAdvancedPropertiesPropsInterface {
      */
     update: () => void;
     /**
-     * user store id
+     * userstore id
      */
     id: string;
     /**
@@ -112,8 +112,8 @@ const EditAdvancedProperties = (
 
                             patchUserStore(id, data).then(() => {
                                 dispatch(addAlert({
-                                    message: "User Store updated successfully!",
-                                    description: "This user store has been updated successfully!",
+                                    message: "Userstore updated successfully!",
+                                    description: "This userstore has been updated successfully!",
                                     level: AlertLevels.SUCCESS
                                 }));
                                 update();
@@ -121,7 +121,7 @@ const EditAdvancedProperties = (
                                 dispatch(addAlert({
                                     message: error?.message || "Something went wrong",
                                     description: error?.description
-                                        || "An error occurred while updating the user store.",
+                                        || "An error occurred while updating the userstore.",
                                     level: AlertLevels.ERROR
                                 }));
                             })

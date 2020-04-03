@@ -119,7 +119,7 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
                             <Table.Header>
                                 <Table.Row>
                                     <Table.HeaderCell>
-                                        User Store
+                                        Userstore
                                     </Table.HeaderCell>
                                     <Table.HeaderCell>
                                         Attribute

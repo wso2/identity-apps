@@ -17,7 +17,7 @@
  */
 
  /**
-  * The ID of the user store type JDBC.
+  * The ID of the userstore type JDBC.
   * 
   * @constant
   * 

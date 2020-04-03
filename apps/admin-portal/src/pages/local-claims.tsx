@@ -224,7 +224,7 @@ export const LocalClaimsPage = (): React.ReactElement => {
                                     setOpenModal(true);
                                 } }
                             >
-                                <Icon name="add" />Add a Local Claim
+                                <Icon name="add" />Add Local Claim
                             </PrimaryButton>
                         )
                     }

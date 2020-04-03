@@ -103,11 +103,11 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     }, []);
 
     /**
-     * The following function fetch the user store list and set it to the state.
+     * The following function fetch the userstore list and set it to the state.
      */
     const getUserStores = () => {
         const storeOptions = [
-                { text: "All user stores", key: -2, value: null },
+                { text: "All userstores", key: -2, value: null },
                 { text: "Primary", key: -1, value: "primary" }
             ];
         let storeOption = { text: "", key: null, value: "" };
@@ -151,7 +151,7 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     };
 
     /**
-     * Fetch the list of available user stores.
+     * Fetch the list of available userstores.
      */
     useEffect(() => {
         getUserStores();
@@ -228,7 +228,7 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                     subtitle={ [
                         t("devPortal:placeholders.emptySearchResult.subtitles.0",
                             { query: searchQuery }),
-                        t("devPortal:placeholders.emptySearchResult.subtitles.1"),
+                        t("devPortal:placeholders.emptySearchResult.subtitles.1")
                     ] }
                 />
             );

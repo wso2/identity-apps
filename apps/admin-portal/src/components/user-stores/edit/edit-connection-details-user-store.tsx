@@ -41,7 +41,7 @@ interface Property {
  */
 interface EditConnectionDetailsPropsInterface {
     /**
-     * User store to be edited
+     * Userstore to be edited
      */
     userStore: UserStore;
     /**
@@ -49,7 +49,7 @@ interface EditConnectionDetailsPropsInterface {
      */
     update: () => void;
     /**
-     * user store id
+     * userstore id
      */
     id: string;
     /**
@@ -124,15 +124,15 @@ const EditConnectionDetails = (
 
                             patchUserStore(id, data).then(() => {
                                 dispatch(addAlert({
-                                    description: "This user store has been updated successfully!",
+                                    description: "This userstore has been updated successfully!",
                                     level: AlertLevels.SUCCESS,
-                                    message: "User Store updated successfully!"
+                                    message: "Userstore updated successfully!"
                                 }));
                                 update();
                             }).catch(error => {
                                 dispatch(addAlert({
                                     description: error?.description
-                                        || "An error occurred while updating the user store.",
+                                        || "An error occurred while updating the userstore.",
                                     level: AlertLevels.ERROR,
                                     message: error?.message || "Something went wrong"
                                 }));
@@ -216,7 +216,7 @@ const EditConnectionDetails = (
                                     }).catch((error) => {
                                         dispatch(addAlert({
                                             description: error?.description
-                                                || "An error occurred while testing the connection to the user store",
+                                                || "An error occurred while testing the connection to the userstore",
                                             level: AlertLevels.ERROR,
                                             message: error?.message || "Something went wrong"
                                         }));

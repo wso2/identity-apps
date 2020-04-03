@@ -31,7 +31,7 @@ import { filterList, sortList } from "../utils";
 import { AppConfig } from "../helpers";
 
 /**
- * This renders the User Stores page.
+ * This renders the Userstores page.
  *
  * @return {React.ReactElement}
  */
@@ -67,7 +67,7 @@ export const UserStores = (): React.ReactElement => {
     const appConfig: AppConfigInterface = useContext(AppConfig);
 
     /**
-     * Fetches all user stores.
+     * Fetches all userstores.
      *
      * @param {number} limit.
      * @param {string} sort.
@@ -90,7 +90,7 @@ export const UserStores = (): React.ReactElement => {
             setIsLoading(false);
             dispatch(addAlert(
                 {
-                    description: error?.description || "An error occurred while fetching user stores",
+                    description: error?.description || "An error occurred while fetching userstores",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -173,8 +173,8 @@ export const UserStores = (): React.ReactElement => {
                     )
             }
             <PageLayout
-                title="User Stores"
-                description="View, edit and add User Stores"
+                title="Userstores"
+                description="View, edit, and add userstores"
                 showBottomDivider={ true }
             >
                 {
@@ -205,7 +205,7 @@ export const UserStores = (): React.ReactElement => {
                                                 setOpenModal(true);
                                             } }
                                         >
-                                            <Icon name="add"/>Add a User Store
+                                            <Icon name="add"/>Add Userstore
                                         </PrimaryButton>
                                     )
                                 }
@@ -230,11 +230,11 @@ export const UserStores = (): React.ReactElement => {
                                         setOpenModal(true);
                                     } }
                                 >
-                                    <Icon name="add"/> Add a User Store
+                                    <Icon name="add"/> Add Userstore
                                 </PrimaryButton>
                             }
-                            title="Create a User Store"
-                            subtitle={ ["Currently, there are no User Stores available."] }
+                            title="Add Userstore"
+                            subtitle={ ["Currently, there are no Userstores available."] }
                             image={ EmptyPlaceholderIllustrations.emptyList }
                             imageSize="tiny"
                         />

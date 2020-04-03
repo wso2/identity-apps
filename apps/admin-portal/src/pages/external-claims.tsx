@@ -278,7 +278,7 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                                         setAddClaim(true);
                                     } }
                                 >
-                                    <Icon name="add" /> Add an External Claim
+                                    <Icon name="add" /> Add External Claim
                                 </PrimaryButton>
                             }
                             title="Create an External Claim"
