@@ -57,7 +57,6 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     const [ checkedPermissions, setCheckedPermissions ] = useState<Permission[]>([]);
     const [ isPermissionsLoading, setIsPermissionsLoading ] = useState<boolean>(true);
     const [ collapseTree, setCollapseTree ] = useState<boolean>(false);
-    const [ isAllChecked, setIsAllChecked ] = useState<boolean>(false);
 
     /**
      * Retrieve permissions for a given role if in Role edit mode.
@@ -104,6 +103,9 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                         path, path.resourcePath.replace(/^\/|\/$/g, "").split('/'), arr,
                     ),[]);
 
+                    //Will collapse top level nodes in initial load
+                    setTopNodesCollapsed(permissionTree)
+
                     //Retrieved permissions of Role in edit mode
                     if (availablePermissionsInRole.length !== 0) {
                         setCheckedPermissions(availablePermissionsInRole);
@@ -127,15 +129,29 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     }
 
     /**
-     * Util method to set check all if the root element is available in the 
-     * selected roles list.
+     * Util method to load the initial tree main elements collapsed.
      * 
-     * @param rolePermissions permissions which are already in the role
-     * @param treeNode permissions tree
+     * @param permissionNodes permissionTree
      */
-    const isAllPermissionsChecked = (rolePermissions: Permission[], treeNode: Permission[]) => {
-        return _.findIndex(rolePermissions, (rolePermission: Permission) => {
-            return rolePermission.fullPath === treeNode[0].fullPath
+    const setTopNodesCollapsed = (permissionNodes: Permission[]): void => {
+        permissionNodes[0].children?.forEach((permissionNode: Permission) => {
+            permissionNode.isExpanded = false;
+        })
+    }
+
+    /**
+     * Util method to change collapse state of tree nodes.
+     * 
+     * @param permissionNodes Permssion Tree
+     * @param parentCollapseState Collapsed state of the parent node
+     */
+    const setNodeCollapseState = (permissionNodes: Permission[], parentCollapseState: boolean): void => {
+        permissionNodes.forEach((permissionNode: Permission) => {
+            permissionNode.isExpanded = parentCollapseState;
+
+            if (permissionNode.children) {
+                setNodeCollapseState(permissionNode.children, parentCollapseState);
+            }
         })
     }
 
@@ -149,9 +165,6 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
      */
     const setCheckedStateForNodesInPermissionTree = (selectedPermissions: Permission[],
         permissionNodes: Permission[], isParentChecked: boolean): void => {
-            if (isAllPermissionsChecked(selectedPermissions, permissionNodes)) {
-                setIsAllChecked(true);
-            }
             permissionNodes.forEach(treeNode => {
                 if (selectedPermissions.some(selectedPermission => selectedPermission.fullPath === treeNode.fullPath)) {
                     treeNode.isChecked = true;
@@ -202,6 +215,31 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         }
     }
 
+    /**
+     * Handler to update collapse button state when tree node is expanded 
+     * or collapsed.
+     * 
+     * @param node - current node expanded or collapsed
+     * @param depth - depth of the current node in the tree
+     */
+    const handleOnToggle = (node: any, depth: number) => {
+        if (depth === 0 && node.isExpanded) {
+            setCollapseTree(false);
+        } else if (depth === 0 && !node.isExpanded) {
+            setCollapseTree(true);
+        }
+    }
+
+    /**
+     * Util method to handle expand all, collapse all button event.
+     */
+    const handleExpandAll = (): void => {
+        const collapsedTree = _.cloneDeep(permissionTree);
+        setNodeCollapseState(collapsedTree, collapseTree);
+        setPermissionTree(collapsedTree);
+        setCollapseTree(!collapseTree);
+    }
+
     return (
         <Segment basic>
             { !isPermissionsLoading && 
@@ -210,34 +248,9 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                             basic
                             compact
                             size="tiny"
-                            onClick={ () => {
-                                const collapsedState = _.cloneDeep(permissionTree);
-                                collapsedState[0].isExpanded = collapseTree;
-                                setPermissionTree(collapsedState);
-                                setCollapseTree(!collapseTree);
-                            } } 
+                            onClick={ handleExpandAll } 
                             icon={ collapseTree? "expand" : "compress" } 
                             content={ collapseTree? "Expand All" : "Collapse All" } 
-                        />
-                        <Button 
-                            basic
-                            compact
-                            size="tiny"
-                            onClick={ () => {
-                                const checkedState: Permission[] = _.cloneDeep(permissionTree);
-                                markChildrenAsChecked(checkedState, !isAllChecked);
-                                setPermissionTree(checkedState);
-                                if (checkedState[0].isChecked) {
-                                    setCheckedPermissions([...checkedPermissions, checkedState[0]])
-                                } else {
-                                    setCheckedPermissions(checkedPermissions.filter(item => { 
-                                        item.fullPath !== checkedState[0].fullPath
-                                    }));
-                                }
-                                setIsAllChecked(!isAllChecked)
-                            } }
-                            icon={ isAllChecked? "square outline" : "check square outline" } 
-                            content={ isAllChecked? "Uncheck All" : "Check All" } 
                         />
                 </div>
             }
@@ -254,6 +267,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                                 noChildrenAvailableMessage= ""
                                 onUpdateCb={ updatedData => setPermissionTree(updatedData) }
                                 onCheckToggleCb={ handlePermssionCheck }
+                                onExpandToggleCb={ handleOnToggle }
                             /> 
                         </div> : 
                         <ContentLoader active />
