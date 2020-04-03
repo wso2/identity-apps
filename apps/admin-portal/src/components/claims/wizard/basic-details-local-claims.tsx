@@ -20,8 +20,6 @@ import { Field, Forms, FormValue } from "@wso2is/forms";
 import { Grid, Label, Popup } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 
-import { Hint } from "@wso2is/react-components";
-
 /**
  * Prop types of `BasicDetailsLocalClaims` component
  */
@@ -58,6 +56,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     const [ isShowNameHint, setIsShowNameHint ] = useState(false);
     const [ isShowClaimIDHint, setIsShowClaimIDHint ] = useState(false);
     const [ isShowRegExHint, setIsShowRegExHint ] = useState(false);
+    const [ isShowDisplayOrderHint, setIsShowDisplayOrderHint ] = useState(false);
 
     /**
      * Set the if show on profile is selected or not
@@ -227,11 +226,23 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     requiredErrorMessage="Display Order is required"
                                     placeholder="Enter the display order"
                                     value={ values?.get("displayOrder")?.toString() ?? "0" }
+                                    onMouseOver={ () => {
+                                        setIsShowDisplayOrderHint(true);
+                                    } }
+                                    onMouseOut={ () => {
+                                        setIsShowDisplayOrderHint(false);
+                                    } }
                                 />
-                                <Hint>
-                                    Integer value to specify the order in which the claim is displayed among
-                                    other claims under the same dialect
-                                    </Hint>
+                                <Popup
+                                    content="This regular expression is used to validate the value this claim can take"
+                                    inverted
+                                    open={ isShowDisplayOrderHint }
+                                    trigger={ <span></span> }
+                                    onClose={ () => {
+                                        setIsShowDisplayOrderHint(false);
+                                    } }
+                                    position="bottom left"
+                                />
                             </Grid.Column>
                         </Grid.Row>
                     )
