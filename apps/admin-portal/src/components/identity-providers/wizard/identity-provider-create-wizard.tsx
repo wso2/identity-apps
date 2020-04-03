@@ -22,10 +22,10 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 
 import _ from "lodash";
 
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { addAlert } from "@wso2is/core/store";
+import { AlertLevels } from "@wso2is/core/models";
+import { useTrigger } from "@wso2is/forms";
 
 import { createIdentityProvider, getFederatedAuthenticatorMetadata } from "../../../api";
 import { history } from "../../../helpers";
@@ -384,7 +384,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     icon: IdentityProviderWizardStepIcons.authenticator,
                     name: WizardSteps.AUTHENTICATOR,
                     submitCallback: setSubmitAuthenticator,
-                    title: "Authenticator"
+                    title: "Authenticator Configuration"
                 }
             ];
         }
@@ -482,7 +482,8 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                         ))}
                     </Steps.Group>
                 </Modal.Content>
-                <Modal.Content className="content-container" scrolling>{resolveStepContent(currentWizardStep)}</Modal.Content>
+                <Modal.Content className="content-container" scrolling>{resolveStepContent(currentWizardStep)}
+                </Modal.Content>
                 <Modal.Actions>
                     <Grid>
                         <Grid.Row column={ 1 }>
@@ -492,7 +493,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                 {currentWizardStep < wizardSteps.length - 1 && (
                                     <PrimaryButton floated="right" onClick={ navigateToNext }>
-                                        Next Step <Icon name="arrow right"/>
+                                        Next<Icon name="arrow right"/>
                                     </PrimaryButton>
                                 )}
                                 {currentWizardStep === wizardSteps.length - 1 && (
@@ -500,7 +501,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                                 )}
                                 {currentWizardStep > 0 && (
                                     <LinkButton floated="right" onClick={ navigateToPrevious }>
-                                        <Icon name="arrow left"/> Previous step
+                                        <Icon name="arrow left"/> Previous
                                     </LinkButton>
                                 )}
                             </Grid.Column>

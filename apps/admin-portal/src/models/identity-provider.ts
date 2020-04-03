@@ -161,7 +161,6 @@ export interface IdentityProviderTemplateListItemInterface {
     image: any;
     category: string;
     displayOrder: number;
-    // todo This is missing in the backend response.
     services?: SupportedServicesInterface[];
     idp: IdentityProviderInterface;
 }

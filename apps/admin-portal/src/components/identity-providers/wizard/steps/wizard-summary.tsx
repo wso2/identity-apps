@@ -65,7 +65,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         return authenticatorSummary?.properties.map((eachProp) => {
             const propertyMetadata = authenticatorMetadata?.properties?.find(eachPropMetadata =>
                 eachProp.key === eachPropMetadata.key);
-            if (eachProp.value !== undefined) {
+            if (eachProp.value !== undefined || !propertyMetadata.isConfidential) {
                 return (
                     <Grid.Row className="summary-field" columns={ 2 } key={ eachProp?.key }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">

@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import { Field, Forms } from "@wso2is/forms";
-import React, { FunctionComponent, ReactElement } from "react";
-import { Button, Grid } from "semantic-ui-react";
 import {
     AuthenticatorFormPropsInterface,
     AuthenticatorProperty,
     FederatedAuthenticatorMetaPropertyInterface
 } from "../../../../models";
+import { Button, Grid } from "semantic-ui-react";
+import { getCheckboxField, getConfidentialField, getTextField, getURLField } from "./form-fields-helper";
+import React, { FunctionComponent, ReactElement } from "react";
+import { Forms } from "@wso2is/forms";
 
 /**
  * Constants for common authenticator.
@@ -39,6 +40,8 @@ enum FieldType {
     CHECKBOX = "CheckBox",
     TEXT = "Text",
     CONFIDENTIAL = "Confidential",
+    URL = "URL",
+    QUERY_PARAMS = "QueryParameters",
 }
 
 /**
@@ -92,65 +95,17 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
         };
     };
 
-    const getConfidentialField = (eachProp: AuthenticatorProperty,
-                                  propertyMetadata: FederatedAuthenticatorMetaPropertyInterface) => {
-        return (
-            <Field
-                showPassword="Show Secret"
-                hidePassword="Hide Secret"
-                label={ propertyMetadata?.displayName }
-                name={ eachProp?.key }
-                placeholder={ propertyMetadata?.description }
-                required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage={ "This is required" }
-                type="password"
-            />
-        );
-    };
-
-    const getCheckboxField = (eachProp: AuthenticatorProperty,
-                              propertyMetadata: FederatedAuthenticatorMetaPropertyInterface) => {
-        return (
-            <Field
-                name={ eachProp?.key }
-                label={ propertyMetadata?.displayName }
-                type="checkbox"
-                required={ propertyMetadata?.isMandatory }
-                value={ eachProp?.value ? [eachProp?.key] : [] }
-                requiredErrorMessage="This is required"
-                children={
-                    [
-                        {
-                            label: propertyMetadata?.description,
-                            value: eachProp?.key
-                        }
-                    ]
-                }
-            />
-        );
-    };
-
-    const getTextField = (eachProp: AuthenticatorProperty,
-                          propertyMetadata: FederatedAuthenticatorMetaPropertyInterface) => {
-        return (
-            <Field
-                name={ eachProp?.key }
-                label={ propertyMetadata?.displayName }
-                required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage="This is required"
-                placeholder={ propertyMetadata?.description }
-                type="text"
-                value={ eachProp?.value }
-                key={ eachProp?.key }
-            />
-        );
-    };
-
-    const getFieldType = (propertyMetadata) => {
+    const getFieldType = (propertyMetadata: FederatedAuthenticatorMetaPropertyInterface): FieldType => {
         if (propertyMetadata?.type?.toUpperCase() === CommonAuthenticatorConstants.BOOLEAN) {
             return FieldType.CHECKBOX;
         } else if (propertyMetadata?.isConfidential) {
             return FieldType.CONFIDENTIAL;
+        } else if (propertyMetadata?.key.toUpperCase().includes("URL")) {
+            // todo Need proper backend support to identity URL fields.
+            return FieldType.URL;
+        } else if (propertyMetadata?.key.toUpperCase().includes("QUERYPARAM")) {
+            // todo Need proper backend support to identity Query parameter fields.
+            return FieldType.QUERY_PARAMS;
         }
         return FieldType.TEXT;
     };
@@ -163,6 +118,12 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
             }
             case FieldType.CONFIDENTIAL : {
                 return getConfidentialField(eachProp, propertyMetadata);
+            }
+            case FieldType.URL : {
+                return getURLField(eachProp, propertyMetadata);
+            }
+            case FieldType.QUERY_PARAMS : {
+                return getTextField(eachProp, propertyMetadata);
             }
             default: {
                 return getTextField(eachProp, propertyMetadata);
@@ -204,9 +165,9 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
             submitState={ triggerSubmit }
         >
             <Grid>
-                { getAuthenticatorPropertyFields().sort((a, b) => {
+                {getAuthenticatorPropertyFields().sort((a, b) => {
                     return Number(a.key) - Number(b.key);
-                }) }
+                })}
                 {enableSubmitButton ? getSubmitButton() : null}
             </Grid>
         </Forms>
