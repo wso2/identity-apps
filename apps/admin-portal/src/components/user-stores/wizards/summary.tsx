@@ -82,7 +82,7 @@ export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): React
             {type ? generateSummaryLine("Userstore Type", type) : null}
             {
                 properties?.map((property: TypeProperty) => {
-                    if (property.name !== "password") {
+                    if (!property.name.toLocaleLowerCase().includes("password")) {
                         return (
                             generateSummaryLine(
                                 property.description.split("#")[0],
