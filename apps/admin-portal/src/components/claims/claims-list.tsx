@@ -16,12 +16,12 @@
 * under the License.
 */
 
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components"
-import { AlertLevels, AppConfigInterface, Claim, ClaimDialect, ExternalClaim } from "../../models";
-import { List, Modal } from "semantic-ui-react";
+import { AlertLevels, AppConfigInterface, AttributeMapping, Claim, ClaimDialect, ExternalClaim, UserStore, UserStoreListItem } from "../../models";
+import { Icon, List, Modal, Popup } from "semantic-ui-react";
 import { AppConfig, history } from "../../helpers";
-import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../../api";
+import { deleteAClaim, deleteADialect, deleteAnExternalClaim, getUserStores } from "../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { CopyInputField } from "@wso2is/react-components";
@@ -73,9 +73,10 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
 
     const { list, localClaim, openEdit, update, dialectID } = props;
 
-    const [deleteConfirm, setDeleteConfirm] = useState(false);
-    const [deleteType, setDeleteType] = useState<ListType>(null);
-    const [deleteID, setDeleteID] = useState<string>(null);
+    const [ deleteConfirm, setDeleteConfirm ] = useState(false);
+    const [ deleteType, setDeleteType ] = useState<ListType>(null);
+    const [ deleteID, setDeleteID ] = useState<string>(null);
+    const [ userStores, setUserStores ] = useState<UserStoreListItem[]>([]);
 
     const dispatch = useDispatch();
 
@@ -85,9 +86,46 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
     const copyButton = useRef([]);
 
     list?.forEach((element, index) => {
-        claimURIText.current.push(claimURIText.current[index] || React.createRef());
-        copyButton.current.push(copyButton.current[index] || React.createRef())
+        claimURIText.current.push(claimURIText.current[ index ] || React.createRef());
+        copyButton.current.push(copyButton.current[ index ] || React.createRef())
     });
+
+    useEffect(() => {
+        if (isLocalClaim(list)) {
+            getUserStores(null).then(response => {
+                setUserStores(response);
+            }).catch(error => {
+                dispatch(addAlert({
+                    description: error?.description ?? "An error occurred while fetching the userstores.",
+                    level: AlertLevels.ERROR,
+                    message: error?.message ?? "Something went wrong"
+                }))
+            })
+        }
+    }, [ list ]);
+
+    /**
+     * This check if the input claim is mapped to attribute from every userstore.
+     * 
+     * @param {Claim} claim The claim to be checked.
+     * 
+     * @returns {string[]} The array of userstore names without a mapped attribute.
+     */
+    const checkUserStoreMapping = (claim: Claim): string[] => {
+        const userStoresNotSet = [];
+
+        userStores.forEach(userStore => {
+            claim.attributeMapping.find(attribute => {
+                return attribute.userstore.toLowerCase() === userStore.name.toLowerCase();
+            }) ?? userStoresNotSet.push(userStore.name);
+        });
+
+        claim.attributeMapping.find(attribute => {
+            return attribute.userstore === "PRIMARY";
+        }) ?? userStoresNotSet.push("Primary");
+
+        return userStoresNotSet;
+    }
 
     /**
      * This checks if the list data is a local claim
@@ -119,7 +157,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
     const listContent = (content: any): React.ReactElement => (
         <List.Content>
             <List.Description className="list-item-meta">
-                {content}
+                { content }
             </List.Description>
         </List.Content>
     );
@@ -280,7 +318,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
      */
     const generateDialectLetter = (name: string): string => {
         const stringArray = name.replace("http://", "").split("/");
-        return stringArray[0][0].toLocaleUpperCase();
+        return stringArray[ 0 ][ 0 ].toLocaleUpperCase();
     }
 
     /**
@@ -290,17 +328,19 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
      */
     const generateClaimLetter = (name: string): string => {
         const stringArray = name.replace("http://", "").split("/");
-        return stringArray[stringArray.length - 1][0].toLocaleUpperCase();
+        return stringArray[ stringArray.length - 1 ][ 0 ].toLocaleUpperCase();
     }
 
     return (
         <>
-            {deleteConfirm ? showDeleteConfirm() : null}
+            { deleteConfirm ? showDeleteConfirm() : null }
             <ResourceList>
                 {
                     isLocalClaim(list)
                         ? appConfig?.claimDialects?.features?.localClaims?.permissions?.read
                         && list?.map((claim: Claim, index: number) => {
+                            const userStoresNotMapped = checkUserStoreMapping(claim);
+                            const showWarning = userStoresNotMapped.length > 0;
                             return (
                                 <ResourceList.Item
                                     key={ index }
@@ -321,18 +361,53 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                         }
                                     ] }
                                     avatar={
-                                        <Image
-                                            floated="left"
-                                            verticalAlign="middle"
-                                            rounded
-                                            centered
-                                            size="mini"
-                                        >
-                                            <ClaimsAvatarBackground />
-                                            <span className="claims-letter">
-                                                { generateClaimLetter(claim.claimURI) }
-                                            </span>
-                                        </Image>
+                                        <>
+                                            { showWarning &&
+                                                <Popup
+                                                    trigger={
+                                                        <Icon
+                                                            className="notification-icon"
+                                                            name="warning circle"
+                                                            size="small"
+                                                            color="red"
+                                                        />
+                                                    }
+                                                    content={
+                                                        <div>
+                                                            This claim has not been mapped to an attribute
+                                                            in the following userstores:
+                                                        <ul>
+                                                                {
+                                                                    userStoresNotMapped.map(
+                                                                        (store: string, index: number) => {
+                                                                            return (
+                                                                                <li key={ index }>
+                                                                                    { store }
+                                                                                </li>
+                                                                            )
+                                                                        })
+                                                                }
+                                                            </ul>
+
+
+                                                        </div>
+                                                    }
+                                                    inverted
+                                                />
+                                            }
+                                            <Image
+                                                floated="left"
+                                                verticalAlign="middle"
+                                                rounded
+                                                centered
+                                                size="mini"
+                                            >
+                                                <ClaimsAvatarBackground />
+                                                <span className="claims-letter">
+                                                    { generateClaimLetter(claim.claimURI) }
+                                                </span>
+                                            </Image>
+                                        </>
                                     }
                                     actionsFloated="right"
                                     itemHeader={ claim.displayName }
