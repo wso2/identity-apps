@@ -157,7 +157,7 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
                 <SummaryUserStores
                     data={ userStore }
                     properties={ type?.properties?.Mandatory }
-                    type={ type?.name }
+                    type={ type?.typeName }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
