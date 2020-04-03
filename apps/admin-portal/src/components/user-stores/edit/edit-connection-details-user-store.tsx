@@ -141,7 +141,9 @@ const EditConnectionDetails = (
                     >
                         {
                             properties?.map((property: Property, index: number) => {
-                                const isPassword = property.name === "password";
+                                const isPassword = property.name
+                                    .toLocaleLowerCase()
+                                    .includes("password");
                                 if (isPassword) {
                                     return (
                                         <Field

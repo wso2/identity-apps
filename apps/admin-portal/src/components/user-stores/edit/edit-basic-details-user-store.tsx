@@ -72,15 +72,15 @@ export const EditBasicDetailsUserStore = (
 
                             updateUserStore(id, data).then(() => {
                                 dispatch(addAlert({
-                                    message: "User Store updated successfully!",
-                                    description: "The User Store has been updated successfully.",
+                                    message: "Userstore updated successfully!",
+                                    description: "The Userstore has been updated successfully.",
                                     level: AlertLevels.SUCCESS
                                 }));
                                 update();
                             }).catch((error) => {
                                 dispatch(addAlert({
                                     message: error?.message ?? "Something went wrong",
-                                    description: error?.description ?? "An error occurred while updating the User Store",
+                                    description: error?.description ?? "An error occurred while updating the Userstore",
                                     level: AlertLevels.ERROR
                                 }));
                             });
@@ -91,19 +91,11 @@ export const EditBasicDetailsUserStore = (
                             label="Name"
                             name="name"
                             type="text"
-                            required={ true }
+                            required={ false }
                             requiredErrorMessage="Name is a required field"
                             placeholder="Enter a name"
                             value={ userStore?.name }
-                        />
-                        <Field
-                            label="Description"
-                            name="description"
-                            type="textarea"
-                            required={ false }
-                            requiredErrorMessage=""
-                            placeholder="Enter a description"
-                            value={ userStore?.description }
+                            disabled
                         />
                         <Field
                             label="Type"
@@ -114,8 +106,16 @@ export const EditBasicDetailsUserStore = (
                             requiredErrorMessage="Select a Type"
                             value={ userStore?.typeName }
                         />
+                        <Field
+                            label="Description"
+                            name="description"
+                            type="textarea"
+                            required={ false }
+                            requiredErrorMessage=""
+                            placeholder="Enter a description"
+                            value={ userStore?.description }
+                        />
                     </Forms>
-
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
