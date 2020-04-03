@@ -234,7 +234,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     } }
                                 />
                                 <Popup
-                                    content="This regular expression is used to validate the value this claim can take"
+                                    content={
+                                        "This determines the position at which this claim is displayed" +
+                                        " in the user profile and the user registration page"
+                                    }
                                     inverted
                                     open={ isShowDisplayOrderHint }
                                     trigger={ <span></span> }
