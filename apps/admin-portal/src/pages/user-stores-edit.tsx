@@ -16,20 +16,21 @@
 * under the License.
 */
 
-import React, { useEffect, useState } from "react"
-import { PageLayout } from "../layouts"
-import { getAType, getAUserStore } from "../api";
 import { AlertLevels, Type, UserStore } from "../models";
-import { ResourceTab } from "@wso2is/react-components";
 import {
     EditBasicDetailsUserStore,
     MemoEditAdvancedProperties,
     MemoEditConnectionDetails,
     MemoEditOptionalProperties
 } from "../components";
-import { history } from "../helpers";
-import { useDispatch } from "react-redux";
+import { getAType, getAUserStore } from "../api";
+import React, { useEffect, useState } from "react"
+
 import { addAlert } from "../store/actions";
+import { history } from "../helpers";
+import { PageLayout } from "../layouts"
+import { ResourceTab } from "@wso2is/react-components";
+import { useDispatch } from "react-redux";
 
 /**
  * This renders the userstore edit page
@@ -72,9 +73,9 @@ export const UserStoresEditPage = (props): React.ReactElement => {
                 setType(response);
             }).catch(error => {
                 dispatch(addAlert({
-                    message: error?.message || "Something went wrong",
                     description: error?.description || "An error occurred while fetching the type meta data.",
-                    level: AlertLevels.ERROR
+                    level: AlertLevels.ERROR,
+                    message: error?.message || "Something went wrong"
                 }));
             });
         }

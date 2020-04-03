@@ -16,19 +16,20 @@
  * under the License.
  */
 
-import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
-import React, { useContext, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { getUserStores } from "../api";
 import { AddUserStore, UserStoresList, UserStoresSearch } from "../components";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { UserConstants } from "../constants";
-import { ListLayout, PageLayout } from "../layouts";
 import { AlertLevels, AppConfigInterface, QueryParams, UserStoreListItem } from "../models";
-import { addAlert } from "../store/actions";
+import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import { filterList, sortList } from "../utils";
+import { ListLayout, PageLayout } from "../layouts";
+import React, { useContext, useEffect, useState } from "react";
+
+import { addAlert } from "../store/actions";
 import { AppConfig } from "../helpers";
+import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
+import { EmptyPlaceholderIllustrations } from "../configs";
+import { getUserStores } from "../api";
+import { useDispatch } from "react-redux";
 
 /**
  * This renders the Userstores page.
@@ -76,10 +77,10 @@ export const UserStores = (): React.ReactElement => {
      */
     const fetchUserStores = (limit?: number, sort?: string, offset?: number, filter?: string) => {
         const params: QueryParams = {
+            filter: filter || null,
             limit: limit || null,
-            sort: sort || null,
             offset: offset || null,
-            filter: filter || null
+            sort: sort || null
         };
         setIsLoading(true);
         getUserStores(params).then(response => {
