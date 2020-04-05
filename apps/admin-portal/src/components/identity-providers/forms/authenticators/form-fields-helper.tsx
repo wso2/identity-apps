@@ -20,7 +20,6 @@ import { AuthenticatorProperty, FederatedAuthenticatorMetaPropertyInterface } fr
 import { Field } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import React from "react";
-import {QueryParamsInputField} from "../../components";
 
 export const getConfidentialField = (eachProp: AuthenticatorProperty,
                                      propertyMetadata: FederatedAuthenticatorMetaPropertyInterface) => {
@@ -101,9 +100,14 @@ export const getURLField = (eachProp: AuthenticatorProperty,
 export const getQueryParamsField = (eachProp: AuthenticatorProperty,
                             propertyMetadata: FederatedAuthenticatorMetaPropertyInterface) => {
     return (
-        <QueryParamsInputField
-            label={ propertyMetadata.displayName }
-            isRequired={ propertyMetadata?.isMandatory }
+        <Field
+            name={ eachProp?.key }
+            label={ propertyMetadata?.displayName }
+            required={ propertyMetadata?.isMandatory }
+            requiredErrorMessage="This is required"
+            type="queryParams"
+            value={ eachProp?.value }
+            key={ eachProp?.key }
         />
     );
 };

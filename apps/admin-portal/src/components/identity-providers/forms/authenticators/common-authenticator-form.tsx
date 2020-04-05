@@ -87,7 +87,7 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
      * @param values - Form values.
      * @return {any} Sanitized form values.
      */
-    const updateConfiguration = (values: any): any => {
+    const getUpdatedConfigurations = (values: any): any => {
         const properties = initialValues?.properties.map((eachProp) => {
             const propertyMetadata = metadata.properties?.find(metaProperty => metaProperty.key === eachProp.key);
             return {
@@ -166,7 +166,7 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
     return (
         <Forms
             onSubmit={ (values) => {
-                onSubmit(updateConfiguration(values));
+                onSubmit(getUpdatedConfigurations(values));
             } }
             submitState={ triggerSubmit }
         >

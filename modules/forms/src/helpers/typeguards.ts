@@ -25,12 +25,12 @@ import {
     FormField,
     FormSubmit,
     PasswordField,
+    QueryParamsField,
     RadioField,
     Reset,
     TextField,
     ToggleField
 } from "../../src";
-import { FormValue } from "../models";
 
 /**
  * Type guard to check if an input element is a text field
@@ -76,6 +76,14 @@ export const isDropdownField = (toBeDetermined: FormField): toBeDetermined is Dr
  */
 export const isCheckBoxField = (toBeDetermined: FormField): toBeDetermined is CheckboxField => {
     return (toBeDetermined as CheckboxField).type === "checkbox";
+};
+
+/**
+ * Type guard to check if an input element is of the type Query Parameters
+ * @param toBeDetermined
+ */
+export const isQueryParamsField = (toBeDetermined: FormField): toBeDetermined is QueryParamsField => {
+    return (toBeDetermined as QueryParamsField).type === "queryParams";
 };
 
 /**
