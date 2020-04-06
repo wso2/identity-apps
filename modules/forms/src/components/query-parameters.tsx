@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Form, Label } from "semantic-ui-react";
+import { Button, Form, Icon, Label, Popup } from "semantic-ui-react";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import _ from "lodash";
 
@@ -120,13 +120,14 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
         if (_.isEmpty(queryParamName) || _.isEmpty(queryParamValue)) {
             return;
         }
-        
-        setQueryParams(_.unionWith(queryParams, [
-            {
-                name: queryParamName,
-                value: queryParamValue
-            }
-        ], _.isEqual));
+
+        const inputQueryParameter = {
+            name: queryParamName,
+            value: queryParamValue
+        };
+        const constructedQueryParameters = _.unionWith(queryParams, [ inputQueryParameter ], _.isEqual);
+
+        setQueryParams(constructedQueryParameters);
 
         updateQueryParameterInputFields({
             name: "",
@@ -134,27 +135,14 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
         })
     };
 
-    const handleLabelRemove = (event, data) => {
-        event.preventDefault();
-        event.stopPropagation();
+    const handleLabelRemove = (queryParameter: string) => {
         
-        if (_.isEmpty(data)) {
+        if (_.isEmpty(queryParameter)) {
             return;
         }
         
-        setQueryParams(_.filter(queryParams, queryParam => !_.isEqual(queryParam, buildQueryParameter(data.content))));
-    };
-
-    const handleLabelClick = (event, data) => {
-        event.preventDefault();
-        
-        if (_.isEmpty(data)) {
-            return;
-        }
-
-        const queryParam = buildQueryParameter(data.content);
-
-        updateQueryParameterInputFields(queryParam);
+        setQueryParams(_.filter(queryParams, queryParam => !_.isEqual(queryParam,
+            buildQueryParameter(queryParameter))));
     };
 
     return (
@@ -180,31 +168,36 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
                     } }
                 />
 
-                <Form.Button
-                    fluid
-                    onClick={ (event) => handleQueryParameterAdd(event) }
-                    icon="plus square"
-                    size="medium"
-                    width="two"
+                <Popup
+                    trigger={
+                        (
+                            <Button
+                                onClick={ (e) => handleQueryParameterAdd(e) }
+                                icon="add"
+                                type="button"
+                                disabled={ false }
+                            />
+                        )
+                    }
+                    position="top center"
+                    content="Add URL"
+                    inverted
                 />
             </Form.Group>
 
             {
                 queryParams && queryParams?.map((eachQueryParam, index) => {
+                    const queryParameter = eachQueryParam.name + "=" + eachQueryParam.value;
                     return (
                         <Label
-                            as='a'
-                            tag
                             key={ index }
-                            onRemove={ (event, data) => {
-                                handleLabelRemove(event, data)
-                            } }
-                            onClick={ (event, data) => {
-                                handleLabelClick(event, data)
-                            } }
-                            removeIcon="delete"
-                            content={ eachQueryParam.name + "=" + eachQueryParam.value }
-                        />
+                        >
+                            { queryParameter }
+                            <Icon
+                                name="delete"
+                                onClick={ () => handleLabelRemove(queryParameter) }
+                            />
+                        </Label>
                     );
                 })
             }

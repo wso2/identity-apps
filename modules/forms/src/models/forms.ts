@@ -146,6 +146,7 @@ export interface CheckboxField extends FormRequiredFieldModel {
 export interface QueryParamsField extends FormRequiredFieldModel {
     type: "queryParams";
     value?: string;
+    validation?: (value: string, validation: Validation, allValues?: Map<string, FormValue>) => void;
 }
 
 /**
