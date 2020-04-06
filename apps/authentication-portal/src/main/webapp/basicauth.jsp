@@ -113,7 +113,7 @@
                     if (userName.value) {
                         $.ajax({
                             type: "GET",
-                            url: "/logincontext?sessionDataKey=" + getParameterByName("sessionDataKey") + 
+                            url: "<%=logincontextURL%>?sessionDataKey=" + getParameterByName("sessionDataKey") +
                                 "&relyingParty=" + getParameterByName("relyingParty") + "&tenantDomain=" + tenantName,
                             success: function (data) {
                                 if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
