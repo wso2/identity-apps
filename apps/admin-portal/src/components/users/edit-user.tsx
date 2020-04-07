@@ -22,7 +22,7 @@ import { useDispatch } from "react-redux";
 import { AlertInterface, BasicProfileInterface } from "../../models";
 import { addAlert } from "../../store/actions";
 import { UserProfile } from "./user-profile";
-import { UserRolesList } from "./user-roles";
+import { UserRolesList } from "./user-roles-edit";
 import { UserGroupsList } from "./user-groups-edit";
 
 interface EditUserPropsInterface {
