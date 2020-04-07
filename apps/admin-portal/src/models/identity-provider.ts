@@ -58,7 +58,7 @@ export interface IdentityProviderInterface {
     roles?: string;
     federatedAuthenticators?: FederatedAuthenticatorListResponseInterface;
     certificate?: CertificateConfigInterface;
-    provisioning?: any;
+    provisioning?: ProvisioningInterface;
 }
 
 export interface IdentityProviderAdvanceInterface {
@@ -203,6 +203,60 @@ export enum SupportedAuthenticators {
 export enum SupportedProvisioningConnectors {
     NONE = "none",
     GOOGLE = "google"
+}
+
+/**
+ *  Provisioning list response interface.
+ */
+export interface ProvisioningResponseInterface {
+    jit?: JITProvisioningResponseInterface;
+    outboundConnectors?: OutboundProvisioningConnectorsListResponseInterface;
+}
+
+export interface ProvisioningInterface {
+    jit?: JITProvisioningResponseInterface;
+    outboundConnectors?: OutboundProvisioningConnectorsInterface;
+}
+
+export interface JITProvisioningResponseInterface {
+    isEnabled?: boolean;
+    scheme?: SupportedJITProvisioningSchemes;
+    userstore?: string;
+}
+
+enum SupportedJITProvisioningSchemes {
+    PROVISION_SILENTLY = "PROVISION_SILENTLY"
+}
+
+export interface OutboundProvisioningConnectorsInterface {
+    defaultConnectorId?: string;
+    connectors?: OutboundProvisioningConnectorInterface[];
+}
+
+export interface OutboundProvisioningConnectorsListResponseInterface {
+    defaultConnectorId?: string;
+    connectors?: OutboundProvisioningConnectorListItemInterface[];
+}
+
+export interface OutboundProvisioningConnectorListItemInterface {
+    connectorId?: string;
+    name?: string;
+    isEnabled?: boolean;
+    self?: string;
+}
+
+export interface OutboundProvisioningConnectorInterface {
+    connectorId?: string;
+    isEnabled?: boolean;
+    isDefault?: boolean;
+    blockingEnabled?: boolean;
+    rulesEnabled?: boolean;
+    properties?: OutboundProvisioningConnectorProperty[];
+}
+
+export interface OutboundProvisioningConnectorProperty {
+    key?: string;
+    value?: string;
 }
 
 /**
