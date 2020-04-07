@@ -70,6 +70,11 @@ export const emptyStorageApplicationSettingsItem = (): StorageApplicationSetting
     recentApplications: []
 });
 
+/**
+ * Empty identity apps settings object.
+ *
+ * @return {StorageIdentityAppsSettingsInterface}
+ */
 export const emptyIdentityAppsSettings = (): StorageIdentityAppsSettingsInterface => ({
     identityAppsSettings: {
         applicationPreferences: {
