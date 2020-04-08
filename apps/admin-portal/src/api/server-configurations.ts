@@ -140,43 +140,45 @@ export const updateAccountRecoveryConfigurations = (data: object): Promise<any> 
 };
 
 /**
- * Retrieve all login policies configurations.
+ * Retrieve all login policies.
  *
  * @returns {Promise<any>} a promise containing the configurations.
  */
-export const getAllLoginPoliciesConfigurations = (): Promise<any> => {
+export const getAllLoginPolicies = (): Promise<any> => {
     return getConfigurations(store.getState().config.endpoints.loginPolicies);
 };
 
 /**
- * Update account locking configurations.
+ * Update login policies.
  *
  * @param data request payload
  *
  * @returns {Promise<any>} a promise containing the response.
  */
-export const updateAccountLockingConfigurations = (data: object): Promise<any> => {
+export const updateAllLoginPolicies = (data: object): Promise<any> => {
+    // Todo: API allows to update any property without looking at the connector ID. Would be better to have different
+    // API calls per each connector if the UI design permits it.
     return updateConfigurations(data, store.getState().config.endpoints.accountLocking);
 };
 
 /**
- * Update account disabling configurations.
+ * Retrieve all password policies.
  *
- * @param data request payload
- *
- * @returns {Promise<any>} a promise containing the response.
+ * @returns {Promise<any>} a promise containing the configurations.
  */
-export const updateAccountDisablingConfigurations = (data: object): Promise<any> => {
-    return updateConfigurations(data, store.getState().config.endpoints.accountDisabling);
+export const getAllPasswordPolicies = (): Promise<any> => {
+    return getConfigurations(store.getState().config.endpoints.passwordPolicies);
 };
 
 /**
- * Update captcha for sso login configurations.
+ * Update password policies.
  *
  * @param data request payload
  *
  * @returns {Promise<any>} a promise containing the response.
  */
-export const updateCaptchaForSSOLoginConfigurations = (data: object): Promise<any> => {
-    return updateConfigurations(data, store.getState().config.endpoints.captchaForSSOLogin);
+export const updateAllPasswordPolicies = (data: object): Promise<any> => {
+    // Todo: API allows to update any property without looking at the connector ID. Would be better to have different
+    // API calls per each connector if the UI design permits it.
+    return updateConfigurations(data, store.getState().config.endpoints.passwordHistory);
 };
