@@ -51,6 +51,7 @@ export interface ApplicationInterface extends ApplicationBasicInterface {
     advancedConfigurations?: AdvancedConfigurationsInterface;
     inboundProtocols?: InboundProtocolListItemInterface[];
     authenticationSequence?: AuthenticationSequenceInterface;
+    provisioningConfigurations?: ProvisioningConfigurationInterface;
 }
 
 /**
@@ -394,3 +395,38 @@ export const emptyApplication = (): ApplicationInterface => ({
     inboundProtocols: undefined,
     name: ""
 });
+
+/**
+ * Inbound SCIM Provisioning configuration.
+ */
+export interface InboundSCIMProvisioningConfigurationInterface {
+    proxyMode: boolean;
+    provisioningUserstoreDomain?: string;
+}
+
+/**
+ * Outbound Provisioning Configuration.
+ */
+export interface OutboundProvisioningConfiguration {
+    idp: string;
+    connector: string;
+    blocking?: boolean;
+    rules?: boolean;
+    jit?: boolean;
+}
+
+/**
+ * Provisioning configuration for the application.
+ */
+export interface ProvisioningConfigurationInterface {
+    inboundProvisioning?: InboundSCIMProvisioningConfigurationInterface;
+    outboundProvisioningIdps?: OutboundProvisioningConfiguration[];
+}
+
+/**
+ * Captures name and id of the user store.
+ */
+export interface SimpleUserStoreListItemInterface {
+    id?: string;
+    name: string;
+}
