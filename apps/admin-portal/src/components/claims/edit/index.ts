@@ -19,6 +19,6 @@
 export * from "./edit-additional-properties-local-claims";
 export * from "./edit-basic-details-local-claims";
 export * from "./edit-mapped-attributes-local-claims";
-export * from "./dep-edit-external-claims";
+export * from "./edit-external-claim";
 export * from "./edit-external-claims";
 export * from "./edit-dialect-details";
