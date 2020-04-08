@@ -133,12 +133,12 @@ export const UserStoresEditPage = (props): React.ReactElement => {
     return (
         <PageLayout
             title={ userStore?.name }
-            description={ "Edit Userstore" }
+            description={ "Edit userstore" }
             backButton={ {
                 onClick: () => {
                     history.push("/user-stores");
                 },
-                text: "Go back to Userstores"
+                text: "Go back to userstores"
             } }
             titleTextAlign="left"
             bottomMargin={ false }
