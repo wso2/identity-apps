@@ -18,4 +18,4 @@
 
 export * from "./mapped-attributes";
 export * from "./basic-details-local-claims";
-export * from "./summary";
+export * from "./summary-local-claims";
