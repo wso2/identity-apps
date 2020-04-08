@@ -60,6 +60,7 @@
         "react": "*",
         "react-codemirror2": "*",
         "react-dom": "*",
+        "react-markdown": "*",
         "react-notification-system": "*",
         "react-router-dom": "*",
         "react-top-loading-bar": "*",
