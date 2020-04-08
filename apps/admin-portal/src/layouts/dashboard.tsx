@@ -275,7 +275,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
         if (headerHeight === document.getElementById("app-header").offsetHeight) {
             return;
         }
-        setHeaderHeight(document.getElementById("app-header").offsetHeight);
+        setHeaderHeight(document.getElementById("app-header").offsetHeight - UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT);
     }, []);
 
     useEffect(() => {
