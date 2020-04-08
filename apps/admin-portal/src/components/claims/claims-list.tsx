@@ -16,10 +16,19 @@
 * under the License.
 */
 
-import { AlertLevels, AppConfigInterface, Claim, ClaimDialect, ExternalClaim, UserStoreListItem } from "../../models";
+import {
+    AddExternalClaim,
+    AlertLevels,
+    AppConfigInterface,
+    Claim,
+    ClaimDialect,
+    ExternalClaim,
+    UserStoreListItem
+} from "../../models";
 import { AppConfig, history } from "../../helpers";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim, getUserStores } from "../../api";
 import { EDIT_EXTERNAL_DIALECT, EDIT_LOCAL_CLAIMS_PATH } from "../../constants";
+import { FormValue, useTrigger } from "@wso2is/forms";
 import { Icon, List, Modal, Popup } from "semantic-ui-react";
 import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components"
 import React, { useContext, useEffect, useRef, useState } from "react";
@@ -27,16 +36,18 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { ClaimsAvatarBackground } from ".";
 import { CopyInputField } from "@wso2is/react-components";
+import { EditExternalClaim } from "./edit";
 import { Image } from "semantic-ui-react";
 import { useDispatch } from "react-redux";
 
 /**
- * Enum containing the list types
+ * Enum containing the list types.
  */
 export enum ListType {
     LOCAL,
     EXTERNAL,
-    DIALECT
+    DIALECT,
+    ADD_EXTERNAL
 }
 
 /**
@@ -44,25 +55,29 @@ export enum ListType {
  */
 interface ClaimsListPropsInterface {
     /**
-     * The array containing claims/external claims/claim dialects
+     * The array containing claims/external claims/claim dialects/add external claim.
      */
-    list: Claim[] | ExternalClaim[] | ClaimDialect[];
+    list: Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[];
     /**
-     * Sets if the list is to contain local claims
+     * Sets if the list is to contain local claims.
      */
     localClaim: ListType;
     /**
-     * Opens the edit modal
+     * Called to initiate update.
      */
-    openEdit?: (id: string) => void;
+    update?: () => void;
     /**
-     * Called to initiate update
-     */
-    update: () => void;
-    /**
-     * The dialect ID of claims
+     * The dialect ID of claims.
      */
     dialectID?: string;
+    /**
+     * Called when edit is clicked on add external claim list.
+     */
+    onEdit?: (index: number, values: Map<string, FormValue>) => void;
+    /**
+     * Called when delete is clicked on add external claim list.
+     */
+    onDelete?: (index: number) => void;
 }
 
 /**
@@ -72,16 +87,20 @@ interface ClaimsListPropsInterface {
  */
 export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement => {
 
-    const { list, localClaim, openEdit, update, dialectID } = props;
+    const { list, localClaim, update, dialectID, onEdit, onDelete } = props;
 
     const [ deleteConfirm, setDeleteConfirm ] = useState(false);
     const [ deleteType, setDeleteType ] = useState<ListType>(null);
     const [ deleteID, setDeleteID ] = useState<string>(null);
     const [ userStores, setUserStores ] = useState<UserStoreListItem[]>([]);
+    const [ editClaim, setEditClaim ] = useState("");
+    const [ editExternalClaim, setEditExternalClaim ] = useState(-1);
 
     const dispatch = useDispatch();
 
     const appConfig: AppConfigInterface = useContext(AppConfig);
+
+    const [ submitExternalClaim, setSubmitExternalClaim ] = useTrigger();
 
     const claimURIText = useRef([]);
     const copyButton = useRef([]);
@@ -129,30 +148,52 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
     }
 
     /**
-     * This checks if the list data is a local claim
-     * @param {Claim[] | ExternalClaim[] | ClaimDialect[]} toBeDetermined Type to be checked
-     * @return {boolean} `true` if the data is a local claim
+     * This checks if the list data is a local claim.
+     * 
+     * @param {Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]} toBeDetermined Type to be checked.
+     * 
+     * @return {boolean} `true` if the data is a local claim.
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const isLocalClaim = (toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[]): toBeDetermined is Claim[] => {
+    const isLocalClaim = (
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]
+    ): toBeDetermined is Claim[] => {
         return localClaim === ListType.LOCAL;
     }
 
     /**
-     * This checks if the list data is a dialect
-     * @param {Claim[] | ExternalClaim[] | ClaimDialect[]} toBeDetermined
-     * @return {boolean} `true` if the data is a dialect 
+     * This checks if the list data is a dialect.
+     * 
+     * @param {Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]} toBeDetermined
+     * 
+     * @return {boolean} `true` if the data is a dialect.
      */
     const isDialect = (
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[]
+        toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]
     ): toBeDetermined is ClaimDialect[] => {
         return localClaim === ListType.DIALECT
     }
 
     /**
-     * This displays the input content within a `List` content
-     * @param {any} content 
+     * This checks if the list data is an external claim.
+     *
+     * @param {Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]} toBeDetermined
+     *
+     * @return {boolean} `true` if the data is a an external claim.
+     */
+    const isExternalClaim = (
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]
+    ): toBeDetermined is ExternalClaim[] => {
+        return localClaim === ListType.EXTERNAL
+    }
+
+    /**
+     * This displays the input content within a `List` content.
+     * 
+     * @param {any} content Element to be enclosed within a list.
+     * 
      * @return {React.ReactElement}
      */
     const listContent = (content: any): React.ReactElement => (
@@ -444,7 +485,8 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                             </Image>
                                         }
                                         actions={ [
-                                            appConfig?.claimDialects?.permissions?.update && {
+                                            {
+                                                hidden: !appConfig?.claimDialects?.permissions?.update,
                                                 icon: "pencil alternate",
                                                 onClick: () => {
                                                     history.push(`${EDIT_EXTERNAL_DIALECT}/${dialect.id}`)
@@ -452,7 +494,8 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                                 popupText: "Edit",
                                                 type: "button"
                                             },
-                                            appConfig?.claimDialects?.permissions?.delete && {
+                                            {
+                                                hidden: !appConfig?.claimDialects?.permissions?.delete,
                                                 icon: "trash alternate",
                                                 onClick: () => { initDelete(ListType.DIALECT, dialect?.id) },
                                                 popupText: "Delete",
@@ -464,47 +507,152 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                     />
                                 );
                             })
-                            : appConfig?.claimDialects?.features?.externalClaims?.permissions?.read
-                            && list?.map((claim: ExternalClaim, index: number) => {
-                                return (
-                                    <ResourceList.Item
-                                        key={ index }
-                                        actions={ [
-                                            appConfig?.claimDialects?.features?.externalClaims?.permissions?.update && {
-                                                icon: "pencil alternate",
-                                                onClick: () => {
-                                                    openEdit(claim?.id);
+                            : isExternalClaim(list)
+                                ? appConfig?.claimDialects?.features?.externalClaims?.permissions?.read
+                                && list?.map((claim: ExternalClaim, index: number) => {
+                                    return (
+                                        <ResourceList.Item
+                                            key={ index }
+                                            actions={ [
+                                                editClaim && {
+                                                    icon: "check",
+                                                    onClick: () => {
+                                                        setSubmitExternalClaim();
+                                                    },
+                                                    popupText: "Update",
+                                                    type: "button"
                                                 },
-                                                popupText: "Edit",
-                                                type: "button"
-                                            },
-                                            appConfig?.claimDialects?.features?.externalClaims?.permissions?.delete && {
-                                                icon: "trash alternate",
-                                                onClick: () => { initDelete(ListType.EXTERNAL, claim?.id) },
-                                                popupText: "Delete",
-                                                type: "dropdown"
+                                                {
+                                                    hidden: !appConfig
+                                                        ?.claimDialects
+                                                        ?.features?.externalClaims?.permissions?.update,
+                                                    icon: editClaim ? "times" : "pencil alternate",
+                                                    onClick: () => {
+                                                        setEditClaim(editClaim ? "" : claim?.id);
+                                                    },
+                                                    popupText: "Edit",
+                                                    type: "button"
+                                                },
+                                                {
+                                                    hidden: !appConfig
+                                                    ?.claimDialects
+                                                    ?.features?.externalClaims?.permissions?.delete,
+                                                    icon: "trash alternate",
+                                                    onClick: () => { initDelete(ListType.EXTERNAL, claim?.id) },
+                                                    popupText: "Delete",
+                                                    type: "dropdown"
+                                                }
+                                            ] }
+                                            avatar={
+                                                <Image
+                                                    floated="left"
+                                                    verticalAlign="middle"
+                                                    rounded
+                                                    centered
+                                                    size="mini"
+                                                >
+                                                    <ClaimsAvatarBackground />
+                                                    <span className="claims-letter">
+                                                        { generateClaimLetter(claim.claimURI) }
+                                                    </span>
+                                                </Image>
                                             }
-                                        ] }
-                                        avatar={
-                                            <Image
-                                                floated="left"
-                                                verticalAlign="middle"
-                                                rounded
-                                                centered
-                                                size="mini"
-                                            >
-                                                <ClaimsAvatarBackground />
-                                                <span className="claims-letter">
-                                                    { generateClaimLetter(claim.claimURI) }
-                                                </span>
-                                            </Image>
-                                        }
-                                        actionsFloated="right"
-                                        itemHeader={ claim.claimURI }
-                                        itemDescription={ claim.mappedLocalClaimURI }
-                                    />
-                                )
-                            })
+                                            actionsFloated="right"
+                                            itemHeader={ claim.claimURI }
+                                            itemDescription={ claim.mappedLocalClaimURI }
+                                            metaContent={ [
+                                                editClaim
+                                                && <EditExternalClaim
+                                                    claimID={ claim.id }
+                                                    dialectID={ dialectID }
+                                                    update={ () => {
+                                                        setEditClaim("");
+                                                        update();
+                                                    } }
+                                                    submit={ submitExternalClaim }
+                                                    claimURI={ claim.claimURI }
+                                                />
+                                            ] }
+                                        />
+                                    )
+                                })
+                                : list?.map((claim: AddExternalClaim, index: number) => {
+                                    return (
+                                        <ResourceList.Item
+                                            key={ index }
+                                            actions={ [
+                                                {
+                                                    hidden: editExternalClaim === -1,
+                                                    icon: "check",
+                                                    onClick: () => {
+                                                        setSubmitExternalClaim();
+                                                    },
+                                                    popupText: "Update",
+                                                    type: "button"
+                                                },
+                                                {
+                                                    icon: editExternalClaim !== -1 ? "times" : "pencil alternate",
+                                                    onClick: () => {
+                                                        setEditExternalClaim(editExternalClaim !== -1 ? -1 : index);
+                                                    },
+                                                    popupText: "Edit",
+                                                    type: "button"
+                                                },
+                                                {
+                                                    icon: "trash alternate",
+                                                    onClick: () => { onDelete(index) },
+                                                    popupText: "Delete",
+                                                    type: "dropdown"
+                                                }
+                                            ] }
+                                            avatar={
+                                                editExternalClaim === -1 ?
+                                                    (
+                                                        <Image
+                                                            floated="left"
+                                                            verticalAlign="middle"
+                                                            rounded
+                                                            centered
+                                                            size="mini"
+                                                        >
+                                                            <ClaimsAvatarBackground />
+                                                            <span className="claims-letter">
+                                                                { generateClaimLetter(claim.claimURI) }
+                                                            </span>
+                                                        </Image>
+                                                    )
+                                                    : null
+                                            }
+                                            actionsFloated="right"
+                                            itemHeader={ editExternalClaim === -1 ? claim.claimURI : null }
+                                            itemDescription={ editExternalClaim === -1
+                                                ? claim.mappedLocalClaimURI
+                                                : null
+                                            }
+                                            descriptionColumnWidth={ 11 }
+                                            metaColumnWidth={ editExternalClaim !== -1 ? 12 : 1 }
+                                            actionsColumnWidth={ editExternalClaim !== -1 ? 4 : 4 }
+                                            metaContent={ [
+                                                editExternalClaim !== -1
+                                                && (
+                                                    <EditExternalClaim
+                                                        dialectID={ dialectID }
+                                                        update={ () => {
+                                                            setEditExternalClaim(-1);
+                                                        } }
+                                                        submit={ submitExternalClaim }
+                                                        claimURI={ claim.claimURI }
+                                                        onSubmit={ (values: Map<string, FormValue>) => {
+                                                            onEdit(index, values);
+                                                        } }
+                                                        wizard={ true }
+                                                        addedClaim={ claim }
+                                                    />
+                                                )
+                                            ] }
+                                        />
+                                    )
+                                })
                 }
             </ResourceList>
         </>
