@@ -93,7 +93,7 @@ export const ExternalDialectEditPage = (props): React.ReactElement => {
                 onClick: () => {
                     history.push(CLAIM_DIALECTS_PATH);
                 },
-                text: "Go back to Claim Dialects"
+                text: "Go back to claim dialects"
             } }
             titleTextAlign="left"
             bottomMargin={ false }
