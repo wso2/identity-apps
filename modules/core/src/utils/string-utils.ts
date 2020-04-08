@@ -118,4 +118,18 @@ export class StringUtils {
 
         return path;
     }
+
+    /**
+     * Removes leading dots and slashes from a relative path.
+     *
+     * @example
+     * // returns "assets/img/test.jpg"
+     * removeDotsAndSlashesFromRelativePath("../../assets/img/test.jpg");
+     *
+     * @param {string} path - Relative path.
+     * @return {string} Modified path.
+     */
+    public static removeDotsAndSlashesFromRelativePath(path: string): string {
+        return path.replace(/\.\.\//g, "");
+    }
 }
