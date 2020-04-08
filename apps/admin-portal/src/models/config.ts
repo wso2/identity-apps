@@ -87,6 +87,10 @@ export interface ApplicationEditFeaturesConfigInterface {
      * Advance settings feature.
      */
     advanceSettings: FeatureConfigInterface;
+    /**
+     * Provisioning settings feature.
+     */
+    provisioningSettings: FeatureConfigInterface;
 }
 
 /**
