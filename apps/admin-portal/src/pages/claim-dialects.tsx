@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AddEditDialect, DialectSearch } from "../components";
+import { AddDialect, DialectSearch } from "../components";
 import { AlertLevels, AppConfigInterface, ClaimDialect } from "../models";
 import { AppConfig, history } from "../helpers";
 import { ClaimsAvatarBackground, ClaimsList, ListType } from "../components";
@@ -164,15 +164,13 @@ export const ClaimDialectsPage = (): React.ReactElement => {
 
     return (
         <>
-            <AddEditDialect
+            <AddDialect
                 open={ addEditClaim }
                 onClose={ () => {
                     setAddEditClaim(false);
                     setDialectID(null);
                 } }
                 update={ getDialect }
-                edit={ dialectID ? true : false }
-                dialectID={ dialectID }
             />
             <PageLayout
                 title="Claim Dialects"
@@ -260,7 +258,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                                     setAddEditClaim(true);
                                 } }
                             >
-                                <Icon name="add" />Add Dialect
+                                <Icon name="add" />Add External Dialect
                             </PrimaryButton>
                         )
                     }
@@ -273,12 +271,6 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                     <ClaimsList
                         list={ paginate(filteredDialects, listItemLimit, offset) }
                         localClaim={ ListType.DIALECT }
-                        openEdit={
-                            (id: string) => {
-                                setDialectID(id);
-                                setAddEditClaim(true);
-                            }
-                        }
                         update={ getDialect }
                     />
                 </ListLayout>
