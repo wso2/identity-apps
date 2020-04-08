@@ -16,23 +16,22 @@
  * under the License.
  */
 
-import { AlertLevels, AppConfigInterface, ClaimDialect, ExternalClaim } from "../../../models";
+import { AlertLevels, ClaimDialect, ExternalClaim } from "../../../models";
 import { ClaimsList, ExternalClaimsSearch, ListType } from "../../../components";
-import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { Divider, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { filterList, sortList } from "../../../utils";
 import { getADialect, getAllExternalClaims } from "../../../api";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { addAlert } from "@wso2is/core/store";
-import { AppConfig } from "../../../helpers";
+import { AddExternalClaims } from "../add";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../../../constants";
 import { EmptyPlaceholder } from "../../../components/shared";
 import { EmptyPlaceholderIllustrations } from "../../../configs";
 import { ListLayout } from "../../../layouts";
-import { PrimaryButton } from "@wso2is/react-components";
 import { useDispatch } from "react-redux";
 
-interface EditExternalClaimsPropsInterface{
+interface EditExternalClaimsPropsInterface {
     /**
      * Dialect ID
      */
@@ -68,17 +67,12 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
     const [ offset, setOffset ] = useState(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ dialect, setDialect ] = useState<ClaimDialect>(null);
-    const [ addClaim, setAddClaim ] = useState(false);
-    const [ editClaim, setEditClaim ] = useState(false);
-    const [ editClaimID, setEditClaimID ] = useState("");
     const [ filteredClaims, setFilteredClaims ] = useState<ExternalClaim[]>(null);
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
     const [ isLoading, setIsLoading ] = useState(true);
 
     const dispatch = useDispatch();
-
-    const appConfig: AppConfigInterface = useContext(AppConfig);
 
     const { dialectID } = props;
 
@@ -190,75 +184,57 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
     };
 
     return (
-        claims?.length > 0
-            ? (
-                <ListLayout
-                    advancedSearch={ <ExternalClaimsSearch onFilter={ (query) => {
-                        //TODO: getExternalClaims(null, null, null, query);
-                        try {
-                            const filteredList: ExternalClaim[] = filterList(
-                                claims, query, sortBy.value, sortOrder
-                            );
-                            setFilteredClaims(filteredList);
-                        } catch (error) {
-                            dispatch(addAlert({
-                                description: error?.message,
-                                level: AlertLevels.ERROR,
-                                message: "Filter query format incorrect"
-                            }));
-                        }
-                    } } /> }
-                    currentListSize={ listItemLimit }
-                    listItemLimit={ listItemLimit }
-                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                    onPageChange={ handlePaginationChange }
-                    onSortStrategyChange={ handleSortStrategyChange }
-                    onSortOrderChange={ handleSortOrderChange }
-                    rightActionPanel={
-                        appConfig?.claimDialects?.features?.externalClaims?.permissions?.create && (
-                            <PrimaryButton
-                                onClick={ () => {
-                                    setAddClaim(true);
-                                } }
-                            >
-                                <Icon name="add" />Add a claim
-                            </PrimaryButton>
-                        )
-                    }
-                    showPagination={ true }
-                    sortOptions={ SORT_BY }
-                    sortStrategy={ sortBy }
-                    totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
-                    totalListSize={ filteredClaims?.length }
-                >
-                    <ClaimsList
-                        list={ paginate(filteredClaims, listItemLimit, offset) }
-                        localClaim={ ListType.EXTERNAL }
-                        openEdit={ (claimID: string) => {
-                            setEditClaim(true);
-                            setEditClaimID(claimID);
-                        } }
-                        update={ getExternalClaims }
-                        dialectID={ dialectID }
-                    />
-                </ListLayout>
-            )
-            : !isLoading && (
-                <EmptyPlaceholder
-                    action={
-                        <PrimaryButton
-                            onClick={ () => {
-                                setAddClaim(true);
-                            } }
+        <>
+            <AddExternalClaims dialect={ dialect } update={ () => { getExternalClaims(null) } } />
+            <Divider hidden/>
+            {
+                claims?.length > 0
+                    ? (
+                        <ListLayout
+                            advancedSearch={ <ExternalClaimsSearch onFilter={ (query) => {
+                                //TODO: getExternalClaims(null, null, null, query);
+                                try {
+                                    const filteredList: ExternalClaim[] = filterList(
+                                        claims, query, sortBy.value, sortOrder
+                                    );
+                                    setFilteredClaims(filteredList);
+                                } catch (error) {
+                                    dispatch(addAlert({
+                                        description: error?.message,
+                                        level: AlertLevels.ERROR,
+                                        message: "Filter query format incorrect"
+                                    }));
+                                }
+                            } } /> }
+                            currentListSize={ listItemLimit }
+                            listItemLimit={ listItemLimit }
+                            onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                            onPageChange={ handlePaginationChange }
+                            onSortStrategyChange={ handleSortStrategyChange }
+                            onSortOrderChange={ handleSortOrderChange }
+                            showPagination={ true }
+                            sortOptions={ SORT_BY }
+                            sortStrategy={ sortBy }
+                            totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
+                            totalListSize={ filteredClaims?.length }
                         >
-                            <Icon name="add" /> Add External Claim
-                                </PrimaryButton>
-                    }
-                    title="Add External Claim"
-                    subtitle={ [ "Currently, there is no External Claim available for this dialect." ] }
-                    image={ EmptyPlaceholderIllustrations.emptyList }
-                    imageSize="tiny"
-                />
-            )
+                            <ClaimsList
+                                list={ paginate(filteredClaims, listItemLimit, offset) }
+                                localClaim={ ListType.EXTERNAL }
+                                update={ getExternalClaims }
+                                dialectID={ dialectID }
+                            />
+                        </ListLayout>
+                    )
+                    : !isLoading && (
+                        <EmptyPlaceholder
+                            title="No External Claim"
+                            subtitle={ [ "Currently, there is no external claim available for this dialect." ] }
+                            image={ EmptyPlaceholderIllustrations.emptyList }
+                            imageSize="tiny"
+                        />
+                    )
+            }
+        </>
     );
 };
