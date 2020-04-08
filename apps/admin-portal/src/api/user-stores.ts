@@ -41,7 +41,7 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getUserStores = (params: QueryParams): Promise<any> => {
     const requestConfig = {
         headers: {
-            Accept: "application/json",
+            "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
