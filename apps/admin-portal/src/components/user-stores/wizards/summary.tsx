@@ -63,7 +63,7 @@ export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): React
                     <div className="label">{title}</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                    <div className="value url">{description}</div>
+                    <div className="value">{description}</div>
                 </Grid.Column>
             </Grid.Row>
         )
