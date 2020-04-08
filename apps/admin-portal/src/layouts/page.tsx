@@ -18,6 +18,7 @@
 
 import { PageHeader, PageHeaderPropsInterface } from "@wso2is/react-components";
 import React, { PropsWithChildren } from "react";
+import classNames from "classnames";
 import { Divider } from "semantic-ui-react";
 
 /**
@@ -25,6 +26,8 @@ import { Divider } from "semantic-ui-react";
  */
 interface PageLayoutPropsInterface extends PageHeaderPropsInterface {
     contentTopMargin?: boolean;
+    padded?: boolean;
+    showHelpPanel?: boolean;
 }
 
 /**
@@ -40,17 +43,25 @@ export const PageLayout: React.FunctionComponent<PropsWithChildren<PageLayoutPro
     const {
         children,
         contentTopMargin,
+        padded,
         ...rest
     } = props;
 
+    const layoutClasses = classNames("layout", "page-layout");
+    const layoutContentClasses = classNames("layout-content", {
+        padded
+    });
+
     return (
-        <>
-            <PageHeader
-                { ...rest }
-            />
-            { contentTopMargin && <Divider hidden /> }
-            { children }
-        </>
+        <div className={ layoutClasses }>
+            <div className={ layoutContentClasses }>
+                <PageHeader
+                    { ...rest }
+                />
+                { contentTopMargin && <Divider hidden/> }
+                { children }
+            </div>
+        </div>
     );
 };
 
@@ -59,5 +70,6 @@ export const PageLayout: React.FunctionComponent<PropsWithChildren<PageLayoutPro
  */
 PageLayout.defaultProps = {
     contentTopMargin: true,
+    padded: true,
     titleTextAlign: "left"
 };
