@@ -184,11 +184,11 @@ export const LocalClaimsPage = (): React.ReactElement => {
             }
             <PageLayout
                 title="Local Claims"
-                description="View, edit and add the local claims"
+                description="View, edit and add local claims"
                 showBottomDivider={ true }
                 backButton={ {
                     onClick: () => { history.push(CLAIM_DIALECTS_PATH) },
-                    text: "Go back to Claim Dialects"
+                    text: "Go back to claim dialects"
                 } }
             >
                 <ListLayout
