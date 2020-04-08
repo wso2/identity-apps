@@ -23,6 +23,9 @@
                 },
                 "advanceSettings": {
                     "enabled": true
+                },
+                "provisioningSettings": {
+                    "enabled": true
                 }
             }
         }
