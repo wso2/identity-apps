@@ -204,11 +204,16 @@
 
 .ui.card {
     &.selection-card {
-        width: @selectionCardDefaultWidth;
         transition: @selectionCardTransition;
         border: @selectionCardBorder;
         box-shadow: none;
 
+        &.default {
+            width: @selectionCardDefaultWidth;
+        }
+        &.small {
+            width: @selectionCardSmallWidth;
+        }
         &:hover {
             transform: none;
             text-decoration: none;
@@ -228,7 +233,10 @@
             cursor: not-allowed;
             filter: grayscale(100%);
         }
-        .card-image-container {
+        &.spaced {
+            &-bottom {
+                margin-bottom: @selectionCardSpacedBottomMargin;
+            }
         }
         .card-text-container {
             padding: @selectionCardTextContainerPadding;
