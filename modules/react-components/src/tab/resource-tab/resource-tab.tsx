@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Tab, TabProps } from "semantic-ui-react";
 import classNames from "classnames";
 import { ResourceTabPane } from "./resource-tab-pane";
@@ -29,20 +29,31 @@ export interface ResourceTabSubComponentsInterface {
 }
 
 /**
+ * Resource tabs component Prop types.
+ */
+export interface ResourceTabPropsInterface extends TabProps {
+    /**
+     * Custom class for the component.
+     */
+    className?: string;
+}
+
+/**
  * Resource tab component.
  *
- * @param {TabProps} props - Props injected to the component.
+ * @param {ResourceTabPropsInterface} props - Props injected to the component.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const ResourceTab: FunctionComponent<TabProps> & ResourceTabSubComponentsInterface = (
-    props: TabProps
-): JSX.Element => {
+export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & ResourceTabSubComponentsInterface = (
+    props: ResourceTabPropsInterface
+): ReactElement => {
 
     const {
         className,
+        defaultActiveTab,
         panes,
-        rest
+        ...rest
     } = props;
 
     const classes = classNames(
@@ -55,6 +66,7 @@ export const ResourceTab: FunctionComponent<TabProps> & ResourceTabSubComponents
             className={ classes }
             menu={ { pointing: true, secondary: true } }
             panes={ panes }
+            defaultActiveIndex={ defaultActiveTab }
             { ...rest }
         />
     );
