@@ -18,7 +18,7 @@
 
 import { Field, Forms, FormValue } from "@wso2is/forms";
 import { Grid, Label, Popup } from "semantic-ui-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 /**
  * Prop types of `BasicDetailsLocalClaims` component
@@ -57,6 +57,11 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     const [ isShowClaimIDHint, setIsShowClaimIDHint ] = useState(false);
     const [ isShowRegExHint, setIsShowRegExHint ] = useState(false);
     const [ isShowDisplayOrderHint, setIsShowDisplayOrderHint ] = useState(false);
+
+    const nameField = useRef<HTMLElement>(null);
+    const claimField = useRef<HTMLElement>(null);
+    const regExField = useRef<HTMLElement>(null);
+    const displayOrderField = useRef<HTMLElement>(null);
 
     /**
      * Set the if show on profile is selected or not
@@ -101,6 +106,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             requiredErrorMessage="Name is required"
                             placeholder="Enter a name for the claim"
                             value={ values?.get("name")?.toString() }
+                            ref={ nameField }
                         />
                         <Popup
                             content={ "Name of the claim that will be shown on the user profile " +
@@ -112,6 +118,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                 setIsShowNameHint(false);
                             } }
                             position="bottom left"
+                            context={ nameField }
                         />
                     </Grid.Column>
                     <Grid.Column width={ 8 }>
@@ -132,17 +139,19 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             onMouseOut={ () => {
                                 setIsShowClaimIDHint(false);
                             } }
+                            ref={ claimField }
                         />
                         <Popup
                             content={ "A unique ID for the claim." +
                                 " The ID will be appended to the dialect URI to create a claim URI" }
                             inverted
                             open={ isShowClaimIDHint }
-                            trigger={ <span></span> }
+                            trigger={ <p></p> }
                             onClose={ () => {
                                 setIsShowClaimIDHint(false);
                             } }
                             position="bottom left"
+                            context={ claimField }
                         />
                         {
                             claimID
@@ -170,7 +179,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         <Field
                             type="text"
                             name="regularExpression"
-                            label="Regular Expression"
+                            label="Regular expression"
                             required={ false }
                             requiredErrorMessage=""
                             placeholder="Regular expression to validate the claim"
@@ -181,6 +190,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             onMouseOut={ () => {
                                 setIsShowRegExHint(false);
                             } }
+                            ref={ regExField }
                         />
                         <Popup
                             content="This regular expression is used to validate the value this claim can take"
@@ -191,6 +201,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                 setIsShowRegExHint(false);
                             } }
                             position="bottom left"
+                            context={ regExField }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -232,6 +243,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     onMouseOut={ () => {
                                         setIsShowDisplayOrderHint(false);
                                     } }
+                                    ref={ displayOrderField }
                                 />
                                 <Popup
                                     content={
@@ -245,6 +257,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                         setIsShowDisplayOrderHint(false);
                                     } }
                                     position="bottom left"
+                                    context={ displayOrderField }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -258,7 +271,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             required={ false }
                             requiredErrorMessage=""
                             children={ [ {
-                                label: "Make this claims required during user registration",
+                                label: "Make this claim required during user registration",
                                 value: "Required"
                             } ] }
                             value={ values?.get("required") as string[] }
