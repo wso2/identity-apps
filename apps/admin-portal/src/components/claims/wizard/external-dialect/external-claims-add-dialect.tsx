@@ -95,6 +95,7 @@ export const ExternalClaims = (props: ExternalClaimsPropsInterface): React.React
                                     onEdit={ (index: number, values: Map<string, FormValue>) => {
                                         const tempClaims = [ ...claims ];
                                         tempClaims[ index ].mappedLocalClaimURI = values.get("localClaim").toString();
+                                        tempClaims[ index ].claimURI = values.get("claimURI").toString();
                                         setClaims(tempClaims);
                                     } }
                                     onDelete={ (index: number) => {
