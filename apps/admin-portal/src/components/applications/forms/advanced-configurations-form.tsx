@@ -24,15 +24,15 @@ import { AdvancedConfigurationsInterface } from "../../../models";
 import { FormValidation } from "@wso2is/validation";
 
 /**
- *  Advance Configurations for the Application.
+ *  Advanced Configurations for the Application.
  */
-interface AdvanceConfigurationsFormPropsInterface extends AdvancedConfigurationsInterface {
+interface AdvanceConfigurationsFormPropsInterface {
     config: AdvancedConfigurationsInterface;
     onSubmit: (values: any) => void;
 }
 
 /**
- * Advance configurations form component.
+ * Advanced configurations form component.
  *
  * @param {AdvanceConfigurationsFormPropsInterface} props - Props injected to the component.
  * @return {JSX.Element}
