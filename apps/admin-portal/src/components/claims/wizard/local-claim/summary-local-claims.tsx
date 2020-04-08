@@ -103,9 +103,12 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
             <Grid.Row columns={ 1 }>
                 <Grid.Column textAlign="center">
                     <List>
-                        { generateLabels("This claim is shown on user profile and user registration page") }
-                        { generateLabels("This claim is required during user registration") }
-                        { generateLabels("This claim is read-only") }
+                        { data.supportedByDefault
+                            && generateLabels("This claim is shown on user profile and user registration page") }
+                        { data.required &&
+                            generateLabels("This claim is required during user registration") }
+                        { data.readOnly &&
+                            generateLabels("This claim is read-only") }
                     </List>
                 </Grid.Column>
             </Grid.Row>
