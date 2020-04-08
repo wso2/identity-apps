@@ -20,4 +20,5 @@ export * from "./api";
 export * from "./application";
 export * from "./authenticate";
 export * from "./global";
+export * from "./help-panel";
 export * from "./loaders";

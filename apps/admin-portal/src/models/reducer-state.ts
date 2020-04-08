@@ -18,6 +18,18 @@
 
 import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "./config";
 import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
+import { HelpPanelMetadataInterface } from "./meta";
 
+/**
+ * Dev portal config reducer state interface.
+ */
 export type ConfigReducerStateInterface = CommonConfigReducerStateInterface<RuntimeConfigInterface,
     ServiceResourceEndpointsInterface>;
+
+/**
+ * Help panel reducer state interface.
+ */
+export interface HelpPanelReducerStateInterface {
+    docURL: string;
+    metadata: HelpPanelMetadataInterface;
+}

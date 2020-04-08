@@ -42,8 +42,10 @@ import { AppState } from "./store";
 import { ContentLoader } from "@wso2is/react-components";
 import { getAppConfig } from "@wso2is/core/api";
 import { Helmet } from "react-helmet";
+import { helpPanelMetadata } from "./meta";
 import { I18n } from "@wso2is/i18n";
 import { I18nextProvider } from "react-i18next";
+import { setHelpPanelMetadata } from "./store/actions";
 import { ThemeContext } from "@wso2is/react-components";
 
 /**
@@ -70,6 +72,13 @@ export const App = (): ReactElement => {
         // once runtime config is refactored.
         dispatch(setDeploymentConfigs<RuntimeConfigInterface>(Config.getRuntimeConfig()));
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
+    }, []);
+
+    /**
+     * Set the help panel metadata in redux state.
+     */
+    useEffect(() => {
+        dispatch(setHelpPanelMetadata(helpPanelMetadata));
     }, []);
 
     /**
