@@ -117,6 +117,14 @@
         background-color: @infoPrimaryButtonColor;
         color: @modalPrimaryButtonFontColor;
     }
+    &.grid-button {
+        margin-top: 23px;
+
+        &.wizard {
+            margin-top: -8px;
+            margin-right: 0;
+        }
+    }
 }
 
 .ui.basic.button {
