@@ -75,10 +75,17 @@
 @littleWidth: 48px;
 
 /*-------------------
+       Icons
+--------------------*/
+
+@iconHoverBgColor: @whiteSmoke;
+
+/*-------------------
     Icon Sizes
 --------------------*/
 
 @iconNano: 10px;
+@iconDefault: 14px;
 @iconMicro: 18px;
 @iconMini: 35px;
 @iconTiny: 80px;
