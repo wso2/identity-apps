@@ -16,16 +16,16 @@
 * under the License.
 */
 
-import { AlertLevels, Claim } from "../../../models";
+import { AlertLevels, Claim, UserStoreListItem } from "../../../models";
 import { DynamicField, KeyValue } from "../dynamic-fields";
 import { getUserStoreList, updateAClaim } from "../../../api";
-import { Grid, Message } from "semantic-ui-react";
+import { Divider, Grid, Message } from "semantic-ui-react";
 import { Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 
 import { addAlert } from "@wso2is/core/store";
 import { useDispatch } from "react-redux";
-import { useTrigger } from "@wso2is/forms";
+import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
 
 /**
  * Prop types of `EditMappedAttributesLocalClaims` component
@@ -79,96 +79,76 @@ export const EditMappedAttributesLocalClaims = (
         <Grid>
             <Grid.Row columns={ 1 }>
                 <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
-                    <Hint>
-                        Corresponding attribute name from the underlying userstore
-                        which is mapped to the Claim URI value
-                    </Hint>
-                    <DynamicField
-                        data={
-                            claim.attributeMapping.map(attribute => {
-                                return {
-                                    key: attribute.userstore,
-                                    value: attribute.mappedAttribute
-                                }
-                            })
-                        }
-                        keyType="dropdown"
-                        keyData={
-                            userStore.map(store => {
-                                return {
-                                    id: store.id,
-                                    value: store.name
-                                }
-                            })
-                        }
-                        keyName="Userstore"
-                        valueName="Attribute to map to"
-                        keyRequiredMessage="Please select a Userstore"
-                        valueRequiredErrorMessage="Please enter an attribute to map to"
-                        requiredField={ true }
-                        duplicateKeyErrorMsg={
-                            "This userstore has been selected twice. A userstore can only be selected once."
-                        }
-                        submit={ submit }
-                        update={ (data) => {
-                            if (data.length > 0) {
-                                setEmpty(false);
-                                const claimData = { ...claim };
-                                delete claimData.id;
-                                delete claimData.dialectURI;
-                                const submitData: Claim = {
-                                    ...claimData,
-                                    attributeMapping: data.map(mapping => {
-                                        return {
-                                            mappedAttribute: mapping.value,
-                                            userstore: mapping.key
-                                        }
-                                    })
-                                }
-                                updateAClaim(claim.id, submitData).then(() => {
-                                    dispatch(addAlert(
-                                        {
-                                            description: "The Attributes Mapping of this local claim has been" +
-                                                " updated successfully!",
-                                            level: AlertLevels.SUCCESS,
-                                            message: "Attributes Mapping updated successfully"
-                                        }
-                                    ));
-                                    update();
-                                }).catch(error => {
-                                    dispatch(addAlert(
-                                        {
-                                            description: error?.description || "There was an error while updating" +
-                                                " the local claim",
-                                            level: AlertLevels.ERROR,
-                                            message: error?.message || "Something went wrong"
-                                        }
-                                    ));
+                    <p>
+                        Enter the attribute from each userstore that you want to map to this claim.
+                    </p>
+                    <Divider hidden />
+                    <Forms
+                        submitState={ submit }
+                        onSubmit={ (values: Map<string, FormValue>) => {
+                            const claimData = { ...claim };
+                            delete claimData.id;
+                            delete claimData.dialectURI;
+
+                            const submitData = {
+                                ...claimData,
+                                attributeMapping: Array.from(values).map(([ userstore, attribute ]) => {
+                                    return {
+                                        mappedAttribute: attribute.toString(),
+                                        userstore: userstore.toString()
+                                    }
                                 })
-                            } else {
-                                setEmpty(true);
                             }
+                            updateAClaim(claim.id, submitData).then(() => {
+                                dispatch(addAlert(
+                                    {
+                                        description: "The Attributes Mapping of this local claim has been" +
+                                            " updated successfully!",
+                                        level: AlertLevels.SUCCESS,
+                                        message: "Attributes Mapping updated successfully"
+                                    }
+                                ));
+                                update();
+                            }).catch(error => {
+                                dispatch(addAlert(
+                                    {
+                                        description: error?.description || "There was an error while updating" +
+                                            " the local claim",
+                                        level: AlertLevels.ERROR,
+                                        message: error?.message || "Something went wrong"
+                                    }
+                                ));
+                            })
                         } }
-                        listen={ (data: KeyValue[]) => {
-                            if (data.length > 0) {
-                                setEmpty(false);
-                            }
-                        } }
-                    />
+                    >
+                        <Grid>
+                            { userStore.map((store: UserStoreListItem, index: number) => {
+                                return (
+                                    <Grid.Row columns={ 2 } key={ index }>
+                                        <Grid.Column width={ 4 }>
+                                            { store.name }
+                                        </Grid.Column>
+                                        <Grid.Column width={ 12 }>
+                                            <Field
+                                                type="text"
+                                                name={ store.name }
+                                                placeholder="Enter an attribute to map to"
+                                                required={ true }
+                                                requiredErrorMessage="Attribute name is a required field"
+                                                value={ claim?.attributeMapping?.find((attribute) => {
+                                                    return attribute.userstore
+                                                        .toLowerCase() === store.name.toLowerCase()
+                                                })?.mappedAttribute }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }) }
+                        </Grid>
+                    </Forms>
+
                 </Grid.Column>
             </Grid.Row>
-            {
-                empty ? (
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 8 }>
-                            <Message negative>
-                                The claim should be mapped to at least one attribute from a userstore.
-                            </Message>
-                        </Grid.Column>
-                    </Grid.Row>
-                )
-                    : null
-            }
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 8 }>
                     <PrimaryButton
