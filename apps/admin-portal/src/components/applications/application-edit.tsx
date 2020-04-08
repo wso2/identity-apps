@@ -66,6 +66,12 @@ interface EditApplicationPropsInterface {
      * CRUD permissions,
      */
     permissions?: CRUDPermissionsInterface;
+    /**
+     * Callback to be triggered when the inbound protocol is changed.
+     *
+     * @param {AuthProtocolMetaListItemInterface} protocol - Inbound protocol.
+     */
+    onInboundProtocolSelect: (protocol: AuthProtocolMetaListItemInterface) => void;
 }
 
 /**
@@ -84,7 +90,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         isLoading,
         onDelete,
         onUpdate,
-        permissions
+        permissions,
+        onInboundProtocolSelect
     } = props;
 
     const dispatch = useDispatch();
@@ -113,6 +120,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 setInboundProtocolsRequestLoading(false);
             });
     }, [ availableInboundProtocols ]);
+
+    /**
+     * Triggered when the inbound protocol is selected.
+     */
+    useEffect(() => {
+        if(!selectedInboundProtocol) {
+            return;
+        }
+
+        onInboundProtocolSelect(selectedInboundProtocol);
+    }, [ selectedInboundProtocol ]);
 
     /**
      * Finds the configured inbound protocol.
