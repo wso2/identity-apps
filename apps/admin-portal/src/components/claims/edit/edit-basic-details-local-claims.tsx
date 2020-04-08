@@ -19,7 +19,7 @@
 import { AlertLevels, Claim } from "../../../models";
 import { Divider, Form, Grid, Popup } from "semantic-ui-react";
 import { Field, Forms, FormValue } from "@wso2is/forms";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { addAlert } from "@wso2is/core/store";
 import { CopyInputField } from "@wso2is/react-components";
@@ -55,6 +55,10 @@ export const EditBasicDetailsLocalClaims = (
     const [ isShowRegExHint, setIsShowRegExHint ] = useState(false);
     const [ isShowDisplayOrderHint, setIsShowDisplayOrderHint ] = useState(false);
     const [ isShowDisplayOrder, setIsShowDisplayOrder ] = useState(false);
+
+    const nameField = useRef<HTMLElement>(null);
+    const regExField = useRef<HTMLElement>(null);
+    const displayOrderField = useRef<HTMLElement>(null);
 
     const { claim, update } = props;
 
@@ -124,6 +128,7 @@ export const EditBasicDetailsLocalClaims = (
                                 requiredErrorMessage="Name is required"
                                 placeholder="Enter a name for the claim"
                                 value={ claim?.displayName }
+                                ref={ nameField }
                             />
                             <Popup
                                 content={ "Name of the claim that will be shown on the user profile " +
@@ -135,6 +140,7 @@ export const EditBasicDetailsLocalClaims = (
                                     setIsShowNameHint(false);
                                 } }
                                 position="bottom left"
+                                context={ nameField }
                             />
                             <Divider hidden />
                             <Field
@@ -146,10 +152,11 @@ export const EditBasicDetailsLocalClaims = (
                                 placeholder="Enter a description"
                                 value={ claim?.description }
                             />
+                            <Divider hidden />
                             <Field
                                 type="text"
                                 name="regularExpression"
-                                label="Regular Expression"
+                                label="Regular expression"
                                 required={ false }
                                 requiredErrorMessage=""
                                 placeholder="Regular expression to validate the claim"
@@ -160,6 +167,7 @@ export const EditBasicDetailsLocalClaims = (
                                 onMouseOut={ () => {
                                     setIsShowRegExHint(false);
                                 } }
+                                ref={ regExField }
                             />
                             <Popup
                                 content="This regular expression is used to validate the value this claim can take"
@@ -170,6 +178,7 @@ export const EditBasicDetailsLocalClaims = (
                                     setIsShowRegExHint(false);
                                 } }
                                 position="bottom left"
+                                context={ regExField }
                             />
                             <Divider hidden />
                             <Field
@@ -205,6 +214,7 @@ export const EditBasicDetailsLocalClaims = (
                                             onMouseOut={ () => {
                                                 setIsShowDisplayOrderHint(false);
                                             } }
+                                            ref={ displayOrderField }
                                         />
                                         <Popup
                                             content={ "This determines the position at which this claim is displayed" +
@@ -216,6 +226,7 @@ export const EditBasicDetailsLocalClaims = (
                                                 setIsShowDisplayOrderHint(false);
                                             } }
                                             position="bottom left"
+                                            context={ displayOrderField }
                                         />
                                     </>
                                 )
@@ -227,7 +238,7 @@ export const EditBasicDetailsLocalClaims = (
                                 required={ false }
                                 requiredErrorMessage=""
                                 children={ [ {
-                                    label: "Make this claims required during user registration",
+                                    label: "Make this claim required during user registration",
                                     value: "Required"
                                 } ] }
                                 value={ claim?.required ? [ "Required" ] : [] }
