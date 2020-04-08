@@ -16,14 +16,14 @@
 * under the License.
 */
 
-import { ClaimsList, ListType } from "..";
+import { ClaimsList, ListType } from "../..";
 import { Divider, Grid } from "semantic-ui-react";
 import React, { useEffect, useRef, useState } from "react";
 
-import { AddExternalClaim } from "../../../models";
-import { AddExternalClaims } from "../add";
+import { AddExternalClaim } from "../../../../models";
+import { AddExternalClaims } from "../../add";
 import { EmptyPlaceholder } from "@wso2is/react-components";
-import { EmptyPlaceholderIllustrations } from "../../../../../user-portal/src/configs";
+import { EmptyPlaceholderIllustrations } from "../../../../../../user-portal/src/configs";
 import { FormValue } from "@wso2is/forms";
 
 /**

@@ -20,8 +20,8 @@ import { Divider, Grid } from "semantic-ui-react";
 import { Field, Forms, FormValue } from "@wso2is/forms";
 import React, { useEffect, useState } from "react";
 
-import { getUserStoreList } from "../../../api";
-import { UserStoreListItem } from "../../../models";
+import { getUserStoreList } from "../../../../api";
+import { UserStoreListItem } from "../../../../models";
 
 /**
  * Prop types of `MappedAttributes` component

@@ -16,14 +16,14 @@
 * under the License.
 */
 
-import { AlertLevels, Claim } from "../../../models";
+import { AlertLevels, Claim } from "../../../../models";
 
 import { addAlert } from "@wso2is/core/store";
-import { DynamicField } from "../dynamic-fields";
+import { DynamicField } from "../../dynamic-fields";
 import { Grid } from "semantic-ui-react";
 import { PrimaryButton } from "@wso2is/react-components";
 import React from "react";
-import { updateAClaim } from "../../../api";
+import { updateAClaim } from "../../../../api";
 import { useDispatch } from "react-redux";
 import { useTrigger } from "@wso2is/forms";
 

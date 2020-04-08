@@ -54,7 +54,6 @@ export const ClaimDialectsPage = (): React.ReactElement => {
     const [ offset, setOffset ] = useState(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ addEditClaim, setAddEditClaim ] = useState(false);
-    const [ dialectID, setDialectID ] = useState<string>(null);
     const [ filteredDialects, setFilteredDialects ] = useState<ClaimDialect[]>(null);
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
@@ -168,7 +167,6 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                 open={ addEditClaim }
                 onClose={ () => {
                     setAddEditClaim(false);
-                    setDialectID(null);
                 } }
                 update={ getDialect }
             />

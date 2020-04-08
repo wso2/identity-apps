@@ -16,16 +16,15 @@
 * under the License.
 */
 
-import { AlertLevels, Claim, UserStoreListItem } from "../../../models";
-import { DynamicField, KeyValue } from "../dynamic-fields";
-import { getUserStoreList, updateAClaim } from "../../../api";
-import { Divider, Grid, Message } from "semantic-ui-react";
-import { Hint, PrimaryButton } from "@wso2is/react-components";
+import { AlertLevels, Claim, UserStoreListItem } from "../../../../models";
+import { Divider, Grid } from "semantic-ui-react";
+import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
+import { getUserStoreList, updateAClaim } from "../../../../api";
 import React, { useEffect, useState } from "react";
 
 import { addAlert } from "@wso2is/core/store";
+import { PrimaryButton } from "@wso2is/react-components";
 import { useDispatch } from "react-redux";
-import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
 
 /**
  * Prop types of `EditMappedAttributesLocalClaims` component
@@ -53,7 +52,6 @@ export const EditMappedAttributesLocalClaims = (
 ): React.ReactElement => {
 
     const [ userStore, setUserStore ] = useState([]);
-    const [ empty, setEmpty ] = useState(false);
 
     const { claim, update } = props;
     const dispatch = useDispatch();

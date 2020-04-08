@@ -16,14 +16,14 @@
 * under the License.
 */
 
-import { AlertLevels, Claim } from "../../../models";
+import { AlertLevels, Claim } from "../../../../models";
 import { Divider, Form, Grid, Popup } from "semantic-ui-react";
 import { Field, Forms, FormValue } from "@wso2is/forms";
 import React, { useRef, useState } from "react";
 
 import { addAlert } from "@wso2is/core/store";
 import { CopyInputField } from "@wso2is/react-components";
-import { updateAClaim } from "../../../api";
+import { updateAClaim } from "../../../../api";
 import { useDispatch } from "react-redux";
 
 /**

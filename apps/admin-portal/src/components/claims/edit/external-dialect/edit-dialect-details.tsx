@@ -16,16 +16,16 @@
 * under the License.
 */
 
-import { AlertLevels, ClaimDialect } from "../../../models";
+import { AlertLevels, ClaimDialect } from "../../../../models";
 import { Divider, Grid } from "semantic-ui-react";
 import { Field, Forms, FormValue } from "@wso2is/forms";
 
 import { addAlert } from "@wso2is/core/store";
-import { EDIT_EXTERNAL_DIALECT } from "../../../constants";
-import { history } from "../../../helpers";
+import { EDIT_EXTERNAL_DIALECT } from "../../../../constants";
+import { history } from "../../../../helpers";
 import { PrimaryButton } from "@wso2is/react-components";
 import React from "react";
-import { updateADialect } from "../../../api";
+import { updateADialect } from "../../../../api";
 import { useDispatch } from "react-redux";
 
 /**

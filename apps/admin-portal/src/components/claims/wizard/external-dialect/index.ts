@@ -16,5 +16,6 @@
 * under the License.
 */
 
-export * from "./local-claim";
-export * from "./external-dialect";
+export * from "./dialect-details-add-dialect";
+export * from "./external-claims-add-dialect";
+export * from "./summary-add-dialect";

@@ -18,7 +18,7 @@
 
 import { Grid, Table } from "semantic-ui-react";
 
-import { AddExternalClaim } from "../../../models";
+import { AddExternalClaim } from "../../../../models";
 import React from "react";
 
 /**

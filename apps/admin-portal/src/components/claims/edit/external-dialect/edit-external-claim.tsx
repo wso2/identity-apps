@@ -16,9 +16,9 @@
 * under the License.
 */
 
-import { AddExternalClaim, AlertLevels, Claim, ExternalClaim } from "../../../models";
+import { AddExternalClaim, AlertLevels, Claim, ExternalClaim } from "../../../../models";
 import { Field, Forms, FormValue } from "@wso2is/forms";
-import { getAllLocalClaims, getAnExternalClaim, updateAnExternalClaim } from "../../../api";
+import { getAllLocalClaims, getAnExternalClaim, updateAnExternalClaim } from "../../../../api";
 import React, { useEffect, useState } from "react";
 
 import { addAlert } from "@wso2is/core/store";

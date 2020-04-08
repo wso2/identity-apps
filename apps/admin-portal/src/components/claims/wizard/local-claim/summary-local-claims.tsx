@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import { AttributeMapping, Claim } from "../../../models";
+import { AttributeMapping, Claim } from "../../../../models";
 import { Form, Grid, Label, List, Table } from "semantic-ui-react";
 import { CopyInputField } from "@wso2is/react-components";
 import React from "react";
