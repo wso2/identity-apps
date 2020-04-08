@@ -16,5 +16,42 @@
  * under the License.
  */
 
-export const DEFAULT_USER_LIST_ITEM_LIMIT = 10;
-export const DEFAULT_ROLE_LIST_ITEM_LIMIT = 10;
+/**
+ * Class containing app constants which can be used across several applications.
+ */
+export class UserConstants {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() { }
+
+    /**
+     * Default user list item limit.
+     * @constant
+     * @type {number}
+     * @default
+     */
+    public static readonly DEFAULT_USER_LIST_ITEM_LIMIT = 10;
+
+    /**
+     * Default role list item limit.
+     * @constant
+     * @type {number}
+     * @default
+     */
+    public static readonly DEFAULT_ROLE_LIST_ITEM_LIMIT = 10;
+
+    /**
+     * Default user list attributes.
+     * @constant
+     * @type {string[]}
+     * @default
+     */
+    public static readonly DEFAULT_USER_LIST_ATTRIBUTES = [ "name", "emails", "userName", "id", "profileUrl",
+        "meta.lastModified" ];
+}

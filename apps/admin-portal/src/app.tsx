@@ -45,9 +45,9 @@ import { Helmet } from "react-helmet";
 import { I18n } from "@wso2is/i18n";
 import { I18nextProvider } from "react-i18next";
 import { ThemeContext } from "@wso2is/react-components";
-import { emptyIdentityAppsSettings } from "@wso2is/core/dist/src/models/storage";
-import { LocalStorageUtils } from "@wso2is/core/dist/src/utils/storage-utils";
-import { CommonHelpers } from "@wso2is/core/dist/src/helpers/common";
+import { emptyIdentityAppsSettings } from "@wso2is/core/models";
+import { LocalStorageUtils } from "@wso2is/core/utils";
+import { CommonHelpers } from "@wso2is/core/helpers";
 
 /**
  * Main App component.
@@ -113,7 +113,7 @@ export const App = (): ReactElement => {
      * Set the application settings of the user to the local storage.
      */
     useEffect(() => {
-        if (userName === "") {
+        if (!userName && userName === "") {
             return;
         }
 

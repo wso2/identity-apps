@@ -39,7 +39,7 @@ import { AlertInterface, AlertLevels } from "../models";
 import { UserListInterface } from "../models/user";
 import { addAlert } from "../store/actions";
 import { EmptyPlaceholderIllustrations } from "../configs";
-import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
+import { UserConstants } from "../constants";
 import { UsersListOptionsComponent } from "../components/users";
 import { store } from "../store";
 
@@ -76,7 +76,7 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     };
 
     useEffect(() => {
-        setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
+        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
 
         if(CommonHelpers.lookupKey(tenantSettings, username) !== null) {
             const userSettings = CommonHelpers.lookupKey(tenantSettings, username);
@@ -84,7 +84,7 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
             const tempColumns = new Map<string, string> ();
 
             if (userPreferences.identityAppsSettings.userPreferences.userListColumns.length < 1) {
-                const metaColumns = ["name", "emails", "userName", "id", "profileUrl", "meta.lastModified"];
+                const metaColumns = UserConstants.DEFAULT_USER_LIST_ATTRIBUTES;
                 setUserMetaColumns(metaColumns);
                 metaColumns.map((column) => {
                     if (column === "id") {

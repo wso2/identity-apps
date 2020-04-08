@@ -17,25 +17,39 @@
  */
 
 /**
- * Identity apps key in local storage.
- * @constant
- * @type {string}
- * @default
+ * Class containing constants used to store user preferences.
  */
-export const IDENTITY_APPS_KEY = "identityAppsSettings";
+export class StorageConstants {
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() { }
 
-/**
- * User preferences key in local storage.
- * @constant
- * @type {string}
- * @default
- */
-export const USER_PREFERENCE = "userPreferences";
+    /**
+     * Identity apps key in local storage.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly IDENTITY_APPS_KEY: string = "identityAppsSettings";
 
-/**
- * Application preferences key in local storage.
- * @constant
- * @type {string}
- * @default
- */
-export const APP_PREFERENCE = "applicationPreferences";
+    /**
+     * User preferences key in local storage.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly USER_PREFERENCE: string = "userPreferences";
+
+    /**
+     * Application preferences key in local storage.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly APP_PREFERENCE: string = "applicationPreferences";
+}
