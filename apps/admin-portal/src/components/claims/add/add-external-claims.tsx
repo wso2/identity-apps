@@ -16,48 +16,48 @@
 * under the License.
 */
 
-import React, { useState, useEffect } from "react";
-import { Modal, Header } from "semantic-ui-react";
-import { ClaimDialect, Claim, AlertLevels } from "../../../models";
-import { LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { getAllLocalClaims, addExternalClaim } from "../../../api";
-import { Forms, Field, FormValue, useTrigger } from "@wso2is/forms";
-import { useDispatch } from "react-redux";
+import { addExternalClaim, getAllLocalClaims } from "../../../api";
+import { AlertLevels, Claim, ClaimDialect } from "../../../models";
+import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
+import React, { useEffect, useState } from "react";
+
 import { addAlert } from "@wso2is/core/store";
+import { Grid } from "semantic-ui-react";
+import { useDispatch } from "react-redux";
 
 /**
- * Prop types for the `AddExternalClaims` component
+ * Prop types for the `AddExternalClaims` component.
  */
 interface AddExternalClaimsPropsInterface {
     /**
-     * Open the modal
+     * Information about the claim dialect.
      */
-    open: boolean;
+    dialect?: ClaimDialect;
     /**
-     * Handler to be called when the modal is closed
+     * Function to be called to initiate an update.
      */
-    onClose: () => void;
+    update?: () => void;
     /**
-     * Information about the claim dialect
+     * SPecifies if this is called from the wizard.
      */
-    dialect: ClaimDialect;
-    /**
-     * Function to be called to initiate an update
-     */
-    update: () => void;
+    wizard?: boolean;
+    onSubmit?: (values: Map<string, FormValue>) => void;
 }
+
 /**
- * A component that lets you add an external claim
+ * A component that lets you add an external claim.
+ * 
  * @param {AddExternalClaimsPropsInterface} props
- * @return {React.ReactElement} Component
+ * 
+ * @return {React.ReactElement} Component.
  */
 export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React.ReactElement => {
 
-    const { open, onClose, dialect, update } = props;
+    const { dialect, update, wizard, onSubmit } = props;
 
-    const [localClaims, setLocalClaims] = useState<Claim[]>();
+    const [ localClaims, setLocalClaims ] = useState<Claim[]>();
 
-    const [submit, setSubmit] = useTrigger();
+    const [ reset, setReset ] = useTrigger();
 
     const dispatch = useDispatch();
 
@@ -76,85 +76,87 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
     }, []);
 
     return (
-        <Modal
-            dimmer="blurring"
-            size="tiny"
-            open={ open }
-            onClose={ onClose }
+        <Forms
+            onSubmit={ (values: Map<string, FormValue>) => {
+                if (wizard) {
+                    onSubmit(values)
+                } else {
+                    addExternalClaim(dialect.id, {
+                        claimURI: values.get("claimURI").toString(),
+                        mappedLocalClaimURI: values.get("localClaim").toString()
+                    }).then(() => {
+                        dispatch(addAlert(
+                            {
+                                description: "The external claim has been added to the dialect successfully!",
+                                level: AlertLevels.SUCCESS,
+                                message: "External claim added successfully"
+                            }
+                        ));
+                        setReset();
+                        update();
+                    }).catch(error => {
+                        dispatch(addAlert(
+                            {
+                                description: error?.description,
+                                level: AlertLevels.ERROR,
+                                message: error?.message || "Something went wrong"
+                            }
+                        ));
+                    })
+                }
+            } }
+            resetState={ reset }
         >
-            <Modal.Header>
-                <Header as="h3" content="Add an External Claim" subheader={ "to " + dialect?.dialectURI } />
-            </Modal.Header>
-            <Modal.Content>
-                <Forms
-                    onSubmit={ (values: Map<string,FormValue>) => {
-                        addExternalClaim(dialect.id, {
-                            claimURI: values.get("claimURI").toString(),
-                            mappedLocalClaimURI: values.get("localClaim").toString()
-                        }).then(() => {
-                            dispatch(addAlert(
-                                {
-                                    description: "The external claim has been added to the dialect successfully!",
-                                    level: AlertLevels.SUCCESS,
-                                    message: "External claim added successfully"
-                                }
-                            ));
-                            onClose();
-                            update();
-                        }).catch(error => {
-                            dispatch(addAlert(
-                                {
-                                    description: error?.description,
-                                    level: AlertLevels.ERROR,
-                                    message: error?.message || "Something went wrong"
-                                }
-                            ));
-                        })
-                    } }
-                    submitState={ submit }
-                >
-                    <Field
-                        name="claimURI"
-                        label="Claim URI"
-                        required={ true }
-                        requiredErrorMessage="Claim URI is required"
-                        placeholder="Enter a claim URI"
-                        type="text"
-                    />
-                    <Field
-                        type="dropdown"
-                        name="localClaim"
-                        label="Local Claim URI to map to"
-                        required={ true }
-                        requiredErrorMessage="Select a local claim to map to"
-                        placeholder="Select a Local Claim"
-                        search
-                        children={
-                            localClaims?.map((claim: Claim, index) => {
-                                return {
-                                    key: index,
-                                    value: claim.claimURI,
-                                    text: claim.displayName
-                                }
-                            })
-                        }
-                    />
-                </Forms>
-            </Modal.Content>
-            <Modal.Actions>
-                <LinkButton
-                    onClick={ onClose }
-                >
-                    Cancel
-                </LinkButton>
-                <PrimaryButton
-                    onClick={ () => {
-                        setSubmit();
-                    } }
-                >
-                    Add
-                </PrimaryButton>
-            </Modal.Actions>
-        </Modal>
+            <Grid>
+                <Grid.Row columns={ wizard ? 2 : 3 }>
+                    <Grid.Column width={ wizard ? 8 : 6 }>
+                        <Field
+                            name="claimURI"
+                            label="Claim URI"
+                            required={ true }
+                            requiredErrorMessage="Claim URI is required"
+                            placeholder="Enter a claim URI"
+                            type="text"
+                        />
+                    </Grid.Column>
+                    <Grid.Column width={ wizard ? 8 : 6 }>
+                        <Field
+                            type="dropdown"
+                            name="localClaim"
+                            label="Local claim URI to map to"
+                            required={ true }
+                            requiredErrorMessage="Select a local claim to map to"
+                            placeholder="Select a Local Claim"
+                            search
+                            children={
+                                localClaims?.map((claim: Claim, index) => {
+                                    return {
+                                        key: index,
+                                        text: claim.displayName,
+                                        value: claim.claimURI
+                                    }
+                                })
+                            }
+                        />
+                    </Grid.Column>
+                    { !wizard &&
+                        (
+                            <Grid.Column width={ 4 } textAlign="right">
+                                <Field className="grid-button" type="submit" value="Add External Claim" />
+                            </Grid.Column>
+                        )
+                    }
+                </Grid.Row>
+                { wizard &&
+                    (
+                    <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 16 } textAlign="right" verticalAlign="top">
+                                <Field className="wizard grid-button" type="submit" value="Add External Claim" />
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+            </Grid>
+        </Forms>
     )
 };
