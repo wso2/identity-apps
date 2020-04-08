@@ -27,6 +27,7 @@ export * from "./danger-zone";
 export * from "./error";
 export * from "./footer";
 export * from "./header";
+export * from "./help-panel";
 export * from "./icon";
 export * from "./input";
 export * from "./language-switcher";
