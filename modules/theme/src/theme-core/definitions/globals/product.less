@@ -252,6 +252,17 @@ body {
             }
         }
     }
+    &.default-size {
+        .icon {
+            width: @iconDefault;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconDefault;
+            }
+        }
+    }
     &.micro {
         .icon {
             width: @iconMicro;
@@ -366,7 +377,9 @@ body {
             path {
                 fill: @iconDefaultBgColor;
             }
-            &:hover {
+        }
+        &:hover {
+            svg.icon {
                 path {
                     fill: @iconDefaultBgHoverColor;
                 }
@@ -514,6 +527,28 @@ body {
 
         img {
             padding: 3px;
+        }
+    }
+    &.link {
+        cursor: pointer;
+
+        &-primary {
+            &:hover {
+                svg.icon {
+                    .path {
+                        fill: @primaryColor;
+                    }
+                }
+            }
+        }
+    }
+    &.hoverable {
+        padding: 6px;
+        display: flex;
+        border-radius: @defaultBorderRadius;
+
+        &:hover {
+            background: @iconHoverBgColor;
         }
     }
 }
