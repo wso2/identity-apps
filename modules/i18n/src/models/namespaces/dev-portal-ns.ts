@@ -669,6 +669,72 @@ export interface DevPortalNS {
                     };
                 };
             };
+            passwordPolicies: {
+                actionTitles: {
+                    config: string;
+                };
+                description: string;
+                heading: string;
+                confirmation: {
+                    heading: string;
+                    message: string;
+                };
+                notifications: {
+                    updateConfigurations: Notification;
+                    accountLockEnable: {
+                        success: {
+                            description: string;
+                        };
+                    };
+                    accountDisablingEnable: {
+                        success: {
+                            description: string;
+                        };
+                    };
+                };
+                passwordHistory: {
+                    heading: string;
+                    form: {
+                        enable: {
+                            label: string;
+                            hint: string;
+                        };
+                        passwordHistoryCount: {
+                            label: string;
+                            hint: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                    };
+                };
+                passwordPatterns: {
+                    heading: string;
+                    form: {
+                        enable: {
+                            label: string;
+                            hint: string;
+                        };
+                        policyMinLength: {
+                            label: string;
+                            hint: string;
+                        };
+                        policyMaxLength: {
+                            label: string;
+                            hint: string;
+                        };
+                        policyPattern: {
+                            label: string;
+                            hint: string;
+                        };
+                        errorMessage: {
+                            label: string;
+                            hint: string;
+                        };
+                    };
+                };
+            };
         };
         footer: {
             copyright: string;

@@ -154,6 +154,14 @@ export class Config {
             logout: `${this.getRuntimeConfig().serverHost}/oidc/logout`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${this.getRuntimeConfig().serverHost}/scim2/Me`,
+            passwordHistory: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID}/connectors/${
+                ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID}`,
+            passwordPolicies: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID}`,
+            passwordPolicy: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID}/connectors/${
+                ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID}`,
             permission: `${this.getRuntimeConfig().serverHost}/api/server/v1/permission-management/permissions`,
             profileSchemas: `${this.getRuntimeConfig().serverHost}/scim2/Schemas`,
             revoke: `${this.getRuntimeConfig().serverHost}/oauth2/revoke`,

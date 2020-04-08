@@ -980,6 +980,85 @@ export const devPortal: DevPortalNS = {
                     heading: "Captcha for SSO Login"
                 }
             },
+            passwordPolicies: {
+                actionTitles: {
+                    config: "More"
+                },
+                confirmation: {
+                    heading: "Confirmation",
+                    message: "Do you wish to save the configurations related to password policies?"
+                },
+                description: "Configure the password policies of the system.",
+                heading: "Password Policies",
+                notifications: {
+                    accountDisablingEnable: {
+                        success: {
+                            description: "Successfully updated the account disabling policy."
+                        }
+                    },
+                    accountLockEnable: {
+                        success: {
+                            description: "Successfully updated the account locking policy."
+                        }
+                    },
+                    updateConfigurations: {
+                        error: {
+                            description: "An error occurred while updating the login policies.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the login policies.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the login policies.",
+                            message: "Configurations updated successfully"
+                        }
+                    }
+                },
+                passwordHistory: {
+                    form: {
+                        enable: {
+                            hint: "Restrict users from using previously used passwords.",
+                            label: "Validate password history"
+                        },
+                        passwordHistoryCount: {
+                            hint: "Restrict reusing last n number of password during password update",
+                            label: "Password history validation count",
+                            placeholder: "3",
+                            validations: {
+                                empty: "Password history validation count cannot be empty."
+                            }
+                        }
+                    },
+                    heading: "Password History"
+                },
+                passwordPatterns: {
+                    form: {
+                        enable: {
+                            hint: "",
+                            label: "Validate passwords based on a policy pattern"
+                        },
+                        errorMessage: {
+                            hint: "This error message will be displayed when a pattern violation is ditected.",
+                            label: "Error message on pattern violation"
+                        },
+                        policyMaxLength: {
+                            hint: "Maximum number of characters in the password.",
+                            label: "Maximum number of characters"
+                        },
+                        policyMinLength: {
+                            hint: "Minimum number of characters in the password.",
+                            label: "Minimum number of characters"
+                        },
+                        policyPattern: {
+                            hint: "A regex pattern to validate the password.",
+                            label: "Password pattern regex"
+                        }
+                    },
+                    heading: "Password Patterns"
+                }
+            },
             selfRegistration: {
                 actionTitles: {
                     config: "More"
