@@ -26,7 +26,6 @@ import React, { useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { addLocalClaim } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
-import { KeyValue } from "../dynamic-fields";
 import { useDispatch } from "react-redux";
 
 /**
@@ -132,7 +131,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Basic Local Claim Details"
+            title: "Basic local-claim details"
         },
         {
             content: (
@@ -143,7 +142,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Mapped Attributes"
+            title: "Map attributes"
         },
         {
             content: (
@@ -188,7 +187,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
             onClose={ onClose }
         >
             <Modal.Header className="wizard-header">
-                Add a Local Claim
+                Add local claim
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group

@@ -138,7 +138,7 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Basic Userstore Details"
+            title: "Basic userstore details"
         },
         {
             content: (
@@ -150,7 +150,7 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Connection Details"
+            title: "Connection details"
         },
         {
             content: (
@@ -199,7 +199,7 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
             className="wizard application-create-wizard"
         >
             <Modal.Header className="wizard-header">
-                Add a Userstore
+                Add userstore
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group
