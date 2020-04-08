@@ -17,11 +17,11 @@
 */
 
 import { AlertLevels, Claim } from "../../../models";
-import { Hint, PrimaryButton } from "@wso2is/react-components";
 
 import { addAlert } from "@wso2is/core/store";
 import { DynamicField } from "../dynamic-fields";
 import { Grid } from "semantic-ui-react";
+import { PrimaryButton } from "@wso2is/react-components";
 import React from "react";
 import { updateAClaim } from "../../../api";
 import { useDispatch } from "react-redux";
@@ -60,7 +60,7 @@ export const EditAdditionalPropertiesLocalClaims = (
         <Grid>
             <Grid.Row columns={ 1 }>
                 <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
-                    <Hint>Used when writing an extension using current claims</Hint>
+                    <p>Use when writing an extension using current claims</p>
                     <DynamicField
                         data={ claim.properties }
                         keyType="text"
