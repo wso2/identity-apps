@@ -16,11 +16,12 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
-import { Form } from "semantic-ui-react";
+import { Error, FormField, FormValue, Validation } from "./models";
 import { Field, GroupFields, InnerField, InnerGroupFields } from "./components";
 import { isCheckBoxField, isDropdownField, isInputField, isRadioField, isTextField, isToggleField } from "./helpers";
-import { Error, FormField, FormValue, Validation } from "./models";
+import React, { useEffect, useState } from "react";
+
+import { Form } from "semantic-ui-react";
 import { useNonInitialEffect } from "./utils";
 
 /**
@@ -31,33 +32,34 @@ interface FormPropsInterface {
     onChange?: (isPure: boolean, values: Map<string, FormValue>) => void;
     resetState?: boolean;
     submitState?: boolean;
+    ref?: React.Ref<any>;
 }
 
 /**
  * This is a Forms component
  */
 export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInterface>> =
-    (props): JSX.Element => {
+    React.forwardRef((props: React.PropsWithChildren<FormPropsInterface>, ref): JSX.Element => {
 
         const { onSubmit, resetState, submitState, onChange, children } = props;
 
         // This holds the values of the form fields
-        const [form, setForm] = useState(new Map<string, FormValue>());
+        const [ form, setForm ] = useState(new Map<string, FormValue>());
 
         // This specifies if any of the fields in the form has been touched or not
-        const [isPure, setIsPure] = useState(true);
+        const [ isPure, setIsPure ] = useState(true);
 
         // This specifies if a field's value is valid or not
-        const [validFields, setValidFields] = useState(new Map<string, Validation>());
+        const [ validFields, setValidFields ] = useState(new Map<string, Validation>());
 
         // This specifies if a field has been touched or not
-        const [touchedFields, setTouchedFields] = useState(new Map<string, boolean>());
+        const [ touchedFields, setTouchedFields ] = useState(new Map<string, boolean>());
 
         // This specifies if the required fields are  filled or not
-        const [requiredFields, setRequiredFields] = useState(new Map<string, boolean>());
+        const [ requiredFields, setRequiredFields ] = useState(new Map<string, boolean>());
 
         // This specifies if the `Submit` method has been called or not
-        const [isSubmitting, setIsSubmitting] = useState(false);
+        const [ isSubmitting, setIsSubmitting ] = useState(false);
 
         // This holds all the form field components
         const formFields: FormField[] = [];
@@ -119,8 +121,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             const tempForm: Map<string, FormValue> = new Map(form);
             const tempTouchedFields: Map<string, boolean> = new Map(touchedFields);
 
-
-            tempForm.set(name, tempForm.get(name)==="true"?"false":"true");
+            tempForm.set(name, tempForm.get(name) === "true" ? "false" : "true");
             tempTouchedFields.set(name, true);
             listener(name, tempForm);
             propagateOnChange(tempForm);
@@ -301,7 +302,10 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                         : tempRequiredFields.set(inputField.name, true);
 
                     if (!tempValidFields.has(inputField.name) || isReset) {
-                        tempValidFields.set(inputField.name, { isValid: true, errorMessages: [] });
+                        tempValidFields.set(inputField.name, {
+                            errorMessages: [],
+                            isValid: true
+                        });
                         tempTouchedFields.set(inputField.name, false);
                     }
 
@@ -443,7 +447,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                     || (touchedFields.get(inputField.name)
                         && inputField.displayErrorOn === "blur"))) {
                 return {
-                    errorMessages: [inputField.requiredErrorMessage],
+                    errorMessages: [ inputField.requiredErrorMessage ],
                     isError: true
                 };
             } else if (
@@ -471,21 +475,21 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
          */
         useNonInitialEffect(() => {
             submit();
-        }, [submitState]);
+        }, [ submitState ]);
 
         /**
          * Calls reset when reset is triggered externally
          */
         useNonInitialEffect(() => {
             reset();
-        }, [resetState]);
+        }, [ resetState ]);
 
         /**
          * Initializes the state of the from every time the passed formFields prop changes
          */
         useEffect(() => {
             initMutex(false);
-        }, [children]);
+        }, [ children ]);
 
         /**
          * Parses the children and
@@ -495,7 +499,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
          * @param fields
          */
         const parseChildren = (elements: React.ReactNode, fields: FormField[]): React.ReactElement[] => {
-            return React.Children.map(elements, (element: React.ReactElement) => {
+            return React.Children.map(elements, (element: React.FunctionComponentElement<any>) => {
                 if (element) {
                     if (element.type === Field) {
                         fields.push(element.props);
@@ -506,11 +510,12 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                                 form,
                                 handleBlur,
                                 handleChange,
-                                handleToggle,
                                 handleChangeCheckBox,
-                                handleReset
+                                handleReset,
+                                handleToggle
                             },
-                            passedProps: { ...element.props }
+                            passedProps: { ...element.props },
+                            ref: element.ref as any
                         });
                     } else if (element.type === GroupFields) {
                         return React.createElement(InnerGroupFields, {
@@ -531,10 +536,10 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             });
         };
 
-        const mutatedChildren: React.ReactElement[] = children ? [...parseChildren(children, formFields)] : null;
+        const mutatedChildren: React.ReactElement[] = children ? [ ...parseChildren(children, formFields) ] : null;
 
-        return <Form onSubmit={ handleSubmit }>{mutatedChildren}</Form>;
-    };
+        return <Form ref={ ref } onSubmit={ handleSubmit }>{ mutatedChildren }</Form>;
+    });
 
 Forms.defaultProps = {
     resetState: false,
