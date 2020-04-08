@@ -19,12 +19,18 @@
 import { AppAvatar, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { Divider, Grid } from "semantic-ui-react";
-import { FederatedAuthenticatorMetaInterface, IdentityProviderInterface } from "../../../../models";
+import {
+    FederatedAuthenticatorMetaInterface,
+    IdentityProviderInterface,
+    OutboundProvisioningConnectorMetaInterface
+} from "../../../../models";
+import _ from "lodash";
 
 /**
  * Proptypes for the wizard summary component.
  */
 interface WizardSummaryProps {
+    provisioningConnectorMetadata: OutboundProvisioningConnectorMetaInterface;
     authenticatorMetadata: FederatedAuthenticatorMetaInterface;
     identityProvider: IdentityProviderInterface;
     triggerSubmit: boolean;
@@ -42,6 +48,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
 ): ReactElement => {
 
     const {
+        provisioningConnectorMetadata,
         authenticatorMetadata,
         identityProvider,
         triggerSubmit,
@@ -59,29 +66,35 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         onSubmit(identityProvider);
     }, [triggerSubmit]);
 
-    const authenticatorSummary = identityProvider?.federatedAuthenticators?.authenticators[0];
+    const authenticatorSummary = identityProvider?.federatedAuthenticators?.authenticators.find(
+        authenticator => authenticator.authenticatorId === identityProvider?.federatedAuthenticators?.
+            defaultAuthenticatorId);
 
-    const getAuthenticatorProperties = () => {
-        const sortedProperties = authenticatorSummary?.properties.sort((a, b) => {
-            const firstOrder = authenticatorMetadata?.properties?.find(eachPropMetadata =>
+    const provisioningSummary = identityProvider?.provisioning?.outboundConnectors.connectors.find(connector =>
+        connector.connectorId === identityProvider?.provisioning?.outboundConnectors?.defaultConnectorId);
+
+    const getPropertySummary = (properties: any[], metaProperties: any[]) => {
+
+        const sortedProperties = properties.sort((a, b) => {
+            const firstOrder = metaProperties.find(eachPropMetadata =>
                 a.key === eachPropMetadata.key)?.displayOrder;
-            const secondOrder = authenticatorMetadata?.properties?.find(eachPropMetadata =>
+            const secondOrder = metaProperties.find(eachPropMetadata =>
                 b.key === eachPropMetadata.key)?.displayOrder;
             return firstOrder - secondOrder;
         });
+
         return sortedProperties.map((eachProp) => {
-            const propertyMetadata = authenticatorMetadata?.properties?.find(eachPropMetadata =>
+            const propertyMetadata = metaProperties.find(eachPropMetadata =>
                 eachProp.key === eachPropMetadata.key);
-            if (eachProp.value !== undefined || !propertyMetadata.isConfidential) {
+            if (eachProp.value !== undefined && !_.isEmpty(eachProp?.value.toString()) &&
+                !propertyMetadata.isConfidential) {
                 return (
                     <Grid.Row className="summary-field" columns={ 2 } key={ eachProp?.key }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">{propertyMetadata?.displayName}</div>
+                            <div className="label">{ propertyMetadata?.displayName }</div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                            <div className="value url">{
-                                eachProp?.value.toString() === "" ? " - " : eachProp?.value
-                            }</div>
+                            <div className="value url">{ eachProp?.value.toString() }</div>
                         </Grid.Column>
                     </Grid.Row>
                 )
@@ -111,36 +124,64 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         );
     };
 
-    const getAuthenticatorComponent = () => {
+    function getNameComponent(key: string, value: string) {
+        return <Grid.Row className="summary-field" columns={ 2 }>
+            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                <div className="label">{ key }</div>
+            </Grid.Column>
+            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                <div className="value url">{ value }</div>
+            </Grid.Column>
+        </Grid.Row>;
+    }
+
+    const getAuthenticatorSettingsComponent = () => {
         return <>
-            <Divider horizontal>Authenticator details</Divider>
+            <Divider horizontal>Authenticator Settings</Divider>
 
             {
-                authenticatorSummary && (
-                    <Grid.Row className="summary-field" columns={ 2 }>
-                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Name</div>
-                        </Grid.Column>
-                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                            <div className="value url">{authenticatorSummary?.name}</div>
-                        </Grid.Column>
-                    </Grid.Row>
-                )
+                authenticatorSummary && getNameComponent("Authenticator", authenticatorSummary?.name)
             }
+
             {
-                authenticatorSummary?.properties && getAuthenticatorProperties()
+                authenticatorSummary?.properties && getPropertySummary(authenticatorSummary?.properties, 
+                    authenticatorMetadata?.properties)
             }
         </>;
     };
 
-    const isAuthenticatorStepAvailable = () => {
+    const getProvisioningSettingsComponent = () => {
+        return <>
+            <Divider horizontal>Provisioning Settings</Divider>
+
+            {
+                provisioningSummary && getNameComponent("Connector", provisioningConnectorMetadata?.displayName)
+            }
+
+            {
+                provisioningSummary?.properties && getPropertySummary(provisioningSummary?.properties,
+                    provisioningConnectorMetadata?.properties)
+            }
+        </>;
+    };
+
+    const isAuthenticatorSettingsStepAvailable = () => {
+
         return identityProvider?.federatedAuthenticators?.defaultAuthenticatorId;
+    };
+
+    const isProvisioningSettingsStepAvailable = () => {
+
+        return identityProvider?.provisioning?.outboundConnectors?.defaultConnectorId;
     };
 
     return (
         <Grid className="wizard-summary">
             { getGeneralDetailsComponent() }
-            { isAuthenticatorStepAvailable() ? getAuthenticatorComponent() : null }
+
+            { isAuthenticatorSettingsStepAvailable() ? getAuthenticatorSettingsComponent() : null }
+
+            { isProvisioningSettingsStepAvailable() ? getProvisioningSettingsComponent() : null }
         </Grid>
     );
 };

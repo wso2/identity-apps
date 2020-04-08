@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { AuthenticatorProperty, FederatedAuthenticatorMetaPropertyInterface } from "../../../../models";
+import { AuthenticatorProperty, CommonMetaPropertyInterface } from "../../../../models";
 import { Field } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import React from "react";
 
 export const getConfidentialField = (eachProp: AuthenticatorProperty,
-                                     propertyMetadata: FederatedAuthenticatorMetaPropertyInterface) => {
+                                     propertyMetadata: CommonMetaPropertyInterface) => {
     return (
         <Field
             showPassword="Show Secret"
@@ -38,7 +38,7 @@ export const getConfidentialField = (eachProp: AuthenticatorProperty,
 };
 
 export const getCheckboxField = (eachProp: AuthenticatorProperty,
-                                 propertyMetadata: FederatedAuthenticatorMetaPropertyInterface) => {
+                                 propertyMetadata: CommonMetaPropertyInterface) => {
     return (
         <Field
             name={ eachProp?.key }
@@ -60,7 +60,7 @@ export const getCheckboxField = (eachProp: AuthenticatorProperty,
 };
 
 export const getTextField = (eachProp: AuthenticatorProperty,
-                             propertyMetadata: FederatedAuthenticatorMetaPropertyInterface) => {
+                             propertyMetadata: CommonMetaPropertyInterface) => {
     return (
         <Field
             name={ eachProp?.key }
@@ -76,7 +76,7 @@ export const getTextField = (eachProp: AuthenticatorProperty,
 };
 
 export const getURLField = (eachProp: AuthenticatorProperty,
-                            propertyMetadata: FederatedAuthenticatorMetaPropertyInterface) => {
+                            propertyMetadata: CommonMetaPropertyInterface) => {
     return (
         <Field
             name={ eachProp?.key }
@@ -98,7 +98,7 @@ export const getURLField = (eachProp: AuthenticatorProperty,
 };
 
 export const getQueryParamsField = (eachProp: AuthenticatorProperty,
-                            propertyMetadata: FederatedAuthenticatorMetaPropertyInterface) => {
+                            propertyMetadata: CommonMetaPropertyInterface) => {
     return (
         <Field
             name={ eachProp?.key }
@@ -117,3 +117,23 @@ export const getQueryParamsField = (eachProp: AuthenticatorProperty,
         />
     );
 };
+
+/**
+ * Each field type.
+ */
+export enum FieldType {
+    CHECKBOX = "CheckBox",
+    TEXT = "Text",
+    CONFIDENTIAL = "Confidential",
+    URL = "URL",
+    QUERY_PARAMS = "QueryParameters",
+}
+
+/**
+ * commonly used constants.
+ */
+export enum CommonConstants {
+    BOOLEAN = "BOOLEAN",
+    FIELD_COMPONENT_KEYWORD_URL = "URL",
+    FIELD_COMPONENT_KEYWORD_QUERY_PARAMETER = "QUERYPARAM"
+}

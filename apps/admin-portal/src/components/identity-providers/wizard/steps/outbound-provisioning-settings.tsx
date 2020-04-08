@@ -20,27 +20,28 @@ import React, { FunctionComponent } from "react";
 import {
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface,
-    IdentityProviderInterface
+    IdentityProviderInterface, OutboundProvisioningConnectorInterface, OutboundProvisioningConnectorMetaInterface
 } from "../../../../models/identity-provider";
 import { AuthenticatorFormFactory } from "../../forms/authenticator-form-factory";
+import { OutboundProvisioningConnectorFormFactory } from "../../forms/outbound-provisioning-connector-form-factory";
 
 /**
- * Proptypes for the authenticator settings wizard form component.
+ * Proptypes for the outbound provisioning settings wizard form component.
  */
-interface AuthenticatorSettingsWizardFormPropsInterface {
-    metadata: FederatedAuthenticatorMetaInterface;
+interface OutboundProvisioningSettingsWizardFormPropsInterface {
+    metadata: OutboundProvisioningConnectorMetaInterface;
     initialValues: IdentityProviderInterface;
     onSubmit: (values: IdentityProviderInterface) => void;
     triggerSubmit: boolean;
 }
 
 /**
- * Authenticator settings wizard form component.
+ * Outbound provisioning settings wizard form component.
  *
- * @param {AuthenticatorSettingsWizardFormPropsInterface} props - Props injected to the component.
+ * @param {OutboundProvisioningSettingsWizardFormPropsInterface} props - Props injected to the component.
  * @return {JSX.Element}
  */
-export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizardFormPropsInterface> = (
+export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisioningSettingsWizardFormPropsInterface> = (
     props
 ): JSX.Element => {
 
@@ -51,29 +52,29 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
         triggerSubmit
     } = props;
 
-    const handleSubmit = (authenticator: FederatedAuthenticatorListItemInterface) => {
+    const handleSubmit = (outboundProvisioningConnector: OutboundProvisioningConnectorInterface) => {
         onSubmit({
             ...initialValues,
-            federatedAuthenticators: {
-                authenticators: [{
-                    ...authenticator,
-                    isDefault: true,
-                    isEnabled: true
-                }],
-                defaultAuthenticatorId: initialValues?.federatedAuthenticators?.defaultAuthenticatorId
+            provisioning: {
+                ...initialValues?.provisioning,
+                outboundConnectors: {
+                    connectors: [{
+                        ...outboundProvisioningConnector,
+                        isDefault: true
+                    }],
+                    defaultConnectorId: outboundProvisioningConnector?.connectorId
+                }
             }
         });
     };
 
-    const authenticator = initialValues?.federatedAuthenticators?.authenticators.find(authenticator =>
-        authenticator.authenticatorId === initialValues?.federatedAuthenticators?.defaultAuthenticatorId);
-
+    const defaultOutboundProvisioningConnector = initialValues?.provisioning?.outboundConnectors?.connectors.find(
+        connector => connector.connectorId === initialValues?.provisioning?.outboundConnectors.defaultConnectorId);
     return (
-        <AuthenticatorFormFactory
+        <OutboundProvisioningConnectorFormFactory
             metadata={ metadata }
-            initialValues={ authenticator }
+            initialValues={ defaultOutboundProvisioningConnector }
             onSubmit={ handleSubmit }
-            type={ authenticator.name }
             triggerSubmit={ triggerSubmit }
             enableSubmitButton={ false }
         />
