@@ -37,6 +37,7 @@ export * from "./modal";
 export * from "./page-header";
 export * from "./pagination";
 export * from "./placeholder";
+export * from "./renderer";
 export * from "./route";
 export * from "./section";
 export * from "./side-panel";

@@ -1,0 +1,259 @@
+/*!
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+@type    : "module";
+@element : "markdown";
+
+@import (multiple) '../../../theme.less';
+.loadVariables();
+
+@markdownGlobalMargin: 0 0 16px 0;
+
+@markdownCodeBlockFontColor: #37474f;
+@markdownCodeBlockBgColor: hsla(0,0%,92.5%,.5);
+
+@markdownBlockQuoteFontColor: #6a737d;
+@markdownBlockQuoteBorderLeft: 25em solid #dfe2e5;
+
+.markdown {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    margin: 1em 0;
+    word-wrap: break-word;
+
+    &.text-align {
+        &-left {
+            text-align: left;
+        }
+        &-center {
+            text-align: center;
+        }
+        &-right {
+            text-align: center;
+        }
+    }
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    &:before {
+        content: "";
+        display: table;
+    }
+
+    * {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    a {
+        text-decoration: none;
+
+        &:active {
+            outline-width: 0;
+            text-decoration: underline;
+        }
+
+        &:hover {
+            outline-width: 0;
+            text-decoration: underline;
+        }
+
+        &:not([href]) {
+            color: inherit;
+            text-decoration: none;
+        }
+    }
+
+    img {
+        border-style: none;
+        -webkit-box-sizing: content-box;
+        box-sizing: content-box;
+        max-width: 100%;
+    }
+
+    img[align=right] {
+        padding-left: 20px;
+    }
+
+    img[align=left] {
+        padding-right: 20px;
+    }
+
+    code {
+        border-radius: 3px;
+        font-size: 85%;
+        margin: 0 .29412em;
+        padding: .07353em 0;
+        background-color: @markdownCodeBlockBgColor;
+        color: @markdownCodeBlockFontColor;
+        line-height: 1.4;
+    }
+
+    pre {
+        word-wrap: normal;
+        border-radius: 3px;
+        font-size: 85%;
+        line-height: 1.45;
+        overflow: auto;
+        padding: 1em;
+        margin: @markdownGlobalMargin;
+
+        code {
+            background: transparent;
+            border: 0;
+            font-size: 100%;
+            margin: 0;
+            padding: 0;
+            white-space: pre;
+            word-break: normal;
+            display: inline;
+            line-height: inherit;
+            max-width: initial;
+            overflow: visible;
+            word-wrap: normal;
+        }
+    }
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        display: block;
+        overflow: auto;
+        width: 100%;
+        margin: @markdownGlobalMargin;
+    }
+
+    th {
+        font-weight: 600;
+        border: 1px solid #dfe2e5;
+        padding: 6px 13px;
+    }
+
+    td {
+        border: 1px solid #dfe2e5;
+        padding: 6px 13px;
+    }
+
+    tr {
+        background-color: #fff;
+        border-top: 1px solid #c6cbd1;
+
+        &:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+    }
+
+    blockquote {
+        border-left: @markdownBlockQuoteBorderLeft;
+        color: @markdownBlockQuoteFontColor;
+        padding: 0 1em;
+        margin: @markdownGlobalMargin;
+    }
+
+    ol {
+        padding-left: 2em;
+        margin: @markdownGlobalMargin;
+
+        ol {
+            list-style-type: lower-roman;
+            margin-bottom: 0;
+            margin-top: 0;
+
+            ol {
+                list-style-type: lower-alpha;
+            }
+        }
+
+        ul {
+            margin-bottom: 0;
+            margin-top: 0;
+
+            ol {
+                list-style-type: lower-alpha;
+            }
+        }
+    }
+
+    ul {
+        padding-left: 2em;
+        margin: @markdownGlobalMargin;
+
+        ol {
+            list-style-type: lower-roman;
+            margin-bottom: 0;
+            margin-top: 0;
+
+            ol {
+                list-style-type: lower-alpha;
+            }
+        }
+
+        ul {
+            margin-bottom: 0;
+            margin-top: 0;
+
+            ol {
+                list-style-type: lower-alpha;
+            }
+        }
+    }
+
+    li {
+        word-wrap: break-word;
+
+        > p {
+            margin-top: 16px;
+        }
+    }
+
+    li + li {
+        margin-top: .25em;
+    }
+
+    .task-list-item {
+        list-style-type: none;
+
+        input {
+            margin: 0 .2em .25em -1.6em;
+            vertical-align: middle;
+        }
+    }
+
+    .task-list-item + .task-list-item {
+        margin-top: 3px;
+    }
+
+    input {
+        font: inherit;
+        margin: 0;
+        overflow: visible;
+        line-height: inherit;
+    }
+
+    [type=checkbox] {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 0;
+    }
+}
+
+.loadUIOverrides();
