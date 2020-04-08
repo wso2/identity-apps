@@ -95,3 +95,11 @@ Recent Application Card
 @labeledCardMarginBottom: 5px;
 @labeledCardLabelFontColor: 0.8em;
 @labeledCardWrapperMarginBottom: 8px;
+
+/*-------------------------------
+           Info Card
+--------------------------------*/
+
+@infoCardTransition: @defaultCardTransition;
+@infoCardBorder: @defaultCardBorder;
+@infoCardHoverBoxShadow: @defaultCardHoverBoxShadow;

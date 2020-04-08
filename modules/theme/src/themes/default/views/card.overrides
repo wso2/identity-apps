@@ -390,3 +390,88 @@
         font-size: @labeledCardLabelFontColor;
     }
 }
+
+/*******************************
+      Info Card Variation
+*******************************/
+
+.ui.card {
+    &.info-card {
+        transition: @defaultCardTransition;
+        border: @defaultCardBorder;
+        box-shadow: none;
+
+        &:hover {
+            transform: none;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: @infoCardHoverBoxShadow;
+        }
+        .content {
+            border: none;
+        }
+        .card-image {
+            margin-right: 0.3em;
+        }
+        .card-header-section {
+            .card-header {
+                font-weight: 600;
+                color: @lightFontColor;
+            }
+            .card-subheader {
+                font-weight: 600;
+            }
+        }
+        .card-description-container {
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+        }
+        .card-description {
+            font-size: 0.9em;
+            word-break: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            line-height: 1.2em;
+            max-height: 3.2em;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        &:not(.fluid) {
+            .github-meta {
+                text-align: center;
+                padding-top: 0.3em;
+            }
+        }
+        &.fluid {
+            .card-description {
+                padding-top: 0.3em;
+                padding-bottom: 0.3em;
+            }
+            .github-meta {
+                margin-top: 3px;
+            }
+            .card-image {
+                margin-right: 1em;
+            }
+        }
+        .card-tags {
+            padding-top: 0.6em;
+            padding-bottom: 0.6em;
+
+            .label {
+                font-weight: 600;
+                color: @white;
+                background: lighten(@nobel, 20);
+            }
+        }
+        .github-meta {
+            .label {
+                background: @lightGray;
+            }
+            &.inline {
+                display: inline-block;
+            }
+        }
+    }
+}
