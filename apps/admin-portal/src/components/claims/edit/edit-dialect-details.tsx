@@ -79,7 +79,7 @@ export const EditDialectDetails = (props: EditDialectDetailsPropsInterface): Rea
                             placeholder="Enter a dialect URI"
                             value={ dialect?.dialectURI }
                             required={ true }
-                            requiredErrorMessage="Dialect URI is a required"
+                            requiredErrorMessage="Enter a dialect URI"
                             label="Dialect URI"
                             name="dialectURI"
                         />
