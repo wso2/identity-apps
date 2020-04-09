@@ -16,8 +16,25 @@
  * under the License.
  */
 
-export * from "./app-constants";
-export * from "./common-constants";
-export * from "./is-constants";
-export * from "./token-constants";
-export * from "./ui-constants";
+/**
+ * Class containing common constants which can be used across several applications.
+ */
+export class CommonConstants {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() { }
+
+    /**
+     * Generic Axios fetch request error message.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly AXIOS_FETCH_REQUEST_ERROR_MESSAGE: string = "An error occurred while executing the request";
+}
