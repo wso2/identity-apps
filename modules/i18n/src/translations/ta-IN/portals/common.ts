@@ -83,7 +83,7 @@ export const common: CommonNS = {
     revokeAll: "அனைத்தையும் நீக்கு",
     samples: "மாதிரிகள்",
     save: "சேமி",
-    sdks: "SDKs",
+    sdks: "SDKகள்",
     search: "தேடு",
     security: "பாதுகாப்பு",
     showAll: "அனைத்தையும் காட்டு",
