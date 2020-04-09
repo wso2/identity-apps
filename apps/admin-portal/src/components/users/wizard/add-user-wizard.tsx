@@ -103,8 +103,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const [ applicationRoles, setApplicationRoles ] = useState<RolesInterface[]>([]);
     const [ internalRoles, setInternalRoles ] = useState<RolesInterface[]>([]);
-    const [ isInternalRolesSet, setIsInternalRolesSet ] = useState(false);
-    const [ isApplicationRolesSet, setIsApplicationRolesSet ] = useState(false);
+    const [ isInternalRolesSet, setIsInternalRolesSet ] = useState<boolean>(false);
+    const [ isApplicationRolesSet, setIsApplicationRolesSet ] = useState<boolean>(false);
 
     const [ viewGroupPermissions, setViewGroupPermissions ] = useState<boolean>(false);
     const [ selectedGroupId, setSelectedGroupId ] = useState<string>();
