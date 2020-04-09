@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { SearchUtils } from "@wso2is/core/utils";
-import { Field, Forms, FormValue } from "@wso2is/forms";
-import { AdvancedSearch } from "@wso2is/react-components";
-import React, { FunctionComponent, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
+import { Field, Forms, FormValue } from "@wso2is/forms";
+import React, { FunctionComponent, useState } from "react";
+import { AdvancedSearch } from "@wso2is/react-components";
 import { AdvancedSearchIcons } from "../../../configs";
+import { SearchUtils } from "@wso2is/core/utils";
+import { useTranslation } from "react-i18next";
 
 /**
  * Filter attribute field identifier.
@@ -67,9 +67,9 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
 
     const { onFilter } = props;
 
-    const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-    const [externalSearchQuery, setExternalSearchQuery] = useState("");
-    const [filterAttribute, setFilterAttribute] = useState("claimURI");
+    const [ isFormSubmitted, setIsFormSubmitted ] = useState(false);
+    const [ externalSearchQuery, setExternalSearchQuery ] = useState("");
+    const [ filterAttribute, setFilterAttribute ] = useState("claimURI");
 
     const { t } = useTranslation();
 
@@ -82,8 +82,14 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
      * @type {({text: string; value: string})[]}
      */
     const filterAttributeOptions = [
-        { value: "claimURI", text: "Claim URI" },
-        { value:"mappedLocalClaimURI", text:"Mapped Local Claim URI"}
+        {
+            text: "Claim URI",
+            value: "claimURI"
+        },
+        {
+            text: "Mapped Local Claim URI",
+            value: "mappedLocalClaimURI"
+        }
     ];
 
     /**
@@ -92,10 +98,22 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
      * @type {({text: string; value: string})[]}
      */
     const filterConditionOptions = [
-        { value: "sw", text: t("common:startsWith") },
-        { value: "ew", text: t("common:endsWith") },
-        { value: "co", text: t("common:contains") },
-        { value: "eq", text: t("common:equals") },
+        {
+            text: t("common:startsWith"),
+            value: "sw"
+        },
+        {
+            text: t("common:endsWith"),
+            value: "ew"
+        },
+        {
+            text: t("common:contains"),
+            value: "co"
+        },
+        {
+            text: t("common:equals"),
+            value: "eq"
+        }
     ];
 
     /**
@@ -155,7 +173,7 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
             hintLabel={ t("devPortal:components.applications.search.hints.querySearch.label") }
             onExternalSearchQueryClear={ handleExternalSearchQueryClear }
             onSearchQuerySubmit={ handleSearchQuerySubmit }
-            placeholder="Search by Claim URI"
+            placeholder="Search by claim URI"
             resetSubmittedState={ handleResetSubmittedState }
             searchOptionsHeader={ t("devPortal:components.applications.search.options.header") }
             externalSearchQuery={ externalSearchQuery }
@@ -188,7 +206,9 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
                                     ".inputs.filerAttribute.validations.empty") }
                                 type="dropdown"
                                 width={ 16 }
-                                value={ filterAttributeOptions?.length === 1 ? filterAttributeOptions[0]?.value : null }
+                                value={ filterAttributeOptions?.length === 1
+                                    ? filterAttributeOptions[ 0 ]?.value
+                                    : null }
                                 disabled={ filterAttributeOptions?.length === 1 }
                             />
                             <Grid>
@@ -219,7 +239,7 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
                                             label={ t("devPortal:components.applications.search.forms.searchForm" +
                                                 ".inputs.filterValue.label") }
                                             name={ FILTER_VALUES_FIELD_IDENTIFIER }
-                                            placeholder={ 
+                                            placeholder={
                                                 filterAttribute === "claimURI"
                                                     ? "E.g. http://axschema.org/namePerson/last"
                                                     : "E.g. http://wso2.org/claims/lastname"

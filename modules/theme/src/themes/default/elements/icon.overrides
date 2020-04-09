@@ -34,4 +34,11 @@ i.icon {
     &.left-aligned-action {
         margin-left: 10px;
     }
+
+    &.notification-icon {
+        position: absolute;
+        z-index: 99;
+        top: -1px;
+        left: 43px;
+    }
 }

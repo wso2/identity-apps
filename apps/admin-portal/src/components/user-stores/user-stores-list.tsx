@@ -16,21 +16,21 @@
 * under the License.
 */
 
-import React, { useContext, useState } from "react";
-import { ResourceList, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { UserStoreListItem, AlertLevels, AppConfigInterface } from "../../models";
-import { Modal } from "semantic-ui-react";
-import { deleteUserStore } from "../../api";
-import { useDispatch } from "react-redux";
-import { addAlert } from "../../store/actions";
+import { AlertLevels, AppConfigInterface, UserStoreListItem } from "../../models";
 import { AppConfig, history } from "../../helpers";
+import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components";
+import React, { ReactElement, useContext, useState } from "react";
+import { addAlert } from "../../store/actions";
+import { deleteUserStore } from "../../api";
+import { Modal } from "semantic-ui-react";
+import { useDispatch } from "react-redux";
 
 /**
  * Prop types of the `UserStoresList` component
  */
 interface UserStoresListPropsInterface {
     /**
-     * The user store list
+     * The userstore list
      */
     list: UserStoreListItem[];
     /**
@@ -40,11 +40,11 @@ interface UserStoresListPropsInterface {
 }
 
 /**
- * This component renders the User Store List
+ * This component renders the Userstore List
  * @param {UserStoresListPropsInterface} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const UserStoresList = (props: UserStoresListPropsInterface): React.ReactElement => {
+export const UserStoresList = (props: UserStoresListPropsInterface): ReactElement => {
 
     const { list, update } = props;
 
@@ -56,8 +56,8 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
     const appConfig: AppConfigInterface = useContext(AppConfig);
 
     /**
-     * Delete a user store
-     * @param {string} id user store id
+     * Delete a userstore
+     * @param {string} id userstore id
      */
     const initDelete = (id: string) => {
         setDeleteID(id);
@@ -74,9 +74,9 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
 
     /**
      * Shows the delete confirmation modal
-     * @return {React.ReactElement}
+     * @return {ReactElement}
      */
-    const showDeleteConfirm = (): React.ReactElement => {
+    const showDeleteConfirm = (): ReactElement => {
         return (
             <Modal
                 open={ deleteConfirm }
@@ -88,7 +88,7 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
                     Confirm Delete
                 </Modal.Header>
                 <Modal.Content>
-                    This will completely remove the user store and the data in it.
+                    This will completely remove the userstore and the data in it.
                     Do you want to continue deleting it?
                 </Modal.Content>
                 <Modal.Actions>
@@ -100,24 +100,26 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
                         deleteUserStore(deleteID)
                             .then(() => {
                                 dispatch(addAlert({
-                                    message: "User Store deleted successfully!",
-                                    description: "The user store has been deleted successfully!",
-                                    level: AlertLevels.SUCCESS
+                                    description: "The userstore has been deleted successfully!",
+                                    level: AlertLevels.SUCCESS,
+                                    message: "Userstore deleted successfully!"
+                                    
                                 }));
                                 dispatch(addAlert({
-                                    message: "Updating User Store list takes time",
-                                    description: "It may take a while for the user store list to be updated. " +
-                                        "Refresh in a few seconds to get the updated user store list.",
-                                    level: AlertLevels.WARNING
+                                    description: "It may take a while for the userstore list to be updated. " +
+                                        "Refresh in a few seconds to get the updated userstore list.",
+                                    level: AlertLevels.WARNING,
+                                    message: "Updating Userstore list takes time"
                                 }));
                                 update();
                                 closeDeleteConfirm();
                             })
                             .catch(error => {
                                 dispatch(addAlert({
-                                    message: error?.message ?? "Something went wrong!",
-                                    description: error?.description ?? "There was an error while deleting the user store",
-                                    level: AlertLevels.ERROR
+                                    description: error?.description
+                                        ?? "There was an error while deleting the userstore",
+                                    level: AlertLevels.ERROR,
+                                    message: error?.message ?? "Something went wrong!"
                                 }));
                                 closeDeleteConfirm();
                             });

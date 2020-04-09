@@ -18,8 +18,7 @@
 
 import { AlertLevels, TypeResponse } from "../../../models";
 import { Field, Forms, FormValue } from "@wso2is/forms";
-import React, { useEffect, useState } from "react";
-
+import React, { ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { getTypes } from "../../../api";
 import { useDispatch } from "react-redux";
@@ -45,11 +44,11 @@ interface BasicDetailsUserStorePropsInterface {
 /**
  * This component renders the Basic Details step of the wizard
  * @param {BasicDetailsUserStorePropsInterface} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
 export const BasicDetailsUserStore = (
     props: BasicDetailsUserStorePropsInterface
-): React.ReactElement => {
+): ReactElement => {
 
     const { submitState, onSubmit, values } = props;
 

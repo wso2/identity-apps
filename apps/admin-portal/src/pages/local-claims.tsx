@@ -23,8 +23,7 @@ import { ClaimsList, ListType, LocalClaimsSearch } from "../components";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { filterList, sortList } from "../utils";
 import { getADialect, getAllLocalClaims } from "../api";
-import React, { useContext, useEffect, useState } from "react";
-
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { addAlert } from "../store/actions";
 import { AddLocalClaims } from "../components";
 import { ListLayout } from "../layouts";
@@ -35,9 +34,9 @@ import { useDispatch } from "react-redux";
 /**
  * This returns the list of local claims.
  *
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const LocalClaimsPage = (): React.ReactElement => {
+export const LocalClaimsPage = (): ReactElement => {
 
     /**
      * Sets the attributes by which the list can be sorted
@@ -184,11 +183,11 @@ export const LocalClaimsPage = (): React.ReactElement => {
             }
             <PageLayout
                 title="Local Claims"
-                description="View, edit and add the local claims"
+                description="View, edit and add local claims"
                 showBottomDivider={ true }
                 backButton={ {
                     onClick: () => { history.push(CLAIM_DIALECTS_PATH) },
-                    text: "Go back to Claim Dialects"
+                    text: "Go back to claim dialects"
                 } }
             >
                 <ListLayout
@@ -224,7 +223,7 @@ export const LocalClaimsPage = (): React.ReactElement => {
                                     setOpenModal(true);
                                 } }
                             >
-                                <Icon name="add" />Add a Local Claim
+                                <Icon name="add" />Add Local Claim
                             </PrimaryButton>
                         )
                     }

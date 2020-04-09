@@ -16,7 +16,5 @@
 * under the License.
 */
 
-export * from "./edit-additional-properties-local-claims";
-export * from "./edit-basic-details-local-claims";
-export * from "./edit-mapped-attributes-local-claims";
-export * from "./edit-external-claims";
+export * from "./local-claim";
+export * from "./external-dialect";

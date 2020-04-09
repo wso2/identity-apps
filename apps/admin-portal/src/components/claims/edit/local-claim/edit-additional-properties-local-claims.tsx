@@ -16,15 +16,15 @@
 * under the License.
 */
 
-import React from "react";
-import { Grid } from "semantic-ui-react";
-import { useTrigger } from "@wso2is/forms";
-import { AlertLevels, Claim } from "../../../models";
-import { updateAClaim } from "../../../api";
-import { useDispatch } from "react-redux";
+import { AlertLevels, Claim } from "../../../../models";
+import React, { ReactElement } from "react";
 import { addAlert } from "@wso2is/core/store";
-import { DynamicField } from "../dynamic-fields";
-import { Hint, PrimaryButton } from "@wso2is/react-components";
+import { DynamicField } from "../../dynamic-fields";
+import { Grid } from "semantic-ui-react";
+import { PrimaryButton } from "@wso2is/react-components";
+import { updateAClaim } from "../../../../api";
+import { useDispatch } from "react-redux";
+import { useTrigger } from "@wso2is/forms";
 
 /**
  * Prop types for `EditAdditionalPropertiesLocalClaims` component
@@ -43,11 +43,11 @@ interface EditAdditionalPropertiesLocalClaimsPropsInterface {
 /**
  * This component renders the additional properties pane
  * @param {EditAdditionalPropertiesLocalClaimsPropsInterface} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
 export const EditAdditionalPropertiesLocalClaims = (
     props: EditAdditionalPropertiesLocalClaimsPropsInterface
-): React.ReactElement => {
+): ReactElement => {
 
     const { claim, update } = props;
 
@@ -59,7 +59,7 @@ export const EditAdditionalPropertiesLocalClaims = (
         <Grid>
             <Grid.Row columns={ 1 }>
                 <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
-                    <Hint>Used when writing an extension using current claims</Hint>
+                    <p>Use when writing an extension using current claims</p>
                     <DynamicField
                         data={ claim.properties }
                         keyType="text"

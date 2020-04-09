@@ -122,34 +122,41 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
             <Grid>
                 <Grid.Row columns={
                     metaContent instanceof Array
-                        ? (metaContent.length + 2) as StrictGridRowProps["columns"]
-                        : 3
+                        ? (metaContent.length + 2) as StrictGridRowProps[ "columns" ]
+                        : (itemHeader || itemDescription)
+                            ? 3
+                            : 2
                 }>
-                    <Grid.Column width={ descriptionColumnWidth } className="resource-item-column">
-                        { avatar }
-                        <List.Content>
-                            <List.Header className="list-item-name">{ itemHeader }</List.Header>
-                            { itemDescription && 
-                                <List.Description className="list-item-description">
-                                    { itemDescription }
-                                </List.Description>
-                            }
-                        </List.Content>
-                    </Grid.Column>
+                    { (itemDescription || itemHeader)
+                        ? (
+                            <Grid.Column width={ descriptionColumnWidth } className="resource-item-column">
+                                { avatar }
+                                <List.Content>
+                                    <List.Header className="list-item-name">{ itemHeader }</List.Header>
+                                    { itemDescription &&
+                                        <List.Description className="list-item-description">
+                                            { itemDescription }
+                                        </List.Description>
+                                    }
+                                </List.Content>
+                            </Grid.Column>
+                        )
+                        : null
+                    }
                     {
                         metaContent instanceof Array
                             ? (
-                                metaContent?.map((content,index) => {
+                                metaContent?.map((content, index) => {
                                     return (
                                         <Grid.Column key={ index } width={ metaColumnWidth } verticalAlign="middle">
-                                            <List.Content>{content}</List.Content>
+                                            <List.Content>{ content }</List.Content>
                                         </Grid.Column>
                                     )
                                 })
                             )
                             : (
                                 <Grid.Column width={ metaColumnWidth } verticalAlign="middle">
-                                    <List.Content>{metaContent}</List.Content>
+                                    <List.Content>{ metaContent }</List.Content>
                                 </Grid.Column>
                             )
                     }

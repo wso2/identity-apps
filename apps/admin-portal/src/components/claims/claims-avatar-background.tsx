@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import React from "react";
+import React, { ReactElement } from "react";
 
 /**
  * Prop types of `ClaimsAvatarBackground` component
@@ -32,9 +32,9 @@ interface ClaimsAvatarBackgroundPropsInterface {
  * This component renders the Claim Avatar Background
  * This is a mosaic of 6x6 squares with random opacity values between `0.8` and `1`.
  * @param {ClaimsAvatarBackgroundPropsInterface} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const ClaimsAvatarBackground = (props: ClaimsAvatarBackgroundPropsInterface): React.ReactElement => {
+export const ClaimsAvatarBackground = (props: ClaimsAvatarBackgroundPropsInterface): ReactElement => {
 
     const { primary } = props;
 

@@ -25,7 +25,7 @@
 export const APPLICATION_SETTINGS_STORAGE_KEY = "application_settings";
 
 /**
- * Primary user store identifier.
+ * Primary userstore identifier.
  * @constant
  * @type {string}
  * @default
@@ -62,7 +62,7 @@ export const LOCAL_CLAIMS_PATH = "/local-claims";
  * @type {string}
  * @default
  */
-export const EXTERNAL_CLAIMS_PATH = "/external-claims";
+export const EDIT_EXTERNAL_DIALECT = "/edit-external-dialect";
 
 /**
  * Path to the applications page.

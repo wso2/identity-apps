@@ -16,27 +16,27 @@
 * under the License.
 */
 
-import React, { useEffect, useState } from "react"
-import { PageLayout } from "../layouts"
-import { getAUserStore, getAType } from "../api";
-import { AlertLevels, UserStore, Type } from "../models";
-import { ResourceTab } from "@wso2is/react-components";
+import { AlertLevels, Type, UserStore } from "../models";
 import {
     EditBasicDetailsUserStore,
-    MemoEditConnectionDetails,
     MemoEditAdvancedProperties,
+    MemoEditConnectionDetails,
     MemoEditOptionalProperties
 } from "../components";
-import { history } from "../helpers";
-import { useDispatch } from "react-redux";
+import { getAType, getAUserStore } from "../api";
+import React, { ReactElement, useEffect, useState } from "react"
 import { addAlert } from "../store/actions";
+import { history } from "../helpers";
+import { PageLayout } from "../layouts"
+import { ResourceTab } from "@wso2is/react-components";
+import { useDispatch } from "react-redux";
 
 /**
- * This renders the user store edit page
+ * This renders the userstore edit page
  * @param props 
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const UserStoresEditPage = (props): React.ReactElement => {
+export const UserStoresEditPage = (props): ReactElement => {
 
     const userStoreId = props.match.params.id;
 
@@ -72,9 +72,9 @@ export const UserStoresEditPage = (props): React.ReactElement => {
                 setType(response);
             }).catch(error => {
                 dispatch(addAlert({
-                    message: error?.message || "Something went wrong",
                     description: error?.description || "An error occurred while fetching the type meta data.",
-                    level: AlertLevels.ERROR
+                    level: AlertLevels.ERROR,
+                    message: error?.message || "Something went wrong"
                 }));
             });
         }
@@ -132,12 +132,12 @@ export const UserStoresEditPage = (props): React.ReactElement => {
     return (
         <PageLayout
             title={ userStore?.name }
-            description={ "Edit User Store" }
+            description={ "Edit userstore" }
             backButton={ {
                 onClick: () => {
                     history.push("/user-stores");
                 },
-                text: "Go back to User Stores"
+                text: "Go back to userstores"
             } }
             titleTextAlign="left"
             bottomMargin={ false }

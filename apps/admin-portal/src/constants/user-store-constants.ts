@@ -17,10 +17,10 @@
  */
 
  /**
-  * The ID of the user store type JDBC.
+  * The ID of the userstore type JDBC.
   * 
   * @constant
   * 
   * @type {string}
   */
-export const JDBC_ID = "SkRCQ1VzZXJTdG9yZU1hbmFnZXI";
+export const JDBC = "JDBC";

@@ -16,15 +16,14 @@
  * under the License.
  */
 
-import { AddEditDialect, DialectSearch } from "../components";
+import { AddDialect, DialectSearch } from "../components";
 import { AlertLevels, AppConfigInterface, ClaimDialect } from "../models";
 import { AppConfig, history } from "../helpers";
 import { ClaimsAvatarBackground, ClaimsList, ListType } from "../components";
 import { UserConstants, LOCAL_CLAIMS_PATH } from "../constants";
 import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
 import { filterList, sortList } from "../utils";
-import React, { useContext, useEffect, useState } from "react";
-
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { getDialects } from "../api";
 import { ListLayout } from "../layouts";
@@ -35,9 +34,9 @@ import { useDispatch } from "react-redux";
 /**
  * This displays a list fo claim dialects.
  *
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const ClaimDialectsPage = (): React.ReactElement => {
+export const ClaimDialectsPage = (): ReactElement => {
 
     /**
      * Sets the attributes by which the list can be sorted.
@@ -54,7 +53,6 @@ export const ClaimDialectsPage = (): React.ReactElement => {
     const [ offset, setOffset ] = useState(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ addEditClaim, setAddEditClaim ] = useState(false);
-    const [ dialectID, setDialectID ] = useState<string>(null);
     const [ filteredDialects, setFilteredDialects ] = useState<ClaimDialect[]>(null);
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
@@ -164,15 +162,12 @@ export const ClaimDialectsPage = (): React.ReactElement => {
 
     return (
         <>
-            <AddEditDialect
+            <AddDialect
                 open={ addEditClaim }
                 onClose={ () => {
                     setAddEditClaim(false);
-                    setDialectID(null);
                 } }
                 update={ getDialect }
-                edit={ dialectID ? true : false }
-                dialectID={ dialectID }
             />
             <PageLayout
                 title="Claim Dialects"
@@ -260,7 +255,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                                     setAddEditClaim(true);
                                 } }
                             >
-                                <Icon name="add" />Add a dialect
+                                <Icon name="add" />Add External Dialect
                             </PrimaryButton>
                         )
                     }
@@ -273,12 +268,6 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                     <ClaimsList
                         list={ paginate(filteredDialects, listItemLimit, offset) }
                         localClaim={ ListType.DIALECT }
-                        openEdit={
-                            (id: string) => {
-                                setDialectID(id);
-                                setAddEditClaim(true);
-                            }
-                        }
                         update={ getDialect }
                     />
                 </ListLayout>
