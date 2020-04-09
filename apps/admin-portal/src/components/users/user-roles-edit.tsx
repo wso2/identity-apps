@@ -46,6 +46,7 @@ import { AlertLevels } from "@wso2is/core/models";
 import { RolesMemberInterface } from "../../models";
 import { EmptyPlaceholderIllustrations } from "../../configs";
 import { UserRolePermissions } from "./user-role-permissions";
+import { RolePermissions } from "./wizard";
 
 interface UserRolesPropsInterface {
     user: BasicProfileInterface;
@@ -96,6 +97,11 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     const [ selectedRoleId, setSelectedRoleId ] = useState<string>("");
     const [ isRoleSelected, setRoleSelection ] = useState(false);
 
+    // The following constant are used to persist the state of the unassigned roles permissions.
+    const [ viewRolePermissions, setViewRolePermissions ] = useState(false);
+    const [ roleId,  setRoleId ] = useState();
+    const [ isSelected, setSelection ] = useState(false);
+
     const [ assignedRoles, setAssignedRoles ] = useState([]);
 
     const { t } = useTranslation();
@@ -109,6 +115,16 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             handleOpenRolePermissionModal();
         }
     }, [ isRoleSelected ]);
+
+    useEffect(() => {
+        if (!roleId) {
+            return;
+        }
+
+        if (isSelected) {
+            setViewRolePermissions(true);
+        }
+    }, [ isSelected ]);
 
     useEffect(() => {
         if (isSelectAssignedAllRolesChecked) {
@@ -477,6 +493,16 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         }
     };
 
+    const handleViewRolePermission = () => {
+        setViewRolePermissions(!viewRolePermissions);
+        setSelection(false);
+    };
+
+    const handleRoleIdSet = (roleId) => {
+        setRoleId(roleId);
+        setSelection(true);
+    };
+
     const addNewGroupModal = () => (
         <Modal open={ showAddNewRoleModal } size="small" className="user-roles">
             <Modal.Header>
@@ -485,70 +511,83 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                     Add new roles or remove existing roles assigned to the user.
                 </Heading>
             </Modal.Header>
-            <Modal.Content image>
-                <TransferComponent
-                    searchPlaceholder="Search roles"
-                    addItems={ addRoles }
-                    removeItems={ removeRoles }
-                    handleUnelectedListSearch={ handleUnselectedListSearch }
-                    handleSelectedListSearch={ handleSelectedListSearch }
-                >
-                    <TransferList
-                        isListEmpty={ !(roleList.length > 0) }
-                        listType="unselected"
-                        listHeaders={ [ "Domain", "Name", "" ] }
-                        handleHeaderCheckboxChange={ selectAllUnAssignedList }
-                        isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
-                    >
-                        {
-                            roleList?.map((role, index)=> {
-                                const roleName = role.displayName?.split("/");
-                                if (roleName.length > 1) {
-                                    return (
-                                        <TransferListItem
-                                            handleItemChange={ () => handleUnassignedItemCheckboxChange(role) }
-                                            key={ index }
-                                            listItem={ roleName[1] }
-                                            listItemId={ role.id }
-                                            listItemIndex={ index }
-                                            listItemTypeLabel={ createItemLabel(role?.displayName) }
-                                            isItemChecked={ checkedUnassignedListItems.includes(role) }
-                                            showSecondaryActions={ true }
-                                        />
-                                    )
-                                }
-                            })
-                        }
-                    </TransferList>
-                    <TransferList
-                        isListEmpty={ !(tempRoleList.length > 0) }
-                        listType="selected"
-                        listHeaders={ [ "Domain", "Name" ] }
-                        handleHeaderCheckboxChange={ selectAllAssignedList }
-                        isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
-                    >
-                        {
-                            tempRoleList?.map((role, index)=> {
-                                const userGroup = role.displayName.split("/");
-                                if (userGroup.length > 1) {
-                                    return (
-                                        <TransferListItem
-                                            handleItemChange={ () => handleAssignedItemCheckboxChange(role) }
-                                            key={ index }
-                                            listItem={ userGroup[1] }
-                                            listItemId={ role.id }
-                                            listItemIndex={ index }
-                                            listItemTypeLabel={ createItemLabel(role?.displayName) }
-                                            isItemChecked={ checkedAssignedListItems.includes(role) }
-                                            showSecondaryActions={ false }
-                                        />
-                                    )
-                                }
-                            })
-                        }
-                    </TransferList>
-                </TransferComponent>
-            </Modal.Content>
+            {
+                viewRolePermissions
+                    ? (
+                        <>
+                            <Modal.Content>
+                                <RolePermissions handleNavigateBack={ handleViewRolePermission } roleId={ roleId }/>
+                            </Modal.Content>
+                            <Divider hidden/>
+                        </>
+                    ) : (
+                        <Modal.Content image>
+                            <TransferComponent
+                                searchPlaceholder="Search roles"
+                                addItems={ addRoles }
+                                removeItems={ removeRoles }
+                                handleUnelectedListSearch={ handleUnselectedListSearch }
+                                handleSelectedListSearch={ handleSelectedListSearch }
+                            >
+                                <TransferList
+                                    isListEmpty={ !(roleList.length > 0) }
+                                    listType="unselected"
+                                    listHeaders={ ["Domain", "Name", ""] }
+                                    handleHeaderCheckboxChange={ selectAllUnAssignedList }
+                                    isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
+                                >
+                                    {
+                                        roleList?.map((role, index) => {
+                                            const roleName = role.displayName?.split("/");
+                                            if (roleName.length > 1) {
+                                                return (
+                                                    <TransferListItem
+                                                        handleItemChange={ () => handleUnassignedItemCheckboxChange(role) }
+                                                        key={ index }
+                                                        listItem={ roleName[1] }
+                                                        listItemId={ role.id }
+                                                        listItemIndex={ index }
+                                                        listItemTypeLabel={ createItemLabel(role?.displayName) }
+                                                        isItemChecked={ checkedUnassignedListItems.includes(role) }
+                                                        showSecondaryActions={ true }
+                                                        handleOpenPermissionModal={ () => handleRoleIdSet(role.id) }
+                                                    />
+                                                )
+                                            }
+                                        })
+                                    }
+                                </TransferList>
+                                <TransferList
+                                    isListEmpty={ !(tempRoleList.length > 0) }
+                                    listType="selected"
+                                    listHeaders={ ["Domain", "Name"] }
+                                    handleHeaderCheckboxChange={ selectAllAssignedList }
+                                    isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
+                                >
+                                    {
+                                        tempRoleList?.map((role, index) => {
+                                            const userGroup = role.displayName.split("/");
+                                            if (userGroup.length > 1) {
+                                                return (
+                                                    <TransferListItem
+                                                        handleItemChange={ () => handleAssignedItemCheckboxChange(role) }
+                                                        key={ index }
+                                                        listItem={ userGroup[1] }
+                                                        listItemId={ role.id }
+                                                        listItemIndex={ index }
+                                                        listItemTypeLabel={ createItemLabel(role?.displayName) }
+                                                        isItemChecked={ checkedAssignedListItems.includes(role) }
+                                                        showSecondaryActions={ false }
+                                                    />
+                                                )
+                                            }
+                                        })
+                                    }
+                                </TransferList>
+                            </TransferComponent>
+                        </Modal.Content>
+                    )
+            }
             <Modal.Actions>
                 <Grid>
                     <Grid.Row column={ 2 }>
@@ -658,8 +697,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             <Table.Header>
                                                 <Table.Row>
                                                     <Table.HeaderCell/>
+                                                    <Table.HeaderCell><strong>Domain</strong></Table.HeaderCell>
                                                     <Table.HeaderCell><strong>Name</strong></Table.HeaderCell>
-                                                    <Table.HeaderCell><strong>Type</strong></Table.HeaderCell>
                                                     <Table.HeaderCell/>
                                                 </Table.Row>
                                             </Table.Header>

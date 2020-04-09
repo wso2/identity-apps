@@ -47,6 +47,7 @@ import { updateUserRoles } from "../../api";
 import { EmptyPlaceholderIllustrations } from "../../configs";
 import { AlertLevels } from "@wso2is/core/models";
 import { UserRolePermissions } from "./user-role-permissions";
+import { RolePermissions } from "./wizard";
 
 interface UserGroupsPropsInterface {
     user: BasicProfileInterface;
@@ -80,6 +81,11 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     const [ selectedGroupId, setSelectedGroupId ] = useState<string>("");
     const [ isGroupSelected, setGroupSelection ] = useState(false);
 
+    // The following constant are used to persist the state of the unassigned groups permissions.
+    const [ viewGroupPermissions, setViewGroupPermissions ] = useState(false);
+    const [ groupId, setGroupId ] = useState();
+    const [ isSelected, setSelection ] = useState(false);
+
     useEffect(() => {
         if (!selectedGroupId) {
             return;
@@ -89,6 +95,16 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             handleOpenGroupPermissionModal();
         }
     }, [ isGroupSelected ]);
+
+    useEffect(() => {
+        if (!groupId) {
+            return;
+        }
+
+        if (isSelected) {
+            setViewGroupPermissions(true);
+        }
+    }, [ isSelected ]);
 
     useEffect(() => {
         if (!(user)) {
@@ -456,6 +472,16 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         }
     };
 
+    const handleViewGroupPermission = () => {
+        setViewGroupPermissions(!viewGroupPermissions);
+        setSelection(false);
+    };
+
+    const handleGroupIdSet = (groupId) => {
+        setGroupId(groupId);
+        setSelection(true);
+    };
+
     const addNewGroupModal = () => (
         <Modal open={ showAddNewRoleModal } size="small" className="user-roles">
             <Modal.Header>
@@ -464,70 +490,83 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                     Add new groups or remove existing group assigned to the user.
                 </Heading>
             </Modal.Header>
-            <Modal.Content image>
-                <TransferComponent
-                    searchPlaceholder="Search groups"
-                    addItems={ addGroups }
-                    removeItems={ removeGroups }
-                    handleUnelectedListSearch={ handleUnselectedListSearch }
-                    handleSelectedListSearch={ handleSelectedListSearch }
-                >
-                    <TransferList
-                        isListEmpty={ !(groupList.length > 0) }
-                        listType="unselected"
-                        listHeaders={ [ "Domain", "Name", "" ] }
-                        handleHeaderCheckboxChange={ selectAllUnAssignedList }
-                        isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
-                    >
-                        {
-                            groupList?.map((role, index)=> {
-                                const roleName = role.displayName?.split("/");
-                                if (roleName.length === 1) {
-                                    return (
-                                        <TransferListItem
-                                            handleItemChange={ () => handleUnassignedItemCheckboxChange(role) }
-                                            key={ index }
-                                            listItem={ role.displayName }
-                                            listItemId={ role.id }
-                                            listItemIndex={ index }
-                                            listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
-                                            isItemChecked={ checkedUnassignedListItems.includes(role) }
-                                            showSecondaryActions={ true }
-                                        />
-                                    )
-                                }
-                            })
-                        }
-                    </TransferList>
-                    <TransferList
-                        isListEmpty={ !(tempGroupList.length > 0) }
-                        listType="selected"
-                        listHeaders={ [ "Domain", "Name" ] }
-                        handleHeaderCheckboxChange={ selectAllAssignedList }
-                        isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
-                    >
-                        {
-                            tempGroupList?.map((role, index)=> {
-                                const userGroup = role.displayName.split("/");
-                                if (userGroup.length === 1) {
-                                    return (
-                                        <TransferListItem
-                                            handleItemChange={ () => handleAssignedItemCheckboxChange(role) }
-                                            key={ index }
-                                            listItem={ role.displayName }
-                                            listItemId={ role.id }
-                                            listItemIndex={ index }
-                                            listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
-                                            isItemChecked={ checkedAssignedListItems.includes(role) }
-                                            showSecondaryActions={ false }
-                                        />
-                                    )
-                                }
-                            })
-                        }
-                    </TransferList>
-                </TransferComponent>
-            </Modal.Content>
+            {
+                viewGroupPermissions
+                    ? (
+                        <>
+                            <Modal.Content>
+                                <RolePermissions handleNavigateBack={ handleViewGroupPermission } roleId={ groupId }/>
+                            </Modal.Content>
+                            <Divider hidden/>
+                        </>
+                    ) : (
+                        <Modal.Content image>
+                            <TransferComponent
+                                searchPlaceholder="Search groups"
+                                addItems={ addGroups }
+                                removeItems={ removeGroups }
+                                handleUnelectedListSearch={ handleUnselectedListSearch }
+                                handleSelectedListSearch={ handleSelectedListSearch }
+                            >
+                                <TransferList
+                                    isListEmpty={ !(groupList.length > 0) }
+                                    listType="unselected"
+                                    listHeaders={ [ "Domain", "Name", "" ] }
+                                    handleHeaderCheckboxChange={ selectAllUnAssignedList }
+                                    isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
+                                >
+                                    {
+                                        groupList?.map((role, index)=> {
+                                            const roleName = role.displayName?.split("/");
+                                            if (roleName.length === 1) {
+                                                return (
+                                                    <TransferListItem
+                                                        handleItemChange={ () => handleUnassignedItemCheckboxChange(role) }
+                                                        key={ index }
+                                                        listItem={ role.displayName }
+                                                        listItemId={ role.id }
+                                                        listItemIndex={ index }
+                                                        listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
+                                                        isItemChecked={ checkedUnassignedListItems.includes(role) }
+                                                        showSecondaryActions={ true }
+                                                        handleOpenPermissionModal={ () => handleGroupIdSet(role.id) }
+                                                    />
+                                                )
+                                            }
+                                        })
+                                    }
+                                </TransferList>
+                                <TransferList
+                                    isListEmpty={ !(tempGroupList.length > 0) }
+                                    listType="selected"
+                                    listHeaders={ [ "Domain", "Name" ] }
+                                    handleHeaderCheckboxChange={ selectAllAssignedList }
+                                    isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
+                                >
+                                    {
+                                        tempGroupList?.map((role, index)=> {
+                                            const userGroup = role.displayName.split("/");
+                                            if (userGroup.length === 1) {
+                                                return (
+                                                    <TransferListItem
+                                                        handleItemChange={ () => handleAssignedItemCheckboxChange(role) }
+                                                        key={ index }
+                                                        listItem={ role.displayName }
+                                                        listItemId={ role.id }
+                                                        listItemIndex={ index }
+                                                        listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
+                                                        isItemChecked={ checkedAssignedListItems.includes(role) }
+                                                        showSecondaryActions={ false }
+                                                    />
+                                                )
+                                            }
+                                        })
+                                    }
+                                </TransferList>
+                            </TransferComponent>
+                        </Modal.Content>
+                    )
+            }
             <Modal.Actions>
                 <Grid>
                     <Grid.Row columns={ 2 }>
@@ -613,7 +652,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                             <Table.Header>
                                                 <Table.Row>
                                                     <Table.HeaderCell/>
-                                                    <Table.HeaderCell><strong>Type</strong></Table.HeaderCell>
+                                                    <Table.HeaderCell><strong>Domain</strong></Table.HeaderCell>
                                                     <Table.HeaderCell><strong>Name</strong></Table.HeaderCell>
                                                     <Table.HeaderCell/>
                                                 </Table.Row>
