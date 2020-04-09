@@ -64,6 +64,7 @@ import {
     MFAIconSet,
     MinimizeIcon,
     OIDCLogo,
+    OIDCWebAppTemplateIllustration,
     OpenIDLogo,
     PinIcon,
     PlugIcon,
@@ -71,6 +72,7 @@ import {
     ReactLogo,
     ReportIcon,
     SamlLogo,
+    SAMLWebAppTemplateIllustration,
     SettigsSectionIconSet,
     SMSOTPIcon,
     SPATemplateIllustration,
@@ -83,6 +85,7 @@ import {
     VueLogo,
     WarningIcon,
     WebAppTemplateIllustration,
+    WindowsTemplateIllustration,
     WSFedLogo,
     WSTrustLogo
 } from "@wso2is/theme";
@@ -176,8 +179,10 @@ export const InboundProtocolLogos = {
 };
 
 export const ApplicationTemplateIllustrations = {
+    oidcWebApp: OIDCWebAppTemplateIllustration,
+    samlWebApp: SAMLWebAppTemplateIllustration,
     spa: SPATemplateIllustration,
-    webApp: WebAppTemplateIllustration
+    windowsNative: WindowsTemplateIllustration
 };
 
 export const TechnologyLogos = {

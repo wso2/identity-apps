@@ -132,10 +132,14 @@ export const ReactLogo = require("../dist/lib/themes/default/assets/images/techn
 export const VueLogo = require("../dist/lib/themes/default/assets/images/technologies/vue-logo.svg");
 
 // Application template illustrations
-export const WebAppTemplateIllustration = 
-    require("../dist/lib/themes/default/assets/images/illustrations/web-app-illustration.svg");
-export const SPATemplateIllustration = 
-    require("../dist/lib/themes/default/assets/images/illustrations/spa-illustration.svg");
+export const OIDCWebAppTemplateIllustration =
+    require("../dist/lib/themes/default/assets/images/illustrations/oidc-web-app-template-illustration.svg");
+export const SAMLWebAppTemplateIllustration =
+    require("../dist/lib/themes/default/assets/images/illustrations/saml-web-app-template-illustration.svg");
+export const SPATemplateIllustration =
+    require("../dist/lib/themes/default/assets/images/illustrations/spa-template-illustration.svg");
+export const WindowsTemplateIllustration =
+    require("../dist/lib/themes/default/assets/images/illustrations/windows-template-illustration.svg");
 
 // Social
 export const FacebookLogo = require("../dist/lib/themes/default/assets/images/social/facebook.svg");
