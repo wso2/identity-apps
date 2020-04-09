@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
+import { LocalStorageUtils } from "@wso2is/core/utils";
+import { CommonHelpers } from "@wso2is/core/helpers";
 import { Button, EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,14 +33,15 @@ import {
 } from "semantic-ui-react";
 import { deleteUser, getUsersList, getUserStoreList } from "../api";
 import { UserSearch, UsersList } from "../components/users";
-import { AddUserWizard } from "../components/users/wizard/add-user-wizard";
+import { AddUserWizard } from "../components/users/wizard";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertInterface, AlertLevels } from "../models";
 import { UserListInterface } from "../models/user";
 import { addAlert } from "../store/actions";
 import { EmptyPlaceholderIllustrations } from "../configs";
-import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
-import { UsersListOptionsComponent } from "../components/users/users-list-options";
+import { UserConstants } from "../constants";
+import { UsersListOptionsComponent } from "../components/users";
+import { store } from "../store";
 
 
 /**
@@ -60,6 +64,10 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ userStore, setUserStore ] = useState(undefined);
 
+    const username = AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME);
+    const tenantName = store.getState().config.deployment.tenant;
+    const tenantSettings = JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenantName));
+
     const getList = (limit: number, offset: number, filter: string, attribute: string, domain: string) => {
         getUsersList(limit, offset, filter, attribute, domain)
             .then((response) => {
@@ -68,17 +76,30 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     };
 
     useEffect(() => {
-        setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
-        setUserListMetaContent(new Map<string, string>([
-            ["name", "name"],
-            ["emails", "emails"],
-            ["name", "name"],
-            ["userName", "userName"],
-            ["id", ""],
-            ["profileUrl", "profileUrl"],
-            ["meta.lastModified", "meta.lastModified"],
-            ["meta.created", ""]
-        ]));
+        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
+
+        if(CommonHelpers.lookupKey(tenantSettings, username) !== null) {
+            const userSettings = CommonHelpers.lookupKey(tenantSettings, username);
+            const userPreferences = userSettings[1];
+            const tempColumns = new Map<string, string> ();
+
+            if (userPreferences.identityAppsSettings.userPreferences.userListColumns.length < 1) {
+                const metaColumns = UserConstants.DEFAULT_USER_LIST_ATTRIBUTES;
+                setUserMetaColumns(metaColumns);
+                metaColumns.map((column) => {
+                    if (column === "id") {
+                        tempColumns.set(column, "");
+                    } else {
+                        tempColumns.set(column, column);
+                    }
+                });
+                setUserListMetaContent(tempColumns);
+            }
+            userPreferences.identityAppsSettings.userPreferences.userListColumns.map((column) => {
+                tempColumns.set(column, column);
+            });
+            setUserListMetaContent(tempColumns);
+        }
     }, []);
 
     /**
@@ -158,6 +179,34 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     }, [ isListUpdated ]);
 
     /**
+     * The following method set the user preferred columns to the local storage.
+     *
+     * @param metaColumns - string[]
+     */
+    const setUserMetaColumns = (metaColumns: string[]) => {
+        if(CommonHelpers.lookupKey(tenantSettings, username) !== null) {
+            const userSettings = CommonHelpers.lookupKey(tenantSettings, username);
+            const userPreferences = userSettings[1];
+
+            const newUserSettings = {
+                ...tenantSettings,
+                [ username ]: {
+                    ...userPreferences,
+                    identityAppsSettings: {
+                        ...userPreferences.identityAppsSettings,
+                        userPreferences: {
+                            ...userPreferences.identityAppsSettings.userPreferences,
+                            userListColumns: metaColumns
+                        }
+                    }
+                }
+            };
+
+            LocalStorageUtils.setValueInLocalStorage(tenantName, JSON.stringify(newUserSettings));
+        }
+    };
+
+    /**
      * Shows list placeholders.
      * @return {JSX.Element}
      */
@@ -202,11 +251,15 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
      * @param metaColumns - string[]
      */
     const handleMetaColumnChange = (metaColumns: string[]) => {
+        metaColumns.push("profileUrl");
         const tempColumns = new Map<string, string> ();
+        setUserMetaColumns(metaColumns);
+
         metaColumns.map((column) => {
             tempColumns.set(column, column)
         });
         setUserListMetaContent(tempColumns);
+        setListUpdated(true);
     };
 
     /**

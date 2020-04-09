@@ -73,20 +73,16 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
         for (const [key, value] of userMetaListContent.entries()) {
             if (key !== "name" && key !== "emails" && key !== "profileUrl" && value !== "") {
-                if (
-                    key !== "" &&
-                    (key === "meta.lastModified" ||
-                        key === "meta.created")
-                )
-                {
+                if (key !== "" && (key === "meta.lastModified")) {
                     if(user.meta) {
                         const metaAttribute = key.split(".");
                         attribute = user.meta[metaAttribute[1]];
                         attribute && (attributes.push(CommonUtils.humanizeDateDifference(attribute)));
                     }
+                } else {
+                    attribute = user[key];
+                    attributes.push(attribute);
                 }
-                attribute = user[key];
-                attributes.push(attribute);
             }
         }
 

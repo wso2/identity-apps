@@ -21,7 +21,7 @@ import { Forms } from "@wso2is/forms";
 import _ from "lodash";
 import { UserBasicInterface, RolesMemberInterface } from "../../../models";
 import { getUsersList } from "../../../api";
-import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../../../constants";
+import { UserConstants } from "../../../constants";
 import { 
     TransferComponent,
     TransferList,
@@ -144,7 +144,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     };
 
     useEffect(() => {
-        setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
+        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
         setUserListMetaContent(new Map<string, string>([
             ["name", "name"],
             ["emails", "emails"],
@@ -532,4 +532,4 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
             }
         </>
     )
-}
+};

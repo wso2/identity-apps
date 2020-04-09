@@ -18,7 +18,7 @@
 
 import { AlertLevels, AppConfigInterface, Claim, ClaimsGetParams } from "../models";
 import { AppConfig, history } from "../helpers";
-import { CLAIM_DIALECTS_PATH, DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
+import { CLAIM_DIALECTS_PATH, UserConstants } from "../constants";
 import { ClaimsList, ListType, LocalClaimsSearch } from "../components";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { filterList, sortList } from "../utils";
@@ -103,7 +103,7 @@ export const LocalClaimsPage = (): React.ReactElement => {
     }, [sortBy, sortOrder]);
 
     useEffect(() => {
-        setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
+        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
         getLocalClaims(null, null, null, null);
         getADialect("local").then((response) => {
             setClaimURIBase(response.dialectURI);
