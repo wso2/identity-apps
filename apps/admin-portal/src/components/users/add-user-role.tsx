@@ -21,6 +21,7 @@ import _ from "lodash";
 import { Forms } from "@wso2is/forms";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
 import { RolesInterface } from "../../models/roles";
+import {UserRolePermissions} from "./user-role-permissions";
 
 /**
  * Proptypes for the application consents list component.
@@ -33,6 +34,7 @@ interface AddUserRoleProps {
     handleTempListChange: (roles: any) => void;
     handleInitialTempListChange: (groups: any) => void;
     handleInitialRoleListChange: (groups: any) => void;
+    handleSetRoleId: (groupId: string) => void;
 }
 
 /**
@@ -49,7 +51,8 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         handleRoleListChange,
         handleTempListChange,
         handleInitialTempListChange,
-        handleInitialRoleListChange
+        handleInitialRoleListChange,
+        handleSetRoleId
     } = props;
 
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesInterface[]>([]);
@@ -216,7 +219,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                 <TransferList
                     isListEmpty={ !(initialValues?.roleList?.length > 0) }
                     listType="unselected"
-                    listHeaders={ [ "Name", "Type" ] }
+                    listHeaders={ [ "Domain", "Name", "" ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
                 >
@@ -232,7 +235,8 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                                     listItemIndex={ index }
                                     listItemTypeLabel={ createItemLabel(role?.displayName) }
                                     isItemChecked={ checkedUnassignedListItems.includes(role) }
-                                    showSecondaryActions={ false }
+                                    showSecondaryActions={ true }
+                                    handleOpenPermissionModal={ () => handleSetRoleId(role.id) }
                                 />
                             )
                         })
@@ -241,7 +245,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                 <TransferList
                     isListEmpty={ !(initialValues?.tempRoleList?.length > 0) }
                     listType="selected"
-                    listHeaders={ [ "Name", "Type" ] }
+                    listHeaders={ [ "Domain", "Name" ] }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
                     isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
                 >

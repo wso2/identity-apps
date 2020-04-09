@@ -42,9 +42,10 @@ import {
 } from "semantic-ui-react";
 import { getRolesList, updateUserRoles } from "../../api";
 import _ from "lodash";
-import { AlertLevels } from "@wso2is/core/dist/src/models/global";
-import { RolesMemberInterface } from "../../models/roles";
-import { EmptyPlaceholderIllustrations } from "../../configs/ui";
+import { AlertLevels } from "@wso2is/core/models";
+import { RolesMemberInterface } from "../../models";
+import { EmptyPlaceholderIllustrations } from "../../configs";
+import { UserRolePermissions } from "./user-role-permissions";
 
 interface UserRolesPropsInterface {
     user: BasicProfileInterface;
@@ -91,10 +92,23 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<RolesMemberInterface[]>([]);
     const [ isSelectUnassignedRolesAllRolesChecked, setIsSelectUnassignedAllRolesChecked ] = useState(false);
     const [ isSelectAssignedAllRolesChecked, setIsSelectAssignedAllRolesChecked ] = useState(false);
+    const [ showRolePermissionModal, setRolePermissionModal ] = useState(false);
+    const [ selectedRoleId, setSelectedRoleId ] = useState<string>("");
+    const [ isRoleSelected, setRoleSelection ] = useState(false);
 
     const [ assignedRoles, setAssignedRoles ] = useState([]);
 
     const { t } = useTranslation();
+
+    useEffect(() => {
+        if (!selectedRoleId) {
+            return;
+        }
+
+        if (isRoleSelected) {
+            handleOpenRolePermissionModal();
+        }
+    }, [ isRoleSelected ]);
 
     useEffect(() => {
         if (isSelectAssignedAllRolesChecked) {
@@ -482,7 +496,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                     <TransferList
                         isListEmpty={ !(roleList.length > 0) }
                         listType="unselected"
-                        listHeaders={ [ "Name", "Type" ] }
+                        listHeaders={ [ "Domain", "Name", "" ] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
                     >
@@ -499,7 +513,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             listItemIndex={ index }
                                             listItemTypeLabel={ createItemLabel(role?.displayName) }
                                             isItemChecked={ checkedUnassignedListItems.includes(role) }
-                                            showSecondaryActions={ false }
+                                            showSecondaryActions={ true }
                                         />
                                     )
                                 }
@@ -509,7 +523,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                     <TransferList
                         isListEmpty={ !(tempRoleList.length > 0) }
                         listType="selected"
-                        listHeaders={ [ "Name", "Type" ] }
+                        listHeaders={ [ "Domain", "Name" ] }
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
                     >
@@ -536,16 +550,26 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 </TransferComponent>
             </Modal.Content>
             <Modal.Actions>
-                <PrimaryButton
-                    onClick={ () => updateUserRole(user, tempRoleList) }
-                >
-                    Save
-                </PrimaryButton>
-                <LinkButton
-                    onClick={ handleCloseAddNewGroupModal }
-                >
-                    Cancel
-                </LinkButton>
+                <Grid>
+                    <Grid.Row column={ 2 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            <LinkButton
+                                floated="left"
+                                onClick={ handleCloseAddNewGroupModal }
+                            >
+                                Cancel
+                            </LinkButton>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            <PrimaryButton
+                                floated="right"
+                                onClick={ () => updateUserRole(user, tempRoleList) }
+                            >
+                                Save
+                            </PrimaryButton>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </Modal.Actions>
         </Modal>
     );
@@ -570,6 +594,30 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         } else {
             setAssignedRoles(user.groups);
         }
+    };
+
+    const handleCloseRolePermissionModal = () => {
+        setRolePermissionModal(false);
+        setRoleSelection(false);
+    };
+
+    const handleOpenRolePermissionModal = () => {
+        setRolePermissionModal(true);
+    };
+
+    const handleSetSelectedId = (roleId: string) => {
+        setSelectedRoleId(roleId);
+        setRoleSelection(true);
+    };
+
+    const viewRolesPermissionModal = () => {
+        return (
+            <UserRolePermissions
+                openRolePermissionModal={ showRolePermissionModal }
+                handleCloseRolePermissionModal={ handleCloseRolePermissionModal }
+                roleId={ selectedRoleId }
+            />
+        )
     };
 
     return (
@@ -610,8 +658,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             <Table.Header>
                                                 <Table.Row>
                                                     <Table.HeaderCell/>
-                                                    <Table.HeaderCell><strong>Type</strong></Table.HeaderCell>
                                                     <Table.HeaderCell><strong>Name</strong></Table.HeaderCell>
+                                                    <Table.HeaderCell><strong>Type</strong></Table.HeaderCell>
                                                     <Table.HeaderCell/>
                                                 </Table.Row>
                                             </Table.Header>
@@ -646,7 +694,13 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                                     <Table.Cell textAlign="center">
                                                                         <Popup
                                                                             content="View permissions"
-                                                                            trigger={ <Icon color="grey" name="eye"/> }
+                                                                            trigger={
+                                                                                <Icon
+                                                                                    color="grey"
+                                                                                    name="key"
+                                                                                    onClick={ () => handleSetSelectedId(group.value) }
+                                                                                />
+                                                                            }
                                                                         />
                                                                     </Table.Cell>
                                                                 </Table.Row>
@@ -681,6 +735,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                         }
                     </Grid.Column>
                 </Grid.Row>
+                { viewRolesPermissionModal() }
                 { addNewGroupModal() }
             </Grid>
         </>

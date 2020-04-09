@@ -20,7 +20,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import _ from "lodash";
 import { Forms } from "@wso2is/forms";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
-import { RolesInterface } from "../../models/roles";
+import { RolesInterface } from "../../models";
 
 /**
  * Proptypes for the application consents list component.
@@ -33,6 +33,7 @@ interface AddUserGroupPropsInterface {
     handleTempListChange: (groups: any) => void;
     handleInitialTempListChange: (groups: any) => void;
     handleInitialGroupListChange: (groups: any) => void;
+    handleSetGroupId: (groupId: string) => void;
 }
 
 /**
@@ -50,7 +51,8 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         handleGroupListChange,
         handleTempListChange,
         handleInitialTempListChange,
-        handleInitialGroupListChange
+        handleInitialGroupListChange,
+        handleSetGroupId
     } = props;
 
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesInterface[]>([]);
@@ -224,7 +226,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                 <TransferList
                     isListEmpty={ !(initialValues?.groupList?.length > 0) }
                     listType="unselected"
-                    listHeaders={ [ "Name", "Type" ] }
+                    listHeaders={ [ "Domain", "Name", "" ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedGroupsAllRolesChecked }
                 >
@@ -239,7 +241,8 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                                     listItemIndex={ index }
                                     listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
                                     isItemChecked={ checkedUnassignedListItems.includes(group) }
-                                    showSecondaryActions={ false }
+                                    showSecondaryActions={ true }
+                                    handleOpenPermissionModal={ () => handleSetGroupId(group.id) }
                                 />
                             )
                         })
@@ -248,7 +251,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                 <TransferList
                     isListEmpty={ !(initialValues.tempGroupList.length > 0) }
                     listType="selected"
-                    listHeaders={ [ "Name", "Type" ] }
+                    listHeaders={ [ "Domain", "Name" ] }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
                     isHeaderCheckboxChecked={ isSelectAssignedAllGroupsChecked }
                 >
