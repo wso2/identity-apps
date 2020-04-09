@@ -162,7 +162,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 icon: "childIcon",
                 id: "userGroups",
                 level: 2,
-                name: "User Groups",
+                name: "Groups",
                 path: "/groups",
                 protected: true,
                 showOnSidePanel: true
@@ -273,7 +273,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             {
                 component: ServerConfigurationsPage,
                 exact: true,
-                icon: "serverConfigurations",
+                icon: "childIcon",
                 id: "serverConfigurations",
                 level: 2,
                 name: "Server Configurations",

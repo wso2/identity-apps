@@ -773,23 +773,59 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     updateEnableNotificationPasswordRecovery: {
+                        error: {
+                            description: "An error occurred while updating the account recovery configurations.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the account recovery configurations.",
+                            message: "Something went wrong"
+                        },
                         success: {
-                            description: "Successfully updated notification based password recovery status."
+                            description: "Successfully updated notification based password recovery status.",
+                            message: ""
                         }
                     },
                     updateEnableUsernameRecovery: {
+                        error: {
+                            description: "An error occurred while updating the account recovery configurations.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the account recovery configurations.",
+                            message: "Something went wrong"
+                        },
                         success: {
-                            description: "Successfully updated username recovery status."
+                            description: "Successfully updated username recovery status.",
+                            message: ""
                         }
                     },
                     updateNotificationPasswordRecoveryReCaptcha: {
+                        error: {
+                            description: "An error occurred while updating the account recovery configurations.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the account recovery configurations.",
+                            message: "Something went wrong"
+                        },
                         success: {
-                            description: "Successfully configured reCaptcha for notification based password recovery."
+                            description: "Successfully configured reCaptcha for notification based password recovery.",
+                            message: ""
                         }
                     },
                     updateUsernameRecoveryReCaptcha: {
+                        error: {
+                            description: "An error occurred while updating the account recovery configurations.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the account recovery configurations.",
+                            message: "Something went wrong"
+                        },
                         success: {
-                            description: "Successfully configured reCaptcha for username recovery."
+                            description: "Successfully configured reCaptcha for username recovery.",
+                            message: ""
                         }
                     }
                 },
@@ -936,13 +972,31 @@ export const devPortal: DevPortalNS = {
                 heading: "Login Policies",
                 notifications: {
                     accountDisablingEnable: {
+                        error: {
+                            description: "An error occurred while updating the login policies.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the login policies.",
+                            message: "Something went wrong"
+                        },
                         success: {
-                            description: "Successfully updated the account disabling policy."
+                            description: "Successfully updated the account disabling policy.",
+                            message: ""
                         }
                     },
                     accountLockEnable: {
+                        error: {
+                            description: "An error occurred while updating the login policies.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the login policies.",
+                            message: "Something went wrong"
+                        },
                         success: {
-                            description: "Successfully updated the account locking policy."
+                            description: "Successfully updated the account locking policy.",
+                            message: ""
                         }
                     },
                     updateConfigurations: {
@@ -978,6 +1032,103 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     heading: "Captcha for SSO Login"
+                }
+            },
+            passwordPolicies: {
+                actionTitles: {
+                    config: "More"
+                },
+                confirmation: {
+                    heading: "Confirmation",
+                    message: "Do you wish to save the configurations related to password policies?"
+                },
+                description: "Configure the password policies of the system.",
+                heading: "Password Policies",
+                notifications: {
+                    accountDisablingEnable: {
+                        error: {
+                            description: "An error occurred while updating the login policies.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the login policies.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the account disabling policy.",
+                            message: ""
+                        }
+                    },
+                    accountLockEnable: {
+                        error: {
+                            description: "An error occurred while updating the login policies.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the login policies.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the account locking policy.",
+                            message: ""
+                        }
+                    },
+                    updateConfigurations: {
+                        error: {
+                            description: "An error occurred while updating the login policies.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the login policies.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the login policies.",
+                            message: "Configurations updated successfully"
+                        }
+                    }
+                },
+                passwordHistory: {
+                    form: {
+                        enable: {
+                            hint: "Restrict users from using previously used passwords.",
+                            label: "Validate password history"
+                        },
+                        passwordHistoryCount: {
+                            hint: "Restrict reusing last n number of password during password update",
+                            label: "Password history validation count",
+                            placeholder: "3",
+                            validations: {
+                                empty: "Password history validation count cannot be empty."
+                            }
+                        }
+                    },
+                    heading: "Password History"
+                },
+                passwordPatterns: {
+                    form: {
+                        enable: {
+                            hint: "",
+                            label: "Validate passwords based on a policy pattern"
+                        },
+                        errorMessage: {
+                            hint: "This error message will be displayed when a pattern violation is ditected.",
+                            label: "Error message on pattern violation"
+                        },
+                        policyMaxLength: {
+                            hint: "Maximum number of characters in the password.",
+                            label: "Maximum number of characters"
+                        },
+                        policyMinLength: {
+                            hint: "Minimum number of characters in the password.",
+                            label: "Minimum number of characters"
+                        },
+                        policyPattern: {
+                            hint: "A regex pattern to validate the password.",
+                            label: "Password pattern regex"
+                        }
+                    },
+                    heading: "Password Patterns"
                 }
             },
             selfRegistration: {
@@ -1030,8 +1181,17 @@ export const devPortal: DevPortalNS = {
                 heading: "User Self Registration",
                 notifications: {
                     updateAccountLockOnCreation: {
+                        error: {
+                            description: "An error occurred while updating the self registration configurations.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the self registration configurations.",
+                            message: "Something went wrong"
+                        },
                         success: {
-                            description: "Successfully updated self registration account lock on creation status."
+                            description: "Successfully updated self registration account lock on creation status.",
+                            message: ""
                         }
                     },
                     updateConfigurations: {
@@ -1049,21 +1209,49 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     updateEnable: {
+                        error: {
+                            description: "An error occurred while updating the self registration configurations.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the self registration configurations.",
+                            message: "Something went wrong"
+                        },
                         success: {
-                            description: "Successfully updated self registration enabled status."
+                            description: "Successfully updated self registration enabled status.",
+                            message: ""
                         }
                     },
                     updateInternalNotificationManagement: {
+                        error: {
+                            description: "An error occurred while updating the self registration configurations.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the self registration configurations.",
+                            message: "Something went wrong"
+                        },
                         success: {
-                            description: "Successfully updated self registration internal notification " +
-                                "management status."
+                            description: "Successfully updated self registration internal notification management " +
+                                "status.",
+                            message: ""
                         }
                     },
                     updateReCaptcha: {
+                        error: {
+                            description: "An error occurred while updating the self registration configurations.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the self registration configurations.",
+                            message: "Something went wrong"
+                        },
                         success: {
-                            description: "Successfully updated self registration enable reCaptcha status."
+                            description: "Successfully updated self registration enable reCaptcha status.",
+                            message: ""
                         }
                     }
+
                 }
             }
         }

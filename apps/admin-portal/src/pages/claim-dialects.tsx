@@ -20,7 +20,7 @@ import { AddEditDialect, DialectSearch } from "../components";
 import { AlertLevels, AppConfigInterface, ClaimDialect } from "../models";
 import { AppConfig, history } from "../helpers";
 import { ClaimsAvatarBackground, ClaimsList, ListType } from "../components";
-import { DEFAULT_USER_LIST_ITEM_LIMIT, LOCAL_CLAIMS_PATH } from "../constants";
+import { UserConstants, LOCAL_CLAIMS_PATH } from "../constants";
 import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
 import { filterList, sortList } from "../utils";
 import React, { useContext, useEffect, useState } from "react";
@@ -100,7 +100,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
     };
 
     useEffect(() => {
-        setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
+        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
         getDialect();
     }, []);
 

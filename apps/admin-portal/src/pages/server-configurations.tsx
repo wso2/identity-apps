@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement } from "react";
-import { useDispatch } from "react-redux";
-import { PageLayout } from "../layouts";
-import { Divider, Grid } from "semantic-ui-react";
-import { AlertInterface } from "../../../user-portal/src/models";
-import { addAlert } from "../../../user-portal/src/store/actions";
 import { AccountRecovery, UserSelfRegistration } from "../components";
-import { LoginPolicies } from "../components/server-configurations/login-policies";
+import { Divider, Grid } from "semantic-ui-react";
+import React, { FunctionComponent, ReactElement } from "react";
+import { addAlert } from "@wso2is/core/store";
+import { AlertInterface } from "@wso2is/core/models";
+import { LoginPolicies } from "../components";
+import { PageLayout } from "../layouts";
+import { PasswordPolicies } from "../components";
+import { useDispatch } from "react-redux";
 
 /**
  * Governance Features page.
@@ -56,6 +57,8 @@ export const ServerConfigurationsPage: FunctionComponent<{}> = (): ReactElement 
 						<AccountRecovery onAlertFired={ handleAlerts }/>
 						<Divider hidden={ true } />
 						<LoginPolicies onAlertFired={ handleAlerts }/>
+						<Divider hidden={ true } />
+						<PasswordPolicies onAlertFired={ handleAlerts }/>
 					</Grid.Column>
 				</Grid.Row>
 			</Grid>

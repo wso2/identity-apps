@@ -75,14 +75,20 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
 4. Execute `wso2server.sh` (For unix environment) or `wso2server.bat` (For windows environment) file from the `bin` directory to run WSO2 Identity Server.
 5. Navigate to `https://localhost:9443/carbon/` from the browser, and login to the system by entering an admin password.
 > **Hint!** Can find out the default password details here: [https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator](https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator)
-6. In the system navigate to `Service Providers -> List` from left navigation. And then go to `Edit` option in `USER_PORTAL` application. Then after to `Inbound Authentication Configuration -> OAuth/OpenID Connect Configuration -> Edit`. And then update the `Callback Url` feild with below value.
+6. In the system, navigate to `Service Providers -> List` from left side panel. And then go to `Edit` option in `USER_PORTAL` application. Then click on `Inbound Authentication Configuration -> OAuth/OpenID Connect Configuration -> Edit`. And then update the `Callback Url` field with below value.
 
 ```
 regexp=(https://localhost:9443/user-portal/login|https://localhost:9443/user-portal/logout|https://localhost:9000/user-portal/login|https://localhost:9000/user-portal/logout)
 ```
 
-7. Open cloned or downloaded Identity Apps repo and Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependancies. _(Note:- Not necessary if you have already done above identity apps build steps)_
-8. Start the apps in development mode, Execute `cd apps/<app> && npm start` command. E.g. `cd apps/user-portal && npm start`.
+7. Similarly, update the callback url of the `ADMIN_PORTAL` application to the following.
+
+```
+regexp=(https://localhost:9443/admin-portal/login|https://localhost:9443/admin-portal/logout|https://localhost:9001/admin-portal/login|https://localhost:9001/admin-portal/logout)
+```
+
+8. Open cloned or downloaded Identity Apps repo and Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependencies. _(Note:- Not necessary if you have already done above identity apps build steps)_
+9. Start the apps in development mode, Execute `cd apps/<app> && npm start` command. E.g. `cd apps/user-portal && npm start`.
 
 ## Reporting Issues
 

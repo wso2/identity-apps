@@ -45,6 +45,9 @@ import { Helmet } from "react-helmet";
 import { I18n } from "@wso2is/i18n";
 import { I18nextProvider } from "react-i18next";
 import { ThemeContext } from "@wso2is/react-components";
+import { emptyIdentityAppsSettings } from "@wso2is/core/models";
+import { LocalStorageUtils } from "@wso2is/core/utils";
+import { CommonHelpers } from "@wso2is/core/helpers";
 
 /**
  * Main App component.
@@ -59,6 +62,7 @@ export const App = (): ReactElement => {
 
     const [ appConfig, setAppConfig ] = useState<AppConfigInterface>(null);
     const [ isAppLoading, setAppLoadingStatus ] = useState<boolean>(false);
+    const userName: string = useSelector((state: AppState) => state.authenticationInformation.username);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
@@ -104,6 +108,34 @@ export const App = (): ReactElement => {
                 // TODO: Log the error here.
             });
     }, [ config ]);
+
+    /**
+     * Set the application settings of the user to the local storage.
+     */
+    useEffect(() => {
+        if (!userName && userName === "") {
+            return;
+        }
+
+        const tenant = config?.deployment?.tenant;
+        const tenantAppSettings = JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenant));
+        const appSettings = {};
+
+        appSettings[userName] = emptyIdentityAppsSettings();
+
+       if (!tenantAppSettings) {
+           LocalStorageUtils.setValueInLocalStorage(tenant, JSON.stringify(appSettings));
+       } else {
+           if (CommonHelpers.lookupKey(tenantAppSettings, userName) === null) {
+               const newUserSettings = {
+                   ...tenantAppSettings,
+                   [ userName ]: emptyIdentityAppsSettings()
+               };
+               LocalStorageUtils.setValueInLocalStorage(tenant, JSON.stringify(newUserSettings));
+           }
+       }
+
+    }, [ config?.deployment?.tenant, userName ]);
 
     return (
         <>

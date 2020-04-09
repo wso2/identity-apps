@@ -19,7 +19,7 @@
 import { AddExternalClaims, ClaimsList, EditExternalClaims, ExternalClaimsSearch, ListType } from "../components";
 import { AlertLevels, AppConfigInterface, ClaimDialect, ExternalClaim } from "../models";
 import { AppConfig, history } from "../helpers";
-import { CLAIM_DIALECTS_PATH, DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
+import { CLAIM_DIALECTS_PATH, UserConstants } from "../constants";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { filterList, sortList } from "../utils";
 import { getADialect, getAllExternalClaims } from "../api";
@@ -77,7 +77,7 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
     const dialectID = props.match.params.id;
 
     useEffect(() => {
-        setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
+        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
         setIsLoading(true);
 
         getADialect(dialectID).then(response => {

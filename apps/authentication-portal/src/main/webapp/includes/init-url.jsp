@@ -24,11 +24,13 @@
     String oauth2AuthorizeURL = "../oauth2/authorize";
     String oidcLogoutURL = "../oidc/logout";
     String openidServerURL = "../openidserver";
+    String logincontextURL = "../logincontext";
     if (StringUtils.isNotBlank(identityServerEndpointContextParam)) {
         samlssoURL = identityServerEndpointContextParam + "/samlsso";
         commonauthURL = identityServerEndpointContextParam + "/commonauth";
         oauth2AuthorizeURL = identityServerEndpointContextParam + "/oauth2/authorize";
         oidcLogoutURL = identityServerEndpointContextParam + "/oidc/logout";
         openidServerURL = identityServerEndpointContextParam + "/oidc/logout";
+        logincontextURL = identityServerEndpointContextParam + "/logincontext";
     }
 %>

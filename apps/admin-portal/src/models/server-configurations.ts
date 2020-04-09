@@ -60,3 +60,13 @@ export interface LoginPoliciesInterface {
 	maxFailedLoginAttemptsToReCaptcha?: string;
 	reCaptchaPreference?: string;
 }
+
+export interface PasswordPoliciesInterface {
+	passwordHistoryEnable?: string[];
+	passwordHistoryCount?: string;
+	passwordPolicyEnable?: string[];
+	passwordPolicyMinLength?: string;
+	passwordPolicyMaxLength?: string;
+	passwordPolicyPattern?: string;
+	passwordPolicyErrorMessage?: string;
+}

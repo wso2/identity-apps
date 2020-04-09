@@ -136,7 +136,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
         const addedGroups = [];
         _.forEachRight(groupListCopy, (group) => {
-            if (primaryGroupsList.has(group.displayName)) {
+            if (primaryGroupsList?.has(group.displayName)) {
                 addedGroups.push(group);
                 groupListCopy.splice(groupListCopy.indexOf(group), 1);
             }
@@ -335,7 +335,9 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         const addOperations = [];
         let removedIds = [];
 
-        removedIds = [ ...primaryGroupsList?.values()];
+        if (primaryGroupsList) {
+            removedIds = [...primaryGroupsList.values()];
+        }
 
         if (groupIds?.length > 0) {
             groupIds.map((groupId) => {
