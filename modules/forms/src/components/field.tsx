@@ -26,6 +26,7 @@ import {
     isDivider,
     isDropdownField,
     isPasswordField,
+    isQueryParamsField,
     isRadioField,
     isResetField,
     isSubmitField,
@@ -35,6 +36,7 @@ import {
 import { FormField, FormValue, RadioChild } from "../models";
 import { filterPassedProps } from "../utils";
 import { Password } from "./password";
+import { QueryParameters } from "./query-parameters";
 
 /**
  * prop types for the Field component
@@ -60,7 +62,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
 
     const {
         passedProps,
-        formProps,
+        formProps
     } = props;
 
     const formField: FormField = { ...passedProps };
@@ -287,6 +289,26 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                             </Form.Field>
                         );
                     })}
+                </Form.Group>
+            );
+        } else if (isQueryParamsField(inputField)) {
+            return (
+                <Form.Group grouped={ true }>
+                    <label>
+                        {inputField.label}
+                        {
+                            inputField.label && inputField.required
+                                ? <span className="ui text color red">*</span>
+                                : null
+                        }
+                    </label>
+                    <QueryParameters
+                        name={ inputField.name }
+                        value={ inputField.value }
+                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
+                            handleChange(event.target.value, inputField.name);
+                        } }
+                    />
                 </Form.Group>
             );
         } else if (isToggleField(inputField)) {

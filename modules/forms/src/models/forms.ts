@@ -141,6 +141,15 @@ export interface CheckboxField extends FormRequiredFieldModel {
 }
 
 /**
+ * Query Parameters field model
+ */
+export interface QueryParamsField extends FormRequiredFieldModel {
+    type: "queryParams";
+    value?: string;
+    validation?: (value: string, validation: Validation, allValues?: Map<string, FormValue>) => void;
+}
+
+/**
  * Toggle field model
  */
 export interface ToggleField extends FormRequiredFieldModel {
@@ -252,7 +261,8 @@ export type FormField =
     | FormButton
     | FormDivider
     | CustomField
-    | ToggleField;
+    | ToggleField
+    | QueryParamsField;
 
 /**
  * FormField value types

@@ -22,7 +22,13 @@ import {
     FederatedAuthenticatorMetaPropertyInterface
 } from "../../../../models";
 import { Button, Grid } from "semantic-ui-react";
-import { getCheckboxField, getConfidentialField, getTextField, getURLField } from "./form-fields-helper";
+import {
+    getCheckboxField,
+    getConfidentialField,
+    getQueryParamsField,
+    getTextField,
+    getURLField
+} from "./form-fields-helper";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Forms } from "@wso2is/forms";
 
@@ -81,7 +87,7 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
      * @param values - Form values.
      * @return {any} Sanitized form values.
      */
-    const updateConfiguration = (values: any): any => {
+    const getUpdatedConfigurations = (values: any): any => {
         const properties = initialValues?.properties.map((eachProp) => {
             const propertyMetadata = metadata.properties?.find(metaProperty => metaProperty.key === eachProp.key);
             return {
@@ -123,7 +129,7 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
                 return getURLField(eachProp, propertyMetadata);
             }
             case FieldType.QUERY_PARAMS : {
-                return getTextField(eachProp, propertyMetadata);
+                return getQueryParamsField(eachProp, propertyMetadata);
             }
             default: {
                 return getTextField(eachProp, propertyMetadata);
@@ -160,7 +166,7 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
     return (
         <Forms
             onSubmit={ (values) => {
-                onSubmit(updateConfiguration(values));
+                onSubmit(getUpdatedConfigurations(values));
             } }
             submitState={ triggerSubmit }
         >

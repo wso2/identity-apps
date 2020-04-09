@@ -105,14 +105,13 @@ export const getQueryParamsField = (eachProp: AuthenticatorProperty,
             label={ propertyMetadata?.displayName }
             required={ propertyMetadata?.isMandatory }
             requiredErrorMessage="This is required"
-            placeholder={ propertyMetadata?.description }
             validation={ (value, validation) => {
-                if (!FormValidation.url(value)) {
+                if (!FormValidation.url("https://www.sample.com?" + value)) {
                     validation.isValid = false;
-                    validation.errorMessages.push("This is not a valid URL");
+                    validation.errorMessages.push("These are not valid query parameters");
                 }
             } }
-            type="text"
+            type="queryParams"
             value={ eachProp?.value }
             key={ eachProp?.key }
         />

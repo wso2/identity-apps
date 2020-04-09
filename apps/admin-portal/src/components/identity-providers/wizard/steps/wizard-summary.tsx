@@ -62,7 +62,14 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
     const authenticatorSummary = identityProvider?.federatedAuthenticators?.authenticators[0];
 
     const getAuthenticatorProperties = () => {
-        return authenticatorSummary?.properties.map((eachProp) => {
+        const sortedProperties = authenticatorSummary?.properties.sort((a, b) => {
+            const firstOrder = authenticatorMetadata?.properties?.find(eachPropMetadata =>
+                a.key === eachPropMetadata.key)?.displayOrder;
+            const secondOrder = authenticatorMetadata?.properties?.find(eachPropMetadata =>
+                b.key === eachPropMetadata.key)?.displayOrder;
+            return firstOrder - secondOrder;
+        });
+        return sortedProperties.map((eachProp) => {
             const propertyMetadata = authenticatorMetadata?.properties?.find(eachPropMetadata =>
                 eachProp.key === eachPropMetadata.key);
             if (eachProp.value !== undefined || !propertyMetadata.isConfidential) {
