@@ -38,9 +38,12 @@ interface AddExternalClaimsPropsInterface {
      */
     update?: () => void;
     /**
-     * SPecifies if this is called from the wizard.
+     * Specifies if this is called from the wizard.
      */
     wizard?: boolean;
+    /**
+     * Called on submit.
+     */
     onSubmit?: (values: Map<string, FormValue>) => void;
 }
 

@@ -25,9 +25,9 @@ import React, { useState } from "react";
 
 import { addAlert } from "@wso2is/core/store";
 import { ApplicationWizardStepIcons } from "../../../configs";
-import { DialectDetails } from "../wizard/external-dialect/dialect-details-add-dialect";
-import { ExternalClaims } from "../wizard/external-dialect/external-claims-add-dialect";
-import { SummaryAddDialect } from "../wizard/external-dialect/summary-add-dialect";
+import { DialectDetails } from "../wizard";
+import { ExternalClaims } from "../wizard";
+import { SummaryAddDialect } from "../wizard";
 import { useDispatch } from "react-redux";
 
 /**
