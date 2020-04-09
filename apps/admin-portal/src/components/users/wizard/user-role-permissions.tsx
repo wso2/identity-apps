@@ -20,7 +20,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { RolesInterface} from "../../../models";
 import { getRoleById } from "../../../api";
 import { Divider, Icon, Segment } from "semantic-ui-react";
-import { PermissionList } from "../../roles/create-role-wizard/role-permisson";
+import { PermissionList } from "../../roles";
 import { Heading, LinkButton } from "@wso2is/react-components";
 
 /**
@@ -31,6 +31,12 @@ interface RolePermissionsInterface {
     handleNavigateBack: () => void;
 }
 
+/**
+ *  Roles permission component.
+ *
+ * @param {RolePermissionsInterface} props - Props injected to the component.
+ * @return {ReactElement}
+ */
 export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
     props: RolePermissionsInterface
 ): ReactElement => {
@@ -72,24 +78,24 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
 
     return (
         isRoleSet && (
-        <>
-            <Heading as="h5">
-                Permissions for { role.displayName }
-            </Heading>
-            <Divider hidden/>
-            <Segment>
-                <div className="permissions-edit-container">
-                    <PermissionList isEdit={ false } isRole roleObject={ role }/>
-                </div>
-            </Segment>
-            <LinkButton
-                floated="left"
-                onClick={ handleNavigateBack }
-            >
-                <Icon name="arrow left"/>
-                Back to list
-            </LinkButton>
-         </>
+            <>
+                <Heading as="h5">
+                    Permissions for { role.displayName }
+                </Heading>
+                <Divider hidden/>
+                <Segment>
+                    <div className="permissions-edit-container">
+                        <PermissionList isEdit={ false } isRole roleObject={ role }/>
+                    </div>
+                </Segment>
+                <LinkButton
+                    floated="left"
+                    onClick={ handleNavigateBack }
+                >
+                    <Icon name="arrow left"/>
+                    Back to list
+                </LinkButton>
+             </>
         )
     )
 };

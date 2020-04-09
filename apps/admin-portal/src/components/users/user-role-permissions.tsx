@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { PermissionList } from "../roles/create-role-wizard/role-permisson";
+import { PermissionList } from "../roles";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Grid, Modal} from "semantic-ui-react";
 import { LinkButton } from "@wso2is/react-components";
@@ -32,6 +32,12 @@ interface UserRolePermissionsInterface {
     roleId: string;
 }
 
+/**
+ *  User roles permission component.
+ *
+ * @param {UserRolePermissionsInterface} props - Props injected to the component.
+ * @return {ReactElement}
+ */
 export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface> = (
     props: UserRolePermissionsInterface
 ): ReactElement => {
@@ -72,30 +78,30 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
 
     return (
         isRoleSet && (
-        <Modal open={ openRolePermissionModal } size="small" className="user-roles">
-            <Modal.Header>
-                Permissions for { role?.displayName }
-            </Modal.Header>
-            <Modal.Content image>
-                <div className="permissions-edit-container">
-                    <PermissionList isEdit={ false } isRole roleObject={ role }/>
-                </div>
-            </Modal.Content>
-            <Modal.Actions>
-                <Grid>
-                    <Grid.Row column={ 1 }>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton
-                                floated="left"
-                                onClick={ handleCloseRolePermissionModal }
-                            >
-                                Cancel
-                            </LinkButton>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Modal.Actions>
-        </Modal>
+            <Modal open={ openRolePermissionModal } size="small" className="user-roles">
+                <Modal.Header>
+                    Permissions for { role?.displayName }
+                </Modal.Header>
+                <Modal.Content image>
+                    <div className="permissions-edit-container">
+                        <PermissionList isEdit={ false } isRole roleObject={ role }/>
+                    </div>
+                </Modal.Content>
+                <Modal.Actions>
+                    <Grid>
+                        <Grid.Row column={ 1 }>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                <LinkButton
+                                    floated="left"
+                                    onClick={ handleCloseRolePermissionModal }
+                                >
+                                    Cancel
+                                </LinkButton>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Modal.Actions>
+            </Modal>
         )
     )
 };

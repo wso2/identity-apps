@@ -17,3 +17,7 @@
  */
 
 export * from "./role-wizard";
+export * from "./role-permisson";
+export * from "./role-sumary";
+export * from "./role-basics";
+export * from "./role-user-assign";

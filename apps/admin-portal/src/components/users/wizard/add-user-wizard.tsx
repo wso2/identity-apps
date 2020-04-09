@@ -33,6 +33,8 @@ import { AddUserRole } from "../add-user-role";
 import { AddUserGroup } from "../add-user-groups";
 import { RolesInterface } from "../../../models";
 import { RolePermissions } from "./user-role-permissions";
+import {boolean} from "@storybook/addon-knobs";
+import {string} from "prop-types";
 
 interface AddUserWizardPropsInterface {
     closeWizard: () => void;
@@ -104,13 +106,13 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ isInternalRolesSet, setIsInternalRolesSet ] = useState(false);
     const [ isApplicationRolesSet, setIsApplicationRolesSet ] = useState(false);
 
-    const [ viewGroupPermissions, setViewGroupPermissions ] = useState(false);
-    const [ selectedGroupId, setSelectedGroupId ] = useState();
-    const [ isGroupSelected, setGroupSelection ] = useState(false);
+    const [ viewGroupPermissions, setViewGroupPermissions ] = useState<boolean>(false);
+    const [ selectedGroupId, setSelectedGroupId ] = useState<string>();
+    const [ isGroupSelected, setGroupSelection ] = useState<boolean>(false);
 
-    const [ viewRolePermissions, setViewRolePermissions ] = useState(false);
-    const [ selectedRoleId,  setSelectedRoleId ] = useState();
-    const [ isRoleSelected, setRoleSelection ] = useState(false);
+    const [ viewRolePermissions, setViewRolePermissions ] = useState<boolean>(false);
+    const [ selectedRoleId,  setSelectedRoleId ] = useState<string>();
+    const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
 
     useEffect(() => {
         if (!selectedGroupId) {
