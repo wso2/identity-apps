@@ -17,7 +17,7 @@
  */
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
-import { LocalStorageUtils } from "@wso2is/core/dist/src/utils/storage-utils";
+import { LocalStorageUtils } from "@wso2is/core/utils";
 import { CommonHelpers } from "@wso2is/core/dist/src/helpers";
 import { Button, EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
