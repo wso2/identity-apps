@@ -35,6 +35,7 @@ interface PermissionListProp {
     roleObject?: RolesInterface;
     isEdit: boolean;
     initialValues?: Permission[];
+    isRole?: boolean;
 }
 
 /**
@@ -49,7 +50,8 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         onSubmit,
         roleObject,
         isEdit,
-        initialValues
+        initialValues,
+        isRole
     } = props;
 
     const [ permissionTree, setPermissionTree ] = useState<Permission[]>([]);
@@ -62,7 +64,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
      * Retrieve permissions for a given role if in Role edit mode.
      */
     useEffect(() => {
-        if (isEdit && roleObject) {
+        if (isRole && roleObject) {
             getPermissionsForRole(roleObject.id)
                 .then(response => {
                     if (response.status === 200 && response.data instanceof Array) {
