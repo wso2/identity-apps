@@ -38,7 +38,8 @@ import {
     UserEditPage,
     UsersPage,
     UserStores,
-    UserStoresEditPage
+    UserStoresEditPage,
+    EmailTemplates
 } from "../pages";
 import {
     CLAIM_DIALECTS_PATH,
@@ -279,6 +280,16 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 level: 2,
                 name: "Server Configurations",
                 path: "/server-configurations",
+                protected: true,
+                showOnSidePanel: true
+            },{
+                component: EmailTemplates,
+                exact: true,
+                icon: "serverConfigurations",
+                id: "serverConfigurations",
+                level: 2,
+                name: "Email Templates",
+                path: "/email-templates",
                 protected: true,
                 showOnSidePanel: true
             }
