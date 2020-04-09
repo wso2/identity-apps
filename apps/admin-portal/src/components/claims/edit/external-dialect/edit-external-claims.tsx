@@ -24,7 +24,7 @@ import { getADialect, getAllExternalClaims } from "../../../../api";
 import React, { ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { AddExternalClaims } from "../../add";
-import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../../../../constants";
+import { UserConstants } from "../../../../constants";
 import { EmptyPlaceholder } from "../../../shared";
 import { EmptyPlaceholderIllustrations } from "../../../../configs";
 import { ListLayout } from "../../../../layouts";
@@ -76,7 +76,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
     const { dialectID } = props;
 
     useEffect(() => {
-        setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
+        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
         setIsLoading(true);
 
         getADialect(dialectID).then(response => {

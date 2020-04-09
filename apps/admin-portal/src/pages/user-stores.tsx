@@ -25,7 +25,7 @@ import { ListLayout, PageLayout } from "../layouts";
 import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { addAlert } from "../store/actions";
 import { AppConfig } from "../helpers";
-import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
+import { UserConstants } from "../constants";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { getUserStores } from "../api";
 import { useDispatch } from "react-redux";
