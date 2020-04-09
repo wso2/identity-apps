@@ -85,6 +85,9 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
     const [ helpPanelSampleContent, setHelpPanelSampleContent ] = useState<string>(undefined);
     const [ selectedInboundProtocol, setSelectedInboundProtocol ] = useState<AuthProtocolMetaListItemInterface>(null);
     const [ helpPanelSelectedSample, setHelpPanelSelectedSample ] = useState<ApplicationSampleInterface>(undefined);
+    const [ samplesTabBackButtonEnabled, setSamplesTabBackButtonEnabled ] = useState<boolean>(true);
+    const [ sdks, setSdks ] = useState<ApplicationSDKInterface[]>(undefined);
+    const [ samples, setSamples ] = useState<ApplicationSampleInterface[]>(undefined);
     const [
         isHelpPanelDocContentRequestLoading,
         setHelpPanelDocContentRequestLoadingStatus
@@ -127,6 +130,56 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                 setApplicationTemplateRequestLoadingStatus(false);
             });
     }, [ applicationTemplateName, applicationTemplates ]);
+
+    /**
+     * Filter SDKs based on the template type.
+     */
+    useEffect(() => {
+        if (!(helpPanelMetadata?.applications?.sdks[ selectedInboundProtocol?.id ])
+            || !(helpPanelMetadata.applications.sdks[ selectedInboundProtocol.id ] instanceof Array)
+            || helpPanelMetadata.applications.sdks[ selectedInboundProtocol.id ].length < 1) {
+
+            return;
+        }
+
+        if (!applicationTemplate?.name) {
+            setSdks(helpPanelMetadata.applications.sdks[ selectedInboundProtocol.id ]);
+
+            return;
+        }
+
+        setSdks(helpPanelMetadata.applications.sdks[ selectedInboundProtocol.id ]
+            .filter((sdk) => sdk?.category?.includes(applicationTemplate.name as GithubRepoCategoryTypes))
+        );
+    }, [ helpPanelMetadata?.applications?.sdks[ selectedInboundProtocol?.id ] ]);
+
+    /**
+     * Filter application samples based on the template type.
+     */
+    useEffect(() => {
+        if (!(helpPanelMetadata?.applications?.samples[ selectedInboundProtocol?.id ])
+            || !(helpPanelMetadata.applications.samples[ selectedInboundProtocol.id ] instanceof Array)
+            || helpPanelMetadata.applications.samples[ selectedInboundProtocol.id ].length < 1) {
+
+            return;
+        }
+
+        if (!applicationTemplate?.name) {
+            setSamples(helpPanelMetadata.applications.samples[ selectedInboundProtocol.id ]);
+
+            return;
+        }
+
+        const filtered = helpPanelMetadata.applications.samples[ selectedInboundProtocol.id ]
+            .filter((sample) => sample?.repo?.category?.includes(applicationTemplate.name as GithubRepoCategoryTypes));
+
+        if (filtered instanceof Array && filtered.length === 1) {
+            setHelpPanelSelectedSample(filtered[0]);
+            setSamplesTabBackButtonEnabled(false);
+        }
+
+        setSamples(filtered);
+    }, [ helpPanelMetadata?.applications?.samples[ selectedInboundProtocol?.id ] ]);
 
     /**
      * Called when help panel doc URL status changes.
@@ -268,7 +321,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
      * @param {string} item - Clicked item.
      */
     const handleSidebarMiniItemClick = (item: string) => {
-        helpPanelTabs.forEach((pane, index) => {
+        getFilteredHelpPanelTabs().forEach((pane, index) => {
             if (pane.heading === item) {
                 setHelpPanelTabsActiveIndex(index);
             }
@@ -277,34 +330,12 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
     };
 
     /**
-     * Filter application samples based on the template type.
-     * @param {ApplicationSampleInterface[]} samples - List of Samples.
-     * @return {ApplicationSampleInterface[]} Filtered list.
-     */
-    const filterSamples = (samples: ApplicationSampleInterface[]) => {
-        if (applicationTemplate) {
-            return samples.filter((sample) =>
-                sample?.repo?.category?.includes(applicationTemplate.name as GithubRepoCategoryTypes)
-            );
-        }
-
-        return samples;
-    };
-
-    /**
-     * Filter SDKs based on the template type.
+     * Filter the help panel tabs and remove hidden tabs.
      *
-     * @param {ApplicationSDKInterface[]} sdks - List of SDKs.
-     * @return {ApplicationSDKInterface[]} Filtered list.
+     * @return {HelpPanelTabInterface[]} Modified tabs array.
      */
-    const filterSDKs = (sdks: ApplicationSDKInterface[]) => {
-        if (applicationTemplate) {
-            return sdks.filter((sdk) =>
-                sdk?.category?.includes(applicationTemplate.name as GithubRepoCategoryTypes)
-            );
-        }
-
-        return sdks;
+    const getFilteredHelpPanelTabs = (): HelpPanelTabInterface[] => {
+        return helpPanelTabs.filter((tab) => !tab.hidden)
     };
 
     const helpPanelTabs: HelpPanelTabInterface[] = [
@@ -325,6 +356,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                     )
             ),
             heading: t("common:docs"),
+            hidden: false,
             icon: "file alternate outline" as SemanticICONS
         },
         {
@@ -335,7 +367,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                             <PageHeader
                                 title={ `${ helpPanelSelectedSample.displayName } Sample` }
                                 titleAs="h4"
-                                backButton={ {
+                                backButton={ samplesTabBackButtonEnabled && {
                                     onClick: () => setHelpPanelSelectedSample(undefined),
                                     text: t("devPortal:components.applications.helpPanel.tabs.samples." +
                                         "content.sample.goBack")
@@ -398,25 +430,18 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                             <Grid>
                                 <Grid.Row columns={ 4 }>
                                     {
-                                        (helpPanelMetadata?.applications?.samples[ selectedInboundProtocol?.id ]
-                                            && helpPanelMetadata.applications.samples[
-                                                selectedInboundProtocol.id ] instanceof Array
-                                            && helpPanelMetadata.applications.samples[
-                                                selectedInboundProtocol.id ].length > 0)
-                                            ? filterSamples(helpPanelMetadata.applications.samples[
-                                                selectedInboundProtocol.id ]).map((sample, index) => (
-                                                    <Grid.Column key={ index }>
-                                                        <SelectionCard
-                                                            size="auto"
-                                                            header={ sample.displayName }
-                                                            image={ TechnologyLogos[ sample.image ] }
-                                                            imageSize="mini"
-                                                            spaced="bottom"
-                                                            onClick={ () => handleHelpPanelSelectedSample(sample) }
-                                                        />
-                                                    </Grid.Column>
-                                            ))
-                                            : null
+                                        samples && samples.map((sample, index) => (
+                                            <Grid.Column key={ index }>
+                                                <SelectionCard
+                                                    size="auto"
+                                                    header={ sample.displayName }
+                                                    image={ TechnologyLogos[ sample.image ] }
+                                                    imageSize="mini"
+                                                    spaced="bottom"
+                                                    onClick={ () => handleHelpPanelSelectedSample(sample) }
+                                                />
+                                            </Grid.Column>
+                                        ))
                                     }
                                 </Grid.Row>
                             </Grid>
@@ -424,6 +449,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                     )
             ),
             heading: t("common:samples"),
+            hidden: !samples || (samples instanceof Array && samples.length < 1),
             icon: "code" as SemanticICONS
         },
         {
@@ -440,38 +466,33 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                     <Grid>
                         <Grid.Row columns={ 2 }>
                             {
-                                (helpPanelMetadata?.applications?.sdks[ selectedInboundProtocol?.id ]
-                                    && helpPanelMetadata.applications.sdks[
-                                        selectedInboundProtocol.id ]instanceof Array
-                                    && helpPanelMetadata.applications.sdks[ selectedInboundProtocol.id ].length > 0)
-                                    ? filterSDKs(helpPanelMetadata.applications.sdks[ selectedInboundProtocol.id ])
-                                        .map((sdk, index) => (
-                                            <Grid.Column key={ index }>
-                                                <InfoCard
-                                                    githubRepoCard={ true }
-                                                    header={ sdk.owner.login }
-                                                    subHeader={ sdk.name }
-                                                    description={ sdk.description }
-                                                    image={ sdk.owner.avatar }
-                                                    tags={ sdk.topics }
-                                                    githubRepoMetaInfo={ {
-                                                        forks: sdk.forks,
-                                                        language: sdk.language,
-                                                        languageLogo: TechnologyLogos[ sdk.languageLogo ],
-                                                        stars: sdk.stars,
-                                                        watchers: sdk.watchers
-                                                    } }
-                                                    onClick={ () => window.open(sdk.url) }
-                                                />
-                                            </Grid.Column>
-                                    ))
-                                    : null
+                                sdks && sdks.map((sdk, index) => (
+                                    <Grid.Column key={ index }>
+                                        <InfoCard
+                                            githubRepoCard={ true }
+                                            header={ sdk.owner.login }
+                                            subHeader={ sdk.name }
+                                            description={ sdk.description }
+                                            image={ sdk.owner.avatar }
+                                            tags={ sdk.topics }
+                                            githubRepoMetaInfo={ {
+                                                forks: sdk.forks,
+                                                language: sdk.language,
+                                                languageLogo: TechnologyLogos[ sdk.languageLogo ],
+                                                stars: sdk.stars,
+                                                watchers: sdk.watchers
+                                            } }
+                                            onClick={ () => window.open(sdk.url) }
+                                        />
+                                    </Grid.Column>
+                                ))
                             }
                         </Grid.Row>
                     </Grid>
                 </>
             ),
             heading: t("common:sdks"),
+            hidden: !sdks || (sdks instanceof Array && sdks.length < 1),
             icon: "box" as SemanticICONS
         }
     ];
@@ -489,7 +510,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
             ] }
             sidebarDirection="right"
             sidebarMiniEnabled={ true }
-            tabs={ helpPanelTabs }
+            tabs={ getFilteredHelpPanelTabs() }
             tabsActiveIndex={ helpPanelTabsActiveIndex }
             sidebarVisibility={ helpSidebarVisibility }
             onSidebarToggle={ handleHelpPanelToggle }
