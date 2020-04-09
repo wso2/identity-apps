@@ -17,9 +17,9 @@
  *
  */
 
-import { GravatarLogo, ReactLogo } from "@wso2is/theme";
-import { LabeledCard, SelectionCard } from "../../../src";
-import React, { ReactElement } from "react";
+import * as React from "react";
+import { CSharpLogo, GravatarLogo, JavaScriptLogo, ReactLogo } from "@wso2is/theme";
+import { InfoCard, LabeledCard, SelectionCard } from "../../../src";
 import { action } from "@storybook/addon-actions";
 import { meta } from "./card.stories.meta";
 
@@ -36,7 +36,7 @@ export default {
  *
  * @return {React.ReactElement}
  */
-export const SelectionVariation = (): ReactElement => (
+export const SelectionVariation = (): React.ReactElement => (
     <SelectionCard
         id="1"
         image={ GravatarLogo }
@@ -59,7 +59,7 @@ SelectionVariation.story = {
  *
  * @return {React.ReactElement}
  */
-export const LabeledCardVariation = (): ReactElement => (
+export const LabeledCardVariation = (): React.ReactElement => (
     <LabeledCard
         label="React"
         image={ ReactLogo }
@@ -70,6 +70,67 @@ LabeledCardVariation.story = {
     parameters: {
         docs: {
             storyDescription: meta.stories[ 2 ].description
+        }
+    }
+};
+
+/**
+ * Story to display info card
+ *
+ * @return {React.ReactElement}
+ */
+export const InfoCardVariation = (): React.ReactElement => (
+    <InfoCard
+        header="WSO2"
+        subHeader="is-javascript-sdk"
+        description="Official javascript wrapper form WSO2 Identity Server Auth APIs."
+        image="https://avatars3.githubusercontent.com/u/533043?v=4"
+        tags={ [ "wso2", "wso2is", "samples", "identityserver", "iam"] }
+        githubRepoCard={ true }
+        githubRepoMetaInfo={ {
+            languageLogo: CSharpLogo,
+            forks: 6623,
+            stars: 34240,
+            watchers: 9985
+        } }
+    />
+);
+
+InfoCardVariation.story = {
+    parameters: {
+        docs: {
+            storyDescription: meta.stories[ 3 ].description
+        }
+    }
+};
+
+/**
+ * Story to display info card
+ *
+ * @return {React.ReactElement}
+ */
+export const InfoCardFluidVariation = (): React.ReactElement => (
+    <InfoCard
+        fluid
+        header="WSO2"
+        subHeader="is-javascript-sdk"
+        description="Official javascript wrapper form WSO2 Identity Server Auth APIs."
+        image="https://avatars3.githubusercontent.com/u/533043?v=4"
+        tags={ [ "wso2", "wso2is", "samples", "identityserver", "iam"] }
+        githubRepoCard={ true }
+        githubRepoMetaInfo={ {
+            languageLogo: JavaScriptLogo,
+            forks: 6623,
+            stars: 34240,
+            watchers: 9985
+        } }
+    />
+);
+
+InfoCardFluidVariation.story = {
+    parameters: {
+        docs: {
+            storyDescription: meta.stories[ 4 ].description
         }
     }
 };
