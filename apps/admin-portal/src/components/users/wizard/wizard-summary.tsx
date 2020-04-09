@@ -153,7 +153,7 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                         <div className="label">Password option</div>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                        <div className="value url">{ "An email sent to" + " " + summary.email + " " +
+                        <div className="value url">{ "An email will be sent to" + " " + summary.email + " " +
                         "with the link to set the password." }</div>
                     </Grid.Column>
                 </Grid.Row>

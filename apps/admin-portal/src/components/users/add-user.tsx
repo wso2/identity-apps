@@ -27,7 +27,7 @@ import {
 import { getUserStoreList } from "../../api";
 
 /**
- * Proptypes for the application consents list component.
+ * Proptypes for the add user component.
  */
 interface AddUserProps {
     initialValues: any;
@@ -171,8 +171,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Message
                                 icon="mail"
-                                content="We will send an email with the link to set the password to the email
-                                address provided."
+                                content="An email with a confirmation link will be sent to the provided email address
+                                for the user to set his/her own password."
                             />
                         </Grid.Column>
                     </Grid.Row>

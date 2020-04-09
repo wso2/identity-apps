@@ -188,6 +188,13 @@ export const ApplicationWizardStepIcons = {
     summary: ReportIcon
 };
 
+export const UserWizardStepIcons = {
+    general: DocumentIcon,
+    groups: GearsIcon,
+    roles: SpinWheelIcon,
+    summary: ReportIcon
+};
+
 export const IdentityProviderWizardStepIcons = {
     authenticatorSettings: GearsIcon,
     general: DocumentIcon,
