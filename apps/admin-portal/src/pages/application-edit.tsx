@@ -48,6 +48,7 @@ import _ from "lodash";
 import { addAlert } from "@wso2is/core/store";
 import { AppState } from "../store";
 import { EditApplication } from "../components";
+import { fetchFromURL } from "@wso2is/core/api";
 import { getApplicationDetails } from "../api";
 import { HelpPanelLayout } from "../layouts";
 import { PageLayout } from "../layouts";
@@ -100,9 +101,10 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
 
         setHelpPanelDocContentRequestLoadingStatus(true);
 
-        fetch(helpPanelDocURL)
-            .then(res => res.text())
-            .then(text => setHelpPanelDocContent(text))
+        fetchFromURL<string>(helpPanelDocURL)
+            .then((response) => {
+                setHelpPanelDocContent(response);
+            })
             .finally(() => {
                 setHelpPanelDocContentRequestLoadingStatus(false);
             });
@@ -118,9 +120,10 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
 
         setHelpPanelSamplesContentRequestLoadingStatus(true);
 
-        fetch(helpPanelSelectedSample.docs)
-            .then(res => res.text())
-            .then(text => setHelpPanelSampleContent(text))
+        fetchFromURL<string>(helpPanelSelectedSample.docs)
+            .then((response) => {
+                setHelpPanelSampleContent(response);
+            })
             .finally(() => {
                 setHelpPanelSamplesContentRequestLoadingStatus(false);
             });
