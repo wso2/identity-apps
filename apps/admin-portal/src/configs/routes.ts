@@ -162,7 +162,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 icon: "childIcon",
                 id: "userGroups",
                 level: 2,
-                name: "User Groups",
+                name: "Groups",
                 path: "/groups",
                 protected: true,
                 showOnSidePanel: true
