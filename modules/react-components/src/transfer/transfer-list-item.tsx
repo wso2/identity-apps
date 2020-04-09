@@ -17,7 +17,7 @@
  */
 
 import React, { FunctionComponent, ReactElement } from "react";
-import { Checkbox, Icon, Label, LabelProps, SemanticCOLORS, Table, TableRowProps } from "semantic-ui-react";
+import { Checkbox, Icon, Label, LabelProps, Popup, SemanticCOLORS, Table, TableRowProps } from "semantic-ui-react";
 
 /**
  * Proptypes for the transfer list item label.
@@ -40,6 +40,7 @@ interface TransferListItemPropsInterface extends TableRowProps {
     handleItemCheck?: () => void;
     handleItemChange: () => void;
     showSecondaryActions: boolean;
+    handleOpenPermissionModal?: () => void;
 }
 
 /**
@@ -60,18 +61,19 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
         isItemChecked,
         handleItemChange,
         handleItemClick,
-        showSecondaryActions
+        showSecondaryActions,
+        handleOpenPermissionModal
     } = props;
 
     return (
         <Table.Row>
-            <Table.Cell id={ listItemId } key={ listItemIndex } width={ 2 }>
+            <Table.Cell id={ listItemId } key={ listItemIndex } collapsing>
                 <Checkbox checked={ isItemChecked } onChange={ handleItemChange } onClick={ handleItemClick} />
             </Table.Cell>
-            <Table.Cell id={ listItemId } key={ listItemIndex } width={ 4 }>{ listItem }</Table.Cell>
             {
                 listItemTypeLabel && (
                     <Table.Cell
+                        collapsing
                         key={ listItemIndex }
                     >
                         <Label
@@ -83,10 +85,22 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
                     </Table.Cell>
                 )
             }
+            <Table.Cell id={ listItemId } key={ listItemIndex }>{ listItem }</Table.Cell>
             {
                 showSecondaryActions && (
-                    <Table.Cell key={listItemIndex} width={2}>
-                        <Icon color="grey" name="ellipsis vertical"/>
+                    <Table.Cell key={ listItemId } collapsing>
+                        <Popup
+                            inverted
+                            basic
+                            content="View permissions"
+                            trigger={
+                                <Icon
+                                    color="grey"
+                                    name="key"
+                                    onClick={ handleOpenPermissionModal }
+                                />
+                            }
+                        />
                     </Table.Cell>
                 )
             }
