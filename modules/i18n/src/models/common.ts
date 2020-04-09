@@ -34,6 +34,13 @@ export interface Page {
 }
 
 /**
+ * Model for edit pages.
+ */
+export interface EditPage extends Page {
+    backButton: string;
+}
+
+/**
  * Model for notification set
  */
 export interface Notification {
@@ -64,4 +71,17 @@ export interface Placeholder {
  */
 interface PlaceholderSubtitle {
     [key: number]: string;
+}
+
+export interface HelpPanelInterface {
+    tabs: HelpPanelTabsInterface;
+}
+
+interface HelpPanelTabsInterface {
+    [ key: string ]: HelpPanelTabInterface;
+}
+
+interface HelpPanelTabInterface {
+    content: any;
+    heading: string;
 }

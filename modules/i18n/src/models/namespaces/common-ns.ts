@@ -44,7 +44,10 @@ export interface CommonNS {
     delete: string;
     description: string;
     deviceModel: string;
+    docs: string;
+    documentation: string;
     done: string;
+    download: string;
     edit: string;
     endsWith: string;
     equals: string;
@@ -79,7 +82,9 @@ export interface CommonNS {
     retry: string;
     revoke: string;
     revokeAll: string;
+    samples: string;
     save: string;
+    sdks: string;
     search: string;
     security: string;
     showAll: string;

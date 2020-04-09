@@ -52,6 +52,7 @@ import { getApplicationDetails } from "../api";
 import { HelpPanelLayout } from "../layouts";
 import { PageLayout } from "../layouts";
 import { StringUtils } from "@wso2is/core/utils";
+import { useTranslation } from "react-i18next";
 
 /**
  * Application Edit page.
@@ -59,6 +60,8 @@ import { StringUtils } from "@wso2is/core/utils";
  * @return {ReactElement}
  */
 export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
+
+    const { t } = useTranslation();
 
     const dispatch = useDispatch();
 
@@ -280,7 +283,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                         />
                     )
             ),
-            heading: "Docs",
+            heading: t("common:docs"),
             icon: "file alternate outline" as SemanticICONS
         },
         {
@@ -293,14 +296,15 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                                 titleAs="h4"
                                 backButton={ {
                                     onClick: () => setHelpPanelSelectedSample(undefined),
-                                    text: "Go back"
+                                    text: t("devPortal:components.applications.helpPanel.tabs.samples." +
+                                        "content.sample.goBack")
                                 } }
                                 bottomMargin={ false }
                             />
 
-                            <Heading as="h5">Download</Heading>
+                            <Heading as="h5">{ t("common:download") }</Heading>
                             <Hint>
-                                Quickly start prototyping by downloading our preconfigured sample application.
+                                { t("devPortal:components.applications.helpPanel.tabs.samples.content.sample.hint") }
                             </Hint>
 
                             <InfoCard
@@ -324,7 +328,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                                     <>
                                         <Divider horizontal>
                                             <Heading as="h5">
-                                                Documentation
+                                                { t("common:documentation") }
                                             </Heading>
                                         </Divider>
                                         <Divider hidden/>
@@ -340,10 +344,13 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                     )
                     : (
                         <>
-                            <Heading as="h4">Select a technology</Heading>
+                            <Heading as="h4">
+                                { t("devPortal:components.applications.helpPanel.tabs.samples.content." +
+                                    "technology.title") }
+                            </Heading>
                             <Hint>
-                                Sample and required SDKs along with useful information will be provided once you select
-                                a technology
+                                { t("devPortal:components.applications.helpPanel.tabs.samples.content." +
+                                    "technology.subTitle") }
                             </Hint>
                             <Divider hidden/>
 
@@ -375,15 +382,17 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                         </>
                     )
             ),
-            heading: "Samples",
+            heading: t("common:samples"),
             icon: "code" as SemanticICONS
         },
         {
             content: (
                 <>
-                    <Heading as="h4">Software Development Kits (SDKs)</Heading>
+                    <Heading as="h4">
+                        { t("devPortal:components.applications.helpPanel.tabs.samples.content.sdks.title") }
+                    </Heading>
                     <Hint>
-                        Following software development kits can be used to jump start your application development.
+                        { t("devPortal:components.applications.helpPanel.tabs.samples.content.sdks.subTitle") }
                     </Hint>
                     <Divider hidden/>
 
@@ -421,7 +430,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                     </Grid>
                 </>
             ),
-            heading: "SDKs",
+            heading: t("common:sdks"),
             icon: "box" as SemanticICONS
         }
     ];
@@ -459,7 +468,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                 ) }
                 backButton={ {
                     onClick: handleBackButtonClick,
-                    text: "Go back to applications"
+                    text: t("adminPortal:pages.applications.backButton")
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }
