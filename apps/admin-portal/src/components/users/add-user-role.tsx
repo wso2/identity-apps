@@ -20,8 +20,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import _ from "lodash";
 import { Forms } from "@wso2is/forms";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
-import { RolesInterface } from "../../models/roles";
-import {UserRolePermissions} from "./user-role-permissions";
+import { RolesInterface } from "../../models";
 
 /**
  * Proptypes for the application consents list component.
