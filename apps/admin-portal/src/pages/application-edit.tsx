@@ -468,7 +468,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                 ) }
                 backButton={ {
                     onClick: handleBackButtonClick,
-                    text: t("adminPortal:pages.applications.backButton")
+                    text: t("devPortal:pages.applicationsEdit.backButton")
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }
