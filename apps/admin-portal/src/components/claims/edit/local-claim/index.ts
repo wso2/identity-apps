@@ -16,9 +16,6 @@
 * under the License.
 */
 
-export * from "./claims-list";
-export * from "./add";
-export * from "./edit";
-export * from "./advanced-search";
-export * from "./dynamic-fields";
-export * from "./claims-avatar-background";
+export * from "./edit-additional-properties-local-claims";
+export * from "./edit-basic-details-local-claims";
+export * from "./edit-mapped-attributes-local-claims";

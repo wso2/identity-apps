@@ -16,11 +16,6 @@
  * under the License.
  */
 
- /**
-  * The ID of the userstore type JDBC.
-  * 
-  * @constant
-  * 
-  * @type {string}
-  */
-export const JDBC = "JDBC";
+export * from "./edit-dialect-details";
+export * from "./edit-external-claim";
+export * from "./edit-external-claims";

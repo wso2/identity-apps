@@ -16,31 +16,35 @@
  * under the License.
  */
 
-import { AddExternalClaims, ClaimsList, EditExternalClaims, ExternalClaimsSearch, ListType } from "../components";
-import { AlertLevels, AppConfigInterface, ClaimDialect, ExternalClaim } from "../models";
-import { AppConfig, history } from "../helpers";
-import { CLAIM_DIALECTS_PATH, UserConstants } from "../constants";
-import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { filterList, sortList } from "../utils";
-import { getADialect, getAllExternalClaims } from "../api";
-import React, { useContext, useEffect, useState } from "react";
-
-import { addAlert } from "../store/actions";
-import { EmptyPlaceholder } from "../components/shared";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { ListLayout } from "../layouts";
-import { PageLayout } from "../layouts";
-import { PrimaryButton } from "@wso2is/react-components";
+import { AlertLevels, ClaimDialect, ExternalClaim } from "../../../../models";
+import { ClaimsList, ExternalClaimsSearch, ListType } from "../../..";
+import { Divider, DropdownProps, PaginationProps } from "semantic-ui-react";
+import { filterList, sortList } from "../../../../utils";
+import { getADialect, getAllExternalClaims } from "../../../../api";
+import React, { ReactElement, useEffect, useState } from "react";
+import { addAlert } from "@wso2is/core/store";
+import { AddExternalClaims } from "../../add";
+import { UserConstants } from "../../../../constants";
+import { EmptyPlaceholder } from "../../../shared";
+import { EmptyPlaceholderIllustrations } from "../../../../configs";
+import { ListLayout } from "../../../../layouts";
 import { useDispatch } from "react-redux";
+
+interface EditExternalClaimsPropsInterface {
+    /**
+     * Dialect ID
+     */
+    dialectID: string;
+}
 
 /**
  * This lists the external claims.
  *
- * @param props.
+ * @param {EditExternalClaimsPropsInterface} props.
  *
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const ExternalClaimsPage = (props): React.ReactElement => {
+export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): ReactElement => {
 
     /**
      * Attributes to sort the list by
@@ -62,19 +66,14 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
     const [ offset, setOffset ] = useState(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ dialect, setDialect ] = useState<ClaimDialect>(null);
-    const [ addClaim, setAddClaim ] = useState(false);
-    const [ editClaim, setEditClaim ] = useState(false);
-    const [ editClaimID, setEditClaimID ] = useState("");
     const [ filteredClaims, setFilteredClaims ] = useState<ExternalClaim[]>(null);
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
-    const [ isLoading, setIsLoading ] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(true);
 
     const dispatch = useDispatch();
 
-    const appConfig: AppConfigInterface = useContext(AppConfig);
-
-    const dialectID = props.match.params.id;
+    const { dialectID } = props;
 
     useEffect(() => {
         setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
@@ -185,39 +184,10 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
 
     return (
         <>
-            { addClaim
-                ? <AddExternalClaims
-                    open={ addClaim }
-                    onClose={ () => { setAddClaim(false) } }
-                    dialect={ dialect }
-                    update={ getExternalClaims }
-                />
-                : null
-            }
+            <AddExternalClaims dialect={ dialect } update={ () => { getExternalClaims(null) } } />
+            <Divider hidden/>
             {
-                editClaim
-                    ? <EditExternalClaims
-                        open={ editClaim }
-                        onClose={ () => {
-                            setEditClaim(false);
-                            setEditClaimID("");
-                        } }
-                        update={ getExternalClaims }
-                        claimID={ editClaimID }
-                        dialectID={ dialect?.id }
-                    />
-                    : null
-            }
-            <PageLayout
-                title="External Claims"
-                description={ "View, edit and add claims of " + dialect?.dialectURI }
-                showBottomDivider={ true }
-                backButton={ {
-                    onClick: () => { history.push(CLAIM_DIALECTS_PATH) },
-                    text: "Go back to Claim Dialects"
-                } }
-            >
-                { claims?.length > 0
+                claims?.length > 0
                     ? (
                         <ListLayout
                             advancedSearch={ <ExternalClaimsSearch onFilter={ (query) => {
@@ -241,17 +211,6 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                             onPageChange={ handlePaginationChange }
                             onSortStrategyChange={ handleSortStrategyChange }
                             onSortOrderChange={ handleSortOrderChange }
-                            rightActionPanel={
-                                appConfig?.claimDialects?.features?.externalClaims?.permissions?.create && (
-                                    <PrimaryButton
-                                        onClick={ () => {
-                                            setAddClaim(true);
-                                        } }
-                                    >
-                                        <Icon name="add" />Add a claim
-                                    </PrimaryButton>
-                                )
-                            }
                             showPagination={ true }
                             sortOptions={ SORT_BY }
                             sortStrategy={ sortBy }
@@ -261,10 +220,6 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                             <ClaimsList
                                 list={ paginate(filteredClaims, listItemLimit, offset) }
                                 localClaim={ ListType.EXTERNAL }
-                                openEdit={ (claimID: string) => {
-                                    setEditClaim(true);
-                                    setEditClaimID(claimID);
-                                } }
                                 update={ getExternalClaims }
                                 dialectID={ dialectID }
                             />
@@ -272,22 +227,13 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                     )
                     : !isLoading && (
                         <EmptyPlaceholder
-                            action={
-                                <PrimaryButton
-                                    onClick={ () => {
-                                        setAddClaim(true);
-                                    } }
-                                >
-                                    <Icon name="add" /> Add an External Claim
-                                </PrimaryButton>
-                            }
-                            title="Create an External Claim"
-                            subtitle={ [ "Currently, there is no External Claim available for this dialect." ] }
+                            title="No External Claim"
+                            subtitle={ [ "Currently, there is no external claim available for this dialect." ] }
                             image={ EmptyPlaceholderIllustrations.emptyList }
                             imageSize="tiny"
                         />
-                    ) }
-            </PageLayout>
+                    )
+            }
         </>
     );
 };

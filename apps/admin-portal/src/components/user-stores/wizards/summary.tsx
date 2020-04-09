@@ -16,10 +16,9 @@
 * under the License.
 */
 
+import React, { ReactElement } from "react";
 import { TypeProperty, UserStorePostData, UserStoreProperty } from "../../../models";
-
 import { Grid } from "semantic-ui-react";
-import React from "react";
 
 /**
  * Prop types of the `SummaryUserStores` component
@@ -34,7 +33,7 @@ interface SummaryUserStoresPropsInterface {
      */
     properties: TypeProperty[];
     /**
-     * The type of the user store
+     * The type of the userstore
      */
     type: string;
 }
@@ -42,28 +41,28 @@ interface SummaryUserStoresPropsInterface {
 /**
  * This component renders the Summary step of the wizard
  * @param {SummaryUserStoresPropsInterface} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): React.ReactElement => {
+export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): ReactElement => {
 
     const { data, properties, type } = props;
 
     /**
      * This generates a summary row
      * @param {string} title 
-     * @param {string | number | React.ReactElement} description
+     * @param {string | number | ReactElement} description
      */
     const generateSummaryLine = (
         title: string,
-        description: string | number | React.ReactElement
-    ): React.ReactElement => {
+        description: string | number | ReactElement
+    ): ReactElement => {
         return (
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                     <div className="label">{title}</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                    <div className="value url">{description}</div>
+                    <div className="value">{description}</div>
                 </Grid.Column>
             </Grid.Row>
         )
@@ -79,10 +78,10 @@ export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): React
                     </div>
                 </Grid.Column>
             </Grid.Row>
-            {type ? generateSummaryLine("User Store Type", type) : null}
+            {type ? generateSummaryLine("Userstore Type", type) : null}
             {
                 properties?.map((property: TypeProperty) => {
-                    if (property.name !== "password") {
+                    if (!property.name.toLocaleLowerCase().includes("password")) {
                         return (
                             generateSummaryLine(
                                 property.description.split("#")[0],

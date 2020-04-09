@@ -32,7 +32,7 @@ const RESOURCE_NOT_FOUND_ERROR_CODE = "CMT-50017";
 const httpClient = AxiosHttpClient.getInstance();
 
 /**
- * Fetches all user stores.
+ * Fetches all userstores.
  *
  * @param {QueryParams} params sort, filter, limit, attributes, offset.
  *
@@ -41,13 +41,13 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getUserStores = (params: QueryParams): Promise<any> => {
     const requestConfig = {
         headers: {
-            Accept: "application/json",
+            "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.userStores,
-        params
+        params,
+        url: store.getState().config.endpoints.userStores
     };
     return httpClient
         .request(requestConfig)
@@ -65,7 +65,7 @@ export const getUserStores = (params: QueryParams): Promise<any> => {
 };
 
 /**
- * Fetch types of user stores.
+ * Fetch types of userstores.
  *
  * @return {Promise<any>} response.
  */
@@ -109,8 +109,8 @@ export const getAType = (id: string, params: QueryParams): Promise<any> => {
             params
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.userStores}/meta/types/${id}`,
-        params
+        params,
+        url: `${store.getState().config.endpoints.userStores}/meta/types/${id}`
     };
     return httpClient
         .request(requestConfig)
@@ -126,9 +126,9 @@ export const getAType = (id: string, params: QueryParams): Promise<any> => {
 };
 
 /**
- * Gets a user store by its id.
+ * Gets a userstore by its id.
  *
- * @param {string} id User Store ID.
+ * @param {string} id Userstore ID.
  *
  * @return {Promise<any>} response.
  */
@@ -157,9 +157,9 @@ export const getAUserStore = (id: string): Promise<any> => {
 };
 
 /**
- * Deletes a User Store.
+ * Deletes a Userstore.
  *
- * @param {string} id User Store ID.
+ * @param {string} id Userstore ID.
  *
  * @return {Promise<any>} Response.
  */
@@ -187,9 +187,9 @@ export const deleteUserStore = (id: string): Promise<any> => {
 };
 
 /**
- * Patches a user store.
+ * Patches a userstore.
  *
- * @param {string} id User Store ID.
+ * @param {string} id Userstore ID.
  * @param {string} path The path to patch.
  * @param {string} value The data to be patched with.
  *
@@ -197,14 +197,14 @@ export const deleteUserStore = (id: string): Promise<any> => {
  */
 export const patchUserStore = (id: string, data: PatchData[]): Promise<any> => {
     const requestConfig = {
+        data,
         headers: {
-            "Accept": "application/json",
+            Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: `${store.getState().config.endpoints.userStores}/${id}`,
-        data
+        url: `${store.getState().config.endpoints.userStores}/${id}`
     };
     return httpClient
         .request(requestConfig)
@@ -220,22 +220,22 @@ export const patchUserStore = (id: string, data: PatchData[]): Promise<any> => {
 };
 
 /**
- * Adds a user store.
+ * Adds a userstore.
  *
- * @param {UserStorePostData} data User Store Data.
+ * @param {UserStorePostData} data Userstore Data.
  *
  * @return {Promise<any>} Response.
  */
 export const addUserStore = (data: UserStorePostData): Promise<any> => {
     const requestConfig = {
+        data,
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${store.getState().config.endpoints.userStores}`,
-        data
+        url: `${store.getState().config.endpoints.userStores}`
     };
     return httpClient
         .request(requestConfig)
@@ -251,23 +251,24 @@ export const addUserStore = (data: UserStorePostData): Promise<any> => {
 };
 
 /**
- * Updates a User Store.
+ * Updates a Userstore.
  *
- * @param {string} id User Store ID.
+ * @param {string} id Userstore ID.
  * @param {UserStorePostData} data Update Data.
  *
  * @return {Promise<any>} response.
  */
 export const updateUserStore = (id: string,data: UserStorePostData): Promise<any> => {
     const requestConfig = {
+        data,
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${store.getState().config.endpoints.userStores}/${id}`,
-        data
+        url: `${store.getState().config.endpoints.userStores}/${id}`
+        
     };
     return httpClient
         .request(requestConfig)
@@ -291,14 +292,14 @@ export const updateUserStore = (id: string,data: UserStorePostData): Promise<any
  */
 export const testConnection = (data: TestConnection): Promise<any> => {
     const requestConfig = {
+        data,
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${store.getState().config.endpoints.userStores}/test-connection`,
-        data
+        url: `${store.getState().config.endpoints.userStores}/test-connection`
     };
     return httpClient
         .request(requestConfig)

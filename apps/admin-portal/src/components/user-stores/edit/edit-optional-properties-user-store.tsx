@@ -16,14 +16,14 @@
 * under the License.
 */
 
-import React, { useEffect, useState } from "react";
-import { UserStore, Type, AlertLevels, UserStoreProperty } from "../../../models";
-import { patchUserStore } from "../../../api";
-import { useDispatch } from "react-redux";
+import { AlertLevels, Type, UserStore, UserStoreProperty } from "../../../models";
+import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
+import React, { ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { Grid } from "semantic-ui-react";
-import { Forms, Field, useTrigger, FormValue } from "@wso2is/forms";
+import { patchUserStore } from "../../../api";
 import { PrimaryButton } from "@wso2is/react-components";
+import { useDispatch } from "react-redux";
 
 /**
  * Type of the property object
@@ -39,7 +39,7 @@ interface Property {
  */
 interface EditOptionalPropertiesPropsInterface {
     /**
-     * User store to be edited
+     * Userstore to be edited
      */
     userStore: UserStore;
     /**
@@ -47,7 +47,7 @@ interface EditOptionalPropertiesPropsInterface {
      */
     update: () => void;
     /**
-     * user store id
+     * userstore id
      */
     id: string;
     /**
@@ -57,7 +57,7 @@ interface EditOptionalPropertiesPropsInterface {
 }
 const EditOptionalProperties = (
     props: EditOptionalPropertiesPropsInterface
-): React.ReactElement => {
+): ReactElement => {
 
     const { userStore, update, id, type } = props;
 
@@ -81,8 +81,8 @@ const EditOptionalProperties = (
                     optional.push(tempProperty);
                 } else {
                     optional.push({
-                        name: property.name,
                         description: property.description,
+                        name: property.name,
                         value: property.defaultValue
                     });
                 }
@@ -105,24 +105,24 @@ const EditOptionalProperties = (
                             const data = properties.map((property: Property) => {
                                 return {
                                     operation: "REPLACE",
-                                    value: values.get(property.name).toString(),
-                                    path: `/properties/${property.name}`
+                                    path: `/properties/${property.name}`,
+                                    value: values.get(property.name).toString()
                                 }
                             });
 
                             patchUserStore(id, data).then(() => {
                                 dispatch(addAlert({
-                                    message: "User Store updated successfully!",
-                                    description: "This user store has been updated successfully!",
-                                    level: AlertLevels.SUCCESS
+                                    description: "This userstore has been updated successfully!",
+                                    level: AlertLevels.SUCCESS,
+                                    message: "Userstore updated successfully!"
                                 }));
                                 update();
                             }).catch(error => {
                                 dispatch(addAlert({
-                                    message: error?.message || "Something went wrong",
                                     description: error?.description
-                                        || "An error occurred while updating the user store.",
-                                    level: AlertLevels.ERROR
+                                        || "An error occurred while updating the userstore.",
+                                    level: AlertLevels.ERROR,
+                                    message: error?.message || "Something went wrong"
                                 }));
                             })
                         }

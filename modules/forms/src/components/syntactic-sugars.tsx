@@ -17,15 +17,16 @@
  */
 
 import { FormField } from "../models";
+import React from "react";
 
 /**
  * This component renders Form elements based on the provided `type` prop
  * @param props
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const Field = (props: FormField): JSX.Element => {
+export const Field = React.forwardRef((props: FormField, ref): JSX.Element => {
     return null;
-};
+});
 
 /**
  * Prop types for the GroupFields component

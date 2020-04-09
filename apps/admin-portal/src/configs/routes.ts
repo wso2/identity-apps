@@ -16,40 +16,41 @@
  * under the License.
  */
 
-import { RouteInterface } from "@wso2is/core/models";
-import { SignIn, SignOut } from "../components/authentication";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultPageLayout, ErrorPageLayout } from "../layouts";
 import {
     ApplicationEditPage,
     ApplicationsPage,
     ApplicationTemplateSelectPage,
+    ClaimDialectsPage,
     CustomizePage,
     GroupsPage,
     HomePage,
+    IdentityProviderEditPage,
     IdentityProvidersPage,
     IdentityProviderTemplateSelectPage,
+    LocalClaimsEditPage,
+    LocalClaimsPage,
     PageNotFound,
     PrivacyPage,
+    RoleEditPage,
+    RolesPage,
+    ServerConfigurationsPage,
     UserEditPage,
     UsersPage,
-    RolesPage,
-    RoleEditPage,
-    LocalClaimsPage,
-    ExternalClaimsPage,
-    ClaimDialectsPage,
-    LocalClaimsEditPage,
     UserStores,
-    UserStoresEditPage,
-    IdentityProviderEditPage,
-    ServerConfigurationsPage
+    UserStoresEditPage
 } from "../pages";
 import {
-    USER_STORES_PATH,
-    LOCAL_CLAIMS_PATH,
-    EXTERNAL_CLAIMS_PATH,
     CLAIM_DIALECTS_PATH,
-    EDIT_LOCAL_CLAIMS_PATH
+    EDIT_EXTERNAL_DIALECT,
+    EDIT_LOCAL_CLAIMS_PATH,
+    LOCAL_CLAIMS_PATH,
+    USER_STORES_PATH
 } from "../constants";
+import { SignIn, SignOut } from "../components/authentication";
+
+import { ExternalDialectEditPage } from "./../pages/external-dialect-edit";
+import { RouteInterface } from "@wso2is/core/models";
 
 /**
  * Dashboard Layout Routes array.
@@ -218,13 +219,13 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: false
     },
     {
-        component: ExternalClaimsPage,
+        component: ExternalDialectEditPage,
         exact: true,
         icon: "childIcon",
-        id: "externalClaims",
+        id: "editExternalDialect",
         level: 2,
-        name: "External Claims",
-        path: `${EXTERNAL_CLAIMS_PATH}/:id`,
+        name: "Edit External Dialect",
+        path: `${EDIT_EXTERNAL_DIALECT}/:id`,
         protected: true,
         showOnSidePanel: false
     },
@@ -254,7 +255,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         component: UserStores,
         icon: "userStore",
         id: "userStores",
-        name: "User Stores",
+        name: "Userstores",
         path: USER_STORES_PATH,
         protected: true,
         showOnSidePanel: true
@@ -263,7 +264,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         component: UserStoresEditPage,
         icon: "userStore",
         id: "edit-user-store",
-        name: "Edit User Store",
+        name: "Edit Userstore",
         path: "/edit-user-store/:id",
         protected: true,
         showOnSidePanel: false

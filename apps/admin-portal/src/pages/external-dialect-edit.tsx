@@ -16,44 +16,43 @@
 * under the License.
 */
 
-import { AlertLevels, Claim } from "../models";
+import { AlertLevels, ClaimDialect } from "../models";
 import {
-    EditAdditionalPropertiesLocalClaims,
-    EditBasicDetailsLocalClaims,
-    EditMappedAttributesLocalClaims
+    EditDialectDetails,
+    EditExternalClaims
 } from "../components";
 import React, { ReactElement, useEffect, useState } from "react"
 import { addAlert } from "../store/actions";
-import { getAClaim } from "../api";
+import { CLAIM_DIALECTS_PATH } from "../constants";
+import { getADialect } from "../api";
 import { history } from "../helpers";
-import { LOCAL_CLAIMS_PATH } from "../constants";
 import { PageLayout } from "../layouts"
 import { ResourceTab } from "@wso2is/react-components";
 import { useDispatch } from "react-redux";
 
 /**
- * This renders the edit local claims page
+ * This renders the edit external dialect page
  * @param props 
  * @return {ReactElement}
  */
-export const LocalClaimsEditPage = (props): ReactElement => {
+export const ExternalDialectEditPage = (props): ReactElement => {
 
-    const claimID = props.match.params.id;
+    const dialectId = props.match.params.id;
 
-    const [claim, setClaim] = useState<Claim>(null);
+    const [ dialect, setDialect ] = useState<ClaimDialect>(null);
 
     const dispatch = useDispatch();
 
     /**
      * Fetches the local claim
      */
-    const getClaim = () => {
-        getAClaim(claimID).then(response => {
-            setClaim(response);
+    const getDialect = () => {
+        getADialect(dialectId).then(response => {
+            setDialect(response);
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while fetching the local claim",
+                    description: error?.description || "There was an error while fetching the external dialect",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -62,50 +61,38 @@ export const LocalClaimsEditPage = (props): ReactElement => {
     }
 
     useEffect(() => {
-        getClaim();
-    }, []);
+        getDialect();
+    }, [ dialectId ]);
 
     /**
      * Contains the data of the panes
      */
     const panes = [
         {
-            menuItem: "Basic Details",
+            menuItem: "Dialect Details",
             render: () => (
-                <EditBasicDetailsLocalClaims
-                    claim={ claim }
-                    update={ getClaim } />
-            )
-        },
-        {
-            menuItem: "Mapped Attributes",
-            render: () => (
-                <EditMappedAttributesLocalClaims
-                    claim={ claim }
-                    update={ getClaim }
+                <EditDialectDetails
+                    dialect={ dialect }
                 />
             )
         },
         {
-            menuItem: "Additional Properties",
+            menuItem: "External Claims",
             render: () => (
-                <EditAdditionalPropertiesLocalClaims
-                    claim={ claim }
-                    update={ getClaim }
-                />
+                <EditExternalClaims dialectID={ dialect.id }/>
             )
         }
     ];
 
     return (
         <PageLayout
-            title={ claim?.displayName }
-            description={ "Edit local claim" }
+            title={ dialect?.dialectURI }
+            description={ "Edit external dialect and its claims" }
             backButton={ {
                 onClick: () => {
-                    history.push(LOCAL_CLAIMS_PATH);
+                    history.push(CLAIM_DIALECTS_PATH);
                 },
-                text: "Go back to Local Claims"
+                text: "Go back to claim dialects"
             } }
             titleTextAlign="left"
             bottomMargin={ false }

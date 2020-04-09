@@ -16,26 +16,26 @@
  * under the License.
  */
 
-import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
-import React, { useContext, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { getUserStores } from "../api";
 import { AddUserStore, UserStoresList, UserStoresSearch } from "../components";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { UserConstants } from "../constants";
-import { ListLayout, PageLayout } from "../layouts";
 import { AlertLevels, AppConfigInterface, QueryParams, UserStoreListItem } from "../models";
-import { addAlert } from "../store/actions";
+import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import { filterList, sortList } from "../utils";
+import { ListLayout, PageLayout } from "../layouts";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
+import { addAlert } from "../store/actions";
 import { AppConfig } from "../helpers";
+import { UserConstants } from "../constants";
+import { EmptyPlaceholderIllustrations } from "../configs";
+import { getUserStores } from "../api";
+import { useDispatch } from "react-redux";
 
 /**
- * This renders the User Stores page.
+ * This renders the Userstores page.
  *
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const UserStores = (): React.ReactElement => {
+export const UserStores = (): ReactElement => {
 
     /**
      * Sets the attributes by which the list can be sorted.
@@ -67,7 +67,7 @@ export const UserStores = (): React.ReactElement => {
     const appConfig: AppConfigInterface = useContext(AppConfig);
 
     /**
-     * Fetches all user stores.
+     * Fetches all userstores.
      *
      * @param {number} limit.
      * @param {string} sort.
@@ -76,10 +76,10 @@ export const UserStores = (): React.ReactElement => {
      */
     const fetchUserStores = (limit?: number, sort?: string, offset?: number, filter?: string) => {
         const params: QueryParams = {
+            filter: filter || null,
             limit: limit || null,
-            sort: sort || null,
             offset: offset || null,
-            filter: filter || null
+            sort: sort || null
         };
         setIsLoading(true);
         getUserStores(params).then(response => {
@@ -90,7 +90,7 @@ export const UserStores = (): React.ReactElement => {
             setIsLoading(false);
             dispatch(addAlert(
                 {
-                    description: error?.description || "An error occurred while fetching user stores",
+                    description: error?.description || "An error occurred while fetching userstores",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -173,8 +173,8 @@ export const UserStores = (): React.ReactElement => {
                     )
             }
             <PageLayout
-                title="User Stores"
-                description="View, edit and add User Stores"
+                title="Userstores"
+                description="View, edit, and add userstores"
                 showBottomDivider={ true }
             >
                 {
@@ -205,7 +205,7 @@ export const UserStores = (): React.ReactElement => {
                                                 setOpenModal(true);
                                             } }
                                         >
-                                            <Icon name="add"/>Add a User Store
+                                            <Icon name="add"/>Add Userstore
                                         </PrimaryButton>
                                     )
                                 }
@@ -230,11 +230,11 @@ export const UserStores = (): React.ReactElement => {
                                         setOpenModal(true);
                                     } }
                                 >
-                                    <Icon name="add"/> Add a User Store
+                                    <Icon name="add"/> Add Userstore
                                 </PrimaryButton>
                             }
-                            title="Create a User Store"
-                            subtitle={ ["Currently, there are no User Stores available."] }
+                            title="Add Userstore"
+                            subtitle={ ["Currently, there are no Userstores available."] }
                             image={ EmptyPlaceholderIllustrations.emptyList }
                             imageSize="tiny"
                         />

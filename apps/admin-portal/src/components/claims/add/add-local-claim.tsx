@@ -16,17 +16,16 @@
 * under the License.
 */
 
-import React, { useState } from "react";
-import { Modal, Grid, Icon } from "semantic-ui-react";
-import { useTrigger, FormValue } from "@wso2is/forms";
-import { addLocalClaim } from "../../../api";
-import { Steps, PrimaryButton, LinkButton } from "@wso2is/react-components";
-import { ApplicationWizardStepIcons } from "../../../configs";
+import { AlertLevels, Claim } from "../../../models";
 import { BasicDetailsLocalClaims, MappedAttributes, SummaryLocalClaims } from "../wizard";
-import { Claim, AlertLevels } from "../../../models";
-import { useDispatch } from "react-redux";
+import { FormValue, useTrigger } from "@wso2is/forms";
+import { Grid, Icon, Modal } from "semantic-ui-react";
+import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import React, { ReactElement, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
-import { KeyValue } from "../dynamic-fields";
+import { addLocalClaim } from "../../../api";
+import { ApplicationWizardStepIcons } from "../../../configs";
+import { useDispatch } from "react-redux";
 
 /**
  * Prop types for `AddLocalClaims` component
@@ -53,15 +52,15 @@ interface AddLocalClaimsPropsInterface {
 /**
  * A component that lets you add a local claim
  * @param {AddLocalClaimsPropsInterface} props
- * @return {React.ReactElement} component
+ * @return {ReactElement} component
  */
-export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.ReactElement => {
+export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElement => {
 
     const { open, onClose, update, claimURIBase } = props;
     const [currentWizardStep, setCurrentWizardStep] = useState(0);
     const [data, setData] = useState<Claim>(null);
     const [basicDetailsData, setBasicDetailsData] = useState<Map<string, FormValue>>(null);
-    const [mappedAttributesData, setMappedAttributesData] = useState<KeyValue[]>(null);
+    const [ mappedAttributesData, setMappedAttributesData ] = useState<Map<string, FormValue>>(null);
 
     const [firstStep, setFirstStep] = useTrigger();
     const [secondStep, setSecondStep] = useTrigger();
@@ -110,7 +109,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
      * @param {Claim} dataFromForm 
      * @param {KeyValue[]} values 
      */
-    const onSubmitMappedAttributes = (dataFromForm: Claim, values: KeyValue[]) => {
+    const onSubmitMappedAttributes = (dataFromForm: Claim, values: Map<string, FormValue>) => {
         setCurrentWizardStep(2);
         const tempData = { ...data, ...dataFromForm };
         setData(tempData);
@@ -130,8 +129,8 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
                     claimURIBase={ claimURIBase }
                 />
             ),
-            title: "Basic Local Claim Details",
-            icon: ApplicationWizardStepIcons.general
+            icon: ApplicationWizardStepIcons.general,
+            title: "Basic local-claim details"
         },
         {
             content: (
@@ -141,8 +140,8 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
                     values={ mappedAttributesData }
                 />
             ),
-            title: "Mapped Attributes",
-            icon: ApplicationWizardStepIcons.general
+            icon: ApplicationWizardStepIcons.general,
+            title: "Map attributes"
         },
         {
             content: (
@@ -187,7 +186,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
             onClose={ onClose }
         >
             <Modal.Header className="wizard-header">
-                Add a Local Claim
+                Add local claim
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group
@@ -215,7 +214,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             {currentWizardStep < STEPS.length - 1 && (
                                 <PrimaryButton floated="right" onClick={ next }>
-                                    Next Step <Icon name="arrow right" />
+                                    Next <Icon name="arrow right" />
                                 </PrimaryButton>
                             )}
                             {currentWizardStep === STEPS.length - 1 && (
@@ -224,7 +223,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
                             )}
                             {currentWizardStep > 0 && (
                                 <LinkButton floated="right" onClick={ previous }>
-                                    <Icon name="arrow left" /> Previous step
+                                    <Icon name="arrow left" /> Previous
                                 </LinkButton>
                             )}
                         </Grid.Column>

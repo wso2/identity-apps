@@ -20,11 +20,10 @@ import { AlertLevels, TestConnection, Type, UserStore, UserStoreProperty } from 
 import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { patchUserStore, testConnection } from "../../../api";
-import React, { useEffect, useState } from "react";
-
+import React, { ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { Grid } from "semantic-ui-react";
-import { JDBC_ID } from "../../../constants";
+import { JDBC } from "../../../constants";
 import { useDispatch } from "react-redux";
 
 /**
@@ -41,7 +40,7 @@ interface Property {
  */
 interface EditConnectionDetailsPropsInterface {
     /**
-     * User store to be edited
+     * Userstore to be edited
      */
     userStore: UserStore;
     /**
@@ -49,7 +48,7 @@ interface EditConnectionDetailsPropsInterface {
      */
     update: () => void;
     /**
-     * user store id
+     * userstore id
      */
     id: string;
     /**
@@ -59,7 +58,7 @@ interface EditConnectionDetailsPropsInterface {
 }
 const EditConnectionDetails = (
     props: EditConnectionDetailsPropsInterface
-): React.ReactElement => {
+): ReactElement => {
 
     const { userStore, update, id, type } = props;
 
@@ -124,15 +123,15 @@ const EditConnectionDetails = (
 
                             patchUserStore(id, data).then(() => {
                                 dispatch(addAlert({
-                                    description: "This user store has been updated successfully!",
+                                    description: "This userstore has been updated successfully!",
                                     level: AlertLevels.SUCCESS,
-                                    message: "User Store updated successfully!"
+                                    message: "Userstore updated successfully!"
                                 }));
                                 update();
                             }).catch(error => {
                                 dispatch(addAlert({
                                     description: error?.description
-                                        || "An error occurred while updating the user store.",
+                                        || "An error occurred while updating the userstore.",
                                     level: AlertLevels.ERROR,
                                     message: error?.message || "Something went wrong"
                                 }));
@@ -141,7 +140,9 @@ const EditConnectionDetails = (
                     >
                         {
                             properties?.map((property: Property, index: number) => {
-                                const isPassword = property.name === "password";
+                                const isPassword = property.name
+                                    .toLocaleLowerCase()
+                                    .includes("password");
                                 if (isPassword) {
                                     return (
                                         <Field
@@ -200,7 +201,7 @@ const EditConnectionDetails = (
                     <LinkButton
                         onClick={
                             () => {
-                                if (type.typeId === JDBC_ID) {
+                                if (type.typeName.includes(JDBC)) {
                                     const testData: TestConnection = {
                                         connectionPassword: formValue?.get("password").toString(),
                                         connectionURL: formValue?.get("url").toString(),
@@ -216,7 +217,7 @@ const EditConnectionDetails = (
                                     }).catch((error) => {
                                         dispatch(addAlert({
                                             description: error?.description
-                                                || "An error occurred while testing the connection to the user store",
+                                                || "An error occurred while testing the connection to the userstore",
                                             level: AlertLevels.ERROR,
                                             message: error?.message || "Something went wrong"
                                         }));
