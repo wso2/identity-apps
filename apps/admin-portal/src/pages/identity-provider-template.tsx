@@ -20,7 +20,7 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useS
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import { IdentityProviderTemplateListInterface, IdentityProviderTemplateListItemInterface } from "../models";
-import { IdentityProviderCreateWizard } from "../components/identity-providers/wizard";
+import { IdentityProviderCreateWizard } from "../components/identity-providers/wizards";
 import { QuickStartIdentityProviderTemplates } from "../components/identity-providers/templates";
 import { getIdentityProviderList, getIdentityProviderTemplate, getIdentityProviderTemplateList } from "../api";
 import { useDispatch, useSelector } from "react-redux";

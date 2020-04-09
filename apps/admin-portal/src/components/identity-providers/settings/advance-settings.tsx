@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { useDispatch } from "react-redux";
+import { addAlert } from "@wso2is/core/store";
+import { AdvanceConfigurationsForm } from "../forms";
+import { AlertLevels } from "@wso2is/core/models";
 import { Divider } from "semantic-ui-react";
-import { updateIdentityProviderDetails } from "../../api";
-import { IdentityProviderAdvanceInterface } from "../../models";
-import { AdvanceConfigurationsForm } from "./forms/advanced-configurations-form";
+import { Heading } from "@wso2is/react-components";
+import { IdentityProviderAdvanceInterface } from "../../../models";
+import { updateIdentityProviderDetails } from "../../../api";
+import { useDispatch } from "react-redux";
 
 /**
  * Proptypes for the advance settings component.
@@ -69,7 +69,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
      */
     const handleAdvancedConfigFormSubmit = (values: any): void => {
         updateIdentityProviderDetails({ id: idpId, ...values })
-            .then((response) => {
+            .then(() => {
                 dispatch(addAlert({
                     description: "Successfully updated the advanced configurations.",
                     level: AlertLevels.SUCCESS,
@@ -78,7 +78,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
 
                 onUpdate(idpId);
             })
-            .catch((error) => {
+            .catch(() => {
                 dispatch(addAlert({
                     description: "An error occurred while the advanced configurations.",
                     level: AlertLevels.ERROR,

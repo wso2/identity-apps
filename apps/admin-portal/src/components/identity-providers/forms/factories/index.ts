@@ -16,5 +16,5 @@
  * under the License.
  */
 
-export * from "./identity-provider-list";
-export * from "./identity-provider-edit";
+export * from "./authenticator-form-factory";
+export * from "./outbound-provisioning-connector-form-factory";

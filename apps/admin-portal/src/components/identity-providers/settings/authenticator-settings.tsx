@@ -16,20 +16,21 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, Heading } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { getFederatedAuthenticatorDetails, getFederatedAuthenticatorMeta, updateFederatedAuthenticator } from "../../api";
 import {
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
     FederatedAuthenticatorMetaInterface,
     SupportedAuthenticators
-} from "../../models";
-import { AuthenticatorFormFactory } from "./forms";
+} from "../../../models";
+import { getFederatedAuthenticatorDetails, getFederatedAuthenticatorMeta, updateFederatedAuthenticator }
+from "../../../api";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { addAlert } from "@wso2is/core/store";
+import { AlertLevels } from "@wso2is/core/models";
+import { AuthenticatorFormFactory } from "../forms";
 import { Divider } from "semantic-ui-react";
+import { useDispatch } from "react-redux";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -74,17 +75,17 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const dispatch = useDispatch();
 
     const [authenticatorMeta, setAuthenticatorMeta] = useState<FederatedAuthenticatorMetaInterface>({
-        name: SupportedAuthenticators.NONE,
-        displayName: "",
         authenticatorId: "",
+        displayName: "",
+        name: SupportedAuthenticators.NONE,
         properties: []
     });
 
     const [authenticatorDetails, setAuthenticatorDetails] = useState<FederatedAuthenticatorListItemInterface>({
-        name: "",
+        authenticatorId: "",
         isDefault: false,
         isEnabled: false,
-        authenticatorId: "",
+        name: "",
         properties: []
     });
 

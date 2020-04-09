@@ -16,12 +16,10 @@
  * under the License.
  */
 
-import { ResourceTab } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import { AdvanceSettings, AuthenticatorSettings, GeneralSettings } from "./settings";
 import { IdentityProviderAdvanceInterface, IdentityProviderInterface } from "../../models";
-import { AdvanceSettings } from "./advance-idp-settings";
-import { GeneralIdentityProviderSettings } from "./general-idp-settings";
-import { AuthenticatorSettings } from "./settings-authenticator";
+import React, { FunctionComponent, ReactElement } from "react";
+import { ResourceTab } from "@wso2is/react-components";
 
 /**
  * Proptypes for the idp edit component.
@@ -63,15 +61,15 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     } = props;
 
     const idpAdvanceConfig: IdentityProviderAdvanceInterface = {
-        isFederationHub: identityProvider.isFederationHub,
-        homeRealmIdentifier: identityProvider.homeRealmIdentifier,
         alias: identityProvider.alias,
-        certificate: identityProvider.certificate
+        certificate: identityProvider.certificate,
+        homeRealmIdentifier: identityProvider.homeRealmIdentifier,
+        isFederationHub: identityProvider.isFederationHub
     };
 
     const GeneralIdentityProviderSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane attached={ false }>
-            <GeneralIdentityProviderSettings
+            <GeneralSettings
                 idpId={ identityProvider.id }
                 description={ identityProvider.description }
                 isEnabled={ identityProvider.isEnabled }

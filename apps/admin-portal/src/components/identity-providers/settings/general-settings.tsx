@@ -16,20 +16,20 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { ConfigReducerStateInterface, IdentityProviderInterface } from "../../../models";
 import { ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
+import { deleteIdentityProvider, updateIdentityProviderDetails } from "../../../api";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteIdentityProvider, updateIdentityProviderDetails } from "../../api";
-import { ConfigReducerStateInterface, IdentityProviderInterface } from "../../models";
-import { GeneralDetailsForm } from "./forms";
-import { AppState } from "../../store";
+import { addAlert } from "@wso2is/core/store";
+import { AlertLevels } from "@wso2is/core/models";
+import { AppState } from "../../../store";
+import { GeneralDetailsForm } from "../forms";
 
 /**
  * Proptypes for the identity provider general details component.
  */
-interface GeneralIdentityProviderSettingsInterface {
+interface GeneralSettingsInterface {
     /**
      * Currently editing idp id.
      */
@@ -67,11 +67,11 @@ interface GeneralIdentityProviderSettingsInterface {
 /**
  * Component to edit general details of the identity provider.
  *
- * @param {GeneralIdentityProviderSettingsInterface} props - Props injected to the component.
+ * @param {GeneralSettingsInterface} props - Props injected to the component.
  * @return {ReactElement}
  */
-export const GeneralIdentityProviderSettings: FunctionComponent<GeneralIdentityProviderSettingsInterface> = (
-    props: GeneralIdentityProviderSettingsInterface
+export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
+    props: GeneralSettingsInterface
 ): ReactElement => {
 
     const {

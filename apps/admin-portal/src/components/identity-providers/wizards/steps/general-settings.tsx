@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { GeneralDetailsForm } from "../../forms";
 import { IdentityProviderInterface } from "../../../../models";
 
@@ -33,11 +33,11 @@ interface GeneralSettingsWizardFormPropsInterface {
  * General settings wizard form component.
  *
  * @param {GeneralSettingsWizardFormPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
 export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsInterface> = (
     props: GeneralSettingsWizardFormPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         initialValues,
