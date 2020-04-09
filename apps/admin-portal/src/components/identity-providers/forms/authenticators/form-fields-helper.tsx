@@ -108,7 +108,7 @@ export const getQueryParamsField = (eachProp: AuthenticatorProperty,
             validation={ (value, validation) => {
                 if (!FormValidation.url("https://www.sample.com?" + value)) {
                     validation.isValid = false;
-                    validation.errorMessages.push("This is not valid query parameters");
+                    validation.errorMessages.push("These are not valid query parameters");
                 }
             } }
             type="queryParams"

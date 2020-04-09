@@ -20,3 +20,4 @@ export * from "./history";
 export * from "./http-headers";
 export * from "./profile";
 export * from "./user-agent-parser";
+export * from "./common";

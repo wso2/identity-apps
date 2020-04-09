@@ -20,7 +20,7 @@ import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { EditSection, Hint, Section } from "@wso2is/react-components";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
-import { getAllLoginPoliciesConfigurations, updateAccountLockingConfigurations } from "../../api";
+import { getAllLoginPolicies, updateAllLoginPolicies } from "../../api";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { LoginPoliciesInterface } from "../../models/server-configurations";
@@ -105,7 +105,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 	 * Calls the API and update the login policies configurations.
 	 */
 	const makeLoginPoliciesPatchCall = (data, successNotification) => {
-		updateAccountLockingConfigurations(data)
+		updateAllLoginPolicies(data)
 			.then(() => {
 				dispatch(addAlert(successNotification));
 			})
@@ -238,7 +238,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 	 * Load login policies from the API, on page load.
 	 */
 	useEffect(() => {
-		getAllLoginPoliciesConfigurations()
+		getAllLoginPolicies()
 			.then((response) => {
 				const configs = {
 					accountDisableInternalNotificationManagement: [],
