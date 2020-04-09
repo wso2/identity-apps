@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { Grid, Icon, Modal } from "semantic-ui-react";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Icon, Modal } from "semantic-ui-react";
 
 import _ from "lodash";
 
@@ -44,10 +44,10 @@ import {
 import { AppState, store } from "../../../store";
 import { IdentityProviderConstants } from "../../../constants";
 import { IdentityProviderWizardStepIcons } from "../../../configs";
-import { IdentityProviderManagementUtils } from "../../../utils/identity-provider-management-utils";
+import { IdentityProviderManagementUtils } from "../../../utils";
 
 import { AuthenticatorSettings, GeneralSettings, WizardSummary } from "./steps";
-import { OutboundProvisioningSettings } from "./steps/outbound-provisioning-settings";
+import { OutboundProvisioningSettings } from "./steps";
 
 /**
  * Proptypes for the identity provider creation wizard component.

@@ -39,7 +39,6 @@ import { Forms } from "@wso2is/forms";
  *
  * @param {OutboundProvisioningConnectorFormPropsInterface} props
  * @return { ReactElement }
- * @constructor
  */
 export const CommonOutboundProvisioningConnectorForm: FunctionComponent<
     OutboundProvisioningConnectorFormPropsInterface> = (props

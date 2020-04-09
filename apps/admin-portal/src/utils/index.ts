@@ -18,6 +18,7 @@
 
 export * from "./adaptive-script-utils";
 export * from "./application-management-utils";
+export * from "./identity-provider-management-utils";
 export * from "./authenticate-util";
 export * from "./http-utils";
 export * from "./search-utils";

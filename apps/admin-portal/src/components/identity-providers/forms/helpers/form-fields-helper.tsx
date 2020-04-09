@@ -17,12 +17,12 @@
  */
 
 import { AuthenticatorProperty, CommonMetaPropertyInterface } from "../../../../models";
+import React, { ReactElement } from "react";
 import { Field } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
-import React from "react";
 
 export const getConfidentialField = (eachProp: AuthenticatorProperty,
-                                     propertyMetadata: CommonMetaPropertyInterface) => {
+                                     propertyMetadata: CommonMetaPropertyInterface): ReactElement => {
     return (
         <Field
             showPassword="Show Secret"
@@ -38,7 +38,7 @@ export const getConfidentialField = (eachProp: AuthenticatorProperty,
 };
 
 export const getCheckboxField = (eachProp: AuthenticatorProperty,
-                                 propertyMetadata: CommonMetaPropertyInterface) => {
+                                 propertyMetadata: CommonMetaPropertyInterface): ReactElement => {
     return (
         <Field
             name={ eachProp?.key }
@@ -60,7 +60,7 @@ export const getCheckboxField = (eachProp: AuthenticatorProperty,
 };
 
 export const getTextField = (eachProp: AuthenticatorProperty,
-                             propertyMetadata: CommonMetaPropertyInterface) => {
+                             propertyMetadata: CommonMetaPropertyInterface): ReactElement => {
     return (
         <Field
             name={ eachProp?.key }
@@ -76,7 +76,7 @@ export const getTextField = (eachProp: AuthenticatorProperty,
 };
 
 export const getURLField = (eachProp: AuthenticatorProperty,
-                            propertyMetadata: CommonMetaPropertyInterface) => {
+                            propertyMetadata: CommonMetaPropertyInterface): ReactElement => {
     return (
         <Field
             name={ eachProp?.key }
@@ -98,7 +98,7 @@ export const getURLField = (eachProp: AuthenticatorProperty,
 };
 
 export const getQueryParamsField = (eachProp: AuthenticatorProperty,
-                            propertyMetadata: CommonMetaPropertyInterface) => {
+                            propertyMetadata: CommonMetaPropertyInterface): ReactElement => {
     return (
         <Field
             name={ eachProp?.key }

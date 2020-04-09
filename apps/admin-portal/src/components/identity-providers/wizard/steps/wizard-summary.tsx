@@ -179,9 +179,9 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         <Grid className="wizard-summary">
             { getGeneralDetailsComponent() }
 
-            { isAuthenticatorSettingsStepAvailable() ? getAuthenticatorSettingsComponent() : null }
+            { isAuthenticatorSettingsStepAvailable() && getAuthenticatorSettingsComponent() }
 
-            { isProvisioningSettingsStepAvailable() ? getProvisioningSettingsComponent() : null }
+            { isProvisioningSettingsStepAvailable() && getProvisioningSettingsComponent() }
         </Grid>
     );
 };

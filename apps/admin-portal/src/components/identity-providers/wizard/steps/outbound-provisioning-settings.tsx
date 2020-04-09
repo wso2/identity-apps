@@ -16,13 +16,12 @@
  * under the License.
  */
 
-import React, { FunctionComponent } from "react";
 import {
-    FederatedAuthenticatorListItemInterface,
-    FederatedAuthenticatorMetaInterface,
-    IdentityProviderInterface, OutboundProvisioningConnectorInterface, OutboundProvisioningConnectorMetaInterface
-} from "../../../../models/identity-provider";
-import { AuthenticatorFormFactory } from "../../forms/authenticator-form-factory";
+    IdentityProviderInterface,
+    OutboundProvisioningConnectorInterface,
+    OutboundProvisioningConnectorMetaInterface
+} from "../../../../models";
+import React, { FunctionComponent, ReactElement } from "react";
 import { OutboundProvisioningConnectorFormFactory } from "../../forms/outbound-provisioning-connector-form-factory";
 
 /**
@@ -39,11 +38,11 @@ interface OutboundProvisioningSettingsWizardFormPropsInterface {
  * Outbound provisioning settings wizard form component.
  *
  * @param {OutboundProvisioningSettingsWizardFormPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
 export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisioningSettingsWizardFormPropsInterface> = (
     props
-): JSX.Element => {
+): ReactElement => {
 
     const {
         metadata,

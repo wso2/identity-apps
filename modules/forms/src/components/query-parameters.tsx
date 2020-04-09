@@ -146,7 +146,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
     };
 
     return (
-        <React.Fragment>
+        <>
             <Form.Group inline widths="equal" unstackable={ true }>
                 <Form.Input
                     fluid
@@ -201,6 +201,6 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
                     );
                 })
             }
-        </React.Fragment>
+        </>
     );
 };
