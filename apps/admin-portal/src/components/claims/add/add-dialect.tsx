@@ -108,7 +108,7 @@ export const AddDialect = (props: AddDialectPropsInterface): React.ReactElement 
      * 
      * @param {Map<string, FormValue>} values Form values.
      */
-    const onSubmitDialectDetails = (values: Map<string, FormValue>) => {
+    const onSubmitDialectDetails = (values: Map<string, FormValue>): void => {
         setCurrentWizardStep(1);
         setDialectDetailsData(values);
     }
