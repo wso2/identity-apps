@@ -18,7 +18,7 @@
 
 import { Button, Divider, Label, List, Popup } from "semantic-ui-react";
 import { Field, Forms, FormValue, useTrigger, Validation } from "@wso2is/forms";
-import React, { useEffect, useRef, useState } from "react";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 
 /**
  * Type of key-value object
@@ -93,9 +93,9 @@ interface DynamicFieldPropsInterface {
 /**
  * This displays a key-value pair of fields that can be dynamically added or removed
  * @param {DynamicFieldPropsInterface} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElement => {
+export const DynamicField = (props: DynamicFieldPropsInterface): ReactElement => {
 
     const {
         data,

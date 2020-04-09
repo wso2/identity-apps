@@ -18,8 +18,7 @@
 
 import { Divider, Grid } from "semantic-ui-react";
 import { Field, Forms, FormValue } from "@wso2is/forms";
-import React, { useEffect, useState } from "react";
-
+import React, { ReactElement, useEffect, useState } from "react";
 import { getUserStoreList } from "../../../../api";
 import { UserStoreListItem } from "../../../../models";
 
@@ -44,9 +43,9 @@ interface MappedAttributesPropsInterface {
 /**
  * This component renders the Mapped Attributes step of the wizard
  * @param {MappedAttributesPropsInterface} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const MappedAttributes = (props: MappedAttributesPropsInterface): React.ReactElement => {
+export const MappedAttributes = (props: MappedAttributesPropsInterface): ReactElement => {
 
     const { onSubmit, submitState, values } = props;
 

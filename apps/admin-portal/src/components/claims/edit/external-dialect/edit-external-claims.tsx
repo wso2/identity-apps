@@ -21,8 +21,7 @@ import { ClaimsList, ExternalClaimsSearch, ListType } from "../../..";
 import { Divider, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { filterList, sortList } from "../../../../utils";
 import { getADialect, getAllExternalClaims } from "../../../../api";
-import React, { useEffect, useState } from "react";
-
+import React, { ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { AddExternalClaims } from "../../add";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../../../../constants";
@@ -43,9 +42,9 @@ interface EditExternalClaimsPropsInterface {
  *
  * @param {EditExternalClaimsPropsInterface} props.
  *
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): React.ReactElement => {
+export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): ReactElement => {
 
     /**
      * Attributes to sort the list by

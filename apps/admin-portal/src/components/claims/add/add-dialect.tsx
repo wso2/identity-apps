@@ -21,8 +21,7 @@ import { AddExternalClaim, AlertLevels } from "../../../models";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
-import React, { useState } from "react";
-
+import React, { ReactElement, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { ApplicationWizardStepIcons } from "../../../configs";
 import { DialectDetails } from "../wizard";
@@ -53,9 +52,9 @@ interface AddDialectPropsInterface {
  * 
  * @param {AddLocalClaimsPropsInterface} props
  * 
- * @return {React.ReactElement} component.
+ * @return {ReactElement} component.
  */
-export const AddDialect = (props: AddDialectPropsInterface): React.ReactElement => {
+export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
 
     const { open, onClose, update } = props;
     const [ currentWizardStep, setCurrentWizardStep ] = useState(0);

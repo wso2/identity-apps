@@ -18,8 +18,7 @@
 */
 
 import { Field, Forms, FormValue } from "@wso2is/forms";
-
-import React from "react";
+import React, { ReactElement } from "react";
 
 /**
  * Prop types of `DialectDetails` component.
@@ -44,9 +43,9 @@ interface DialectDetailsPropsInterface {
  * 
  * @param {DialectDetailsPropsInterface} props
  * 
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const DialectDetails = (props: DialectDetailsPropsInterface): React.ReactElement => {
+export const DialectDetails = (props: DialectDetailsPropsInterface): ReactElement => {
 
     const { submitState, onSubmit, values } = props;
 

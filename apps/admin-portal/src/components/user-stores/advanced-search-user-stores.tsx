@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { SearchUtils } from "@wso2is/core/utils";
-import { Field, Forms } from "@wso2is/forms";
-import { AdvancedSearch } from "@wso2is/react-components";
-import React, { FunctionComponent, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
+import { Field, Forms } from "@wso2is/forms";
+import React, { FunctionComponent, useState } from "react";
+import { AdvancedSearch } from "@wso2is/react-components";
 import { AdvancedSearchIcons } from "../../configs";
+import { SearchUtils } from "@wso2is/core/utils";
+import { useTranslation } from "react-i18next";
 
 /**
  * Filter attribute field identifier.
@@ -67,8 +67,8 @@ export const UserStoresSearch: FunctionComponent<LocalClaimsSearchPropsInterface
 
     const { onFilter } = props;
 
-    const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-    const [externalSearchQuery, setExternalSearchQuery] = useState("");
+    const [ isFormSubmitted, setIsFormSubmitted ] = useState(false);
+    const [ externalSearchQuery, setExternalSearchQuery ] = useState("");
 
     const { t } = useTranslation();
 
@@ -78,8 +78,14 @@ export const UserStoresSearch: FunctionComponent<LocalClaimsSearchPropsInterface
      * @type {({text: string; value: string})[]}
      */
     const filterAttributeOptions = [
-        { value: "name", text: t("common:name") },
-        { value: "description", text: "Description" },
+        {
+            text: t("common:name"),
+            value: "name"
+        },
+        {
+            text: "Description",
+            value: "description"
+        }
     ];
 
     /**
@@ -88,10 +94,22 @@ export const UserStoresSearch: FunctionComponent<LocalClaimsSearchPropsInterface
      * @type {({text: string; value: string})[]}
      */
     const filterConditionOptions = [
-        { value: "sw", text: t("common:startsWith") },
-        { value: "ew", text: t("common:endsWith") },
-        { value: "co", text: t("common:contains") },
-        { value: "eq", text: t("common:equals") }
+        {
+            text: t("common:startsWith"),
+            value: "sw"
+        },
+        {
+            text: t("common:endsWith"),
+            value: "ew"
+        },
+        {
+            text: t("common:contains"),
+            value: "co"
+        },
+        {
+            text: t("common:equals"),
+            value: "eq"
+        }
     ];
 
     /**

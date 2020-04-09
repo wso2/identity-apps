@@ -19,8 +19,7 @@
 import { AlertLevels, Claim } from "../../../../models";
 import { Divider, Form, Grid, Popup } from "semantic-ui-react";
 import { Field, Forms, FormValue } from "@wso2is/forms";
-import React, { useRef, useState } from "react";
-
+import React, { ReactElement, useRef, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { CopyInputField } from "@wso2is/react-components";
 import { updateAClaim } from "../../../../api";
@@ -43,11 +42,11 @@ interface EditBasicDetailsLocalClaimsPropsInterface {
 /**
  * This component renders the Basic Details pane of the edit local claim screen
  * @param {EditBasicDetailsLocalClaimsPropsInterface} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
 export const EditBasicDetailsLocalClaims = (
     props: EditBasicDetailsLocalClaimsPropsInterface
-): React.ReactElement => {
+): ReactElement => {
 
     const dispatch = useDispatch();
 

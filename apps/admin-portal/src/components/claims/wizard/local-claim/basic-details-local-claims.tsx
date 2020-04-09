@@ -18,7 +18,7 @@
 
 import { Field, Forms, FormValue } from "@wso2is/forms";
 import { Grid, Label, Popup } from "semantic-ui-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 
 /**
  * Prop types of `BasicDetailsLocalClaims` component
@@ -45,9 +45,9 @@ interface BasicDetailsLocalClaimsPropsInterface {
 /**
  * This component renders the basic details step of the add local claim wizard
  * @param {BasicDetailsLocalClaimsPropsInterface} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInterface): React.ReactElement => {
+export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInterface): ReactElement => {
 
     const { submitState, onSubmit, values, claimURIBase } = props;
 

@@ -19,8 +19,7 @@
 import { addExternalClaim, getAllLocalClaims } from "../../../api";
 import { AlertLevels, Claim, ClaimDialect } from "../../../models";
 import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
-import React, { useEffect, useState } from "react";
-
+import React, { ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { Grid } from "semantic-ui-react";
 import { useDispatch } from "react-redux";
@@ -52,9 +51,9 @@ interface AddExternalClaimsPropsInterface {
  * 
  * @param {AddExternalClaimsPropsInterface} props
  * 
- * @return {React.ReactElement} Component.
+ * @return {ReactElement} Component.
  */
-export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React.ReactElement => {
+export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): ReactElement => {
 
     const { dialect, update, wizard, onSubmit } = props;
 

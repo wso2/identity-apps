@@ -22,8 +22,7 @@ import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import { filterList, sortList } from "../utils";
 import { ListLayout, PageLayout } from "../layouts";
-import React, { useContext, useEffect, useState } from "react";
-
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { addAlert } from "../store/actions";
 import { AppConfig } from "../helpers";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
@@ -34,9 +33,9 @@ import { useDispatch } from "react-redux";
 /**
  * This renders the Userstores page.
  *
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const UserStores = (): React.ReactElement => {
+export const UserStores = (): ReactElement => {
 
     /**
      * Sets the attributes by which the list can be sorted.

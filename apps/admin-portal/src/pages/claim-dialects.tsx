@@ -23,8 +23,7 @@ import { ClaimsAvatarBackground, ClaimsList, ListType } from "../components";
 import { UserConstants, LOCAL_CLAIMS_PATH } from "../constants";
 import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
 import { filterList, sortList } from "../utils";
-import React, { useContext, useEffect, useState } from "react";
-
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { getDialects } from "../api";
 import { ListLayout } from "../layouts";
@@ -35,9 +34,9 @@ import { useDispatch } from "react-redux";
 /**
  * This displays a list fo claim dialects.
  *
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const ClaimDialectsPage = (): React.ReactElement => {
+export const ClaimDialectsPage = (): ReactElement => {
 
     /**
      * Sets the attributes by which the list can be sorted.

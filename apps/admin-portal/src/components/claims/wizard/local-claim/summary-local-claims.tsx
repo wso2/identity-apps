@@ -18,8 +18,8 @@
 
 import { AttributeMapping, Claim } from "../../../../models";
 import { Form, Grid, Label, List, Table } from "semantic-ui-react";
+import React, { ReactElement } from "react";
 import { CopyInputField } from "@wso2is/react-components";
-import React from "react";
 
 /**
  * Prop types of `SummaryLocalClaims` component
@@ -34,22 +34,22 @@ interface SummaryLocalClaimsPropsInterface {
 /**
  * This component renders the summary view of the wizard
  * @param {SummaryLocalClaimsPropsInterface} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): React.ReactElement => {
+export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): ReactElement => {
 
     const { data } = props;
 
     /**
      * This component returns a row of summary
      * @param {string} title 
-     * @param {string | number | React.ReactElement} description
-     * @return {React.ReactElement} A row of summary 
+     * @param {string | number | ReactElement} description
+     * @return {ReactElement} A row of summary 
      */
     const generateSummaryLine = (
         title: string,
-        description: string | number | React.ReactElement
-    ): React.ReactElement => {
+        description: string | number | ReactElement
+    ): ReactElement => {
         return (
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
@@ -66,9 +66,9 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
      * This components generates labels for boolean types
      * @param {string} name 
      * @param {boolean} boolean
-     * @return {React.ReactElement} 
+     * @return {ReactElement} 
      */
-    const generateLabels = (name: string): React.ReactElement => {
+    const generateLabels = (name: string): ReactElement => {
         return (
             <List.Item>
                 <Label basic circular>
@@ -80,9 +80,9 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
 
     /**
      * This returns the Claim URI in a copy field
-     * @return {React.ReactElement} Copy Field
+     * @return {ReactElement} Copy Field
      */
-    const showClaimURI = (): React.ReactElement => {
+    const showClaimURI = (): ReactElement => {
         return (
             <Form.Field>
                 <CopyInputField value={ data ? data?.claimURI : "" } />

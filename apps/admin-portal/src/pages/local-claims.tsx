@@ -23,8 +23,7 @@ import { ClaimsList, ListType, LocalClaimsSearch } from "../components";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { filterList, sortList } from "../utils";
 import { getADialect, getAllLocalClaims } from "../api";
-import React, { useContext, useEffect, useState } from "react";
-
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { addAlert } from "../store/actions";
 import { AddLocalClaims } from "../components";
 import { ListLayout } from "../layouts";
@@ -35,9 +34,9 @@ import { useDispatch } from "react-redux";
 /**
  * This returns the list of local claims.
  *
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const LocalClaimsPage = (): React.ReactElement => {
+export const LocalClaimsPage = (): ReactElement => {
 
     /**
      * Sets the attributes by which the list can be sorted

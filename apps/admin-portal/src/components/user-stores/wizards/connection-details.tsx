@@ -20,8 +20,7 @@ import { AlertLevels, TestConnection, Type, TypeProperty } from "../../../models
 import { Button, Divider, Grid, Header, Icon } from "semantic-ui-react";
 import { Field, Forms, FormValue } from "@wso2is/forms";
 import { getAType, testConnection } from "../../../api";
-import React, { useEffect, useState } from "react";
-
+import React, { ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { JDBC } from "../../../constants";
 import { useDispatch } from "react-redux";
@@ -55,7 +54,7 @@ interface ConnectionDetailsPropsInterface {
  */
 export const ConnectionDetails = (
     props: ConnectionDetailsPropsInterface
-): React.ReactElement => {
+): ReactElement => {
 
     const { submitState, onSubmit, values, typeId } = props;
 

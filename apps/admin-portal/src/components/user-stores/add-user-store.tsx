@@ -21,8 +21,7 @@ import { BasicDetailsUserStore, ConnectionDetails } from "./wizards";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
-import React, { useState } from "react";
-
+import React, { ReactElement, useState } from "react";
 import { addAlert } from "../../store/actions";
 import { addUserStore } from "../../api";
 import { ApplicationWizardStepIcons } from "../../configs";
@@ -47,9 +46,9 @@ interface AddUserStoreProps {
 /**
  * This component renders the Add Userstore Wizard
  * @param {AddUserStoreProps} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
+export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
 
     const { open, onClose } = props;
 

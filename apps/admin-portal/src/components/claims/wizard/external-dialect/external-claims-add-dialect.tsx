@@ -18,8 +18,7 @@
 
 import { ClaimsList, ListType } from "../..";
 import { Divider, Grid } from "semantic-ui-react";
-import React, { useEffect, useRef, useState } from "react";
-
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { AddExternalClaim } from "../../../../models";
 import { AddExternalClaims } from "../../add";
 import { EmptyPlaceholder } from "@wso2is/react-components";
@@ -49,9 +48,9 @@ interface ExternalClaimsPropsInterface {
  * 
  * @param {ExternalClaimsPropsInterface} props
  * 
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const ExternalClaims = (props: ExternalClaimsPropsInterface): React.ReactElement => {
+export const ExternalClaims = (props: ExternalClaimsPropsInterface): ReactElement => {
 
     const { onSubmit, submitState, values } = props;
     const [ claims, setClaims ] = useState<AddExternalClaim[]>([]);

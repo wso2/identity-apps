@@ -17,9 +17,8 @@
 */
 
 import { Grid, Table } from "semantic-ui-react";
-
+import React, { ReactElement } from "react";
 import { AddExternalClaim } from "../../../../models";
-import React from "react";
 
 /**
  * Prop types of the `SummaryAddDialect` component.
@@ -40,9 +39,9 @@ interface SummaryAddDialectPropsInterface {
  * 
  * @param {SummaryAddDialectPropsInterface} props
  * 
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): React.ReactElement => {
+export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): ReactElement => {
 
     const { dialectURI, claims } = props;
 

@@ -20,8 +20,7 @@ import { AlertLevels, TestConnection, Type, UserStore, UserStoreProperty } from 
 import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { patchUserStore, testConnection } from "../../../api";
-import React, { useEffect, useState } from "react";
-
+import React, { ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { Grid } from "semantic-ui-react";
 import { JDBC } from "../../../constants";
@@ -59,7 +58,7 @@ interface EditConnectionDetailsPropsInterface {
 }
 const EditConnectionDetails = (
     props: EditConnectionDetailsPropsInterface
-): React.ReactElement => {
+): ReactElement => {
 
     const { userStore, update, id, type } = props;
 

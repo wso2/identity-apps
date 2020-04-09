@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { SearchUtils } from "@wso2is/core/utils";
-import { Field, Forms, FormValue } from "@wso2is/forms";
-import { AdvancedSearch } from "@wso2is/react-components";
-import React, { FunctionComponent, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
+import { Field, Forms, FormValue } from "@wso2is/forms";
+import React, { FunctionComponent, useState } from "react";
+import { AdvancedSearch } from "@wso2is/react-components";
 import { AdvancedSearchIcons } from "../../../configs";
+import { SearchUtils } from "@wso2is/core/utils";
+import { useTranslation } from "react-i18next";
 
 /**
  * Filter attribute field identifier.
@@ -68,9 +68,9 @@ export const LocalClaimsSearch: FunctionComponent<LocalClaimsSearchPropsInterfac
 
     const { onFilter, claimURIBase } = props;
 
-    const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-    const [externalSearchQuery, setExternalSearchQuery] = useState("");
-    const [filterAttribute, setFilterAttribute] = useState("displayName");
+    const [ isFormSubmitted, setIsFormSubmitted ] = useState(false);
+    const [ externalSearchQuery, setExternalSearchQuery ] = useState("");
+    const [ filterAttribute, setFilterAttribute ] = useState("displayName");
 
     const { t } = useTranslation();
 
@@ -81,8 +81,14 @@ export const LocalClaimsSearch: FunctionComponent<LocalClaimsSearchPropsInterfac
      * @type {({text: string; value: string})[]}
      */
     const filterAttributeOptions = [
-        { value: "displayName", text: t("common:name") },
-        { value: "claimURI", text: "Claim ID" }
+        {
+            text: t("common:name"),
+            value: "displayName"
+        },
+        {
+            text: "Claim ID",
+            value: "claimURI"
+        }
     ];
 
     /**
@@ -91,10 +97,22 @@ export const LocalClaimsSearch: FunctionComponent<LocalClaimsSearchPropsInterfac
      * @type {({text: string; value: string})[]}
      */
     const filterConditionOptions = [
-        { value: "sw", text: t("common:startsWith") },
-        { value: "ew", text: t("common:endsWith") },
-        { value: "co", text: t("common:contains") },
-        { value: "eq", text: t("common:equals") }
+        {
+            text: t("common:startsWith"),
+            value: "sw"
+        },
+        {
+            text: t("common:endsWith"),
+            value: "ew"
+        },
+        {
+            text: t("common:contains"),
+            value: "co"
+        },
+        {
+            text: t("common:equals"),
+            value: "eq"
+        }
     ];
 
     /**
@@ -191,7 +209,9 @@ export const LocalClaimsSearch: FunctionComponent<LocalClaimsSearchPropsInterfac
                                     ".inputs.filerAttribute.validations.empty") }
                                 type="dropdown"
                                 width={ 16 }
-                                value={ filterAttributeOptions?.length === 1 ? filterAttributeOptions[0]?.value : null }
+                                value={ filterAttributeOptions?.length === 1
+                                    ? filterAttributeOptions[ 0 ]?.value
+                                    : null }
                                 disabled={ filterAttributeOptions?.length === 1 }
                             />
                             <Grid>

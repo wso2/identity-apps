@@ -19,12 +19,11 @@
 import { AlertLevels, ClaimDialect } from "../../../../models";
 import { Divider, Grid } from "semantic-ui-react";
 import { Field, Forms, FormValue } from "@wso2is/forms";
-
+import React, { ReactElement } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { EDIT_EXTERNAL_DIALECT } from "../../../../constants";
 import { history } from "../../../../helpers";
 import { PrimaryButton } from "@wso2is/react-components";
-import React from "react";
 import { updateADialect } from "../../../../api";
 import { useDispatch } from "react-redux";
 
@@ -38,9 +37,9 @@ interface EditDialectDetailsPropsInterface {
 /**
  * This renders the dialect details tab pane of the edit external dialect page.
  * 
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const EditDialectDetails = (props: EditDialectDetailsPropsInterface): React.ReactElement => {
+export const EditDialectDetails = (props: EditDialectDetailsPropsInterface): ReactElement => {
 
     const { dialect } = props;
 

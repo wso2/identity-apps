@@ -18,11 +18,10 @@
 
 import { AlertLevels, UserStore } from "../../../models";
 import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
-
+import React, { ReactElement } from "react";
 import { addAlert } from "../../../store/actions";
 import { Grid } from "semantic-ui-react";
 import { PrimaryButton } from "@wso2is/react-components";
-import React from "react";
 import { updateUserStore } from "../../../api";
 import { useDispatch } from "react-redux";
 
@@ -47,11 +46,11 @@ interface EditBasicDetailsUserStorePropsInterface {
 /**
  * This renders the edit basic details pane
  * @param {EditBasicDetailsUserStorePropsInterface} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
 export const EditBasicDetailsUserStore = (
     props: EditBasicDetailsUserStorePropsInterface
-): React.ReactElement => {
+): ReactElement => {
 
     const { userStore, update, id } = props;
 

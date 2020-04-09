@@ -21,8 +21,7 @@ import { BasicDetailsLocalClaims, MappedAttributes, SummaryLocalClaims } from ".
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
-import React, { useState } from "react";
-
+import React, { ReactElement, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { addLocalClaim } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
@@ -53,9 +52,9 @@ interface AddLocalClaimsPropsInterface {
 /**
  * A component that lets you add a local claim
  * @param {AddLocalClaimsPropsInterface} props
- * @return {React.ReactElement} component
+ * @return {ReactElement} component
  */
-export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.ReactElement => {
+export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElement => {
 
     const { open, onClose, update, claimURIBase } = props;
     const [currentWizardStep, setCurrentWizardStep] = useState(0);

@@ -20,8 +20,7 @@ import { AlertLevels, Claim, UserStoreListItem } from "../../../../models";
 import { Divider, Grid } from "semantic-ui-react";
 import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
 import { getUserStoreList, updateAClaim } from "../../../../api";
-import React, { useEffect, useState } from "react";
-
+import React, { ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import { useDispatch } from "react-redux";
@@ -45,11 +44,11 @@ interface EditMappedAttributesLocalClaimsPropsInterface {
  * the edit local claim screen
  * 
  * @param {EditMappedAttributesLocalClaimsPropsInterface} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
 export const EditMappedAttributesLocalClaims = (
     props: EditMappedAttributesLocalClaimsPropsInterface
-): React.ReactElement => {
+): ReactElement => {
 
     const [ userStore, setUserStore ] = useState([]);
 

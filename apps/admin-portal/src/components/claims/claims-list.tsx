@@ -31,8 +31,7 @@ import { EDIT_EXTERNAL_DIALECT, EDIT_LOCAL_CLAIMS_PATH } from "../../constants";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { Icon, List, Modal, Popup } from "semantic-ui-react";
 import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components"
-import React, { useContext, useEffect, useRef, useState } from "react";
-
+import React, { ReactElement, useContext, useEffect, useRef, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { ClaimsAvatarBackground } from ".";
 import { CopyInputField } from "@wso2is/react-components";
@@ -83,9 +82,9 @@ interface ClaimsListPropsInterface {
 /**
  * This component renders claims/dialects list
  * @param {ClaimsListPropsInterface} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement => {
+export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
 
     const { list, localClaim, update, dialectID, onEdit, onDelete } = props;
 
@@ -194,9 +193,9 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
      * 
      * @param {any} content Element to be enclosed within a list.
      * 
-     * @return {React.ReactElement}
+     * @return {ReactElement}
      */
-    const listContent = (content: any): React.ReactElement => (
+    const listContent = (content: any): ReactElement => (
         <List.Content>
             <List.Description className="list-item-meta">
                 { content }
@@ -294,9 +293,9 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
 
     /**
      * This shows the delete confirmation modal
-     * @return {React.ReactElement} Modal
+     * @return {ReactElement} Modal
      */
-    const showDeleteConfirm = (): React.ReactElement => {
+    const showDeleteConfirm = (): ReactElement => {
         return (
             <Modal
                 open={ deleteConfirm }

@@ -24,8 +24,7 @@ import {
     MemoEditOptionalProperties
 } from "../components";
 import { getAType, getAUserStore } from "../api";
-import React, { useEffect, useState } from "react"
-
+import React, { ReactElement, useEffect, useState } from "react"
 import { addAlert } from "../store/actions";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts"
@@ -35,9 +34,9 @@ import { useDispatch } from "react-redux";
 /**
  * This renders the userstore edit page
  * @param props 
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const UserStoresEditPage = (props): React.ReactElement => {
+export const UserStoresEditPage = (props): ReactElement => {
 
     const userStoreId = props.match.params.id;
 

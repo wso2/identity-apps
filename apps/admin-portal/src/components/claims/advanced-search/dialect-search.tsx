@@ -19,7 +19,6 @@
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { Field, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, useState } from "react";
-
 import { AdvancedSearch } from "@wso2is/react-components";
 import { AdvancedSearchIcons } from "../../../configs";
 import { SearchUtils } from "@wso2is/core/utils";

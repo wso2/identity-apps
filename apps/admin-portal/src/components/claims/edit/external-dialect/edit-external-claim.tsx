@@ -19,8 +19,7 @@
 import { AddExternalClaim, AlertLevels, Claim, ExternalClaim } from "../../../../models";
 import { Field, Forms, FormValue } from "@wso2is/forms";
 import { getAllLocalClaims, getAnExternalClaim, updateAnExternalClaim } from "../../../../api";
-import React, { useEffect, useState } from "react";
-
+import React, { ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { Grid } from "semantic-ui-react";
 import { useDispatch } from "react-redux";
@@ -66,9 +65,9 @@ interface EditExternalClaimsPropsInterface {
 /**
  * This component renders the edit external claim modal
  * @param {EditExternalClaimsPropsInterface} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): React.ReactElement => {
+export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): ReactElement => {
 
     const { claimID, update, dialectID, submit, claimURI, wizard, onSubmit, addedClaim } = props;
 

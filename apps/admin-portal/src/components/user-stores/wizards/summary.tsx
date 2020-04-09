@@ -16,10 +16,9 @@
 * under the License.
 */
 
+import React, { ReactElement } from "react";
 import { TypeProperty, UserStorePostData, UserStoreProperty } from "../../../models";
-
 import { Grid } from "semantic-ui-react";
-import React from "react";
 
 /**
  * Prop types of the `SummaryUserStores` component
@@ -42,21 +41,21 @@ interface SummaryUserStoresPropsInterface {
 /**
  * This component renders the Summary step of the wizard
  * @param {SummaryUserStoresPropsInterface} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): React.ReactElement => {
+export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): ReactElement => {
 
     const { data, properties, type } = props;
 
     /**
      * This generates a summary row
      * @param {string} title 
-     * @param {string | number | React.ReactElement} description
+     * @param {string | number | ReactElement} description
      */
     const generateSummaryLine = (
         title: string,
-        description: string | number | React.ReactElement
-    ): React.ReactElement => {
+        description: string | number | ReactElement
+    ): ReactElement => {
         return (
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">

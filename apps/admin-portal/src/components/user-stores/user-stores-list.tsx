@@ -19,8 +19,7 @@
 import { AlertLevels, AppConfigInterface, UserStoreListItem } from "../../models";
 import { AppConfig, history } from "../../helpers";
 import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components";
-import React, { useContext, useState } from "react";
-
+import React, { ReactElement, useContext, useState } from "react";
 import { addAlert } from "../../store/actions";
 import { deleteUserStore } from "../../api";
 import { Modal } from "semantic-ui-react";
@@ -43,9 +42,9 @@ interface UserStoresListPropsInterface {
 /**
  * This component renders the Userstore List
  * @param {UserStoresListPropsInterface} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const UserStoresList = (props: UserStoresListPropsInterface): React.ReactElement => {
+export const UserStoresList = (props: UserStoresListPropsInterface): ReactElement => {
 
     const { list, update } = props;
 
@@ -75,9 +74,9 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
 
     /**
      * Shows the delete confirmation modal
-     * @return {React.ReactElement}
+     * @return {ReactElement}
      */
-    const showDeleteConfirm = (): React.ReactElement => {
+    const showDeleteConfirm = (): ReactElement => {
         return (
             <Modal
                 open={ deleteConfirm }

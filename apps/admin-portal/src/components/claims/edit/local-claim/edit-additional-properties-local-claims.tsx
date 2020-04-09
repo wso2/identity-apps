@@ -17,12 +17,11 @@
 */
 
 import { AlertLevels, Claim } from "../../../../models";
-
+import React, { ReactElement } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { DynamicField } from "../../dynamic-fields";
 import { Grid } from "semantic-ui-react";
 import { PrimaryButton } from "@wso2is/react-components";
-import React from "react";
 import { updateAClaim } from "../../../../api";
 import { useDispatch } from "react-redux";
 import { useTrigger } from "@wso2is/forms";
@@ -44,11 +43,11 @@ interface EditAdditionalPropertiesLocalClaimsPropsInterface {
 /**
  * This component renders the additional properties pane
  * @param {EditAdditionalPropertiesLocalClaimsPropsInterface} props
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
 export const EditAdditionalPropertiesLocalClaims = (
     props: EditAdditionalPropertiesLocalClaimsPropsInterface
-): React.ReactElement => {
+): ReactElement => {
 
     const { claim, update } = props;
 

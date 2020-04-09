@@ -21,8 +21,7 @@ import {
     EditDialectDetails,
     EditExternalClaims
 } from "../components";
-import React, { useEffect, useState } from "react"
-
+import React, { ReactElement, useEffect, useState } from "react"
 import { addAlert } from "../store/actions";
 import { CLAIM_DIALECTS_PATH } from "../constants";
 import { getADialect } from "../api";
@@ -34,9 +33,9 @@ import { useDispatch } from "react-redux";
 /**
  * This renders the edit external dialect page
  * @param props 
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const ExternalDialectEditPage = (props): React.ReactElement => {
+export const ExternalDialectEditPage = (props): ReactElement => {
 
     const dialectId = props.match.params.id;
 

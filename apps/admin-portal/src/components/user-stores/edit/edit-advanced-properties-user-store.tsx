@@ -18,8 +18,7 @@
 
 import { AlertLevels, Type, UserStore, UserStoreProperty } from "../../../models";
 import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
-import React, { useEffect, useState } from "react";
-
+import React, { ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { Grid } from "semantic-ui-react";
 import { patchUserStore } from "../../../api";
@@ -58,7 +57,7 @@ interface EditAdvancedPropertiesPropsInterface {
 }
 const EditAdvancedProperties = (
     props: EditAdvancedPropertiesPropsInterface
-): React.ReactElement => {
+): ReactElement => {
 
     const { userStore, update, id, type } = props;
 

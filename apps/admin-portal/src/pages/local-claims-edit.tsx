@@ -22,8 +22,7 @@ import {
     EditBasicDetailsLocalClaims,
     EditMappedAttributesLocalClaims
 } from "../components";
-import React, { useEffect, useState } from "react"
-
+import React, { ReactElement, useEffect, useState } from "react"
 import { addAlert } from "../store/actions";
 import { getAClaim } from "../api";
 import { history } from "../helpers";
@@ -35,9 +34,9 @@ import { useDispatch } from "react-redux";
 /**
  * This renders the edit local claims page
  * @param props 
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
-export const LocalClaimsEditPage = (props): React.ReactElement => {
+export const LocalClaimsEditPage = (props): ReactElement => {
 
     const claimID = props.match.params.id;
 
