@@ -33,8 +33,8 @@ export interface ApplicationsHelpPanelMetadataInterface {
         saml?: ApplicationSampleInterface[];
     };
     sdks: {
-        oidc?: GithubRepoInterface[];
-        saml?: GithubRepoInterface[];
+        oidc?: ApplicationSDKInterface[];
+        saml?: ApplicationSDKInterface[];
     };
 }
 
@@ -50,18 +50,32 @@ export interface ApplicationSampleInterface {
 }
 
 /**
+ * Type for SDKs.
+ */
+export type ApplicationSDKInterface = GithubRepoInterface;
+
+/**
  * Github repo metadata interface.
  */
 export interface GithubRepoInterface {
+    category: GithubRepoCategoryTypes[];
     owner: {
         login: string;
         avatar: string;
     };
     name: string;
     description: string;
+    language: "C#" | "JavaScript" | "Swift" | "Java" | "TypeScript" | "HTML";
+    languageLogo: any;
     topics: string[];
     stars: number;
     watchers: number;
     forks: number;
     url: string;
 }
+
+export type GithubRepoCategoryTypes = "SAML Web Application"
+    | "Single Page Application"
+    | "OIDC Web Application"
+    | "Windows Application"
+    | "Mobile Application";

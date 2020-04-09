@@ -30,12 +30,17 @@ import { AppConfig, history } from "../helpers";
 import {
     AppConfigInterface,
     ApplicationEditFeaturesConfigInterface,
-    ApplicationInterface, ApplicationSampleInterface,
+    ApplicationInterface,
+    ApplicationSampleInterface,
+    ApplicationSDKInterface,
+    ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
-    emptyApplication
+    emptyApplication,
+    GithubRepoCategoryTypes
 } from "../models";
 import { ApplicationConstants, ApplicationManagementConstants, UIConstants } from "../constants";
 import { Divider, Grid, SemanticICONS } from "semantic-ui-react";
+import { HelpPanelTabInterface, InfoCard } from "@wso2is/react-components";
 import { HelpSidebarIcons, TechnologyLogos } from "../configs";
 import React, { FunctionComponent, ReactElement, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,7 +50,6 @@ import { AppState } from "../store";
 import { EditApplication } from "../components";
 import { getApplicationDetails } from "../api";
 import { HelpPanelLayout } from "../layouts";
-import { InfoCard } from "@wso2is/react-components";
 import { PageLayout } from "../layouts";
 import { StringUtils } from "@wso2is/core/utils";
 
@@ -64,6 +68,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
     const appConfig: AppConfigInterface = useContext(AppConfig);
 
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
+    const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(false);
     const [ permissions, setPermissions ] = useState<CRUDPermissionsInterface>(undefined);
     const [ features, setFeatures ] = useState<ApplicationEditFeaturesConfigInterface>(undefined);
@@ -219,7 +224,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
      * @param {string} item - Clicked item.
      */
     const handleSidebarMiniItemClick = (item: string) => {
-        tabs.forEach((pane, index) => {
+        helpPanelTabs.forEach((pane, index) => {
             if (pane.heading === item) {
                 setHelpPanelTabsActiveIndex(index);
             }
@@ -227,7 +232,38 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
         setHelpSidebarVisibility(true);
     };
 
-    const tabs = [
+    /**
+     * Filter application samples based on the template type.
+     * @param {ApplicationSampleInterface[]} samples - List of Samples.
+     * @return {ApplicationSampleInterface[]} Filtered list.
+     */
+    const filterSamples = (samples: ApplicationSampleInterface[]) => {
+        if (applicationTemplate?.name) {
+            return samples.filter((sample) =>
+                sample?.repo?.category?.includes(applicationTemplate.name as GithubRepoCategoryTypes)
+            );
+        }
+
+        return samples;
+    };
+
+    /**
+     * Filter SDKs based on the template type.
+     *
+     * @param {ApplicationSDKInterface[]} sdks - List of SDKs.
+     * @return {ApplicationSDKInterface[]} Filtered list.
+     */
+    const filterSDKs = (sdks: ApplicationSDKInterface[]) => {
+        if (applicationTemplate?.name) {
+            return sdks.filter((sdk) =>
+                sdk?.category?.includes(applicationTemplate.name as GithubRepoCategoryTypes)
+            );
+        }
+
+        return sdks;
+    };
+
+    const helpPanelTabs: HelpPanelTabInterface[] = [
         {
             content: (
                 isHelpPanelDocContentRequestLoading
@@ -319,8 +355,8 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                                                 selectedInboundProtocol.id ] instanceof Array
                                             && helpPanelMetadata.applications.samples[
                                                 selectedInboundProtocol.id ].length > 0)
-                                            ? helpPanelMetadata.applications.samples[
-                                                selectedInboundProtocol.id ].map((sample, index) => (
+                                            ? filterSamples(helpPanelMetadata.applications.samples[
+                                                selectedInboundProtocol.id ]).map((sample, index) => (
                                                     <Grid.Column key={ index }>
                                                         <SelectionCard
                                                             size="auto"
@@ -345,7 +381,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
         {
             content: (
                 <>
-                    <Heading as="h4">SDKs</Heading>
+                    <Heading as="h4">Software Development Kits (SDKs)</Heading>
                     <Hint>
                         Following software development kits can be used to jump start your application development.
                     </Hint>
@@ -356,11 +392,10 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                             {
                                 (helpPanelMetadata?.applications?.sdks[ selectedInboundProtocol?.id ]
                                     && helpPanelMetadata.applications.sdks[
-                                        selectedInboundProtocol.id ] instanceof Array
-                                    && helpPanelMetadata.applications.sdks[
-                                        selectedInboundProtocol.id ].length > 0)
-                                    ? helpPanelMetadata.applications.sdks[
-                                        selectedInboundProtocol.id ].map((sdk, index) => (
+                                        selectedInboundProtocol.id ]instanceof Array
+                                    && helpPanelMetadata.applications.sdks[ selectedInboundProtocol.id ].length > 0)
+                                    ? filterSDKs(helpPanelMetadata.applications.sdks[ selectedInboundProtocol.id ])
+                                        .map((sdk, index) => (
                                             <Grid.Column key={ index }>
                                                 <InfoCard
                                                     githubRepoCard={ true }
@@ -371,6 +406,8 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                                                     tags={ sdk.topics }
                                                     githubRepoMetaInfo={ {
                                                         forks: sdk.forks,
+                                                        language: sdk.language,
+                                                        languageLogo: TechnologyLogos[ sdk.languageLogo ],
                                                         stars: sdk.stars,
                                                         watchers: sdk.watchers
                                                     } }
@@ -402,7 +439,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
             ] }
             sidebarDirection="right"
             sidebarMiniEnabled={ true }
-            tabs={ tabs }
+            tabs={ helpPanelTabs }
             tabsActiveIndex={ helpPanelTabsActiveIndex }
             sidebarVisibility={ helpSidebarVisibility }
             onSidebarToggle={ handleHelpPanelToggle }
