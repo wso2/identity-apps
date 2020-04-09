@@ -21,7 +21,9 @@ import {
     AppAvatar,
     ContentLoader,
     Heading,
+    HelpPanelTabInterface,
     Hint,
+    InfoCard,
     Markdown,
     PageHeader,
     SelectionCard
@@ -32,26 +34,24 @@ import {
     ApplicationEditFeaturesConfigInterface,
     ApplicationInterface,
     ApplicationSampleInterface,
-    ApplicationSDKInterface,
-    ApplicationTemplateListItemInterface,
+    ApplicationSDKInterface, ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
     emptyApplication,
     GithubRepoCategoryTypes
 } from "../models";
 import { ApplicationConstants, ApplicationManagementConstants, UIConstants } from "../constants";
-import { Divider, Grid, SemanticICONS } from "semantic-ui-react";
-import { HelpPanelTabInterface, InfoCard } from "@wso2is/react-components";
+import { Divider, Grid, Label, SemanticICONS } from "semantic-ui-react";
+import { HelpPanelLayout, PageLayout } from "../layouts";
 import { HelpSidebarIcons, TechnologyLogos } from "../configs";
 import React, { FunctionComponent, ReactElement, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 import { addAlert } from "@wso2is/core/store";
+import { ApplicationManagementUtils } from "../utils";
 import { AppState } from "../store";
 import { EditApplication } from "../components";
 import { fetchFromURL } from "@wso2is/core/api";
 import { getApplicationDetails } from "../api";
-import { HelpPanelLayout } from "../layouts";
-import { PageLayout } from "../layouts";
 import { StringUtils } from "@wso2is/core/utils";
 import { useTranslation } from "react-i18next";
 
@@ -68,10 +68,13 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
 
     const helpPanelDocURL = useSelector((state: AppState) => state.helpPanel.docURL);
     const helpPanelMetadata = useSelector((state: AppState) => state.helpPanel.metadata);
+    const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
+        (state: AppState) => state.application.templates);
 
     const appConfig: AppConfigInterface = useContext(AppConfig);
 
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
+    const [ applicationTemplateName, setApplicationTemplateName ] = useState<string>(undefined);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(false);
     const [ permissions, setPermissions ] = useState<CRUDPermissionsInterface>(undefined);
@@ -90,6 +93,40 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
         isHelpPanelSamplesContentRequestLoading,
         setHelpPanelSamplesContentRequestLoadingStatus
     ] = useState<boolean>(false);
+    const [
+        isApplicationTemplateRequestLoading,
+        setApplicationTemplateRequestLoadingStatus
+    ] = useState<boolean>(false);
+
+    /**
+     * Fetch the application details on initial component load.
+     */
+    useEffect(() => {
+        const path = history.location.pathname.split("/");
+        const id = path[ path.length - 1 ];
+
+        getApplication(id);
+    }, []);
+
+    /**
+     * Set the template once application templates list is available in redux.
+     */
+    useEffect(() => {
+        if (!_.isEmpty(applicationTemplates)
+            && applicationTemplates instanceof Array
+            && applicationTemplates.length > 0) {
+
+            setApplicationTemplate(applicationTemplates.find((template) => template.name === applicationTemplateName));
+            return;
+        }
+
+        setApplicationTemplateRequestLoadingStatus(true);
+
+        ApplicationManagementUtils.getApplicationTemplates()
+            .finally(() => {
+                setApplicationTemplateRequestLoadingStatus(false);
+            });
+    }, [ applicationTemplateName, applicationTemplates ]);
 
     /**
      * Called when help panel doc URL status changes.
@@ -130,16 +167,6 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
     }, [ helpPanelSelectedSample ]);
 
     /**
-     * Use effect for the initial component load.
-     */
-    useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const id = path[ path.length - 1 ];
-
-        getApplication(id);
-    }, []);
-
-    /**
      * Called when the app config value changes.
      */
     useEffect(() => {
@@ -160,8 +187,19 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
         setApplicationRequestLoading(true);
 
         getApplicationDetails(id)
-            .then((response) => {
-                setApplication(response);
+            .then((response: ApplicationInterface) => {
+
+                const [
+                    templateName,
+                    description
+                ] = ApplicationManagementUtils.resolveApplicationTemplateNameInDescription(response.description);
+
+                setApplicationTemplateName(templateName);
+
+                setApplication({
+                    ...response,
+                    description
+                });
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -244,7 +282,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
      * @return {ApplicationSampleInterface[]} Filtered list.
      */
     const filterSamples = (samples: ApplicationSampleInterface[]) => {
-        if (applicationTemplate?.name) {
+        if (applicationTemplate) {
             return samples.filter((sample) =>
                 sample?.repo?.category?.includes(applicationTemplate.name as GithubRepoCategoryTypes)
             );
@@ -260,7 +298,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
      * @return {ApplicationSDKInterface[]} Filtered list.
      */
     const filterSDKs = (sdks: ApplicationSDKInterface[]) => {
-        if (applicationTemplate?.name) {
+        if (applicationTemplate) {
             return sdks.filter((sdk) =>
                 sdk?.category?.includes(applicationTemplate.name as GithubRepoCategoryTypes)
             );
@@ -460,7 +498,12 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
             <PageLayout
                 title={ application.name }
                 contentTopMargin={ true }
-                description={ application.description }
+                description={ (
+                    <div className="with-label ellipsis">
+                        { applicationTemplate?.name && <Label size="small">{ applicationTemplate.name }</Label> }
+                        { application.description }
+                    </div>
+                ) }
                 image={ (
                     <AppAvatar
                         name={ application.name }
@@ -484,6 +527,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                     onUpdate={ handleApplicationUpdate }
                     permissions={ permissions }
                     onInboundProtocolSelect={ setSelectedInboundProtocol }
+                    template={ applicationTemplate }
                 />
             </PageLayout>
         </HelpPanelLayout>

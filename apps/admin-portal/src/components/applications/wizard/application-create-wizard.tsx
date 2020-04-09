@@ -40,6 +40,7 @@ import { WizardSummary } from "./wizard-summary";
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
 import { WSTrustProtocolSettingsWizardForm } from "./ws-trust-protocol-settings-wizard-form";
 import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
+import { ApplicationManagementUtils } from "../../../utils";
 
 /**
  * Proptypes for the application creation wizard component.
@@ -250,7 +251,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             return;
         }
 
-        let summary = {};
+        let summary: any = {};
 
         for (const [key, value] of Object.entries(wizardState)) {
             if (key === WizardStepsFormTypes.PROTOCOL_SELECTION) {
@@ -278,7 +279,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             delete application.inboundProtocolConfiguration.oidc;
         }
 
-        createNewApplication(application);
+        createNewApplication(ApplicationManagementUtils.prefixTemplateNameToDescription(application, template));
     };
 
     /**
@@ -294,9 +295,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      * @return {React.ReactElement} Step content.
      */
     const resolveStepContent = (): ReactElement => {
-        const step = currentWizardStep;
-
-        switch (step) {
+        switch (currentWizardStep) {
             case 0:
                 return (
                     <GeneralSettingsWizardForm

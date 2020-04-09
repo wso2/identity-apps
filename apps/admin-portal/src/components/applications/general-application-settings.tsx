@@ -17,12 +17,13 @@
  */
 
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { ApplicationInterface, ApplicationTemplateListItemInterface, ConfigReducerStateInterface } from "../../models";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
+import { deleteApplication, regenerateClientSecret, revokeClientSecret, updateApplicationDetails } from "../../api";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteApplication, regenerateClientSecret, revokeClientSecret, updateApplicationDetails } from "../../api";
-import { ApplicationInterface, ConfigReducerStateInterface } from "../../models";
+import { addAlert } from "@wso2is/core/store";
+import { ApplicationManagementUtils } from "../../utils";
 import { AppState } from "../../store";
 import { GeneralDetailsForm } from "./forms";
 import { setHelpPanelDocsContentURL } from "../../store/actions";
@@ -79,6 +80,10 @@ interface GeneralApplicationSettingsInterface {
      * whether to show revoke in danger zones or not
      */
     showRevoke?: boolean;
+    /**
+     * Application template.
+     */
+    template?: ApplicationTemplateListItemInterface;
 }
 
 /**
@@ -103,7 +108,8 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         onUpdate,
         permissions,
         showRegenerate,
-        showRevoke
+        showRevoke,
+        template
     } = props;
 
     const dispatch = useDispatch();
@@ -235,7 +241,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
      * @param {ApplicationInterface} updatedDetails - Form values.
      */
     const handleFormSubmit = (updatedDetails: ApplicationInterface): void => {
-        updateApplicationDetails(updatedDetails)
+        updateApplicationDetails(ApplicationManagementUtils.prefixTemplateNameToDescription(updatedDetails, template))
             .then(() => {
                 dispatch(addAlert({
                     description: "Successfully updated the application",

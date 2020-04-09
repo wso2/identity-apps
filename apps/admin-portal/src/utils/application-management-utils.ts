@@ -17,12 +17,18 @@
  *
  */
 
-import { ApplicationTemplateListInterface, AuthProtocolMetaListItemInterface } from "../models";
+import {
+    ApplicationTemplateListInterface,
+    ApplicationTemplateListItemInterface,
+    AuthProtocolMetaListItemInterface,
+    MainApplicationInterface
+} from "../models";
 import { getApplicationTemplateList, getAvailableInboundProtocols } from "../api";
 import { setApplicationTemplates, setAvailableInboundAuthProtocolMeta } from "../store/actions";
 import _ from "lodash";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
+import { ApplicationManagementConstants } from "../constants";
 import { store } from "../store";
 
 /**
@@ -101,4 +107,50 @@ export class ApplicationManagementUtils {
                 }));
             })
     };
+
+    /**
+     * Appends template name to the application description.
+     * TODO: This is a temporary solution. Revert back once SP -> Template mapping is available.
+     *
+     * @param {MainApplicationInterface} application - Application details.
+     * @param {ApplicationTemplateListItemInterface} template - Template object.
+     *
+     * @return {MainApplicationInterface} Modified Application object.
+     */
+    public static prefixTemplateNameToDescription(
+        application: MainApplicationInterface, template: ApplicationTemplateListItemInterface
+    ): MainApplicationInterface {
+
+        return {
+            ...application,
+            description: template.name
+                + ApplicationManagementConstants.APPLICATION_DESCRIPTION_SPLITTER
+                + application.description
+        };
+    }
+
+    /**
+     * Resolves the template name and description when the raw description string is passed in.
+     * TODO: This is a temporary solution. Revert back once SP -> Template mapping is available.
+     *
+     * @param {string} description - Raw description string.
+     *
+     * @return {(string | null)[]} Template name and Description as tuple.
+     */
+    public static resolveApplicationTemplateNameInDescription(description: string): (string | null)[] {
+
+        if (!description || typeof description !== "string") {
+            return [ null, description ];
+        }
+
+        const tokens = description.split(ApplicationManagementConstants.APPLICATION_DESCRIPTION_SPLITTER);
+
+        if(tokens.length <= 1) {
+            return [ null, description ];
+        }
+
+        const [ template, ...desc ] = tokens;
+
+        return [ template, desc.join(ApplicationManagementConstants.APPLICATION_DESCRIPTION_SPLITTER) ];
+    }
 }
