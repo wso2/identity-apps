@@ -156,7 +156,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
 
         const addedRoles = [];
             _.forEachRight(roleListCopy, (role) => {
-                if (primaryRolesList.has(role.displayName)) {
+                if (primaryRolesList?.has(role.displayName)) {
                     addedRoles.push(role);
                     roleListCopy.splice(roleListCopy.indexOf(role), 1);
                 }
@@ -246,7 +246,9 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         const addOperations = [];
         let removedIds = [];
 
-        removedIds = [ ...primaryRolesList?.values()];
+        if (primaryRolesList) {
+            removedIds = [...primaryRolesList.values()];
+        }
 
         if (roleIds?.length > 0) {
             roleIds.map((roleId) => {

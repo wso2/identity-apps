@@ -227,12 +227,12 @@ export interface DevPortalNS {
                         roles: string;
                         groups: string;
                         summary: string;
-                    }
+                    };
                     buttons: {
                         next: string;
                         previous: string;
-                    }
-                }
+                    };
+                };
             };
             profile: {
                 fields: {
@@ -404,26 +404,10 @@ export interface DevPortalNS {
                 };
                 notifications: {
                     updateConfigurations: Notification;
-                    updateEnable: {
-                        success: {
-                            description: string;
-                        };
-                    };
-                    updateAccountLockOnCreation: {
-                        success: {
-                            description: string;
-                        };
-                    };
-                    updateInternalNotificationManagement: {
-                        success: {
-                            description: string;
-                        };
-                    };
-                    updateReCaptcha: {
-                        success: {
-                            description: string;
-                        };
-                    };
+                    updateEnable: Notification;
+                    updateAccountLockOnCreation: Notification;
+                    updateInternalNotificationManagement: Notification;
+                    updateReCaptcha: Notification;
                 };
                 form: {
                     enable: {
@@ -476,26 +460,10 @@ export interface DevPortalNS {
                 };
                 notifications: {
                     updateConfigurations: Notification;
-                    updateEnableUsernameRecovery: {
-                        success: {
-                            description: string;
-                        };
-                    };
-                    updateUsernameRecoveryReCaptcha: {
-                        success: {
-                            description: string;
-                        };
-                    };
-                    updateEnableNotificationPasswordRecovery: {
-                        success: {
-                            description: string;
-                        };
-                    };
-                    updateNotificationPasswordRecoveryReCaptcha: {
-                        success: {
-                            description: string;
-                        };
-                    };
+                    updateEnableUsernameRecovery: Notification;
+                    updateUsernameRecoveryReCaptcha: Notification;
+                    updateEnableNotificationPasswordRecovery: Notification;
+                    updateNotificationPasswordRecoveryReCaptcha: Notification;
                 };
                 usernameRecovery: {
                     heading: string;
@@ -597,16 +565,8 @@ export interface DevPortalNS {
                 };
                 notifications: {
                     updateConfigurations: Notification;
-                    accountLockEnable: {
-                        success: {
-                            description: string;
-                        };
-                    };
-                    accountDisablingEnable: {
-                        success: {
-                            description: string;
-                        };
-                    };
+                    accountLockEnable: Notification;
+                    accountDisablingEnable: Notification;
                 };
                 accountLock: {
                     heading: string;
@@ -681,16 +641,8 @@ export interface DevPortalNS {
                 };
                 notifications: {
                     updateConfigurations: Notification;
-                    accountLockEnable: {
-                        success: {
-                            description: string;
-                        };
-                    };
-                    accountDisablingEnable: {
-                        success: {
-                            description: string;
-                        };
-                    };
+                    accountLockEnable: Notification;
+                    accountDisablingEnable: Notification;
                 };
                 passwordHistory: {
                     heading: string;

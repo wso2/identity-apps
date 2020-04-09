@@ -17,10 +17,9 @@
  */
 
 /**
- * Class containing app constants which can be used across several applications.
+ * Class containing constants used to store user preferences.
  */
-export class UserConstants {
-
+export class StorageConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
@@ -31,27 +30,26 @@ export class UserConstants {
     private constructor() { }
 
     /**
-     * Default user list item limit.
+     * Identity apps key in local storage.
      * @constant
-     * @type {number}
+     * @type {string}
      * @default
      */
-    public static readonly DEFAULT_USER_LIST_ITEM_LIMIT = 10;
+    public static readonly IDENTITY_APPS_KEY: string = "identityAppsSettings";
 
     /**
-     * Default role list item limit.
+     * User preferences key in local storage.
      * @constant
-     * @type {number}
+     * @type {string}
      * @default
      */
-    public static readonly DEFAULT_ROLE_LIST_ITEM_LIMIT = 10;
+    public static readonly USER_PREFERENCE: string = "userPreferences";
 
     /**
-     * Default user list attributes.
+     * Application preferences key in local storage.
      * @constant
-     * @type {string[]}
+     * @type {string}
      * @default
      */
-    public static readonly DEFAULT_USER_LIST_ATTRIBUTES = [ "name", "emails", "userName", "id", "profileUrl",
-        "meta.lastModified" ];
+    public static readonly APP_PREFERENCE: string = "applicationPreferences";
 }

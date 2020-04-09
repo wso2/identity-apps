@@ -23,7 +23,7 @@ import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getUserStores } from "../api";
 import { AddUserStore, UserStoresList, UserStoresSearch } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
-import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
+import { UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertLevels, AppConfigInterface, QueryParams, UserStoreListItem } from "../models";
 import { addAlert } from "../store/actions";
@@ -99,7 +99,7 @@ export const UserStores = (): React.ReactElement => {
     };
 
     useEffect(() => {
-        setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
+        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
         fetchUserStores(null, null, null, null);
     }, []);
 

@@ -23,7 +23,7 @@ import React, { ReactElement, useEffect, useState, SyntheticEvent } from "react"
 import { deleteRoleById, getRolesList, searchRoleList, getUserStoreList } from "../api";
 
 import { CreateRoleWizard } from "../components/roles/create-role-wizard";
-import { DEFAULT_ROLE_LIST_ITEM_LIMIT } from "../constants";
+import { UserConstants } from "../constants";
 import { PrimaryButton } from "@wso2is/react-components";
 import { RoleList, RoleSearch } from "../components/roles";
 import { addAlert } from "../store/actions";
@@ -69,7 +69,7 @@ export const GroupsPage = (): ReactElement => {
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(ROLES_SORTING_OPTIONS[ 0 ]);
 
     useEffect(() => {
-        setListItemLimit(DEFAULT_ROLE_LIST_ITEM_LIMIT);
+        setListItemLimit(UserConstants.DEFAULT_ROLE_LIST_ITEM_LIMIT);
     }, []);
 
     useEffect(() => {
