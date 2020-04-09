@@ -16,14 +16,18 @@
  * under the License.
  */
 
+import {
+    ApplicationTemplateListItemInterface,
+    AuthProtocolMetaListItemInterface,
+    OIDCMetadataInterface
+} from "../../../models";
+
 /**
  * Enum for application action types.
  *
  * @readonly
  * @enum {string}
  */
-import { AuthProtocolMetaListItemInterface, OIDCMetadataInterface } from "../../../models";
-
 export enum ApplicationActionTypes {
     /**
      * Action type to set the list of available inbound authentication protocols.
@@ -37,6 +41,12 @@ export enum ApplicationActionTypes {
      * @type {string}
      */
     SET_AUTH_PROTOCOL_META = "SET_AUTH_PROTOCOL_META",
+    /**
+     * Action type to set application templates.
+     *
+     * @type {string}
+     */
+    SET_APPLICATION_TEMPLATES = "SET_APPLICATION_TEMPLATES"
 }
 
 /**
@@ -64,7 +74,16 @@ export interface SetAuthProtocolMetaInterface extends ApplicationBaseActionInter
 }
 
 /**
+ * Set application templates action interface.
+ */
+export interface SetApplicationTemplatesActionInterface extends ApplicationBaseActionInterface {
+    payload: ApplicationTemplateListItemInterface[];
+    type: ApplicationActionTypes.SET_APPLICATION_TEMPLATES;
+}
+
+/**
  * Export action interfaces.
  */
 export type ApplicationActions = SetAvailableInboundProtocolsMetaInterface
-    | SetAuthProtocolMetaInterface;
+    | SetAuthProtocolMetaInterface
+    | SetApplicationTemplatesActionInterface;

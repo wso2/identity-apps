@@ -16,7 +16,9 @@
  * under the License.
  */
 
+import { AuthProtocolMetaListItemInterface, OIDCMetadataInterface } from "./application-inbound";
 import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "./config";
+import { ApplicationTemplateListItemInterface } from "./application";
 import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
 import { HelpPanelMetadataInterface } from "./meta";
 
@@ -32,4 +34,28 @@ export type ConfigReducerStateInterface = CommonConfigReducerStateInterface<Runt
 export interface HelpPanelReducerStateInterface {
     docURL: string;
     metadata: HelpPanelMetadataInterface;
+}
+
+/**
+ * Interface for the Application reducer state.
+ */
+export interface ApplicationReducerStateInterface {
+    meta: ApplicationMetaInterface;
+    templates: ApplicationTemplateListItemInterface[];
+}
+
+/**
+ * Interface for the application meta for the redux store.
+ */
+interface ApplicationMetaInterface {
+    inboundProtocols: AuthProtocolMetaListItemInterface[];
+    protocolMeta: AuthProtocolMetaInterface;
+}
+
+/**
+ * Interface for the auth protocol metadata.
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+interface AuthProtocolMetaInterface {
+    [ key: string ]: OIDCMetadataInterface | any;
 }

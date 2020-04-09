@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { ApplicationReducerStateInterface } from "../../models";
 import { ApplicationActions, ApplicationActionTypes } from "../actions/types";
+import { ApplicationReducerStateInterface } from "../../models";
 
 /**
  * Common profile reducer initial state.
@@ -26,7 +26,8 @@ const initialState: ApplicationReducerStateInterface = {
     meta: {
         inboundProtocols: [],
         protocolMeta: {}
-    }
+    },
+    templates: []
 };
 
 /**
@@ -58,6 +59,11 @@ export const applicationReducer = (state: ApplicationReducerStateInterface = ini
                         ...action.payload
                     }
                 }
+            };
+        case ApplicationActionTypes.SET_APPLICATION_TEMPLATES:
+            return {
+                ...state,
+                templates: action.payload
             };
         default:
             return state;

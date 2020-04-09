@@ -17,13 +17,13 @@
  *
  */
 
-import { AuthProtocolMetaListItemInterface } from "../models";
-import { getAvailableInboundProtocols } from "../api";
+import { ApplicationTemplateListInterface, AuthProtocolMetaListItemInterface } from "../models";
+import { getApplicationTemplateList, getAvailableInboundProtocols } from "../api";
+import { setApplicationTemplates, setAvailableInboundAuthProtocolMeta } from "../store/actions";
 import _ from "lodash";
-import { setAvailableInboundAuthProtocolMeta } from "../store/actions";
-import { store } from "../store";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
+import { store } from "../store";
 
 /**
  * Utility class for application(service provider) operations.
@@ -74,4 +74,31 @@ export class ApplicationManagementUtils {
                 }));
             });
     }
+
+    /**
+     * Retrieve Application template list form the API and sets it in redux state.
+     */
+    public static getApplicationTemplates = (): Promise<void> => {
+        return getApplicationTemplateList()
+            .then((response) => {
+                store.dispatch(setApplicationTemplates((response as ApplicationTemplateListInterface).templates));
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    store.dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Application Template List Fetch Error"
+                    }));
+
+                    return;
+                }
+
+                store.dispatch(addAlert({
+                    description: "An error occurred while retrieving application template list",
+                    level: AlertLevels.ERROR,
+                    message: "Retrieval Error"
+                }));
+            })
+    };
 }

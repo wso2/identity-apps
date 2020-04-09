@@ -16,22 +16,16 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { ApplicationCreateWizard, QuickStartApplicationTemplates } from "../components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
-import { ApplicationCreateWizard, QuickStartApplicationTemplates, } from "../components";
-import { ApplicationTemplateIllustrations } from "../configs";
+import _ from "lodash";
+import { ApplicationManagementUtils } from "../utils";
+import { ApplicationTemplateListItemInterface } from "../models";
+import { AppState } from "../store";
+import { ContentLoader } from "@wso2is/react-components";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
-import {
-    ApplicationTemplateListInterface,
-    ApplicationTemplateListItemInterface,
-    SupportedApplicationTemplateCategories,
-    SupportedAuthProtocolTypes,
-    SupportedQuickStartTemplateTypes
-} from "../models";
-import { getApplicationList, getApplicationTemplateList } from "../api";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 /**
  * Choose the application template from this page.
@@ -40,44 +34,31 @@ import { useDispatch } from "react-redux";
  */
 export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactElement => {
 
-    const dispatch = useDispatch();
+    const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
+        (state: AppState) => state.application.templates);
 
-    const [showWizard, setShowWizard] = useState<boolean>(false);
-    const [selectedTemplate, setSelectedTemplate] = useState<ApplicationTemplateListItemInterface>(null);
-    const [availableTemplates, setAvailableTemplates] = useState<ApplicationTemplateListItemInterface[]>([]);
+    const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    const [ selectedTemplate, setSelectedTemplate]  = useState<ApplicationTemplateListItemInterface>(null);
+    const [
+        isApplicationTemplateRequestLoading,
+        setApplicationTemplateRequestLoadingStatus
+    ] = useState<boolean>(false);
 
     /**
-     * Retrieve Application template list.
-     *
+     *  Get Application templates.
      */
-    const getAppTemplateList = (): void => {
+    useEffect(() => {
+        if (!_.isEmpty(applicationTemplates)) {
+            return;
+        }
 
-        getApplicationTemplateList()
-            .then((response) => {
-                // TODO enable after displayByOrder is available.
-                // const templateList: ApplicationTemplateListInterface = response;
-                // sort templateList based on display Order
-                // templateList.templates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
-                // setAvailableTemplates(templateList.templates);
-                setAvailableTemplates((response as ApplicationTemplateListInterface).templates);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Application Template List Fetch Error"
-                    }));
+        setApplicationTemplateRequestLoadingStatus(true);
 
-                    return;
-                }
-                dispatch(addAlert({
-                    description: "An error occurred while retrieving application template list",
-                    level: AlertLevels.ERROR,
-                    message: "Retrieval Error"
-                }));
-            })
-    };
+        ApplicationManagementUtils.getApplicationTemplates()
+            .finally(() => {
+                setApplicationTemplateRequestLoadingStatus(false);
+            });
+    }, [ applicationTemplates ]);
 
     /**
      * Handles back button click.
@@ -94,7 +75,7 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
      */
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
 
-        const selected = availableTemplates.find((template) => template.id === id);
+        const selected = applicationTemplates.find((template) => template.id === id);
 
         if (!selected) {
             return;
@@ -103,13 +84,6 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
         setSelectedTemplate(selected);
         setShowWizard(true);
     };
-
-    /**
-     *  Get Application templates.
-     */
-    useEffect(() => {
-        getAppTemplateList();
-    }, []);
 
     return (
         <PageLayout
@@ -124,15 +98,19 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
             bottomMargin={ false }
             showBottomDivider
         >
-            { availableTemplates &&
-            <div className="quick-start-templates">
-                <QuickStartApplicationTemplates
-                    templates={ availableTemplates }
-                    onTemplateSelect={ (e, { id }) =>
-                        handleTemplateSelection(e, { id })
-                    }
-                />
-            </div>
+            {
+                !isApplicationTemplateRequestLoading
+                    ? (
+                        <div className="quick-start-templates">
+                            <QuickStartApplicationTemplates
+                                templates={ applicationTemplates }
+                                onTemplateSelect={ (e, { id }) =>
+                                    handleTemplateSelection(e, { id })
+                                }
+                            />
+                        </div>
+                    )
+                    : <ContentLoader dimmer />
             }
             { showWizard && (
                 <ApplicationCreateWizard
