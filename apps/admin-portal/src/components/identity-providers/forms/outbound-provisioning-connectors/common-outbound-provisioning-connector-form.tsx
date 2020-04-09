@@ -16,32 +16,32 @@
  * under the License.
  */
 
-import {
-    AuthenticatorFormPropsInterface,
-    AuthenticatorProperty,
-    FederatedAuthenticatorMetaPropertyInterface
-} from "../../../../models";
 import { Button, Grid } from "semantic-ui-react";
 import {
-    CommonConstants, FieldType,
+    CommonConstants,
+    FieldType,
     getCheckboxField,
     getConfidentialField,
     getQueryParamsField,
     getTextField,
     getURLField
 } from "../helpers";
+import {
+    OutboundProvisioningConnectorFormPropsInterface,
+    OutboundProvisioningConnectorMetaPropertyInterface,
+    OutboundProvisioningConnectorProperty
+} from "../../../../models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Forms } from "@wso2is/forms";
 
 /**
- * Google authenticator configurations form.
+ * Common outbound provisioning connector configurations form.
  *
- * @param {AuthenticatorFormPropsInterface} props
+ * @param {OutboundProvisioningConnectorFormPropsInterface} props
  * @return { ReactElement }
- * @constructor
  */
-export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsInterface> = (
-    props
+export const CommonOutboundProvisioningConnectorForm: FunctionComponent<
+    OutboundProvisioningConnectorFormPropsInterface> = (props
 ): ReactElement => {
 
     const {
@@ -52,8 +52,8 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
         enableSubmitButton
     } = props;
 
-    const getInterpretedFormValue = (propertyMetadata: FederatedAuthenticatorMetaPropertyInterface, values: any,
-                                     eachProp: AuthenticatorProperty) => {
+    const getInterpretedFormValue = (propertyMetadata: OutboundProvisioningConnectorMetaPropertyInterface, values: any,
+                                     eachProp: OutboundProvisioningConnectorProperty) => {
         switch (propertyMetadata?.type.toUpperCase()) {
             case CommonConstants.BOOLEAN: {
                 return values.get(eachProp?.key)?.includes(eachProp?.key);
@@ -84,7 +84,7 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
         };
     };
 
-    const getFieldType = (propertyMetadata: FederatedAuthenticatorMetaPropertyInterface): FieldType => {
+    const getFieldType = (propertyMetadata: OutboundProvisioningConnectorMetaPropertyInterface): FieldType => {
         if (propertyMetadata?.type?.toUpperCase() === CommonConstants.BOOLEAN) {
             return FieldType.CHECKBOX;
         } else if (propertyMetadata?.isConfidential) {
@@ -121,13 +121,13 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
         }
     };
 
-    const getAuthenticatorPropertyFields = (): ReactElement[] => {
-        return initialValues.properties?.map((eachProp: AuthenticatorProperty) => {
-            const propertyMetadata = metadata.properties?.find(metaProperty => metaProperty.key === eachProp.key);
+    const getOutboundProvisioningConnectorPropertyFields = (): ReactElement[] => {
+        return initialValues?.properties?.map((eachProp: OutboundProvisioningConnectorProperty) => {
+            const propertyMetadata = metadata?.properties?.find(metaProperty => metaProperty.key === eachProp.key);
             return (
                 <Grid.Row columns={ 1 } key={ propertyMetadata?.displayOrder }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        {getPropertyField(eachProp, propertyMetadata)}
+                        { getPropertyField(eachProp, propertyMetadata) }
                     </Grid.Column>
                 </Grid.Row>
 
@@ -155,7 +155,7 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
             submitState={ triggerSubmit }
         >
             <Grid>
-                {getAuthenticatorPropertyFields().sort((a, b) => {
+                {getOutboundProvisioningConnectorPropertyFields().sort((a, b) => {
                     return Number(a.key) - Number(b.key);
                 })}
                 {enableSubmitButton ? getSubmitButton() : null}
@@ -164,6 +164,6 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
     );
 };
 
-CommonAuthenticatorForm.defaultProps = {
+CommonOutboundProvisioningConnectorForm.defaultProps = {
     enableSubmitButton: true
 };

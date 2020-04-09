@@ -58,7 +58,7 @@ export interface IdentityProviderInterface {
     roles?: string;
     federatedAuthenticators?: FederatedAuthenticatorListResponseInterface;
     certificate?: CertificateConfigInterface;
-    provisioning?: any;
+    provisioning?: ProvisioningInterface;
 }
 
 export interface IdentityProviderAdvanceInterface {
@@ -92,17 +92,7 @@ export interface FederatedAuthenticatorListResponseInterface {
     authenticators?: FederatedAuthenticatorListItemInterface[];
 }
 
-export interface FederatedAuthenticatorMetaPropertyInterface {
-    key?: string;
-    displayName?: string;
-    description?: string;
-    type?: string;
-    displayOrder?: number;
-    regex?: string;
-    isMandatory?: boolean;
-    isConfidential?: boolean;
-    options?: string[];
-    defaultValue?: string;
+export interface FederatedAuthenticatorMetaPropertyInterface extends CommonMetaPropertyInterface{
     subProperties?: FederatedAuthenticatorMetaPropertyInterface[];
 }
 
@@ -203,6 +193,95 @@ export enum SupportedAuthenticators {
 export enum SupportedProvisioningConnectors {
     NONE = "none",
     GOOGLE = "google"
+}
+
+/**
+ *  Provisioning list response interface.
+ */
+export interface ProvisioningResponseInterface {
+    jit?: JITProvisioningResponseInterface;
+    outboundConnectors?: OutboundProvisioningConnectorsListResponseInterface;
+}
+
+export interface ProvisioningInterface {
+    jit?: JITProvisioningResponseInterface;
+    outboundConnectors?: OutboundProvisioningConnectorsInterface;
+}
+
+export interface JITProvisioningResponseInterface {
+    isEnabled?: boolean;
+    scheme?: SupportedJITProvisioningSchemes;
+    userstore?: string;
+}
+
+enum SupportedJITProvisioningSchemes {
+    PROVISION_SILENTLY = "PROVISION_SILENTLY"
+}
+
+export interface OutboundProvisioningConnectorsInterface {
+    defaultConnectorId?: string;
+    connectors?: OutboundProvisioningConnectorInterface[];
+}
+
+export interface OutboundProvisioningConnectorsListResponseInterface {
+    defaultConnectorId?: string;
+    connectors?: OutboundProvisioningConnectorListItemInterface[];
+}
+
+export interface OutboundProvisioningConnectorListItemInterface {
+    connectorId?: string;
+    name?: string;
+    isEnabled?: boolean;
+    self?: string;
+}
+
+export interface OutboundProvisioningConnectorInterface {
+    connectorId?: string;
+    isEnabled?: boolean;
+    isDefault?: boolean;
+    blockingEnabled?: boolean;
+    rulesEnabled?: boolean;
+    properties?: OutboundProvisioningConnectorProperty[];
+}
+
+export interface OutboundProvisioningConnectorProperty {
+    key?: string;
+    value?: string;
+}
+
+export interface OutboundProvisioningConnectorFormPropsInterface {
+    metadata?: OutboundProvisioningConnectorMetaInterface;
+    initialValues: OutboundProvisioningConnectorInterface;
+    onSubmit: (values: OutboundProvisioningConnectorInterface) => void;
+    triggerSubmit?: boolean;
+    enableSubmitButton?: boolean;
+}
+
+export interface OutboundProvisioningConnectorMetaInterface {
+    connectorId?: string;
+    name?: string;
+    displayName?: string;
+    blockingEnabled?: boolean;
+    rulesEnabled?: boolean;
+    properties?: OutboundProvisioningConnectorMetaPropertyInterface[];
+}
+
+export interface OutboundProvisioningConnectorMetaPropertyInterface extends CommonMetaPropertyInterface{
+    subProperties?: OutboundProvisioningConnectorMetaPropertyInterface[];
+}
+
+export interface CommonMetaPropertyInterface {
+    key?: string;
+    displayName?: string;
+    description?: string;
+    type?: string;
+    displayOrder?: number;
+    regex?: string;
+    isMandatory?: boolean;
+    isConfidential?: boolean;
+    options?: string[];
+    defaultValue?: string;
+    subProperties?: CommonMetaPropertyInterface[];
 }
 
 /**

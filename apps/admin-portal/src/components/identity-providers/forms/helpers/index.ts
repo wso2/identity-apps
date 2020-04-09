@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from "./common-authenticator-form";
+export * from "./form-fields-helper";

@@ -65,7 +65,9 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
         });
     };
 
-    const authenticator = initialValues?.federatedAuthenticators?.authenticators[0];
+    const authenticator = initialValues?.federatedAuthenticators?.authenticators.find(authenticator =>
+        authenticator.authenticatorId === initialValues?.federatedAuthenticators?.defaultAuthenticatorId);
+
     return (
         <AuthenticatorFormFactory
             metadata={ metadata }
