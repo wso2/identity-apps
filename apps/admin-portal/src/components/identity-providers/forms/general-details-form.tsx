@@ -194,7 +194,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             label="Identity Provider Image URL"
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder="Enter a image url for the identity provider"
+                            placeholder="Provide the image url for the identity provider"
                             type="text"
                             validation={ (value: string, validation: Validation) => {
                                 if (!FormValidation.url(value)) {

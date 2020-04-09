@@ -28,6 +28,7 @@ import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { AppState } from "../store";
 import { setAvailableAuthenticatorsMeta } from "../store/actions/identity-provider";
+import { IdPCapabilityIcons } from "../configs";
 
 /**
  * Choose the application template from this page.
@@ -46,6 +47,28 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
     const availableAuthenticators = useSelector((state: AppState) => state.identityProvider.meta.authenticators);
 
     /**
+     * Populate available services in the template.
+     *
+     * @param templates List of templates.
+     * @return List of templates populated with available services.
+     */
+    const populateTemplatesWithServices = (templates: IdentityProviderTemplateListItemInterface[]):
+        IdentityProviderTemplateListItemInterface[] => {
+        return templates.map((template): IdentityProviderTemplateListItemInterface => {
+            return {
+                ...template,
+                services: template?.services?.map(service => {
+                    const predefinedLogo = Object.keys(IdPCapabilityIcons).find(key => key === service.logo);
+                    return {
+                        ...service,
+                        logo: predefinedLogo ? predefinedLogo : service.logo
+                    }
+                })
+            };
+        });
+    };
+
+    /**
      * Retrieve Identity Provider template list.
      *
      */
@@ -56,7 +79,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
                 const templateList: IdentityProviderTemplateListInterface = response;
                 // sort templateList based on display Order
                 templateList.templates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
-                setAvailableTemplates(templateList.templates);
+                setAvailableTemplates(populateTemplatesWithServices(templateList.templates));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
