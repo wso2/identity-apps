@@ -16,9 +16,20 @@
  * under the License.
  */
 
-import { AdvanceSettings, AuthenticatorSettings, GeneralSettings } from "./settings";
-import { IdentityProviderAdvanceInterface, IdentityProviderInterface } from "../../models";
-import React, { FunctionComponent, ReactElement } from "react";
+import {
+    AdvanceSettings,
+    AuthenticatorSettings,
+    GeneralSettings,
+    OutboundProvisioningSettings
+} from "./settings";
+import {
+    IdentityProviderAdvanceInterface,
+    IdentityProviderInterface
+} from "../../models";
+import React, {
+    FunctionComponent,
+    ReactElement
+} from "react";
 import { ResourceTab } from "@wso2is/react-components";
 
 /**
@@ -93,6 +104,17 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         </ResourceTab.Pane>
     );
 
+    const OutboundProvisioningSettingsTabPane = (): ReactElement => (
+        <ResourceTab.Pane attached={ false }>
+            <OutboundProvisioningSettings
+                idpId={ identityProvider.id }
+                outboundConnectors={ identityProvider.provisioning?.outboundConnectors }
+                isLoading={ isLoading }
+                onUpdate={ onUpdate }
+            />
+        </ResourceTab.Pane>
+    );
+
     const AdvancedSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane attached={ false }>
             <AdvanceSettings
@@ -112,8 +134,12 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                         render: GeneralIdentityProviderSettingsTabPane
                     },
                     {
-                        menuItem: "Authenticator",
+                        menuItem: "Authenticator Configurations",
                         render: AuthenticatorSettingsTabPane
+                    },
+                    {
+                        menuItem: "Outbound Provisioning Configurations",
+                        render: OutboundProvisioningSettingsTabPane
                     },
                     {
                         menuItem: "Advance",
