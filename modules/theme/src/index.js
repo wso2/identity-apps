@@ -123,9 +123,11 @@ export const AndroidLogo = require("../dist/lib/themes/default/assets/images/tec
 export const AngularLogo = require("../dist/lib/themes/default/assets/images/technologies/angular-logo.svg");
 export const AppleLogo = require("../dist/lib/themes/default/assets/images/technologies/apple-logo.svg");
 export const CordovaLogo = require("../dist/lib/themes/default/assets/images/technologies/cordova-logo.svg");
+export const CSharpLogo = require("../dist/lib/themes/default/assets/images/technologies/c-sharp-logo.svg");
 export const DotNetLogo = require("../dist/lib/themes/default/assets/images/technologies/dotnet-logo.svg");
 export const HTMLLogo = require("../dist/lib/themes/default/assets/images/technologies/html-logo.svg");
 export const JavaLogo = require("../dist/lib/themes/default/assets/images/technologies/java-logo.svg");
+export const JavaScriptLogo = require("../dist/lib/themes/default/assets/images/technologies/javascript-logo.svg");
 export const ReactLogo = require("../dist/lib/themes/default/assets/images/technologies/react-logo.svg");
 export const VueLogo = require("../dist/lib/themes/default/assets/images/technologies/vue-logo.svg");
 

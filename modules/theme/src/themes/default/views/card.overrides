@@ -447,7 +447,6 @@
         }
         &:not(.fluid) {
             .github-meta {
-                text-align: center;
                 padding-top: 0.3em;
             }
         }
@@ -474,8 +473,12 @@
             }
         }
         .github-meta {
-            .label {
-                background: @lightGray;
+            .ui.labels {
+                display: flex;
+
+                .label {
+                    background: @lightGray;
+                }
             }
             &.inline {
                 display: inline-block;

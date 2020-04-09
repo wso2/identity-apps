@@ -33,6 +33,7 @@ import {
     CodeIcon,
     CordovaLogo,
     CrossIcon,
+    CSharpLogo,
     DashboardIcon,
     DatabaseIcon,
     DocumentIcon,
@@ -55,6 +56,7 @@ import {
     HTMLLogo,
     InfoIcon,
     JavaLogo,
+    JavaScriptLogo,
     LaunchIcon,
     Logo,
     MagnifierIcon,
@@ -182,10 +184,12 @@ export const TechnologyLogos = {
     android: AndroidLogo,
     angular: AngularLogo,
     apple: AppleLogo,
+    cSharp: CSharpLogo,
     cordova: CordovaLogo,
     dotNet: DotNetLogo,
     html: HTMLLogo,
     java: JavaLogo,
+    javascript: JavaScriptLogo,
     react: ReactLogo,
     vue: VueLogo
 };

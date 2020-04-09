@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Card, CardProps, Icon, Label, SemanticSIZES } from "semantic-ui-react";
+import { Card, CardProps, Icon, Label, Popup } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
 import React, { FunctionComponent, ReactElement } from "react";
 import classNames from "classnames";
@@ -76,6 +76,8 @@ export interface InfoCardPropsInterface extends CardProps {
 }
 
 export interface GithubHubRepoMetaInfoInterface {
+    language?: any;
+    languageLogo?: any;
     forks: number;
     stars: number;
     watchers: number;
@@ -148,10 +150,35 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                 <div className="card-header-section">
                     { header && <Card.Header className="card-header ellipsis">{ header }</Card.Header> }
                     { subHeader && <Card.Header className="card-subheader ellipsis">{ subHeader }</Card.Header> }
-                    { description && fluid && <Card.Description className="card-description">{ description }</Card.Description> }
+                    {
+                        description && fluid && (
+                            <Card.Description className="card-description">{ description }</Card.Description>
+                        )
+                    }
                     {
                         githubRepoCard && githubRepoMetaInfo && fluid && (
-                            <Card.Content className="github-meta inline">
+                            <Card.Content className="github-meta">
+                                {
+                                    githubRepoMetaInfo.languageLogo && (
+                                        <Popup
+                                            trigger={
+                                                <div className="language">
+                                                    <GenericIcon
+                                                        icon={ githubRepoMetaInfo.languageLogo }
+                                                        size="micro"
+                                                        transparent
+                                                        inline
+                                                        square
+                                                        spaced="right"
+                                                        floated="left"
+                                                    />
+                                                </div>
+                                            }
+                                            content={ githubRepoMetaInfo.language }
+                                            inverted
+                                        />
+                                    )
+                                }
                                 <Label.Group size="mini">
                                     <Label>
                                         <Icon name="star" /> { githubRepoMetaInfo.stars }
@@ -193,6 +220,27 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
             {
                 githubRepoCard && githubRepoMetaInfo && !fluid && (
                     <Card.Content className="github-meta">
+                        {
+                            githubRepoMetaInfo.languageLogo && (
+                                <Popup
+                                    trigger={
+                                        <div className="language">
+                                            <GenericIcon
+                                                icon={ githubRepoMetaInfo.languageLogo }
+                                                size="micro"
+                                                transparent
+                                                inline
+                                                square
+                                                spaced="right"
+                                                floated="left"
+                                            />
+                                        </div>
+                                    }
+                                    content={ githubRepoMetaInfo.language }
+                                    inverted
+                                />
+                            )
+                        }
                         <Label.Group size="mini">
                             <Label>
                                 <Icon name="star" /> { githubRepoMetaInfo.stars }
