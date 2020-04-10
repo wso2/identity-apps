@@ -199,9 +199,6 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                         { displayName }
                     </Table.Cell>
                     <Table.Cell>
-                        { getClaimName(mappedURI) }
-                    </Table.Cell>
-                    <Table.Cell>
                         <Popup
                             trigger={
                                 (

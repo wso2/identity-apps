@@ -393,7 +393,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             </Heading>
             <Divider hidden/>
             <Grid.Row>
-                {/*<Grid.Column computer={ (selectedDialect.localDialect && claimMappingOn) ? 12 : 8 }>*/ }
                 <Grid.Column computer={ (selectedDialect.localDialect) ? 10 : 8 }>
                     {
                         (selectedClaims.length > 0 || selectedExternalClaims.length > 0) ? (
@@ -458,15 +457,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                 </Table.Row>
                                                             ) :
                                                             (
-                                                                // <Table.Row>
-                                                                //     <Table.HeaderCell>
-                                                                //         <strong>Attribute</strong>
-                                                                //     </Table.HeaderCell>
-                                                                //     <Table.HeaderCell>
-                                                                //         <strong>Mandatory</strong>
-                                                                //     </Table.HeaderCell>
-                                                                //
-                                                                // </Table.Row>
                                                                 <Table.Row>
                                                                     <Table.HeaderCell>
                                                                         <strong>Attribute</strong>
@@ -517,9 +507,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                             <strong>Attribute</strong>
                                                         </Table.HeaderCell>
                                                         <Table.HeaderCell>
-                                                            <strong>Mapped Local Attribute</strong>
-                                                        </Table.HeaderCell>
-                                                        <Table.HeaderCell>
                                                             <strong>Mandatory</strong>
                                                         </Table.HeaderCell>
                                                     </Table.Row>
@@ -527,7 +514,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                 <Table.Body>
                                                     {
                                                         filterSelectedExternalClaims?.map((claim) => {
-                                                            // const userGroup = group.display.split("/");
                                                             return (
                                                                 <AttributeListItem
                                                                     key={ claim.id }
