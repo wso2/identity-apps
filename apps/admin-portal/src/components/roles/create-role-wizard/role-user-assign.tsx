@@ -406,9 +406,6 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                             selectedUsers?.map((user) => {
                                                                 return (
                                                                     <Table.Row>
-                                                                        <Table.Cell width={ 1 }>
-                                                                            <Checkbox checked disabled/>
-                                                                        </Table.Cell>
                                                                         <Table.Cell>
                                                                             <UserAvatar
                                                                                 name={ user.userName }
