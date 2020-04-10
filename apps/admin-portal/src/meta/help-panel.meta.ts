@@ -43,8 +43,8 @@ export const helpPanelMetadata: HelpPanelMetadataInterface = {
             inbound: {
                 oidc: "https://raw.githubusercontent.com/wso2/docs-is/5.10.0/en/docs/learn/configuring-oauth2-openid-connect-single-sign-on.md",
                 saml: "https://raw.githubusercontent.com/wso2/docs-is/5.10.0/en/docs/learn/configuring-saml2-web-single-sign-on.md",
-                wsFed: "https://raw.githubusercontent.com/wso2/docs-is/5.10.0/en/docs/learn/configuring-ws-federation-single-sign-on.md",
-                wsTrust: "https://raw.githubusercontent.com/wso2/docs-is/5.10.0/en/docs/learn/configuring-ws-trust-security-token-service.md"
+                [ "passive-sts" ]: "https://raw.githubusercontent.com/wso2/docs-is/5.10.0/en/docs/learn/configuring-ws-federation-single-sign-on.md",
+                [ "ws-trust" ]: "https://raw.githubusercontent.com/wso2/docs-is/5.10.0/en/docs/learn/configuring-ws-trust-security-token-service.md"
             },
             roleMapping: "https://raw.githubusercontent.com/wso2/docs-is/5.10.0/en/docs/learn/configuring-roles-and-permissions-for-a-service-provider.md"
         },
