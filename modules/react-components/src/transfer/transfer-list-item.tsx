@@ -34,7 +34,7 @@ interface ItemTypeLabelPropsInterface extends LabelProps {
 interface TransferListItemPropsInterface extends TableRowProps {
     listItem: string;
     listItemId: string;
-    listItemIndex: number;
+    listItemIndex: number | string;
     listItemTypeLabel?: ItemTypeLabelPropsInterface;
     isItemChecked: boolean;
     handleItemCheck?: () => void;
