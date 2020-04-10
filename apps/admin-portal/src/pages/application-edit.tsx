@@ -506,9 +506,9 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
     return (
         <HelpPanelLayout
             actions={ [
-                {
+                /*{
                     icon: HelpSidebarIcons.actionPanel.pin
-                },
+                },*/
                 {
                     icon: HelpSidebarIcons.actionPanel.close,
                     onClick: handleHelpPanelToggle
