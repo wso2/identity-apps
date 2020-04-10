@@ -17,6 +17,8 @@
  */
 
 import {
+    WSTrustTemplateIllustration,
+    PassiveSTSTemplateIllustration,
     AlertIcon,
     AndroidLogo,
     AngularLogo,
@@ -180,9 +182,11 @@ export const InboundProtocolLogos = {
 
 export const ApplicationTemplateIllustrations = {
     oidcWebApp: OIDCWebAppTemplateIllustration,
+    passiveSTS: PassiveSTSTemplateIllustration,
     samlWebApp: SAMLWebAppTemplateIllustration,
     spa: SPATemplateIllustration,
-    windowsNative: WindowsTemplateIllustration
+    windowsNative: WindowsTemplateIllustration,
+    wsTrust: WSTrustTemplateIllustration
 };
 
 export const TechnologyLogos = {

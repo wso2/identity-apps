@@ -140,6 +140,10 @@ export const SPATemplateIllustration =
     require("../dist/lib/themes/default/assets/images/illustrations/spa-template-illustration.svg");
 export const WindowsTemplateIllustration =
     require("../dist/lib/themes/default/assets/images/illustrations/windows-template-illustration.svg");
+export const WSTrustTemplateIllustration =
+    require("../dist/lib/themes/default/assets/images/illustrations/ws-trust-template-illustration.svg");
+export const PassiveSTSTemplateIllustration =
+    require("../dist/lib/themes/default/assets/images/illustrations/passive-sts-template-illustration.svg");
 
 // Social
 export const FacebookLogo = require("../dist/lib/themes/default/assets/images/social/facebook.svg");
