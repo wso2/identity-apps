@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import classNames from "classnames";
 import React, { PropsWithChildren } from "react";
+import classNames from "classnames";
 
 /**
  * Proptypes for the Generic Icon component.
@@ -28,8 +28,12 @@ export interface GenericIconProps {
     colored?: boolean;
     defaultIcon?: boolean;
     floated?: string;
+    hoverable?: boolean;
     icon: any;
     inline?: boolean;
+    link?: boolean;
+    linkType?: "primary";
+    onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
     relaxed?: boolean | "very";
     rounded?: boolean;
     size?: GenericIconSizes;
@@ -43,6 +47,7 @@ export interface GenericIconProps {
 export type GenericIconSizes =
     "auto"
     | "nano"
+    | "default"
     | "micro"
     | "mini"
     | "tiny"
@@ -69,8 +74,12 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         colored,
         defaultIcon,
         floated,
+        hoverable,
         icon,
         inline,
+        link,
+        linkType,
+        onClick,
         relaxed,
         rounded,
         size,
@@ -78,7 +87,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         style,
         square,
         transparent,
-        twoTone,
+        twoTone
     } = props;
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
 
@@ -87,10 +96,13 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         "colored": colored,
         "default": defaultIcon,
         [`floated-${floated}`]: floated,
+        hoverable,
         "inline": inline,
+        link,
+        [ `link-${ linkType }` ]: linkType,
         "relaxed": relaxed,
         "rounded": rounded,
-        [`${size}`]: size,
+        [ (size === "default") ? "default-size" : size ]: size,
         [`spaced-${spaced}`]: spaced,
         "square": square,
         "transparent": transparent,
@@ -117,7 +129,9 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
 
             // Check if the icon is a module and has `ReactComponent` property.
             // Important when used with SVG's imported with `@svgr/webpack`.
-            if (Object.prototype.hasOwnProperty.call(icon,"ReactComponent") && typeof icon.ReactComponent === "function") {
+            if (Object.prototype.hasOwnProperty.call(icon,"ReactComponent")
+                && typeof icon.ReactComponent === "function") {
+
                 return <icon.ReactComponent/>;
             }
 
@@ -141,7 +155,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
     };
 
     return (
-        <div className={ `theme-icon ${classes}` } style={ style }>
+        <div className={ `theme-icon ${classes}` } style={ style } onClick={ onClick }>
             { constructContent() }
         </div>
     );
@@ -163,5 +177,5 @@ GenericIcon.defaultProps = {
     square: false,
     style: {},
     transparent: false,
-    twoTone: false,
+    twoTone: false
 };

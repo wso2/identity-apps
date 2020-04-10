@@ -65,6 +65,14 @@ export interface SelectionCardPropsInterface {
      */
     selected?: boolean;
     /**
+     * Card size.
+     */
+    size?: "small" | "default" | "auto";
+    /**
+     * Add spacing to the card.
+     */
+    spaced?: "bottom";
+    /**
      * Text alignment.
      */
     textAlign?: "center" | "left" | "right";
@@ -96,6 +104,8 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         imageSize,
         onClick,
         selected,
+        size,
+        spaced,
         textAlign
     } = props;
 
@@ -105,6 +115,8 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
             disabled,
             inline,
             selected,
+            [ size ]: size,
+            [`spaced-${ spaced }`]: spaced,
             ["with-image"]: image
         },
         className
@@ -143,5 +155,6 @@ SelectionCard.defaultProps = {
     imageSize: "tiny",
     inline: false,
     onClick: () => null,
+    size: "default",
     textAlign: "center"
 };

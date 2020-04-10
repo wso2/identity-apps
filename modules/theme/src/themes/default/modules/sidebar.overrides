@@ -22,3 +22,62 @@
         min-height: @sidePanelPusherMinHeight;
     }
 }
+
+/*******************************
+     Help Panel Variation
+*******************************/
+
+.ui.sidebar {
+    &.help-panel {
+        &:not(.mini) {
+            width: @helpPanelWidth;
+        }
+        &.mini {
+            width: unset;
+        }
+        .help-panel-action-bar {
+            padding: 6px 15px;
+            border-bottom: @defaultBorderWidth solid @defaultBorderColor;
+
+            .actions-group {
+                display: flex;
+
+                > .action {
+                    &:not(:last-child) {
+                        margin-right: 5px;
+                    }
+                }
+            }
+            &.floated {
+                &-right {
+                    .actions-group {
+                        float: right;
+                    }
+                }
+                &-left {
+                    .actions-group {
+                        float: left;
+                    }
+                }
+            }
+            &.clearing {
+                overflow: auto;
+            }
+        }
+
+        .help-panel-tabs {
+            .ui.menu .item {
+                font-size: inherit;
+            }
+
+            .tab {
+                text-align: left;
+                padding: 1em 2.5em;
+
+                .markdown-renderer {
+                    text-align: left;
+                }
+            }
+        }
+    }
+}

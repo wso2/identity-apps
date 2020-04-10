@@ -55,6 +55,8 @@ Recent Application Card
 @selectionCardBorder: @defaultCardBorder;
 @selectionCardSelectedStateBorderColor: @primaryColor;
 @selectionCardDefaultWidth: 150px;
+@selectionCardSmallWidth: 135px;
+@selectionCardSpacedBottomMargin: 2em;
 @selectionCardRightSpacing: 20px;
 @selectionCardTextContainerPadding: 0.8em 1em;
 @selectionCardHeaderFontSize: 1em;
@@ -95,3 +97,11 @@ Recent Application Card
 @labeledCardMarginBottom: 5px;
 @labeledCardLabelFontColor: 0.8em;
 @labeledCardWrapperMarginBottom: 8px;
+
+/*-------------------------------
+           Info Card
+--------------------------------*/
+
+@infoCardTransition: @defaultCardTransition;
+@infoCardBorder: @defaultCardBorder;
+@infoCardHoverBoxShadow: @defaultCardHoverBoxShadow;

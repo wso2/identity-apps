@@ -27,6 +27,7 @@ import {
 import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "../models";
 import { combineReducers } from "redux";
 import { commonConfigReducer } from "@wso2is/core/store";
+import { helpPanelReducer } from "./reducers/help-panel";
 
 /**
  * Combines all the reducers.
@@ -39,6 +40,7 @@ export const reducers = combineReducers({
     config: commonConfigReducer<RuntimeConfigInterface, ServiceResourceEndpointsInterface>(
         commonConfigReducerInitialState),
     global: globalReducer,
+    helpPanel: helpPanelReducer,
     identityProvider: identityProviderReducer,
     loaders: LoadersReducer
 });

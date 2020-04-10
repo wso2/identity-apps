@@ -35,10 +35,12 @@ import {
     SubjectConfigInterface,
     SupportedAuthProtocolTypes
 } from "../../../models";
+import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "../../../store";
 import { isEmpty } from "lodash";
-import { useTrigger } from "@wso2is/forms";
-import { useDispatch } from "react-redux";
 import { RoleMapping } from "./role-mapping";
+import { setHelpPanelDocsContentURL } from "../../../store/actions";
+import { useTrigger } from "@wso2is/forms";
 
 
 export interface SelectedDialectInterface {
@@ -147,6 +149,19 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     // Role Mapping.
     const [roleMapping, setRoleMapping] = useState<RoleMappingInterface[]>([]);
+
+    const helpPanelMetadata = useSelector((state: AppState) => state.helpPanel.metadata);
+
+    /**
+     * Set the default doc content URL for the tab.
+     */
+    useEffect(() => {
+        if (!helpPanelMetadata?.applications?.docs?.claimMapping) {
+            return;
+        }
+
+        dispatch(setHelpPanelDocsContentURL(helpPanelMetadata.applications.docs.claimMapping));
+    }, [ helpPanelMetadata ]);
 
     const getClaims = () => {
         getAllLocalClaims(null)

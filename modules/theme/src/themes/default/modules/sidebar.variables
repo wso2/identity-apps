@@ -26,3 +26,9 @@
 --------------------*/
 
 @sidePanelPusherMinHeight: calc(100vh - @headerHeight);
+
+/*-------------------
+     Help Panel
+--------------------*/
+
+@helpPanelWidth: 550px;

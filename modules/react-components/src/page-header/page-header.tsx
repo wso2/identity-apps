@@ -32,6 +32,7 @@ export interface PageHeaderPropsInterface {
     image?: any;
     showBottomDivider?: boolean;
     title: string;
+    titleAs?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
     titleTextAlign?: "left" | "center" | "right" | "justified";
 }
 
@@ -61,6 +62,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
         image,
         showBottomDivider,
         title,
+        titleAs,
         titleTextAlign
     } = props;
 
@@ -99,7 +101,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                             spaced="right"
                         />
                     ) }
-                    <Header className="page-header" as="h1" textAlign={ titleTextAlign }>
+                    <Header className="page-header" as={ titleAs } textAlign={ titleTextAlign }>
                         { title && title }
                         { description && <Header.Subheader className="sub-header">{ description }</Header.Subheader> }
                     </Header>
@@ -117,5 +119,6 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
 
 PageHeader.defaultProps = {
     bottomMargin: true,
-    showBottomDivider: false
+    showBottomDivider: false,
+    titleAs: "h1"
 };

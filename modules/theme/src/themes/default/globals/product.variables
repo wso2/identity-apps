@@ -68,6 +68,8 @@
 @fluidDashboardLayoutSidePanelPadding: @fluidDashboardLayoutTopPadding @fluidDashboardLayoutHorizontalPadding;
 @fluidDashboardLayoutDesktopContentPadding: @fluidDashboardLayoutTopPadding 30px;
 
+@pageLayoutContentPadding: @fluidDashboardLayoutTopPadding 30px;
+
 /*-------------------
     Input Addons
 --------------------*/

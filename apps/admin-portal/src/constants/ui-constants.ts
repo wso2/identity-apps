@@ -72,4 +72,12 @@ export class UIConstants {
      * @type {number}
      */
     public static readonly AJAX_TOP_LOADING_BAR_HEIGHT: number = 3;
+
+    /**
+     * URL prefix to load assets from IS doc repository.
+     * @constant
+     * @type {string}
+     */
+    public static readonly HELP_PANEL_DOCS_ASSETS_URL_PREFIX: string = "https://github.com/wso2/docs-is/raw/5.10.0/en" +
+        "/docs/";
 }

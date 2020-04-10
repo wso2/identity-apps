@@ -18,27 +18,28 @@
 
 import {
     AlertIcon,
-    ArrowRight,
-    MaximizeIcon,
-    MinimizeIcon,
-    MagnifierIcon,
-    DragSquaresIcon,
-    LaunchIcon,
+    AndroidLogo,
     AngularLogo,
     AppIcon,
+    AppleLogo,
+    ArrowRight,
     AuthenticationCapabilityIcon,
     BasicAuthIcon,
     BlockedMagnifierIcon,
     BoxIcon,
     CaretRightIcon,
+    ClaimsIcon,
     CloseIcon,
     CodeIcon,
+    CordovaLogo,
     CrossIcon,
+    CSharpLogo,
     DashboardIcon,
     DatabaseIcon,
     DocumentIcon,
     DotNetLogo,
     DragIcon,
+    DragSquaresIcon,
     DummyUser,
     EmailOTPIcon,
     EmptySearchResultsIllustration,
@@ -52,12 +53,19 @@ import {
     GoogleIdPIcon,
     GoogleLogo,
     HomeTileIcons,
+    HTMLLogo,
     InfoIcon,
     JavaLogo,
+    JavaScriptLogo,
+    LaunchIcon,
     Logo,
+    MagnifierIcon,
+    MaximizeIcon,
     MFAIconSet,
+    MinimizeIcon,
     OIDCLogo,
     OpenIDLogo,
+    PinIcon,
     PlugIcon,
     ProvisionCapabilityIcon,
     ReactLogo,
@@ -76,8 +84,7 @@ import {
     WarningIcon,
     WebAppTemplateIllustration,
     WSFedLogo,
-    WSTrustLogo,
-    ClaimsIcon
+    WSTrustLogo
 } from "@wso2is/theme";
 
 type ImageType = string;
@@ -174,9 +181,15 @@ export const ApplicationTemplateIllustrations = {
 };
 
 export const TechnologyLogos = {
+    android: AndroidLogo,
     angular: AngularLogo,
+    apple: AppleLogo,
+    cSharp: CSharpLogo,
+    cordova: CordovaLogo,
     dotNet: DotNetLogo,
+    html: HTMLLogo,
     java: JavaLogo,
+    javascript: JavaScriptLogo,
     react: ReactLogo,
     vue: VueLogo
 };
@@ -235,4 +248,15 @@ export const OperationIcons = {
     drag: DragSquaresIcon,
     maximize: MaximizeIcon,
     minimize: MinimizeIcon
+};
+
+export const HelpSidebarIcons = {
+    actionPanel: {
+        close: CrossIcon,
+        pin: PinIcon
+    },
+    mini: {
+        SDKs: BoxIcon,
+        docs: DocumentIcon
+    }
 };

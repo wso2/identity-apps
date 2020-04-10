@@ -115,6 +115,12 @@ body {
     }
 }
 
+.ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 /*****************************************
                 Layout
 *****************************************/
@@ -159,12 +165,6 @@ body {
                     width: 100%;
                 }
             }
-
-            .mobile-container {
-                .content-wrapper {
-                    padding: @dashboardLayoutMobileContentPadding;
-                }
-            }
         }
 
         &.fluid-dashboard-layout {
@@ -172,17 +172,24 @@ body {
                 padding: @fluidDashboardLayoutHeaderPadding;
             }
 
-            .layout-content {
-                .desktop-container {
-                    .content-wrapper {
-                        padding: @fluidDashboardLayoutDesktopContentPadding;
-                    }
-                }
-            }
-
             .app-footer {
                 padding: @fluidDashboardLayoutFooterPadding;
             }
+        }
+    }
+
+    &.page-layout {
+        .layout-content {
+            min-height: 100%;
+            &.padded {
+                padding: @pageLayoutContentPadding;
+            }
+        }
+    }
+
+    &.help-panel-layout {
+        .layout-content {
+            min-height: 100%;
         }
     }
 
@@ -249,6 +256,17 @@ body {
         &.square {
             .icon {
                 height: @iconNano;
+            }
+        }
+    }
+    &.default-size {
+        .icon {
+            width: @iconDefault;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconDefault;
             }
         }
     }
@@ -366,7 +384,9 @@ body {
             path {
                 fill: @iconDefaultBgColor;
             }
-            &:hover {
+        }
+        &:hover {
+            svg.icon {
                 path {
                     fill: @iconDefaultBgHoverColor;
                 }
@@ -514,6 +534,28 @@ body {
 
         img {
             padding: 3px;
+        }
+    }
+    &.link {
+        cursor: pointer;
+
+        &-primary {
+            &:hover {
+                svg.icon {
+                    .path {
+                        fill: @primaryColor;
+                    }
+                }
+            }
+        }
+    }
+    &.hoverable {
+        padding: 6px;
+        display: flex;
+        border-radius: @defaultBorderRadius;
+
+        &:hover {
+            background: @iconHoverBgColor;
         }
     }
 }

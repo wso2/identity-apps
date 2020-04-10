@@ -28,8 +28,8 @@ import {
     SupportedAuthProtocolMetaTypes,
     SupportedAuthProtocolTypes
 } from "../../models";
+import { setAuthProtocolMeta, setHelpPanelDocsContentURL } from "../../store/actions";
 import { AppState } from "../../store";
-import { setAuthProtocolMeta } from "../../store/actions";
 import { InboundFormFactory } from "./forms";
 import { Divider } from "semantic-ui-react";
 import { InboundProtocolLogos } from "../../configs";
@@ -106,8 +106,20 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
 
     const availableInboundProtocols = useSelector((state: AppState) => state.application.meta.inboundProtocols);
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
+    const helpPanelMetadata = useSelector((state: AppState) => state.helpPanel.metadata);
 
     const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
+
+    /**
+     * Set the default doc content URL for the tab.
+     */
+    useEffect(() => {
+        if (!helpPanelMetadata?.applications?.docs?.inbound[ selectedInboundProtocol.id ]) {
+            return;
+        }
+
+        dispatch(setHelpPanelDocsContentURL(helpPanelMetadata.applications.docs.inbound[ selectedInboundProtocol.id ]));
+    }, [ selectedInboundProtocol?.id, helpPanelMetadata ]);
 
     /**
      * Handles the inbound protocol selection.

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Page, Placeholder, Notification } from "../common";
+import { EditPage, HelpPanelInterface, Notification, Page, Placeholder } from "../common";
 
 /**
  * Model for the dev portal namespace
@@ -24,6 +24,7 @@ import { Page, Placeholder, Notification } from "../common";
 export interface DevPortalNS {
     components: {
         applications: {
+            helpPanel: HelpPanelInterface;
             notifications: {
                 fetchApplications: Notification;
             };
@@ -844,6 +845,8 @@ export interface DevPortalNS {
         };
     };
     pages: {
+        applications: Page;
+        applicationsEdit: EditPage;
         overView: Page;
     };
     placeholders: {

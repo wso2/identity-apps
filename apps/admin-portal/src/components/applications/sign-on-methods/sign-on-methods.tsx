@@ -23,13 +23,15 @@ import {
     AuthenticationSequenceInterface,
     AuthenticationStepInterface
 } from "../../../models";
+import { useDispatch, useSelector } from "react-redux";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { Divider } from "semantic-ui-react";
 import { updateAuthenticationSequence } from "../../../api";
-import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { AppState } from "../../../store";
 import { PrimaryButton } from "@wso2is/react-components";
+import { setHelpPanelDocsContentURL } from "../../../store/actions";
 
 /**
  * Proptypes for the sign on methods component.
@@ -76,9 +78,22 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
     const dispatch = useDispatch();
 
+    const helpPanelMetadata = useSelector((state: AppState) => state.helpPanel.metadata);
+
     const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
     const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
     const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
+
+    /**
+     * Set the default doc content URL for the tab.
+     */
+    useEffect(() => {
+        if (!helpPanelMetadata?.applications?.docs?.adaptiveAuthentication?.introduction) {
+            return;
+        }
+
+        dispatch(setHelpPanelDocsContentURL(helpPanelMetadata.applications.docs.adaptiveAuthentication.introduction));
+    }, [ helpPanelMetadata ]);
 
     /**
      * Toggles the update trigger.

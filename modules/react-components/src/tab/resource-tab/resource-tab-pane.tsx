@@ -31,7 +31,7 @@ export const ResourceTabPane: FunctionComponent<PropsWithChildren<TabPaneProps>>
 
     const {
         children,
-        rest
+        ...rest
     } = props;
 
     return (

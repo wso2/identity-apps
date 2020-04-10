@@ -57,6 +57,7 @@ export const MinimizeIcon = require("../dist/lib/themes/default/assets/images/ic
 export const MonitorIcon = require("../dist/lib/themes/default/assets/images/icons/monitor-icon.svg");
 export const PackageIcon = require("../dist/lib/themes/default/assets/images/icons/package.svg");
 export const PadlockIcon = require("../dist/lib/themes/default/assets/images/icons/padlock-icon.svg");
+export const PinIcon = require("../dist/lib/themes/default/assets/images/icons/pin-icon.svg");
 export const PlugIcon = require("../dist/lib/themes/default/assets/images/icons/plug-icon.svg");
 export const SecurityQuestionsIcon = 
     require("../dist/lib/themes/default/assets/images/icons/security-questions-icon.svg");
@@ -118,9 +119,15 @@ export const DummyUser = require("../dist/lib/themes/default/assets/images/user.
 export const OrangeAppIconBackground = require("../dist/lib/themes/default/assets/images/app-icon-background.png");
 
 // Technology Logos
+export const AndroidLogo = require("../dist/lib/themes/default/assets/images/technologies/android-logo.svg");
 export const AngularLogo = require("../dist/lib/themes/default/assets/images/technologies/angular-logo.svg");
+export const AppleLogo = require("../dist/lib/themes/default/assets/images/technologies/apple-logo.svg");
+export const CordovaLogo = require("../dist/lib/themes/default/assets/images/technologies/cordova-logo.svg");
+export const CSharpLogo = require("../dist/lib/themes/default/assets/images/technologies/c-sharp-logo.svg");
 export const DotNetLogo = require("../dist/lib/themes/default/assets/images/technologies/dotnet-logo.svg");
+export const HTMLLogo = require("../dist/lib/themes/default/assets/images/technologies/html-logo.svg");
 export const JavaLogo = require("../dist/lib/themes/default/assets/images/technologies/java-logo.svg");
+export const JavaScriptLogo = require("../dist/lib/themes/default/assets/images/technologies/javascript-logo.svg");
 export const ReactLogo = require("../dist/lib/themes/default/assets/images/technologies/react-logo.svg");
 export const VueLogo = require("../dist/lib/themes/default/assets/images/technologies/vue-logo.svg");
 

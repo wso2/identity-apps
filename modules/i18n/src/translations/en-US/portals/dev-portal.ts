@@ -20,6 +20,34 @@ import { DevPortalNS } from "../../../models";
 export const devPortal: DevPortalNS = {
     components: {
         applications: {
+            helpPanel: {
+                tabs: {
+                    docs: {
+                        content: null,
+                        heading: "Docs"
+                    },
+                    samples: {
+                        content: {
+                            sample: {
+                                goBack: "Go back",
+                                hint: "Quickly start prototyping by downloading our preconfigured sample application.",
+                                title: "HTML Sample"
+                            },
+                            sdks: {
+                                subTitle: "Following software development kits can be used to jump start your " +
+                                    "application development.",
+                                title: "Software Development Kits (SDKs)"
+                            },
+                            technology: {
+                                subTitle: "Sample and required SDKs along with useful information will be provided " +
+                                    "once you select a technology",
+                                title: "Select a technology"
+                            }
+                        },
+                        heading: "Samples"
+                    }
+                }
+            },
             notifications: {
                 fetchApplications: {
                     error: {
@@ -1257,6 +1285,15 @@ export const devPortal: DevPortalNS = {
         }
     },
     pages: {
+        applications: {
+            subTitle: "Create applications based on templates and configure authentication.",
+            title: "Applications"
+        },
+        applicationsEdit: {
+            backButton: "Go back to applications",
+            subTitle: null,
+            title: null
+        },
         overView: {
             subTitle: "The following section would give you an overview of the system statistics",
             title: "Welcome, {{firstName}}"
