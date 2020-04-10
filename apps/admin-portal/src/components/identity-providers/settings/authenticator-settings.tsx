@@ -23,8 +23,11 @@ import {
     FederatedAuthenticatorMetaInterface,
     SupportedAuthenticators
 } from "../../../models";
-import { getFederatedAuthenticatorDetails, getFederatedAuthenticatorMeta, updateFederatedAuthenticator }
-from "../../../api";
+import {
+    getFederatedAuthenticatorDetails,
+    getFederatedAuthenticatorMeta,
+    updateFederatedAuthenticator
+} from "../../../api";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";

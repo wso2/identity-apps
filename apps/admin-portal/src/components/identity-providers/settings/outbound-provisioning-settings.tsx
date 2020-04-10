@@ -31,7 +31,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { Divider } from "semantic-ui-react";
-import { OutboundProvisioningConnectorFormFactory } from "../forms/factories";
+import { OutboundProvisioningConnectorFormFactory } from "../forms";
 import { useDispatch } from "react-redux";
 
 /**

@@ -22,7 +22,7 @@ import {
     IdentityProviderInterface
 } from "../../../../models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { AuthenticatorFormFactory } from "../../forms/factories";
+import { AuthenticatorFormFactory } from "../../forms";
 
 /**
  * Proptypes for the authenticator settings wizard form component.

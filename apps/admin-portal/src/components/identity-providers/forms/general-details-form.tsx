@@ -73,6 +73,7 @@ interface GeneralDetailsFormPopsInterface {
  * Form to edit general details of the identity provider.
  *
  * @param props GeneralDetailsFormPopsInterface.
+ * @return {React.ReactElement}.
  */
 export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterface> = (props): ReactElement => {
 
