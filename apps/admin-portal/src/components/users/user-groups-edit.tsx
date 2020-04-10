@@ -20,7 +20,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { AlertInterface, BasicProfileInterface } from "../../models";
 import {
     Button,
-    Checkbox,
     Divider,
     Grid,
     Icon,
@@ -651,7 +650,6 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                         <Table singleLine compact>
                                             <Table.Header>
                                                 <Table.Row>
-                                                    <Table.HeaderCell/>
                                                     <Table.HeaderCell><strong>Domain</strong></Table.HeaderCell>
                                                     <Table.HeaderCell><strong>Name</strong></Table.HeaderCell>
                                                     <Table.HeaderCell/>
@@ -664,9 +662,6 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                                         if (userGroup.length === 1) {
                                                             return (
                                                                 <Table.Row>
-                                                                    <Table.Cell>
-                                                                        <Checkbox checked disabled/>
-                                                                    </Table.Cell>
                                                                     <Table.Cell>
                                                                         <Label color="olive">Primary</Label>
                                                                     </Table.Cell>

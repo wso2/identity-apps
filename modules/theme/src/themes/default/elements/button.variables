@@ -44,3 +44,9 @@
 @infoPrimaryButtonColor: @infoColor;
 
 @modalPrimaryButtonFontColor: @white;
+
+/*-------------------------
+    Meta columns button
+--------------------------*/
+
+@metaColumnsButtonPadding: 12px 27px;

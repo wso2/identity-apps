@@ -18,6 +18,7 @@
 
 import { LinkInterface } from "./application";
 import { MultiValue, Name } from "./profile";
+import { RolesInterface } from "./roles";
 
 /**
  * Captures meta details of the user.
@@ -70,22 +71,73 @@ export interface UserListInterface {
 /**
  *  User basic details for add wizard.
  */
-export interface UserBasicWizard {
+export interface AddUserWizardStateInterface {
     userName: string;
     email: string;
     firstName: string;
     lastName: string;
     domain: string;
     newPassword: string;
+    confirmPassword: string;
     passwordOption: string;
+    groups: RolesInterface[];
+    roles: RolesInterface[];
 }
 
-export const createEmptyUserBasicWizard = (): UserBasicWizard => ({
+/**
+ * Interface for emails in user details
+ */
+export interface EmailsInterface {
+    primary: boolean;
+    value: string;
+}
+
+/**
+ * Captures user details
+ */
+export interface UserDetailsInterface {
+    emails: EmailsInterface[];
+    name: Name;
+    userName: string;
+    password: string;
+    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"?: {
+        askPassword: string;
+    };
+    profileUrl: string;
+}
+
+/**
+ * The following function creates an empty user details object
+ */
+export const createEmptyUserDetails = (): UserDetailsInterface => ({
+    emails: [{
+        primary: false,
+        value: ""
+    }],
+    name: {
+        givenName: "",
+        familyName: ""
+    },
+    userName: "",
+    password: "",
+    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+        askPassword: ""
+    },
+    profileUrl: "",
+});
+
+/**
+ * The following function creates an empty add user wizard object
+ */
+export const createEmptyUserBasicWizard = (): AddUserWizardStateInterface => ({
     domain: "",
     email: "",
     firstName: "",
     lastName: "",
     newPassword: "",
     passwordOption: "",
-    userName: ""
+    userName: "",
+    confirmPassword: "",
+    groups: [],
+    roles: []
 });

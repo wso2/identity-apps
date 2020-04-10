@@ -343,7 +343,7 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                                 on='click'
                                 pinned
                                 trigger={
-                                    <Button basic><Icon name="columns"/>Columns</Button>
+                                    <Button className="meta-columns-button" basic><Icon name="columns"/>Columns</Button>
                                 }
                             />
                             <Dropdown
