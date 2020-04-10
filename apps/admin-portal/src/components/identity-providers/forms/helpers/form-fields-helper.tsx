@@ -16,13 +16,16 @@
  * under the License.
  */
 
-import { AuthenticatorProperty, CommonMetaPropertyInterface } from "../../../../models";
+import {
+    CommonPluggableComponentMetaPropertyInterface,
+    CommonPluggableComponentPropertyInterface
+} from "../../../../models";
 import React, { ReactElement } from "react";
 import { Field } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 
-export const getConfidentialField = (eachProp: AuthenticatorProperty,
-                                     propertyMetadata: CommonMetaPropertyInterface): ReactElement => {
+export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyInterface,
+                                     propertyMetadata: CommonPluggableComponentMetaPropertyInterface): ReactElement => {
     return (
         <Field
             showPassword="Show Secret"
@@ -37,8 +40,8 @@ export const getConfidentialField = (eachProp: AuthenticatorProperty,
     );
 };
 
-export const getCheckboxField = (eachProp: AuthenticatorProperty,
-                                 propertyMetadata: CommonMetaPropertyInterface): ReactElement => {
+export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInterface,
+                                 propertyMetadata: CommonPluggableComponentMetaPropertyInterface): ReactElement => {
     return (
         <Field
             name={ eachProp?.key }
@@ -59,8 +62,8 @@ export const getCheckboxField = (eachProp: AuthenticatorProperty,
     );
 };
 
-export const getTextField = (eachProp: AuthenticatorProperty,
-                             propertyMetadata: CommonMetaPropertyInterface): ReactElement => {
+export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface,
+                             propertyMetadata: CommonPluggableComponentMetaPropertyInterface): ReactElement => {
     return (
         <Field
             name={ eachProp?.key }
@@ -75,8 +78,8 @@ export const getTextField = (eachProp: AuthenticatorProperty,
     );
 };
 
-export const getURLField = (eachProp: AuthenticatorProperty,
-                            propertyMetadata: CommonMetaPropertyInterface): ReactElement => {
+export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
+                            propertyMetadata: CommonPluggableComponentMetaPropertyInterface): ReactElement => {
     return (
         <Field
             name={ eachProp?.key }
@@ -97,8 +100,8 @@ export const getURLField = (eachProp: AuthenticatorProperty,
     );
 };
 
-export const getQueryParamsField = (eachProp: AuthenticatorProperty,
-                            propertyMetadata: CommonMetaPropertyInterface): ReactElement => {
+export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyInterface,
+                            propertyMetadata: CommonPluggableComponentMetaPropertyInterface): ReactElement => {
     return (
         <Field
             name={ eachProp?.key }
@@ -137,3 +140,54 @@ export enum CommonConstants {
     FIELD_COMPONENT_KEYWORD_URL = "URL",
     FIELD_COMPONENT_KEYWORD_QUERY_PARAMETER = "QUERYPARAM"
 }
+
+/**
+ * Get interpreted field type for given property metada.
+ *
+ * @param propertyMetadata Property metadata of type {@link CommonPluggableComponentMetaPropertyInterface}.
+ */
+export const getFieldType = (propertyMetadata: CommonPluggableComponentMetaPropertyInterface): FieldType => {
+
+    if (propertyMetadata?.type?.toUpperCase() === CommonConstants.BOOLEAN) {
+        return FieldType.CHECKBOX;
+    } else if (propertyMetadata?.isConfidential) {
+        return FieldType.CONFIDENTIAL;
+    } else if (propertyMetadata?.key.toUpperCase().includes(CommonConstants.FIELD_COMPONENT_KEYWORD_URL)) {
+        // todo Need proper backend support to identity URL fields.
+        return FieldType.URL;
+    } else if (propertyMetadata?.key.toUpperCase().includes(
+        CommonConstants.FIELD_COMPONENT_KEYWORD_QUERY_PARAMETER)) {
+        // todo Need proper backend support to identity Query parameter fields.
+        return FieldType.QUERY_PARAMS;
+    }
+    return FieldType.TEXT;
+};
+
+/**
+ * Get corresponding {@link Field} component for the provided property.
+ *
+ * @param property Property of type {@link CommonPluggableComponentPropertyInterface}.
+ * @param propertyMetadata Property metadata of type {@link CommonPluggableComponentMetaPropertyInterface}.
+ */
+export const getPropertyField = (property: CommonPluggableComponentPropertyInterface,
+                          propertyMetadata: CommonPluggableComponentMetaPropertyInterface): ReactElement => {
+
+    switch (getFieldType(propertyMetadata)) {
+        // TODO Identify URLs, and generate a Field which supports URL validation.
+        case FieldType.CHECKBOX : {
+            return getCheckboxField(property, propertyMetadata);
+        }
+        case FieldType.CONFIDENTIAL : {
+            return getConfidentialField(property, propertyMetadata);
+        }
+        case FieldType.URL : {
+            return getURLField(property, propertyMetadata);
+        }
+        case FieldType.QUERY_PARAMS : {
+            return getQueryParamsField(property, propertyMetadata);
+        }
+        default: {
+            return getTextField(property, propertyMetadata);
+        }
+    }
+};
