@@ -25,7 +25,8 @@ import {
     IdentityProviderListResponseInterface,
     IdentityProviderResponseInterface,
     IdentityProviderTemplateListInterface,
-    IdentityProviderTemplateListItemInterface, OutboundProvisioningConnectorInterface,
+    IdentityProviderTemplateListItemInterface,
+    OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../models";
 import { AxiosHttpClient } from "@wso2is/http";
