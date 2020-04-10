@@ -91,6 +91,7 @@ export interface HelpPanelComponentPropsInterface extends HelpPanelPropsInterfac
  */
 export interface HelpPanelTabInterface {
     heading: any;
+    hidden: boolean;
     content: ReactNode;
     icon: SemanticICONS;
 }

@@ -43,8 +43,8 @@ export const helpPanelMetadata: HelpPanelMetadataInterface = {
             inbound: {
                 oidc: "https://raw.githubusercontent.com/wso2/docs-is/5.10.0/en/docs/learn/configuring-oauth2-openid-connect-single-sign-on.md",
                 saml: "https://raw.githubusercontent.com/wso2/docs-is/5.10.0/en/docs/learn/configuring-saml2-web-single-sign-on.md",
-                wsFed: "https://raw.githubusercontent.com/wso2/docs-is/5.10.0/en/docs/learn/configuring-ws-federation-single-sign-on.md",
-                wsTrust: "https://raw.githubusercontent.com/wso2/docs-is/5.10.0/en/docs/learn/configuring-ws-trust-security-token-service.md"
+                [ "passive-sts" ]: "https://raw.githubusercontent.com/wso2/docs-is/5.10.0/en/docs/learn/configuring-ws-federation-single-sign-on.md",
+                [ "ws-trust" ]: "https://raw.githubusercontent.com/wso2/docs-is/5.10.0/en/docs/learn/configuring-ws-trust-security-token-service.md"
             },
             roleMapping: "https://raw.githubusercontent.com/wso2/docs-is/5.10.0/en/docs/learn/configuring-roles-and-permissions-for-a-service-provider.md"
         },
@@ -55,7 +55,7 @@ export const helpPanelMetadata: HelpPanelMetadataInterface = {
                     displayName: "HTML",
                     image: "html",
                     repo: {
-                        category: [ "Single Page Application" ],
+                        category: [ "Single page application" ],
                         owner: {
                             login: "wso2/samples-is",
                             avatar: "https://avatars3.githubusercontent.com/u/533043?v=4"
@@ -86,7 +86,7 @@ export const helpPanelMetadata: HelpPanelMetadataInterface = {
                     displayName: "React",
                     image: "react",
                     repo: {
-                        category: [ "Single Page Application" ],
+                        category: [ "Single page application" ],
                         owner: {
                             login: "wso2/samples-is",
                             avatar: "https://avatars3.githubusercontent.com/u/533043?v=4"
@@ -117,7 +117,7 @@ export const helpPanelMetadata: HelpPanelMetadataInterface = {
                     displayName: ".NET",
                     image: "dotNet",
                     repo: {
-                        category: [ "Windows Application" ],
+                        category: [ "Windows desktop application" ],
                         owner: {
                             login: "wso2-extensions",
                             avatar: "https://avatars0.githubusercontent.com/u/17171218?v=4"
@@ -140,14 +140,14 @@ export const helpPanelMetadata: HelpPanelMetadataInterface = {
                         forks: 3,
                         url: "https://github.com/wso2-extensions/identity-samples-dotnet"
                     },
-                    docs: "https://raw.githubusercontent.com/wso2-extensions/identity-samples-dotnet/master/README.md"
+                    docs: "https://api.github.com/repos/wso2-extensions/identity-samples-dotnet/releases/24582946"
                 },
                 {
                     name: "android",
                     displayName: "Android",
                     image: "android",
                     repo: {
-                        category: [ "Mobile Application" ],
+                        category: [ "Mobile application" ],
                         owner: {
                             login: "wso2/samples-is",
                             avatar: "https://avatars3.githubusercontent.com/u/533043?v=4"
@@ -177,7 +177,7 @@ export const helpPanelMetadata: HelpPanelMetadataInterface = {
                     displayName: "Cordova",
                     image: "cordova",
                     repo: {
-                        category: [ "Mobile Application" ],
+                        category: [ "Mobile application" ],
                         owner: {
                             login: "wso2/samples-is",
                             avatar: "https://avatars3.githubusercontent.com/u/533043?v=4"
@@ -207,7 +207,7 @@ export const helpPanelMetadata: HelpPanelMetadataInterface = {
                     displayName: "iOS",
                     image: "apple",
                     repo: {
-                        category: [ "Mobile Application" ],
+                        category: [ "Mobile application" ],
                         owner: {
                             login: "wso2/samples-is",
                             avatar: "https://avatars3.githubusercontent.com/u/533043?v=4"
@@ -240,7 +240,7 @@ export const helpPanelMetadata: HelpPanelMetadataInterface = {
                     displayName: ".NET",
                     image: "dotNet",
                     repo: {
-                        category: [ "SAML Web Application" ],
+                        category: [ "SAML web application" ],
                         owner: {
                             login: "wso2/samples-is",
                             avatar: "https://avatars3.githubusercontent.com/u/533043?v=4"
@@ -270,7 +270,7 @@ export const helpPanelMetadata: HelpPanelMetadataInterface = {
         sdks: {
             oidc: [
                 {
-                    category: [ "Single Page Application" ],
+                    category: [ "Single page application" ],
                     owner: {
                         login: "wso2/identity-apps",
                         avatar: "https://avatars3.githubusercontent.com/u/533043?v=4"
@@ -292,7 +292,7 @@ export const helpPanelMetadata: HelpPanelMetadataInterface = {
                     url: "https://github.com/wso2/identity-apps/tree/master/modules/authentication"
                 },
                 {
-                    category: [ "OIDC Web Application", "Windows Application" ],
+                    category: [ "OIDC web application", "Windows desktop application" ],
                     owner: {
                         login: "wso2-extensions",
                         avatar: "https://avatars0.githubusercontent.com/u/17171218?v=4"

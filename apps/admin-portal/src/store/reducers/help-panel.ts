@@ -30,7 +30,7 @@ const initialState: HelpPanelReducerStateInterface = {
 /**
  * Reducer to handle the state of help panel related actions.
  *
- * @param {ApplicationReducerStateInterface} state - Previous state
+ * @param {HelpPanelReducerStateInterface} state - Previous state
  * @param {ApplicationActions} action - Action type.
  * @returns The new state
  */

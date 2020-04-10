@@ -17,11 +17,10 @@
  */
 
 import {
-    AuthProtocolMetaListItemInterface,
     OIDCDataInterface,
-    OIDCMetadataInterface, PassiveStsConfigurationInterface, SAML2ConfigurationInterface,
-    SupportedAuthProtocolTypes,
-    SupportedQuickStartTemplateTypes, WSTrustConfigurationInterface
+    PassiveStsConfigurationInterface,
+    SAML2ConfigurationInterface,
+    WSTrustConfigurationInterface
 } from "./application-inbound";
 
 /**
@@ -226,29 +225,6 @@ export interface AuthenticationSequenceInterface  {
     script?: string;
     subjectStepId?: number;
     attributeStepId?: number;
-}
-
-/**
- * Interface for the Application reducer state.
- */
-export interface ApplicationReducerStateInterface {
-    meta: ApplicationMetaInterface;
-}
-
-/**
- * Interface for the application meta for the redux store.
- */
-interface ApplicationMetaInterface {
-    inboundProtocols: AuthProtocolMetaListItemInterface[];
-    protocolMeta: AuthProtocolMetaInterface;
-}
-
-/**
- * Interface for the auth protocol metadata.
- */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-interface AuthProtocolMetaInterface {
-    [ key: string ]: OIDCMetadataInterface | any;
 }
 
 /**

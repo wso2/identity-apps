@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import classNames from "classnames";
-import React, { MouseEventHandler } from "react";
 import { Divider, Header, Icon } from "semantic-ui-react";
+import React, { MouseEventHandler, ReactNode } from "react";
+import classNames from "classnames";
 import { GenericIcon } from "../icon";
 
 /**
@@ -28,7 +28,7 @@ export interface PageHeaderPropsInterface {
     backButton?: BackButtonInterface;
     bottomMargin?: boolean;
     className?: string;
-    description?: string;
+    description?: ReactNode;
     image?: any;
     showBottomDivider?: boolean;
     title: string;
@@ -69,7 +69,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
     const wrapperClasses = classNames(
         "page-header-wrapper",
         {
-            ["with-image"]: image,
+            ["with-image"]: image
         },
         className
     );
@@ -77,7 +77,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
     const innerClasses = classNames(
         "page-header-inner",
         {
-            ["with-image"]: image,
+            ["with-image"]: image
         }
     );
 
@@ -101,9 +101,11 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                             spaced="right"
                         />
                     ) }
-                    <Header className="page-header" as={ titleAs } textAlign={ titleTextAlign }>
+                    <Header className="page-header ellipsis" as={ titleAs } textAlign={ titleTextAlign }>
                         { title && title }
-                        { description && <Header.Subheader className="sub-header">{ description }</Header.Subheader> }
+                        { description && (
+                            <Header.Subheader className="sub-header ellipsis">{ description }</Header.Subheader>
+                        ) }
                     </Header>
                 </div>
                 {

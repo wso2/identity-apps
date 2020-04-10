@@ -17,14 +17,16 @@
  */
 
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
 import { AppAvatar, ConfirmationModal, ResourceList, ResourceListActionInterface } from "@wso2is/react-components";
+import { ApplicationListInterface, ApplicationListItemInterface, ConfigReducerStateInterface } from "../../models";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { addAlert } from "@wso2is/core/store";
+import { ApplicationManagementUtils } from "../../utils";
+import { AppState } from "../../store";
 import { deleteApplication } from "../../api";
 import { history } from "../../helpers";
-import { ApplicationListInterface, ApplicationListItemInterface, ConfigReducerStateInterface } from "../../models";
-import { AppState } from "../../store";
+import { Label } from "semantic-ui-react";
 
 /**
  *
@@ -152,6 +154,12 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             <ResourceList className="applications-list">
                 {
                     list.applications.map((app: ApplicationListItemInterface, index: number) => {
+
+                        const [
+                            templateName,
+                            description
+                        ] = ApplicationManagementUtils.resolveApplicationTemplateNameInDescription(app.description);
+
                         // TODO Remove this check and move the logic to backend.
                         if ("wso2carbon-local-sp" !== app.name) {
                             return (
@@ -168,7 +176,16 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                         />
                                     ) }
                                     itemHeader={ app.name }
-                                    itemDescription={ app.description }
+                                    itemDescription={ (
+                                        <>
+                                            { templateName && (
+                                                <Label size="mini" className="compact spaced-right">
+                                                    { templateName }
+                                                </Label>
+                                            ) }
+                                            { description }
+                                        </>
+                                    ) }
                                 />
                             );
                         }

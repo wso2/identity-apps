@@ -24,7 +24,8 @@ import {
     ApplicationInterface,
     ApplicationEditFeaturesConfigInterface,
     AuthProtocolMetaListItemInterface,
-    SupportedAuthProtocolTypes
+    SupportedAuthProtocolTypes,
+    ApplicationTemplateListItemInterface
 } from "../../models";
 import { AdvanceSettings } from "./advance-application";
 import { GeneralApplicationSettings } from "./general-application-settings";
@@ -73,6 +74,10 @@ interface EditApplicationPropsInterface {
      * @param {AuthProtocolMetaListItemInterface} protocol - Inbound protocol.
      */
     onInboundProtocolSelect: (protocol: AuthProtocolMetaListItemInterface) => void;
+    /**
+     * Application template.
+     */
+    template?: ApplicationTemplateListItemInterface;
 }
 
 /**
@@ -92,7 +97,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         onDelete,
         onUpdate,
         permissions,
-        onInboundProtocolSelect
+        onInboundProtocolSelect,
+        template
     } = props;
 
     const dispatch = useDispatch();
@@ -204,6 +210,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 showRegenerate={ selectedInboundProtocol?.id === SupportedAuthProtocolTypes.OIDC }
                 // TODO we need check whether application is active or not as well.
                 showRevoke={ selectedInboundProtocol?.id === SupportedAuthProtocolTypes.OIDC }
+                template={ template }
             />
         </ResourceTab.Pane>
     );

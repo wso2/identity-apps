@@ -74,4 +74,12 @@ export class ApplicationManagementConstants {
         "invalid status code while fetching application templates list.";
     public static readonly APPLICATION_TEMPLATES_LIST_FETCH_ERROR: string = "An error occurred while fetching the " +
         "required adaptive application templates list.";
+
+    /**
+     * Splitter token to split the description to extract the template.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly APPLICATION_DESCRIPTION_SPLITTER: string = ":::";
 }

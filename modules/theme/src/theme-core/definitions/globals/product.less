@@ -25,6 +25,8 @@
 
 @spacer: 1rem;
 
+@pageHeaderMaxWidth: 600px;
+
 each(range(5), {
     .ui.divider.hidden.x@{value} {
         margin: (@value * 1rem) 0rem;
@@ -908,6 +910,16 @@ body {
 
             .page-header {
                 margin: 0 0 0 10px;
+                max-width: @pageHeaderMaxWidth;
+
+                .sub-header {
+                    .with-label {
+                        .label {
+                            margin-left: 0;
+                            margin-right: 8px;
+                        }
+                    }
+                }
             }
         }
     }

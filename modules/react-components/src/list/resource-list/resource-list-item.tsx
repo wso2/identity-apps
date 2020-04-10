@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import classNames from "classnames";
-import React, { FunctionComponent } from "react";
 import {
     Dropdown,
     DropdownItemProps,
@@ -31,6 +29,8 @@ import {
     SemanticWIDTHS,
     StrictGridRowProps
 } from "semantic-ui-react";
+import React, { FunctionComponent, ReactNode } from "react";
+import classNames from "classnames";
 
 /**
  * Proptypes for the resource list item component.
@@ -52,7 +52,7 @@ export interface ResourceListItemPropsInterface extends ListItemProps {
      * Avatar to be displayed on the list item.
      * Can be either {@link UserAvatar} or {@link AppAvatar}
      */
-    avatar?: React.ReactNode;
+    avatar?: ReactNode;
     /**
      * Additional CSS classes.
      */
@@ -60,11 +60,11 @@ export interface ResourceListItemPropsInterface extends ListItemProps {
     /**
      * List item header.
      */
-    itemHeader: string | React.ReactNode;
+    itemHeader: string | ReactNode;
     /**
      * List item description
      */
-    itemDescription?: string;
+    itemDescription?: string | ReactNode;
     /**
      * Width of the description area.
      */
@@ -72,7 +72,7 @@ export interface ResourceListItemPropsInterface extends ListItemProps {
     /**
      * Meta info about the list item.
      */
-    metaContent?: React.ReactNode | React.ReactNode[];
+    metaContent?: ReactNode | ReactNode[];
     /**
      * Width of the meta info area.
      */

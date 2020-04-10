@@ -17,13 +17,19 @@
  *
  */
 
-import { AuthProtocolMetaListItemInterface } from "../models";
-import { getAvailableInboundProtocols } from "../api";
+import {
+    ApplicationTemplateListInterface,
+    ApplicationTemplateListItemInterface,
+    AuthProtocolMetaListItemInterface,
+    MainApplicationInterface
+} from "../models";
+import { getApplicationTemplateList, getAvailableInboundProtocols } from "../api";
+import { setApplicationTemplates, setAvailableInboundAuthProtocolMeta } from "../store/actions";
 import _ from "lodash";
-import { setAvailableInboundAuthProtocolMeta } from "../store/actions";
-import { store } from "../store";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
+import { ApplicationManagementConstants } from "../constants";
+import { store } from "../store";
 
 /**
  * Utility class for application(service provider) operations.
@@ -73,5 +79,82 @@ export class ApplicationManagementUtils {
                     message: "Retrieval error"
                 }));
             });
+    }
+
+    /**
+     * Retrieve Application template list form the API and sets it in redux state.
+     */
+    public static getApplicationTemplates = (): Promise<void> => {
+        return getApplicationTemplateList()
+            .then((response) => {
+                store.dispatch(setApplicationTemplates((response as ApplicationTemplateListInterface).templates));
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    store.dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Application Template List Fetch Error"
+                    }));
+
+                    return;
+                }
+
+                store.dispatch(addAlert({
+                    description: "An error occurred while retrieving application template list",
+                    level: AlertLevels.ERROR,
+                    message: "Retrieval Error"
+                }));
+            })
+    };
+
+    /**
+     * Appends template name to the application description.
+     * TODO: This is a temporary solution. Revert back once SP -> Template mapping is available.
+     *
+     * @param {MainApplicationInterface} application - Application details.
+     * @param {ApplicationTemplateListItemInterface} template - Template object.
+     *
+     * @return {MainApplicationInterface} Modified Application object.
+     */
+    public static prefixTemplateNameToDescription(
+        application: MainApplicationInterface, template: ApplicationTemplateListItemInterface
+    ): MainApplicationInterface {
+
+        if (!template || !template.name) {
+            return application;
+        }
+
+        return {
+            ...application,
+            description: template.name
+                + ApplicationManagementConstants.APPLICATION_DESCRIPTION_SPLITTER
+                + application.description
+        };
+    }
+
+    /**
+     * Resolves the template name and description when the raw description string is passed in.
+     * TODO: This is a temporary solution. Revert back once SP -> Template mapping is available.
+     *
+     * @param {string} description - Raw description string.
+     *
+     * @return {(string | null)[]} Template name and Description as tuple.
+     */
+    public static resolveApplicationTemplateNameInDescription(description: string): (string | null)[] {
+
+        if (!description || typeof description !== "string") {
+            return [ null, description ];
+        }
+
+        const tokens = description.split(ApplicationManagementConstants.APPLICATION_DESCRIPTION_SPLITTER);
+
+        if(tokens.length <= 1) {
+            return [ null, description ];
+        }
+
+        const [ template, ...desc ] = tokens;
+
+        return [ template, desc.join(ApplicationManagementConstants.APPLICATION_DESCRIPTION_SPLITTER) ];
     }
 }

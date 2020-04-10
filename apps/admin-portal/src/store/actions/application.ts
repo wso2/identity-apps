@@ -17,13 +17,16 @@
  */
 
 import {
-    AuthProtocolMetaListItemInterface, OIDCMetadataInterface, SupportedAuthProtocolMetaTypes
-} from "../../models";
-import {
-    ApplicationActionTypes,
+    ApplicationActionTypes, SetApplicationTemplatesActionInterface,
     SetAuthProtocolMetaInterface,
     SetAvailableInboundProtocolsMetaInterface
 } from "./types";
+import {
+    ApplicationTemplateListItemInterface,
+    AuthProtocolMetaListItemInterface,
+    OIDCMetadataInterface,
+    SupportedAuthProtocolMetaTypes
+} from "../../models";
 
 /**
  * Redux action to set the list of available inbound authentication protocols.
@@ -53,4 +56,18 @@ export const setAuthProtocolMeta = (
         [ protocol ]: meta
     },
     type: ApplicationActionTypes.SET_AUTH_PROTOCOL_META
+});
+
+/**
+ * Redux action to set the application templates.
+ *
+ * @param {ApplicationTemplateListItemInterface[]} templates - Application templates list.
+ *
+ * @return {SetApplicationTemplatesActionInterface} An action of type `ApplicationActionTypes.SET_APPLICATION_TEMPLATES`
+ */
+export const setApplicationTemplates = (
+    templates: ApplicationTemplateListItemInterface[]
+): SetApplicationTemplatesActionInterface => ({
+    payload: templates,
+    type: ApplicationActionTypes.SET_APPLICATION_TEMPLATES
 });
