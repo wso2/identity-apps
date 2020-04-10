@@ -28,7 +28,7 @@ import {
     PageHeader,
     SelectionCard
 } from "@wso2is/react-components";
-import { AppConfig, history } from "../helpers";
+import { AppConfig, history, isGithubApiURL } from "../helpers";
 import {
     AppConfigInterface,
     ApplicationEditFeaturesConfigInterface,
@@ -210,8 +210,14 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
 
         setHelpPanelSamplesContentRequestLoadingStatus(true);
 
-        fetchFromURL<string>(helpPanelSelectedSample.docs)
+        fetchFromURL<string | object>(helpPanelSelectedSample.docs)
             .then((response) => {
+                if (isGithubApiURL(helpPanelSelectedSample.docs)) {
+                    setHelpPanelSampleContent(response.body);
+
+                    return;
+                }
+
                 setHelpPanelSampleContent(response);
             })
             .finally(() => {

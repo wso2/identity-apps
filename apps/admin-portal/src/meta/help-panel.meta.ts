@@ -140,7 +140,7 @@ export const helpPanelMetadata: HelpPanelMetadataInterface = {
                         forks: 3,
                         url: "https://github.com/wso2-extensions/identity-samples-dotnet"
                     },
-                    docs: "https://raw.githubusercontent.com/wso2-extensions/identity-samples-dotnet/master/README.md"
+                    docs: "https://api.github.com/repos/wso2-extensions/identity-samples-dotnet/releases/24582946"
                 },
                 {
                     name: "android",

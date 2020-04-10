@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,11 +15,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { UIConstants } from "../constants";
 
-export * from "./help-panel";
-export * from "./history";
-export * from "./http-headers";
-export * from "./image";
-export * from "./user-agent-parser";
-export * from "./user";
-export * from "./app-config-context";
+/**
+ * Checks if the passed in URL is a github API endpoint.
+ *
+ * @param {string} url - Raw URL.
+ * @return {boolean} True or false.
+ */
+export const isGithubApiURL = (url: string): boolean => {
+    return url.includes(UIConstants.GITHUB_API_BASE_URL);
+};
