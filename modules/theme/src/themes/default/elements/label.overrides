@@ -45,3 +45,23 @@
         padding: 11px 14.5px;
     }
 }
+
+/*******************************
+            Sizing
+*******************************/
+
+.ui.label {
+    &.mini {
+        &.compact {
+            padding: 0.4em;
+        }
+        &.spaced {
+            &-left {
+                margin-left: 0.4em;
+            }
+            &-right {
+                margin-right: 0.4em;
+            }
+        }
+    }
+}

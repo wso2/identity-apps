@@ -26,6 +26,7 @@ import { ApplicationManagementUtils } from "../../utils";
 import { AppState } from "../../store";
 import { deleteApplication } from "../../api";
 import { history } from "../../helpers";
+import { Label } from "semantic-ui-react";
 
 /**
  *
@@ -175,7 +176,16 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                         />
                                     ) }
                                     itemHeader={ app.name }
-                                    itemDescription={ description }
+                                    itemDescription={ (
+                                        <>
+                                            { templateName && (
+                                                <Label size="mini" className="compact spaced-right">
+                                                    { templateName }
+                                                </Label>
+                                            ) }
+                                            { description }
+                                        </>
+                                    ) }
                                 />
                             );
                         }
