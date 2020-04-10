@@ -22,7 +22,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { addUser, addUserRole, getRolesList } from "../../../api";
+import { addUser, addUserRole, getGravatarImage, getRolesList } from "../../../api";
 import { UserWizardStepIcons } from "../../../configs";
 import { AlertLevels } from "../../../models";
 import { addAlert } from "../../../store/actions";
@@ -33,8 +33,6 @@ import { AddUserRole } from "../add-user-role";
 import { AddUserGroup } from "../add-user-groups";
 import { RolesInterface } from "../../../models";
 import { RolePermissions } from "./user-role-permissions";
-import {boolean} from "@storybook/addon-knobs";
-import {string} from "prop-types";
 
 interface AddUserWizardPropsInterface {
     closeWizard: () => void;
@@ -113,6 +111,21 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ viewRolePermissions, setViewRolePermissions ] = useState<boolean>(false);
     const [ selectedRoleId,  setSelectedRoleId ] = useState<string>();
     const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
+
+    const [ userGravatarUrl, setUserGravatarUrl ] = useState<string>("");
+
+    useEffect(() => {
+        if (!wizardState) {
+            return;
+        }
+
+        if (wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.email) {
+            getGravatarImage(wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.email)
+                .then((response) => {
+                    setUserGravatarUrl(response);
+                });
+        }
+    }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.email ]);
 
     useEffect(() => {
         if (!selectedGroupId) {
@@ -383,10 +396,15 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      */
     const addUserBasic = (userInfo: any) => {
         let userName = "";
+        let profileUrl = "";
         userInfo.domain !== "primary" ? userName = userInfo.domain + "/" + userInfo.userName : userName =
             userInfo.userName;
         let userDetails = {};
         const password = userInfo.newPassword;
+
+        if (userGravatarUrl) {
+            profileUrl = userGravatarUrl;
+        }
 
         userInfo.passwordOption && userInfo.passwordOption !== "askPw" ?
             (
@@ -401,6 +419,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             familyName: userInfo.lastName,
                             givenName: userInfo.firstName
                         },
+                    profileUrl,
                     password,
                     userName
                 }
@@ -422,7 +441,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         {
                             askPassword: "true"
                         },
-                    userName
+                    userName,
+                    profileUrl
                 }
             );
 
