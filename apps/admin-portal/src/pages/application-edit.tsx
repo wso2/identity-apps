@@ -34,7 +34,8 @@ import {
     ApplicationEditFeaturesConfigInterface,
     ApplicationInterface,
     ApplicationSampleInterface,
-    ApplicationSDKInterface, ApplicationTemplateListItemInterface,
+    ApplicationSDKInterface,
+    ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
     emptyApplication,
     GithubRepoCategoryTypes
@@ -120,6 +121,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
             && applicationTemplates.length > 0) {
 
             setApplicationTemplate(applicationTemplates.find((template) => template.name === applicationTemplateName));
+
             return;
         }
 

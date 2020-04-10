@@ -23,7 +23,9 @@ import {
 } from "./types";
 import {
     ApplicationTemplateListItemInterface,
-    AuthProtocolMetaListItemInterface, OIDCMetadataInterface, SupportedAuthProtocolMetaTypes
+    AuthProtocolMetaListItemInterface,
+    OIDCMetadataInterface,
+    SupportedAuthProtocolMetaTypes
 } from "../../models";
 
 /**
