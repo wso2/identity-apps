@@ -84,6 +84,51 @@ export interface AddUserWizardStateInterface {
     roles: RolesInterface[];
 }
 
+/**
+ * Interface for emails in user details
+ */
+export interface EmailsInterface {
+    primary: boolean;
+    value: string;
+}
+
+/**
+ * Captures user details
+ */
+export interface UserDetailsInterface {
+    emails: EmailsInterface[];
+    name: Name;
+    userName: string;
+    password: string;
+    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"?: {
+        askPassword: string;
+    };
+    profileUrl: string;
+}
+
+/**
+ * The following function creates an empty user details object
+ */
+export const createEmptyUserDetails = (): UserDetailsInterface => ({
+    emails: [{
+        primary: false,
+        value: ""
+    }],
+    name: {
+        givenName: "",
+        familyName: ""
+    },
+    userName: "",
+    password: "",
+    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+        askPassword: ""
+    },
+    profileUrl: "",
+});
+
+/**
+ * The following function creates an empty add user wizard object
+ */
 export const createEmptyUserBasicWizard = (): AddUserWizardStateInterface => ({
     domain: "",
     email: "",

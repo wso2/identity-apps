@@ -31,7 +31,12 @@ import { AddUserWizardSummary } from "./wizard-summary";
 import { useTrigger } from "@wso2is/forms";
 import { AddUserRole } from "../add-user-role";
 import { AddUserGroup } from "../add-user-groups";
-import { RolesInterface, AddUserWizardStateInterface } from "../../../models";
+import {
+    RolesInterface,
+    AddUserWizardStateInterface,
+    UserDetailsInterface,
+    createEmptyUserDetails
+} from "../../../models";
 import { RolePermissions } from "./user-role-permissions";
 
 interface AddUserWizardPropsInterface {
@@ -399,7 +404,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         let profileUrl = "";
         userInfo.domain !== "primary" ? userName = userInfo.domain + "/" + userInfo.userName : userName =
             userInfo.userName;
-        let userDetails: object = {};
+        let userDetails: UserDetailsInterface = createEmptyUserDetails();
         const password = userInfo.newPassword;
 
         if (userGravatarUrl) {
@@ -426,17 +431,17 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             ) :
             (
                 userDetails = {
-                    "emails":
+                    emails:
                         [{
                             primary: true,
                             value: userInfo.email
                         }],
-                    "name":
+                    name:
                         {
                             familyName: userInfo.lastName,
                             givenName: userInfo.firstName
                         },
-                    "password": "password",
+                    password: "password",
                     "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User":
                         {
                             askPassword: "true"
