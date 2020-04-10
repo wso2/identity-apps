@@ -37,6 +37,7 @@ import { getInboundProtocolConfig } from "../../api";
 import { ApplicationManagementUtils } from "../../utils";
 import { InboundProtocolsMeta } from "./meta";
 import _ from "lodash";
+import { ProvisioningSettings } from "./provisioning";
 
 /**
  * Proptypes for the applications edit component.
@@ -259,6 +260,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         </ResourceTab.Pane>
     );
 
+    const ProvisioningSettingsTabPane = (): ReactElement => (
+        <ResourceTab.Pane attached={ false }>
+            <ProvisioningSettings
+                appId={ application.id }
+                provisioningConfigurations={ application.provisioningConfigurations }
+                onUpdate={ onUpdate }
+                permissions={ permissions }
+            />
+        </ResourceTab.Pane>
+    );
+
     /**
      * Resolves the tab panes based on the application config.
      *
@@ -297,6 +309,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     render: SignOnMethodsTabPane,
                 });
             }
+            if (features === undefined || features.provisioningSettings.enabled !== false) {
+
+                panes.push({
+                    menuItem: "Provisioning",
+                    render: ProvisioningSettingsTabPane,
+                });
+            }
             if (features.advanceSettings === undefined || features.advanceSettings.enabled !== false) {
 
                 panes.push({
@@ -325,9 +344,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 render: SignOnMethodsTabPane,
             },
             {
-                menuItem: "Advance",
-                render: AdvancedSettingsTabPane,
+                menuItem: "Provisioning",
+                render: ProvisioningSettingsTabPane,
             },
+            {
+                menuItem: "Advanced",
+                render: AdvancedSettingsTabPane,
+            }
         ];
     };
 

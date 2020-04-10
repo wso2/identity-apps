@@ -19,17 +19,21 @@
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import { updateApplicationConfigurations } from "../../api";
-import { AdvancedConfigurationsInterface } from "../../models";
-import { AdvanceConfigurationsForm } from "./forms";
+import { getUserStoreList, updateApplicationConfigurations } from "../../api";
+import {
+    AdvancedConfigurationsInterface,
+    ProvisioningConfigurationInterface,
+    SimpleUserStoreListItemInterface
+} from "../../models";
+import { AdvanceConfigurationsForm, ProvisioningConfigurationsForm } from "./forms";
 
 /**
- * Proptypes for the advance settings component.
+ * Proptypes for the provision settings component.
  */
-interface AdvanceSettingsPropsInterface {
+interface ProvisioningSettingsPropsInterface {
     /**
      * Currently editing application id.
      */
@@ -37,7 +41,7 @@ interface AdvanceSettingsPropsInterface {
     /**
      * Current advanced configurations.
      */
-    advancedConfigurations: AdvancedConfigurationsInterface;
+    provisioningConfigurations: ProvisioningConfigurationInterface;
     /**
      * Callback to update the application details.
      */
@@ -49,33 +53,35 @@ interface AdvanceSettingsPropsInterface {
 }
 
 /**
- *  advance settings component.
+ *  Provisioning component.
  *
- * @param {AdvanceSettingsPropsInterface} props - Props injected to the component.
+ * @param {ProvisioningSettingsPropsInterface} props - Props injected to the component.
  * @return {ReactElement}
  */
-export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> = (
-    props: AdvanceSettingsPropsInterface
+export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsInterface> = (
+    props: ProvisioningSettingsPropsInterface
 ): ReactElement => {
 
     const {
         appId,
-        advancedConfigurations,
+        provisioningConfigurations,
         onUpdate
     } = props;
 
     const dispatch = useDispatch();
 
+    const [userStore, setUserStore] = useState<SimpleUserStoreListItemInterface[]>([]);
+
     /**
-     * Handles the advanced config form submit action.
+     * Handles the provisioning config form submit action.
      *
      * @param values - Form values.
      */
-    const handleAdvancedConfigFormSubmit = (values: any): void => {
+    const handleProvisioningConfigFormSubmit = (values: any): void => {
         updateApplicationConfigurations(appId, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully updated the advanced configurations.",
+                    description: "Successfully updated the provisioning configurations.",
                     level: AlertLevels.SUCCESS,
                     message: "Update successful"
                 }));
@@ -84,23 +90,38 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: "An error occurred while the advanced configurations.",
+                    description: "An error occurred while the provisioning configurations.",
                     level: AlertLevels.ERROR,
                     message: "Update error"
                 }));
             });
     };
 
+
+    useEffect(() => {
+        const userstore: SimpleUserStoreListItemInterface[] = [];
+        userstore.push({
+            id: "PRIMARY",
+            name: "PRIMARY"
+        });
+        getUserStoreList().then((response) => {
+            userstore.push(...response.data);
+            setUserStore(userstore);
+        }).catch(() => {
+            setUserStore(userstore);
+        });
+    }, []);
+
     return (
         <>
-            <div className="advanced-configuration-section">
-                <Heading as="h4">Advanced Configurations</Heading>
-                <Divider hidden/>
-                <AdvanceConfigurationsForm
-                    config={ advancedConfigurations }
-                    onSubmit={ handleAdvancedConfigFormSubmit }
+            {
+                userStore &&
+                <ProvisioningConfigurationsForm
+                    config={ provisioningConfigurations }
+                    onSubmit={ handleProvisioningConfigFormSubmit }
+                    useStoreList={ userStore }
                 />
-            </div>
+            }
         </>
     );
 };

@@ -382,11 +382,11 @@ export const updateAuthProtocolConfig = <T>(id: string, config: any,
  * Updates the application configuration.
  *
  * @param id Application ID
- * @param advancedConfigs Application's advanced configurations.
+ * @param configs Application configurations.
  */
-export const updateAdvanceConfigurations = (id: string, advancedConfigs: object): Promise<any> => {
+export const updateApplicationConfigurations = (id: string, configs: object): Promise<any> => {
     const requestConfig = {
-        data: advancedConfigs,
+        data: configs,
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,

@@ -23,3 +23,4 @@ export * from "./general-details-form";
 export * from "./inbound-saml-form";
 export * from "./inbound-ws-trust-form";
 export * from "./inbound-passive-sts-form";
+export * from "./provisioning-configuration-form";
