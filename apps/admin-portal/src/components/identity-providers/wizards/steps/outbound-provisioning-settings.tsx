@@ -22,7 +22,7 @@ import {
     OutboundProvisioningConnectorMetaInterface
 } from "../../../../models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { OutboundProvisioningConnectorFormFactory } from "../../forms/factories";
+import { OutboundProvisioningConnectorFormFactory } from "../../forms";
 
 /**
  * Proptypes for the outbound provisioning settings wizard form component.

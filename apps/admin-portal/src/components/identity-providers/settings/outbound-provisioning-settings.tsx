@@ -18,36 +18,35 @@
 
 import { ContentLoader, Heading } from "@wso2is/react-components";
 import {
-    FederatedAuthenticatorListItemInterface,
-    FederatedAuthenticatorListResponseInterface,
-    FederatedAuthenticatorMetaInterface,
-    SupportedAuthenticators
-} from "../../../models";
-import {
-    getFederatedAuthenticatorDetails,
-    getFederatedAuthenticatorMeta,
-    updateFederatedAuthenticator
+    getOutboundProvisioningConnector,
+    getOutboundProvisioningConnectorMetadata,
+    updateOutboundProvisioningConnector
 } from "../../../api";
+import {
+    OutboundProvisioningConnectorInterface,
+    OutboundProvisioningConnectorMetaInterface,
+    OutboundProvisioningConnectorsInterface
+} from "../../../models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
-import { AuthenticatorFormFactory } from "../forms";
 import { Divider } from "semantic-ui-react";
+import { OutboundProvisioningConnectorFormFactory } from "../forms";
 import { useDispatch } from "react-redux";
 
 /**
- * Proptypes for the identity providers settings component.
+ * Proptypes for the provisioning settings component.
  */
-interface IdentityProviderSettingsPropsInterface {
-    /**
+interface ProvisioningSettingsPropsInterface {
+    /**OutboundProvisioningConnectorsInterface
      * Currently editing idp id.
      */
     idpId: string;
 
     /**
-     * federatedAuthenticators of the IDP
+     * Outbound connector details of the IDP
      */
-    federatedAuthenticators: FederatedAuthenticatorListResponseInterface;
+    outboundConnectors: OutboundProvisioningConnectorsInterface;
     /**
      * Is the idp info request loading.
      */
@@ -59,49 +58,52 @@ interface IdentityProviderSettingsPropsInterface {
 }
 
 /**
- *  Identity Provider and advance settings component.
+ *  Identity Provider provisioning settings component.
  *
- * @param {IdentityProviderSettingsPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param { ProvisioningSettingsPropsInterface } props - Props injected to the component.
+ * @return { ReactElement }
  */
-export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPropsInterface> = (
-    props: IdentityProviderSettingsPropsInterface
+export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsInterface> = (
+    props: ProvisioningSettingsPropsInterface
 ): ReactElement => {
 
     const {
         idpId,
-        federatedAuthenticators,
+        outboundConnectors,
         isLoading,
         onUpdate
     } = props;
 
     const dispatch = useDispatch();
 
-    const [authenticatorMeta, setAuthenticatorMeta] = useState<FederatedAuthenticatorMetaInterface>({
-        authenticatorId: "",
+    const [connectorMeta, setConnectorMeta] = useState<OutboundProvisioningConnectorMetaInterface>({
+        blockingEnabled: false,
+        connectorId: "",
         displayName: "",
-        name: SupportedAuthenticators.NONE,
-        properties: []
+        name: "",
+        properties: [],
+        rulesEnabled: false
     });
 
-    const [authenticatorDetails, setAuthenticatorDetails] = useState<FederatedAuthenticatorListItemInterface>({
-        authenticatorId: "",
+    const [connectorDetails, setConnectorDetails] = useState<OutboundProvisioningConnectorInterface>({
+        blockingEnabled: false,
+        connectorId: "",
         isDefault: false,
         isEnabled: false,
-        name: "",
-        properties: []
+        properties: [],
+        rulesEnabled: false
     });
 
     /**
-     * Handles the inbound config form submit action.
+     * Handles the connector config form submit action.
      *
      * @param values - Form values.
      */
-    const handleInboundConfigFormSubmit = (values: any): void => {
-        updateFederatedAuthenticator(idpId, values)
+    const handleConnectorConfigFormSubmit = (values: OutboundProvisioningConnectorInterface): void => {
+        updateOutboundProvisioningConnector(idpId, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully updated the federated authenticator.",
+                    description: "Successfully updated the outbound provisioning connector.",
                     level: AlertLevels.SUCCESS,
                     message: "Update successful"
                 }));
@@ -120,7 +122,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while updating the federated authenticator.",
+                    description: "An error occurred while updating the outbound provisioning connector.",
                     level: AlertLevels.ERROR,
                     message: "Update error"
                 }));
@@ -128,10 +130,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     };
 
     useEffect(() => {
-        if (federatedAuthenticators.defaultAuthenticatorId) {
-            getFederatedAuthenticatorDetails(idpId, federatedAuthenticators.defaultAuthenticatorId)
+        if (outboundConnectors.defaultConnectorId) {
+            getOutboundProvisioningConnector(idpId, outboundConnectors.defaultConnectorId)
                 .then(response => {
-                    setAuthenticatorDetails(response);
+                    setConnectorDetails(response);
                 })
                 .catch(error => {
                     if (error.response && error.response.data && error.response.data.description) {
@@ -145,15 +147,15 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     }
 
                     dispatch(addAlert({
-                        description: "An error occurred retrieving the federated authenticator details.",
+                        description: "An error occurred retrieving the outbound provisioning connector details.",
                         level: AlertLevels.ERROR,
                         message: "Retrieval error"
                     }));
                 });
 
-            getFederatedAuthenticatorMeta(federatedAuthenticators.defaultAuthenticatorId)
+            getOutboundProvisioningConnectorMetadata(outboundConnectors.defaultConnectorId)
                 .then(response => {
-                    setAuthenticatorMeta(response);
+                    setConnectorMeta(response);
                 })
                 .catch(error => {
                     if (error.response && error.response.data && error.response.data.description) {
@@ -167,7 +169,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     }
 
                     dispatch(addAlert({
-                        description: "An error occurred retrieving the federated authenticator metadata.",
+                        description: "An error occurred retrieving the outbound provisioning connector metadata.",
                         level: AlertLevels.ERROR,
                         message: "Retrieval error"
                     }));
@@ -178,20 +180,19 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     return (
         (!isLoading)
             ? (
-                <div className="inbound-protocols-section">
+                <div className="default-provisioning-connector-section">
                     {
                         (
                             <>
-                                <Heading as="h4">{authenticatorDetails?.name}</Heading>
+                                <Heading as="h4">{connectorMeta?.name}</Heading>
                                 {
-                                    federatedAuthenticators.defaultAuthenticatorId ?
-                                        <AuthenticatorFormFactory
-                                            metadata={ authenticatorMeta }
-                                            initialValues={ authenticatorDetails }
-                                            onSubmit={ handleInboundConfigFormSubmit }
-                                            type={ authenticatorMeta?.name }
-                                        />
-                                        : null
+                                    outboundConnectors.defaultConnectorId &&
+                                    <OutboundProvisioningConnectorFormFactory
+                                        metadata={ connectorMeta }
+                                        initialValues={ connectorDetails }
+                                        onSubmit={ handleConnectorConfigFormSubmit }
+                                        type={ connectorMeta?.name }
+                                    />
                                 }
                                 <Divider hidden/>
                             </>

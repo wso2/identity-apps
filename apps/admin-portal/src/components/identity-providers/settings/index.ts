@@ -18,4 +18,5 @@
 
 export * from "./general-settings";
 export * from "./authenticator-settings";
+export * from "./outbound-provisioning-settings";
 export * from "./advance-settings";

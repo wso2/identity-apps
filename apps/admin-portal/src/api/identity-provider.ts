@@ -25,7 +25,7 @@ import {
     IdentityProviderListResponseInterface,
     IdentityProviderResponseInterface,
     IdentityProviderTemplateListInterface,
-    IdentityProviderTemplateListItemInterface,
+    IdentityProviderTemplateListItemInterface, OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../models";
 import { AxiosHttpClient } from "@wso2is/http";
@@ -389,6 +389,76 @@ export const getOutboundProvisioningConnectorMetadata = (connectorId: string): P
             }
 
             return Promise.resolve(response.data as OutboundProvisioningConnectorMetaInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Get outbound provisioning connector.
+ *
+ * @param idpId Identity provider ID.
+ * @param connectorId ID of the outbound provisioning connector.
+ * @return {Promise<any>} A promise containing the response.
+ */
+export const getOutboundProvisioningConnector = (idpId: string, connectorId: string): Promise<any> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/provisioning/outbound-connectors/"
+            + connectorId
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to get outbound provisioning connector for: "
+                    + connectorId));
+            }
+
+            return Promise.resolve(response.data as OutboundProvisioningConnectorInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Update a outbound provisioning connector of a specified IDP.
+ *
+ * @param idpId ID of the Identity Provider.
+ * @param connector Outbound provisioning connector.
+ * @return {Promise<any>} A promise containing the response.
+ */
+export const updateOutboundProvisioningConnector = (
+    idpId: string,
+    connector: OutboundProvisioningConnectorInterface
+): Promise<any> => {
+
+    const { connectorId, ...rest } = connector;
+
+    const requestConfig = {
+        data: rest,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId +
+            "/provisioning/outbound-connectors/" + connectorId
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update identity provider: " + idpId));
+            }
+            return Promise.resolve(response.data as IdentityProviderInterface);
         }).catch((error) => {
             return Promise.reject(error);
         });
