@@ -407,7 +407,7 @@ export interface InboundSCIMProvisioningConfigurationInterface {
 /**
  * Outbound Provisioning Configuration.
  */
-export interface OutboundProvisioningConfiguration {
+export interface OutboundProvisioningConfigurationInterface {
     idp: string;
     connector: string;
     blocking?: boolean;
@@ -420,7 +420,7 @@ export interface OutboundProvisioningConfiguration {
  */
 export interface ProvisioningConfigurationInterface {
     inboundProvisioning?: InboundSCIMProvisioningConfigurationInterface;
-    outboundProvisioningIdps?: OutboundProvisioningConfiguration[];
+    outboundProvisioningIdps?: OutboundProvisioningConfigurationInterface[];
 }
 
 /**

@@ -133,7 +133,6 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                             label="Provisioning userstore domain"
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder={ "Enter the userstore" }
                             type="dropdown"
                             default={ useStoreList && useStoreList.length > 0 && useStoreList[0].name }
                             value={ config?.inboundProvisioning?.provisioningUserstoreDomain }
