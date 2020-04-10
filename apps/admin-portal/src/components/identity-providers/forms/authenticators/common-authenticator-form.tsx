@@ -16,31 +16,18 @@
  * under the License.
  */
 
-import {
-    AuthenticatorFormPropsInterface,
-    AuthenticatorProperty,
-    FederatedAuthenticatorMetaPropertyInterface
-} from "../../../../models";
-import { Button, Grid } from "semantic-ui-react";
-import {
-    CommonConstants, FieldType,
-    getCheckboxField,
-    getConfidentialField,
-    getQueryParamsField,
-    getTextField,
-    getURLField
-} from "../helpers";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Forms } from "@wso2is/forms";
+import { CommonPluggableComponentForm } from "../components";
+import { CommonPluggableComponentFormPropsInterface } from "../../../../models";
 
 /**
  * Google authenticator configurations form.
  *
- * @param {AuthenticatorFormPropsInterface} props
+ * @param {CommonPluggableComponentFormPropsInterface} props
  * @return { ReactElement }
  * @constructor
  */
-export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsInterface> = (
+export const CommonAuthenticatorForm: FunctionComponent<CommonPluggableComponentFormPropsInterface> = (
     props
 ): ReactElement => {
 
@@ -52,115 +39,14 @@ export const CommonAuthenticatorForm: FunctionComponent<AuthenticatorFormPropsIn
         enableSubmitButton
     } = props;
 
-    const getInterpretedFormValue = (propertyMetadata: FederatedAuthenticatorMetaPropertyInterface, values: any,
-                                     eachProp: AuthenticatorProperty) => {
-        switch (propertyMetadata?.type.toUpperCase()) {
-            case CommonConstants.BOOLEAN: {
-                return values.get(eachProp?.key)?.includes(eachProp?.key);
-            }
-            default: {
-                return values.get(eachProp?.key)
-            }
-        }
-    };
-
-    /**
-     * Prepares form values for submit.
-     *
-     * @param values - Form values.
-     * @return {any} Sanitized form values.
-     */
-    const getUpdatedConfigurations = (values: any): any => {
-        const properties = initialValues?.properties.map((eachProp) => {
-            const propertyMetadata = metadata.properties?.find(metaProperty => metaProperty.key === eachProp.key);
-            return {
-                key: eachProp?.key,
-                value: getInterpretedFormValue(propertyMetadata, values, eachProp)
-            };
-        });
-        return {
-            ...initialValues,
-            properties: [...properties]
-        };
-    };
-
-    const getFieldType = (propertyMetadata: FederatedAuthenticatorMetaPropertyInterface): FieldType => {
-        if (propertyMetadata?.type?.toUpperCase() === CommonConstants.BOOLEAN) {
-            return FieldType.CHECKBOX;
-        } else if (propertyMetadata?.isConfidential) {
-            return FieldType.CONFIDENTIAL;
-        } else if (propertyMetadata?.key.toUpperCase().includes(CommonConstants.FIELD_COMPONENT_KEYWORD_URL)) {
-            // todo Need proper backend support to identity URL fields.
-            return FieldType.URL;
-        } else if (propertyMetadata?.key.toUpperCase().includes(
-            CommonConstants.FIELD_COMPONENT_KEYWORD_QUERY_PARAMETER)) {
-            // todo Need proper backend support to identity Query parameter fields.
-            return FieldType.QUERY_PARAMS;
-        }
-        return FieldType.TEXT;
-    };
-
-    const getPropertyField = (eachProp, propertyMetadata) => {
-        switch (getFieldType(propertyMetadata)) {
-            // TODO Identify URLs, and generate a Field which supports URL validation.
-            case FieldType.CHECKBOX : {
-                return getCheckboxField(eachProp, propertyMetadata);
-            }
-            case FieldType.CONFIDENTIAL : {
-                return getConfidentialField(eachProp, propertyMetadata);
-            }
-            case FieldType.URL : {
-                return getURLField(eachProp, propertyMetadata);
-            }
-            case FieldType.QUERY_PARAMS : {
-                return getQueryParamsField(eachProp, propertyMetadata);
-            }
-            default: {
-                return getTextField(eachProp, propertyMetadata);
-            }
-        }
-    };
-
-    const getAuthenticatorPropertyFields = (): ReactElement[] => {
-        return initialValues.properties?.map((eachProp: AuthenticatorProperty) => {
-            const propertyMetadata = metadata.properties?.find(metaProperty => metaProperty.key === eachProp.key);
-            return (
-                <Grid.Row columns={ 1 } key={ propertyMetadata?.displayOrder }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        {getPropertyField(eachProp, propertyMetadata)}
-                    </Grid.Column>
-                </Grid.Row>
-
-            )
-        });
-    };
-
-    const getSubmitButton = () => {
-        return (
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    <Button primary type="submit" size="small" className="form-button">
-                        Update
-                    </Button>
-                </Grid.Column>
-            </Grid.Row>
-        );
-    };
-
     return (
-        <Forms
-            onSubmit={ (values) => {
-                onSubmit(getUpdatedConfigurations(values));
-            } }
-            submitState={ triggerSubmit }
-        >
-            <Grid>
-                {getAuthenticatorPropertyFields().sort((a, b) => {
-                    return Number(a.key) - Number(b.key);
-                })}
-                {enableSubmitButton ? getSubmitButton() : null}
-            </Grid>
-        </Forms>
+        <CommonPluggableComponentForm 
+            onSubmit={ onSubmit } 
+            initialValues={ initialValues } 
+            enableSubmitButton={ enableSubmitButton }
+            triggerSubmit={ triggerSubmit }
+            metadata={ metadata }
+        />
     );
 };
 

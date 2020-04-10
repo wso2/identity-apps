@@ -18,11 +18,11 @@
 
 import { AppState, store } from "../../../store";
 import {
-    AuthenticatorProperty,
+    AuthenticatorPropertyInterface,
+    CommonPluggableComponentPropertyInterface,
     FederatedAuthenticatorMetaInterface,
     IdentityProviderInterface,
     OutboundProvisioningConnectorMetaInterface,
-    OutboundProvisioningConnectorProperty,
     ProvisioningInterface
 } from "../../../models";
 import { AuthenticatorSettings, GeneralSettings, WizardSummary } from "./steps";
@@ -428,7 +428,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      */
     const getValidatedAuthenticators = () => {
         const defaultAuthenticatorPropertiesFromMetadata = defaultAuthenticatorMetadata?.properties.map(
-            (eachProp): AuthenticatorProperty => {
+            (eachProp): AuthenticatorPropertyInterface => {
                 return {
                     key: eachProp?.key,
                     value: eachProp?.defaultValue
@@ -458,7 +458,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      */
     const getValidatedOutboundProvisioningConnectors = () => {
         const defaultConnectorPropertiesFromMetadata = defaultOutboundProvisioningConnectorMetadata?.properties.map(
-            (eachProp): OutboundProvisioningConnectorProperty => {
+            (eachProp): CommonPluggableComponentPropertyInterface => {
                 return {
                     key: eachProp?.key,
                     value: eachProp?.defaultValue
@@ -619,7 +619,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
 
     return (
         (
-            wizardSteps ? <Modal
+            wizardSteps && <Modal
                 open={ true }
                 className="wizard identity-provider-create-wizard"
                 dimmer="blurring"
@@ -669,7 +669,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                         </Grid.Row>
                     </Grid>
                 </Modal.Actions>
-            </Modal> : null
+            </Modal>
         )
     );
 };
