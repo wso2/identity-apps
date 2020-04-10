@@ -134,11 +134,11 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                         render: GeneralIdentityProviderSettingsTabPane
                     },
                     {
-                        menuItem: "Authenticator Configurations",
+                        menuItem: "Authentication",
                         render: AuthenticatorSettingsTabPane
                     },
                     {
-                        menuItem: "Outbound Provisioning Configurations",
+                        menuItem: "Outbound Provisioning",
                         render: OutboundProvisioningSettingsTabPane
                     },
                     {
