@@ -29,7 +29,6 @@ import {
 } from "@wso2is/react-components";
 import {
     Button,
-    Checkbox,
     Divider,
     Grid,
     Icon,
@@ -696,7 +695,6 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                         <Table singleLine compact>
                                             <Table.Header>
                                                 <Table.Row>
-                                                    <Table.HeaderCell/>
                                                     <Table.HeaderCell><strong>Domain</strong></Table.HeaderCell>
                                                     <Table.HeaderCell><strong>Name</strong></Table.HeaderCell>
                                                     <Table.HeaderCell/>
@@ -709,9 +707,6 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                         if (userGroup.length > 1) {
                                                             return (
                                                                 <Table.Row>
-                                                                    <Table.Cell>
-                                                                        <Checkbox checked disabled/>
-                                                                    </Table.Cell>
                                                                     {
                                                                         userGroup[0] == "Application" ? (
                                                                             <Table.Cell>

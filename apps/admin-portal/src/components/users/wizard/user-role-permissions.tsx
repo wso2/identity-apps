@@ -82,7 +82,6 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
                 <Heading as="h5">
                     Permissions for { role.displayName }
                 </Heading>
-                <Divider hidden/>
                 <Segment>
                     <div className="permissions-edit-container">
                         <PermissionList isEdit={ false } isRole roleObject={ role }/>
