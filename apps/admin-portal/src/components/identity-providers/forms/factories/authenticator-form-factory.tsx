@@ -17,8 +17,8 @@
  */
 
 import React, { FunctionComponent, ReactElement } from "react";
-import { FederatedAuthenticatorListItemInterface, FederatedAuthenticatorMetaInterface } from "../../../models";
-import { CommonAuthenticatorForm } from "./authenticators";
+import { FederatedAuthenticatorListItemInterface, FederatedAuthenticatorMetaInterface } from "../../../../models";
+import { CommonAuthenticatorForm } from "../authenticators";
 
 /**
  * Proptypes for the inbound form factory component.

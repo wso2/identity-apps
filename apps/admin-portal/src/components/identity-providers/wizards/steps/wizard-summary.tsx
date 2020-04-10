@@ -17,13 +17,13 @@
  */
 
 import { AppAvatar, Heading } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { Divider, Grid } from "semantic-ui-react";
 import {
     FederatedAuthenticatorMetaInterface,
     IdentityProviderInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../../../../models";
+import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import _ from "lodash";
 
 /**

@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { OutboundProvisioningConnectorInterface, OutboundProvisioningConnectorMetaInterface } from "../../../../models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { OutboundProvisioningConnectorInterface, OutboundProvisioningConnectorMetaInterface } from "../../../models";
-import { CommonOutboundProvisioningConnectorForm } from "./outbound-provisioning-connectors";
+import { CommonOutboundProvisioningConnectorForm } from "../outbound-provisioning-connectors";
 
 interface OutboundProvisioningConnectorFormFactoryInterface {
     metadata?: OutboundProvisioningConnectorMetaInterface;

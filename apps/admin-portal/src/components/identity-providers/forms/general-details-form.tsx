@@ -16,15 +16,16 @@
  * under the License.
  */
 
-import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
-import React, { FunctionComponent, useEffect, useState } from "react";
 import { Button, Grid } from "semantic-ui-react";
-import { IdentityProviderInterface } from "../../../models";
-import { FormValidation } from "@wso2is/validation";
+import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
+import { FormValidation } from "@wso2is/validation";
 import { getIdentityProviderList } from "../../../api";
+import { IdentityProviderInterface } from "../../../models";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../../../store/actions";
+
 
 /**
  * Proptypes for the identity provider general details form component.
@@ -73,14 +74,12 @@ interface GeneralDetailsFormPopsInterface {
  *
  * @param props GeneralDetailsFormPopsInterface.
  */
-export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterface> = (props): JSX.Element => {
+export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterface> = (props): ReactElement => {
 
     const {
-        idpId,
         name,
         description,
         imageUrl,
-        isPrimary,
         onSubmit,
         triggerSubmit,
         simplify,
@@ -136,10 +135,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     const updateConfigurations = (values: Map<string, FormValue>): IdentityProviderInterface => {
         return {
-            name: values.get("name").toString(),
             description: values.get("description").toString(),
             image: values.get("image").toString(),
-            isPrimary: !!values.get("isPrimary")
+            isPrimary: !!values.get("isPrimary"),
+            name: values.get("name").toString()
         };
     };
 

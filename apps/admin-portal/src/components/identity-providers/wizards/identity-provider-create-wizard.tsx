@@ -16,23 +16,7 @@
  * under the License.
  */
 
-import { Grid, Icon, Modal } from "semantic-ui-react";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import _ from "lodash";
-
-import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
-import { useTrigger } from "@wso2is/forms";
-
-import {
-    createIdentityProvider,
-    getFederatedAuthenticatorMetadata,
-    getOutboundProvisioningConnectorMetadata
-} from "../../../api";
-import { history } from "../../../helpers";
+import { AppState, store } from "../../../store";
 import {
     AuthenticatorProperty,
     FederatedAuthenticatorMetaInterface,
@@ -41,13 +25,25 @@ import {
     OutboundProvisioningConnectorProperty,
     ProvisioningInterface
 } from "../../../models";
-import { AppState, store } from "../../../store";
-import { IdentityProviderConstants } from "../../../constants";
-import { IdentityProviderWizardStepIcons } from "../../../configs";
-import { IdentityProviderManagementUtils } from "../../../utils";
-
 import { AuthenticatorSettings, GeneralSettings, WizardSummary } from "./steps";
+import {
+    createIdentityProvider,
+    getFederatedAuthenticatorMetadata,
+    getOutboundProvisioningConnectorMetadata
+} from "../../../api";
+import { Grid, Icon, Modal } from "semantic-ui-react";
+import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import _ from "lodash";
+import { addAlert } from "@wso2is/core/store";
+import { AlertLevels } from "@wso2is/core/models";
+import { history } from "../../../helpers";
+import { IdentityProviderConstants } from "../../../constants";
+import { IdentityProviderManagementUtils } from "../../../utils";
+import { IdentityProviderWizardStepIcons } from "../../../configs";
 import { OutboundProvisioningSettings } from "./steps";
+import { useTrigger } from "@wso2is/forms";
 
 /**
  * Proptypes for the identity provider creation wizard component.

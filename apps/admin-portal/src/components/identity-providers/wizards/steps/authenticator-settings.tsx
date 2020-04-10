@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import React, { FunctionComponent } from "react";
 import {
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface,
     IdentityProviderInterface
-} from "../../../../models/identity-provider";
-import { AuthenticatorFormFactory } from "../../forms/authenticator-form-factory";
+} from "../../../../models";
+import React, { FunctionComponent, ReactElement } from "react";
+import { AuthenticatorFormFactory } from "../../forms/factories";
 
 /**
  * Proptypes for the authenticator settings wizard form component.
@@ -38,11 +38,11 @@ interface AuthenticatorSettingsWizardFormPropsInterface {
  * Authenticator settings wizard form component.
  *
  * @param {AuthenticatorSettingsWizardFormPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
 export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizardFormPropsInterface> = (
     props
-): JSX.Element => {
+): ReactElement => {
 
     const {
         metadata,

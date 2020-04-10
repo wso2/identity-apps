@@ -16,5 +16,6 @@
  * under the License.
  */
 
-export * from "./identity-provider-list";
-export * from "./identity-provider-edit";
+export * from "./general-settings";
+export * from "./authenticator-settings";
+export * from "./advance-settings";
