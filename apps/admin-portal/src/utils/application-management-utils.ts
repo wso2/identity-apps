@@ -121,6 +121,10 @@ export class ApplicationManagementUtils {
         application: MainApplicationInterface, template: ApplicationTemplateListItemInterface
     ): MainApplicationInterface {
 
+        if (!template || !template.name) {
+            return application;
+        }
+
         return {
             ...application,
             description: template.name

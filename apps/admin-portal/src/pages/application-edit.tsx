@@ -210,7 +210,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
 
         setHelpPanelSamplesContentRequestLoadingStatus(true);
 
-        fetchFromURL<string | object>(helpPanelSelectedSample.docs)
+        fetchFromURL<any>(helpPanelSelectedSample.docs)
             .then((response) => {
                 if (isGithubApiURL(helpPanelSelectedSample.docs)) {
                     setHelpPanelSampleContent(response.body);
