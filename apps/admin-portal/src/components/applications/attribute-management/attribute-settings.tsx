@@ -142,6 +142,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     // Mapping operation.
     const [claimMapping, setClaimMapping] = useState<ExtendedClaimMappingInterface[]>([]);
     const [claimMappingOn, setClaimMappingOn] = useState(false);
+    // Form submitted with EmptyClaim Mapping
+    const [claimMappingError, setClaimMappingError] = useState(false);
 
     //Advance Settings.
     const [advanceSettingValues, setAdvanceSettingValues] = useState<AdvanceSettingsSubmissionInterface>();
@@ -166,7 +168,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const getClaims = () => {
         getAllLocalClaims(null)
             .then((response) => {
-                // setClaims(response.slice(0, 10));
                 setClaims(response);
             })
             .catch((error) => {
@@ -223,9 +224,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     };
 
     const createMapping = (claim: Claim) => {
-        const claimMappingList: ExtendedClaimMappingInterface[] = [...claimMapping];
+
         if (selectedDialect.localDialect) {
-            const claimMapping: ExtendedClaimMappingInterface = {
+            const claimMappingList: ExtendedClaimMappingInterface[] = [...claimMapping];
+            const newClaimMapping: ExtendedClaimMappingInterface = {
                 applicationClaim: "",
                 localClaim: {
                     displayName: claim.displayName,
@@ -234,11 +236,12 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 },
                 addMapping: false
             };
-            if (!claimMappingList.includes(claimMapping)) {
-                claimMappingList.push(claimMapping);
-                setClaimMapping(claimMappingList);
+            if (!(claimMappingList.filter((claimMap) => claimMap.localClaim.uri === claim.claimURI).length > 0)) {
+                claimMappingList.push(newClaimMapping);
             }
+            setClaimMapping(claimMappingList);
         }
+
     };
 
     const removeMapping = (claim: Claim) => {
@@ -265,10 +268,14 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     // Update mapping value
     const updateClaimMapping = (claimURI: string, mappedValue: string) => {
+        console.log(claimMapping);
         const claimMappingList = [...claimMapping];
+        console.log(claimMappingList);
         claimMappingList.forEach((mapping) => {
             if (mapping.localClaim.uri === claimURI) {
                 mapping.applicationClaim = mappedValue;
+                console.log(claimURI);
+                console.log(mappedValue);
             }
         });
         setClaimMapping(claimMappingList);
@@ -349,28 +356,19 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         const options: DropdownOptionsInterface[] = [];
 
         if (selectedDialect.localDialect) {
-            let claimMappingOn = false;
-            const claimMappingOption: DropdownOptionsInterface[] = [];
-            claimMapping.map((element: ExtendedClaimMappingInterface) => {
-                let option: DropdownOptionsInterface;
-                if (!isEmpty(element.applicationClaim)) {
-                    claimMappingOn = true;
-                    option = {
-                        key: element.localClaim.id,
-                        text: element.applicationClaim,
-                        value: element.applicationClaim,
-                    };
-                    claimMappingOption.push(option);
-                } else {
-                    option = {
-                        key: element.localClaim.id,
-                        text: element.localClaim.uri,
-                        value: element.localClaim.uri,
-                    };
-                    claimMappingOption.push(option);
-                }
-            });
             if (claimMappingOn) {
+                const claimMappingOption: DropdownOptionsInterface[] = [];
+                claimMapping.map((element: ExtendedClaimMappingInterface) => {
+                    let option: DropdownOptionsInterface;
+                    if (!isEmpty(element.applicationClaim)) {
+                        option = {
+                            key: element.localClaim.id,
+                            text: element.applicationClaim,
+                            value: element.applicationClaim,
+                        };
+                        claimMappingOption.push(option);
+                    }
+                });
                 return claimMappingOption;
             } else {
                 claims.map((element: ExtendedClaimInterface) => {
@@ -392,8 +390,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 options.push(option);
             });
         }
-        return options;
 
+        return options;
     };
 
     const updateValues = () => {
@@ -412,29 +410,50 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         return requestURI;
     });
 
-    const submitUpdateRequest = () => {
+    /**
+     *  Generate final claim mapping list.
+     */
+    const getFinalMappingList = ((): ExtendedClaimMappingInterface[] => {
         const claimMappingFinal = [];
+        let returnList = true;
+        setClaimMappingError(false);
         const createdClaimMappings: ExtendedClaimMappingInterface[] = [...claimMapping];
         createdClaimMappings.map((claimMapping) => {
             if (claimMapping.addMapping) {
-                const claimMappedObject: ExtendedClaimMappingInterface = {
-                    applicationClaim: claimMapping.applicationClaim,
-                    localClaim: {
-                        uri: claimMapping.localClaim.uri
-                    },
-                };
-                claimMappingFinal.push(claimMappedObject);
+                if (isEmpty(claimMapping.applicationClaim)) {
+                    setClaimMappingError(true)
+                    returnList = false;
+                } else {
+                    const claimMappedObject: ExtendedClaimMappingInterface = {
+                        applicationClaim: claimMapping.applicationClaim,
+                        localClaim: {
+                            uri: claimMapping.localClaim.uri
+                        },
+                    };
+                    claimMappingFinal.push(claimMappedObject);
+                }
             }
         });
+
+        if (returnList) {
+            return claimMappingFinal;
+        } else {
+            return null;
+        }
+    });
+
+    const submitUpdateRequest = (claimMappingFinal) => {
         const RequestedClaims = [];
         if (selectedDialect.localDialect) {
             selectedClaims.map((claim: ExtendedClaimInterface) => {
                 // If claim mapping is there then check whether claim is requested or not.
-                if (claimMappingFinal.length > 0) {
+                const claimMappingURI = claimMappingFinal.length > 0 ?
+                    getMapping(claim.claimURI, claimMappingFinal) : null;
+                if (claimMappingURI) {
                     if (claim.requested) {
                         const requestedClaim = {
                             claim: {
-                                uri: getMapping(claim.claimURI, claimMappingFinal)
+                                uri: claimMappingURI
                             },
                             mandatory: claim.mandatory
                         };
@@ -461,6 +480,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 RequestedClaims.push(requestedClaim);
             })
         }
+
+        // Generate Final Submit value
         const submitValue = {
             claimConfiguration: {
                 dialect: claimMappingFinal.length > 0 ? "CUSTOM" : "LOCAL",
@@ -487,7 +508,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         if (isEmpty(submitValue.claimConfiguration.claimMappings)) {
             delete submitValue.claimConfiguration.claimMappings;
         }
-
         if (isEmpty(submitValue.claimConfiguration.role.mappings)) {
             delete submitValue.claimConfiguration.role.mappings;
         }
@@ -532,10 +552,23 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     }, [selectedInboundProtocol, dialect]);
 
     useEffect(() => {
+
         if (advanceSettingValues) {
-            submitUpdateRequest();
+            const mappingList = getFinalMappingList();
+            if (mappingList !== null) {
+                submitUpdateRequest(mappingList);
+            }
         }
     }, [advanceSettingValues]);
+
+    /**
+     * Set initial value for claim mapping.
+     */
+    useEffect(() => {
+        if (claimConfigurations.dialect === "CUSTOM") {
+            setClaimMappingOn(true)
+        }
+    }, [claimConfigurations]);
 
     return (
         !isClaimRequestLoading && selectedDialect && !(isEmpty(claims) && isEmpty(externalClaims)) ?
@@ -558,6 +591,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     updateClaimMapping={ updateClaimMapping }
                     addToClaimMapping={ addToClaimMapping }
                     claimConfigurations={ claimConfigurations }
+                    claimMappingOn={ claimMappingOn }
+                    setClaimMappingOn={ setClaimMappingOn }
+                    claimMappingError={ claimMappingError }
                 />
                 <AdvanceAttributeSettings
                     dropDownOptions={ createDropdownOption() }
@@ -565,6 +601,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     setSubmissionValues={ setAdvanceSettingValues }
                     initialRole={ claimConfigurations.role }
                     initialSubject={ claimConfigurations.subject }
+                    claimMappingOn={ claimMappingOn }
                 />
                 <RoleMapping
                     submitState={ triggerAdvanceSettingFormSubmission }
