@@ -31,7 +31,7 @@ import { AddUserWizardSummary } from "./wizard-summary";
 import { useTrigger } from "@wso2is/forms";
 import { AddUserRole } from "../add-user-role";
 import { AddUserGroup } from "../add-user-groups";
-import { RolesInterface } from "../../../models";
+import { RolesInterface, AddUserWizardStateInterface } from "../../../models";
 import { RolePermissions } from "./user-role-permissions";
 
 interface AddUserWizardPropsInterface {
@@ -394,12 +394,12 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     /**
      * This function handles adding the user.
      */
-    const addUserBasic = (userInfo: any) => {
+    const addUserBasic = (userInfo: AddUserWizardStateInterface) => {
         let userName = "";
         let profileUrl = "";
         userInfo.domain !== "primary" ? userName = userInfo.domain + "/" + userInfo.userName : userName =
             userInfo.userName;
-        let userDetails = {};
+        let userDetails: object = {};
         const password = userInfo.newPassword;
 
         if (userGravatarUrl) {
@@ -539,7 +539,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         return _.merge(_.cloneDeep(summary));
     };
 
-    const handleWizardFormFinish = (user: any) => {
+    const handleWizardFormFinish = (user: AddUserWizardStateInterface) => {
         addUserBasic(user);
     };
 

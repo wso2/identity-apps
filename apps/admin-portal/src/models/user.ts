@@ -18,6 +18,7 @@
 
 import { LinkInterface } from "./application";
 import { MultiValue, Name } from "./profile";
+import { RolesInterface } from "./roles";
 
 /**
  * Captures meta details of the user.
@@ -70,22 +71,28 @@ export interface UserListInterface {
 /**
  *  User basic details for add wizard.
  */
-export interface UserBasicWizard {
+export interface AddUserWizardStateInterface {
     userName: string;
     email: string;
     firstName: string;
     lastName: string;
     domain: string;
     newPassword: string;
+    confirmPassword: string;
     passwordOption: string;
+    groups: RolesInterface[];
+    roles: RolesInterface[];
 }
 
-export const createEmptyUserBasicWizard = (): UserBasicWizard => ({
+export const createEmptyUserBasicWizard = (): AddUserWizardStateInterface => ({
     domain: "",
     email: "",
     firstName: "",
     lastName: "",
     newPassword: "",
     passwordOption: "",
-    userName: ""
+    userName: "",
+    confirmPassword: "",
+    groups: [],
+    roles: []
 });
