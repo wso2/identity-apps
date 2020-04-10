@@ -17,16 +17,13 @@
  */
 
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Grid, Input, List } from "semantic-ui-react";
+import { Button, Checkbox, Divider, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
 import {
-    Claim,
     ClaimConfigurationInterface,
     ClaimMappingInterface,
-    ExternalClaim,
     RequestedClaimConfigurationInterface
 } from "../../../models";
-import { AttributeItem } from "./attribute-item";
-import { EmptyPlaceholder, Heading, Hint } from "@wso2is/react-components";
+import { EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
 import { EmptyPlaceholderIllustrations } from "../../../configs";
 import {
     ExtendedClaimInterface,
@@ -34,7 +31,9 @@ import {
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "./attribute-settings";
-import { isEmpty } from "lodash";
+import { AttributeListItem } from "./attribute-list-item";
+import { AttributeSelectionWizard } from "./attribute-selection-wizard";
+import { AttributeSelectionWizardOtherDialect } from "./attirbute-selection-wizard-other-dialect";
 
 
 interface AttributeSelectionPropsInterface {
@@ -55,8 +54,16 @@ interface AttributeSelectionPropsInterface {
     updateClaimMapping: any;
     addToClaimMapping: any;
     claimConfigurations: ClaimConfigurationInterface;
+    claimMappingOn: boolean;
+    setClaimMappingOn: (mappingOn: boolean) => void;
+    claimMappingError: boolean;
 }
 
+/**
+ * Attribute selection component.
+ *
+ * @param props AttributeSelectionPropsInterface
+ */
 export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterface> = (
     props
 ): ReactElement => {
@@ -77,14 +84,22 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         getCurrentMapping,
         updateClaimMapping,
         addToClaimMapping,
-        claimConfigurations
+        claimConfigurations,
+        claimMappingOn,
+        setClaimMappingOn,
+        claimMappingError
     } = props;
 
-    //search operation
-    const [filteredClaims, setFilteredClaims] = useState<ExtendedClaimInterface[]>([]);
-    const [filteredExternalClaims, setFilteredExternalClaims] = useState<ExtendedExternalClaimInterface[]>([]);
-    const [searchOn, setSearchOn] = useState(false);
 
+    const [availableClaims, setAvailableClaims] = useState<ExtendedClaimInterface[]>([]);
+    const [availableExternalClaims, setAvailableExternalClaims] = useState<ExtendedExternalClaimInterface[]>([]);
+
+    const [filterSelectedClaims, setFilterSelectedClaims] = useState<ExtendedClaimInterface[]>([]);
+    const [filterSelectedExternalClaims, setFilterSelectedExternalClaims] = useState<ExtendedExternalClaimInterface[]>([]);
+
+    const [initializationFinished, setInitializationFinished] = useState(false);
+
+    const [showSelectionModal, setShowSelectionModal] = useState(false);
 
     const updateMandatory = (claimURI: string, mandatory: boolean) => {
         if (selectedDialect.localDialect) {
@@ -115,131 +130,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 }
             });
             setSelectedClaims(localClaims);
-        }
-    };
-
-    const selectAttribute = (claimURI) => {
-        const allAttributes = [...filteredClaims];
-        const oldAttributes = [...selectedClaims];
-        let currentClaim: Claim = null;
-        let sliceIndex = -1;
-        allAttributes.map((claim, index) => {
-            if (claim.claimURI === claimURI) {
-                sliceIndex = index;
-                currentClaim = claim;
-            }
-        });
-
-        if (sliceIndex > -1) {
-            allAttributes.splice(sliceIndex, 1);
-        }
-        if (currentClaim !== null) {
-            oldAttributes.push(currentClaim);
-            createMapping(currentClaim);
-        }
-        setSelectedClaims(oldAttributes);
-        setFilteredClaims(allAttributes);
-    };
-
-    const removeAttribute = (claimURI) => {
-        const allAttributes = [...filteredClaims];
-        const oldAttributes = [...selectedClaims];
-
-        let sliceIndex = -1;
-        let currentClaim: Claim = null;
-        // tslint:disable-next-line:no-shadowed-variable
-        oldAttributes.map((claim, index) => {
-            if (claim.claimURI === claimURI) {
-                sliceIndex = index;
-                currentClaim = claim;
-            }
-        });
-
-        if (sliceIndex > -1) {
-            oldAttributes.splice(sliceIndex, 1);
-        }
-        if (currentClaim !== null) {
-            allAttributes.push(currentClaim);
-            removeMapping(currentClaim);
-        }
-        setSelectedClaims(oldAttributes);
-        setFilteredClaims(allAttributes)
-    };
-
-    const selectExternalAttribute = (claimURI) => {
-        const allAttributes = [...filteredExternalClaims];
-        const oldAttributes = [...selectedExternalClaims];
-        let currentClaim: ExternalClaim = null;
-        let sliceIndex = -1;
-        allAttributes.map((claim, index) => {
-            if (claim.claimURI === claimURI) {
-                sliceIndex = index;
-                currentClaim = claim;
-            }
-        });
-
-        if (sliceIndex > -1) {
-            allAttributes.splice(sliceIndex, 1);
-        }
-        if (currentClaim !== null) {
-            oldAttributes.push(currentClaim);
-        }
-        setSelectedExternalClaims(oldAttributes);
-        setFilteredExternalClaims(allAttributes)
-    };
-
-    const removeExternalAttribute = (claimURI) => {
-        const allAttributes = [...externalClaims];
-        const oldAttributes = [...selectedExternalClaims];
-        let currentClaim: ExternalClaim = null;
-        let sliceIndex = -1;
-        // tslint:disable-next-line:no-shadowed-variable
-        oldAttributes.map((claim, index) => {
-            if (claim.claimURI === claimURI) {
-                sliceIndex = index;
-                currentClaim = claim;
-            }
-        });
-
-        if (sliceIndex > -1) {
-            oldAttributes.splice(sliceIndex, 1);
-        }
-        if (currentClaim !== null) {
-            allAttributes.push(currentClaim);
-        }
-        setSelectedExternalClaims(oldAttributes);
-        setFilteredExternalClaims(allAttributes)
-    };
-
-    const addAll = (): void => {
-        if (selectedDialect.localDialect) {
-            const allAttributes = [...filteredClaims];
-            const oldAttributes = [...selectedClaims];
-            const newAttributes = oldAttributes.concat(allAttributes);
-            setSelectedClaims(newAttributes);
-            setFilteredClaims([])
-        } else {
-            const allAttributes = [...filteredExternalClaims];
-            const oldAttributes = [...selectedExternalClaims];
-            const newAttributes = oldAttributes.concat(allAttributes);
-            setSelectedExternalClaims(newAttributes);
-            setFilteredExternalClaims([])
-        }
-    };
-
-    const removeAll = (): void => {
-        if (selectedDialect.localDialect) {
-            const allAttributes = [...filteredClaims];
-            const selectedAttributes = [...selectedClaims];
-            // const newAttributes = allAttributes.concat(oldAttributes);
-            setSelectedClaims([]);
-            setFilteredClaims(claims)
-        } else {
-            const allAttributes = [...filteredExternalClaims];
-            const selectedAttributes = [...selectedExternalClaims];
-            // const newAttributes = allAttributes.concat(oldAttributes);
-            setSelectedExternalClaims([]);
-            setFilteredExternalClaims(externalClaims)
         }
     };
 
@@ -312,10 +202,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const searchFilter = (changeValue) => {
 
         if (selectedDialect.localDialect) {
-            setFilteredClaims(claims.filter((item) =>
+            setFilterSelectedClaims(selectedClaims.filter((item) =>
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1))
         } else {
-            setFilteredExternalClaims(externalClaims.filter((item) =>
+            setFilterSelectedExternalClaims(selectedExternalClaims.filter((item) =>
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1))
         }
     };
@@ -328,14 +218,14 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const handleChange = (event) => {
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
-            setSearchOn(true);
+            // setSearchOn(true);
             searchFilter(changeValue);
         } else {
-            setSearchOn(false);
+            // setSearchOn(false);
             if (selectedDialect.localDialect) {
-                setFilteredClaims(claims)
+                setFilterSelectedClaims(selectedClaims)
             } else {
-                setFilteredExternalClaims(externalClaims)
+                setFilterSelectedExternalClaims(selectedExternalClaims)
             }
         }
     };
@@ -343,6 +233,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const setInitialValues = () => {
         // set local dialect values.
         if (selectedDialect.localDialect) {
+            setInitializationFinished(false);
             const initialRequest = getInitiallySelectedClaimsURI();
             const initialSelectedClaims: ExtendedClaimInterface[] = [];
             const initialAvailableClaims: ExtendedClaimInterface[] = [];
@@ -360,7 +251,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             });
             setSelectedClaims(initialSelectedClaims);
             setClaims(initialAvailableClaims);
-            setFilteredClaims(initialAvailableClaims);
+            setAvailableClaims(initialAvailableClaims);
 
             //Handle claim mapping initialization
             if (claimConfigurations.dialect === "CUSTOM") {
@@ -379,11 +270,25 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 });
                 setClaimMapping(initialClaimMappingList);
             } else {
+                const initialClaimMappingList: ExtendedClaimMappingInterface[] = [];
                 initialSelectedClaims.map((claim: ExtendedClaimInterface) => {
-                    createMapping(claim);
-                })
+                    // createMapping(claim);
+                    const claimMapping: ExtendedClaimMappingInterface = {
+                        applicationClaim: "",
+                        localClaim: {
+                            displayName: claim.displayName,
+                            id: claim.id,
+                            uri: claim.claimURI
+                        },
+                        addMapping: false
+                    };
+                    initialClaimMappingList.push(claimMapping);
+                });
+                setClaimMapping(initialClaimMappingList);
             }
+            setInitializationFinished(true);
         } else {
+            setInitializationFinished(false);
             const initialRequest = getInitiallySelectedClaimsURI();
             const initialSelectedClaims: ExtendedExternalClaimInterface[] = [];
             const initialAvailableClaims: ExtendedExternalClaimInterface[] = [];
@@ -401,202 +306,254 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             });
             setSelectedExternalClaims(initialSelectedClaims);
             setExternalClaims(initialAvailableClaims);
-            setFilteredExternalClaims(initialAvailableClaims);
+            setAvailableExternalClaims(initialAvailableClaims);
+            setInitializationFinished(true);
         }
     };
 
+    const getClaimName = (claimURI: string): string => {
+        if (typeof claimURI === "string") {
+            const claimArray = claimURI.split("/");
+            if (claimArray.length > 1) {
+                return claimArray[claimArray.length - 1];
+            } else {
+                return claimArray[0];
+            }
+        }
+        return claimURI;
+    };
+
+    const handleOpenSelectionModal = () => {
+        setShowSelectionModal(true);
+    };
+
+    const handelMapButtonClick = () => {
+        const mapping = claimMappingOn;
+        setClaimMappingOn(!mapping);
+    };
+
     useEffect(() => {
-        if (filteredClaims && filteredExternalClaims) {
-            setFilteredClaims([...claims]);
-            setFilteredExternalClaims([...externalClaims]);
+        if (claims) {
+            setAvailableClaims([...claims]);
+        }
+        if (externalClaims) {
+            setAvailableExternalClaims([...externalClaims]);
         }
     }, [claims, externalClaims]);
+
+
+    useEffect(() => {
+        if (selectedClaims) {
+            setFilterSelectedClaims([...selectedClaims]);
+        }
+        if (selectedExternalClaims) {
+            setFilterSelectedExternalClaims([...selectedExternalClaims]);
+        }
+    }, [selectedClaims, selectedExternalClaims]);
 
     useEffect(() => {
         setInitialValues();
     }, [claimConfigurations]);
 
+    const addSelectionModal = (() => {
+            if (selectedDialect.localDialect) {
+                return <AttributeSelectionWizard
+                    selectedClaims={ selectedClaims }
+                    setSelectedClaims={ setFilterSelectedClaims }
+                    setInitialSelectedClaims={ setSelectedClaims }
+                    showAddModal={ showSelectionModal }
+                    setShowAddModal={ setShowSelectionModal }
+                    availableClaims={ claims }
+                    setAvailableClaims={ setClaims }
+                    createMapping={ createMapping }
+                    removeMapping={ removeMapping }
+                />
+            }
+            return (
+
+                <AttributeSelectionWizardOtherDialect
+                    selectedExternalClaims={ selectedExternalClaims }
+                    setSelectedExternalClaims={ setFilterSelectedExternalClaims }
+                    setInitialSelectedExternalClaims={ setSelectedExternalClaims }
+                    showAddModal={ showSelectionModal }
+                    setShowAddModal={ setShowSelectionModal }
+                    availableExternalClaims={ externalClaims }
+                    setAvailableExternalClaims={ setExternalClaims }
+                />
+            )
+        }
+    );
+
 
     return (
-        !isEmpty(claimConfigurations) &&
+        initializationFinished &&
         <>
+            <Heading as="h5">
+                Attribute Selection
+            </Heading>
+            <Divider hidden/>
             <Grid.Row>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 6 }>
-                    <Heading as="h5">Attribute Selection</Heading>
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row className="claim-list-row">
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 6 } className="claim-list-columnn" id="style-1">
-                    <Heading as="h6">Available attributes</Heading>
-                    <Hint> Choose attributes to be add to the token </Hint>
-                    <Input
-                        icon="search"
-                        placeholder="Search Attribute"
-                        onChange={ handleChange }
-                        className={ "available-claim-search" }
-                    />
-                    <div className="claim-scrolling-list" id="claim-scroll">
-                        { selectedDialect.localDialect ?
-                            (
-                                filteredClaims.length > 0 ?
-                                    <List verticalAlign="middle" className="claim-list">
-                                        { filteredClaims.map((claim) => {
-                                            return (
-                                                <AttributeItem
-                                                    onClick={ selectAttribute }
-                                                    id={ claim.id }
-                                                    key={ claim.id }
-                                                    claimURI={ claim.claimURI }
-                                                    displayName={ claim.displayName }
-                                                    mappedURI={ claim.claimURI }
-                                                    claimSelected={ false }
-                                                    localDialect={ true }
-                                                    scope={ "Local" }
-                                                />
-                                            )
-                                        })
-                                        }
-                                    </List>
-                                    :
-                                    (searchOn ?
-                                            <EmptyPlaceholder
-                                                image={ EmptyPlaceholderIllustrations.emptySearch }
-                                                imageSize="tiny"
-                                                title={ "No Attributes found" }
-                                                subtitle={ ["Nothing found on the search"] }
-                                            />
-                                            :
-                                            <div className={ "empty-placeholder-center" }>
-                                                <EmptyPlaceholder
-                                                    subtitle={ ["There is no attribute available to be selected"] }
-                                                />
-                                            </div>
-                                    )
-                            ) :
-                            (
-                                <List verticalAlign="middle" className="claim-list">
-                                    { filteredExternalClaims.length > 0 ? filteredExternalClaims.map((claim) => {
-                                            return (
-                                                <AttributeItem
-                                                    onClick={ selectExternalAttribute }
-                                                    id={ claim.id }
-                                                    key={ claim.id }
-                                                    claimURI={ claim.claimURI }
-                                                    displayName={ claim.claimURI }
-                                                    mappedURI={ claim.mappedLocalClaimURI }
-                                                    claimSelected={ false }
-                                                    localDialect={ false }
-                                                    scope={ "Local" }
-                                                />
-                                            )
-                                        }) :
-                                        <EmptyPlaceholder
-                                            image={ EmptyPlaceholderIllustrations.emptyList }
-                                            imageSize="tiny"
-                                            title={ "No Attributes found" }
-                                            subtitle={ ["No Attribute is available to select"] }
-                                        />
-                                    }
-                                </List>
-                            )
-                        }
-                    </div>
-                </Grid.Column>
+                <Grid.Column computer={ (selectedDialect.localDialect) ? 10 : 8 }>
+                    {
+                        (selectedClaims.length > 0 || selectedExternalClaims.length > 0) ? (
+                            <Segment.Group fluid>
+                                <Segment className="user-role-edit-header-segment">
+                                    <Grid.Row>
+                                        <Table basic='very' compact>
+                                            <Table.Body>
+                                                <Table.Row>
+                                                    <Table.Cell>
+                                                        <Input
+                                                            icon={ <Icon name="search"/> }
+                                                            onChange={ handleChange }
+                                                            placeholder="Search attributes"
+                                                            floated="left"
+                                                            size="small"
+                                                        />
+                                                    </Table.Cell>
+                                                    { selectedDialect.localDialect &&
+                                                    (
+                                                        <Table.Cell textAlign="right">
+                                                            <Checkbox
+                                                                slider
+                                                                defaultChecked={ claimMappingOn }
+                                                                onChange={ handelMapButtonClick }
+                                                                label="Enable mapping"
+                                                            />
+                                                        </Table.Cell>
+                                                    )
+                                                    }
+                                                    <Table.Cell textAlign="right">
+                                                        <Button
+                                                            size="medium"
+                                                            icon="pencil"
+                                                            floated="right"
+                                                            onClick={ handleOpenSelectionModal }
+                                                        />
+                                                    </Table.Cell>
+                                                </Table.Row>
+                                            </Table.Body>
+                                        </Table>
+                                    </Grid.Row>
+                                    <Grid.Row>
+                                        { selectedDialect.localDialect ? (
+                                                <Table singleLine compact>
+                                                    <Table.Header>
+                                                        { claimMappingOn ?
+                                                            (
+                                                                <Table.Row>
+                                                                    <Table.HeaderCell>
+                                                                        <strong>Attribute</strong>
+                                                                    </Table.HeaderCell>
+                                                                    <Table.HeaderCell>
+                                                                        <strong>Application attribute</strong>
+                                                                    </Table.HeaderCell>
+                                                                    <Table.HeaderCell>
+                                                                        <strong> Requested </strong>
+                                                                    </Table.HeaderCell>
+                                                                    <Table.HeaderCell>
+                                                                        <strong>Mandatory</strong>
+                                                                    </Table.HeaderCell>
+                                                                </Table.Row>
+                                                            ) :
+                                                            (
+                                                                <Table.Row>
+                                                                    <Table.HeaderCell>
+                                                                        <strong>Attribute</strong>
+                                                                    </Table.HeaderCell>
+                                                                    <Table.HeaderCell>
+                                                                        <strong>Application attribute</strong>
+                                                                    </Table.HeaderCell>
+                                                                    <Table.HeaderCell>
+                                                                        <strong> Requested </strong>
+                                                                    </Table.HeaderCell>
+                                                                    <Table.HeaderCell>
+                                                                        <strong>Mandatory</strong>
+                                                                    </Table.HeaderCell>
+                                                                </Table.Row>
+                                                            )
+                                                        }
+                                                    </Table.Header>
+                                                    <Table.Body>
+                                                        {
+                                                            filterSelectedClaims?.map((claim) => {
+                                                                return (
+                                                                    <AttributeListItem
+                                                                        key={ claim.id }
+                                                                        claimURI={ claim.claimURI }
+                                                                        displayName={ claim.displayName }
+                                                                        mappedURI={ claim.claimURI }
+                                                                        localDialect={ true }
+                                                                        updateMapping={ updateClaimMapping }
+                                                                        addToMapping={ addToClaimMapping }
+                                                                        mapping={ getCurrentMapping(claim.claimURI) }
+                                                                        initialMandatory={ claim.mandatory }
+                                                                        initialRequested={ claim.requested }
+                                                                        selectMandatory={ updateMandatory }
+                                                                        selectRequested={ updateRequested }
+                                                                        claimMappingOn={ claimMappingOn }
+                                                                        claimMappingError={ claimMappingError }
+                                                                    />
+                                                                )
 
-                { selectedDialect.localDialect ?
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 9 } className="claim-list-columnn selected"
-                                 id="style-1" verticalAlign="middle">
-                        <Heading as="h6">Selected attributes</Heading>
-                        <Hint> These attributes can be present in the token </Hint>
-                        <div className="claim-scrolling-list selected" id="claim-scroll">
-                            { selectedClaims.length > 0 ?
-                                <List verticalAlign="middle" className="claim-list">
-                                    { selectedClaims.map((claim) => {
-                                        return (
-                                            <AttributeItem
-                                                onClick={ removeAttribute }
-                                                id={ claim.id }
-                                                key={ claim.id }
-                                                claimURI={ claim.claimURI }
-                                                displayName={ claim.displayName }
-                                                mappedURI={ claim.claimURI }
-                                                claimSelected={ true }
-                                                localDialect={ true }
-                                                updateMapping={ updateClaimMapping }
-                                                addToMapping={ addToClaimMapping }
-                                                scope={ "Local" }
-                                                mapping={ getCurrentMapping(claim.claimURI) }
-                                                initialMandatory={ claim.mandatory }
-                                                initialRequested={ claim.requested }
-                                                selectMandatory={ updateMandatory }
-                                                selectRequested={ updateRequested }
-                                            />
-                                        );
-                                    })
+                                                            })
+                                                        }
+                                                    </Table.Body>
+                                                </Table>) :
+                                            (<Table singleLine compact>
+                                                <Table.Header>
+                                                    <Table.Row>
+                                                        <Table.HeaderCell>
+                                                            <strong>Attribute</strong>
+                                                        </Table.HeaderCell>
+                                                        <Table.HeaderCell>
+                                                            <strong>Mandatory</strong>
+                                                        </Table.HeaderCell>
+                                                    </Table.Row>
+                                                </Table.Header>
+                                                <Table.Body>
+                                                    {
+                                                        filterSelectedExternalClaims?.map((claim) => {
+                                                            return (
+                                                                <AttributeListItem
+                                                                    key={ claim.id }
+                                                                    claimURI={ claim.claimURI }
+                                                                    displayName={ claim.claimURI }
+                                                                    mappedURI={ claim.mappedLocalClaimURI }
+                                                                    localDialect={ false }
+                                                                    initialMandatory={ claim.mandatory }
+                                                                    selectMandatory={ updateMandatory }
+                                                                />
+                                                            )
+                                                        })
+                                                    }
+                                                </Table.Body>
+                                            </Table>)
+                                        }
+                                    </Grid.Row>
+                                </Segment>
+                            </Segment.Group>
+                        ) : (
+                            <Segment>
+                                <EmptyPlaceholder
+                                    title="No attributes added"
+                                    subtitle={ [
+                                        "There are no attributes selected to the application at the moment."
+                                    ] }
+                                    action={
+                                        <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">
+                                            Add Attribute
+                                        </PrimaryButton>
                                     }
-                                </List> :
-                                <div className={ "empty-placeholder-center" }>
-                                    <EmptyPlaceholder
-                                        subtitle={ ["Select the attributes from available attribute list"] }
-                                    />
-                                </div> }
-                        </div>
-                    </Grid.Column> :
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 } className="claim-list-columnn selected"
-                                 id="style-1">
-                        <Heading as="h6">Selected attributes</Heading>
-                        <Hint> These attributes can be present in the token </Hint>
-                        <div className="claim-scrolling-list selected" id="claim-scroll">
-                            { selectedExternalClaims.length > 0 ?
-                                <List verticalAlign="middle" className="claim-list">
-                                    { selectedExternalClaims.map((claim) => {
-                                        return (
-                                            <AttributeItem
-                                                onClick={ removeExternalAttribute }
-                                                id={ claim.id }
-                                                key={ claim.id }
-                                                claimURI={ claim.claimURI }
-                                                displayName={ claim.claimURI }
-                                                mappedURI={ claim.mappedLocalClaimURI }
-                                                claimSelected={ true }
-                                                localDialect={ false }
-                                                selectMandatory={ updateMandatory }
-                                                initialMandatory={ claim.mandatory }
-                                                scope={ "Local" }
-                                            />
-                                        )
-                                    })
-                                    }
-                                </List> :
-                                <div className={ "empty-placeholder-center" }>
-                                    <EmptyPlaceholder
-                                        // image={ EmptyPlaceholderIllustrations.newList }
-                                        // imageSize="tiny"
-                                        // title={ "No Attributes Selected" }
-                                        subtitle={ ["Select the attributes from available attribute list"] }
-                                    />
-                                </div>
-                            }
-                        </div>
-                    </Grid.Column>
-                }
-            </Grid.Row>
-            <Grid.Row>
-                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
-                    <Button
-                        onClick={ addAll }
-                    >
-                        Select All
-                    </Button>
-                </Grid.Column>
-                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
-                    <Button
-                        onClick={ removeAll }
-                    >
-                        Remove All
-                    </Button>
+                                    image={ EmptyPlaceholderIllustrations.emptyList }
+                                    imageSize="tiny"
+                                />
+                            </Segment>
+                        )
+                    }
                 </Grid.Column>
             </Grid.Row>
+            { addSelectionModal() }
         </>
     );
 };

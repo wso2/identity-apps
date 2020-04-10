@@ -34,13 +34,15 @@ interface ItemTypeLabelPropsInterface extends LabelProps {
 interface TransferListItemPropsInterface extends TableRowProps {
     listItem: string;
     listItemId: string;
-    listItemIndex: number;
+    listItemIndex: number | string;
     listItemTypeLabel?: ItemTypeLabelPropsInterface;
     isItemChecked: boolean;
     handleItemCheck?: () => void;
     handleItemChange: () => void;
     showSecondaryActions: boolean;
     handleOpenPermissionModal?: () => void;
+    showListSubItem?: boolean;
+    listSubItem?: string;
 }
 
 /**
@@ -62,13 +64,15 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
         handleItemChange,
         handleItemClick,
         showSecondaryActions,
-        handleOpenPermissionModal
+        handleOpenPermissionModal,
+        showListSubItem,
+        listSubItem
     } = props;
 
     return (
-        <Table.Row>
-            <Table.Cell id={ listItemId } key={ listItemIndex } collapsing>
-                <Checkbox checked={ isItemChecked } onChange={ handleItemChange } onClick={ handleItemClick} />
+        <Table.Row key={ listItemIndex }>
+            <Table.Cell id={ listItemId } collapsing>
+                <Checkbox checked={ isItemChecked } onChange={ handleItemChange } onClick={ handleItemClick }/>
             </Table.Cell>
             {
                 listItemTypeLabel && (
@@ -85,10 +89,19 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
                     </Table.Cell>
                 )
             }
-            <Table.Cell id={ listItemId } key={ listItemIndex }>{ listItem }</Table.Cell>
+            {
+                showListSubItem ?
+                    (
+                        <Table.Cell id={ listItemId }>
+                            <div>{ listItem }</div>
+                            <div className={ "transfer-list-sub-content" }>{ listSubItem }</div>
+                        </Table.Cell>
+                    ) :
+                    (<Table.Cell id={ listItemId }> { listItem } </Table.Cell>)
+            }
             {
                 showSecondaryActions && (
-                    <Table.Cell key={ listItemId } collapsing>
+                    <Table.Cell collapsing>
                         <Popup
                             inverted
                             basic
@@ -106,4 +119,8 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
             }
         </Table.Row>
     );
+};
+
+TransferListItem.defaultProps = {
+    showListSubItem: false
 };
