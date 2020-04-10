@@ -268,14 +268,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     // Update mapping value
     const updateClaimMapping = (claimURI: string, mappedValue: string) => {
-        console.log(claimMapping);
         const claimMappingList = [...claimMapping];
-        console.log(claimMappingList);
         claimMappingList.forEach((mapping) => {
             if (mapping.localClaim.uri === claimURI) {
                 mapping.applicationClaim = mappedValue;
-                console.log(claimURI);
-                console.log(mappedValue);
             }
         });
         setClaimMapping(claimMappingList);
