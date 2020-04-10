@@ -20,7 +20,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { Field, Forms } from "@wso2is/forms";
 import { Divider, Grid } from "semantic-ui-react";
 import { Heading, Hint } from "@wso2is/react-components";
-import { AdvanceSettingsSubmissionInterface } from "./attribute-settings";
+import { DropdownOptionsInterface } from "./attribute-settings";
 import { RoleConfigInterface, SubjectConfigInterface } from "../../../models";
 
 interface AdvanceAttributeSettingsPropsInterface {
@@ -29,6 +29,7 @@ interface AdvanceAttributeSettingsPropsInterface {
     triggerSubmission: boolean;
     initialSubject: SubjectConfigInterface;
     initialRole: RoleConfigInterface;
+    claimMappingOn: boolean;
 }
 
 export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSettingsPropsInterface> = (
@@ -40,19 +41,34 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         setSubmissionValues,
         triggerSubmission,
         initialSubject,
-        initialRole
+        initialRole,
+        claimMappingOn
     } = props;
 
+    /**
+     * Check whether initial value is exist in dropdown list.
+     */
+    const getDefaultDropDownValue = ((options, checkValue): string => {
+        const dropDownOptions: DropdownOptionsInterface[] = options as DropdownOptionsInterface[];
+        let claimURI = "";
+        dropDownOptions.map((option) => {
+            if (option.value === checkValue) {
+                claimURI = checkValue
+            }
+        });
+        return claimURI;
+    });
+
     const submitValues = (values) => {
-        const settingValues: AdvanceSettingsSubmissionInterface = {
+        const settingValues = {
             subject: {
-                claim: values.get("subjectAttribute"),
+                claim: getDefaultDropDownValue(dropDownOptions, values.get("subjectAttribute")),
                 includeTenantDomain: values.get("subjectIncludeTenantDomain").includes("includeTenantDomain"),
                 includeUserDomain: values.get("subjectIncludeUserDomain").includes("includeUserDomain"),
                 useMappedLocalSubject: values.get("subjectUseMappedLocalSubject").includes("useMappedLocalSubject")
             },
             role: {
-                claim: values.get("roleAttribute"),
+                claim: getDefaultDropDownValue(dropDownOptions, values.get("roleAttribute")),
                 includeUserDomain: values.get("role").includes("includeUserDomain"),
                 mappings: []
             }
@@ -80,11 +96,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         <Field
                             name="subjectAttribute"
                             label="Subject attribute"
-                            required={ false }
-                            requiredErrorMessage="this is needed"
+                            required={ claimMappingOn ? true : false }
+                            requiredErrorMessage="Select the subject attribute"
                             type="dropdown"
-                            value={ initialSubject?.claim?.uri }
-                            placeholder="select the attribute"
+                            value={ initialSubject?.claim?.uri || dropDownOptions[0]?.value }
                             children={ dropDownOptions }
                         />
                         <Hint>
@@ -171,11 +186,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         <Field
                             name="roleAttribute"
                             label="Role attribute"
-                            required={ false }
-                            requiredErrorMessage="this is needed"
+                            required={ claimMappingOn ? true : false }
+                            requiredErrorMessage="Select the role attribute"
                             type="dropdown"
                             value={ initialRole?.claim?.uri }
-                            placeholder="select the attribute"
                             children={ dropDownOptions }
                         />
                         <Hint>
