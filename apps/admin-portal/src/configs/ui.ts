@@ -17,8 +17,6 @@
  */
 
 import {
-    WSTrustTemplateIllustration,
-    PassiveSTSTemplateIllustration,
     AlertIcon,
     AndroidLogo,
     AngularLogo,
@@ -68,6 +66,7 @@ import {
     OIDCLogo,
     OIDCWebAppTemplateIllustration,
     OpenIDLogo,
+    PassiveSTSTemplateIllustration,
     PinIcon,
     PlugIcon,
     ProvisionCapabilityIcon,
@@ -89,7 +88,8 @@ import {
     WebAppTemplateIllustration,
     WindowsTemplateIllustration,
     WSFedLogo,
-    WSTrustLogo
+    WSTrustLogo,
+    WSTrustTemplateIllustration
 } from "@wso2is/theme";
 
 type ImageType = string;
