@@ -260,7 +260,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                     <TransferList
                         isListEmpty={ !(filterTempAvailableClaims.length > 0) }
                         listType="unselected"
-                        listHeaders={ ["Attribute", "URI"] }
+                        listHeaders={ ["Attribute"] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectUnassignedClaimsAllClaimsChecked }
                     >
@@ -273,13 +273,10 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                                         listItem={ claim.displayName }
                                         listItemId={ claim.id }
                                         listItemIndex={ claim.claimURI }
-                                        listItemTypeLabel={ {
-                                            labelText: claim.claimURI,
-                                            labelColor: null,
-                                            name: "internal-label"
-                                        } }
                                         isItemChecked={ checkedUnassignedListItems.includes(claim) }
                                         showSecondaryActions={ false }
+                                        showListSubItem={ true }
+                                        listSubItem={ claim.claimURI }
                                     />
                                 )
                             })
@@ -288,7 +285,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                     <TransferList
                         isListEmpty={ !(filterTempSelectedClaims.length > 0) }
                         listType="selected"
-                        listHeaders={ ["Attribute", "URI"] }
+                        listHeaders={ ["Attribute"] }
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
                     >
@@ -302,13 +299,10 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                                         listItem={ claim.displayName }
                                         listItemId={ claim.id }
                                         listItemIndex={ claim.claimURI }
-                                        listItemTypeLabel={ {
-                                            labelText: claim.claimURI,
-                                            labelColor: null,
-                                            name: "application-label"
-                                        } }
                                         isItemChecked={ checkedAssignedListItems.includes(claim) }
                                         showSecondaryActions={ false }
+                                        showListSubItem={ true }
+                                        listSubItem={ claim.claimURI }
                                     />
                                 )
                             })
@@ -317,16 +311,16 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                 </TransferComponent>
             </Modal.Content>
             <Modal.Actions>
-                <PrimaryButton
-                    onClick={ updateSelectedClaims }
-                >
-                    Save
-                </PrimaryButton>
                 <LinkButton
                     onClick={ handleAttributeModal }
                 >
                     Cancel
                 </LinkButton>
+                <PrimaryButton
+                    onClick={ updateSelectedClaims }
+                >
+                    Save
+                </PrimaryButton>
             </Modal.Actions>
         </Modal>
     )

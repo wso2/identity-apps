@@ -250,7 +250,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
                     <TransferList
                         isListEmpty={ !(filterTempAvailableClaims.length > 0) }
                         listType="unselected"
-                        listHeaders={ ["Attribute", "Local Attribute"] }
+                        listHeaders={ ["Attribute"] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectUnassignedClaimsAllClaimsChecked }
                     >
@@ -263,11 +263,6 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
                                         listItem={ claim.claimURI }
                                         listItemId={ claim.id }
                                         listItemIndex={ claim.claimURI }
-                                        listItemTypeLabel={ {
-                                            labelText: getClaimName(claim.mappedLocalClaimURI),
-                                            labelColor: null,
-                                            name: "internal-label"
-                                        } }
                                         isItemChecked={ checkedUnassignedListItems.includes(claim) }
                                         showSecondaryActions={ false }
                                     />
@@ -278,7 +273,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
                     <TransferList
                         isListEmpty={ !(filterTempSelectedClaims.length > 0) }
                         listType="selected"
-                        listHeaders={ ["Attribute", "Local Attribute"] }
+                        listHeaders={ ["Attribute"] }
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
                     >
@@ -292,11 +287,6 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
                                         listItem={ claim.claimURI }
                                         listItemId={ claim.id }
                                         listItemIndex={ claim.claimURI }
-                                        listItemTypeLabel={ {
-                                            labelText: getClaimName(claim.mappedLocalClaimURI),
-                                            labelColor: null,
-                                            name: "application-label"
-                                        } }
                                         isItemChecked={ checkedAssignedListItems.includes(claim) }
                                         showSecondaryActions={ false }
                                     />
@@ -307,16 +297,16 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
                 </TransferComponent>
             </Modal.Content>
             <Modal.Actions>
-                <PrimaryButton
-                    onClick={ updateSelectedClaims }
-                >
-                    Save
-                </PrimaryButton>
                 <LinkButton
                     onClick={ handleAttributeModal }
                 >
                     Cancel
                 </LinkButton>
+                <PrimaryButton
+                    onClick={ updateSelectedClaims }
+                >
+                    Save
+                </PrimaryButton>
             </Modal.Actions>
         </Modal>
     )
