@@ -77,5 +77,5 @@ export interface GithubRepoInterface {
 export type GithubRepoCategoryTypes = "SAML Web Application"
     | "Single Page Application"
     | "OIDC Web Application"
-    | "Windows Application"
+    | "Windows Desktop Application"
     | "Mobile Application";

@@ -117,7 +117,7 @@ export const helpPanelMetadata: HelpPanelMetadataInterface = {
                     displayName: ".NET",
                     image: "dotNet",
                     repo: {
-                        category: [ "Windows Application" ],
+                        category: [ "Windows Desktop Application" ],
                         owner: {
                             login: "wso2-extensions",
                             avatar: "https://avatars0.githubusercontent.com/u/17171218?v=4"
@@ -292,7 +292,7 @@ export const helpPanelMetadata: HelpPanelMetadataInterface = {
                     url: "https://github.com/wso2/identity-apps/tree/master/modules/authentication"
                 },
                 {
-                    category: [ "OIDC Web Application", "Windows Application" ],
+                    category: [ "OIDC Web Application", "Windows Desktop Application" ],
                     owner: {
                         login: "wso2-extensions",
                         avatar: "https://avatars0.githubusercontent.com/u/17171218?v=4"
