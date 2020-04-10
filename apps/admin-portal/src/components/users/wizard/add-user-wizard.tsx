@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { addUser, addUserRole, getRolesList } from "../../../api";
-import { ApplicationWizardStepIcons } from "../../../configs";
+import { UserWizardStepIcons } from "../../../configs";
 import { AlertLevels } from "../../../models";
 import { addAlert } from "../../../store/actions";
 import { AddUser } from "../add-user";
@@ -31,7 +31,10 @@ import { AddUserWizardSummary } from "./wizard-summary";
 import { useTrigger } from "@wso2is/forms";
 import { AddUserRole } from "../add-user-role";
 import { AddUserGroup } from "../add-user-groups";
-import { RolesInterface } from "../../../models/roles";
+import { RolesInterface } from "../../../models";
+import { RolePermissions } from "./user-role-permissions";
+import {boolean} from "@storybook/addon-knobs";
+import {string} from "prop-types";
 
 interface AddUserWizardPropsInterface {
     closeWizard: () => void;
@@ -100,8 +103,36 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const [ applicationRoles, setApplicationRoles ] = useState<RolesInterface[]>([]);
     const [ internalRoles, setInternalRoles ] = useState<RolesInterface[]>([]);
-    const [ isInternalRolesSet, setIsInternalRolesSet ] = useState(false);
-    const [ isApplicationRolesSet, setIsApplicationRolesSet ] = useState(false);
+    const [ isInternalRolesSet, setIsInternalRolesSet ] = useState<boolean>(false);
+    const [ isApplicationRolesSet, setIsApplicationRolesSet ] = useState<boolean>(false);
+
+    const [ viewGroupPermissions, setViewGroupPermissions ] = useState<boolean>(false);
+    const [ selectedGroupId, setSelectedGroupId ] = useState<string>();
+    const [ isGroupSelected, setGroupSelection ] = useState<boolean>(false);
+
+    const [ viewRolePermissions, setViewRolePermissions ] = useState<boolean>(false);
+    const [ selectedRoleId,  setSelectedRoleId ] = useState<string>();
+    const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (!selectedGroupId) {
+            return;
+        }
+
+        if (isGroupSelected) {
+            setViewGroupPermissions(true);
+        }
+    }, [ isGroupSelected ]);
+
+    useEffect(() => {
+        if (!selectedRoleId) {
+            return;
+        }
+
+        if (isRoleSelected) {
+            setViewRolePermissions(true);
+        }
+    }, [ isRoleSelected ]);
 
     useEffect(() => {
         if (applicationRoles.length === 0) {
@@ -156,6 +187,26 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 setGroupsList(response.data.Resources);
                 setInitialGroupList(response.data.Resources);
             });
+    };
+
+    const handleViewGroupPermission = () => {
+        setViewGroupPermissions(!viewGroupPermissions);
+        setGroupSelection(false);
+    };
+
+    const handleGroupIdSet = (groupId) => {
+        setSelectedGroupId(groupId);
+        setGroupSelection(true);
+    };
+
+    const handleViewRolePermission = () => {
+        setViewRolePermissions(!viewRolePermissions);
+        setRoleSelection(false);
+    };
+
+    const handleRoleIdSet = (roleId) => {
+        setSelectedRoleId(roleId);
+        setRoleSelection(true);
     };
 
     const handleRoleListChange = (roleList) => {
@@ -481,51 +532,57 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
                 />
             ),
-            icon: ApplicationWizardStepIcons.general,
+            icon: UserWizardStepIcons.general,
             title: t("devPortal:components.user.modals.addUserWizard.steps.basicDetails")
         },
         {
             content: (
-                <AddUserGroup
-                    triggerSubmit={ submitGroupList }
-                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
-                    initialValues={
-                        {
-                            initialGroupList: initialGroupList,
-                            groupList: groupList,
-                            tempGroupList: tempGroupList,
-                            initialTempGroupList: initialTempGroupList
-                        }
-                    }
-                    handleGroupListChange={ (groups) => handleGroupListChange(groups) }
-                    handleTempListChange={ (groups) => handleAddedGroupListChange(groups) }
-                    handleInitialTempListChange={ (groups) => handleAddedGroupInitialListChange(groups) }
-                    handleInitialGroupListChange={ (groups) => handleInitialGroupListChange(groups) }
-                />
+                viewGroupPermissions
+                     ? <RolePermissions handleNavigateBack={ handleViewGroupPermission } roleId={ selectedGroupId } />
+                     : <AddUserGroup
+                            triggerSubmit={ submitGroupList }
+                            onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
+                            initialValues={
+                                {
+                                    initialGroupList: initialGroupList,
+                                    groupList: groupList,
+                                    tempGroupList: tempGroupList,
+                                    initialTempGroupList: initialTempGroupList
+                                }
+                            }
+                            handleGroupListChange={ (groups) => handleGroupListChange(groups) }
+                            handleTempListChange={ (groups) => handleAddedGroupListChange(groups) }
+                            handleInitialTempListChange={ (groups) => handleAddedGroupInitialListChange(groups) }
+                            handleInitialGroupListChange={ (groups) => handleInitialGroupListChange(groups) }
+                            handleSetGroupId={ (groupId) => handleGroupIdSet(groupId) }
+                        />
             ),
-            icon: ApplicationWizardStepIcons.general,
+            icon: UserWizardStepIcons.groups,
             title: t("devPortal:components.user.modals.addUserWizard.steps.groups")
         },
         {
             content: (
-                <AddUserRole
-                    triggerSubmit={ submitRoleList }
-                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
-                    initialValues={
-                        {
-                            initialRoleList: initialRoleList,
-                            roleList: roleList,
-                            tempRoleList: tempRoleList,
-                            initialTempRoleList: initialTempRoleList
+                viewRolePermissions
+                ? <RolePermissions handleNavigateBack={ handleViewRolePermission } roleId={ selectedRoleId } />
+                : <AddUserRole
+                        triggerSubmit={ submitRoleList }
+                        onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
+                        initialValues={
+                            {
+                                initialRoleList: initialRoleList,
+                                roleList: roleList,
+                                tempRoleList: tempRoleList,
+                                initialTempRoleList: initialTempRoleList
+                            }
                         }
-                    }
-                    handleRoleListChange={ (roles) => handleRoleListChange(roles) }
-                    handleTempListChange={ (roles) => handleAddedListChange(roles) }
-                    handleInitialTempListChange={ (roles) => handleAddedRoleInitialListChange(roles) }
-                    handleInitialRoleListChange={ (roles) => handleInitialRoleListChange(roles) }
-                />
+                        handleRoleListChange={ (roles) => handleRoleListChange(roles) }
+                        handleTempListChange={ (roles) => handleAddedListChange(roles) }
+                        handleInitialTempListChange={ (roles) => handleAddedRoleInitialListChange(roles) }
+                        handleInitialRoleListChange={ (roles) => handleInitialRoleListChange(roles) }
+                        handleSetRoleId={ (roleId) => handleRoleIdSet(roleId) }
+                    />
             ),
-            icon: ApplicationWizardStepIcons.general,
+            icon: UserWizardStepIcons.roles,
             title: t("devPortal:components.user.modals.addUserWizard.steps.roles")
         },
         {
@@ -536,7 +593,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     summary={ generateWizardSummary() }
                 />
             ),
-            icon: ApplicationWizardStepIcons.general,
+            icon: UserWizardStepIcons.summary,
             title: t("devPortal:components.user.modals.addUserWizard.steps.summary")
         }
     ];

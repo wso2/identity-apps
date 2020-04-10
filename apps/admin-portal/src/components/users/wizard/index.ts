@@ -18,3 +18,4 @@
 
 export * from "./add-user-wizard";
 export * from "./wizard-summary";
+export * from "./user-role-permissions";

@@ -62,7 +62,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
         <>
             {
                 !isListEmpty ? (
-                <Table singleLine>
+                <Table>
                     {
                         listHeaders instanceof Array && (
                             <Table.Header>

@@ -316,7 +316,7 @@ export const devPortal: DevPortalNS = {
                             }
                         },
                         domain: {
-                            label: "User store",
+                            label: "Userstore",
                             placeholder: "Select user store",
                             validations: {
                                 empty: "User store name cannot be empty.",
@@ -388,12 +388,12 @@ export const devPortal: DevPortalNS = {
                 },
                 addUserWizard: {
                     title: "Add user",
-                    subTitle: "Follow the wizard steps to add the new user",
+                    subTitle: "Follow the steps to add the new user",
                     steps: {
                         title: "Fill the following details to create a new user.",
-                        basicDetails: "Basic user details",
-                        roles: "Assign user roles",
-                        groups: "Assign user groups",
+                        basicDetails: "Basic details",
+                        roles: "User roles",
+                        groups: "User groups",
                         summary: "Summary",
                     },
                     buttons: {
@@ -627,7 +627,7 @@ export const devPortal: DevPortalNS = {
                 options: {
                     header: "Advanced search",
                 },
-                placeholder: "Search by  user name",
+                placeholder: "Search by  username",
                 popups: {
                     clear: "Clear search",
                     dropdown: "Show options"

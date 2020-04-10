@@ -100,7 +100,7 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
     
     return (
         <div className="permissions-edit-container">
-            <PermissionList isEdit onSubmit={ onPermissionUpdate } roleObject={ roleObject } />
+            <PermissionList isEdit isRole onSubmit={ onPermissionUpdate } roleObject={ roleObject } />
         </div>
     )
 }

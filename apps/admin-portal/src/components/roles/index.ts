@@ -18,3 +18,4 @@
 
 export * from "./role-list";
 export * from "./roles-search";
+export * from "./create-role-wizard"

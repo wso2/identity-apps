@@ -310,7 +310,7 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     return (
         <PageLayout
             title="Users"
-            description="Create and manage users, user access and user profiles."
+            description="Create and manage users, user access, and user profiles."
             showBottomDivider={ true }
         >
             <ListLayout
