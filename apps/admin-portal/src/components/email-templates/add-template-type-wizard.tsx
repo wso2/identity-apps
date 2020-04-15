@@ -39,13 +39,13 @@ export const EmailTemplateTypeWizard: FunctionComponent<any> = (props: any): Rea
             />
         ),
         icon: ApplicationWizardStepIcons.general,
-        title: "Basic Details"
+        title: "Template Type"
     }]
 
     return (
         <Modal
             open={ true }
-            className="wizard create-role-wizard"
+            className="wizard create-template-type-wizard"
             dimmer="blurring"
             size="small"
             onClose={ () => { console.log() } }
@@ -53,11 +53,14 @@ export const EmailTemplateTypeWizard: FunctionComponent<any> = (props: any): Rea
             closeOnEscape={ false }
         >
             <Modal.Header className="wizard-header">
-                Create Role
-                <Heading as="h6">Create a New Role in the System with Specific Permissions.</Heading>
+                Create Email Template Type
+                <Heading as="h6">Create a new Email Template Type in the system.</Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
-                <Steps.Group header="Fill the following mandatory details of the new role." current={ currentStep }>
+                <Steps.Group 
+                    header="Fill the following mandatory details of the new template type." 
+                    current={ currentStep }
+                >
                     { WIZARD_STEPS.map((step, index) => (
                         <Steps.Step
                             key={ index }
