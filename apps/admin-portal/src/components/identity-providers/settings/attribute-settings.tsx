@@ -16,9 +16,18 @@
  * under the License.
  */
 
-import { ContentLoader } from "@wso2is/react-components";
-import { IdentityProviderRolesInterface } from "../../../models";
-import React, { FunctionComponent, ReactElement } from "react";
+import { Button, Divider, Grid } from "semantic-ui-react";
+import { Heading, Hint } from "@wso2is/react-components";
+import {
+    IdentityProviderRoleMappingInterface,
+    RoleListInterface,
+    RolesInterface
+} from "../../../models";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { addAlert } from "@wso2is/core/dist/src/store";
+import { AlertLevels } from "@wso2is/core/dist/src/models";
+import { DynamicField } from "../../claims";
+import { getRolesList } from "../../../api";
 import { useDispatch } from "react-redux";
 
 /**
@@ -39,7 +48,7 @@ interface IdentityProviderSettingsPropsInterface {
     /**
      * Roles of the IDP
      */
-    roles: IdentityProviderRolesInterface;
+    initialRoleMappings?: IdentityProviderRoleMappingInterface[];
 
     /**
      * Is the idp info request loading.
@@ -62,24 +71,118 @@ export const AttributeSettings: FunctionComponent<IdentityProviderSettingsPropsI
     props: IdentityProviderSettingsPropsInterface
 ): ReactElement => {
 
+    const [roleList, setRoleList] = useState<RolesInterface[]>();
+
     const {
         idpId,
         claims,
-        roles,
+        initialRoleMappings,
         isLoading,
         onUpdate
     } = props;
 
     const dispatch = useDispatch();
 
+    /**
+     * Filter out Application related and Internal roles
+     */
+    const getFilteredRoles = () => {
+        const filterRole: RolesInterface[] = roleList.filter(
+            (role) => {
+                return !(role.displayName.includes("Application/") || role.displayName.includes("Internal/"))
+            });
+
+        return filterRole.map(role => {
+            return {
+                id: role.displayName,
+                value: role.displayName
+            }
+        });
+    };
+
+    useEffect(() => {
+        getRolesList(null)
+            .then((response) => {
+                if (response.status === 200) {
+                    console.log(response)
+                    const allRole: RoleListInterface = response.data;
+                    setRoleList(allRole.Resources);
+                }
+            })
+            .catch((error) => {
+                dispatch(addAlert({
+                    description: "An error occurred while retrieving roles.",
+                    level: AlertLevels.ERROR,
+                    message: "Get Error"
+                }));
+            });
+    }, [initialRoleMappings]);
+
+    const onSubmit = (data) => {
+        console.log(data)
+    };
+
+    const updateValues = () => {
+        console.log("updating...")
+    };
+
     return (
-        (!isLoading)
-            ? (
-                <div className="inbound-protocols-section">
-                    <h2>Claims</h2>
-                    <h2>Roles</h2>
-                </div>
-            )
-            : <ContentLoader/>
+        <Grid className="claim-mapping">
+            <Grid.Row columns={ 2 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Heading as="h5">Claim Configuration</Heading>
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 2 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Divider />
+                    <Heading as="h5">Role Mapping</Heading>
+                    <Hint>Map local roles with the Identity Provider roles</Hint>
+                    <DynamicField
+                        data={
+                            initialRoleMappings ?
+                                initialRoleMappings.map(mapping => {
+                                    return {
+                                        key: mapping.localRole,
+                                        value: mapping.idpRole
+                                    }
+                                }) : []
+                        }
+                        keyType="dropdown"
+                        keyData={ roleList ? getFilteredRoles() : [] }
+                        keyName="Local Role"
+                        valueName="Identity Provider Role"
+                        keyRequiredMessage="Please enter the local role"
+                        valueRequiredErrorMessage="Please enter an IDP role to map to"
+                        duplicateKeyErrorMsg="This role is already mapped. Please select another role"
+                        submit={ true }
+                        update={ (data) => {
+                            if (data.length > 0) {
+                                const finalData: IdentityProviderRoleMappingInterface[] = data.map(mapping => {
+                                    return {
+                                        idpRole: mapping.value,
+                                        localRole: mapping.key
+                                    }
+                                });
+                                onSubmit(finalData);
+                            } else {
+                                onSubmit([]);
+                            }
+                        } }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
+                    <Button
+                        primary
+                        size="small"
+                        onClick={ updateValues }
+                    >
+                        Update
+                    </Button>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
     );
 };

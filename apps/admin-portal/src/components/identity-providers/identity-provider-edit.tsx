@@ -30,8 +30,8 @@ import React, {
     FunctionComponent,
     ReactElement
 } from "react";
+import { AttributeSettings } from "./settings";
 import { ResourceTab } from "@wso2is/react-components";
-import { AttributeSettings } from "./settings/attribute-settings";
 
 /**
  * Proptypes for the idp edit component.
@@ -99,7 +99,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             <AttributeSettings
                 idpId={ identityProvider.id }
                 claims={ identityProvider.claims }
-                roles={ identityProvider.roles }
+                initialRoleMappings={ identityProvider.roles.mappings }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
             />
