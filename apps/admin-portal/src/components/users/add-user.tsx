@@ -24,7 +24,8 @@ import {
     Grid,
     Message,
 } from "semantic-ui-react";
-import { getUserStoreList } from "../../api";
+import { getUsersList, getUserStoreList } from "../../api";
+import { generate } from "generate-password";
 
 /**
  * Proptypes for the add user component.
@@ -50,13 +51,65 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ passwordOption, setPasswordOption ] = useState(initialValues && initialValues.passwordOption);
+    const [ isUsernameValid, setIsUsernameValid ] = useState<boolean>(true);
+    const [ updatedUsername, setUpdatedUsername ] = useState<string>(initialValues?.userName);
+    const [ userStore, setUserStore ] = useState<string>("");
 
     const { t } = useTranslation();
+
+    /**
+     * The following useEffect is triggered when the username gets updated.
+     */
+    useEffect(() => {
+        setIsUsernameValid(false);
+        validateUsername(updatedUsername);
+    }, [ updatedUsername ]);
+
+    /**
+     * The following useEffect is triggered when the username gets updated.
+     */
+    useEffect(() => {
+        setIsUsernameValid(false);
+        validateUsername(updatedUsername);
+    }, [ userStore ]);
+
+    /**
+     * Fetch the list of available user stores.
+     */
+    useEffect(() => {
+        getUserStores();
+    }, []);
+
 
     const passwordOptions = [
         { label: "Invite user to set password", value: "askPw" },
         { label: "Set user password", value: "createPw" },
     ];
+
+    const validateUsername = (username: string) => {
+        getUsersList(null, null, "userName eq " + username, null, userStore)
+            .then((response) => {
+                setIsUsernameValid(response?.totalResults === 0);
+            });
+    };
+
+    /**
+     * The following function handles the change of the userstore.
+     *
+     * @param values
+     */
+    const handleUserStoreChange = (values) => {
+        setUserStore(values.get("domain").toString());
+    };
+
+    /**
+     * The following function handles the change of the username.
+     *
+     * @param values
+     */
+    const handleUserNameChange = (values) => {
+        setUpdatedUsername(values?.get("userName")?.toString());
+    };
 
     /**
      * The following function fetch the user store list and set it to the state.
@@ -83,13 +136,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
         setUserStoresList(storeOptions);
     };
-    
-    /**
-     * Fetch the list of available user stores.
-     */
-    useEffect(() => {
-        getUserStores();
-    }, []);
 
     const getFormValues = (values) => {
         return {
@@ -110,7 +156,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         if (passwordOption && passwordOption === "createPw") {
             return (
                 <>
-                    <Grid.Row columns={ 2 }>
+                    <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 hidePassword={ t("common:hidePassword") }
@@ -132,6 +178,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 value={ initialValues && initialValues.newPassword }
                             />
                         </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 hidePassword={ t("common:hidePassword") }
@@ -208,6 +256,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             ) }
                             required={ true }
                             value={ initialValues?.domain ? initialValues?.domain : userStoreOptions[0]?.value }
+                            listen={ handleUserStoreChange }
                         />
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -226,7 +275,14 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 "inputs.username.validations.empty"
                             ) }
                             type="text"
+                            validation={ (value: string, validation: Validation) => {
+                                if (isUsernameValid === false) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push("A user already exists with this username.");
+                                }
+                            } }
                             value={ initialValues && initialValues.userName }
+                            listen={ handleUserNameChange }
                         />
                     </Grid.Column>
                 </Grid.Row>
