@@ -116,21 +116,25 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
      * Set the template once application templates list is available in redux.
      */
     useEffect(() => {
-        if (!_.isEmpty(applicationTemplates)
-            && applicationTemplates instanceof Array
-            && applicationTemplates.length > 0) {
+        if (applicationTemplates === undefined) {
 
-            setApplicationTemplate(applicationTemplates.find((template) => template.name === applicationTemplateName));
+            setApplicationTemplateRequestLoadingStatus(true);
+
+            ApplicationManagementUtils.getApplicationTemplates()
+                .finally(() => {
+                    setApplicationTemplateRequestLoadingStatus(false);
+                });
 
             return;
         }
 
-        setApplicationTemplateRequestLoadingStatus(true);
+        if (applicationTemplateName
+            && !_.isEmpty(applicationTemplates)
+            && applicationTemplates instanceof Array
+            && applicationTemplates.length > 0) {
 
-        ApplicationManagementUtils.getApplicationTemplates()
-            .finally(() => {
-                setApplicationTemplateRequestLoadingStatus(false);
-            });
+            setApplicationTemplate(applicationTemplates.find((template) => template.name === applicationTemplateName));
+        }
     }, [ applicationTemplateName, applicationTemplates ]);
 
     /**
