@@ -17,7 +17,7 @@
 */
 
 import React, { ReactElement, FunctionComponent, useState } from "react";
-import { Modal, Grid, Icon } from "semantic-ui-react";
+import { Modal, Grid } from "semantic-ui-react";
 import { Heading, Steps, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { AddEmailTemplateType } from "./add-template-type";
 import { ApplicationWizardStepIcons } from "../../configs";
@@ -51,14 +51,14 @@ export const EmailTemplateTypeWizard: FunctionComponent<any> = (props: any): Rea
                 <Heading as="h6">Create a New Role in the System with Specific Permissions.</Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
-                <Steps.Group header="Fill the following mandatory details of the new role." current={currentStep}>
-                    {WIZARD_STEPS.map((step, index) => (
+                <Steps.Group header="Fill the following mandatory details of the new role." current={ currentStep }>
+                    { WIZARD_STEPS.map((step, index) => (
                         <Steps.Step
-                            key={index}
-                            icon={step.icon}
-                            title={step.title}
+                            key={ index }
+                            icon={ step.icon }
+                            title={ step.title }
                         />
-                    ))}
+                    )) }
                 </Steps.Group>
             </Modal.Content>
             <Modal.Content className="content-container" scrolling>
@@ -66,11 +66,11 @@ export const EmailTemplateTypeWizard: FunctionComponent<any> = (props: any): Rea
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
-                    <Grid.Row column={1}>
-                        <Grid.Column mobile={8} tablet={8} computer={8}>
-                            <LinkButton floated="left" onClick={() => { console.log() } }>Cancel</LinkButton>
+                    <Grid.Row column={ 1 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            <LinkButton floated="left" onClick={ () => { console.log() } }>Cancel</LinkButton>
                         </Grid.Column>
-                        <Grid.Column mobile={8} tablet={8} computer={8}>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <PrimaryButton floated="right" onClick={ setFinishSubmit }>
                                 Finish
                             </PrimaryButton>
