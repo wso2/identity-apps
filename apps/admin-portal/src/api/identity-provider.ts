@@ -25,7 +25,8 @@ import {
     IdentityProviderListResponseInterface,
     IdentityProviderResponseInterface,
     IdentityProviderTemplateListInterface,
-    IdentityProviderTemplateListItemInterface, IdentityProviderTemplateListResponseInterface,
+    IdentityProviderTemplateListItemInterface,
+    IdentityProviderTemplateListResponseInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../models";
