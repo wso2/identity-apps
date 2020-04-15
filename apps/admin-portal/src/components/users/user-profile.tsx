@@ -285,9 +285,9 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
             <Divider hidden />
             <DangerZoneGroup sectionHeader="Danger Zone">
                 <DangerZone
-                    actionTitle="Delete user"
-                    header="Delete the user"
-                    subheader="This action is irreversible. Please proceed with caution."
+                    actionTitle="Delete User"
+                    header="Delete user"
+                    subheader="Once you delete a user, there is no going back. Please be certain."
                     onActionClick={ (): void => {
                         setShowDeleteConfirmationModal(true);
                         setDeletingUser(user);

@@ -172,9 +172,9 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     { !(config.deployment.doNotDeleteIdentityProviders.includes(name)) && (
                         <DangerZoneGroup sectionHeader="Danger Zone">
                             <DangerZone
-                                actionTitle="Delete identity provider"
-                                header="Delete the identity provider"
-                                subheader="This action is irreversible. Please proceed with caution."
+                                actionTitle="Delete Identity Provider"
+                                header="Delete identity provider"
+                                subheader="Once you delete an identity provider, there is no going back. Please be certain."
                                 onActionClick={ handleIdentityProviderDelete }
                             />
                         </DangerZoneGroup>

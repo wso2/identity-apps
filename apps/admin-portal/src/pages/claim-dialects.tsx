@@ -171,7 +171,7 @@ export const ClaimDialectsPage = (): ReactElement => {
             />
             <PageLayout
                 title="Claim Dialects"
-                description="View, edit and add claim dialects"
+                description="Create and manage claim dialects"
                 showBottomDivider={ true }
             >
                 {
@@ -255,7 +255,7 @@ export const ClaimDialectsPage = (): ReactElement => {
                                     setAddEditClaim(true);
                                 } }
                             >
-                                <Icon name="add" />Add External Dialect
+                                <Icon name="add" />New External Dialect
                             </PrimaryButton>
                         )
                     }
