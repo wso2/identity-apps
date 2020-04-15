@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -16,10 +16,23 @@
  * under the License.
  */
 
-import React, { ReactElement } from "react";
 
-export const AddEmailTemplate = (): ReactElement => {
-    return (
-        <div></div>
-    )
+export interface EmailTemplateType {
+    id: string;
+    displayName: string;
+    self: string;
+}
+
+export interface EmailTemplateDetails {
+    displayName: string;
+    templates: EmailTemplate[];
+    id: string;
+}
+
+export interface EmailTemplate {
+    contentType: string;
+    subject: string;
+    body: string;
+    footer: string;
+    id: string;
 }

@@ -175,6 +175,7 @@ export interface ServiceResourceEndpointsInterface {
     groups: string;
     claims: string;
     externalClaims: string;
+    emailTemplateType: string;
     identityProviders: string;
     issuer: string;
     jwks: string;
