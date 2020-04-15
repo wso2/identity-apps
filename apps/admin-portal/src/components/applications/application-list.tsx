@@ -209,8 +209,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                                 templateName
                                                 && applicationTemplates
                                                 && applicationTemplates instanceof Array
-                                                && applicationTemplates.find(
-                                                    (template) => template.name === templateName)
+                                                && applicationTemplates
+                                                    .find((template) => template.name === templateName)
                                                 && (
                                                     <Label size="mini" className="compact spaced-right">
                                                         { templateName }
