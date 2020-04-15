@@ -16,19 +16,24 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
-import { history } from "../helpers";
-import { PageLayout } from "../layouts";
-import { IdentityProviderTemplateListInterface, IdentityProviderTemplateListItemInterface } from "../models";
-import { IdentityProviderCreateWizard } from "../components/identity-providers/wizards";
-import { QuickStartIdentityProviderTemplates } from "../components/identity-providers/templates";
-import { getIdentityProviderList, getIdentityProviderTemplate, getIdentityProviderTemplateList } from "../api";
-import { useDispatch, useSelector } from "react-redux";
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
-import { AppState } from "../store";
-import { setAvailableAuthenticatorsMeta } from "../store/actions/identity-provider";
-import { IdPCapabilityIcons } from "../configs";
+import React, {FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState} from "react";
+import {history} from "../helpers";
+import {PageLayout} from "../layouts";
+import {
+    IdentityProviderTemplateListItemInterface, IdentityProviderTemplateListItemResponseInterface,
+    IdentityProviderTemplateListResponseInterface,
+    SupportedServices
+} from "../models";
+import {IdentityProviderCreateWizard} from "../components/identity-providers/wizards";
+import {QuickStartIdentityProviderTemplates} from "../components/identity-providers/templates";
+import {getIdentityProviderList, getIdentityProviderTemplate, getIdentityProviderTemplateList} from "../api";
+import {useDispatch, useSelector} from "react-redux";
+import {addAlert} from "@wso2is/core/store";
+import {AlertLevels} from "@wso2is/core/models";
+import {AppState} from "../store";
+import {setAvailableAuthenticatorsMeta} from "../store/actions/identity-provider";
+import {SupportedServicesInterface} from "../models/identity-provider";
+import {IdPCapabilityIcons} from "../configs";
 
 /**
  * Choose the application template from this page.
@@ -47,23 +52,41 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
     const availableAuthenticators = useSelector((state: AppState) => state.identityProvider.meta.authenticators);
 
     /**
-     * Populate available services in the template.
+     * Build supported services from the given service identifiers.
      *
-     * @param templates List of templates.
-     * @return List of templates populated with available services.
+     * @param serviceIdentifiers Set of service identifiers.
      */
-    const populateTemplatesWithServices = (templates: IdentityProviderTemplateListItemInterface[]):
-        IdentityProviderTemplateListItemInterface[] => {
-        return templates.map((template): IdentityProviderTemplateListItemInterface => {
-            return {
-                ...template,
-                services: template?.services?.map(service => {
-                    const predefinedLogo = Object.keys(IdPCapabilityIcons).find(key => key === service.logo);
+    const buildSupportedServices = (serviceIdentifiers: string[]): SupportedServicesInterface[] => {
+        return serviceIdentifiers?.map((serviceIdentifier: string): SupportedServicesInterface => {
+            switch (serviceIdentifier) {
+                case SupportedServices.AUTHENTICATION:
                     return {
-                        ...service,
-                        logo: predefinedLogo ? predefinedLogo : service.logo
+                        displayName: "Authentication Service",
+                        logo: IdPCapabilityIcons[SupportedServices.AUTHENTICATION],
+                        name: SupportedServices.AUTHENTICATION
                     }
-                })
+                case SupportedServices.PROVISIONING:
+                    return {
+                        displayName: "Provisioning Service",
+                        logo: IdPCapabilityIcons[SupportedServices.PROVISIONING],
+                        name: SupportedServices.PROVISIONING
+                    }
+            }
+        });
+    };
+
+    /**
+     * Interpret available templates from the response templates.
+     *
+     * @param templates List of response templates.
+     * @return List of templates.
+     */
+    const interpretAvailableTemplates = (templates: IdentityProviderTemplateListItemResponseInterface[]):
+        IdentityProviderTemplateListItemInterface[] => {
+        return templates?.map(eachTemplate => {
+            return {
+                ...eachTemplate,
+                services: buildSupportedServices(eachTemplate?.services)
             };
         });
     };
@@ -75,11 +98,12 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
     const getTemplateList = (): void => {
 
         getIdentityProviderTemplateList()
-            .then((response) => {
-                const templateList: IdentityProviderTemplateListInterface = response;
+            .then((response: IdentityProviderTemplateListResponseInterface) => {
                 // sort templateList based on display Order
-                templateList.templates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
-                setAvailableTemplates(populateTemplatesWithServices(templateList.templates));
+                response.templates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
+                const availableTemplates: IdentityProviderTemplateListItemInterface[] = interpretAvailableTemplates(
+                    response?.templates);
+                setAvailableTemplates(availableTemplates);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
