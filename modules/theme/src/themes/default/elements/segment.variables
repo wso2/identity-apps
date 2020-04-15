@@ -58,6 +58,7 @@
 @TransferComponentSegmentApplicationLabelBorderColor: #8E95B6;
 @TransferComponentSegmentInternalLabelBackgroundColor: #8DC1D4;
 @TransferComponentSegmentInternalLabelBorderColor: #7CB5CA;
+@TransferListSegmentHeight: 210px;
 
 /*************************************
     User edit section Variation
