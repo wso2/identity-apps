@@ -18,8 +18,13 @@
 
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { AppAvatar, ConfirmationModal, ResourceList, ResourceListActionInterface } from "@wso2is/react-components";
-import { ApplicationListInterface, ApplicationListItemInterface, ConfigReducerStateInterface } from "../../models";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import {
+    ApplicationListInterface,
+    ApplicationListItemInterface,
+    ApplicationTemplateListItemInterface,
+    ConfigReducerStateInterface
+} from "../../models";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { ApplicationManagementUtils } from "../../utils";
@@ -66,9 +71,31 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     const dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
+        (state: AppState) => state.application.templates);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
+    const [
+        isApplicationTemplateRequestLoading,
+        setApplicationTemplateRequestLoadingStatus
+    ] = useState<boolean>(false);
+
+    /**
+     * Fetch the application templates if list is not available in redux.
+     */
+    useEffect(() => {
+        if (applicationTemplates !== undefined) {
+            return;
+        }
+
+        setApplicationTemplateRequestLoadingStatus(true);
+
+        ApplicationManagementUtils.getApplicationTemplates()
+            .finally(() => {
+                setApplicationTemplateRequestLoadingStatus(false);
+            });
+    }, [ applicationTemplates ]);
 
     /**
      * Redirects to the applications edit page when the edit button is clicked.
@@ -178,11 +205,18 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                     itemHeader={ app.name }
                                     itemDescription={ (
                                         <>
-                                            { templateName && (
-                                                <Label size="mini" className="compact spaced-right">
-                                                    { templateName }
-                                                </Label>
-                                            ) }
+                                            {
+                                                templateName
+                                                && applicationTemplates
+                                                && applicationTemplates instanceof Array
+                                                && applicationTemplates
+                                                    .find((template) => template.name === templateName)
+                                                && (
+                                                    <Label size="mini" className="compact spaced-right">
+                                                        { templateName }
+                                                    </Label>
+                                                )
+                                            }
                                             { description }
                                         </>
                                     ) }

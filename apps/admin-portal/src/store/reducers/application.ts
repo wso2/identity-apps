@@ -27,7 +27,7 @@ const initialState: ApplicationReducerStateInterface = {
         inboundProtocols: [],
         protocolMeta: {}
     },
-    templates: []
+    templates: undefined
 };
 
 /**
