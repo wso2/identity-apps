@@ -77,14 +77,6 @@ export const EmailTemplates = (): ReactElement => {
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
-                rightActionPanel={
-                    (
-                        <PrimaryButton onClick={ () => { console.log() } }>
-                            <Icon name="add"/>
-                            Add Template Type
-                        </PrimaryButton>
-                    )
-                }
                 showPagination={ true }
                 totalPages={ Math.ceil(emailTemplateTypes?.length / listItemLimit) }
                 totalListSize={ emailTemplateTypes?.length }
