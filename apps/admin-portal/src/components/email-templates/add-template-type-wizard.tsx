@@ -28,9 +28,15 @@ export const EmailTemplateTypeWizard: FunctionComponent<any> = (props: any): Rea
     const [ currentStep, setCurrentWizardStep ] = useState<number>(0);
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
+    const handleFormSubmit = (values: any): void => {
+        //TODO handle form submit
+    }
+
     const WIZARD_STEPS = [{
         content: (
-            <AddEmailTemplateType />
+            <AddEmailTemplateType 
+                onSubmit={ (values) =>  handleFormSubmit(values) }
+            />
         ),
         icon: ApplicationWizardStepIcons.general,
         title: "Basic Details"

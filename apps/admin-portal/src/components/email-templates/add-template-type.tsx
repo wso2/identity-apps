@@ -17,9 +17,55 @@
 */
 
 import React, { ReactElement, FunctionComponent } from "react";
+import { Forms, Field } from "@wso2is/forms";
+import { Grid, GridRow, GridColumn } from "semantic-ui-react";
 
-export const AddEmailTemplateType: FunctionComponent<any> = (props: any): ReactElement => {
+/**
+ * Interface to capture role basics props.
+ */
+interface AddEmailTemplateTypeProps {
+    onSubmit: (values: any) => void;
+}
+
+export const AddEmailTemplateType: FunctionComponent<AddEmailTemplateTypeProps> = (
+    props: AddEmailTemplateTypeProps
+): ReactElement => {
+
+    const {
+        onSubmit
+    } = props;
+
+    /**
+     * Util method to collect form data for processing.
+     * 
+     * @param values - contains values from form elements
+     */
+    const getFormValues = (values: any): any => {
+        return {
+            templateType: values.get("templatetype").toString(),
+        };
+    };
+
     return (
-        <div></div>
+        <Forms
+            onSubmit={ (values) => {
+                onSubmit(getFormValues(values));
+            } }
+        >
+             <Grid>
+                <GridRow columns={ 2 }>
+                    <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            type="text"
+                            name="templatetype"
+                            label="Email Template Type"
+                            placeholder="Enter Template Type"
+                            required={ true }
+                            requiredErrorMessage="Template Type is required to proceed."
+                        />
+                    </GridColumn>
+                </GridRow>
+            </Grid>
+        </Forms>
     )
 }
