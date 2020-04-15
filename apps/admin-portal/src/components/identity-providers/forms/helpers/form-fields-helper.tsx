@@ -31,7 +31,8 @@ export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyI
             showPassword="Show Secret"
             hidePassword="Hide Secret"
             label={ propertyMetadata?.displayName }
-            name={ eachProp?.key }
+            name={ propertyMetadata?.key }
+            key={ propertyMetadata?.key }
             placeholder={ propertyMetadata?.description }
             required={ propertyMetadata?.isMandatory }
             requiredErrorMessage={ "This is required" }
@@ -41,10 +42,12 @@ export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyI
 };
 
 export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInterface,
-                                 propertyMetadata: CommonPluggableComponentMetaPropertyInterface): ReactElement => {
+                                 propertyMetadata: CommonPluggableComponentMetaPropertyInterface):
+    ReactElement => {
     return (
         <Field
-            name={ eachProp?.key }
+            name={ propertyMetadata?.key }
+            key={ propertyMetadata?.key }
             label={ propertyMetadata?.displayName }
             type="checkbox"
             required={ propertyMetadata?.isMandatory }
@@ -66,14 +69,14 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
                              propertyMetadata: CommonPluggableComponentMetaPropertyInterface): ReactElement => {
     return (
         <Field
-            name={ eachProp?.key }
+            name={ propertyMetadata?.key }
             label={ propertyMetadata?.displayName }
             required={ propertyMetadata?.isMandatory }
             requiredErrorMessage="This is required"
             placeholder={ propertyMetadata?.description }
             type="text"
             value={ eachProp?.value }
-            key={ eachProp?.key }
+            key={ propertyMetadata?.key }
         />
     );
 };
@@ -82,7 +85,7 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
                             propertyMetadata: CommonPluggableComponentMetaPropertyInterface): ReactElement => {
     return (
         <Field
-            name={ eachProp?.key }
+            name={ propertyMetadata?.key }
             label={ propertyMetadata?.displayName }
             required={ propertyMetadata?.isMandatory }
             requiredErrorMessage="This is required"
@@ -95,7 +98,7 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
             } }
             type="text"
             value={ eachProp?.value }
-            key={ eachProp?.key }
+            key={ propertyMetadata?.key }
         />
     );
 };
@@ -104,7 +107,7 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
                             propertyMetadata: CommonPluggableComponentMetaPropertyInterface): ReactElement => {
     return (
         <Field
-            name={ eachProp?.key }
+            name={ propertyMetadata?.key }
             label={ propertyMetadata?.displayName }
             required={ propertyMetadata?.isMandatory }
             requiredErrorMessage="This is required"
@@ -116,7 +119,7 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
             } }
             type="queryParams"
             value={ eachProp?.value }
-            key={ eachProp?.key }
+            key={ propertyMetadata?.key }
         />
     );
 };
@@ -170,7 +173,8 @@ export const getFieldType = (propertyMetadata: CommonPluggableComponentMetaPrope
  * @param propertyMetadata Property metadata of type {@link CommonPluggableComponentMetaPropertyInterface}.
  */
 export const getPropertyField = (property: CommonPluggableComponentPropertyInterface,
-                          propertyMetadata: CommonPluggableComponentMetaPropertyInterface): ReactElement => {
+                                 propertyMetadata: CommonPluggableComponentMetaPropertyInterface):
+    ReactElement => {
 
     switch (getFieldType(propertyMetadata)) {
         // TODO Identify URLs, and generate a Field which supports URL validation.

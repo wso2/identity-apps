@@ -262,6 +262,9 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                         (form.get(inputField.name) as string[]).includes(checkbox.value)
                                     }
                                     onChange={ (event: React.ChangeEvent<HTMLInputElement>, { value }) => {
+                                        if (inputField?.notifyOnChange) {
+                                            inputField.notifyOnChange(value.toString(), inputField.name);
+                                        }
                                         handleChangeCheckBox(value.toString(), inputField.name);
                                     } }
                                     onBlur={ (event: React.KeyboardEvent) => {

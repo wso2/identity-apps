@@ -17,13 +17,23 @@
  */
 
 import { Button, Grid } from "semantic-ui-react";
-import { CommonConstants, getPropertyField } from "../helpers";
+import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../helpers";
 import {
     CommonPluggableComponentFormPropsInterface,
+    CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../../models";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Forms } from "@wso2is/forms";
+import { PropertyFieldFactory } from "../factories/property-field-factory";
+import { ComplexField } from "./complex-field";
+
+interface SubPropertyController {
+    parentId: string;
+    disable: boolean;
+    setDisable: React.Dispatch<any>;
+}
+
 
 /**
  * Common pluggable connector configurations form.
@@ -42,6 +52,9 @@ export const CommonPluggableComponentForm: FunctionComponent<
         triggerSubmit,
         enableSubmitButton
     } = props;
+
+    const [ subPropertyControllers, setSubPropertyControllers ] = useState<SubPropertyController[]>([]);
+    const [ renderProps, setRenderProps ] = useState<boolean>(false);
 
     const interpretValueByType = (value: any, key: string, type: string) => {
 
@@ -76,19 +89,52 @@ export const CommonPluggableComponentForm: FunctionComponent<
         };
     };
 
-    const getComponentPropertyFields = (): ReactElement[] => {
+    /**
+     * Check whether provided property has supported sub properties. Sub properties are supported, only if the
+     * provided property is a checkbox.
+     *
+     * @param propertyMetadata Metadata of the property.
+     */
+    const isSupportedSubProperty = (propertyMetadata: CommonPluggableComponentMetaPropertyInterface): boolean => {
 
-        return initialValues?.properties?.map((eachProp: CommonPluggableComponentPropertyInterface) => {
-            const propertyMetadata = metadata?.properties?.find(metaProperty => metaProperty.key === eachProp.key);
-            return (
-                <Grid.Row columns={ 1 } key={ propertyMetadata?.displayOrder }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        { getPropertyField(eachProp, propertyMetadata) }
-                    </Grid.Column>
-                </Grid.Row>
+        return propertyMetadata?.subProperties?.length > 0 && getFieldType(propertyMetadata) === FieldType.CHECKBOX;
+    };
 
-            )
+    const getField = (eachPropertyMeta: CommonPluggableComponentMetaPropertyInterface, 
+                      property: CommonPluggableComponentPropertyInterface): ReactElement => {
+
+        return (
+            <Grid.Row columns={ 1 } key={ eachPropertyMeta?.displayOrder }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    { getPropertyField(property, eachPropertyMeta) }
+                </Grid.Column>
+            </Grid.Row>
+        );
+    }
+
+    const getSortedPropertyFields = (metaProperties: CommonPluggableComponentMetaPropertyInterface[],
+                                     disabled: boolean): ReactElement[] => {
+        const bucket: ReactElement[] = [];
+
+        metaProperties?.forEach((eachPropertyMeta: CommonPluggableComponentMetaPropertyInterface) => {
+            
+            const property: CommonPluggableComponentPropertyInterface = initialValues?.properties?.find(property => 
+                property.key === eachPropertyMeta.key);
+
+            let field: ReactElement;
+            if (!isSupportedSubProperty(eachPropertyMeta)) {
+                field = getField(eachPropertyMeta, property);
+            } else {
+                // field = getFieldWithSubProperties(eachPropertyMeta, property, eachPropertyMeta?.subProperties);
+                field = <ComplexField>
+                    { getField(eachPropertyMeta, property) }
+                </ComplexField>;
+            }
+
+            bucket.push(field);
         });
+
+        return bucket.sort((a, b) => Number(a.key) - Number(b.key));
     };
 
     const getSubmitButton = (content: string) => {
@@ -103,18 +149,21 @@ export const CommonPluggableComponentForm: FunctionComponent<
         );
     };
 
+    const getPropertyFields = () => {
+        return getSortedPropertyFields(metadata?.properties, false)
+    };
+
     return (
         <Forms
             onSubmit={ (values) => {
                 onSubmit(getUpdatedConfigurations(values));
             } }
             submitState={ triggerSubmit }
+            // onChange={ () => {} }
         >
             <Grid>
                 {
-                    getComponentPropertyFields().sort((a, b) => {
-                        return Number(a.key) - Number(b.key);
-                    })
+                   getPropertyFields()
                 }
                 { enableSubmitButton && getSubmitButton("Update") }
             </Grid>

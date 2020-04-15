@@ -619,7 +619,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
 
     return (
         (
-            wizardSteps && <Modal
+            wizardSteps ? <Modal
                 open={ true }
                 className="wizard identity-provider-create-wizard"
                 dimmer="blurring"
@@ -643,7 +643,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                         ))}
                     </Steps.Group>
                 </Modal.Content>
-                <Modal.Content className="content-container" scrolling>{resolveStepContent(currentWizardStep)}
+                <Modal.Content className="content-container" scrolling>{ resolveStepContent(currentWizardStep) }
                 </Modal.Content>
                 <Modal.Actions>
                     <Grid>
@@ -669,7 +669,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                         </Grid.Row>
                     </Grid>
                 </Modal.Actions>
-            </Modal>
+            </Modal> : null
         )
     );
 };
