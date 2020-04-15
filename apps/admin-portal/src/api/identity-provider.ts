@@ -473,7 +473,7 @@ export const updateOutboundProvisioningConnector = (
  * @param {number} offset - Offset for get to start.
  * @param {string} filter - Search filter.
  *
- * @return {Promise<IdentityProviderTemplateListInterface>} A promise containing the response.
+ * @return {Promise<IdentityProviderTemplateListResponseInterface>} A promise containing the response.
  */
 export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
                                            filter?: string): Promise<IdentityProviderTemplateListResponseInterface> => {
