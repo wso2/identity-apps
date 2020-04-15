@@ -51,17 +51,35 @@ export const EmailTemplates = (): ReactElement => {
         });
     }, [emailTemplateTypes.length]);
 
+    /**
+     * Handler for pagination page change.
+     * 
+     * @param event pagination page change event
+     * @param data pagination page change data
+     */
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         const offsetValue = (data.activePage as number - 1) * listItemLimit;
         setListOffset(offsetValue);
         setEmailTemplateTypePage(offsetValue, listItemLimit);
     };
 
+    /**
+     * Handler for Items per page dropdown change.
+     * 
+     * @param event drop down event
+     * @param data drop down data
+     */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
         setEmailTemplateTypePage(listOffset, data.value as number);
     };
 
+    /**
+     * Util method to paginate retrieved email template type list.
+     * 
+     * @param offsetValue pagination offset value
+     * @param itemLimit pagination item limit
+     */
     const setEmailTemplateTypePage = (offsetValue: number, itemLimit: number) => {
         setPaginatedEmailTemplateTypes(emailTemplateTypes?.slice(offsetValue, itemLimit + offsetValue));
     }

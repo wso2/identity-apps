@@ -17,18 +17,27 @@
  */
 
 
+ /**
+  * Interface to campture Email Template type
+  */
 export interface EmailTemplateType {
     id: string;
     displayName: string;
     self: string;
 }
 
+/**
+ * Interface to capture Email Template Type Details
+ */
 export interface EmailTemplateDetails {
     displayName: string;
     templates: EmailTemplate[];
     id: string;
 }
 
+/**
+ * Interface to capture Email Template
+ */
 export interface EmailTemplate {
     contentType: string;
     subject: string;
