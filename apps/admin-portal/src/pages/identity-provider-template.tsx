@@ -20,13 +20,19 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useS
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import {
-    IdentityProviderTemplateListItemInterface, IdentityProviderTemplateListItemResponseInterface,
+    IdentityProviderListResponseInterface,
+    IdentityProviderTemplateListItemInterface,
+    IdentityProviderTemplateListItemResponseInterface,
     IdentityProviderTemplateListResponseInterface,
     SupportedServices
 } from "../models";
 import { IdentityProviderCreateWizard } from "../components/identity-providers/wizards";
 import { QuickStartIdentityProviderTemplates } from "../components/identity-providers/templates";
-import { getIdentityProviderList, getIdentityProviderTemplate, getIdentityProviderTemplateList } from "../api";
+import {
+    getIdentityProviderList,
+    getIdentityProviderTemplate,
+    getIdentityProviderTemplateList
+} from "../api";
 import { useDispatch, useSelector } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
@@ -43,7 +49,9 @@ import { IdPCapabilityIcons } from "../configs";
 export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): ReactElement => {
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateListItemInterface>(null);
+    const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateListItemInterface>(undefined);
+    const [ selectedTemplateWithUniqueName, setSelectedTemplateWithUniqueName ] =
+        useState<IdentityProviderTemplateListItemInterface>(undefined);
     const [ availableTemplates, setAvailableTemplates ] = useState<IdentityProviderTemplateListItemInterface[]>([]);
     const [ possibleListOfDuplicateIdps, setPossibleListOfDuplicateIdps ] = useState<string[]>(undefined);
 
@@ -182,8 +190,10 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
     };
 
     const getPossibleListOfDuplicateIdps = (idpName: string) => {
-        getIdentityProviderList(null, null, "name sw " + idpName).then((response) => {
-            setPossibleListOfDuplicateIdps( response?.identityProviders?.map(eachIdp => eachIdp.name));
+        getIdentityProviderList(null, null, "name sw " + idpName).then(
+            (response: IdentityProviderListResponseInterface) => {
+            setPossibleListOfDuplicateIdps( response?.totalResults ? response?.identityProviders?.map(
+                eachIdp => eachIdp.name) : []);
         })
     };
 
@@ -223,7 +233,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
             return;
         }
 
-        setSelectedTemplate({
+        setSelectedTemplateWithUniqueName({
             ...selectedTemplate,
             idp: {
                 ...selectedTemplate?.idp,
@@ -259,13 +269,14 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
             ) }
             { showWizard && (
                 <IdentityProviderCreateWizard
-                    title={ selectedTemplate?.name }
-                    subTitle={ selectedTemplate?.description }
+                    title={ selectedTemplateWithUniqueName?.name }
+                    subTitle={ selectedTemplateWithUniqueName?.description }
                     closeWizard={ () => {
-                        setSelectedTemplate(null);
+                        setSelectedTemplateWithUniqueName(undefined);
+                        setSelectedTemplate(undefined);
                         setShowWizard(false);
                     } }
-                    template={ selectedTemplate?.idp }
+                    template={ selectedTemplateWithUniqueName?.idp }
                 />
             ) }
         </PageLayout>
