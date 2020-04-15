@@ -175,7 +175,6 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         const nodeText = _.get(node, keywordLabel, "");
 
         if (isCheckable(node, depth)) {
-            console.log(node.isPartiallyChecked);
             return (
                 <label htmlFor={ node.id } className="tree-label">
                     <input
