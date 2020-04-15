@@ -31,6 +31,7 @@ import React, {
     ReactElement
 } from "react";
 import { ResourceTab } from "@wso2is/react-components";
+import { AttributeSettings } from "./settings/attribute-settings";
 
 /**
  * Proptypes for the idp edit component.
@@ -93,6 +94,18 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         </ResourceTab.Pane>
     );
 
+    const AttributeSettingsTabPane = (): ReactElement => (
+        <ResourceTab.Pane attached={ false }>
+            <AttributeSettings
+                idpId={ identityProvider.id }
+                claims={ identityProvider.claims }
+                roles={ identityProvider.roles }
+                isLoading={ isLoading }
+                onUpdate={ onUpdate }
+            />
+        </ResourceTab.Pane>
+    );
+
     const AuthenticatorSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane attached={ false }>
             <AuthenticatorSettings
@@ -132,6 +145,10 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                     {
                         menuItem: "General",
                         render: GeneralIdentityProviderSettingsTabPane
+                    },
+                    {
+                        menuItem: "Attributes",
+                        render: AttributeSettingsTabPane
                     },
                     {
                         menuItem: "Authentication",
