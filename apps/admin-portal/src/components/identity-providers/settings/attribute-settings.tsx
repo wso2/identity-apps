@@ -17,9 +17,10 @@
  */
 
 import { Button, Divider, Grid } from "semantic-ui-react";
+import { getRolesList, updateIDPRoleMappings } from "../../../api";
 import { Heading, Hint } from "@wso2is/react-components";
 import {
-    IdentityProviderRoleMappingInterface,
+    IdentityProviderRoleMappingInterface, IdentityProviderRolesInterface,
     RoleListInterface,
     RolesInterface
 } from "../../../models";
@@ -27,8 +28,8 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { addAlert } from "@wso2is/core/dist/src/store";
 import { AlertLevels } from "@wso2is/core/dist/src/models";
 import { DynamicField } from "../../claims";
-import { getRolesList } from "../../../api";
 import { useDispatch } from "react-redux";
+import { useTrigger } from "@wso2is/forms";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -51,14 +52,9 @@ interface IdentityProviderSettingsPropsInterface {
     initialRoleMappings?: IdentityProviderRoleMappingInterface[];
 
     /**
-     * Is the idp info request loading.
+     * Outbound provisioning roles of the IDP
      */
-    isLoading?: boolean;
-
-    /**
-     * Callback to update the idp details.
-     */
-    onUpdate: (id: string) => void;
+    outboundProvisioningRoles?: string[];
 }
 
 /**
@@ -72,13 +68,13 @@ export const AttributeSettings: FunctionComponent<IdentityProviderSettingsPropsI
 ): ReactElement => {
 
     const [roleList, setRoleList] = useState<RolesInterface[]>();
+    const [submit, setSubmit] = useTrigger();
 
     const {
         idpId,
         claims,
         initialRoleMappings,
-        isLoading,
-        onUpdate
+        outboundProvisioningRoles
     } = props;
 
     const dispatch = useDispatch();
@@ -104,12 +100,11 @@ export const AttributeSettings: FunctionComponent<IdentityProviderSettingsPropsI
         getRolesList(null)
             .then((response) => {
                 if (response.status === 200) {
-                    console.log(response)
                     const allRole: RoleListInterface = response.data;
                     setRoleList(allRole.Resources);
                 }
             })
-            .catch((error) => {
+            .catch(() => {
                 dispatch(addAlert({
                     description: "An error occurred while retrieving roles.",
                     level: AlertLevels.ERROR,
@@ -118,12 +113,28 @@ export const AttributeSettings: FunctionComponent<IdentityProviderSettingsPropsI
             });
     }, [initialRoleMappings]);
 
-    const onSubmit = (data) => {
-        console.log(data)
-    };
-
-    const updateValues = () => {
-        console.log("updating...")
+    const onSubmit = (mappings) => {
+        const data: IdentityProviderRolesInterface = {
+            mappings: mappings,
+            outboundProvisioningRoles: outboundProvisioningRoles
+        };
+        updateIDPRoleMappings(idpId, data).then(() => {
+            dispatch(addAlert(
+                {
+                    description: "Attributes of the identity provider updated successfully!",
+                    level: AlertLevels.SUCCESS,
+                    message: "Identity Provider updated successfully"
+                }
+            ));
+        }).catch(error => {
+            dispatch(addAlert(
+                {
+                    description: error?.description || "There was an error while updating the identity provider",
+                    level: AlertLevels.ERROR,
+                    message: error?.message || "Something went wrong"
+                }
+            ));
+        })
     };
 
     return (
@@ -155,7 +166,7 @@ export const AttributeSettings: FunctionComponent<IdentityProviderSettingsPropsI
                         keyRequiredMessage="Please enter the local role"
                         valueRequiredErrorMessage="Please enter an IDP role to map to"
                         duplicateKeyErrorMsg="This role is already mapped. Please select another role"
-                        submit={ true }
+                        submit={ submit }
                         update={ (data) => {
                             if (data.length > 0) {
                                 const finalData: IdentityProviderRoleMappingInterface[] = data.map(mapping => {
@@ -177,7 +188,9 @@ export const AttributeSettings: FunctionComponent<IdentityProviderSettingsPropsI
                     <Button
                         primary
                         size="small"
-                        onClick={ updateValues }
+                        onClick={ () => {
+                            setSubmit();
+                        } }
                     >
                         Update
                     </Button>

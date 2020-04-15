@@ -23,7 +23,7 @@ import {
     HttpMethods,
     IdentityProviderInterface,
     IdentityProviderListResponseInterface,
-    IdentityProviderResponseInterface,
+    IdentityProviderResponseInterface, IdentityProviderRolesInterface,
     IdentityProviderTemplateListInterface,
     IdentityProviderTemplateListItemInterface,
     OutboundProvisioningConnectorInterface,
@@ -555,5 +555,39 @@ export const getIdentityProviderTemplate = (templateId: string): Promise<Identit
                 error.request,
                 error.response,
                 error.config);
+        });
+};
+
+/**
+ * Update role mappings of a specified IDP.
+ *
+ * @param idpId ID of the Identity Provider.
+ * @param mappings IDP role mappings.
+ * @return {Promise<any>} A promise containing the response.
+ */
+export const updateIDPRoleMappings = (
+    idpId: string,
+    mappings: IdentityProviderRolesInterface
+): Promise<any> => {
+
+    const requestConfig = {
+        data: mappings,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/roles"
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update identity provider: " + idpId));
+            }
+            return Promise.resolve(response.data as IdentityProviderInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
         });
 };
