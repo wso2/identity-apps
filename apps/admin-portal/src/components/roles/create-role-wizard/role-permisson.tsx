@@ -257,7 +257,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
      */
     const handlePermssionCheck = (nodeData: Permission[]): void => {
         const checkState = nodeData[0].isChecked;
-        
+
         markChildrenAsChecked(nodeData, checkState);
 
         if (nodeData[0].isChecked) {
