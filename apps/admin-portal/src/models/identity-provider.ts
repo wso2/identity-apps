@@ -144,7 +144,11 @@ export interface IdentityProviderTemplateListInterface {
  *  Identity provider template list response interface.
  */
 export interface IdentityProviderTemplateListResponseInterface {
-    templates: IdentityProviderTemplateListItemResponseInterface[];
+    totalResults?: number;
+    startIndex?: number;
+    count?: number;
+    links?: number;
+    templates?: IdentityProviderTemplateListItemResponseInterface[];
 }
 
 /**

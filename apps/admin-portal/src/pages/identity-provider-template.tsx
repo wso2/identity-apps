@@ -16,24 +16,24 @@
  * under the License.
  */
 
-import React, {FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState} from "react";
-import {history} from "../helpers";
-import {PageLayout} from "../layouts";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import { history } from "../helpers";
+import { PageLayout } from "../layouts";
 import {
     IdentityProviderTemplateListItemInterface, IdentityProviderTemplateListItemResponseInterface,
     IdentityProviderTemplateListResponseInterface,
     SupportedServices
 } from "../models";
-import {IdentityProviderCreateWizard} from "../components/identity-providers/wizards";
-import {QuickStartIdentityProviderTemplates} from "../components/identity-providers/templates";
-import {getIdentityProviderList, getIdentityProviderTemplate, getIdentityProviderTemplateList} from "../api";
-import {useDispatch, useSelector} from "react-redux";
-import {addAlert} from "@wso2is/core/store";
-import {AlertLevels} from "@wso2is/core/models";
-import {AppState} from "../store";
-import {setAvailableAuthenticatorsMeta} from "../store/actions/identity-provider";
-import {SupportedServicesInterface} from "../models/identity-provider";
-import {IdPCapabilityIcons} from "../configs";
+import { IdentityProviderCreateWizard } from "../components/identity-providers/wizards";
+import { QuickStartIdentityProviderTemplates } from "../components/identity-providers/templates";
+import { getIdentityProviderList, getIdentityProviderTemplate, getIdentityProviderTemplateList } from "../api";
+import { useDispatch, useSelector } from "react-redux";
+import { addAlert } from "@wso2is/core/store";
+import { AlertLevels } from "@wso2is/core/models";
+import { AppState } from "../store";
+import { setAvailableAuthenticatorsMeta } from "../store/actions/identity-provider";
+import { SupportedServicesInterface } from "../models/identity-provider";
+import { IdPCapabilityIcons } from "../configs";
 
 /**
  * Choose the application template from this page.
@@ -99,8 +99,11 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
 
         getIdentityProviderTemplateList()
             .then((response: IdentityProviderTemplateListResponseInterface) => {
+                if (!response?.totalResults) {
+                    return;
+                }
                 // sort templateList based on display Order
-                response.templates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
+                response?.templates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
                 const availableTemplates: IdentityProviderTemplateListItemInterface[] = interpretAvailableTemplates(
                     response?.templates);
                 setAvailableTemplates(availableTemplates);
