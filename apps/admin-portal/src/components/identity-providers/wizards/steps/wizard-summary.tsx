@@ -140,7 +140,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
             <Divider horizontal>Authenticator Settings</Divider>
 
             {
-                authenticatorSummary && getNameComponent("Authenticator", authenticatorSummary?.name)
+                authenticatorSummary && getNameComponent("Authenticator", authenticatorMetadata?.name)
             }
 
             {

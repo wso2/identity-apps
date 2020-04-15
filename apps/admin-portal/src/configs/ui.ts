@@ -91,6 +91,7 @@ import {
     WSTrustLogo,
     WSTrustTemplateIllustration
 } from "@wso2is/theme";
+import { SupportedServices } from "../models";
 
 type ImageType = string;
 
@@ -249,8 +250,8 @@ export const IdPIcons = {
 };
 
 export const IdPCapabilityIcons = {
-    authentication: AuthenticationCapabilityIcon,
-    provision: ProvisionCapabilityIcon
+    [ SupportedServices.AUTHENTICATION ]: AuthenticationCapabilityIcon,
+    [ SupportedServices.PROVISIONING ]: ProvisionCapabilityIcon
 };
 
 export const OperationIcons = {
