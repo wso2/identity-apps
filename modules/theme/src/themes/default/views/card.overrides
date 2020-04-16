@@ -316,6 +316,12 @@
                 font-size: @appTemplateCardDescriptionFontSize;
                 max-width: @appTemplateCardDescriptionMaxWidth;
                 min-height: @appTemplateCardDescriptionMinHeight;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                height: @appTemplateCardDescriptionHeight;
             }
             .technologies {
                 margin-top: 8px;
