@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { ContentLoader, Heading } from "@wso2is/react-components";
+import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
+import { ConfirmationModal, ContentLoader, PrimaryButton } from "@wso2is/react-components";
 import {
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
@@ -28,11 +29,11 @@ import {
     getFederatedAuthenticatorMeta,
     updateFederatedAuthenticator
 } from "../../../api";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
+import { AuthenticatorAccordion } from "../../shared";
 import { AuthenticatorFormFactory } from "../forms";
-import { Divider } from "semantic-ui-react";
 import { useDispatch } from "react-redux";
 
 /**
@@ -77,13 +78,17 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
     const dispatch = useDispatch();
 
+    const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [
+        deletingAuthenticator,
+        setDeletingAuthenticator
+    ] = useState<FederatedAuthenticatorListItemInterface>(undefined);
     const [authenticatorMeta, setAuthenticatorMeta] = useState<FederatedAuthenticatorMetaInterface>({
         authenticatorId: "",
         displayName: "",
         name: SupportedAuthenticators.NONE,
         properties: []
     });
-
     const [authenticatorDetails, setAuthenticatorDetails] = useState<FederatedAuthenticatorListItemInterface>({
         authenticatorId: "",
         isDefault: false,
@@ -175,27 +180,128 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         }
     }, [props]);
 
+    /**
+     * Handles default authenticator change event.
+     *
+     * @param {React.FormEvent<HTMLInputElement>} e - Event.
+     * @param {CheckboxProps} data - Checkbox data.
+     * @param {string} id - Id of the authenticator.
+     */
+    const handleDefaultAuthenticatorChange = (
+        e: FormEvent<HTMLInputElement>,
+        data: CheckboxProps,
+        id: string): void => {
+
+        // Implement necessary logic here.
+    };
+
+    /**
+     * Handles authenticator enable toggle.
+     *
+     * @param {React.FormEvent<HTMLInputElement>} e - Event.
+     * @param {CheckboxProps} data - Checkbox data.
+     * @param {string} id - Id of the authenticator.
+     */
+    const handleAuthenticatorEnableToggle = (e: FormEvent<HTMLInputElement>, data: CheckboxProps, id: string): void => {
+        // Implement necessary logic here.
+    };
+
+    /**
+     * Handles Authenticator delete action.
+     *
+     * @param {string} id - Id of the authenticator.
+     */
+    const handleAuthenticatorDelete = (id: string): void => {
+        // Implement deletion logic here.
+    };
+
     return (
         (!isLoading)
             ? (
-                <div className="inbound-protocols-section">
+                <div className="authentication-section">
+                    <Grid>
+                        <Grid.Row>
+                            <Grid.Column width={ 16 } textAlign="right">
+                                <PrimaryButton>
+                                    <Icon name="add"/>Add Authenticator
+                                </PrimaryButton>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
+                                <AuthenticatorAccordion
+                                    actions={ [
+                                        {
+                                            defaultChecked: true,
+                                            label: "Make default",
+                                            onChange: handleDefaultAuthenticatorChange,
+                                            type: "checkbox"
+                                        },
+                                        {
+                                            defaultChecked: true,
+                                            label: "Enabled",
+                                            onChange: handleAuthenticatorEnableToggle,
+                                            type: "toggle"
+                                        },
+                                        {
+                                            icon: "trash alternate",
+                                            onClick: (e: MouseEvent<HTMLDivElement>, id: string): void => {
+                                                setShowDeleteConfirmationModal(true);
+                                                setDeletingAuthenticator(
+                                                    federatedAuthenticators.authenticators
+                                                        .find((authenticator) => authenticator.authenticatorId === id)
+                                                );
+                                            },
+                                            type: "icon"
+                                        }
+                                    ] }
+                                    authenticators={ [
+                                        {
+                                            content: federatedAuthenticators.defaultAuthenticatorId && (
+                                                <AuthenticatorFormFactory
+                                                    metadata={ authenticatorMeta }
+                                                    initialValues={ authenticatorDetails }
+                                                    onSubmit={ handleInboundConfigFormSubmit }
+                                                    type={ authenticatorMeta?.name }
+                                                />
+                                            ),
+                                            id: authenticatorDetails?.authenticatorId,
+                                            title: authenticatorDetails?.name
+                                        }
+                                    ] }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
                     {
-                        (
-                            <>
-                                <Heading as="h4">{authenticatorDetails?.name}</Heading>
-                                {
-                                    federatedAuthenticators.defaultAuthenticatorId ?
-                                        <AuthenticatorFormFactory
-                                            metadata={ authenticatorMeta }
-                                            initialValues={ authenticatorDetails }
-                                            onSubmit={ handleInboundConfigFormSubmit }
-                                            type={ authenticatorMeta?.name }
-                                        />
-                                        : null
+                        deletingAuthenticator && (
+                            <ConfirmationModal
+                                onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                                type="warning"
+                                open={ showDeleteConfirmationModal }
+                                assertion={ deletingAuthenticator?.name }
+                                assertionHint={ (
+                                    <p>Please type <strong>{ deletingAuthenticator?.name }</strong> to confirm.</p>
+                                ) }
+                                assertionType="input"
+                                primaryAction="Confirm"
+                                secondaryAction="Cancel"
+                                onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                                onPrimaryActionClick={
+                                    (): void => handleAuthenticatorDelete(deletingAuthenticator.authenticatorId)
                                 }
-                                <Divider hidden/>
-                            </>
-                        )}
+                            >
+                                <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+                                <ConfirmationModal.Message attached warning>
+                                    This action is irreversible and will permanently delete the authenticator.
+                                </ConfirmationModal.Message>
+                                <ConfirmationModal.Content>
+                                    If you delete this authenticator, you will not be able to get it back. All the
+                                    applications depending on this also might stop working. Please proceed with caution.
+                                </ConfirmationModal.Content>
+                            </ConfirmationModal>
+                        )
+                    }
                 </div>
             )
             : <ContentLoader/>
