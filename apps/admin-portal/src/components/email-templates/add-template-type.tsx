@@ -23,7 +23,7 @@ import { Grid, GridRow, GridColumn } from "semantic-ui-react";
 /**
  * Interface to capture role basics props.
  */
-interface AddEmailTemplateTypeProps {
+interface AddEmailTemplateTypePropsInterface {
     onSubmit: (values: any) => void;
 }
 
