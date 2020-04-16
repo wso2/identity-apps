@@ -69,7 +69,21 @@ export interface UserListInterface {
 }
 
 /**
- *  User basic details for add wizard.
+ * Basic user details for add user wizard
+ */
+export interface BasicUserDetailsInterface {
+    userName: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    domain: string;
+    newPassword: string;
+    confirmPassword: string;
+    passwordOption: string;
+}
+
+/**
+ *  User details for add user wizard.
  */
 export interface AddUserWizardStateInterface {
     userName: string;

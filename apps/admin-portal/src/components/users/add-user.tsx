@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Field, Forms, Validation } from "@wso2is/forms";
+import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -26,6 +26,7 @@ import {
 } from "semantic-ui-react";
 import { getUsersList, getUserStoreList } from "../../api";
 import { generate } from "generate-password";
+import { BasicUserDetailsInterface } from "../../models";
 
 /**
  * Proptypes for the add user component.
@@ -102,7 +103,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      *
      * @param username
      */
-    const validateUsername = (username: string) => {
+    const validateUsername = (username: string): void => {
         getUsersList(null, null, "userName eq " + username, null, userStore)
             .then((response) => {
                 setIsUsernameValid(response?.totalResults === 0);
@@ -114,7 +115,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      *
      * @param values
      */
-    const handleUserStoreChange = (values) => {
+    const handleUserStoreChange = (values: Map<string, FormValue>): void => {
         setUserStore(values.get("domain").toString());
     };
 
@@ -123,18 +124,21 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      *
      * @param values
      */
-    const handleUserNameChange = (values) => {
+    const handleUserNameChange = (values: Map<string, FormValue>): void => {
         setUpdatedUsername(values?.get("userName")?.toString());
     };
 
-    const generateRandomPassword = () => {
+    /**
+     * The following function generate a random password.
+     */
+    const generateRandomPassword = (): void => {
         setRandomPassword(generate({ length: 10, numbers: true }));
     };
 
     /**
      * The following function fetch the user store list and set it to the state.
      */
-    const getUserStores = () => {
+    const getUserStores = (): void => {
         const storeOptions = [{ text: "Primary", key: -1, value: "primary" }];
         let storeOption = { text: "", key: null, value: "" };
         getUserStoreList()
@@ -157,7 +161,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         setUserStoresList(storeOptions);
     };
 
-    const getFormValues = (values) => {
+    const getFormValues = (values: Map<string, FormValue>): BasicUserDetailsInterface => {
         return {
             domain: values.get("domain").toString(),
             email: values.get("email").toString(),

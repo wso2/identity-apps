@@ -68,7 +68,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                         placeholder={ searchPlaceholder }
                                                     />
                                                     <Segment className="transfer-list-segment">
-                                                    { list }
+                                                        { list }
                                                     </Segment>
                                                 </Segment>
                                             </Grid.Column>
