@@ -241,7 +241,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
                 <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                     <Field
                         name={ schema.name }
-                        label={ fieldName }
+                        label={ schema.name === "profileUrl" ? "Profile image URL" : fieldName }
                         required={ schema.required }
                         requiredErrorMessage={ fieldName + " " + "is required" }
                         placeholder={ "Enter your" + " " + fieldName }
