@@ -1,0 +1,43 @@
+{
+	"id": "776a73da-fd8e-490b-84ff-93009f8ede85",
+    "name": "SAML web application",
+    "description": "Regular web applications which uses redirections inside browsers.",
+    "image": "samlWebApp",
+    "authenticationProtocol": "saml",
+    "types": [
+        "java",
+        "dotNet"
+    ],
+    "category": "DEFAULT",
+    "displayOrder": 2,
+    "application": {
+        "name": "",
+        "advancedConfigurations": {
+            "discoverableByEndUsers": false
+        },
+        "authenticationSequence": {
+            "type": "DEFAULT",
+            "steps": [
+                {
+                    "id": 1,
+                    "options": [
+                        {
+                            "idp": "LOCAL",
+                            "authenticator": "basic"
+                        }
+                    ]
+                }
+            ]
+        },
+        "inboundProtocolConfiguration": {
+            "saml": {
+                "manualConfiguration": {
+                    "issuer": "",
+                    "assertionConsumerUrls": [
+                        ""
+                    ]
+                }
+            }
+        }
+    }
+}
