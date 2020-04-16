@@ -1,15 +1,15 @@
 {
   "id": "8ea23303-49c0-4253-b81f-82c0fe6fb4a0",
   "name": "Google",
-  "description": "Authenticate users with Google.",
+  "description": "Provision users with Google.",
   "image": "google",
   "category": "DEFAULT",
   "displayOrder": 1,
-  "services": ["authentication", "provisioning"],
+  "services": ["provisioning"],
   "idp": {
     "name": "Google",
     "description": "Identity provider for Google Federation",
-    "image": "google",
+    "image": "",
     "isPrimary": false,
     "isFederationHub": false,
     "homeRealmIdentifier": "",
@@ -31,31 +31,8 @@
       "outboundProvisioningRoles": []
     },
     "federatedAuthenticators": {
-      "defaultAuthenticatorId": "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
-      "authenticators": [
-        {
-          "authenticatorId": "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
-          "isEnabled": true,
-          "properties": [
-            {
-              "key": "AdditionalQueryParameters",
-              "value": ""
-            },
-            {
-              "key": "ClientId",
-              "value": ""
-            },
-            {
-              "key": "ClientSecret",
-              "value": ""
-            },
-            {
-              "key": "callbackUrl",
-              "value": ""
-            }
-          ]
-        }
-      ]
+      "defaultAuthenticatorId": "",
+      "authenticators": []
     },
     "provisioning": {
       "jit": {
