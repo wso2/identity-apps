@@ -21,13 +21,11 @@ import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    Button,
     Grid,
     Message,
 } from "semantic-ui-react";
 import { getUsersList, getUserStoreList } from "../../api";
 import { generate } from "generate-password";
-import {boolean} from "@storybook/addon-knobs";
 
 /**
  * Proptypes for the add user component.
@@ -61,6 +59,9 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
     const { t } = useTranslation();
 
+    /**
+     * The following useEffect is triggered when a random password is generated.
+     */
     useEffect(() => {
         if (randomPassword && randomPassword !== "") {
             setIsPasswordGenerated(true);
@@ -95,6 +96,12 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         { label: "Set user password", value: "createPw" },
     ];
 
+    /**
+     * The following function validates whether the username entered by the user already exists in the
+     * user store selected by the user.
+     *
+     * @param username
+     */
     const validateUsername = (username: string) => {
         getUsersList(null, null, "userName eq " + username, null, userStore)
             .then((response) => {
