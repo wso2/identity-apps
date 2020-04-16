@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+ 
 import { store } from "../store";
 import { HttpMethods, EmailTemplateType, EmailTemplateDetails } from "../models";
 import { AxiosHttpClient } from "@wso2is/http";
