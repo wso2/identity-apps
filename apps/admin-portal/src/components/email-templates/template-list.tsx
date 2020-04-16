@@ -30,7 +30,7 @@ interface EmailTemplateListProps {
  * 
  * @param props props required to render the email template list
  */
-export const EmailTemplateList: React.FunctionComponent<EmailTemplateListProps> = (
+export const EmailTemplateList: FunctionComponent<EmailTemplateListProps> = (
     props: EmailTemplateListProps
 ): ReactElement => {
 
