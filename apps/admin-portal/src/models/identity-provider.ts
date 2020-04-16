@@ -55,10 +55,20 @@ export interface IdentityProviderInterface {
     homeRealmIdentifier?: string;
     alias?: string;
     claims?: string;
-    roles?: string;
+    roles?: IdentityProviderRolesInterface;
     federatedAuthenticators?: FederatedAuthenticatorListResponseInterface;
     certificate?: CertificateConfigInterface;
     provisioning?: ProvisioningInterface;
+}
+
+export interface IdentityProviderRolesInterface {
+    mappings?: IdentityProviderRoleMappingInterface[];
+    outboundProvisioningRoles?: string[];
+}
+
+export interface IdentityProviderRoleMappingInterface {
+    idpRole?: string;
+    localRole?: string;
 }
 
 export interface IdentityProviderAdvanceInterface {

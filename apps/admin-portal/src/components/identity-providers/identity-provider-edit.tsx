@@ -30,6 +30,7 @@ import React, {
     FunctionComponent,
     ReactElement
 } from "react";
+import { AttributeSettings } from "./settings";
 import { ResourceTab } from "@wso2is/react-components";
 
 /**
@@ -93,6 +94,17 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         </ResourceTab.Pane>
     );
 
+    const AttributeSettingsTabPane = (): ReactElement => (
+        <ResourceTab.Pane attached={ false }>
+            <AttributeSettings
+                idpId={ identityProvider.id }
+                claims={ identityProvider.claims }
+                initialRoleMappings={ identityProvider.roles.mappings }
+                outboundProvisioningRoles={ identityProvider.roles.outboundProvisioningRoles }
+            />
+        </ResourceTab.Pane>
+    );
+
     const AuthenticatorSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane attached={ false }>
             <AuthenticatorSettings
@@ -132,6 +144,10 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                     {
                         menuItem: "General",
                         render: GeneralIdentityProviderSettingsTabPane
+                    },
+                    {
+                        menuItem: "Attributes",
+                        render: AttributeSettingsTabPane
                     },
                     {
                         menuItem: "Authentication",
