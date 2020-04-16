@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import React, { ReactElement } from "react";
+import React, { FunctionComponent , ReactElement } from "react";
 import { ResourceList, ResourceListItem, Avatar } from "@wso2is/react-components";
 import { Icon } from "semantic-ui-react";
 import { EmailTemplateType } from "../../models";
