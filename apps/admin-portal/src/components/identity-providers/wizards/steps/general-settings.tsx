@@ -53,7 +53,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
             onSubmit={ onSubmit }
             imageUrl={ initialValues?.image }
             triggerSubmit={ triggerSubmit }
-            simplify={ true }
+            enableWizardMode={ true }
         />
     );
 };

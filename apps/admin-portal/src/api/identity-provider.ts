@@ -26,6 +26,7 @@ import {
     IdentityProviderResponseInterface,
     IdentityProviderTemplateListInterface,
     IdentityProviderTemplateListItemInterface,
+    IdentityProviderTemplateListResponseInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../models";
@@ -472,10 +473,10 @@ export const updateOutboundProvisioningConnector = (
  * @param {number} offset - Offset for get to start.
  * @param {string} filter - Search filter.
  *
- * @return {Promise<IdentityProviderTemplateListInterface>} A promise containing the response.
+ * @return {Promise<IdentityProviderTemplateListResponseInterface>} A promise containing the response.
  */
 export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
-                                           filter?: string): Promise<IdentityProviderTemplateListInterface> => {
+                                           filter?: string): Promise<IdentityProviderTemplateListResponseInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -504,7 +505,7 @@ export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
                     response.config);
             }
 
-            return Promise.resolve(response.data as IdentityProviderTemplateListInterface);
+            return Promise.resolve(response.data as IdentityProviderTemplateListResponseInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 IdentityProviderManagementConstants.IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR,
