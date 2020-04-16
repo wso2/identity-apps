@@ -38,8 +38,9 @@ import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { AppState } from "../store";
 import { setAvailableAuthenticatorsMeta } from "../store/actions/identity-provider";
-import { SupportedServicesInterface } from "../models/identity-provider";
+import { SupportedServicesInterface } from "../models";
 import { IdPCapabilityIcons } from "../configs";
+import { ExpertModeTemplate } from "../components/identity-providers/meta/templates";
 
 /**
  * Choose the application template from this page.
@@ -72,7 +73,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
                         displayName: "Authentication Service",
                         logo: IdPCapabilityIcons[SupportedServices.AUTHENTICATION],
                         name: SupportedServices.AUTHENTICATION
-                    }
+                    };
                 case SupportedServices.PROVISIONING:
                     return {
                         displayName: "Provisioning Service",
@@ -92,10 +93,17 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
     const interpretAvailableTemplates = (templates: IdentityProviderTemplateListItemResponseInterface[]):
         IdentityProviderTemplateListItemInterface[] => {
         return templates?.map(eachTemplate => {
-            return {
-                ...eachTemplate,
-                services: buildSupportedServices(eachTemplate?.services)
-            };
+            if (eachTemplate.services[0] === "") {
+                return {
+                    ...eachTemplate,
+                    services: []
+                };
+            } else {
+                return {
+                    ...eachTemplate,
+                    services: buildSupportedServices(eachTemplate?.services)
+                };
+            }
         });
     };
 
@@ -114,6 +122,10 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
                 response?.templates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
                 const availableTemplates: IdentityProviderTemplateListItemInterface[] = interpretAvailableTemplates(
                     response?.templates);
+
+                // Add expert mode template
+                availableTemplates.unshift(ExpertModeTemplate);
+
                 setAvailableTemplates(availableTemplates);
             })
             .catch((error) => {
@@ -186,7 +198,11 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
      * @param {string} id - Id of the template.
      */
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
-        getTemplate(id);
+        if (id === "expert-mode") {
+            setSelectedTemplate(ExpertModeTemplate)
+        } else {
+            getTemplate(id);
+        }
     };
 
     const getPossibleListOfDuplicateIdps = (idpName: string) => {
