@@ -9,7 +9,7 @@
   "idp": {
     "name": "Facebook",
     "description": "Identity provider for Facebook Federation",
-    "image": "facebook",
+    "image": "",
     "isPrimary": false,
     "isFederationHub": false,
     "homeRealmIdentifier": "",

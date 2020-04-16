@@ -9,7 +9,7 @@
   "idp": {
     "name": "OpenIdConnect",
     "description": "Identity provider for Federation via OpenId Connect",
-    "image": "oidc",
+    "image": "",
     "isPrimary": false,
     "isFederationHub": false,
     "homeRealmIdentifier": "",
