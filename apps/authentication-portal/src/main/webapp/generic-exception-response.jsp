@@ -18,6 +18,7 @@
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@include file="includes/localize.jsp" %>
@@ -25,6 +26,12 @@
 <%
     String stat = request.getParameter("status");
     String statusMessage = request.getParameter("statusMsg");
+
+    if (stat == null || statusMessage == null) {
+        stat = (String) request.getAttribute("status");
+        statusMessage = (String) request.getAttribute("statusMsg");
+    }
+
     if (stat == null || statusMessage == null) {
         stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
         statusMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"something.went.wrong.during.authentication");

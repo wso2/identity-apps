@@ -36,6 +36,8 @@
 <%@ page import="java.nio.charset.Charset" %>
 <%@ page import="org.wso2.carbon.base.ServerConfiguration" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EndpointConfigManager" %>
+<%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
+<%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 
@@ -141,6 +143,9 @@
     private static final String JAVAX_SERVLET_FORWARD_QUERY_STRING = "javax.servlet.forward.query_string";
     private static final String UTF_8 = "UTF-8";
     private static final String TENANT_DOMAIN = "tenant-domain";
+    private static final String ACCOUNT_RECOVERY_ENDPOINT = "/accountrecoveryendpoint";
+    private static final String ACCOUNT_RECOVERY_ENDPOINT_RECOVER = "/recoveraccountrouter.do";
+    private static final String ACCOUNT_RECOVERY_ENDPOINT_REGISTER = "/register.do";
 %>
 <%
     String resendUsername = request.getParameter("resend_username");
@@ -292,10 +297,18 @@
             urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
             urlParameters = prmstr;
 
-            identityMgtEndpointContext =
-                    application.getInitParameter("IdentityManagementEndpointContextURL");
+            identityMgtEndpointContext = application.getInitParameter("IdentityManagementEndpointContextURL");
             if (StringUtils.isBlank(identityMgtEndpointContext)) {
-                identityMgtEndpointContext = getServerURL("/accountrecoveryendpoint", true, true);
+                try {
+                    identityMgtEndpointContext = ServiceURLBuilder.create().addPath(ACCOUNT_RECOVERY_ENDPOINT).build()
+                            .getAbsolutePublicURL();
+                } catch (URLBuilderException e) {
+                    request.setAttribute(STATUS, AuthenticationEndpointUtil.i18n(resourceBundle, CONFIGURATION_ERROR));
+                    request.setAttribute(STATUS_MSG, AuthenticationEndpointUtil
+                            .i18n(resourceBundle, ERROR_WHILE_BUILDING_THE_ACCOUNT_RECOVERY_ENDPOINT_URL));
+                    request.getRequestDispatcher("error.do").forward(request, response);
+                    return;
+                }
             }
         } 
     %>
@@ -391,23 +404,20 @@
     </div>
     <% } %>
     <%!
-        private String getRecoverAccountUrl (
-            String identityMgtEndpointContext,
-            String urlEncodedURL,
-            boolean isUsernameRecovery,
-            String urlParameters) {
+        private String getRecoverAccountUrl(String identityMgtEndpointContext, String urlEncodedURL,
+                boolean isUsernameRecovery, String urlParameters) {
 
-            return identityMgtEndpointContext + "/recoveraccountrouter.do?" + urlParameters +
-                "&isUsernameRecovery=" + isUsernameRecovery + "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
+            return identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_RECOVER + "?" + urlParameters
+                    + "&isUsernameRecovery=" + isUsernameRecovery + "&callback=" + Encode
+                    .forHtmlAttribute(urlEncodedURL);
         }
 
-        private String getRegistrationUrl (
-            String identityMgtEndpointContext,
-            String urlEncodedURL,
-            String urlParameters) {
+        private String getRegistrationUrl(String identityMgtEndpointContext, String urlEncodedURL,
+                String urlParameters) {
 
-            return identityMgtEndpointContext + "/register.do?" + urlParameters +
-                "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
+            return identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_REGISTER + "?"
+                    + urlParameters + "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
         }
+
     %>
 </form>
