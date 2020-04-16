@@ -22,10 +22,9 @@ module.exports = {
         "sort-keys": ["warn", "asc"],
         "comma-dangle": ["warn", "never"],
         "sort-imports": ["warn", {
-            "ignoreCase": true,
+            "ignoreCase": false,
             "ignoreDeclarationSort": false,
-            "ignoreMemberSort": false,
-            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+            "ignoreMemberSort": true
         }],
         "react/jsx-curly-spacing": [
             "warn",

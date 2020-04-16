@@ -17,17 +17,20 @@
  */
 
 module.exports = {
-    presets: [
-        [
-            "@babel/preset-env",
-            {
-                "useBuiltIns": "entry"
-            }
-        ]
-    ],
-    env: {
+  env: {
+    development: {
+      compact: false
+    },
     test: {
       plugins: ["@babel/plugin-transform-modules-commonjs"]
     }
-  }
-}
+  },
+  presets: [
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "entry"
+      }
+    ]
+  ]
+};
