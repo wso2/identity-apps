@@ -248,3 +248,10 @@
         padding: @metaColumnsButtonPadding;
     }
 }
+
+.ui.button {
+    &.generate-password-button {
+        padding: @generatePasswordButtonPadding;
+        margin-top: @generatePasswordButtonMarginTop;
+    }
+}

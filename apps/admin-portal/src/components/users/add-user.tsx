@@ -21,11 +21,13 @@ import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
+    Button,
     Grid,
     Message,
 } from "semantic-ui-react";
 import { getUsersList, getUserStoreList } from "../../api";
 import { generate } from "generate-password";
+import {boolean} from "@storybook/addon-knobs";
 
 /**
  * Proptypes for the add user component.
@@ -54,8 +56,16 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const [ isUsernameValid, setIsUsernameValid ] = useState<boolean>(true);
     const [ updatedUsername, setUpdatedUsername ] = useState<string>(initialValues?.userName);
     const [ userStore, setUserStore ] = useState<string>("");
+    const [ randomPassword, setRandomPassword ] = useState<string>("");
+    const [ isPasswordGenerated, setIsPasswordGenerated ] = useState<boolean>(false);
 
     const { t } = useTranslation();
+
+    useEffect(() => {
+        if (randomPassword && randomPassword !== "") {
+            setIsPasswordGenerated(true);
+        }
+    }, [ randomPassword ]);
 
     /**
      * The following useEffect is triggered when the username gets updated.
@@ -79,7 +89,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     useEffect(() => {
         getUserStores();
     }, []);
-
 
     const passwordOptions = [
         { label: "Invite user to set password", value: "askPw" },
@@ -109,6 +118,10 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     const handleUserNameChange = (values) => {
         setUpdatedUsername(values?.get("userName")?.toString());
+    };
+
+    const generateRandomPassword = () => {
+        setRandomPassword(generate({ length: 10, numbers: true }));
     };
 
     /**
@@ -156,7 +169,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         if (passwordOption && passwordOption === "createPw") {
             return (
                 <>
-                    <Grid.Row>
+                    <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 hidePassword={ t("common:hidePassword") }
@@ -175,7 +188,16 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 ) }
                                 showPassword={ t("common:showPassword") }
                                 type="password"
-                                value={ initialValues && initialValues.newPassword }
+                                value={ isPasswordGenerated ? randomPassword : initialValues?.newPassword }
+                            />
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                className="generate-password-button"
+                                onClick={ generateRandomPassword }
+                                type="button"
+                                value="Generate Password"
+                                icon="random"
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -198,7 +220,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 ) }
                                 showPassword={ t("common:showPassword") }
                                 type="password"
-                                value={ initialValues && initialValues.confirmPassword }
+                                value={ isPasswordGenerated ? randomPassword : initialValues?.confirmPassword }
                                 validation={ (value: string, validation: Validation, formValues) => {
                                     if (formValues.get("newPassword") !== value) {
                                         validation.isValid = false;
