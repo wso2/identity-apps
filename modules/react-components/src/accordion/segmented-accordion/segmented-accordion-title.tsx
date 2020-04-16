@@ -27,7 +27,7 @@ import {
     Segment,
     SemanticICONS
 } from "semantic-ui-react";
-import { GenericIcon, GenericIconProps } from "@wso2is/react-components";
+import { GenericIcon, GenericIconProps } from "../../icon";
 import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement } from "react";
 import classNames from "classnames";
 
