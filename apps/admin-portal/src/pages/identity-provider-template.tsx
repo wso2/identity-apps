@@ -40,7 +40,7 @@ import { AppState } from "../store";
 import { setAvailableAuthenticatorsMeta } from "../store/actions/identity-provider";
 import { SupportedServicesInterface } from "../models";
 import { IdPCapabilityIcons } from "../configs";
-import { ExpertModeTemplate } from "../components/identity-providers/meta/templates";
+import { ExpertModeTemplate } from "../components/identity-providers/meta";
 
 /**
  * Choose the application template from this page.
