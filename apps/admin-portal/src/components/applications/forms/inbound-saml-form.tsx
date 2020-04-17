@@ -115,8 +115,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                     enableIdpInitiatedSingleSignOn: values.get("idPInitiatedSSO").includes("enableIdPInitiatedSSO"),
                     assertion: {
                         nameIdFormat: values.get("nameIdFormat"),
-                        audiences: audiences.split(","),
-                        recipients: recipients.split(","),
+                        audiences: audiences ? audiences.split(",") : [],
+                        recipients: recipients ? recipients.split(",") : [],
                         digestAlgorithm: values.get("digestAlgorithm"),
                         encryption: {
                             enabled: values.get("assertionEncryption").includes("enableAssertionEncryption"),
@@ -136,7 +136,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                     logoutMethod: values.get("logoutMethod"),
                     idpInitiatedSingleLogout: {
                         enabled: values.get("idpInitiatedSingleLogout").includes("enabled"),
-                        returnToUrls: returnToURLS.split(",")
+                        returnToUrls: returnToURLS ? returnToURLS.split(",") : []
                     }
                 },
                 requestValidation: {
