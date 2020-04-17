@@ -107,7 +107,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         onDelete,
         onUpdate,
         permissions,
-        showRegenerate,
         showRevoke,
         template
     } = props;
@@ -119,7 +118,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showRevokeConfirmationModal, setShowRevokeConfirmationModal ] = useState<boolean>(false);
-    const [ showRegenerateConfirmationModal, setShowRegenerateConfirmationModal ] = useState<boolean>(false);
 
     /**
      * Set the default doc content URL for the tab.
@@ -178,8 +176,8 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     message: "Revoke successful"
                 }));
 
-                setShowDeleteConfirmationModal(false);
-                onDelete();
+                setShowRevokeConfirmationModal(false);
+                onUpdate(appId);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -196,40 +194,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     description: "An error occurred while revoking the application",
                     level: AlertLevels.ERROR,
                     message: "Application Revoke Error"
-                }));
-            });
-    };
-
-    /**
-     * Revokes application.
-     */
-    const handleApplicationRegenerate = (): void => {
-        regenerateClientSecret(appId)
-            .then(() => {
-                dispatch(addAlert({
-                    description: "Successfully regenerated the application",
-                    level: AlertLevels.SUCCESS,
-                    message: "Regenerate successful"
-                }));
-
-                setShowDeleteConfirmationModal(false);
-                onDelete();
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Application Regenerate Error"
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: "An error occurred while regenerating the application",
-                    level: AlertLevels.ERROR,
-                    message: "Application Regenerate Error"
                 }));
             });
     };
@@ -288,15 +252,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             ? null
                             : !config.deployment.doNotDeleteApplications.includes(name) && (
                             <DangerZoneGroup sectionHeader="Danger Zone">
-                                { showRegenerate && (
-                                    <DangerZone
-                                        actionTitle="Regenerate"
-                                        header="Regenerate the client secret"
-                                        subheader="This action is irreversible. Please proceed with caution."
-                                        onActionClick={ (): void => setShowRegenerateConfirmationModal(true) }
-                                    />
-                                )
-                                }
                                 { showRevoke && (
                                     <DangerZone
                                         actionTitle="Revoke"
@@ -355,27 +310,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
                             If you Revoke this application, All the applications
-                            depending on this also might stop working. Please proceed with caution.
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>
-                    <ConfirmationModal
-                        onClose={ (): void => setShowRegenerateConfirmationModal(false) }
-                        type="warning"
-                        open={ showRegenerateConfirmationModal }
-                        assertion={ name }
-                        assertionHint={ <p>Please type <strong>{ name }</strong> to confirm.</p> }
-                        assertionType="input"
-                        primaryAction="Confirm"
-                        secondaryAction="Cancel"
-                        onSecondaryActionClick={ (): void => setShowRegenerateConfirmationModal(false) }
-                        onPrimaryActionClick={ (): void => handleApplicationRegenerate() }
-                    >
-                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
-                            This action is irreversible and permanently change the client secret.
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
-                            If you regenerate this application, All the applications
                             depending on this also might stop working. Please proceed with caution.
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
