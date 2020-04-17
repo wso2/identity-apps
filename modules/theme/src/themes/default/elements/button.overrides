@@ -255,3 +255,9 @@
         margin-top: @generatePasswordButtonMarginTop;
     }
 }
+
+.ui.button {
+    &.oidc-regenerate-button {
+        margin-top: 25px;
+    }
+}

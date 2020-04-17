@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { Field, Forms, Validation } from "@wso2is/forms";
-import { CopyInputField, Heading, Hint } from "@wso2is/react-components";
+import { Field, Forms } from "@wso2is/forms";
+import { ConfirmationModal, CopyInputField, Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -38,6 +38,7 @@ interface InboundOIDCFormPropsInterface {
     metadata: OIDCMetadataInterface;
     initialValues: OIDCDataInterface;
     onSubmit: (values: any) => void;
+    handleApplicationRegenerate: () => void;
 }
 
 /**
@@ -54,12 +55,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const {
         metadata,
         initialValues,
-        onSubmit
+        onSubmit,
+        handleApplicationRegenerate
     } = props;
 
     const [isEncryptionEnabled, setEncryptionEnable] = useState(false);
     const [callBackUrls, setCallBackUrls] = useState("");
     const [showURLError, setShowURLError] = useState(false);
+    const [showRegenerateConfirmationModal, setShowRegenerateConfirmationModal] = useState<boolean>(false);
 
     /**
      * Add regexp to multiple callbackUrls and update configs.
@@ -99,29 +102,29 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const makeGrantTypeReadable = (grant: string): any => {
         // TODO Remove this method and fix backend to provide consistent options
         if ("urn:ietf:params:oauth:grant-type:device_code" === grant) {
-            // return { label: "Device Code", value: grant };
+            return { label: "Device Code", value: grant };
         } else if ("urn:ietf:params:oauth:grant-type:uma-ticket" === grant) {
-            // return { label: "UMA Ticket ", value: grant };
+            return { label: "UMA Ticket ", value: grant };
         } else if ("account_switch" === grant) {
-            // return { label: "Account Switch", value: grant };
+            return { label: "Account Switch", value: grant };
         } else if ("urn:ietf:params:oauth:grant-type:jwt-bearer" === grant) {
-            // return { label: "JWT Bearer", value: grant };
+            return { label: "JWT Bearer", value: grant };
         } else if ("Code" === grant) {
             return { label: grant, value: "authorization_code" };
         } else if ("Refresh Token" === grant) {
             return { label: grant, value: "refresh_token" };
         } else if ("SAML2" === grant) {
-            // return { label: grant, value: "urn:ietf:params:oauth:grant-type:saml2-bearer" };
+            return { label: grant, value: "urn:ietf:params:oauth:grant-type:saml2-bearer" };
         } else if ("Implicit" === grant) {
-            // return { label: grant, value: "implicit" };
+            return { label: grant, value: "implicit" };
         } else if ("Password" === grant) {
-            // return { label: grant, value: "password" };
+            return { label: grant, value: "password" };
         } else if ("Client Credential" === grant) {
-            // return { label: grant, value: "client_credentials" };
+            return { label: grant, value: "client_credentials" };
         } else if ("IWA-NTLM" === grant) {
-            // return { label: grant, value: "iwa:ntlm" };
+            return { label: grant, value: "iwa:ntlm" };
         } else {
-            // return { label: grant, value: grant };
+            return { label: grant, value: grant };
         }
     };
 
@@ -171,6 +174,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             selectedValues.push("supportPlainTransformAlgorithm");
         }
         return selectedValues;
+    };
+
+    /**
+     * Show Regenerate confirmation.
+     *
+     * @param event Button click event.
+     */
+    const handleRegenerateButton = (event) => {
+        event.preventDefault();
+        setShowRegenerateConfirmationModal(true)
     };
 
     /**
@@ -256,7 +269,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                         <Form.Field>
                                             <label>Client ID</label>
-                                            <CopyInputField value={ initialValues?.clientId } />
+                                            <CopyInputField value={ initialValues?.clientId }/>
                                         </Form.Field>
                                     </Grid.Column>
                                 </Grid.Row>
@@ -264,7 +277,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         {
                             initialValues.clientSecret && (
-                                <Grid.Row columns={ 1 }>
+                                <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                         <Field
                                             name="clientSecret"
@@ -278,6 +291,41 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             value={ initialValues.clientSecret }
                                             readOnly
                                         />
+                                    </Grid.Column>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 4 }>
+                                        <Button
+                                            color="red"
+                                            className="oidc-regenerate-button"
+                                            onClick={ handleRegenerateButton }
+                                        >
+                                            Regenerate
+                                        </Button>
+                                        <ConfirmationModal
+                                            onClose={ (): void => setShowRegenerateConfirmationModal(false) }
+                                            type="warning"
+                                            open={ showRegenerateConfirmationModal }
+                                            assertion={ initialValues?.clientId }
+                                            assertionHint={ <p>Please
+                                                type <strong>{ initialValues?.clientId }</strong> to confirm.</p> }
+                                            assertionType="input"
+                                            primaryAction="Confirm"
+                                            secondaryAction="Cancel"
+                                            onSecondaryActionClick={ (): void => setShowRegenerateConfirmationModal(false) }
+                                            onPrimaryActionClick={ (): void => {
+                                                handleApplicationRegenerate();
+                                                setShowRegenerateConfirmationModal(false);
+                                            }
+                                            }
+                                        >
+                                            <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+                                            <ConfirmationModal.Message attached warning>
+                                                This action is irreversible and permanently change the client secret.
+                                            </ConfirmationModal.Message>
+                                            <ConfirmationModal.Content>
+                                                If you regenerate this application, All the applications
+                                                depending on this also might stop working. Please proceed with caution.
+                                            </ConfirmationModal.Content>
+                                        </ConfirmationModal>
                                     </Grid.Column>
                                 </Grid.Row>
                             )
@@ -321,21 +369,22 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         />
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    name="allowedOrigins"
-                                    label="Allowed origins"
-                                    validation={ (value: string, validation: Validation) => {
-                                        if (!FormValidation.url(value)) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push("This is not a valid URL");
-                                        }
-                                    } }
-                                    required={ false }
-                                    requiredErrorMessage="this is not needed"
-                                    placeholder="Enter the Allowed Origins"
-                                    type="text"
-                                    value={ initialValues.allowedOrigins?.toString() }
-                                />
+                                {/*TODO: Enable this after the backend is fixed*/ }
+                                {/*<Field*/ }
+                                {/*    name="allowedOrigins"*/ }
+                                {/*    label="Allowed origins"*/ }
+                                {/*    validation={ (value: string, validation: Validation) => {*/ }
+                                {/*        if (!FormValidation.url(value)) {*/ }
+                                {/*            validation.isValid = false;*/ }
+                                {/*            validation.errorMessages.push("This is not a valid URL");*/ }
+                                {/*        }*/ }
+                                {/*    } }*/ }
+                                {/*    required={ false }*/ }
+                                {/*    requiredErrorMessage="this is not needed"*/ }
+                                {/*    placeholder="Enter the Allowed Origins"*/ }
+                                {/*    type="text"*/ }
+                                {/*    value={ initialValues.allowedOrigins?.toString() }*/ }
+                                {/*/>*/ }
                                 <Hint>
                                     Certain origins can be whitelisted to allowed cross origin requests. Enter a list
                                     of URL separated by commas. E.g. https://app.example.com/js.
