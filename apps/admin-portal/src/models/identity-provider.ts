@@ -54,7 +54,7 @@ export interface IdentityProviderInterface {
     image?: string;
     homeRealmIdentifier?: string;
     alias?: string;
-    claims?: string;
+    claims?: IdentityProviderClaimsInterface;
     roles?: IdentityProviderRolesInterface;
     federatedAuthenticators?: FederatedAuthenticatorListResponseInterface;
     certificate?: CertificateConfigInterface;
@@ -69,6 +69,16 @@ export interface IdentityProviderRolesInterface {
 export interface IdentityProviderRoleMappingInterface {
     idpRole?: string;
     localRole?: string;
+}
+
+export interface IdentityProviderClaimsInterface {
+    userIdClaim?: {
+        uri?: string;
+    };
+    roleClaim?: {
+        uri?: string;
+    };
+    provisioningClaims?: string[];
 }
 
 export interface IdentityProviderAdvanceInterface {
@@ -165,7 +175,7 @@ export interface IdentityProviderTemplateListResponseInterface {
  *  Identity provider template item interface.
  */
 export interface IdentityProviderTemplateItemInterface {
-    id: SupportedQuickStartTemplates;
+    id: string;
     name: string;
     description: string;
     /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -200,7 +210,8 @@ export enum SupportedQuickStartTemplates {
     GOOGLE = "google",
     TWITTER = "twitter",
     OIDC = "oidc",
-    SAML = "saml"
+    SAML = "saml",
+    EXPERT = "expert"
 }
 
 /**

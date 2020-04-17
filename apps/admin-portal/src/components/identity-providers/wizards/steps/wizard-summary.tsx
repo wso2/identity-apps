@@ -70,7 +70,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         authenticator => authenticator.authenticatorId === identityProvider?.federatedAuthenticators?.
             defaultAuthenticatorId);
 
-    const provisioningSummary = identityProvider?.provisioning?.outboundConnectors.connectors.find(connector =>
+    const provisioningSummary = identityProvider?.provisioning?.outboundConnectors?.connectors.find(connector =>
         connector.connectorId === identityProvider?.provisioning?.outboundConnectors?.defaultConnectorId);
 
     const getPropertySummary = (properties: any[], metaProperties: any[]) => {

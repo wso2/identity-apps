@@ -20,6 +20,7 @@ import { Button, Divider, Grid } from "semantic-ui-react";
 import { getRolesList, updateIDPRoleMappings } from "../../../api";
 import { Heading, Hint } from "@wso2is/react-components";
 import {
+    IdentityProviderClaimsInterface,
     IdentityProviderRoleMappingInterface, IdentityProviderRolesInterface,
     RoleListInterface,
     RolesInterface
@@ -44,7 +45,7 @@ interface IdentityProviderSettingsPropsInterface {
     /**
      * Claims of the IDP
      */
-    claims: string;
+    claims?: IdentityProviderClaimsInterface;
 
     /**
      * Roles of the IDP
