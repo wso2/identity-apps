@@ -25,6 +25,7 @@ import {
 } from "../../../../models";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import _ from "lodash";
+import { getPropertyMetadata } from "../../utils";
 
 /**
  * Proptypes for the wizard summary component.
@@ -70,7 +71,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         authenticator => authenticator.authenticatorId === identityProvider?.federatedAuthenticators?.
             defaultAuthenticatorId);
 
-    const provisioningSummary = identityProvider?.provisioning?.outboundConnectors?.connectors.find(connector =>
+    const provisioningSummary = identityProvider?.provisioning?.outboundConnectors.connectors?.find(connector =>
         connector.connectorId === identityProvider?.provisioning?.outboundConnectors?.defaultConnectorId);
 
     const getPropertySummary = (properties: any[], metaProperties: any[]) => {
@@ -84,10 +85,9 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         });
 
         return sortedProperties.map((eachProp) => {
-            const propertyMetadata = metaProperties.find(eachPropMetadata =>
-                eachProp.key === eachPropMetadata.key);
+            const propertyMetadata = getPropertyMetadata(eachProp?.key, metaProperties);
             if (eachProp.value !== undefined && !_.isEmpty(eachProp?.value.toString()) &&
-                !propertyMetadata.isConfidential) {
+                !propertyMetadata?.isConfidential) {
                 return (
                     <Grid.Row className="summary-field" columns={ 2 } key={ eachProp?.key }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">

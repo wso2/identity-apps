@@ -20,12 +20,16 @@ import {
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../../models";
+import {
+    Field,
+    FormValue
+} from "@wso2is/forms";
 import React, { ReactElement } from "react";
-import { Field } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 
 export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyInterface,
-                                     propertyMetadata: CommonPluggableComponentMetaPropertyInterface): ReactElement => {
+                                     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+                                     disable: boolean): ReactElement => {
     return (
         <Field
             showPassword="Show Secret"
@@ -37,13 +41,14 @@ export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyI
             required={ propertyMetadata?.isMandatory }
             requiredErrorMessage={ "This is required" }
             type="password"
+            disabled={ disable }
         />
     );
 };
 
 export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInterface,
-                                 propertyMetadata: CommonPluggableComponentMetaPropertyInterface):
-    ReactElement => {
+                                 propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+                                 disable: boolean): ReactElement => {
     return (
         <Field
             name={ propertyMetadata?.key }
@@ -61,12 +66,43 @@ export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInter
                     }
                 ]
             }
+            disabled={ disable }
+        />
+    );
+};
+
+export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentPropertyInterface,
+                                             propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+                                             listen: (key: string, values: Map<string, FormValue>) => void,
+                                             disable: boolean): ReactElement => {
+    return (
+        <Field
+            name={ propertyMetadata?.key }
+            key={ propertyMetadata?.key }
+            label={ propertyMetadata?.displayName }
+            type="checkbox"
+            required={ propertyMetadata?.isMandatory }
+            value={ eachProp?.value ? [eachProp?.key] : [] }
+            requiredErrorMessage="This is required"
+            children={
+                [
+                    {
+                        label: propertyMetadata?.description,
+                        value: eachProp?.key
+                    }
+                ]
+            }
+            listen={ (values: Map<string, FormValue>) => {
+                listen(propertyMetadata.key, values);
+            } }
+            disabled={ disable }
         />
     );
 };
 
 export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface,
-                             propertyMetadata: CommonPluggableComponentMetaPropertyInterface): ReactElement => {
+                             propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+                             disable: boolean): ReactElement => {
     return (
         <Field
             name={ propertyMetadata?.key }
@@ -77,12 +113,14 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
             type="text"
             value={ eachProp?.value }
             key={ propertyMetadata?.key }
+            disabled={ disable }
         />
     );
 };
 
 export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
-                            propertyMetadata: CommonPluggableComponentMetaPropertyInterface): ReactElement => {
+                            propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+                            disable: boolean): ReactElement => {
     return (
         <Field
             name={ propertyMetadata?.key }
@@ -99,12 +137,14 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
             type="text"
             value={ eachProp?.value }
             key={ propertyMetadata?.key }
+            disabled={ disable }
         />
     );
 };
 
 export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyInterface,
-                            propertyMetadata: CommonPluggableComponentMetaPropertyInterface): ReactElement => {
+                                    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+                                    disable: boolean): ReactElement => {
     return (
         <Field
             name={ propertyMetadata?.key }
@@ -120,6 +160,7 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
             type="queryParams"
             value={ eachProp?.value }
             key={ propertyMetadata?.key }
+            disabled={ disable }
         />
     );
 };
@@ -170,28 +211,35 @@ export const getFieldType = (propertyMetadata: CommonPluggableComponentMetaPrope
  * Get corresponding {@link Field} component for the provided property.
  *
  * @param property Property of type {@link CommonPluggableComponentPropertyInterface}.
- * @param propertyMetadata Property metadata of type {@link CommonPluggableComponentMetaPropertyInterface}.
+ * @param propertyMetadata Property metadata of type.
+ * @param disable Disables the form field.
+ * @param listen Listener method for the on change events of a checkbox field.
+ * @link CommonPluggableComponentMetaPropertyInterface}.
  */
 export const getPropertyField = (property: CommonPluggableComponentPropertyInterface,
-                                 propertyMetadata: CommonPluggableComponentMetaPropertyInterface):
+                                 propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+                                 disable: boolean,
+                                 listen?: (key: string, values: Map<string, FormValue>) => void):
     ReactElement => {
 
     switch (getFieldType(propertyMetadata)) {
-        // TODO Identify URLs, and generate a Field which supports URL validation.
         case FieldType.CHECKBOX : {
-            return getCheckboxField(property, propertyMetadata);
+            if (listen) {
+                return getCheckboxFieldWithListener(property, propertyMetadata, listen, disable);
+            }
+            return getCheckboxField(property, propertyMetadata, disable);
         }
         case FieldType.CONFIDENTIAL : {
-            return getConfidentialField(property, propertyMetadata);
+            return getConfidentialField(property, propertyMetadata, disable);
         }
         case FieldType.URL : {
-            return getURLField(property, propertyMetadata);
+            return getURLField(property, propertyMetadata, disable);
         }
         case FieldType.QUERY_PARAMS : {
-            return getQueryParamsField(property, propertyMetadata);
+            return getQueryParamsField(property, propertyMetadata, disable);
         }
         default: {
-            return getTextField(property, propertyMetadata);
+            return getTextField(property, propertyMetadata, disable);
         }
     }
 };
