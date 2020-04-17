@@ -303,3 +303,15 @@
         height: @EditRoleSegmentFooterHeight;
     }
 }
+
+/***********************************
+  Secondary Segment with lighter BG
+************************************/
+
+.ui.segment {
+    &.secondary {
+        &.lighter-bg {
+            background: @secondaryLighterBackground;
+        }
+    }
+}

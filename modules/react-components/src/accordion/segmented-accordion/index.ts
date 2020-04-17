@@ -14,10 +14,9 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
 
-export * from "./advanced-search";
-export * from "./authenticator-accordion";
-export * from "./icon";
-export * from "./empty-placeholder";
-export * from "./modal";
+export * from "./segmented-accordion";
+export * from "./segmented-accordion-content";
+export * from "./segmented-accordion-title";

@@ -1,3 +1,22 @@
 /*******************************
       Accordion Overrides
 *******************************/
+
+/*-----------------------------
+      Segmented Variation
+------------------------------*/
+
+.ui.accordion {
+    &.segmented-accordion {
+        .segmented-accordion-title {
+            .chevron {
+                transition: transform .1s ease-in-out;
+            }
+            &.active {
+                .chevron {
+                    transform: rotate(90deg);
+                }
+            }
+        }
+    }
+}
