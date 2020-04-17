@@ -20,19 +20,13 @@ import { Button, Grid } from "semantic-ui-react";
 import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../helpers";
 import {
     CommonPluggableComponentFormPropsInterface,
+    CommonPluggableComponentInterface,
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../../models";
-import React, { FunctionComponent, ReactElement, useState } from "react";
-import { Forms } from "@wso2is/forms";
-import { PropertyFieldFactory } from "../factories/property-field-factory";
-import { ComplexField } from "./complex-field";
-
-interface SubPropertyController {
-    parentId: string;
-    disable: boolean;
-    setDisable: React.Dispatch<any>;
-}
+import { Forms, FormValue } from "@wso2is/forms";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { getPropertyMetadata } from "../../utils";
 
 
 /**
@@ -41,8 +35,7 @@ interface SubPropertyController {
  * @param {CommonPluggableComponentFormPropsInterface} props
  * @return { ReactElement }
  */
-export const CommonPluggableComponentForm: FunctionComponent<
-    CommonPluggableComponentFormPropsInterface> = (props
+export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComponentFormPropsInterface> = (props
 ): ReactElement => {
 
     const {
@@ -52,11 +45,12 @@ export const CommonPluggableComponentForm: FunctionComponent<
         triggerSubmit,
         enableSubmitButton
     } = props;
+    
+    // Used for field elements which needs to keep an internal state of the form values being sensitive to onchange 
+    // events.
+    const [dynamicValues, setDynamicValues] = useState<CommonPluggableComponentInterface>(undefined);
 
-    const [ subPropertyControllers, setSubPropertyControllers ] = useState<SubPropertyController[]>([]);
-    const [ renderProps, setRenderProps ] = useState<boolean>(false);
-
-    const interpretValueByType = (value: any, key: string, type: string) => {
+    const interpretValueByType = (value: FormValue, key: string, type: string) => {
 
         switch (type.toUpperCase()) {
             case CommonConstants.BOOLEAN: {
@@ -74,15 +68,18 @@ export const CommonPluggableComponentForm: FunctionComponent<
      * @param values - Form values.
      * @return {any} Sanitized form values.
      */
-    const getUpdatedConfigurations = (values: any): any => {
+    const getUpdatedConfigurations = (values: Map<string, FormValue>): any => {
 
-        const properties = initialValues?.properties.map((eachProp) => {
-            const propertyMetadata = metadata.properties?.find(metaProperty => metaProperty.key === eachProp.key);
-            return {
-                key: eachProp?.key,
-                value: interpretValueByType(values.get(eachProp?.key), eachProp?.key, propertyMetadata?.type)
-            };
+        const properties = [];
+
+        values?.forEach((value, key) => {
+            const propertyMetadata = getPropertyMetadata(key, metadata?.properties);
+            properties.push({
+                key: key,
+                value: interpretValueByType(value, key, propertyMetadata?.type)
+            });
         });
+
         return {
             ...initialValues,
             properties: [...properties]
@@ -90,51 +87,76 @@ export const CommonPluggableComponentForm: FunctionComponent<
     };
 
     /**
-     * Check whether provided property has supported sub properties. Sub properties are supported, only if the
-     * provided property is a checkbox.
+     * Check whether provided property is a checkbox and contain sub-properties.
      *
      * @param propertyMetadata Metadata of the property.
      */
-    const isSupportedSubProperty = (propertyMetadata: CommonPluggableComponentMetaPropertyInterface): boolean => {
+    const isCheckboxWithSubProperties = (propertyMetadata: CommonPluggableComponentMetaPropertyInterface): boolean => {
 
         return propertyMetadata?.subProperties?.length > 0 && getFieldType(propertyMetadata) === FieldType.CHECKBOX;
     };
 
-    const getField = (eachPropertyMeta: CommonPluggableComponentMetaPropertyInterface, 
-                      property: CommonPluggableComponentPropertyInterface): ReactElement => {
+    const getField = (property: CommonPluggableComponentPropertyInterface,
+                      eachPropertyMeta: CommonPluggableComponentMetaPropertyInterface,
+                      disable: boolean,
+                      listen?: (key: string, values: Map<string, FormValue>) => void): ReactElement => {
 
         return (
             <Grid.Row columns={ 1 } key={ eachPropertyMeta?.displayOrder }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    { getPropertyField(property, eachPropertyMeta) }
+                    {
+                        getPropertyField(property, eachPropertyMeta, disable, listen)
+                    }
                 </Grid.Column>
             </Grid.Row>
         );
     }
 
     const getSortedPropertyFields = (metaProperties: CommonPluggableComponentMetaPropertyInterface[],
-                                     disabled: boolean): ReactElement[] => {
+                                     disable: boolean):
+        ReactElement[] => {
+
         const bucket: ReactElement[] = [];
 
-        metaProperties?.forEach((eachPropertyMeta: CommonPluggableComponentMetaPropertyInterface) => {
-            
-            const property: CommonPluggableComponentPropertyInterface = initialValues?.properties?.find(property => 
-                property.key === eachPropertyMeta.key);
+        metaProperties?.forEach((metaProperty: CommonPluggableComponentMetaPropertyInterface) => {
+
+            const property: CommonPluggableComponentPropertyInterface = dynamicValues?.properties?.find(property =>
+                property.key === metaProperty.key);
 
             let field: ReactElement;
-            if (!isSupportedSubProperty(eachPropertyMeta)) {
-                field = getField(eachPropertyMeta, property);
+            if (!isCheckboxWithSubProperties(metaProperty)) {
+                field = getField(property, metaProperty, disable);
             } else {
-                // field = getFieldWithSubProperties(eachPropertyMeta, property, eachPropertyMeta?.subProperties);
-                field = <ComplexField>
-                    { getField(eachPropertyMeta, property) }
-                </ComplexField>;
+                field =
+                    <div className={ "complex-property-" + property.key } key={ property.key }>
+                        {
+                            // Render parent property.
+                            getField(property, metaProperty, disable, handleParentPropertyChange)
+                        }
+                        {
+                            getSortedPropertyFields(metaProperty?.subProperties, !(property?.value?.toString()?.
+                            toLowerCase() === "true"))
+                        }
+                    </div>;
             }
 
             bucket.push(field);
         });
 
         return bucket.sort((a, b) => Number(a.key) - Number(b.key));
+    };
+
+    const handleParentPropertyChange = (key: string, values: Map<string, FormValue>) => {
+        setDynamicValues({
+            ...dynamicValues,
+            properties: dynamicValues.properties.map((prop: CommonPluggableComponentPropertyInterface):
+            CommonPluggableComponentPropertyInterface => {
+                return prop.key === key ? {
+                    key: key,
+                    value: values.get(key)?.includes(key).toString()
+                } : prop;
+            })
+        });
     };
 
     const getSubmitButton = (content: string) => {
@@ -149,9 +171,9 @@ export const CommonPluggableComponentForm: FunctionComponent<
         );
     };
 
-    const getPropertyFields = () => {
-        return getSortedPropertyFields(metadata?.properties, false)
-    };
+    useEffect(() => {
+        setDynamicValues(initialValues);
+    }, []);
 
     return (
         <Forms
@@ -159,13 +181,14 @@ export const CommonPluggableComponentForm: FunctionComponent<
                 onSubmit(getUpdatedConfigurations(values));
             } }
             submitState={ triggerSubmit }
-            // onChange={ () => {} }
         >
             <Grid>
                 {
-                   getPropertyFields()
+                    dynamicValues && getSortedPropertyFields(metadata?.properties, false)
                 }
-                { enableSubmitButton && getSubmitButton("Update") }
+                {
+                    enableSubmitButton && getSubmitButton("Update")
+                }
             </Grid>
         </Forms>
     );
