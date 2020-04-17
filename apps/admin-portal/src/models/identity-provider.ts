@@ -248,8 +248,11 @@ export interface JITProvisioningResponseInterface {
     userstore?: string;
 }
 
-enum SupportedJITProvisioningSchemes {
-    PROVISION_SILENTLY = "PROVISION_SILENTLY"
+export enum SupportedJITProvisioningSchemes {
+    PROVISION_SILENTLY = "PROVISION_SILENTLY",
+    PROMPT_CONSENT = "PROMPT_CONSENT",
+    PROMPT_PASSWORD_CONSENT = "PROMPT_PASSWORD_CONSENT",
+    PROMPT_USERNAME_PASSWORD_CONSENT = "PROMPT_USERNAME_PASSWORD_CONSENT"
 }
 
 export interface OutboundProvisioningConnectorsInterface {

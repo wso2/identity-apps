@@ -23,10 +23,11 @@ import {
     HttpMethods,
     IdentityProviderInterface,
     IdentityProviderListResponseInterface,
-    IdentityProviderResponseInterface, IdentityProviderRolesInterface,
-    IdentityProviderTemplateListInterface,
+    IdentityProviderResponseInterface,
+    IdentityProviderRolesInterface,
     IdentityProviderTemplateListItemInterface,
     IdentityProviderTemplateListResponseInterface,
+    JITProvisioningResponseInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../models";
@@ -453,6 +454,41 @@ export const updateOutboundProvisioningConnector = (
         method: HttpMethods.PUT,
         url: store.getState().config.endpoints.identityProviders + "/" + idpId +
             "/provisioning/outbound-connectors/" + connectorId
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update identity provider: " + idpId));
+            }
+            return Promise.resolve(response.data as IdentityProviderInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Update JIT provisioning configs of a specified IDP.
+ *
+ * @param idpId ID of the Identity Provider.
+ * @param configs JIT provisioning configs.
+ * @return {Promise<any>} A promise containing the response.
+ */
+export const updateJITProvisioningConfigs = (
+    idpId: string,
+    configs: JITProvisioningResponseInterface
+): Promise<any> => {
+
+    const requestConfig = {
+        data: configs,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId +
+            "/provisioning/jit"
     };
 
     return httpClient.request(requestConfig)
