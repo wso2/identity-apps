@@ -43,6 +43,7 @@ export const SegmentedAccordionContent: FunctionComponent<SegmentedAccordionCont
 
     const classes = classNames(
         "segmented-accordion-content",
+        "lighter-bg",
         className
     );
 

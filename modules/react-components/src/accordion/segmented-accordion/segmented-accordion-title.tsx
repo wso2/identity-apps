@@ -195,7 +195,6 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                                         link
                                         inline
                                         transparent
-                                        hoverable
                                         verticalAlign="middle"
                                         icon={ <Icon name={ icon as SemanticICONS } color="grey"/> }
                                         onClick={
@@ -222,7 +221,6 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                                     link
                                     inline
                                     transparent
-                                    hoverable
                                     verticalAlign="middle"
                                     onClick={ (e: MouseEvent<HTMLDivElement>) => handleActionOnClick(onClick, e, id) }
                                     { ...icon }
@@ -269,6 +267,16 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                                             </div>
                                         ))
                                     }
+                                    <GenericIcon
+                                        size="default"
+                                        defaultIcon
+                                        link
+                                        inline
+                                        transparent
+                                        verticalAlign="middle"
+                                        floated="right"
+                                        icon={ <Icon name="angle right" className="chevron" /> }
+                                    />
                                 </div>
                             )
                         }
