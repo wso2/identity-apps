@@ -26,7 +26,7 @@ import { FormValidation } from "@wso2is/validation";
 /**
  *  Advanced Configurations for the Application.
  */
-interface AdvanceConfigurationsFormPropsInterface {
+interface AdvancedConfigurationsFormPropsInterface {
     config: AdvancedConfigurationsInterface;
     onSubmit: (values: any) => void;
 }
@@ -34,11 +34,11 @@ interface AdvanceConfigurationsFormPropsInterface {
 /**
  * Advanced configurations form component.
  *
- * @param {AdvanceConfigurationsFormPropsInterface} props - Props injected to the component.
+ * @param {AdvancedConfigurationsFormPropsInterface} props - Props injected to the component.
  * @return {JSX.Element}
  */
-export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsFormPropsInterface> = (
-    props: AdvanceConfigurationsFormPropsInterface
+export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfigurationsFormPropsInterface> = (
+    props: AdvancedConfigurationsFormPropsInterface
 ): JSX.Element => {
 
     const {
@@ -64,7 +64,8 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                 enableAuthorization: !!values.get("enableAuthorization")?.includes("enableAuthorization"),
                 returnAuthenticatedIdpList: !!values.get("returnAuthenticatedIdpList")?.includes("returnAuthenticatedIdpList"),
                 saas: !!values.get("saas")?.includes("saas"),
-                skipConsent: !!values.get("skipConsent")?.includes("skipConsent"),
+                skipLoginConsent: !!values.get("skipConsentLogin")?.includes("skipLoginConsent"),
+                skipLogoutConsent: !!values.get("skipConsentLogout")?.includes("skipLogoutConsent")
             }
         };
     };
@@ -98,21 +99,42 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
-                            name="skipConsent"
+                            name="skipConsentLogin"
                             label=""
                             required={ false }
                             requiredErrorMessage="this is needed"
-                            value={ config?.skipConsent ? ["skipConsent"] : [] }
+                            value={ config?.skipLoginConsent ? ["skipLoginConsent"] : [] }
                             type="checkbox"
                             children={ [
                                 {
-                                    label: "Skip consent",
-                                    value: "skipConsent"
+                                    label: "Skip login consent",
+                                    value: "skipLoginConsent"
                                 }
                             ] }
                         />
                         <Hint>
                             User consent will be skipped during login flows.
+                        </Hint>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            name="skipConsentLogout"
+                            label=""
+                            required={ false }
+                            requiredErrorMessage="this is needed"
+                            value={ config?.skipLogoutConsent ? ["skipLogoutConsent"] : [] }
+                            type="checkbox"
+                            children={ [
+                                {
+                                    label: "Skip logout consent",
+                                    value: "skipLogoutConsent"
+                                }
+                            ] }
+                        />
+                        <Hint>
+                            User consent will be skipped during logout flows.
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

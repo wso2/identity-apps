@@ -190,7 +190,8 @@ export interface AdvancedConfigurationsInterface {
     saas?: boolean;
     discoverableByEndUsers?: boolean;
     certificate?: CertificateInterface;
-    skipConsent?: boolean; // TODO  Add consent for logout
+    skipLoginConsent?: boolean;
+    skipLogoutConsent?: boolean;
     returnAuthenticatedIdpList?: boolean;
     enableAuthorization?: boolean;
 }
