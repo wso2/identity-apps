@@ -192,7 +192,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         data: CheckboxProps,
         id: string): void => {
 
-        // Implement necessary logic here.
+        // TODO: Implement necessary logic here.
     };
 
     /**
@@ -203,7 +203,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * @param {string} id - Id of the authenticator.
      */
     const handleAuthenticatorEnableToggle = (e: FormEvent<HTMLInputElement>, data: CheckboxProps, id: string): void => {
-        // Implement necessary logic here.
+        // TODO: Implement necessary logic here.
     };
 
     /**
@@ -212,7 +212,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * @param {string} id - Id of the authenticator.
      */
     const handleAuthenticatorDelete = (id: string): void => {
-        // Implement deletion logic here.
+        // TODO: Implement deletion logic here.
     };
 
     return (
