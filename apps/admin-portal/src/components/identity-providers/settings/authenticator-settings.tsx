@@ -230,19 +230,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
                                 <AuthenticatorAccordion
-                                    actions={ [
-                                        {
-                                            defaultChecked: true,
-                                            label: "Make default",
-                                            onChange: handleDefaultAuthenticatorChange,
-                                            type: "checkbox"
-                                        },
-                                        {
-                                            defaultChecked: true,
-                                            label: "Enabled",
-                                            onChange: handleAuthenticatorEnableToggle,
-                                            type: "toggle"
-                                        },
+                                    globalActions={ [
                                         {
                                             icon: "trash alternate",
                                             onClick: (e: MouseEvent<HTMLDivElement>, id: string): void => {
@@ -257,6 +245,20 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                     ] }
                                     authenticators={ [
                                         {
+                                            actions: [
+                                                {
+                                                    defaultChecked: true,
+                                                    label: "Make default",
+                                                    onChange: handleDefaultAuthenticatorChange,
+                                                    type: "checkbox"
+                                                },
+                                                {
+                                                    defaultChecked: true,
+                                                    label: "Enabled",
+                                                    onChange: handleAuthenticatorEnableToggle,
+                                                    type: "toggle"
+                                                }
+                                            ],
                                             content: federatedAuthenticators.defaultAuthenticatorId && (
                                                 <AuthenticatorFormFactory
                                                     metadata={ authenticatorMeta }

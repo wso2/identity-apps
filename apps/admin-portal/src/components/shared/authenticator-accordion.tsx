@@ -35,13 +35,13 @@ export interface AuthenticatorAccordionPropsInterface {
      */
     authenticators: AuthenticatorAccordionItemInterface[];
     /**
-     * Accordion actions.
-     */
-    actions: SegmentedAccordionTitlePropsInterface["actions"];
-    /**
      * Initial activeIndexes value.
      */
     defaultActiveIndexes?: number[];
+    /**
+     * Accordion actions.
+     */
+    globalActions?: SegmentedAccordionTitlePropsInterface["actions"];
     /**
      * Attribute to sort the array.
      */
@@ -52,6 +52,10 @@ export interface AuthenticatorAccordionPropsInterface {
  * Authenticator interface.
  */
 export interface AuthenticatorAccordionItemInterface {
+    /**
+     * Accordion actions.
+     */
+    actions?: SegmentedAccordionTitlePropsInterface["actions"];
     /**
      * Unique id for the authenticator.
      */
@@ -81,7 +85,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
 ): ReactElement => {
 
     const {
-        actions,
+        globalActions,
         authenticators,
         defaultActiveIndexes,
         orderBy
@@ -132,7 +136,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                                     { authenticator.title }
                                 </>
                             ) }
-                            actions={ actions }
+                            actions={ [ ...authenticator.actions, ...globalActions ] }
                         />
                         <SegmentedAccordion.Content
                             active={ accordionActiveIndexes.includes(index) }
