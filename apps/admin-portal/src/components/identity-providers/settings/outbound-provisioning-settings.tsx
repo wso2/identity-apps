@@ -76,9 +76,9 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
 
     const dispatch = useDispatch();
 
-    const [connectorMeta, setConnectorMeta] = useState<OutboundProvisioningConnectorMetaInterface>(null);
+    const [connectorMeta, setConnectorMeta] = useState<OutboundProvisioningConnectorMetaInterface>(undefined);
 
-    const [connectorDetails, setConnectorDetails] = useState<OutboundProvisioningConnectorInterface>(null);
+    const [connectorDetails, setConnectorDetails] = useState<OutboundProvisioningConnectorInterface>(undefined);
 
     /**
      * Handles the connector config form submit action.

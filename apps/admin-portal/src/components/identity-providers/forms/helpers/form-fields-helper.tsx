@@ -213,8 +213,8 @@ export const getFieldType = (propertyMetadata: CommonPluggableComponentMetaPrope
  * @param property Property of type {@link CommonPluggableComponentPropertyInterface}.
  * @param propertyMetadata Property metadata of type.
  * @param disable Disables the form field.
- * @param listen Listener method for the on change events of a checkbox field.
- * @link CommonPluggableComponentMetaPropertyInterface}.
+ * @param listen Listener method for the on change events of a checkbox field
+ * @return Corresponding property field.
  */
 export const getPropertyField = (property: CommonPluggableComponentPropertyInterface,
                                  propertyMetadata: CommonPluggableComponentMetaPropertyInterface,

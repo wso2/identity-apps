@@ -21,7 +21,7 @@ import { CommonPluggableComponentForm } from "../components";
 import { CommonPluggableComponentFormPropsInterface } from "../../../../models";
 
 /**
- * Google authenticator configurations form.
+ * Common authenticator configurations form.
  *
  * @param {CommonPluggableComponentFormPropsInterface} props
  * @return { ReactElement }
