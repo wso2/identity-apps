@@ -21,3 +21,4 @@ export * from "./advanced-configurations-form";
 export * from "./factories";
 export * from "./authenticators";
 export * from "./outbound-provisioning-connectors";
+export * from "./jit-provisioning-configuration-form";
