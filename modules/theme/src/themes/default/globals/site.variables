@@ -67,6 +67,7 @@
 @doveGray         : #666666;
 @dullGreen        : #34a850;
 @paleGray         : #D6D6D6;
+@alabaster        : #FCFCFC;
 
 /*-------------------
      Image Sizes
