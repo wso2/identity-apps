@@ -23,7 +23,7 @@ import { store } from "../store";
 /**
  * The error code that is returned when there is no item in the list.
  */
-const RESOURCE_NOT_FOUND_ERROR_CODE = "CMT-50017";
+const RESOURCE_NOT_FOUND_ERROR_CODE = "SUS-60003";
 
 /**
  * Initialize an axios Http client.
