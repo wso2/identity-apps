@@ -324,7 +324,7 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                     (
                         <PrimaryButton onClick={ () => setShowWizard(true) }>
                             <Icon name="add"/>
-                            Add User
+                            New User
                         </PrimaryButton>
                     )
                 }

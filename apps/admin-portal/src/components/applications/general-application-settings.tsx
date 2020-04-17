@@ -309,8 +309,8 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                 }
                                 <DangerZone
                                     actionTitle="Delete"
-                                    header="Delete the application"
-                                    subheader="This action is irreversible. Please proceed with caution."
+                                    header="Delete application"
+                                    subheader="Once you delete an application, there is no going back. Please be certain."
                                     onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
                                 />
                             </DangerZoneGroup>

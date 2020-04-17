@@ -59,7 +59,7 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                     <div className="general-details">
                         <UserAvatar
                             name={ summary?.firstName }
-                            image={ summary?.imageUrl }
+                            image={ summary?.profileUrl }
                             size="tiny"
                         />
                         { summary?.firstName && (

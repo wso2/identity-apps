@@ -236,7 +236,7 @@ export const GroupsPage = (): ReactElement => {
                     (
                         <PrimaryButton onClick={ () => setShowWizard(true) }>
                             <Icon name="add"/>
-                            Add Group
+                            New Group
                         </PrimaryButton>
                     )
                 }
