@@ -46,8 +46,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         enableSubmitButton
     } = props;
     
-    // Used for field elements which needs to keep an internal state of the form values being sensitive to onchange 
-    // events.
+    // Used for field elements which needs to listen for any onChange events in the form.
     const [dynamicValues, setDynamicValues] = useState<CommonPluggableComponentInterface>(undefined);
 
     const interpretValueByType = (value: FormValue, key: string, type: string) => {
