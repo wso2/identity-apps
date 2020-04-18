@@ -18,7 +18,7 @@
 
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AdvancedConfigurationsInterface } from "../../../models";
 import { FormValidation } from "@wso2is/validation";
@@ -35,11 +35,11 @@ interface AdvancedConfigurationsFormPropsInterface {
  * Advanced configurations form component.
  *
  * @param {AdvancedConfigurationsFormPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
 export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfigurationsFormPropsInterface> = (
     props: AdvancedConfigurationsFormPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         config,

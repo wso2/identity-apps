@@ -362,7 +362,8 @@ export const emptyApplication = (): ApplicationInterface => ({
         enableAuthorization: false,
         returnAuthenticatedIdpList: false,
         saas: false,
-        skipConsent: false,
+        skipLoginConsent: false,
+        skipLogoutConsent: false
     },
     authenticationSequence: undefined,
     claimConfiguration: undefined,
