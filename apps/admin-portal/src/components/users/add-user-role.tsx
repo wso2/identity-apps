@@ -214,6 +214,12 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                 removeItems={ removeRoles }
                 handleUnelectedListSearch={ handleUnselectedListSearch }
                 handleSelectedListSearch={ handleSelectedListSearch }
+                unselectedSegmentTestId="user_mgt_add_user_wizard_modal_unselected_roles_segment"
+                selectedSegmentTestId="user_mgt_add_user_wizard_modal_selected_roles_segment"
+                unselectedListSearchFieldTestId="user_mgt_add_user_wizard_modal_unselected_roles_search_input"
+                selectedListSearchFieldTestId="user_mgt_add_user_wizard_modal_selected_roles_search_input"
+                addItemsButtonTestId="user_mgt_add_user_wizard_modal_add_selected_roles_button"
+                removeItemsButtonTestId="user_mgt_add_user_wizard_modal_remove_selected_roles_button"
             >
                 <TransferList
                     isListEmpty={ !(initialValues?.roleList?.length > 0) }
@@ -221,6 +227,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                     listHeaders={ [ "Domain", "Name", "" ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
+                    selectAllCheckboxId="user_mgt_add_user_wizard_modal_unselected_roles_select_all_checkbox"
                 >
                     {
                         initialValues?.roleList?.map((role, index)=> {
@@ -236,6 +243,10 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                                     isItemChecked={ checkedUnassignedListItems.includes(role) }
                                     showSecondaryActions={ true }
                                     handleOpenPermissionModal={ () => handleSetRoleId(role.id) }
+                                    checkboxTestId={ `user_mgt_add_user_wizard_modal_unselected_roles_
+                                    ${ role.displayName.replace(" ", "_") }_checkbox` }
+                                    iconTestId={ `user_mgt_add_user_wizard_modal_unselected_roles_
+                                    ${ role.displayName.replace(" ", "_") }_icon` }
                                 />
                             )
                         })
@@ -247,6 +258,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                     listHeaders={ [ "Domain", "Name" ] }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
                     isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
+                    selectAllCheckboxId="user_mgt_add_user_wizard_modal_selected_roles_select_all_checkbox"
                 >
                     {
                         initialValues?.tempRoleList?.map((role, index)=> {
@@ -261,6 +273,8 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                                     listItemTypeLabel={ createItemLabel(role.displayName) }
                                     isItemChecked={ checkedAssignedListItems.includes(role) }
                                     showSecondaryActions={ false }
+                                    checkboxTestId={ `user_mgt_add_user_wizard_modal_selected_roles_
+                                    ${ role.displayName.replace(" ", "_") }_checkbox` }
                                 />
                             )
                         })

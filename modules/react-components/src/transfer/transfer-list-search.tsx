@@ -24,6 +24,7 @@ import { Grid, Icon, Input } from "semantic-ui-react";
  * Proptypes transfer list search component.
  */
 export interface TransferListSearchProps {
+    searchFieldTestId?: string;
     placeholder: string;
     handleListSearch?: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string; }) => void;
 }
@@ -39,6 +40,7 @@ export const TransferListSearch: FunctionComponent<TransferListSearchProps> = (
 ): ReactElement => {
 
     const {
+        searchFieldTestId,
         handleListSearch,
         placeholder
     } = props;
@@ -46,6 +48,7 @@ export const TransferListSearch: FunctionComponent<TransferListSearchProps> = (
     return (
         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
             <Input
+                data-testid={ searchFieldTestId }
                 icon={ <Icon name="search"/> }
                 fluid
                 onChange={ handleListSearch }

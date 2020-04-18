@@ -24,6 +24,14 @@ import { Button, Header, Responsive, Segment } from "semantic-ui-react";
  */
 export interface DangerZoneProps {
     /**
+     * Test id of the danger zone.
+     */
+    dangerZoneTestId?: string;
+    /**
+     * Test id of the delete button.
+     */
+    deleteButtonTestId?: string;
+    /**
      * Title for the danger zone action.
      */
     actionTitle: string;
@@ -56,16 +64,19 @@ export const DangerZone: React.FunctionComponent<DangerZoneProps> = (
         actionTitle,
         header,
         subheader,
-        onActionClick
+        onActionClick,
+        deleteButtonTestId,
+        dangerZoneTestId
     } = props;
 
     return (
-        <Segment className="danger-zone" padded clearing>
+        <Segment data-testid={ dangerZoneTestId } className="danger-zone" padded clearing>
             <Header as="h5" color="red" floated="left">
                 { header }
                 <Header.Subheader className="sub-header">{ subheader }</Header.Subheader>
             </Header>
             <Button
+                data-testid={ deleteButtonTestId }
                 fluid={ window.innerWidth <= Responsive.onlyTablet.maxWidth }
                 negative
                 className={

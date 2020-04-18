@@ -35,6 +35,22 @@ import { LinkButton } from "../../button";
 
 export interface ConfirmationModalPropsInterface extends ModalProps {
     /**
+     * Test id of the confirmation modal.
+     */
+    confirmationModalTestId?: string;
+    /**
+     * Test id of the confirmation input field.
+     */
+    confirmationInputTestId?: string;
+    /**
+     * Test id of the secondary action button.
+     */
+    secondaryActionButtonTestId?: string;
+    /**
+     * Test id of the primary action button.
+     */
+    primaryActionButtonTestId?: string;
+    /**
      * If the animated icons should be shown.
      */
     animated?: boolean;
@@ -117,6 +133,10 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
         onPrimaryActionClick,
         onSecondaryActionClick,
         textAlign,
+        confirmationInputTestId,
+        primaryActionButtonTestId,
+        secondaryActionButtonTestId,
+        confirmationModalTestId,
         ...rest
     } = props;
 
@@ -246,6 +266,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                 <>
                     { assertionHint && typeof assertionHint === "string" ? <p>{ assertionHint }</p> : assertionHint }
                     <Input
+                        data-testid={ confirmationInputTestId }
                         onChange={ (e: ChangeEvent<HTMLInputElement>): void => setAssertionInput(e.target?.value) }
                         value={ assertionInput }
                         fluid
@@ -271,6 +292,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
 
     return (
         <Modal
+            data-testid={ confirmationModalTestId }
             { ...rest }
             className={ classes }
         >
@@ -291,6 +313,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                         {
                             (secondaryAction && onSecondaryActionClick) && (
                                     <LinkButton
+                                        data-testid={ secondaryActionButtonTestId }
                                         positive={ type === "positive" }
                                         neagtive={ type === "negative" }
                                         warning={ type === "warning" }
@@ -304,6 +327,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                         {
                             (primaryAction && onPrimaryActionClick) && (
                                 <Button
+                                    data-testid={ primaryActionButtonTestId }
                                     className={ `${ type } ${ primaryActionFluid ? "fluid" : "" }` }
                                     disabled={ !confirmed }
                                     onClick={ onPrimaryActionClick }

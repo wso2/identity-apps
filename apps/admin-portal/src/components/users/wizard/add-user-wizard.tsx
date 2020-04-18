@@ -576,7 +576,12 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         {
             content: (
                 viewGroupPermissions
-                     ? <RolePermissions handleNavigateBack={ handleViewGroupPermission } roleId={ selectedGroupId } />
+                     ? <RolePermissions
+                            backButtonTestId="user_mgt_add_user_wizard_modal_group_permission_back_button"
+                            rolePermissionSegmentTestId="user_mgt_add_user_wizard_modal_group_permission"
+                            handleNavigateBack={ handleViewGroupPermission }
+                            roleId={ selectedGroupId }
+                        />
                      : <AddUserGroup
                             triggerSubmit={ submitGroupList }
                             onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
@@ -601,7 +606,12 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         {
             content: (
                 viewRolePermissions
-                ? <RolePermissions handleNavigateBack={ handleViewRolePermission } roleId={ selectedRoleId } />
+                ? <RolePermissions
+                        backButtonTestId="user_mgt_add_user_wizard_modal_role_permission_back_button"
+                        rolePermissionSegmentTestId="user_mgt_add_user_wizard_modal_role_permission"
+                        handleNavigateBack={ handleViewRolePermission }
+                        roleId={ selectedRoleId }
+                    />
                 : <AddUserRole
                         triggerSubmit={ submitRoleList }
                         onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
@@ -638,6 +648,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     return (
         <Modal
+            data-testid="user_mgt_add_user_wizard_modal"
             open={ true }
             className="wizard application-create-wizard"
             dimmer="blurring"
@@ -671,23 +682,39 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 <Grid>
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton floated="left" onClick={ () => closeWizard() }>
+                            <LinkButton
+                                data-testid="user_mgt_add_user_wizard_modal_cancel_button"
+                                floated="left"
+                                onClick={ () => closeWizard() }
+                            >
                                 { t("common:cancel") }
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ navigateToNext }>
+                                <PrimaryButton
+                                    data-testid="user_mgt_add_user_wizard_modal_next_button"
+                                    floated="right"
+                                    onClick={ navigateToNext }
+                                >
                                     { t("devPortal:components.user.modals.addUserWizard.buttons.next") }
                                     <Icon name="arrow right"/>
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep === STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ navigateToNext }>
+                                <PrimaryButton
+                                    data-testid="user_mgt_add_user_wizard_modal_finish_button"
+                                    floated="right"
+                                    onClick={ navigateToNext }
+                                >
                                     Finish</PrimaryButton>
                             ) }
                             { currentWizardStep > 0 && (
-                                <LinkButton floated="right" onClick={ navigateToPrevious }>
+                                <LinkButton
+                                    data-testid="user_mgt_add_user_wizard_modal_previous_button"
+                                    floated="right"
+                                    onClick={ navigateToPrevious }
+                                >
                                     <Icon name="arrow left"/>
                                     { t("devPortal:components.user.modals.addUserWizard.buttons.previous") }
                                 </LinkButton>

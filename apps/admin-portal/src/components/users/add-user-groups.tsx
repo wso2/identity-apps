@@ -222,6 +222,12 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                 removeItems={ removeGroups }
                 handleUnelectedListSearch={ handleUnselectedListSearch }
                 handleSelectedListSearch={ handleSelectedListSearch }
+                unselectedSegmentTestId="user_mgt_add_user_wizard_modal_unselected_groups_segment"
+                selectedSegmentTestId="user_mgt_add_user_wizard_modal_selected_groups_segment"
+                unselectedListSearchFieldTestId="user_mgt_add_user_wizard_modal_unselected_groups_search_input"
+                selectedListSearchFieldTestId="user_mgt_add_user_wizard_modal_selected_groups_search_input"
+                addItemsButtonTestId="user_mgt_add_user_wizard_modal_add_selected_groups_button"
+                removeItemsButtonTestId="user_mgt_add_user_wizard_modal_remove_selected_groups_button"
             >
                 <TransferList
                     isListEmpty={ !(initialValues?.groupList?.length > 0) }
@@ -229,6 +235,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                     listHeaders={ [ "Domain", "Name", "" ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedGroupsAllRolesChecked }
+                    selectAllCheckboxId="user_mgt_add_user_wizard_modal_unselected_groups_select_all_checkbox"
                 >
                     {
                         initialValues?.groupList?.map((group, index)=> {
@@ -243,6 +250,10 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                                     isItemChecked={ checkedUnassignedListItems.includes(group) }
                                     showSecondaryActions={ true }
                                     handleOpenPermissionModal={ () => handleSetGroupId(group.id) }
+                                    checkboxTestId={ `user_mgt_add_user_wizard_modal_unselected_groups_
+                                    ${ group.displayName.replace(" ", "_") }_checkbox` }
+                                    iconTestId={ `user_mgt_add_user_wizard_modal_unselected_groups_
+                                    ${ group.displayName.replace(" ", "_") }_icon` }
                                 />
                             )
                         })
@@ -254,6 +265,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                     listHeaders={ [ "Domain", "Name" ] }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
                     isHeaderCheckboxChecked={ isSelectAssignedAllGroupsChecked }
+                    selectAllCheckboxId="user_mgt_add_user_wizard_modal_selected_groups_select_all_checkbox"
                 >
                     {
                         initialValues?.tempGroupList?.map((group, index)=> {
@@ -267,6 +279,8 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                                     listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
                                     isItemChecked={ checkedAssignedListItems.includes(group) }
                                     showSecondaryActions={ false }
+                                    checkboxTestId={ `user_mgt_add_user_wizard_modal_selected_groups_
+                                    ${ group.displayName.replace(" ", "_") }_checkbox` }
                                 />
                             )
                         })

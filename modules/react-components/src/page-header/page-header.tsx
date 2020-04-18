@@ -42,6 +42,7 @@ export interface PageHeaderPropsInterface {
 interface BackButtonInterface {
     text: string;
     onClick: MouseEventHandler;
+    testId: string;
 }
 
 /**
@@ -63,7 +64,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
         showBottomDivider,
         title,
         titleAs,
-        titleTextAlign
+        titleTextAlign,
     } = props;
 
     const wrapperClasses = classNames(
@@ -86,7 +87,11 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
             <div className={ wrapperClasses }>
                 {
                     backButton && backButton.text && (
-                        <div className="back-button" onClick={ backButton.onClick }>
+                        <div
+                            data-testid={ backButton.testId }
+                            className="back-button"
+                            onClick={ backButton.onClick }
+                        >
                             <Icon name="arrow left" />
                             { backButton.text }
                         </div>

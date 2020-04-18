@@ -319,10 +319,14 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                 currentListSize={ usersList.itemsPerPage }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                itemsPerPageDropDownTestId="user_mgt_user_list_items_per_page_dropdown"
                 onPageChange={ handlePaginationChange }
                 rightActionPanel={
                     (
-                        <PrimaryButton onClick={ () => setShowWizard(true) }>
+                        <PrimaryButton
+                            data-testid="user_mgt_user_list_add_user_button"
+                            onClick={ () => setShowWizard(true) }
+                        >
                             <Icon name="add"/>
                             New User
                         </PrimaryButton>
@@ -343,10 +347,18 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                                 on='click'
                                 pinned
                                 trigger={
-                                    <Button className="meta-columns-button" basic><Icon name="columns"/>Columns</Button>
+                                    <Button
+                                        data-testid="user_mgt_user_list_meta_columns_button"
+                                        className="meta-columns-button"
+                                        basic
+                                    >
+                                        <Icon name="columns"/>
+                                        Columns
+                                    </Button>
                                 }
                             />
                             <Dropdown
+                                data-testid="user_mgt_user_list_userstore_dropdown"
                                 selection
                                 options={ userStoreOptions && userStoreOptions }
                                 onChange={ handleDomainChange }

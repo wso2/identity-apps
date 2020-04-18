@@ -463,6 +463,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         if (selectedGroupId) {
             return (
                 <UserRolePermissions
+                    backButtonTestId="user_mgt_groups_list_group_permission_modal_back_button"
+                    rolePermissionSegmentTestId="user_mgt_groups_list_group_permission_modal"
                     openRolePermissionModal={ showGroupPermissionModal }
                     handleCloseRolePermissionModal={ handleCloseRolePermissionModal }
                     roleId={ selectedGroupId }
@@ -482,7 +484,12 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     };
 
     const addNewGroupModal = () => (
-        <Modal open={ showAddNewRoleModal } size="small" className="user-roles">
+        <Modal
+            data-testid="user_mgt_update_groups_modal"
+            open={ showAddNewRoleModal }
+            size="small"
+            className="user-roles"
+        >
             <Modal.Header>
                 Update User Groups
                 <Heading subHeading ellipsis as="h6">
@@ -506,6 +513,12 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                 removeItems={ removeGroups }
                                 handleUnelectedListSearch={ handleUnselectedListSearch }
                                 handleSelectedListSearch={ handleSelectedListSearch }
+                                unselectedSegmentTestId="user_mgt_update_groups_modal_unselected_groups_segment"
+                                selectedSegmentTestId="user_mgt_update_groups_modal_selected_groups_segment"
+                                unselectedListSearchFieldTestId="user_mgt_update_groups_modal_unselected_groups_search_input"
+                                selectedListSearchFieldTestId="user_mgt_update_groups_modal_selected_groups_search_input"
+                                addItemsButtonTestId="user_mgt_update_groups_modal_add_selected_groups_button"
+                                removeItemsButtonTestId="user_mgt_update_groups_modal_remove_selected_groups_button"
                             >
                                 <TransferList
                                     isListEmpty={ !(groupList.length > 0) }
@@ -513,6 +526,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                     listHeaders={ [ "Domain", "Name", "" ] }
                                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                     isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
+                                    selectAllCheckboxId="user_mgt_update_groups_modal_unselected_groups_select_all_checkbox"
                                 >
                                     {
                                         groupList?.map((role, index)=> {
@@ -529,6 +543,10 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                                         isItemChecked={ checkedUnassignedListItems.includes(role) }
                                                         showSecondaryActions={ true }
                                                         handleOpenPermissionModal={ () => handleGroupIdSet(role.id) }
+                                                        checkboxTestId={ `user_mgt_update_groups_modal_unselected_groups_
+                                                        ${ role.displayName.replace(" ", "_") }_checkbox` }
+                                                        iconTestId={ `user_mgt_update_groups_modal_unselected_groups_
+                                                        ${ role.displayName.replace(" ", "_") }_icon` }
                                                     />
                                                 )
                                             }
@@ -541,6 +559,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                     listHeaders={ [ "Domain", "Name" ] }
                                     handleHeaderCheckboxChange={ selectAllAssignedList }
                                     isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
+                                    selectAllCheckboxId="user_mgt_update_groups_modal_selected_groups_select_all_checkbox"
                                 >
                                     {
                                         tempGroupList?.map((role, index)=> {
@@ -556,6 +575,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                                         listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
                                                         isItemChecked={ checkedAssignedListItems.includes(role) }
                                                         showSecondaryActions={ false }
+                                                        checkboxTestId={ `user_mgt_update_groups_modal_selected_groups_
+                                                        ${ role.displayName.replace(" ", "_") }_checkbox` }
                                                     />
                                                 )
                                             }
@@ -571,6 +592,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton
+                                data-testid="user_mgt_update_groups_modal_cancel_button"
                                 floated="left"
                                 onClick={ handleCloseAddNewGroupModal }
                             >
@@ -579,6 +601,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <PrimaryButton
+                                data-testid="user_mgt_update_groups_modal_save_button"
                                 floated="right"
                                 onClick={ () => updateUserGroup(user, tempGroupList) }
                             >
@@ -628,10 +651,14 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                         {
                             primaryGroupsList?.size > 0 ? (
                             <Segment.Group fluid>
-                                <Segment className="user-role-edit-header-segment">
+                                <Segment
+                                    data-testid="user_mgt_groups_list"
+                                    className="user-role-edit-header-segment"
+                                >
                                     <Grid.Row>
                                         <Grid.Column>
                                             <Input
+                                                data-testid="user_mgt_groups_list_search_input"
                                                 icon={ <Icon name="search"/> }
                                                 onChange={ handleAssignedGroupListSearch }
                                                 placeholder="Search groups"
@@ -639,6 +666,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                                 size="small"
                                             />
                                             <Button
+                                                data-testid="user_mgt_groups_list_update_button"
                                                 size="medium"
                                                 icon="pencil"
                                                 floated="right"
@@ -671,6 +699,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                                                             content="View permissions"
                                                                             trigger={
                                                                                 <Icon
+                                                                                    data-testid={ `user_mgt_groups_
+                                                                                    list_${ group.display }_permissions_button` }
                                                                                     color="grey"
                                                                                     name="key"
                                                                                     onClick={ () => handleSetSelectedId(group.value) }
@@ -691,6 +721,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                             ) : (
                                 <Segment>
                                     <EmptyPlaceholder
+                                        data-testid="user_mgt_empty_groups_list"
                                         title="No Groups Assigned"
                                         subtitle={ [
                                             "There are no groups assigned to the user at the moment.",
@@ -698,7 +729,11 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                             "tasks like accessing certain applications."
                                         ] }
                                         action={
-                                            <PrimaryButton icon="plus" onClick={ handleOpenAddNewGroupModal }>
+                                            <PrimaryButton
+                                                data-testid="user_mgt_empty_groups_list_assign_group_button"
+                                                icon="plus"
+                                                onClick={ handleOpenAddNewGroupModal }
+                                            >
                                                 Assign Group
                                             </PrimaryButton>
                                         }

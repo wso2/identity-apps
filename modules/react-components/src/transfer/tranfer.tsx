@@ -29,6 +29,12 @@ export interface TransferComponentPropsInterface {
     addItems: () => void;
     removeItems: () => void;
     searchPlaceholder: string;
+    unselectedSegmentTestId?: string;
+    selectedSegmentTestId?: string;
+    unselectedListSearchFieldTestId?: string;
+    selectedListSearchFieldTestId?: string;
+    addItemsButtonTestId?: string;
+    removeItemsButtonTestId?: string;
 }
 
 /**
@@ -47,7 +53,13 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         children,
         searchPlaceholder,
         handleUnelectedListSearch,
-        handleSelectedListSearch
+        handleSelectedListSearch,
+        unselectedListSearchFieldTestId,
+        selectedListSearchFieldTestId,
+        unselectedSegmentTestId,
+        selectedSegmentTestId,
+        addItemsButtonTestId,
+        removeItemsButtonTestId
     } = props;
 
     return (
@@ -62,8 +74,12 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                         {
                                             list.props.listType === "unselected" && (
                                             <Grid.Column width={ 7 }>
-                                                <Segment className="transfer-segment">
+                                                <Segment
+                                                    data-testid={ unselectedSegmentTestId }
+                                                    className="transfer-segment"
+                                                >
                                                     <TransferListSearch
+                                                        searchFieldTestId={ unselectedListSearchFieldTestId }
                                                         handleListSearch={ handleUnelectedListSearch }
                                                         placeholder={ searchPlaceholder }
                                                     />
@@ -82,12 +98,24 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                     className="transfer-list-button-column"
                                                 >
                                                     <Grid.Row>
-                                                        <Button type="button" basic size="mini" onClick={ addItems }>
+                                                        <Button
+                                                            data-testid={ addItemsButtonTestId }
+                                                            type="button"
+                                                            basic
+                                                            size="mini"
+                                                            onClick={ addItems }
+                                                        >
                                                             <Icon name="chevron right"/>
                                                         </Button>
                                                     </Grid.Row>
                                                     <Grid.Row>
-                                                        <Button type="button" basic size="mini" onClick={ removeItems }>
+                                                        <Button
+                                                            data-testid={ removeItemsButtonTestId }
+                                                            type="button"
+                                                            basic
+                                                            size="mini"
+                                                            onClick={ removeItems }
+                                                        >
                                                             <Icon name="chevron left"/>
                                                         </Button>
                                                     </Grid.Row>
@@ -97,8 +125,12 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                         {
                                             list.props.listType === "selected" && (
                                                 <Grid.Column width={ 7 } className="transfer-list-assigned-column">
-                                                    <Segment className="transfer-segment">
+                                                    <Segment
+                                                        data-testid={ selectedSegmentTestId }
+                                                        className="transfer-segment"
+                                                    >
                                                         <TransferListSearch
+                                                            searchFieldTestId={ selectedListSearchFieldTestId }
                                                             handleListSearch={ handleSelectedListSearch }
                                                             placeholder={ searchPlaceholder }
                                                         />
