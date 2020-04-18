@@ -22,6 +22,7 @@ import React, { lazy, Suspense, ReactElement } from "react";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { Placeholder } from "semantic-ui-react";
 import { useTranslation } from "react-i18next";
+
 interface ExtensionInterface {
     section: "account-subscription" | "account-status";
     type: "component";
