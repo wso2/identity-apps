@@ -27,8 +27,8 @@ interface AddEmailTemplateTypePropsInterface {
     onSubmit: (values: any) => void;
 }
 
-export const AddEmailTemplateType: FunctionComponent<AddEmailTemplateTypeProps> = (
-    props: AddEmailTemplateTypeProps
+export const AddEmailTemplateType: FunctionComponent<AddEmailTemplateTypePropsInterface> = (
+    props: AddEmailTemplateTypePropsInterface
 ): ReactElement => {
 
     const {
