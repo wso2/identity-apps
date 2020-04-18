@@ -23,11 +23,22 @@ import { EmptyPlaceholderIllustrations } from "../configs";
 import { Placeholder } from "semantic-ui-react";
 import { useTranslation } from "react-i18next";
 
+/**
+ * Extension Interface.
+ *
+ * @interface ExtensionInterface - Component placeholder properties.
+ */
 interface ExtensionInterface {
     section: "account-subscription" | "account-status";
     type: "component";
 }
 
+/**
+ * Extended Component.
+ *
+ * @param {ExtensionInterface} props
+ * @returns {ReactElement}
+ */
 export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement => {
 
     const { section, type } = props;
@@ -62,8 +73,8 @@ export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement =>
                 fallback={ (
                     <Placeholder>
                         <Placeholder.Header>
-                        <Placeholder.Line />
-                        <Placeholder.Line />
+                            <Placeholder.Line />
+                            <Placeholder.Line />
                         </Placeholder.Header>
                     </Placeholder>
                 ) }>
