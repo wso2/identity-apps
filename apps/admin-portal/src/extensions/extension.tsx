@@ -38,11 +38,7 @@ export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement =>
     let DynamicLoader;
 
     if (fragment) {
-        DynamicLoader = lazy(() => {
-            return new Promise(resolve => setTimeout(resolve, 5 * 1000)).then(
-                () => import(`${fragment}`)
-            );
-        });
+        DynamicLoader = lazy(() => import(`${fragment}`));
     } else {
         DynamicLoader = () => <></>;
     }
