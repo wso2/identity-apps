@@ -43,6 +43,9 @@ interface AdvancedSearchProps {
     resetSubmittedState?: () => void;
     searchOptionsHeader?: string;
     submitted?: boolean;
+    searchFieldTestId?: string;
+    clearSearchButtonTestId?: string;
+    showOptionsButtonTestId?: string;
 }
 
 /**
@@ -72,7 +75,10 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
         placeholder,
         resetSubmittedState,
         searchOptionsHeader,
-        submitted
+        submitted,
+        searchFieldTestId,
+        clearSearchButtonTestId,
+        showOptionsButtonTestId
     } = props;
 
     const [ internalSearchQuery, setInternalSearchQuery ] = useState("");
@@ -190,6 +196,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
     return (
         <div className={ `advanced-search-wrapper ${ wrapperClasses }` }>
             <Input
+                data-testid={ searchFieldTestId }
                 action={ (
                     <>
                         {
@@ -200,6 +207,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
                                         trigger={
                                             (
                                                 <Button
+                                                    data-testid={ clearSearchButtonTestId }
                                                     basic
                                                     compact
                                                     className="input-add-on"
@@ -225,7 +233,12 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
                             disabled={ !dropdownTriggerPopupLabel }
                             trigger={
                                 (
-                                    <Button basic compact className="input-add-on" onClick={ handleShowOptionsClick }>
+                                    <Button
+                                        data-testid={ showOptionsButtonTestId }
+                                        basic
+                                        compact className="input-add-on"
+                                        onClick={ handleShowOptionsClick }
+                                    >
                                         <Icon name="caret down"/>
                                     </Button>
                                 )

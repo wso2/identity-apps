@@ -673,7 +673,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         return (
             <UserRolePermissions
                 backButtonTestId="user_mgt_roles_list_roles_permission_modal_back_button"
-                rolePermissionSegmentTestId="user_mgt_roles_list_role_permission_modal"
+                rolePermissionModalTestId="user_mgt_roles_list_role_permission_modal"
                 openRolePermissionModal={ showRolePermissionModal }
                 handleCloseRolePermissionModal={ handleCloseRolePermissionModal }
                 roleId={ selectedRoleId }

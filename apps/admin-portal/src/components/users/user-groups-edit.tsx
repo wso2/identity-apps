@@ -464,7 +464,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             return (
                 <UserRolePermissions
                     backButtonTestId="user_mgt_groups_list_group_permission_modal_back_button"
-                    rolePermissionSegmentTestId="user_mgt_groups_list_group_permission_modal"
+                    rolePermissionModalTestId="user_mgt_groups_list_group_permission_modal"
                     openRolePermissionModal={ showGroupPermissionModal }
                     handleCloseRolePermissionModal={ handleCloseRolePermissionModal }
                     roleId={ selectedGroupId }
