@@ -16,18 +16,23 @@
  * under the License.
  */
 
-import * as getConfig from "./config"; 
+import * as getConfig from "./config";
+import { EmptyPlaceholder, ErrorBoundary  } from "@wso2is/react-components";
 import React, { lazy, Suspense, ReactElement } from "react";
-import { ErrorBoundary } from "@wso2is/react-components";
-
+import { EmptyPlaceholderIllustrations } from "../configs";
+import { Placeholder } from "semantic-ui-react";
+import { useTranslation } from "react-i18next";
 interface ExtensionInterface {
     section: "account-subscription" | "account-status";
     type: "component";
 }
 
-export const Placeholder = (props: ExtensionInterface): ReactElement => {
+export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement => {
 
     const { section, type } = props;
+    
+    const { t } = useTranslation();
+
     const fragment = getConfig()?.sections[type + "s"]?.[section];
 
     let DynamicLoader;
@@ -43,8 +48,28 @@ export const Placeholder = (props: ExtensionInterface): ReactElement => {
     }
 
     return (
-        <ErrorBoundary>
-            <Suspense fallback={ <div>Loading...</div> }>
+        <ErrorBoundary
+                fallback={ (
+                    <EmptyPlaceholder
+                        image={ EmptyPlaceholderIllustrations.genericError }
+                        imageSize="tiny"
+                        subtitle={ [
+                            t("views:placeholders.genericError.subtitles.0"),
+                            t("views:placeholders.genericError.subtitles.1")
+                        ] }
+                        title={ t("views:placeholders.genericError.title") }
+                    />
+                ) }
+            >
+            <Suspense
+                fallback={ (
+                    <Placeholder>
+                        <Placeholder.Header>
+                        <Placeholder.Line />
+                        <Placeholder.Line />
+                        </Placeholder.Header>
+                    </Placeholder>
+                ) }>
                 <DynamicLoader />
             </Suspense>
         </ErrorBoundary>
