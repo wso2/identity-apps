@@ -20,7 +20,7 @@ module.exports = () => {
     return {
         sections: {
             components: {
-                "account-subscription": "./components/subscription.tsx"
+                "example": "./components/example.tsx"
             }
         }
     };
