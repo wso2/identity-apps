@@ -73,14 +73,15 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
         const url = changeUrl;
         const urlValid = validation(url);
         setValidURL(urlValid);
-        const availableURls = urlState.split(",");
-        const duplicate = availableURls.includes(url);
-        setDuplicateURL(duplicate);
-        if (urlValid && !duplicate) {
-            if (urlState === "") {
-                setURLState(url);
-                setChangeUrl("");
-            } else {
+        if (urlState === "" || urlState === undefined) {
+            setURLState(url);
+            setChangeUrl("");
+        }
+        else {
+            const availableURls = urlState.split(",");
+            const duplicate = availableURls.includes(url);
+            setDuplicateURL(duplicate);
+            if (urlValid && !duplicate) {
                 setURLState((url + "," + urlState));
                 setChangeUrl("");
             }

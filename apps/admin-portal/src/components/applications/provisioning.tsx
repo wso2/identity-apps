@@ -28,7 +28,7 @@ import {
     ProvisioningConfigurationInterface,
     SimpleUserStoreListItemInterface
 } from "../../models";
-import { AdvanceConfigurationsForm, ProvisioningConfigurationsForm } from "./forms";
+import { AdvancedConfigurationsForm, ProvisioningConfigurationsForm } from "./forms";
 
 /**
  * Proptypes for the provision settings component.

@@ -22,6 +22,7 @@ import { Button, Grid } from "semantic-ui-react";
 import { PassiveStsConfigurationInterface } from "../../../models";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
+import _ from "lodash";
 
 /**
  * Proptypes for the inbound Passive Sts form component.
@@ -77,9 +78,11 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                             placeholder="Enter realm."
                             type="text"
                             value={ initialValues?.realm }
-                            readOnly
+                            readOnly={ !(_.isEmpty(initialValues?.realm)) }
                         />
-                        <Hint>Enter realm identifier for passive sts</Hint>
+                        <Hint disabled={ !(_.isEmpty(initialValues?.realm)) }>
+                            Enter realm identifier for passive sts
+                        </Hint>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
