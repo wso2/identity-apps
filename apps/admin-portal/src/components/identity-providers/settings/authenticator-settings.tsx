@@ -21,9 +21,7 @@ import { ConfirmationModal, ContentLoader, PrimaryButton } from "@wso2is/react-c
 import {
     FederatedAuthenticatorInterface,
     FederatedAuthenticatorListItemInterface,
-    FederatedAuthenticatorListResponseInterface,
-    FederatedAuthenticatorMetaInterface,
-    SupportedAuthenticators
+    FederatedAuthenticatorListResponseInterface
 } from "../../../models";
 import {
     getFederatedAuthenticatorDetails,
@@ -35,9 +33,8 @@ import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { AuthenticatorAccordion } from "../../shared";
 import { AuthenticatorFormFactory } from "../forms";
-import { useDispatch } from "react-redux";
 import { FederatedAuthenticators } from "../meta/authenticators";
-import { renderIntoDocument } from "react-dom/test-utils";
+import { useDispatch } from "react-redux";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -86,20 +83,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         deletingAuthenticator,
         setDeletingAuthenticator
     ] = useState<FederatedAuthenticatorListItemInterface>(undefined);
-    const [authenticatorMeta, setAuthenticatorMeta] = useState<FederatedAuthenticatorMetaInterface>({
-        authenticatorId: "",
-        displayName: "",
-        name: SupportedAuthenticators.NONE,
-        properties: []
-    });
-    const [authenticatorDetails, setAuthenticatorDetails] = useState<FederatedAuthenticatorListItemInterface>({
-        authenticatorId: "",
-        isDefault: false,
-        isEnabled: false,
-        name: "",
-        properties: []
-    });
-
     const [availableAuthenticators, setAvailableAuthenticators] = useState<FederatedAuthenticatorInterface[]>([]);
 
     /**
@@ -115,6 +98,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     level: AlertLevels.SUCCESS,
                     message: "Update successful"
                 }));
+                onUpdate(idpId)
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -211,6 +195,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     }
 
     useEffect(() => {
+        setAvailableAuthenticators([]);
         fetchAuthenticators()
             .then((res) => {
                 setAvailableAuthenticators(res);
@@ -226,8 +211,9 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      */
     const handleDefaultAuthenticatorChange = (e: FormEvent<HTMLInputElement>, data: CheckboxProps, id: string):
         void => {
-
-        // TODO: Implement necessary logic here.
+        const authenticator = availableAuthenticators.find(authenticator => (authenticator.id === id)).data;
+        authenticator.isDefault = data.checked;
+        handleInboundConfigFormSubmit(authenticator);
     };
 
     /**
@@ -238,7 +224,19 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * @param {string} id - Id of the authenticator.
      */
     const handleAuthenticatorEnableToggle = (e: FormEvent<HTMLInputElement>, data: CheckboxProps, id: string): void => {
-        // TODO: Implement necessary logic here.
+        const authenticator = availableAuthenticators.find(authenticator => (authenticator.id === id)).data;
+        // Validation
+        if (authenticator.isDefault && !data.checked) {
+            dispatch(addAlert({
+                description: "You cannot disable the default authenticator.",
+                level: AlertLevels.WARNING,
+                message: "Data validation error"
+            }));
+            onUpdate(idpId);
+        } else {
+            authenticator.isEnabled = data.checked;
+            handleInboundConfigFormSubmit(authenticator);
+        }
     };
 
     /**
@@ -288,13 +286,17 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                     actions: [
                                                         {
                                                             defaultChecked: authenticator.data?.isDefault,
-                                                            label: "Make default",
+                                                            disabled: (authenticator.data?.isDefault ||
+                                                                !authenticator.data?.isEnabled),
+                                                            label: (authenticator.data?.isDefault ?
+                                                                "Default" : "Make default"),
                                                             onChange: handleDefaultAuthenticatorChange,
                                                             type: "checkbox"
                                                         },
                                                         {
                                                             defaultChecked: authenticator.data?.isEnabled,
-                                                            label: "Enabled",
+                                                            label: (authenticator.data?.isEnabled ?
+                                                                "Enabled" : "Disabled"),
                                                             onChange: handleAuthenticatorEnableToggle,
                                                             type: "toggle"
                                                         }
@@ -307,13 +309,13 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                             type={ authenticator.meta?.name }
                                                         />
                                                     ),
-                                                    id: authenticator?.id,
-                                                    title: authenticator.meta?.displayName,
                                                     icon: {
                                                         icon: authenticator.id &&
                                                             (FederatedAuthenticators.find((fedAuth) =>
                                                                 (fedAuth.authenticatorId === authenticator.id ))).icon
-                                                    }
+                                                    },
+                                                    id: authenticator?.id,
+													title: authenticator.meta?.displayName
                                                 }
                                             ] }
                                         />
