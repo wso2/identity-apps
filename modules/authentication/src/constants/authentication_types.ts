@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,18 @@
  * under the License.
  */
 
-export * from "./authentication_types";
-export * from "./endpoints";
-export * from "./token";
-export * from "./user";
+/**
+ * Basic authentication type.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const BASIC_TYPE = "basic";
+
+/**
+ * Authorization Code based authentication type.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const AUTHORIZATION_CODE_TYPE = "authorization_code";

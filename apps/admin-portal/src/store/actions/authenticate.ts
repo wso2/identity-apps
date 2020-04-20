@@ -18,23 +18,16 @@
 
 import { AlertLevels, ProfileSchema } from "../../models";
 import { AuthAction, authenticateActionTypes } from "./types";
-import {
-    AuthenticateSessionUtil,
-    AuthenticateTokenKeys,
-    OIDCRequestParamsInterface,
-    OPConfigurationUtil,
-    SignInUtil,
-    SignOutUtil
-} from "@wso2is/authentication";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
+import { I18n } from "@wso2is/i18n";
+import { IdentityClient } from "@wso2is/authentication";
+import { SYSTEM_SCOPE } from "../../constants";
 import _ from "lodash";
 import { addAlert } from "@wso2is/core/store";
 import { getProfileInfo } from "@wso2is/core/api";
 import { getProfileSchemas } from "../../api";
 import { history } from "../../helpers";
-import { I18n } from "@wso2is/i18n";
 import { store } from "../index";
-import { SYSTEM_SCOPE } from "../../constants";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
@@ -160,92 +153,45 @@ export const getProfileInformation = () => (dispatch): void => {
         });
 };
 
-
 /**
- * Handle user sign-out
+ * Initialize identityManager client
  */
-export const handleSignOut = () => (dispatch): void => {
-    if (sessionStorage.length === 0) {
-        history.push(store.getState().config.deployment.appLoginPath);
-    } else {
-        SignOutUtil.sendSignOutRequest(store.getState().config.deployment.loginCallbackUrl, () => {
-                dispatch(setSignOut());
-                AuthenticateSessionUtil.endAuthenticatedSession();
-                OPConfigurationUtil.resetOPConfiguration();
-            }).catch(() => {
-                history.push(store.getState().config.deployment.appLoginPath);
-            });
-    }
-};
+const identityManager = new IdentityClient({
+    callbackURL: store.getState().config.deployment.loginCallbackUrl,
+    clientHost: store.getState().config.deployment.clientHost,
+    clientID: store.getState().config.deployment.clientID,
+    scope: [ SYSTEM_SCOPE ],
+    serverOrigin: store.getState().config.deployment.serverOrigin,
+    tenant: store.getState().config.deployment.tenant,
+    tenantPath: store.getState().config.deployment.tenantPath
+});
 
 /**
  * Handle user sign-in
  */
-export const handleSignIn = (consentDenied = false) => (dispatch): void => {
-    const requestParams: OIDCRequestParamsInterface = {
-        clientHost: store.getState().config.deployment.clientHost,
-        clientId: store.getState().config.deployment.clientID,
-        clientSecret: null,
-        enablePKCE: true,
-        redirectUri: store.getState().config.deployment.loginCallbackUrl,
-        scope: [ SYSTEM_SCOPE ],
-        serverOrigin: store.getState().config.deployment.serverOrigin,
-        tenant: store.getState().config.deployment.tenant
-    };
+export const handleSignIn = () => (dispatch) => {
+    identityManager.signIn(
+        () => {
+            dispatch(setSignIn());
+            dispatch(getProfileInformation());
+        })
+        .catch((error) => {
+            // TODO: Show error page
+            throw error;
+        });
+};
 
-    const sendSignInRequest = (): void => {
-        if (consentDenied) {
-            requestParams.prompt = "login";
-        }
-
-        if (SignInUtil.hasAuthorizationCode()) {
-            SignInUtil.sendTokenRequest(requestParams)
-                .then((response) => {
-                    AuthenticateSessionUtil.initUserSession(
-                        response,
-                        SignInUtil.getAuthenticatedUser(response.idToken)
-                    );
-                    dispatch(setSignIn());
-                    dispatch(getProfileInformation());
-                })
-                .catch((error) => {
-                    if (error.response.status === 400) {
-                        SignInUtil.sendAuthorizationRequest(requestParams);
-                    }
-
-                    throw error;
-                });
-        } else {
-            SignInUtil.sendAuthorizationRequest(requestParams);
-        }
-    };
-
-    if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
-        if (OPConfigurationUtil.isValidOPConfig(requestParams.tenant)) {
-            AuthenticateSessionUtil.endAuthenticatedSession();
-            OPConfigurationUtil.resetOPConfiguration();
-            handleSignOut();
-        }
-
-        dispatch(setSignIn());
-        dispatch(getProfileInformation());
-    } else {
-        OPConfigurationUtil.initOPConfiguration(store.getState().config.endpoints.wellKnown, false)
-            .then(() => {
-                sendSignInRequest();
-            })
-            .catch(() => {
-                OPConfigurationUtil.setAuthorizeEndpoint(store.getState().config.endpoints.authorize);
-                OPConfigurationUtil.setTokenEndpoint(store.getState().config.endpoints.token);
-                OPConfigurationUtil.setRevokeTokenEndpoint(store.getState().config.endpoints.revoke);
-                OPConfigurationUtil.setEndSessionEndpoint(store.getState().config.endpoints.logout);
-                OPConfigurationUtil.setJwksUri(store.getState().config.endpoints.jwks);
-                OPConfigurationUtil.setIssuer(store.getState().config.endpoints.issuer);
-                OPConfigurationUtil.setOPConfigInitiated();
-
-                sendSignInRequest();
-            });
-    }
+/**
+ * Handle user sign-out
+ */
+export const handleSignOut = () => (dispatch) => {
+    identityManager.signOut(
+        () => {
+            dispatch(setSignOut());
+        })
+        .catch(() => {
+            history.push(store.getState().config.deployment.appLoginPath);
+        });
 };
 
 /**

@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import axios from "axios";
 import {
     ACCESS_TOKEN,
     AUTHORIZATION_CODE,
@@ -25,12 +24,30 @@ import {
     REQUEST_PARAMS,
     SERVICE_RESOURCES
 } from "../constants";
-import { AuthenticatedUserInterface } from "../models/authenticated-user";
-import { AccountSwitchRequestParams, OIDCRequestParamsInterface } from "../models/oidc-request-params";
 import { TokenResponseInterface, TokenRequestHeader } from "../models/token-response";
+import {
+    endAuthenticatedSession,
+    getSessionParameter,
+    initUserSession,
+    removeSessionParameter,
+    setSessionParameter
+} from "./session";
+import {
+    getAuthorizeEndpoint,
+    getIssuer,
+    getJwksUri,
+    getRevokeTokenEndpoint,
+    getTokenEndpoint,
+    initOPConfiguration,
+    isValidOPConfig,
+    resetOPConfiguration
+} from "./op-config";
 import { getCodeChallenge, getCodeVerifier, getEmailHash, getJWKForTheIdToken, isValidIdToken } from "./crypto";
-import { getAuthorizeEndpoint, getIssuer, getJwksUri, getRevokeTokenEndpoint, getTokenEndpoint } from "./op-config";
-import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
+import { AccountSwitchRequestParams } from "../models/oidc-request-params";
+import { AuthenticatedUserInterface } from "../models/authenticated-user";
+import { ConfigInterface } from "../models/client";
+import axios from "axios";
+import { handleSignOut } from "./sign-out";
 
 /**
  * Checks whether authorization code present in the request.
@@ -60,9 +77,9 @@ const getTokenRequestHeaders = (clientHost: string): TokenRequestHeader => {
 /**
  * Send authorization request.
  *
- * @param {OIDCRequestParamsInterface} requestParams request parameters required for authorization request.
+ * @param {ConfigInterface} requestParams request parameters required for authorization request.
  */
-export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterface): Promise<never>|boolean => {
+export const sendAuthorizationRequest = (requestParams: ConfigInterface): Promise<never>|boolean => {
     const authorizeEndpoint = getAuthorizeEndpoint();
 
     if (!authorizeEndpoint || authorizeEndpoint.trim().length === 0) {
@@ -70,7 +87,7 @@ export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterfa
     }
 
     let authorizeRequest = authorizeEndpoint + "?response_type=code&client_id="
-        + requestParams.clientId;
+        + requestParams.clientID;
 
     let scope = OIDC_SCOPE;
 
@@ -82,7 +99,7 @@ export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterfa
     }
 
     authorizeRequest += "&scope=" + scope;
-    authorizeRequest += "&redirect_uri=" + requestParams.redirectUri;
+    authorizeRequest += "&redirect_uri=" + requestParams.callbackURL;
 
     if (requestParams.enablePKCE) {
         const codeVerifier = getCodeVerifier();
@@ -97,7 +114,7 @@ export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterfa
 
     document.location.href = authorizeRequest;
 
-    return false;
+    return;
 };
 
 /**
@@ -123,7 +140,9 @@ const validateIdToken = (clientId: string, idToken: string,  serverOrigin: strin
             }
 
             const jwk = getJWKForTheIdToken(idToken.split(".")[0], response.data.keys);
+
             let issuer = getIssuer();
+
             if (!issuer || issuer.trim().length === 0) {
                 issuer = serverOrigin + SERVICE_RESOURCES.token;
             }
@@ -137,11 +156,11 @@ const validateIdToken = (clientId: string, idToken: string,  serverOrigin: strin
 /**
  * Send token request.
  *
- * @param {OIDCRequestParamsInterface} requestParams request parameters required for token request.
+ * @param {ConfigInterface} requestParams request parameters required for token request.
  * @returns {Promise<TokenResponseInterface>} token response data or error.
  */
 export const sendTokenRequest = (
-    requestParams: OIDCRequestParamsInterface
+    requestParams: ConfigInterface
 ): Promise<TokenResponseInterface> => {
 
     const tokenEndpoint = getTokenEndpoint();
@@ -153,7 +172,7 @@ export const sendTokenRequest = (
     const code = new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
 
     const body = [];
-    body.push(`client_id=${requestParams.clientId}`);
+    body.push(`client_id=${requestParams.clientID}`);
 
     if (requestParams.clientSecret && requestParams.clientSecret.trim().length > 0) {
         body.push(`client_secret=${requestParams.clientSecret}`);
@@ -161,7 +180,7 @@ export const sendTokenRequest = (
 
     body.push(`code=${code}`);
     body.push("grant_type=authorization_code");
-    body.push(`redirect_uri=${requestParams.redirectUri}`);
+    body.push(`redirect_uri=${requestParams.callbackURL}`);
 
     if (requestParams.enablePKCE) {
         body.push(`code_verifier=${getSessionParameter(PKCE_CODE_VERIFIER)}`);
@@ -174,7 +193,7 @@ export const sendTokenRequest = (
                 return Promise.reject(new Error("Invalid status code received in the token response: "
                     + response.status));
             }
-            return validateIdToken(requestParams.clientId, response.data.id_token, requestParams.serverOrigin)
+            return validateIdToken(requestParams.clientID, response.data.id_token, requestParams.serverOrigin)
                 .then((valid) => {
                 if (valid) {
                     setSessionParameter(REQUEST_PARAMS, JSON.stringify(requestParams));
@@ -186,8 +205,10 @@ export const sendTokenRequest = (
                         scope: response.data.scope,
                         tokenType: response.data.token_type
                     };
+
                     return Promise.resolve(tokenResponse);
                 }
+
                 return Promise.reject(new Error("Invalid id_token in the token response: " + response.data.id_token));
             });
         }).catch((error) => {
@@ -198,12 +219,12 @@ export const sendTokenRequest = (
 /**
  * Send refresh token request.
  *
- * @param {OIDCRequestParamsInterface} requestParams request parameters required for token request.
+ * @param {ConfigInterface} requestParams request parameters required for token request.
  * @param {string} refreshToken
  * @returns {Promise<TokenResponseInterface>} refresh token response data or error.
  */
 export const sendRefreshTokenRequest = (
-    requestParams: OIDCRequestParamsInterface,
+    requestParams: ConfigInterface,
     refreshToken: string
 ): Promise<TokenResponseInterface> => {
 
@@ -214,7 +235,7 @@ export const sendRefreshTokenRequest = (
     }
 
     const body = [];
-    body.push(`client_id=${requestParams.clientId}`);
+    body.push(`client_id=${requestParams.clientID}`);
     body.push(`refresh_token=${refreshToken}`);
     body.push("grant_type=refresh_token");
 
@@ -224,7 +245,7 @@ export const sendRefreshTokenRequest = (
                 return Promise.reject(new Error("Invalid status code received in the refresh token response: "
                     + response.status));
             }
-            return validateIdToken(requestParams.clientId, response.data.id_token, requestParams.serverOrigin)
+            return validateIdToken(requestParams.clientID, response.data.id_token, requestParams.serverOrigin)
                 .then((valid) => {
                     if (valid) {
                         const tokenResponse: TokenResponseInterface = {
@@ -249,13 +270,12 @@ export const sendRefreshTokenRequest = (
 /**
  * Send revoke token request.
  *
- * @param {OIDCRequestParamsInterface} requestParams request parameters required for revoke token request.
+ * @param {ConfigInterface} requestParams request parameters required for revoke token request.
  * @param {string} accessToken access token
  * @returns {any}
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const sendRevokeTokenRequest = (requestParams: OIDCRequestParamsInterface,
-                                       accessToken: string): Promise<any> => {
+export const sendRevokeTokenRequest = (requestParams: ConfigInterface, accessToken: string): Promise<any> => {
     const revokeTokenEndpoint = getRevokeTokenEndpoint();
 
     if (!revokeTokenEndpoint || revokeTokenEndpoint.trim().length === 0) {
@@ -263,7 +283,7 @@ export const sendRevokeTokenRequest = (requestParams: OIDCRequestParamsInterface
     }
 
     const body = [];
-    body.push(`client_id=${requestParams.clientId}`);
+    body.push(`client_id=${requestParams.clientID}`);
     body.push(`token=${accessToken}`);
     body.push("token_type_hint=access_token");
 
@@ -304,7 +324,7 @@ export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterfac
     return {
         displayName: payload.preferred_username ? payload.preferred_username : payload.sub,
         email: emailAddress,
-        username: payload.sub,
+        username: payload.sub
     };
 };
 
@@ -334,7 +354,7 @@ export const sendAccountSwitchRequest = (
     }
 
     const body = [];
-    body.push(`grant_type=account_switch`);
+    body.push("grant_type=account_switch");
     body.push(`username=${ requestParams.username }`);
     body.push(`userstore-domain=${ requestParams["userstore-domain"] }`);
     body.push(`tenant-domain=${ requestParams["tenant-domain"] }`);
@@ -370,4 +390,63 @@ export const sendAccountSwitchRequest = (
         .catch((error) => {
             return Promise.reject(error);
         });
+};
+
+/**
+ * Execute user sign in request
+ *
+ * @param {object} requestParams
+ * @param {function} callback
+ * @returns {Promise<any>} sign out request status
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const sendSignInRequest = (requestParams: ConfigInterface, callback?: () => void): Promise<any> => {
+    if (hasAuthorizationCode()) {
+        return sendTokenRequest(requestParams)
+            .then((response) => {
+                initUserSession(
+                    response,
+                    getAuthenticatedUser(response.idToken)
+                );
+
+                if (callback) {
+                    callback();
+                }
+
+                return Promise.resolve("Sign In successful!");
+            })
+            .catch((error) => {
+                if (error.response && (error.response.status === 400)) {
+                    sendAuthorizationRequest(requestParams);
+                }
+
+                return Promise.reject(error);
+            });
+    } else {
+        sendAuthorizationRequest(requestParams);
+    }
+};
+
+/**
+ * Handle sign in requests
+ *
+ * @param {object} requestParams
+ * @param {function} callback
+ * @returns {Promise<any>} sign in status
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const handleSignIn = (requestParams: ConfigInterface, callback?: () => void): Promise<any> => {
+    if (getSessionParameter(ACCESS_TOKEN)) {
+        if (isValidOPConfig(requestParams.tenant)) {
+            endAuthenticatedSession();
+            resetOPConfiguration();
+
+            return handleSignOut(requestParams);
+        }
+    } else {
+        initOPConfiguration(requestParams, false)
+            .then(() => {
+                sendSignInRequest(requestParams, callback);
+            });
+    }
 };

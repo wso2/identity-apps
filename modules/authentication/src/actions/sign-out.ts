@@ -17,16 +17,19 @@
  */
 
 import { ID_TOKEN } from "../constants";
-import { getEndSessionEndpoint } from "./op-config";
-import { getSessionParameter } from "./session";
+import { ConfigInterface } from "../models/client";
+import { getEndSessionEndpoint, resetOPConfiguration } from "./op-config";
+import { endAuthenticatedSession, getSessionParameter } from "./session";
 
 /**
- * Handle user sign out.
+ * Execute user sign out request
  *
- * @returns {}
+ * @param {object} requestParams
+ * @param {function} callback
+ * @returns {Promise<any>} sign out request status
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const sendSignOutRequest =  (redirectUri: string, sessionClearCallback): Promise<any> => {
+export const sendSignOutRequest =  (requestParams: ConfigInterface, callback?: () => void): Promise<any> => {
     const logoutEndpoint = getEndSessionEndpoint();
 
     if (!logoutEndpoint || logoutEndpoint.trim().length === 0) {
@@ -39,9 +42,33 @@ export const sendSignOutRequest =  (redirectUri: string, sessionClearCallback): 
         return Promise.reject(new Error("Invalid id_token found."));
     }
 
-    sessionClearCallback();
-    Promise.resolve("Logout sucess!");
+    endAuthenticatedSession();
+    resetOPConfiguration();
+
+    if (callback) {
+        callback();
+    }
 
     window.location.href = `${logoutEndpoint}?` + `id_token_hint=${idToken}` +
-        `&post_logout_redirect_uri=${redirectUri}`;
+        `&post_logout_redirect_uri=${requestParams.callbackURL}`;
+};
+
+/**
+ * Handle sign out requests
+ *
+ * @param {object} requestParams
+ * @param {function} callback
+ * @returns {Promise<any>} sign out status
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const handleSignOut = (requestParams: ConfigInterface, callback?: () => void): Promise<any> => {
+    if (sessionStorage.length === 0) {
+        return Promise.reject(new Error("No login sessions."));
+    } else {
+        return sendSignOutRequest(requestParams, callback)
+            .catch((error) => {
+                // TODO: Handle error
+                throw error;
+            });
+    }
 };

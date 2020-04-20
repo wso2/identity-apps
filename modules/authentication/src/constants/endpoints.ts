@@ -17,13 +17,21 @@
  */
 
 interface ServiceResourcesType {
+    authorize: string;
     jwks: string;
+    logout: string;
+    revoke: string;
     token: string;
+    wellKnown: string;
 }
 
 export const SERVICE_RESOURCES: ServiceResourcesType = {
+    authorize: "/oauth2/authorize",
     jwks: "/oauth2/jwks",
-    token: "/oauth2/token"
+    logout: "/oidc/logout",
+    revoke: "/oauth2/revoke",
+    token: "/oauth2/token",
+    wellKnown: "/oauth2/oidcdiscovery/.well-known/openid-configuration"
 };
 
 export const AUTHORIZATION_ENDPOINT = "authorization_endpoint";
