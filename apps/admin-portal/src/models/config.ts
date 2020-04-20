@@ -176,6 +176,9 @@ export interface ServiceResourceEndpointsInterface {
     challenges: string;
     challengeAnswers: string;
     consents: string;
+    publicCertificates: string;
+    certificates: string;
+    clientCertificates: string;
     groups: string;
     claims: string;
     externalClaims: string;
