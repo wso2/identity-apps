@@ -16,48 +16,41 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
-import { PageLayout, ListLayout } from "../layouts";
-import { PrimaryButton } from "@wso2is/react-components";
+import React, { ReactElement, useEffect, useState } from "react";
 import { Icon, PaginationProps, DropdownProps } from "semantic-ui-react";
-import { history } from "../helpers";
-import { EmailTemplateDetails, EmailTemplate } from "../models";
-import { getEmailTemplate } from "../api";
 import { AxiosResponse } from "axios";
-import { EmailTemplateList } from "../components/email-templates";
-import { UserConstants, EMAIL_TEMPLATE_VIEW_PATH } from "../constants";
+import { PrimaryButton } from "@wso2is/react-components";
+import { PageLayout, ListLayout } from "../layouts";
+import { EmailTemplateTypeList, EmailTemplateTypeWizard } from "../components/email-templates";
+import { getEmailTemplateTypes } from "../api";
+import { UserConstants } from "../constants";
+import { EmailTemplateType } from "../models";
 
-export const EmailTemplates: FunctionComponent = (): ReactElement => {
+/**
+ * Component to list available email templates.
+ * 
+ */
+export const EmailTemplateTypes = (): ReactElement => {
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ listOffset, setListOffset ] = useState<number>(0);
-
-    const [ templateTypeId, setTemplateTypeId ] = useState<string>('');
-    const [ emailTemplateTypeDetails, setEmailTemplateTypeDetails ] = useState<EmailTemplateDetails>(undefined);
-    const [ emailTemplates, setEmailTemplates ] = useState<EmailTemplate[]>([]);
-    const [ paginatedemailTemplates, setPaginatedemailTemplates ] = useState<EmailTemplate[]>([]);
+    const [ showNewTypeWizard, setShowNewTypeWizard ] = useState<boolean>(false);
+    
+    const [ emailTemplateTypes, setEmailTemplateTypes ] = useState<EmailTemplateType[]>([]);
+    const [ paginatedEmailTemplateTypes, setPaginatedEmailTemplateTypes ] = useState<EmailTemplateType[]>([]);
 
     useEffect(() => {
         setListItemLimit(UserConstants.DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT);
     }, []);
 
     useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const templateTypeId = path[ path.length - 1 ];
-
-        setTemplateTypeId(templateTypeId);
-
-        getEmailTemplate(templateTypeId).then((response: AxiosResponse<EmailTemplateDetails>) => {
+        getEmailTemplateTypes().then((response: AxiosResponse<EmailTemplateType[]>) => {
             if (response.status === 200) {
-                setEmailTemplateTypeDetails(response.data);
-                
-                if (response.data.templates instanceof Array && response.data.templates.length !== 0) {
-                    setEmailTemplates(response.data.templates);
-                    setEmailTemplateTypePage(listOffset, listItemLimit);
-                }
+                setEmailTemplateTypes(response.data);
+                setEmailTemplateTypePage(listOffset, listItemLimit);
             }
-        })
-    }, [emailTemplateTypeDetails !== undefined, emailTemplates.length]);
+        });
+    }, [emailTemplateTypes.length]);
 
     /**
      * Handler for pagination page change.
@@ -89,33 +82,14 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
      * @param itemLimit pagination item limit
      */
     const setEmailTemplateTypePage = (offsetValue: number, itemLimit: number) => {
-        setPaginatedemailTemplates(emailTemplates?.slice(offsetValue, itemLimit + offsetValue));
+        setPaginatedEmailTemplateTypes(emailTemplateTypes?.slice(offsetValue, itemLimit + offsetValue));
     }
 
-    /**
-     * Util to handle back button event.
-     */
-    const handleBackButtonClick = () => {
-        history.push(EMAIL_TEMPLATE_VIEW_PATH);
-    };
-
-    /**
-     * Util to handle back button event.
-     */
-    const handleAddNewTemplate = () => {
-        history.push(EMAIL_TEMPLATE_VIEW_PATH + templateTypeId + "/add-template");
-    };
-    
     return (
         <PageLayout
-            title={ emailTemplateTypeDetails && 
-                    emailTemplateTypeDetails.displayName ? emailTemplateTypeDetails.displayName : "Email Templates" }
-            backButton={ {
-                onClick: handleBackButtonClick,
-                text: "Go back to email templates"
-            } }
-            titleTextAlign="left"
-            bottomMargin={ false }
+            title="Email Templates"
+            description="Create and manage templates."
+            showBottomDivider={ true } 
         >
             <ListLayout
                 currentListSize={ listItemLimit }
@@ -123,18 +97,25 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
                 showPagination={ true }
-                totalPages={ Math.ceil(emailTemplates?.length / listItemLimit) }
-                totalListSize={ emailTemplates?.length }
+                totalPages={ Math.ceil(emailTemplateTypes?.length / listItemLimit) }
+                totalListSize={ emailTemplateTypes?.length }
                 rightActionPanel={
                     (
-                        <PrimaryButton onClick={ () => handleAddNewTemplate() }>
+                        <PrimaryButton onClick={ () => setShowNewTypeWizard(true) }>
                             <Icon name="add"/>
-                            New Locale
+                            New Template
                         </PrimaryButton>
                     )
                 }
             >
-                <EmailTemplateList templateList={ paginatedemailTemplates }/>
+                <EmailTemplateTypeList templateTypeList={ paginatedEmailTemplateTypes } />
+                {
+                    showNewTypeWizard && (
+                        <EmailTemplateTypeWizard
+                            onCloseHandler={ () => setShowNewTypeWizard(false) }
+                        />
+                    ) 
+                }
             </ListLayout>
         </PageLayout>
     )

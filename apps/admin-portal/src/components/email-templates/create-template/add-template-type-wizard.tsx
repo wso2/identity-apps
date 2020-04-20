@@ -18,12 +18,22 @@
 
 import React, { ReactElement, FunctionComponent, useState } from "react";
 import { Modal, Grid } from "semantic-ui-react";
-import { Heading, Steps, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { AddEmailTemplateType } from "./add-template-type";
-import { ApplicationWizardStepIcons } from "../../configs";
+import { ApplicationWizardStepIcons } from "../../../configs";
 import { useTrigger } from "@wso2is/forms";
 
-export const EmailTemplateTypeWizard: FunctionComponent<any> = (props: any): ReactElement => {
+interface EmailTemplateTypeWizardProps {
+    onCloseHandler: () => void;
+}
+
+export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardProps> = (
+    props: EmailTemplateTypeWizardProps
+): ReactElement => {
+
+    const {
+        onCloseHandler
+    } = props;
 
     const [ currentStep, setCurrentWizardStep ] = useState<number>(0);
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
@@ -48,28 +58,14 @@ export const EmailTemplateTypeWizard: FunctionComponent<any> = (props: any): Rea
             className="wizard create-template-type-wizard"
             dimmer="blurring"
             size="small"
-            onClose={ () => { console.log() } }
+            onClose={ onCloseHandler }
             closeOnDimmerClick={ false }
             closeOnEscape={ false }
         >
-            <Modal.Header className="wizard-header">
-                Create Email Template Type
-                <Heading as="h6">Create a new Email Template Type in the system.</Heading>
+            <Modal.Header className="wizard-header template-type-wizard">
+                Create Email Template
+                <Heading as="h6">Create a new email template.</Heading>
             </Modal.Header>
-            <Modal.Content className="steps-container">
-                <Steps.Group 
-                    header="Fill the following mandatory details of the new template type." 
-                    current={ currentStep }
-                >
-                    { WIZARD_STEPS.map((step, index) => (
-                        <Steps.Step
-                            key={ index }
-                            icon={ step.icon }
-                            title={ step.title }
-                        />
-                    )) }
-                </Steps.Group>
-            </Modal.Content>
             <Modal.Content className="content-container" scrolling>
                 {WIZARD_STEPS[currentStep].content}
             </Modal.Content>
@@ -77,11 +73,11 @@ export const EmailTemplateTypeWizard: FunctionComponent<any> = (props: any): Rea
                 <Grid>
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton floated="left" onClick={ () => { console.log() } }>Cancel</LinkButton>
+                            <LinkButton floated="left" onClick={ () => { onCloseHandler() } }>Cancel</LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <PrimaryButton floated="right" onClick={ setFinishSubmit }>
-                                Finish
+                                Create Template
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>

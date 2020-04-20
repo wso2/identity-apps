@@ -19,12 +19,12 @@
 import React, { FunctionComponent , ReactElement } from "react";
 import { ResourceList, ResourceListItem, Avatar } from "@wso2is/react-components";
 import { Icon } from "semantic-ui-react";
-import { EmailTemplate } from "../../models";
+import { EmailTemplateType } from "../../models";
 import { history } from "../../helpers";
 import { EMAIL_TEMPLATE_VIEW_PATH } from "../../constants";
 
 interface EmailTemplateListPropsInterface {
-    templateList: EmailTemplate[];
+    templateTypeList: EmailTemplateType[];
 }
 
 /**
@@ -32,12 +32,12 @@ interface EmailTemplateListPropsInterface {
  * 
  * @param props props required to render the email template list
  */
-export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterface> = (
+export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInterface> = (
     props: EmailTemplateListPropsInterface
 ): ReactElement => {
 
     const {
-        templateList: templateList
+        templateTypeList: templateList
     } = props;
 
     const handleEditTemplate = (templateId: string) => {
@@ -65,7 +65,16 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                             popupText: "Delete Role",
                             type: "button"
                         }] }
-                        itemHeader={ template.id }
+                        avatar={ (
+                            <Avatar
+                                name={ template.displayName }
+                                size="small"
+                                image={
+                                    <Icon size="large" name='mail' />
+                                }
+                            />
+                        ) }
+                        itemHeader={ template.displayName }
                     />
                 ))
             }

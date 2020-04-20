@@ -39,7 +39,9 @@ import {
     UsersPage,
     UserStores,
     UserStoresEditPage,
-    EmailTemplates
+    EmailTemplateTypes,
+    EmailTemplates,
+    AddTemplateLocale
 } from "../pages";
 import {
     CLAIM_DIALECTS_PATH,
@@ -283,15 +285,33 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 protected: true,
                 showOnSidePanel: true
             },{
-                component: EmailTemplates,
+                component: EmailTemplateTypes,
                 exact: true,
                 icon: "serverConfigurations",
-                id: "serverConfigurations",
+                id: "emailTemplateTypes",
                 level: 2,
                 name: "Email Templates",
                 path: "/email-templates",
                 protected: true,
                 showOnSidePanel: true
+            },{
+                component: EmailTemplates,
+                exact: true,
+                icon: "serverConfigurations",
+                id: "emailTemplates",
+                name: "Role-Edit",
+                path: "/email-templates/:typeId",
+                protected: true,
+                showOnSidePanel: false
+            },{
+                component: AddTemplateLocale,
+                exact: true,
+                icon: "serverConfigurations",
+                id: "emailTemplates",
+                name: "Role-Edit",
+                path: "/email-templates/:typeId/add-template",
+                protected: true,
+                showOnSidePanel: false
             }
         ],
         exact: true,
