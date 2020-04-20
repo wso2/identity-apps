@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Icon, SemanticICONS } from "semantic-ui-react";
+import { Icon, Popup, PopupProps, SemanticICONS } from "semantic-ui-react";
 import React, { PropsWithChildren, ReactElement } from "react";
 import classNames from "classnames";
 
@@ -41,9 +41,21 @@ export interface HintPropsInterface {
      */
     icon?: SemanticICONS;
     /**
+     * Display inline.
+     */
+    inline?: boolean;
+    /**
      * Hides the component.
      */
     hidden?: boolean;
+    /**
+     * Display the hint inside a popup.
+     */
+    popup?: boolean;
+    /**
+     * Popup options
+     */
+    popupOptions?: PopupProps;
 }
 
 /**
@@ -62,7 +74,10 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
         compact,
         disabled,
         hidden,
-        icon
+        icon,
+        inline,
+        popup,
+        popupOptions
     } = props;
 
     const classes = classNames(
@@ -70,15 +85,31 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
         {
             compact,
             disabled,
-            hidden
+            hidden,
+            inline: popup ? true : inline,
+            popup
         },
         className
     );
 
     return (
         <div className={ classes }>
-            { icon && <Icon color="grey" floated="left" name={ icon }/> }
-            { children }
+            {
+                popup
+                    ? (
+                        <Popup
+                            trigger={ <Icon color="grey" floated="left" name={ icon } /> }
+                            content={ children }
+                            { ...popupOptions }
+                        />
+                    )
+                    : (
+                        <>
+                            { icon && <Icon color="grey" floated="left" name={ icon }/> }
+                            { children }
+                        </>
+                    )
+            }
         </div>
     );
 };
@@ -88,5 +119,13 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
  */
 Hint.defaultProps = {
     compact: false,
-    icon: "info circle"
+    icon: "info circle",
+    inline: false,
+    popup: false,
+    popupOptions: {
+        basic: true,
+        hoverable: true,
+        inverted: true,
+        position: "bottom left"
+    }
 };
