@@ -16,9 +16,17 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement } from "react";
 import { CommonPluggableComponentForm } from "../components";
 import { CommonPluggableComponentFormPropsInterface } from "../../../../models";
+import {
+    AuthenticatorFormPropsInterface,
+    AuthenticatorProperty,
+    FederatedAuthenticatorMetaPropertyInterface
+} from "../../../../models";
+import { Button, Grid } from "semantic-ui-react";
+import React, { FunctionComponent, ReactElement } from "react";
+import { CommonConstants } from "../helpers";
+import { getPropertyField } from "../../utils";
 
 /**
  * Common authenticator configurations form.
@@ -38,6 +46,67 @@ export const CommonAuthenticatorForm: FunctionComponent<CommonPluggableComponent
         triggerSubmit,
         enableSubmitButton
     } = props;
+
+    const getInterpretedFormValue = (propertyMetadata: FederatedAuthenticatorMetaPropertyInterface, values: any,
+                                     eachProp: AuthenticatorProperty) => {
+        switch (propertyMetadata?.type.toUpperCase()) {
+            case CommonConstants.BOOLEAN: {
+                return values.get(eachProp?.key)?.includes(eachProp?.key);
+            }
+            default: {
+                return values.get(eachProp?.key)
+            }
+        }
+    };
+
+    /**
+     * Prepares form values for submit.
+     *
+     * @param values - Form values.
+     * @return {any} Sanitized form values.
+     */
+    const getUpdatedConfigurations = (values: any): any => {
+        const properties = initialValues?.properties.map((eachProp) => {
+            const propertyMetadata = metadata.properties?.find(metaProperty => metaProperty.key === eachProp.key);
+            return {
+                key: eachProp?.key,
+                value: getInterpretedFormValue(propertyMetadata, values, eachProp)
+            };
+        });
+        return {
+            ...initialValues,
+            properties: [...properties]
+        };
+    };
+
+    const getAuthenticatorPropertyFields = (): ReactElement[] => {
+        return initialValues.properties?.map((eachProp: AuthenticatorProperty) => {
+            const propertyMetadata = metadata.properties?.find(metaProperty => metaProperty.key === eachProp.key);
+            if (!propertyMetadata) {
+                //todo
+            }
+            return (
+                <Grid.Row columns={ 1 } key={ propertyMetadata?.displayOrder }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        { getPropertyField(eachProp, propertyMetadata) }
+                    </Grid.Column>
+                </Grid.Row>
+
+            )
+        });
+    };
+
+    const getSubmitButton = () => {
+        return (
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Button primary type="submit" size="small" className="form-button">
+                        Update
+                    </Button>
+                </Grid.Column>
+            </Grid.Row>
+        );
+    };
 
     return (
         <CommonPluggableComponentForm 

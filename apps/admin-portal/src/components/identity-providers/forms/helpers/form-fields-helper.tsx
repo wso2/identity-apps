@@ -26,23 +26,29 @@ import {
 } from "@wso2is/forms";
 import React, { ReactElement } from "react";
 import { FormValidation } from "@wso2is/validation";
+import { Hint } from "@wso2is/react-components";
 
 export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyInterface,
                                      propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
                                      disable: boolean): ReactElement => {
     return (
-        <Field
-            showPassword="Show Secret"
-            hidePassword="Hide Secret"
-            label={ propertyMetadata?.displayName }
-            name={ propertyMetadata?.key }
-            key={ propertyMetadata?.key }
-            placeholder={ propertyMetadata?.description }
-            required={ propertyMetadata?.isMandatory }
-            requiredErrorMessage={ "This is required" }
-            type="password"
-            disabled={ disable }
-        />
+        <>
+            <Field
+                showPassword="Show Secret"
+                hidePassword="Hide Secret"
+                label={ propertyMetadata?.displayName }
+                name={ propertyMetadata?.key }
+                placeholder={ propertyMetadata?.description }
+                required={ propertyMetadata?.isMandatory }
+                requiredErrorMessage={ "This is required" }
+                value={ eachProp?.value }
+                type="password"
+                disabled={ disable }
+            />
+            { propertyMetadata?.description && (
+                <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
+            )}
+        </>
     );
 };
 
@@ -50,24 +56,28 @@ export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInter
                                  propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
                                  disable: boolean): ReactElement => {
     return (
-        <Field
-            name={ propertyMetadata?.key }
-            key={ propertyMetadata?.key }
-            label={ propertyMetadata?.displayName }
-            type="checkbox"
-            required={ propertyMetadata?.isMandatory }
-            value={ eachProp?.value ? [eachProp?.key] : [] }
-            requiredErrorMessage="This is required"
-            children={
-                [
-                    {
-                        label: propertyMetadata?.description,
-                        value: eachProp?.key
-                    }
-                ]
-            }
-            disabled={ disable }
-        />
+        <>
+            <Field
+                name={ propertyMetadata?.key }
+                key={ propertyMetadata?.key }
+                type="checkbox"
+                required={ propertyMetadata?.isMandatory }
+                value={ (eachProp?.value == "true") ? [eachProp?.key] : [] }
+                requiredErrorMessage="This is required"
+                children={
+                    [
+                        {
+                            label: propertyMetadata?.displayName,
+                            value: eachProp?.key
+                        }
+                    ]
+                }
+                disabled={ disable }
+            />
+            { propertyMetadata?.description && (
+                <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
+            )}
+        </>
     );
 };
 
@@ -76,27 +86,32 @@ export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentP
                                              listen: (key: string, values: Map<string, FormValue>) => void,
                                              disable: boolean): ReactElement => {
     return (
-        <Field
-            name={ propertyMetadata?.key }
-            key={ propertyMetadata?.key }
-            label={ propertyMetadata?.displayName }
-            type="checkbox"
-            required={ propertyMetadata?.isMandatory }
-            value={ eachProp?.value ? [eachProp?.key] : [] }
-            requiredErrorMessage="This is required"
-            children={
-                [
-                    {
-                        label: propertyMetadata?.description,
-                        value: eachProp?.key
-                    }
-                ]
-            }
-            listen={ (values: Map<string, FormValue>) => {
-                listen(propertyMetadata.key, values);
-            } }
-            disabled={ disable }
-        />
+        <>
+            <Field
+                name={ propertyMetadata?.key }
+                key={ propertyMetadata?.key }
+                label={ propertyMetadata?.displayName }
+                type="checkbox"
+                required={ propertyMetadata?.isMandatory }
+                value={ eachProp?.value ? [eachProp?.key] : [] }
+                requiredErrorMessage="This is required"
+                children={
+                    [
+                        {
+                            label: propertyMetadata?.description,
+                            value: eachProp?.key
+                        }
+                    ]
+                }
+                listen={ (values: Map<string, FormValue>) => {
+                    listen(propertyMetadata.key, values);
+                } }
+                disabled={ disable }
+            />
+            { propertyMetadata?.description && (
+                <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
+            )}
+        </>
     );
 };
 
@@ -104,17 +119,22 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
                              propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
                              disable: boolean): ReactElement => {
     return (
-        <Field
-            name={ propertyMetadata?.key }
-            label={ propertyMetadata?.displayName }
-            required={ propertyMetadata?.isMandatory }
-            requiredErrorMessage="This is required"
-            placeholder={ propertyMetadata?.description }
-            type="text"
-            value={ eachProp?.value }
-            key={ propertyMetadata?.key }
-            disabled={ disable }
-        />
+        <>
+            <Field
+                name={ propertyMetadata?.key }
+                label={ propertyMetadata?.displayName }
+                required={ propertyMetadata?.isMandatory }
+                requiredErrorMessage="This is required"
+                placeholder={ propertyMetadata?.description }
+                type="text"
+                value={ eachProp?.value }
+                key={ eachProp?.key }
+                disabled={ disable }
+            />
+            { propertyMetadata?.description && (
+                <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
+            )}
+        </>
     );
 };
 
@@ -122,23 +142,28 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
                             propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
                             disable: boolean): ReactElement => {
     return (
-        <Field
-            name={ propertyMetadata?.key }
-            label={ propertyMetadata?.displayName }
-            required={ propertyMetadata?.isMandatory }
-            requiredErrorMessage="This is required"
-            placeholder={ propertyMetadata?.description }
-            validation={ (value, validation) => {
-                if (!FormValidation.url(value)) {
-                    validation.isValid = false;
-                    validation.errorMessages.push("This is not a valid URL");
-                }
-            } }
-            type="text"
-            value={ eachProp?.value }
-            key={ propertyMetadata?.key }
-            disabled={ disable }
-        />
+        <>
+            <Field
+                name={ propertyMetadata?.key }
+                label={ propertyMetadata?.displayName }
+                required={ propertyMetadata?.isMandatory }
+                requiredErrorMessage="This is required"
+                placeholder={ propertyMetadata?.description }
+                validation={ (value, validation) => {
+                    if (!FormValidation.url(value)) {
+                        validation.isValid = false;
+                        validation.errorMessages.push("This is not a valid URL");
+                    }
+                } }
+                type="text"
+                value={ eachProp?.value }
+                key={ propertyMetadata?.key }
+                disabled={ disable }
+            />
+            { propertyMetadata?.description && (
+                <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
+            )}
+        </>
     );
 };
 
@@ -146,22 +171,27 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
                                     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
                                     disable: boolean): ReactElement => {
     return (
-        <Field
-            name={ propertyMetadata?.key }
-            label={ propertyMetadata?.displayName }
-            required={ propertyMetadata?.isMandatory }
-            requiredErrorMessage="This is required"
-            validation={ (value, validation) => {
-                if (!FormValidation.url("https://www.sample.com?" + value)) {
-                    validation.isValid = false;
-                    validation.errorMessages.push("These are not valid query parameters");
-                }
-            } }
-            type="queryParams"
-            value={ eachProp?.value }
-            key={ propertyMetadata?.key }
-            disabled={ disable }
-        />
+        <>
+            <Field
+                name={ propertyMetadata?.key }
+                label={ propertyMetadata?.displayName }
+                required={ propertyMetadata?.isMandatory }
+                requiredErrorMessage="This is required"
+                validation={ (value, validation) => {
+                    if (!FormValidation.url("https://www.sample.com?" + value)) {
+                        validation.isValid = false;
+                        validation.errorMessages.push("These are not valid query parameters");
+                    }
+                } }
+                type="queryParams"
+                value={ eachProp?.value }
+                key={ propertyMetadata?.key }
+                disabled={ disable }
+            />
+            { propertyMetadata?.description && (
+                <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
+            )}
+        </>
     );
 };
 
