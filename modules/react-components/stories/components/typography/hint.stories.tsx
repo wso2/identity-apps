@@ -17,7 +17,7 @@
  *
  */
 
-import React, { ReactElement } from "react";
+import * as React from "react";
 import { Hint } from "../../../src";
 import { meta } from "./hint.stories.meta";
 
@@ -34,7 +34,7 @@ export default {
  *
  * @return {React.ReactElement}
  */
-export const DefaultHint = (): ReactElement => (
+export const DefaultHint = (): React.ReactElement => (
     <Hint>This is a default hint</Hint>
 );
 
@@ -51,7 +51,7 @@ DefaultHint.story = {
  *
  * @return {React.ReactElement}
  */
-export const HintWithIcon = (): ReactElement => (
+export const HintWithIcon = (): React.ReactElement => (
     <Hint icon="info circle">This is an example of a hint with an icon.</Hint>
 );
 
@@ -59,6 +59,23 @@ HintWithIcon.story = {
     parameters: {
         docs: {
             storyDescription: meta.stories[ 1 ].description
+        }
+    }
+};
+
+/**
+ * Story to display a hint as a popup.
+ *
+ * @return {React.ReactElement}
+ */
+export const HintAsPopup = (): React.ReactElement => (
+    <>Hover over the info icon<Hint icon="info circle" popup>This is an example of a hint inside a popup.</Hint></>
+);
+
+HintWithIcon.story = {
+    parameters: {
+        docs: {
+            storyDescription: meta.stories[ 2 ].description
         }
     }
 };
