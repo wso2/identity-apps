@@ -1,4 +1,4 @@
-/**
+/*!
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -17,15 +17,35 @@
  *
  */
 
-/* Global */
-& { @import "definitions/globals/product.less"; }
+@type    : "module";
+@element : "markdown";
 
-/* Apps */
-& { @import "definitions/apps/login-portal.less"; }
-& { @import "definitions/apps/admin-portal.less"; }
-& { @import "definitions/apps/user-portal.less"; }
+@import (multiple) '../../theme.less';
+.loadVariables();
 
-/* Modules */
-& { @import "definitions/modules/treeview.less"; }
-& { @import "definitions/modules/markdown.less"; }
-& { @import "definitions/modules/hint.less"; }
+/*****************************************
+            UI Hints
+*****************************************/
+
+@uiHintColor: @doveGray;
+@uiHintFontSize: 12px;
+@uiHintMargin: 10px 0;;
+
+.ui-hint {
+    color: @uiHintColor;
+    font-size: @uiHintFontSize;
+    margin: @uiHintMargin;
+
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.45;
+    }
+    &.compact {
+        margin: 0;
+    }
+    &.hidden {
+        display: none;
+    }
+}
+
+.loadUIOverrides();
