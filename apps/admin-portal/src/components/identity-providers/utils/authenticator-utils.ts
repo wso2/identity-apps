@@ -2,7 +2,7 @@ import {
     CommonConstants,
     FieldType,
     getCheckboxField,
-    getConfidentialField,
+    getConfidentialField, getDropDownField,
     getQueryParamsField,
     getTextField,
     getURLField
@@ -39,6 +39,8 @@ const getFieldType = (propertyMetadata: FederatedAuthenticatorMetaPropertyInterf
         CommonConstants.FIELD_COMPONENT_KEYWORD_QUERY_PARAMETER)) {
         // todo Need proper backend support to identity Query parameter fields.
         return FieldType.QUERY_PARAMS;
+    } else if (propertyMetadata?.options?.length > 0) {
+        return FieldType.DROP_DOWN;
     }
     return FieldType.TEXT;
 };
@@ -57,6 +59,9 @@ export const getPropertyField = (eachProp, propertyMetadata) => {
         }
         case FieldType.QUERY_PARAMS : {
             return getQueryParamsField(eachProp, propertyMetadata);
+        }
+        case FieldType.DROP_DOWN : {
+            return getDropDownField(eachProp, propertyMetadata);
         }
         default: {
             return getTextField(eachProp, propertyMetadata);

@@ -67,7 +67,17 @@ export const CommonAuthenticatorForm: FunctionComponent<CommonPluggableComponent
      */
     const getUpdatedConfigurations = (values: any): any => {
         const properties = initialValues?.properties.map((eachProp) => {
-            const propertyMetadata = metadata.properties?.find(metaProperty => metaProperty.key === eachProp.key);
+            let propertyMetadata = metadata.properties?.find(metaProperty => metaProperty.key === eachProp.key);
+            if (!propertyMetadata) {
+                // Trying to find metadata from sub properties.
+                metadata.properties?.map((prop) => {
+                    if (prop.subProperties.length > 0 &&
+                        prop.subProperties.find(metaSubProp => metaSubProp.key === eachProp.key)) {
+                        propertyMetadata = prop.subProperties.find(
+                            metaSubProp => metaSubProp.key === eachProp.key);
+                    }
+                });
+            }
             return {
                 key: eachProp?.key,
                 value: getInterpretedFormValue(propertyMetadata, values, eachProp)
@@ -81,18 +91,40 @@ export const CommonAuthenticatorForm: FunctionComponent<CommonPluggableComponent
 
     const getAuthenticatorPropertyFields = (): ReactElement[] => {
         return initialValues.properties?.map((eachProp: AuthenticatorProperty) => {
-            const propertyMetadata = metadata.properties?.find(metaProperty => metaProperty.key === eachProp.key);
+            let propertyMetadata = metadata.properties?.find(metaProperty => metaProperty.key === eachProp.key);
             if (!propertyMetadata) {
-                //todo
+                // Try to find the metadata in sub properties.
+                metadata.properties?.map((meta) => {
+                    if (meta.subProperties.length > 0 &&
+                        meta.subProperties.find(metaSubProp => metaSubProp.key === eachProp.key)) {
+                        propertyMetadata = meta.subProperties.find(
+                            metaSubProp => metaSubProp.key === eachProp.key);
+                    }
+                });
+                if (propertyMetadata) {
+                    return (
+                        <Grid.Row columns={ 2 } key={ propertyMetadata?.displayOrder }>
+                            <Grid.Column mobile={ 2 } tablet={ 2 } computer={ 1 }>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 14 } tablet={ 14 } computer={ 7 }>
+                                { getPropertyField(eachProp, propertyMetadata) }
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                } else {
+                    // Todo handle error
+                    console.log("Metadata could not be found for the property: " + eachProp.key)
+                    return;
+                }
+            } else {
+                return (
+                    <Grid.Row columns={ 1 } key={ propertyMetadata?.displayOrder }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            { getPropertyField(eachProp, propertyMetadata) }
+                        </Grid.Column>
+                    </Grid.Row>
+                )
             }
-            return (
-                <Grid.Row columns={ 1 } key={ propertyMetadata?.displayOrder }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        { getPropertyField(eachProp, propertyMetadata) }
-                    </Grid.Column>
-                </Grid.Row>
-
-            )
         });
     };
 

@@ -195,6 +195,37 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
     );
 };
 
+export const getDropDownField = (eachProp: AuthenticatorProperty,
+                                    propertyMetadata: CommonMetaPropertyInterface): ReactElement => {
+    return (
+        <>
+            <Field
+                name={ eachProp?.key }
+                label={ propertyMetadata?.displayName }
+                required={ propertyMetadata?.isMandatory }
+                requiredErrorMessage="This is required"
+                type="dropdown"
+                value={ eachProp?.value }
+                key={ eachProp?.key }
+                children={ getDropDownChildren(eachProp?.key, propertyMetadata?.options) }
+            />
+            { propertyMetadata?.description && (
+                <Hint>{ propertyMetadata?.description }</Hint>
+            )}
+        </>
+    );
+};
+
+const getDropDownChildren = (key: string, options: string[]) => {
+    return options.map((option) => {
+        return ({
+            key: key,
+            text: option,
+            value: option
+        });
+    })
+};
+
 /**
  * Each field type.
  */
@@ -204,6 +235,7 @@ export enum FieldType {
     CONFIDENTIAL = "Confidential",
     URL = "URL",
     QUERY_PARAMS = "QueryParameters",
+    DROP_DOWN = "DropDown"
 }
 
 /**
