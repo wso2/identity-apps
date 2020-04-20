@@ -69,7 +69,12 @@ HintWithIcon.story = {
  * @return {React.ReactElement}
  */
 export const HintAsPopup = (): React.ReactElement => (
-    <>Hover over the info icon<Hint icon="info circle" popup>This is an example of a hint inside a popup.</Hint></>
+    <>
+        Hover over the info icon
+        <Hint icon="info circle" popup>
+            This is an example of a hint inside a popup. Click <a>here</a> to read the docs.
+        </Hint>
+    </>
 );
 
 HintWithIcon.story = {
