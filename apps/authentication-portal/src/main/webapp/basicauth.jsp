@@ -79,37 +79,13 @@
                     if (usernameUserInput) {
                         var usernameUserInputValue = usernameUserInput.value.trim();
 
-                        if (tenantName && tenantName !== "null") {
-
-                            if (isEmailUsernameEnabled) {
-
-                                if (usernameUserInputValue.split("@").length <= 1) {
-                                    var errorMessage = document.getElementById("error-msg");
-
-                                    errorMessage.innerHTML = "Invalid Username. Username has to be an email address.";
-                                    errorMessage.style.display = "block";
-
-                                    return;
-                                }
-
-                                if (usernameUserInputValue.split("@").length === 2) {
-                                    userName.value = usernameUserInputValue + "@" + tenantName;
-                                }
-                                else {
-                                    userName.value = usernameUserInputValue;
-                                }
-                            } else {
-                                if (usernameUserInputValue.split("@").length > 1) {
-                                    userName.value = usernameUserInputValue;
-                                } else {
-                                    userName.value = usernameUserInputValue + "@" + tenantName;
-                                }
-
-                            }
-                            
-                        } else {
-                            userName.value = usernameUserInputValue;
+                        if (isEmailUsernameEnabled && usernameUserInputValue.split("@").length <= 1) {
+                            var errorMessage = document.getElementById("error-msg");
+                            errorMessage.innerHTML = "Invalid Username. Username has to be an email address.";
+                            errorMessage.style.display = "block";
+                            return;
                         }
+                        userName.value = usernameUserInputValue;
                     }
 
                     if (userName.value) {
