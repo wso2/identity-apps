@@ -477,7 +477,7 @@ export const updateOutboundProvisioningConnector = (
 export const updateJITProvisioningConfigs = (
     idpId: string,
     configs: JITProvisioningResponseInterface
-): Promise<any> => {
+): Promise<IdentityProviderInterface> => {
 
     const requestConfig = {
         data: configs,
