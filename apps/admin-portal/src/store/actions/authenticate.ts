@@ -18,16 +18,16 @@
 
 import { AlertLevels, ProfileSchema } from "../../models";
 import { AuthAction, authenticateActionTypes } from "./types";
+import { ConfigInterface, IdentityClient } from "@wso2is/authentication";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
-import { I18n } from "@wso2is/i18n";
-import { IdentityClient } from "@wso2is/authentication";
-import { SYSTEM_SCOPE } from "../../constants";
 import _ from "lodash";
 import { addAlert } from "@wso2is/core/store";
 import { getProfileInfo } from "@wso2is/core/api";
 import { getProfileSchemas } from "../../api";
 import { history } from "../../helpers";
+import { I18n } from "@wso2is/i18n";
 import { store } from "../index";
+import { SYSTEM_SCOPE } from "../../constants";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
@@ -156,21 +156,37 @@ export const getProfileInformation = () => (dispatch): void => {
 /**
  * Initialize identityManager client
  */
-const identityManager = new IdentityClient({
-    callbackURL: store.getState().config.deployment.loginCallbackUrl,
-    clientHost: store.getState().config.deployment.clientHost,
-    clientID: store.getState().config.deployment.clientID,
-    scope: [ SYSTEM_SCOPE ],
-    serverOrigin: store.getState().config.deployment.serverOrigin,
-    tenant: store.getState().config.deployment.tenant,
-    tenantPath: store.getState().config.deployment.tenantPath
-});
+const identityManager = (() => {
+    let instance: ConfigInterface;
+ 
+    const createInstance = () => {
+        return new IdentityClient({
+            callbackURL: store.getState().config.deployment.loginCallbackUrl,
+            clientHost: store.getState().config.deployment.clientHost,
+            clientID: store.getState().config.deployment.clientID,
+            scope: [ SYSTEM_SCOPE ],
+            serverOrigin: store.getState().config.deployment.serverOrigin,
+            tenant: store.getState().config.deployment.tenant,
+            tenantPath: store.getState().config.deployment.tenantPath
+        });
+    };
+ 
+    return {
+        getInstance: () => {
+            if (!instance) {
+                instance = createInstance();
+            }
+
+            return instance;
+        }
+    };
+})();
 
 /**
  * Handle user sign-in
  */
 export const handleSignIn = () => (dispatch) => {
-    identityManager.signIn(
+    identityManager.getInstance().signIn(
         () => {
             dispatch(setSignIn());
             dispatch(getProfileInformation());
@@ -185,7 +201,7 @@ export const handleSignIn = () => (dispatch) => {
  * Handle user sign-out
  */
 export const handleSignOut = () => (dispatch) => {
-    identityManager.signOut(
+    identityManager.getInstance().signOut(
         () => {
             dispatch(setSignOut());
         })

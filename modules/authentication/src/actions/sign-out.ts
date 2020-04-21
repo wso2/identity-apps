@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { ID_TOKEN } from "../constants";
-import { ConfigInterface } from "../models/client";
-import { getEndSessionEndpoint, resetOPConfiguration } from "./op-config";
 import { endAuthenticatedSession, getSessionParameter } from "./session";
+import { getEndSessionEndpoint, resetOPConfiguration } from "./op-config";
+import { ConfigInterface } from "../models/client";
+import { ID_TOKEN } from "../constants";
 
 /**
  * Execute user sign out request

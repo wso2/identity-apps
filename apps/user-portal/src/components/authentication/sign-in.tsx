@@ -19,10 +19,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../store";
 import { GlobalConfig } from "../../configs";
-import { USER_DENIED_CONSENT } from "../../constants";
 import { handleSignIn } from "../../store/actions";
 import { history } from "../../helpers";
 import { useEffect } from "react";
+import { USER_DENIED_CONSENT } from "../../constants";
 
 /**
  * This component handles the sign-in function

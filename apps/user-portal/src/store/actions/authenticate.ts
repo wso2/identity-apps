@@ -21,7 +21,7 @@ import { GlobalConfig, i18n } from "../../configs";
 import { authenticateActionTypes, AuthAction } from "./types";
 import { getProfileInfo, getProfileSchemas } from "../../api";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
-import { IdentityClient } from "@wso2is/authentication";
+import { ClientInteface, IdentityClient } from "@wso2is/authentication";
 import _ from "lodash";
 import { addAlert } from "./global";
 import { getProfileCompletion } from "../../utils";
@@ -170,20 +170,36 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
 /**
  * Initialize identityManager client
  */
-const identityManager = new IdentityClient({
-    callbackURL: GlobalConfig.loginCallbackUrl,
-    clientHost: GlobalConfig.clientHost,
-    clientID: GlobalConfig.clientID,
-    serverOrigin: GlobalConfig.serverOrigin,
-    tenant: GlobalConfig.tenant,
-    tenantPath: GlobalConfig.tenantPath
-});
+const identityManager = (() => {
+    let instance: ClientInteface;
+ 
+    const createInstance = () => {
+        return new IdentityClient({
+            callbackURL: GlobalConfig.loginCallbackUrl,
+            clientHost: GlobalConfig.clientHost,
+            clientID: GlobalConfig.clientID,
+            serverOrigin: GlobalConfig.serverOrigin,
+            tenant: GlobalConfig.tenant,
+            tenantPath: GlobalConfig.tenantPath
+        });
+    };
+ 
+    return {
+        getInstance: () => {
+            if (!instance) {
+                instance = createInstance();
+            }
+
+            return instance;
+        }
+    };
+})();
 
 /**
  * Handle user sign-in
  */
 export const handleSignIn = () => (dispatch) => {
-    identityManager.signIn(
+    identityManager.getInstance().signIn(
         () => {
             dispatch(setSignIn());
             dispatch(getProfileInformation());
@@ -198,7 +214,7 @@ export const handleSignIn = () => (dispatch) => {
  * Handle user sign-out
  */
 export const handleSignOut = () => (dispatch) => {
-    identityManager.signOut(
+    identityManager.getInstance().signOut(
         () => {
             dispatch(setSignOut());
         })
