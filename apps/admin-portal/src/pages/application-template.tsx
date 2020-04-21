@@ -25,6 +25,9 @@ import { ContentLoader } from "@wso2is/react-components";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import { useSelector } from "react-redux";
+import { CustomApplicationTemplate } from "../components/applications/meta";
+import { Divider } from "semantic-ui-react";
+import { CustomApplicationTemplates } from "../components/applications/templates/custom-application-template";
 
 /**
  * Choose the application template from this page.
@@ -74,19 +77,22 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
      */
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
 
-        const selected = applicationTemplates.find((template) => template.id === id);
+        const selected = applicationTemplates?.find((template) => template.id === id);
 
-        if (!selected) {
-            return;
+        if (id === "custom-application") {
+            setSelectedTemplate(CustomApplicationTemplate);
+        } else {
+            if (!selected) {
+                return;
+            }
+            setSelectedTemplate(selected);
         }
-
-        setSelectedTemplate(selected);
         setShowWizard(true);
     };
 
     return (
         <PageLayout
-            title="Select application type"
+            title="Select Application Type"
             contentTopMargin={ true }
             description="Please choose one of the following application types."
             backButton={ {
@@ -111,6 +117,15 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
                     )
                     : <ContentLoader dimmer />
             }
+            <Divider hidden />
+            <div className="quick-start-templates">
+                <CustomApplicationTemplates
+                    template={ CustomApplicationTemplate }
+                    onTemplateSelect={ (e, { id }) =>
+                        handleTemplateSelection(e, { id })
+                    }
+                />
+            </div>
             { showWizard && (
                 <ApplicationCreateWizard
                     title={ selectedTemplate?.name }
