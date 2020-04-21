@@ -18,6 +18,7 @@
 
 import React, { PropsWithChildren } from "react";
 import classNames from "classnames";
+import { SemanticVERTICALALIGNMENTS } from "semantic-ui-react";
 
 /**
  * Proptypes for the Generic Icon component.
@@ -42,6 +43,7 @@ export interface GenericIconProps {
     square?: boolean;
     transparent?: boolean;
     twoTone?: boolean;
+    verticalAlign?: SemanticVERTICALALIGNMENTS;
 }
 
 export type GenericIconSizes =
@@ -87,7 +89,8 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         style,
         square,
         transparent,
-        twoTone
+        twoTone,
+        verticalAlign
     } = props;
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
 
@@ -108,6 +111,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         "transparent": transparent,
         "two-tone": twoTone,
         [`${relaxLevel}`]: relaxLevel,
+        [`vertical-aligned-${ verticalAlign }`]: verticalAlign
     }, className);
 
     /**

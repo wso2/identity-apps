@@ -21,7 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, Heading, Hint, SelectionCard } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAuthProtocolMetadata, updateAuthProtocolConfig } from "../../api";
+import { getAuthProtocolMetadata, regenerateClientSecret, updateAuthProtocolConfig } from "../../api";
 import {
     AuthProtocolMetaListItemInterface,
     InboundProtocolListItemInterface,
@@ -114,6 +114,9 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
      * Set the default doc content URL for the tab.
      */
     useEffect(() => {
+        if (!selectedInboundProtocol?.id) {
+            return;
+        }
         if (!helpPanelMetadata?.applications?.docs?.inbound[ selectedInboundProtocol.id ]) {
             return;
         }
@@ -172,6 +175,38 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
     };
 
     /**
+     *  Regenerate application.
+     */
+    const handleApplicationRegenerate = (): void => {
+        regenerateClientSecret(appId)
+            .then(() => {
+                dispatch(addAlert({
+                    description: "Successfully regenerated the application",
+                    level: AlertLevels.SUCCESS,
+                    message: "Regenerate successful"
+                }));
+                onUpdate(appId);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Application Regenerate Error"
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: "An error occurred while regenerating the application",
+                    level: AlertLevels.ERROR,
+                    message: "Application Regenerate Error"
+                }));
+            });
+    };
+
+    /**
      * Resolves the corresponding protocol config form when a
      * protocol is selected.
      * @return {React.ReactElement}
@@ -191,6 +226,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                         }
                         onSubmit={ handleInboundConfigFormSubmit }
                         type={ SupportedAuthProtocolTypes.OIDC }
+                        handleApplicationRegenerate={ handleApplicationRegenerate }
                     />
                 );
             case SupportedAuthProtocolTypes.SAML:

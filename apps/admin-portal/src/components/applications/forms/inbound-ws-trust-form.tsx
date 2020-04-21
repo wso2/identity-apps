@@ -21,6 +21,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { Button, Grid } from "semantic-ui-react";
 import { MetadataPropertyInterface, WSTrustConfigurationInterface, WSTrustMetaDataInterface } from "../../../models";
 import { Hint } from "@wso2is/react-components";
+import _ from "lodash";
 
 /**
  * Proptypes for the inbound WS Trust form component.
@@ -95,10 +96,13 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                     placeholder="Enter audience"
                                     type="text"
                                     value={ initialValues?.audience }
-                                    readOnly
+                                    readOnly={ !(_.isEmpty(initialValues?.audience)) }
                                 />
-                                {/* eslint-disable-next-line react/no-unescaped-entities */ }
-                                <Hint>The trusted relying party's endpoint address.</Hint>
+
+                                <Hint disabled={ !(_.isEmpty(initialValues?.audience)) }>
+                                    {/* eslint-disable-next-line react/no-unescaped-entities */ }
+                                    The trusted relying party's endpoint address.
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>

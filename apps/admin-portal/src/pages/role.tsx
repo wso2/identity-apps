@@ -222,7 +222,7 @@ export const RolesPage = (): ReactElement => {
     return (
         <PageLayout
             title="Roles"
-            description="Create and Manage Roles, Assign Permissions for Roles."
+            description="Create and manage roles, assign permissions for roles."
             showBottomDivider={ true } 
         >
             <ListLayout
@@ -237,7 +237,7 @@ export const RolesPage = (): ReactElement => {
                     (
                         <PrimaryButton onClick={ () => setShowWizard(true) }>
                             <Icon name="add"/>
-                            Add Role
+                            New Role
                         </PrimaryButton>
                     )
                 }

@@ -20,7 +20,7 @@
 @type    : "module";
 @element : "treeview";
 
-@import (multiple) '../../../theme.less';
+@import (multiple) '../../theme.less';
 .loadVariables();
 
 .permissions-edit-container {
@@ -181,7 +181,7 @@
                             fill: @primaryColor;
                         }
 
-                        polyline {
+                        .tick {
                             stroke-dashoffset: 0;
                         }
                     }
@@ -236,6 +236,19 @@
                         stroke-linejoin: round;
                         stroke-width: 2;
                         stroke: #ffffff;
+                        transition: all 0.3s ease;
+                    }
+                }
+            }
+
+            .indeterminate {
+                svg {
+                    path {
+                        fill: @primaryColor;
+                    }
+
+                    .dash {
+                        stroke-dashoffset: 0;
                         transition: all 0.3s ease;
                     }
                 }

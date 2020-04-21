@@ -31,6 +31,7 @@ interface InboundFormFactoryInterface {
     initialValues: any;
     onSubmit: (values: any) => void;
     type: SupportedAuthProtocolTypes;
+    handleApplicationRegenerate?: () => void;
 }
 
 /**
@@ -47,12 +48,20 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         metadata,
         initialValues,
         onSubmit,
-        type
+        type,
+        handleApplicationRegenerate
     } = props;
 
     switch (type) {
         case SupportedAuthProtocolTypes.OIDC:
-            return <InboundOIDCForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit }/>;
+            return (
+                <InboundOIDCForm
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    handleApplicationRegenerate={ handleApplicationRegenerate }
+                />
+            );
         case SupportedAuthProtocolTypes.SAML:
             return <InboundSAMLForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit }/>;
         case SupportedAuthProtocolTypes.WS_TRUST:

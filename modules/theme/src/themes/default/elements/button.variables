@@ -50,3 +50,10 @@
 --------------------------*/
 
 @metaColumnsButtonPadding: 12px 27px;
+
+/*----------------------------
+    Generate password button
+------------------------------*/
+
+@generatePasswordButtonPadding: 12px 27px;
+@generatePasswordButtonMarginTop: 22px;

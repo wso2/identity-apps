@@ -62,6 +62,10 @@ body {
          Global Helper Classes
 *****************************************/
 
+.flex {
+    display: flex;
+}
+
 .inline {
     display: inline-block;
 }
@@ -77,6 +81,12 @@ body {
 
 .clearing {
     overflow: auto;
+}
+
+.m {
+    &-auto {
+        margin: auto !important;
+    }
 }
 
 .mr {
@@ -563,6 +573,20 @@ body {
         &:hover {
             background: @iconHoverBgColor;
         }
+        i {
+            margin: 0 0.25em;
+        }
+    }
+    &.vertical-aligned {
+        &-top {
+            vertical-align: top;
+        }
+        &-middle {
+            vertical-align: middle;
+        }
+        &-bottom {
+            vertical-align: bottom;
+        }
     }
 }
 
@@ -926,27 +950,6 @@ body {
                 }
             }
         }
-    }
-}
-
-/*****************************************
-            UI Hints
-*****************************************/
-
-.ui-hint {
-    color: @inputAddonColor;
-    font-size: @inputAddonFontSize;
-    margin: @inputAddonMargin;
-
-    &.disabled {
-        pointer-events: none;
-        opacity: 0.45;
-    }
-    &.compact {
-        margin: 0;
-    }
-    &.hidden {
-        display: none;
     }
 }
 

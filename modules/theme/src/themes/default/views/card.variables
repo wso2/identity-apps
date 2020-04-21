@@ -79,6 +79,7 @@ Recent Application Card
 @appTemplateCardHeaderFontWeight: 500;
 @appTemplateCardHeaderLineHeight: 1.3em;
 @appTemplateCardDescriptionFontSize: 0.8em;
+@appTemplateCardDescriptionHeight: 3.5em;
 @appTemplateCardHeaderMaxWidth: 100%;
 @appTemplateCardDescriptionMaxWidth: 100%;
 @appTemplateCardDescriptionMinHeight: 20px;

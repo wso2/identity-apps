@@ -210,7 +210,7 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
                             history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDER_TEMPLATES"));
                         } }
                     >
-                        <Icon name="add"/>Add Identity Provider
+                        <Icon name="add"/>New Identity Provider
                     </PrimaryButton>
                 ) }
                 image={ EmptyPlaceholderIllustrations.newList }
@@ -228,7 +228,7 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
     return (
         <PageLayout
             title="Identity Providers"
-            description="Create identity providers based on templates and configure authentication."
+            description="Create and manage identity providers based on templates and configure authentication."
             showBottomDivider={ true }
         >
             <ListLayout
@@ -245,7 +245,7 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
                                 history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDER_TEMPLATES"));
                             } }
                         >
-                            <Icon name="add"/>Add Identity Provider
+                            <Icon name="add"/>New Identity Provider
                         </PrimaryButton>
                     )
                 }

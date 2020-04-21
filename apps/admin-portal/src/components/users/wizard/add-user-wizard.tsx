@@ -532,9 +532,22 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             return;
         }
 
+        let wizardData: WizardStateInterface = { ...wizardState };
+
+        if (wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] &&
+            !(wizardState[ WizardStepsFormTypes.BASIC_DETAILS ].profileUrl) && userGravatarUrl) {
+            wizardData = {
+                ...wizardState,
+                BasicDetails: {
+                    ...wizardState.BasicDetails,
+                    profileUrl: userGravatarUrl
+                }
+            }
+        }
+
         let summary = {};
 
-        for (const value of Object.values(wizardState)) {
+        for (const value of Object.values(wizardData)) {
             summary = {
                 ...summary,
                 ...value

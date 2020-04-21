@@ -1,0 +1,40 @@
+{
+	"id": "df929521-6768-44f5-8586-624126ec3f8b",
+    "name": "Windows desktop application",
+    "description": "Applications developed to target windows desktops.",
+    "image": "windowsNative",
+    "authenticationProtocol": "oidc",
+    "types": [
+        "dotNet"
+    ],
+    "category": "DEFAULT",
+    "displayOrder": 4,
+    "application": {
+        "name": "",
+        "advancedConfigurations": {
+            "discoverableByEndUsers": false
+        },
+        "authenticationSequence": {
+            "type": "DEFAULT",
+            "steps": [
+                {
+                    "id": 1,
+                    "options": [
+                        {
+                            "idp": "LOCAL",
+                            "authenticator": "basic"
+                        }
+                    ]
+                }
+            ]
+        },
+        "inboundProtocolConfiguration": {
+            "oidc": {
+                "grantTypes": [
+                    "authorization_code"
+                ],
+                "publicClient": false
+            }
+        }
+    }
+}

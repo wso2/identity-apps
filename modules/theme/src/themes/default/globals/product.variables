@@ -71,14 +71,6 @@
 @pageLayoutContentPadding: @fluidDashboardLayoutTopPadding 30px;
 
 /*-------------------
-    Input Addons
---------------------*/
-
-@inputAddonColor: @doveGray;
-@inputAddonFontSize: 12px;
-@inputAddonMargin: 10px 0;;
-
-/*-------------------
         Steps
 --------------------*/
 

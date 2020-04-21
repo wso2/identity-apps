@@ -158,8 +158,8 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             <DangerZoneGroup sectionHeader="Danger Zone">
                 <DangerZone
                     actionTitle="Delete Role"
-                    header="Delete this role"
-                    subheader="This action is irreversible. Please proceed with caution."
+                    header="Delete role"
+                    subheader="Once you delete a role, there is no going back. Please be certain."
                     onActionClick={ () => setShowDeleteConfirmationModal(!showRoleDeleteConfirmation) }
                 />
             </DangerZoneGroup> 

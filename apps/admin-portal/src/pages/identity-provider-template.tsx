@@ -19,16 +19,28 @@
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
-import { IdentityProviderTemplateListInterface, IdentityProviderTemplateListItemInterface } from "../models";
+import {
+    IdentityProviderListResponseInterface,
+    IdentityProviderTemplateListItemInterface,
+    IdentityProviderTemplateListItemResponseInterface,
+    IdentityProviderTemplateListResponseInterface,
+    SupportedServices
+} from "../models";
 import { IdentityProviderCreateWizard } from "../components/identity-providers/wizards";
 import { QuickStartIdentityProviderTemplates } from "../components/identity-providers/templates";
-import { getIdentityProviderList, getIdentityProviderTemplate, getIdentityProviderTemplateList } from "../api";
+import {
+    getIdentityProviderList,
+    getIdentityProviderTemplate,
+    getIdentityProviderTemplateList
+} from "../api";
 import { useDispatch, useSelector } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { AppState } from "../store";
 import { setAvailableAuthenticatorsMeta } from "../store/actions/identity-provider";
+import { SupportedServicesInterface } from "../models";
 import { IdPCapabilityIcons } from "../configs";
+import { ExpertModeTemplate } from "../components/identity-providers/meta";
 
 /**
  * Choose the application template from this page.
@@ -38,7 +50,9 @@ import { IdPCapabilityIcons } from "../configs";
 export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): ReactElement => {
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateListItemInterface>(null);
+    const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateListItemInterface>(undefined);
+    const [ selectedTemplateWithUniqueName, setSelectedTemplateWithUniqueName ] =
+        useState<IdentityProviderTemplateListItemInterface>(undefined);
     const [ availableTemplates, setAvailableTemplates ] = useState<IdentityProviderTemplateListItemInterface[]>([]);
     const [ possibleListOfDuplicateIdps, setPossibleListOfDuplicateIdps ] = useState<string[]>(undefined);
 
@@ -47,24 +61,49 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
     const availableAuthenticators = useSelector((state: AppState) => state.identityProvider.meta.authenticators);
 
     /**
-     * Populate available services in the template.
+     * Build supported services from the given service identifiers.
      *
-     * @param templates List of templates.
-     * @return List of templates populated with available services.
+     * @param serviceIdentifiers Set of service identifiers.
      */
-    const populateTemplatesWithServices = (templates: IdentityProviderTemplateListItemInterface[]):
-        IdentityProviderTemplateListItemInterface[] => {
-        return templates.map((template): IdentityProviderTemplateListItemInterface => {
-            return {
-                ...template,
-                services: template?.services?.map(service => {
-                    const predefinedLogo = Object.keys(IdPCapabilityIcons).find(key => key === service.logo);
+    const buildSupportedServices = (serviceIdentifiers: string[]): SupportedServicesInterface[] => {
+        return serviceIdentifiers?.map((serviceIdentifier: string): SupportedServicesInterface => {
+            switch (serviceIdentifier) {
+                case SupportedServices.AUTHENTICATION:
                     return {
-                        ...service,
-                        logo: predefinedLogo ? predefinedLogo : service.logo
+                        displayName: "Authentication Service",
+                        logo: IdPCapabilityIcons[SupportedServices.AUTHENTICATION],
+                        name: SupportedServices.AUTHENTICATION
+                    };
+                case SupportedServices.PROVISIONING:
+                    return {
+                        displayName: "Provisioning Service",
+                        logo: IdPCapabilityIcons[SupportedServices.PROVISIONING],
+                        name: SupportedServices.PROVISIONING
                     }
-                })
-            };
+            }
+        });
+    };
+
+    /**
+     * Interpret available templates from the response templates.
+     *
+     * @param templates List of response templates.
+     * @return List of templates.
+     */
+    const interpretAvailableTemplates = (templates: IdentityProviderTemplateListItemResponseInterface[]):
+        IdentityProviderTemplateListItemInterface[] => {
+        return templates?.map(eachTemplate => {
+            if (eachTemplate.services[0] === "") {
+                return {
+                    ...eachTemplate,
+                    services: []
+                };
+            } else {
+                return {
+                    ...eachTemplate,
+                    services: buildSupportedServices(eachTemplate?.services)
+                };
+            }
         });
     };
 
@@ -75,11 +114,19 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
     const getTemplateList = (): void => {
 
         getIdentityProviderTemplateList()
-            .then((response) => {
-                const templateList: IdentityProviderTemplateListInterface = response;
+            .then((response: IdentityProviderTemplateListResponseInterface) => {
+                if (!response?.totalResults) {
+                    return;
+                }
                 // sort templateList based on display Order
-                templateList.templates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
-                setAvailableTemplates(populateTemplatesWithServices(templateList.templates));
+                response?.templates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
+                const availableTemplates: IdentityProviderTemplateListItemInterface[] = interpretAvailableTemplates(
+                    response?.templates);
+
+                // Add expert mode template
+                availableTemplates.unshift(ExpertModeTemplate);
+
+                setAvailableTemplates(availableTemplates);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -151,12 +198,18 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
      * @param {string} id - Id of the template.
      */
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
-        getTemplate(id);
+        if (id === "expert-mode") {
+            setSelectedTemplate(ExpertModeTemplate)
+        } else {
+            getTemplate(id);
+        }
     };
 
     const getPossibleListOfDuplicateIdps = (idpName: string) => {
-        getIdentityProviderList(null, null, "name sw " + idpName).then((response) => {
-            setPossibleListOfDuplicateIdps( response?.identityProviders?.map(eachIdp => eachIdp.name));
+        getIdentityProviderList(null, null, "name sw " + idpName).then(
+            (response: IdentityProviderListResponseInterface) => {
+            setPossibleListOfDuplicateIdps( response?.totalResults ? response?.identityProviders?.map(
+                eachIdp => eachIdp.name) : []);
         })
     };
 
@@ -196,7 +249,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
             return;
         }
 
-        setSelectedTemplate({
+        setSelectedTemplateWithUniqueName({
             ...selectedTemplate,
             idp: {
                 ...selectedTemplate?.idp,
@@ -232,13 +285,14 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
             ) }
             { showWizard && (
                 <IdentityProviderCreateWizard
-                    title={ selectedTemplate?.name }
-                    subTitle={ selectedTemplate?.description }
+                    title={ selectedTemplateWithUniqueName?.name }
+                    subTitle={ selectedTemplateWithUniqueName?.description }
                     closeWizard={ () => {
-                        setSelectedTemplate(null);
+                        setSelectedTemplateWithUniqueName(undefined);
+                        setSelectedTemplate(undefined);
                         setShowWizard(false);
                     } }
-                    template={ selectedTemplate?.idp }
+                    template={ selectedTemplateWithUniqueName?.idp }
                 />
             ) }
         </PageLayout>

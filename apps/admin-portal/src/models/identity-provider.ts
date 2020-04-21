@@ -54,11 +54,31 @@ export interface IdentityProviderInterface {
     image?: string;
     homeRealmIdentifier?: string;
     alias?: string;
-    claims?: string;
-    roles?: string;
+    claims?: IdentityProviderClaimsInterface;
+    roles?: IdentityProviderRolesInterface;
     federatedAuthenticators?: FederatedAuthenticatorListResponseInterface;
     certificate?: CertificateConfigInterface;
     provisioning?: ProvisioningInterface;
+}
+
+export interface IdentityProviderRolesInterface {
+    mappings?: IdentityProviderRoleMappingInterface[];
+    outboundProvisioningRoles?: string[];
+}
+
+export interface IdentityProviderRoleMappingInterface {
+    idpRole?: string;
+    localRole?: string;
+}
+
+export interface IdentityProviderClaimsInterface {
+    userIdClaim?: {
+        uri?: string;
+    };
+    roleClaim?: {
+        uri?: string;
+    };
+    provisioningClaims?: string[];
 }
 
 export interface IdentityProviderAdvanceInterface {
@@ -141,18 +161,42 @@ export interface IdentityProviderTemplateListInterface {
 }
 
 /**
- *  Identity provider template list item interface.
+ *  Identity provider template list response interface.
  */
-export interface IdentityProviderTemplateListItemInterface {
-    id: SupportedQuickStartTemplates;
+export interface IdentityProviderTemplateListResponseInterface {
+    totalResults?: number;
+    startIndex?: number;
+    count?: number;
+    links?: number;
+    templates?: IdentityProviderTemplateListItemResponseInterface[];
+}
+
+/**
+ *  Identity provider template item interface.
+ */
+export interface IdentityProviderTemplateItemInterface {
+    id: string;
     name: string;
     description: string;
     /* eslint-disable @typescript-eslint/no-explicit-any */
     image: any;
     category: string;
     displayOrder: number;
-    services?: SupportedServicesInterface[];
     idp: IdentityProviderInterface;
+}
+
+/**
+ *  Identity provider template list item interface.
+ */
+export interface IdentityProviderTemplateListItemInterface extends IdentityProviderTemplateItemInterface {
+    services?: SupportedServicesInterface[];
+}
+
+/**
+ *  Identity provider template list item response interface.
+ */
+export interface IdentityProviderTemplateListItemResponseInterface extends IdentityProviderTemplateItemInterface {
+    services?: string[];
 }
 
 /**
@@ -166,7 +210,8 @@ export enum SupportedQuickStartTemplates {
     GOOGLE = "google",
     TWITTER = "twitter",
     OIDC = "oidc",
-    SAML = "saml"
+    SAML = "saml",
+    EXPERT = "expert"
 }
 
 /**
@@ -292,6 +337,17 @@ export interface SupportedServicesInterface {
     displayName: string;
     /* eslint-disable @typescript-eslint/no-explicit-any */
     logo: any;
+}
+
+/**
+ * Enum for supported services.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum SupportedServices {
+    AUTHENTICATION = "authentication",
+    PROVISIONING = "provisioning"
 }
 
 /**

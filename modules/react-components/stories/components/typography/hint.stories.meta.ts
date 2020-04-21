@@ -31,6 +31,10 @@ export const meta: StoryMetaInterface = {
         {
             description: "Hint with an icon.",
             title: "With Icon"
+        },
+        {
+            description: "Shows a hint inside a popup.",
+            title: "As Popup"
         }
     ],
     title: `${ StoryCategories.COMPONENTS }/Hint`

@@ -1,0 +1,38 @@
+{
+	"id": "8ca3f88d-832e-451e-b421-d45b84abae80",
+    "name": "Passive STS web application",
+    "description": "Web applications which uses security tokens.",
+    "image": "passiveSTS",
+    "authenticationProtocol": "passive-sts",
+    "types": [
+        "java",
+        "dotNet"
+    ],
+    "category": "DEFAULT",
+    "displayOrder": 6,
+    "application": {
+        "name": "",
+        "inboundProtocolConfiguration": {
+            "passiveSts": {}
+        },
+        "authenticationSequence": {
+            "type": "DEFAULT",
+            "steps": [
+                {
+                    "id": 1,
+                    "options": [
+                        {
+                            "idp": "LOCAL",
+                            "authenticator": "basic"
+                        }
+                    ]
+                }
+            ],
+            "subjectStepId": 1,
+            "attributeStepId": 1
+        },
+        "advancedConfigurations": {
+            "discoverableByEndUsers": false
+        }
+    }
+}
