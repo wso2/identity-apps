@@ -246,7 +246,14 @@ export const IdPIcons = {
     google: GoogleIdPIcon,
     twitter: TwitterIdPIcon,
     saml: SamlLogo,
-    oidc: OIDCLogo
+    oidc: OIDCLogo,
+    wsFed: WSFedLogo,
+    smsOTP: SMSOTPIcon,
+    emailOTP: EmailOTPIcon,
+    microsoft: GoogleIdPIcon,
+    yahoo: GoogleIdPIcon,
+    iwaKerberos: GoogleIdPIcon,
+    office365: GoogleIdPIcon
 };
 
 export const IdPCapabilityIcons = {
