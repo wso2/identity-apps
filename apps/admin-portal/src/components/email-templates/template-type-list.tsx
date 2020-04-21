@@ -16,14 +16,15 @@
 * under the License.
 */
 
-import React, { FunctionComponent , ReactElement } from "react";
-import { ResourceList, ResourceListItem, Avatar } from "@wso2is/react-components";
+import React, { FunctionComponent , ReactElement, useState } from "react";
+import { ResourceList, ResourceListItem, Avatar, ConfirmationModal } from "@wso2is/react-components";
 import { Icon } from "semantic-ui-react";
 import { EmailTemplateType } from "../../models";
 import { history } from "../../helpers";
 import { EMAIL_TEMPLATE_VIEW_PATH } from "../../constants";
 
 interface EmailTemplateListPropsInterface {
+    onDelete: (templateId: string) => void;
     templateTypeList: EmailTemplateType[];
 }
 
@@ -37,47 +38,84 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
 ): ReactElement => {
 
     const {
-        templateTypeList: templateList
+        templateTypeList: templateList,
+        onDelete
     } = props;
 
-    const handleEditTemplate = (templateId: string) => {
-        history.push(EMAIL_TEMPLATE_VIEW_PATH + templateId);
+    const [ showTemplateTypeDeleteConfirmation, setShowTemplateTypeDeleteConfirmation ] = useState<boolean>(false);
+    const [ currentDeletingTemplate, setCurrentDeletingTemplate ] = useState<EmailTemplateType>(undefined);
+
+    const handleEditTemplate = (templateTypeId: string) => {
+        history.push(EMAIL_TEMPLATE_VIEW_PATH + templateTypeId);
     };
 
     return (
-        <ResourceList className="roles-list">
+        <>
+            <ResourceList className="roles-list">
+                {
+                    templateList && templateList.map((template: EmailTemplateType, index: number) => (
+                        <ResourceListItem
+                            key={ index }
+                            actionsFloated="right"
+                            actions={ [{
+                                icon: "pencil alternate",
+                                onClick: () => handleEditTemplate(template.id),
+                                popupText: "Edit Template",
+                                type: "button"
+                            },{
+                                icon: "trash alternate",
+                                onClick: () => {
+                                    setCurrentDeletingTemplate(template);
+                                    setShowTemplateTypeDeleteConfirmation(true)
+                                    
+                                },
+                                popupText: "Delete Template",
+                                type: "button"
+                            }] }
+                            avatar={ (
+                                <Avatar
+                                    name={ template.displayName }
+                                    size="small"
+                                    image={
+                                        <Icon size="large" name='mail' />
+                                    }
+                                />
+                            ) }
+                            itemHeader={ template.displayName }
+                        />
+                    ))
+                }
+            </ResourceList>
             {
-                templateList && templateList.map((template, index) => (
-                    <ResourceListItem
-                        key={ index }
-                        actionsFloated="right"
-                        actions={ [{
-                            icon: "pencil alternate",
-                            onClick: () => handleEditTemplate(template.id),
-                            popupText: "Edit Role",
-                            type: "button"
-                        },
-                        {
-                            icon: "trash alternate",
-                            onClick: () => {
-                                console.log()
-                            },
-                            popupText: "Delete Role",
-                            type: "button"
-                        }] }
-                        avatar={ (
-                            <Avatar
-                                name={ template.displayName }
-                                size="small"
-                                image={
-                                    <Icon size="large" name='mail' />
-                                }
-                            />
-                        ) }
-                        itemHeader={ template.displayName }
-                    />
-                ))
+                showTemplateTypeDeleteConfirmation && 
+                    <ConfirmationModal
+                        onClose={ (): void => setShowTemplateTypeDeleteConfirmation(false) }
+                        type="warning"
+                        open={ showTemplateTypeDeleteConfirmation }
+                        assertion={ currentDeletingTemplate.displayName }
+                        assertionHint={ 
+                            <p>Please type <strong>{ currentDeletingTemplate.displayName }</strong> to confirm. </p> 
+                        }
+                        assertionType="input"
+                        primaryAction="Confirm"
+                        secondaryAction="Cancel"
+                        onSecondaryActionClick={ (): void => setShowTemplateTypeDeleteConfirmation(false) }
+                        onPrimaryActionClick={ (): void => {
+                            onDelete(currentDeletingTemplate.id);
+                            setShowTemplateTypeDeleteConfirmation(false);
+                        } }
+                    >
+                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+                        <ConfirmationModal.Message attached warning>
+                            This action is irreversible and will permanently delete the selected email template type.
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            If you delete this email template type, all associated work flows will no longer
+                            have a valid email template to work with and this will delete all the locale templates 
+                            associated with this template type. Please proceed cautiously.
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
             }
-        </ResourceList>
+        </>
     )
 }

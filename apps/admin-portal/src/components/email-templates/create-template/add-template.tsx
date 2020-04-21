@@ -16,32 +16,43 @@
 * under the License.
 */
 
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState, SyntheticEvent } from "react";
 import { history } from "../../../helpers";
 import { EMAIL_TEMPLATE_VIEW_PATH } from "../../../constants";
-import { Forms, Field } from "@wso2is/forms";
-import { Grid, Button, DropdownItemProps } from "semantic-ui-react";
+import { Forms, Field, FormValue } from "@wso2is/forms";
+import { Grid, Button, DropdownItemProps, Form, Dropdown, DropdownProps } from "semantic-ui-react";
 import * as CountryLanguage from "country-language";
-import { CodeEditor } from "@wso2is/react-components";
+import { EmailTemplateEditor } from "../email-code-editor";
+import { EmailTemplate, EmailTemplateType, AlertInterface, AlertLevels } from "../../../models";
+import { createLocaleTemplate, getTemplateDetails, replaceLocaleTemplateContent } from "../../../api";
+import { AxiosResponse, AxiosError } from "axios";
+import { addAlert } from "@wso2is/core/dist/src/store";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
-export const AddLocaleTemplate: FunctionComponent = (): ReactElement => {
+interface AddLocaleTemplatePropsInterface {
+    templateId: string;
+    templateTypeId: string;
+}
 
-    const [ templateTypeId, setTemplateTypeId ] = useState<string>('');
+export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterface> = (
+    props: AddLocaleTemplatePropsInterface
+): ReactElement => {
+    const dispatch = useDispatch();
+    const { t } = useTranslation();
+
     const [ localeList, setLocaleList ] = useState<DropdownItemProps[]>([]);
+    const [ subject, setSubject ] = useState<string>('');
+    const [ locale, setLocale ] = useState<string>('');
+    const [ htmlBodyContent, setHtmlBodyContent ] = useState<string>('');
+    const [ htmlFooterContent, setHtmlFooterContent ] = useState<string>('');
 
-    /**
-     * Util to handle back button event.
-     */
-    const handleBackButtonClick = () => {
-        history.push(EMAIL_TEMPLATE_VIEW_PATH + templateTypeId);
-    };
+    const {
+        templateId,
+        templateTypeId
+    } = props;
 
     useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const templateTypeId = path[ path.length - 2 ];
-
-        setTemplateTypeId(templateTypeId);
-
         const locales: string[] = CountryLanguage.getLocales(true);
         const localeDropDown: DropdownItemProps[] = [];
 
@@ -56,8 +67,6 @@ export const AddLocaleTemplate: FunctionComponent = (): ReactElement => {
                 key: index,
                 value: locale,
                 text: country ? language + " (" + country + ")" : language,
-                active: locale === "en-US",
-                selected: locale === "en-US"
             })
         });
 
@@ -65,24 +74,122 @@ export const AddLocaleTemplate: FunctionComponent = (): ReactElement => {
 
     }, [localeList.length]);
 
+    useEffect(() => {
+        getTemplateDetails(templateTypeId, templateId).then((response: AxiosResponse<EmailTemplate>) => {
+            if (response.status === 200) {
+                const templateDetails = response.data;
+
+                setLocale(templateDetails.id);
+                setSubject(templateDetails.subject);
+                setHtmlBodyContent(templateDetails.body);
+                setHtmlFooterContent(templateDetails.footer);
+            }
+        })
+    },[templateId != ''])
+
+    /**
+     * Dispatches the alert object to the redux store.
+     *
+     * @param {AlertInterface} alert - Alert object.
+     */
+    const handleAlerts = (alert: AlertInterface) => {
+        dispatch(addAlert(alert));
+    };
+
+    const createTemplate = (values: Map<string, FormValue>) => {
+        const templateDate: EmailTemplate = {
+            contentType: "text/html",
+            subject: values.get("emailSubject").toString(),
+            body: htmlBodyContent,
+            footer: htmlFooterContent,
+            id: values.get("locale").toString(),
+        }
+
+        createLocaleTemplate(templateTypeId, templateDate).then((response: AxiosResponse<EmailTemplateType>) => {
+            if (response.status === 201) {
+                handleAlerts({
+                    description: t(
+                        "devPortal:components.emailTemplates.notifications.createTemplate.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "devPortal:components.emailTemplates.notifications.createTemplate.success.message"
+                    )
+                });
+                history.push(EMAIL_TEMPLATE_VIEW_PATH + templateTypeId);
+            }
+        }).catch((error: AxiosError) => {
+            handleAlerts({
+                description: error.response.data.description,
+                level: AlertLevels.ERROR,
+                message: t(
+                    "devPortal:components.emailTemplates.notifications.createTemplate.genericError.message"
+                )
+            });
+        })
+    }
+
+    const updateTemplate = (values: Map<string, FormValue>) => {
+        const templateDate: EmailTemplate = {
+            contentType: "text/html",
+            subject: values.get("emailSubject").toString(),
+            body: htmlBodyContent,
+            footer: htmlFooterContent,
+            id: templateId
+        }
+
+        replaceLocaleTemplateContent(templateTypeId, templateId, templateDate).then((response: AxiosResponse) => {
+            if (response.status === 201) {
+                handleAlerts({
+                    description: t(
+                        "devPortal:components.emailTemplates.notifications.updateTemplate.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "devPortal:components.emailTemplates.notifications.updateTemplate.success.message"
+                    )
+                });
+                history.push(EMAIL_TEMPLATE_VIEW_PATH + templateTypeId);
+            }
+        }).catch(error => {
+            handleAlerts({
+                description: error.response.data.description,
+                level: AlertLevels.ERROR,
+                message: t(
+                    "devPortal:components.emailTemplates.notifications.updateTemplate.genericError.message"
+                )
+            });
+        });
+    }
+
     return (
         <Forms 
-            onSubmit={ (values) => {
-                console.log(values)
+            onSubmit={ (values: Map<string, FormValue>) => {
+                if (templateId === "") {
+                    createTemplate(values)
+                } else {
+                    updateTemplate(values);
+                }
             } }
         >
             <Grid>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
-                        <Field
-                            type="dropdown"
+                    <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 4 }>
+                        <Dropdown
+                            placeholder="Select Locale"
                             label="Locale "
                             name="locale"
-                            children={ localeList ? localeList : [] }
-                            placeholder="Domain"
-                            requiredErrorMessage="Select Domain"
+                            requiredErrorMessage="Select locale"
                             required={ true }
-                            element={ <div></div> }
+                            options={ localeList ? localeList : [] }
+                            disabled={ templateId !== "" }
+                            onChange={ (event: SyntheticEvent, data: DropdownProps) => {
+                                setLocale(data.value.toString());
+                            } }
+                            value={ locale }
+                            selection
+                            fluid
+                            scrolling
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -95,29 +202,38 @@ export const AddLocaleTemplate: FunctionComponent = (): ReactElement => {
                             requiredErrorMessage={ "Email Subject is required" }
                             placeholder={ "Enter your Email Subject" }
                             type="text"
+                            value={ subject }
                         />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 12 }>
-                        <CodeEditor
-                            lint
-                            language="javascript"
-                            sourceCode={ "" }
-                            options={ {
-                                lineWrapping: true
-                            } }
-                            onChange={ (editor, data, value) => {
-                                console.log();
-                            } }
-                            theme={  "dark" }
-                        />
+                        <Form.Field>
+                            <label>Body</label>
+                            <EmailTemplateEditor 
+                                htmlContent={ htmlBodyContent } 
+                                isReadOnly={ false }
+                                updateHtmlContent={ setHtmlBodyContent }
+                            />
+                        </Form.Field>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 12 }>
+                        <Form.Field>
+                            <label>Footer</label>
+                            <EmailTemplateEditor 
+                                htmlContent={ htmlFooterContent } 
+                                isReadOnly={ false }
+                                updateHtmlContent={ setHtmlFooterContent }
+                            />
+                        </Form.Field>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Button primary type="submit" size="small" className="form-button">
-                            Add Locale Template
+                            {templateId === '' ? "Add Locale Template" : "Save Changes" }
                         </Button>
                     </Grid.Column>
                 </Grid.Row>

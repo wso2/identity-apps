@@ -21,3 +21,4 @@ export * from "./create-template/add-template-type";
 export * from "./create-template/add-template-type-wizard";
 export * from "./template-list";
 export * from "./template-type-list";
+export * from "./view-template";
