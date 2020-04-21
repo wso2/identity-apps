@@ -17,7 +17,7 @@
  */
  
 import { store } from "../store";
-import { HttpMethods, EmailTemplateType, EmailTemplateDetails } from "../models";
+import { HttpMethods, EmailTemplateType, EmailTemplateDetails, EmailTemplate } from "../models";
 import { AxiosHttpClient } from "@wso2is/http";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 
@@ -51,6 +51,30 @@ export const getEmailTemplateTypes = (): Promise<AxiosResponse<EmailTemplateType
 }
 
 /**
+ * Delete selected email template type for a given template type id.
+ * 
+ * @param templateTypeId - selected template type id.
+ */
+export const deleteEmailTemplateType = (templateTypeId: string): Promise<AxiosResponse> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: store.getState().config.endpoints.emailTemplateType + "/" + templateTypeId,
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+}
+
+/**
  * Get details for the given email template ID.
  * 
  * @param templateId - Unique ID of the required email template
@@ -67,6 +91,119 @@ export const getEmailTemplate = (templateId: string): Promise<AxiosResponse<Emai
 
     return httpClient.request<EmailTemplateDetails>(requestConfig)
         .then((response: AxiosResponse<EmailTemplateDetails>) => {
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+}
+
+/**
+ * Get template details for given template type id and template id.
+ * 
+ * @param templateTypeId - template type id
+ * @param templateId - template id
+ */
+export const getTemplateDetails = (
+    templateTypeId: string, templateId: string
+): Promise<AxiosResponse<EmailTemplate>> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.emailTemplateType + "/" + templateTypeId + "/templates/" + templateId
+    };
+
+    return httpClient.request<EmailTemplate>(requestConfig)
+        .then((response: AxiosResponse<EmailTemplate>) => {
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+
+}
+
+/**
+ * Create email template for selected locale.
+ * 
+ * @param templateTypeId - template type id
+ * @param templateData - new template details
+ */
+export const createLocaleTemplate = (
+    templateTypeId: string, templateData: EmailTemplate
+): Promise<AxiosResponse<EmailTemplateType>> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        data: templateData,
+        url: store.getState().config.endpoints.emailTemplateType + "/" + templateTypeId
+    };
+
+    return httpClient.request<EmailTemplateType>(requestConfig)
+        .then((response: AxiosResponse<EmailTemplateType>) => {
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+
+}
+
+/**
+ * Delete a given locale template using the template type id and template id.
+ * 
+ * @param templateTypeId - template type id
+ * @param templateId - locale template id
+ */
+export const deleteLocaleTemplate = (templateTypeId: string, templateId: string): Promise<AxiosResponse> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: store.getState().config.endpoints.emailTemplateType + "/" + templateTypeId + "/templates/" + templateId
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+}
+
+/**
+ * Replace given content for the selected locale template id and template type id.
+ * 
+ * @param templateTypeId - template type id
+ * @param templateId - locale template id
+ * @param templateData - replacable locale template data
+ */
+export const replaceLocaleTemplateContent = (
+    templateTypeId: string, templateId: string, templateData: EmailTemplate): Promise<AxiosResponse> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        data: templateData,
+        url: store.getState().config.endpoints.emailTemplateType + "/" + templateTypeId + "/templates/" + templateId
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
         .catch((error) => {
