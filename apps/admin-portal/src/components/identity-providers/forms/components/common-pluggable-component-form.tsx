@@ -182,12 +182,8 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             submitState={ triggerSubmit }
         >
             <Grid>
-                {
-                    dynamicValues && getSortedPropertyFields(metadata?.properties, false)
-                }
-                {
-                    enableSubmitButton && getSubmitButton("Update")
-                }
+                { dynamicValues && getSortedPropertyFields(metadata?.properties, false) }
+                { enableSubmitButton && getSubmitButton("Update") }
             </Grid>
         </Forms>
     );
