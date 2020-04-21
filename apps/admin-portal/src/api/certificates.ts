@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { Certificate, HttpMethods } from "../models";
 import { AxiosHttpClient } from "@wso2is/http";
-import { HttpMethods } from "../models";
 import { store } from "../store";
 
 /**
@@ -76,12 +76,11 @@ export const retrieveCertificateAlias = (alias: string, encode?: boolean): Promi
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PUT,
+        method: HttpMethods.GET,
         params: {
-            alias,
             encode
         },
-        url: store.getState().config.endpoints.certificates
+        url: `${store.getState().config.endpoints.certificates}/${alias}`
     };
     return httpClient
         .request(requestConfig)
@@ -110,7 +109,7 @@ export const retrievePublicCertificate = (encode?: boolean): Promise<any> => {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PUT,
+        method: HttpMethods.GET,
         params: {
             encode
         },
@@ -143,7 +142,7 @@ export const listClientCertificates = (filter?: string): Promise<any> => {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PUT,
+        method: HttpMethods.GET,
         params: {
             filter
         },
@@ -177,17 +176,77 @@ export const retrieveClientCertificate = (alias: string, encode?: boolean): Prom
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PUT,
+        method: HttpMethods.GET,
         params: {
-            alias,
             encode
         },
-        url: store.getState().config.endpoints.clientCertificates
+        url: `${store.getState().config.endpoints.clientCertificates}/${alias}`
     };
     return httpClient
         .request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
+                return Promise.reject(`An error occurred. The server returned ${response.status}`);
+            }
+            return Promise.resolve(response.data);
+        })
+        .catch((error) => {
+            return Promise.reject(error?.response?.data);
+        });
+};
+
+/**
+ * This deletes a keystore certificate.
+ * 
+ * @param {string} alias The certificate alias to be deleted.
+ * 
+ * @return {Promise<any>} 
+ */
+export const deleteKeystoreCertificate = (alias: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: `${store.getState().config.endpoints.certificates}/${alias}`
+    };
+    return httpClient
+        .request(requestConfig)
+        .then((response) => {
+            if (response.status !== 204) {
+                return Promise.reject(`An error occurred. The server returned ${response.status}`);
+            }
+            return Promise.resolve(response.data);
+        })
+        .catch((error) => {
+            return Promise.reject(error?.response?.data);
+        });
+};
+
+/**
+ * This adds a certificate to the keystore. 
+ * 
+ * @param {Certificate} data The alias and the certificate to be added.
+ * 
+ * @return {Promise<any>}
+ */
+export const createKeystoreCertificate = (data: Certificate): Promise<any> => {
+    const requestConfig = {
+        data,
+        headers: {
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.certificates
+    };
+    return httpClient
+        .request(requestConfig)
+        .then((response) => {
+            if (response.status !== 201) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
             return Promise.resolve(response.data);
