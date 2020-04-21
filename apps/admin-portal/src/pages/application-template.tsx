@@ -27,7 +27,7 @@ import { PageLayout } from "../layouts";
 import { useSelector } from "react-redux";
 import { CustomApplicationTemplate } from "../components/applications/meta";
 import { Divider } from "semantic-ui-react";
-import { CustomApplicationTemplates } from "../components/applications/templates/custom-application-template";
+import { CustomApplicationTemplates } from "../components/applications/templates";
 
 /**
  * Choose the application template from this page.

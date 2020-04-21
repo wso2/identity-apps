@@ -15,10 +15,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { ApplicationTemplateListItemInterface } from "../../../models";
 
-export * from "./spa-application-template.meta";
-export * from "./oauth-web-application-template.meta";
-export * from "./inbound-protocols.meta";
-export * from "./authenticators";
-export * from "./saml-web-application-template.meta";
-export * from "./custom-application-template.meta";
+export const CustomApplicationTemplate: ApplicationTemplateListItemInterface = {
+    id: "",
+    name: "Custom Application",
+    description: "Manually configure the inbound authentication protocol, authentication flow, etc.",
+    image: "customApp",
+    authenticationProtocol: "",
+    types: [
+        "java",
+        "dotNet",
+        "react",
+        "angular"
+    ],
+    category: "DEFAULT",
+    displayOrder: 0,
+    self: ""
+};
