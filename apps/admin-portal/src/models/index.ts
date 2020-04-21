@@ -29,6 +29,7 @@ export * from "./notifications";
 export * from "./tokens";
 export * from "./profile";
 export * from "./global";
+export * from "./help-panel";
 export * from "./loaders";
 export * from "./meta";
 export * from "./application-inbound";
