@@ -38,7 +38,7 @@ export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyI
                 hidePassword="Hide Secret"
                 label={ propertyMetadata?.displayName }
                 name={ propertyMetadata?.key }
-                placeholder={ propertyMetadata?.description }
+                placeholder={ propertyMetadata?.defaultValue }
                 required={ propertyMetadata?.isMandatory }
                 requiredErrorMessage={ "This is required" }
                 value={ eachProp?.value }
@@ -124,7 +124,7 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
                 requiredErrorMessage="This is required"
-                placeholder={ propertyMetadata?.description }
+                placeholder={ propertyMetadata?.defaultValue }
                 type="text"
                 value={ eachProp?.value }
                 key={ eachProp?.key }
@@ -147,7 +147,7 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
                 requiredErrorMessage="This is required"
-                placeholder={ propertyMetadata?.description }
+                placeholder={ propertyMetadata?.defaultValue }
                 validation={ (value, validation) => {
                     if (!FormValidation.url(value)) {
                         validation.isValid = false;
