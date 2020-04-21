@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { ApplicationTemplateListItemInterface } from "../../../models";
 
 export const CustomApplicationTemplate: ApplicationTemplateListItemInterface = {
