@@ -182,7 +182,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             label="Regular expression"
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder="Regular expression to validate the claim"
+                            placeholder="Enter a regular expression"
                             value={ values?.get("regularExpression")?.toString() }
                             onMouseOver={ () => {
                                 setIsShowRegExHint(true);
