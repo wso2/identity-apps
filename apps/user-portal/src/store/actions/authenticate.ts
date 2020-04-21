@@ -16,25 +16,17 @@
  * under the License.
  */
 
-import {
-    AuthenticateSessionUtil,
-    AuthenticateTokenKeys,
-    OIDCRequestParamsInterface,
-    OPConfigurationUtil,
-    SignInUtil,
-    SignOutUtil
-} from "@wso2is/authentication";
-import _ from "lodash";
-import { getProfileInfo, getProfileSchemas } from "../../api";
-import { GlobalConfig, i18n, ServiceResourcesEndpoint } from "../../configs";
-import * as TokenConstants from "../../constants";
-import { history } from "../../helpers";
 import { AlertLevels, BasicProfileInterface, ProfileSchema } from "../../models";
-import { getProfileCompletion } from "../../utils";
-import { store } from "../index";
-import { addAlert } from "./global";
-import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
+import { GlobalConfig, i18n } from "../../configs";
 import { authenticateActionTypes, AuthAction } from "./types";
+import { getProfileInfo, getProfileSchemas } from "../../api";
+import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
+import { ClientInteface, IdentityClient } from "@wso2is/authentication";
+import _ from "lodash";
+import { addAlert } from "./global";
+import { getProfileCompletion } from "../../utils";
+import { history } from "../../helpers";
+import { store } from "../index";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
@@ -176,88 +168,57 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
 };
 
 /**
- * Handle user sign-out
+ * Initialize identityManager client
  */
-export const handleSignOut = () => (dispatch): void => {
-    if (sessionStorage.length === 0) {
-        history.push(GlobalConfig.appLoginPath);
-    } else {
-        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl, () => {
-                dispatch(setSignOut());
-                AuthenticateSessionUtil.endAuthenticatedSession();
-                OPConfigurationUtil.resetOPConfiguration();
-            }).catch(() => {
-                history.push(GlobalConfig.appLoginPath);
-            });
-    }
-};
+const identityManager = (() => {
+    let instance: ClientInteface;
+ 
+    const createInstance = () => {
+        return new IdentityClient({
+            callbackURL: GlobalConfig.loginCallbackUrl,
+            clientHost: GlobalConfig.clientHost,
+            clientID: GlobalConfig.clientID,
+            serverOrigin: GlobalConfig.serverOrigin,
+            tenant: GlobalConfig.tenant,
+            tenantPath: GlobalConfig.tenantPath
+        });
+    };
+ 
+    return {
+        getInstance: () => {
+            if (!instance) {
+                instance = createInstance();
+            }
+
+            return instance;
+        }
+    };
+})();
 
 /**
  * Handle user sign-in
  */
-export const handleSignIn = (consentDenied = false) => (dispatch): void => {
-    const requestParams: OIDCRequestParamsInterface = {
-        clientHost: GlobalConfig.clientHost,
-        clientId: GlobalConfig.clientID,
-        clientSecret: null,
-        enablePKCE: true,
-        redirectUri: GlobalConfig.loginCallbackUrl,
-        scope: [TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE],
-        serverOrigin: GlobalConfig.serverOrigin,
-        tenant: GlobalConfig.tenant
-    };
+export const handleSignIn = () => (dispatch) => {
+    identityManager.getInstance().signIn(
+        () => {
+            dispatch(setSignIn());
+            dispatch(getProfileInformation());
+        })
+        .catch((error) => {
+            // TODO: Show error page
+            throw error;
+        });
+};
 
-    const sendSignInRequest = (): void => {
-        if (consentDenied) {
-            requestParams.prompt = "login";
-        }
-
-        if (SignInUtil.hasAuthorizationCode()) {
-            SignInUtil.sendTokenRequest(requestParams)
-                .then((response) => {
-                    AuthenticateSessionUtil.initUserSession(
-                        response,
-                        SignInUtil.getAuthenticatedUser(response.idToken)
-                    );
-                    dispatch(setSignIn());
-                    dispatch(getProfileInformation());
-                })
-                .catch((error) => {
-                    if (error.response.status === 400) {
-                        SignInUtil.sendAuthorizationRequest(requestParams);
-                    }
-
-                    throw error;
-                });
-        } else {
-            SignInUtil.sendAuthorizationRequest(requestParams);
-        }
-    };
-
-    if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
-        if (OPConfigurationUtil.isValidOPConfig(requestParams.tenant)) {
-            AuthenticateSessionUtil.endAuthenticatedSession();
-            OPConfigurationUtil.resetOPConfiguration();
-            handleSignOut();
-        }
-
-        dispatch(setSignIn());
-        dispatch(getProfileInformation());
-    } else {
-        OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false)
-            .then(() => {
-                sendSignInRequest();
-            })
-            .catch(() => {
-                OPConfigurationUtil.setAuthorizeEndpoint(ServiceResourcesEndpoint.authorize);
-                OPConfigurationUtil.setTokenEndpoint(ServiceResourcesEndpoint.token);
-                OPConfigurationUtil.setRevokeTokenEndpoint(ServiceResourcesEndpoint.revoke);
-                OPConfigurationUtil.setEndSessionEndpoint(ServiceResourcesEndpoint.logout);
-                OPConfigurationUtil.setJwksUri(ServiceResourcesEndpoint.jwks);
-                OPConfigurationUtil.setIssuer(ServiceResourcesEndpoint.issuer);
-                OPConfigurationUtil.setOPConfigInitiated();
-
-                sendSignInRequest();
-            });
-    }
+/**
+ * Handle user sign-out
+ */
+export const handleSignOut = () => (dispatch) => {
+    identityManager.getInstance().signOut(
+        () => {
+            dispatch(setSignOut());
+        })
+        .catch(() => {
+            history.push(GlobalConfig.appLoginPath);
+        });
 };

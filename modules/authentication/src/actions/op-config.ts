@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import axios from "axios";
 import {
     AUTHORIZATION_ENDPOINT,
     END_SESSION_ENDPOINT,
@@ -24,10 +23,13 @@ import {
     JWKS_ENDPOINT,
     OP_CONFIG_INITIATED,
     REVOKE_TOKEN_ENDPOINT,
+    SERVICE_RESOURCES,
     TOKEN_ENDPOINT,
     USERNAME
 } from "../constants";
 import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
+import { ConfigInterface } from "../models/client";
+import axios from "axios";
 
 /**
  * Checks whether openid configuration initiated.
@@ -109,24 +111,24 @@ export const setIssuer = (issuer): void => {
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const initOPConfiguration = (
-        wellKnownEndpoint: string,
+        requestParams: ConfigInterface,
         forceInit: boolean
     ): Promise<any> => {
 
     if (!forceInit && isOPConfigInitiated()) {
-        Promise.resolve("success");
+
+        return Promise.resolve();
     }
 
-    if (!wellKnownEndpoint || wellKnownEndpoint.trim().length === 0) {
-        return Promise.reject(new Error("OpenID provider configuration endpoint is not defined."));
-    }
+    const serverHost = requestParams.serverOrigin + requestParams.tenantPath;
 
-    return axios.get(wellKnownEndpoint)
+    return axios.get(serverHost + SERVICE_RESOURCES.wellKnown)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to load OpenID provider configuration from: "
-                    + wellKnownEndpoint));
+                    + serverHost + SERVICE_RESOURCES.wellKnown));
             }
+
             setAuthorizeEndpoint(response.data.authorization_endpoint);
             setTokenEndpoint(response.data.token_endpoint);
             setEndSessionEndpoint(response.data.end_session_endpoint);
@@ -136,9 +138,16 @@ export const initOPConfiguration = (
             setIssuer(response.data.issuer);
             setOPConfigInitiated();
 
-            return Promise.resolve("success");
-        }).catch((error) => {
-            return Promise.reject(error);
+            return Promise.resolve();
+        }).catch(() => {
+            setTokenEndpoint(SERVICE_RESOURCES.token);
+            setRevokeTokenEndpoint(SERVICE_RESOURCES.revoke);
+            setEndSessionEndpoint(SERVICE_RESOURCES.logout);
+            setJwksUri(SERVICE_RESOURCES.jwks);
+            setIssuer(SERVICE_RESOURCES.token);
+            setOPConfigInitiated();
+
+            return Promise.resolve();
         });
 };
 
