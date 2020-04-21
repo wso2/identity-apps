@@ -31,8 +31,11 @@ import {
     ApplicationEditPage,
     ApplicationTemplateSelectPage,
     ApplicationsPage,
+    CertificatesKeystore,
+    CertificatesTruststore,
     ClaimDialectsPage,
     CustomizePage,
+    ExternalDialectEditPage,
     GroupsPage,
     HomePage,
     IdentityProviderEditPage,
@@ -271,6 +274,34 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         path: "/edit-user-store/:id",
         protected: true,
         showOnSidePanel: false
+    },
+    {
+        icon: "userStore",
+        id: "certificates",
+        name: "Certificates",
+        protected: true,
+        showOnSidePanel: true,
+        exact: true,
+        children: [
+            {
+                component: CertificatesKeystore,
+                icon: "childIcon",
+                id: "certificatesKeystore",
+                name: "Keystore",
+                path: "/certificates-keystore",
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
+                component: CertificatesTruststore,
+                icon: "childIcon",
+                id: "certificatesTruststore",
+                name: "Truststore",
+                path: "/certificates-truststore",
+                protected: true,
+                showOnSidePanel: true
+            }
+        ]
     },
     {
         exact: true,
