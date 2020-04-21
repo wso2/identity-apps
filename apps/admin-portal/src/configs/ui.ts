@@ -89,7 +89,8 @@ import {
     WindowsTemplateIllustration,
     WSFedLogo,
     WSTrustLogo,
-    WSTrustTemplateIllustration
+    WSTrustTemplateIllustration,
+    CustomApplicationTemplateIllustration
 } from "@wso2is/theme";
 import { SupportedServices } from "../models";
 
@@ -187,7 +188,8 @@ export const ApplicationTemplateIllustrations = {
     samlWebApp: SAMLWebAppTemplateIllustration,
     spa: SPATemplateIllustration,
     windowsNative: WindowsTemplateIllustration,
-    wsTrust: WSTrustTemplateIllustration
+    wsTrust: WSTrustTemplateIllustration,
+    customApp: CustomApplicationTemplateIllustration
 };
 
 export const TechnologyLogos = {
