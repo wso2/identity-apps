@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,10 +16,14 @@
  * under the License.
  */
 
-export * from "./app-config-context"; 
-export * from "./help-panel";
-export * from "./history";
-export * from "./http-headers";
-export * from "./image";
-export * from "./user-agent-parser";
-export * from "./user";
+import React, { ReactElement } from "react";
+import { Section } from "@wso2is/react-components";
+
+export default (): ReactElement => {
+    return (
+        <Section
+            description={ "Loaded dynamically from extension configuration." }
+            header={ "Dynamic Component" }
+        />
+    )
+};
