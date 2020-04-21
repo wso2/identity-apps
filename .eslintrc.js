@@ -24,7 +24,6 @@ module.exports = {
         "eol-last": "error",
         "quotes": ["warn", "double"],
         "max-len": ["warn", { "code": 120 }],
-        "sort-keys": ["warn", "asc"],
         "comma-dangle": ["warn", "never"],
         "sort-imports": ["warn", {
             "ignoreCase": false,
@@ -34,7 +33,11 @@ module.exports = {
         "import/order": [
             "warn",
             {
-                "groups": [ "builtin", "external", "index", "sibling", "parent", "internal" ]
+                "groups": [ "builtin", "external", "index", "sibling", "parent", "internal" ],
+                "alphabetize": {
+                    order: 'asc',
+                    caseInsensitive: true
+                }
             }
         ],
         "react/jsx-curly-spacing": [
