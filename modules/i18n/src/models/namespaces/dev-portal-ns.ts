@@ -76,6 +76,20 @@ export interface DevPortalNS {
                 resultsIndicator: string;
             };
         };
+        emailTemplateTypes: {
+            notifications: {
+                deleteTemplateType: Notification;
+                updateTemplateType: Notification;
+                createTemplateType: Notification;
+            }
+        }
+        emailTemplates: {
+            notifications: {
+                deleteTemplate: Notification;
+                updateTemplate: Notification;
+                createTemplate: Notification;
+            }
+        }
         users: {
             all: {
                 heading: string;
