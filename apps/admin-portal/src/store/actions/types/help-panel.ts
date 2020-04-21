@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { HelpPanelMetadataInterface } from "../../../models";
+import { PortalDocumentationStructureInterface } from "../../../models";
 
 /**
  * Enum for help panel action types.
@@ -32,11 +32,11 @@ export enum HelpPanelActionTypes {
      */
     SET_HELP_PANEL_DOCS_CONTENT_URL = "SET_HELP_PANEL_DOCS_CONTENT_URL",
     /**
-     * Action type to set the metadata for the help panel.
+     * Action type to set the documentation structure for the help panel.
      *
      * @type {string}
      */
-    SET_HELP_PANEL_METADATA = "SET_HELP_PANEL_METADATA"
+    SET_HELP_PANEL_DOC_STRUCTURE = "SET_HELP_PANEL_DOC_STRUCTURE"
 }
 
 /**
@@ -55,15 +55,15 @@ export interface SetHelpPanelDocsContentURLActionInterface extends HelpPanelBase
 }
 
 /**
- * Set the metadata for the help panel action interface.
+ * Set the doc structure for the help panel action interface.
  */
-export interface SetHelpPanelMetadataActionInterface extends HelpPanelBaseActionInterface {
-    payload: HelpPanelMetadataInterface;
-    type: HelpPanelActionTypes.SET_HELP_PANEL_METADATA;
+export interface SetHelpPanelDocStructureActionInterface extends HelpPanelBaseActionInterface {
+    payload: PortalDocumentationStructureInterface;
+    type: HelpPanelActionTypes.SET_HELP_PANEL_DOC_STRUCTURE;
 }
 
 /**
  * Export action interfaces.
  */
 export type HelpPanelActions = SetHelpPanelDocsContentURLActionInterface
-    | SetHelpPanelMetadataActionInterface;
+    | SetHelpPanelDocStructureActionInterface;

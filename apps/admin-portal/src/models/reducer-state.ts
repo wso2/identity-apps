@@ -20,7 +20,7 @@ import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
 import { ApplicationTemplateListItemInterface } from "./application";
 import { AuthProtocolMetaListItemInterface, OIDCMetadataInterface } from "./application-inbound";
 import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "./config";
-import { HelpPanelMetadataInterface } from "./meta";
+import { PortalDocumentationStructureInterface } from "./help-panel";
 
 /**
  * Dev portal config reducer state interface.
@@ -33,7 +33,7 @@ export type ConfigReducerStateInterface = CommonConfigReducerStateInterface<Runt
  */
 export interface HelpPanelReducerStateInterface {
     docURL: string;
-    metadata: HelpPanelMetadataInterface;
+    docStructure: PortalDocumentationStructureInterface;
 }
 
 /**
