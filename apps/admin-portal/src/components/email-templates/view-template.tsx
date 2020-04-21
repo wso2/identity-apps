@@ -19,7 +19,6 @@
 import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
 import { Modal, Grid } from "semantic-ui-react";
 import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { useTrigger } from "@wso2is/forms";
 import { ApplicationWizardStepIcons } from "../../configs";
 import { EmailTemplateEditor } from "./email-code-editor";
 import { getTemplateDetails } from "../../api";
