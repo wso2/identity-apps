@@ -138,6 +138,14 @@ export const WindowsTemplateIllustration =
 export const WSTrustTemplateIllustration =
     require("../dist/lib/themes/default/assets/images/illustrations/ws-trust-template-illustration.svg");
 
+
+// File upload illustration.
+export const FileUploadIllustration = require("../dist/lib/themes/default/assets/images/illustrations/upload.svg");
+
+// Certificate illustration.
+export const CertificateIllustration =
+    require("../dist/lib/themes/default/assets/images/illustrations/certificate.svg");
+
 // Identity provider template illustrations
 export const ExpertModeIdPIcon =
     require("../dist/lib/themes/default/assets/images/identity-providers/expert-idp-illustration.svg");

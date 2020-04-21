@@ -29,6 +29,7 @@ import {
     BoxIcon,
     CSharpLogo,
     CaretRightIcon,
+    CertificateIllustration,
     ClaimsIcon,
     CloseIcon,
     CodeIcon,
@@ -47,6 +48,7 @@ import {
     ErrorIcon,
     ExpertModeIdPIcon,
     FIDOLogo,
+    FileUploadIllustration,
     FacebookIdPIcon,
     FacebookLogo,
     ForbiddenIcon,
@@ -285,3 +287,13 @@ export const HelpSidebarIcons = {
         docs: DocumentIcon
     }
 };
+
+/**
+ * File upload placeholder.
+ */
+export const FileUploadPlaceholder = FileUploadIllustration;
+
+/**
+ * Certificate illustration.
+ */
+export const CertificateImage = CertificateIllustration;
