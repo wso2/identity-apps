@@ -52,7 +52,7 @@ const DEFAULT_SEARCH_STRATEGY = "name co";
 /**
  * Prop types for the application search component.
  */
-interface LocalClaimsSearchPropsInterface {
+interface UserStoresSearchPropsInterface {
     onFilter: (query: string) => void;
 }
 
@@ -61,8 +61,8 @@ interface LocalClaimsSearchPropsInterface {
  *
  * @return {JSX.Element}
  */
-export const UserStoresSearch: FunctionComponent<LocalClaimsSearchPropsInterface> = (
-    props: LocalClaimsSearchPropsInterface
+export const UserStoresSearch: FunctionComponent<UserStoresSearchPropsInterface> = (
+    props: UserStoresSearchPropsInterface
 ): JSX.Element => {
 
     const { onFilter } = props;
@@ -226,8 +226,7 @@ export const UserStoresSearch: FunctionComponent<LocalClaimsSearchPropsInterface
                                             label={ t("devPortal:components.applications.search.forms.searchForm" +
                                                 ".inputs.filterValue.label") }
                                             name={ FILTER_VALUES_FIELD_IDENTIFIER }
-                                            placeholder={ t("devPortal:components.applications.search.forms." +
-                                                "searchForm.inputs.filterValue.placeholder") }
+                                            placeholder={ "E.g. secondary, tertiary" }
                                             required={ true }
                                             requiredErrorMessage={ t("devPortal:components.applications.search." +
                                                 "forms.searchForm.inputs.filterValue.validations.empty") }
