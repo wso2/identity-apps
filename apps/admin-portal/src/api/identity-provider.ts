@@ -472,7 +472,7 @@ export const updateOutboundProvisioningConnector = (
  *
  * @param idpId ID of the Identity Provider.
  * @param configs JIT provisioning configs.
- * @return {Promise<any>} A promise containing the response.
+ * @return {Promise<IdentityProviderInterface>} A promise containing the response.
  */
 export const updateJITProvisioningConfigs = (
     idpId: string,
