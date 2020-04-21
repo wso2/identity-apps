@@ -18,19 +18,25 @@
 
 import React, { ReactElement, useEffect, useState } from "react";
 import { Icon, PaginationProps, DropdownProps } from "semantic-ui-react";
-import { AxiosResponse } from "axios";
+import { AxiosResponse, AxiosError } from "axios";
 import { PrimaryButton } from "@wso2is/react-components";
 import { PageLayout, ListLayout } from "../layouts";
 import { EmailTemplateTypeList, EmailTemplateTypeWizard } from "../components/email-templates";
-import { getEmailTemplateTypes } from "../api";
+import { getEmailTemplateTypes, deleteEmailTemplateType } from "../api";
 import { UserConstants } from "../constants";
-import { EmailTemplateType } from "../models";
+import { EmailTemplateType, AlertInterface } from "../models";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { addAlert } from "@wso2is/core/dist/src/store";
+import { AlertLevels } from "@wso2is/core/dist/src/models";
 
 /**
  * Component to list available email templates.
  * 
  */
 export const EmailTemplateTypes = (): ReactElement => {
+    const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -44,13 +50,17 @@ export const EmailTemplateTypes = (): ReactElement => {
     }, []);
 
     useEffect(() => {
+        getTemplateTypes()
+    }, [emailTemplateTypes.length]);
+
+    const getTemplateTypes = (): void => {
         getEmailTemplateTypes().then((response: AxiosResponse<EmailTemplateType[]>) => {
             if (response.status === 200) {
                 setEmailTemplateTypes(response.data);
                 setEmailTemplateTypePage(listOffset, listItemLimit);
             }
         });
-    }, [emailTemplateTypes.length]);
+    }
 
     /**
      * Handler for pagination page change.
@@ -85,6 +95,40 @@ export const EmailTemplateTypes = (): ReactElement => {
         setPaginatedEmailTemplateTypes(emailTemplateTypes?.slice(offsetValue, itemLimit + offsetValue));
     }
 
+    /**
+     * Dispatches the alert object to the redux store.
+     *
+     * @param {AlertInterface} alert - Alert object.
+     */
+    const handleAlerts = (alert: AlertInterface) => {
+        dispatch(addAlert(alert));
+    };
+
+    const deleteTemplateType = (templateTypeId: string) => {
+        deleteEmailTemplateType(templateTypeId).then((response: AxiosResponse) => {
+            if (response.status === 204) {
+                handleAlerts({
+                    description: t(
+                        "devPortal:components.emailTemplateTypes.notifications.deleteTemplateType.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "devPortal:components.emailTemplateTypes.notifications.deleteTemplateType.success.message"
+                    )
+                });
+            }
+            getTemplateTypes();
+        }).catch((error: AxiosError) => {
+            handleAlerts({
+                description: error.response.data.description,
+                level: AlertLevels.ERROR,
+                message: t(
+                    "devPortal:components.emailTemplateTypes.notifications.deleteTemplateType.genericError.message"
+                )
+            });
+        })
+    }
+
     return (
         <PageLayout
             title="Email Templates"
@@ -108,7 +152,10 @@ export const EmailTemplateTypes = (): ReactElement => {
                     )
                 }
             >
-                <EmailTemplateTypeList templateTypeList={ paginatedEmailTemplateTypes } />
+                <EmailTemplateTypeList 
+                    onDelete={ deleteTemplateType } 
+                    templateTypeList={ paginatedEmailTemplateTypes } 
+                />
                 {
                     showNewTypeWizard && (
                         <EmailTemplateTypeWizard

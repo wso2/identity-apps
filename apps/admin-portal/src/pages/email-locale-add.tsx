@@ -28,7 +28,9 @@ import { AddLocaleTemplate } from "../components/email-templates";
 export const AddTemplateLocale: FunctionComponent = (): ReactElement => {
     
     const [ templateTypeId, setTemplateTypeId ] = useState<string>('');
+    const [ templateId, setTemplateId ] = useState<string>('');
     const [ emailTemplateTypeDetails, setEmailTemplateTypeDetails ] = useState<EmailTemplateDetails>(undefined);
+    const [ emailTemplateName, setEmailTemplateName ] = useState<string>('');
 
     /**
      * Util to handle back button event.
@@ -38,30 +40,41 @@ export const AddTemplateLocale: FunctionComponent = (): ReactElement => {
     };
 
     useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const templateTypeId = path[ path.length - 2 ];
+        const path: string[] = history.location.pathname.split("/");
+        let templateTypeId = '';
+        let templateId = '';
+        
+        //Handle edit flow if length is 5
+        if (path.length === 5) {
+            templateTypeId = path[ path.length - 3 ];
+            templateId =  path[ path.length - 1 ];
+        } else if (path.length === 4) {
+            templateTypeId = path[ path.length - 2 ];
+        }
 
+        setTemplateId(templateId);
         setTemplateTypeId(templateTypeId);
 
         getEmailTemplate(templateTypeId).then((response: AxiosResponse<EmailTemplateDetails>) => {
             if (response.status === 200) {
                 setEmailTemplateTypeDetails(response.data);
+                setEmailTemplateName(response.data.displayName)
             }
         })
     }, [emailTemplateTypeDetails !== undefined]);
 
     return (
         <PageLayout
-            title={ "Add new locale for template" }
+            title={ templateId === "" ? "Add new locale for template" : "Edit " + templateId + " locale  template" }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: "Go back to " + emailTemplateTypeDetails?.displayName + " template"
+                text: "Go back to " + emailTemplateName + " template"
             } }
             titleTextAlign="left"
             showBottomDivider={ true }
             bottomMargin={ false }
         >
-            <AddLocaleTemplate />
+            <AddLocaleTemplate templateId={ templateId } templateTypeId={ templateTypeId } />
         </PageLayout>
     )
 }

@@ -21,13 +21,18 @@ import { PageLayout, ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
 import { Icon, PaginationProps, DropdownProps } from "semantic-ui-react";
 import { history } from "../helpers";
-import { EmailTemplateDetails, EmailTemplate } from "../models";
-import { getEmailTemplate } from "../api";
-import { AxiosResponse } from "axios";
+import { EmailTemplateDetails, EmailTemplate, AlertInterface, AlertLevels } from "../models";
+import { getEmailTemplate, deleteLocaleTemplate } from "../api";
+import { AxiosResponse, AxiosError } from "axios";
 import { EmailTemplateList } from "../components/email-templates";
 import { UserConstants, EMAIL_TEMPLATE_VIEW_PATH } from "../constants";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { addAlert } from "@wso2is/core/dist/src/store";
 
 export const EmailTemplates: FunctionComponent = (): ReactElement => {
+    const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -47,6 +52,13 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
 
         setTemplateTypeId(templateTypeId);
 
+        getTemplates();
+    }, [emailTemplateTypeDetails !== undefined, emailTemplates.length]);
+
+    /**
+     * Util method to get all locale templates.
+     */
+    const getTemplates = () => {
         getEmailTemplate(templateTypeId).then((response: AxiosResponse<EmailTemplateDetails>) => {
             if (response.status === 200) {
                 setEmailTemplateTypeDetails(response.data);
@@ -57,7 +69,7 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
                 }
             }
         })
-    }, [emailTemplateTypeDetails !== undefined, emailTemplates.length]);
+    }
 
     /**
      * Handler for pagination page change.
@@ -105,6 +117,40 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
     const handleAddNewTemplate = () => {
         history.push(EMAIL_TEMPLATE_VIEW_PATH + templateTypeId + "/add-template");
     };
+
+    /**
+     * Dispatches the alert object to the redux store.
+     *
+     * @param {AlertInterface} alert - Alert object.
+     */
+    const handleAlerts = (alert: AlertInterface) => {
+        dispatch(addAlert(alert));
+    };
+
+    const deleteTemplateType = (templateTypeId: string, templateId: string) => {
+        deleteLocaleTemplate(templateTypeId, templateId).then((response: AxiosResponse) => {
+            if (response.status === 204) {
+                handleAlerts({
+                    description: t(
+                        "devPortal:components.emailTemplates.notifications.deleteTemplate.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "devPortal:components.emailTemplates.notifications.deleteTemplate.success.message"
+                    )
+                });
+            }
+            getTemplates();
+        }).catch((error: AxiosError) => {
+            handleAlerts({
+                description: error.response.data.description,
+                level: AlertLevels.ERROR,
+                message: t(
+                    "devPortal:components.emailTemplates.notifications.deleteTemplate.genericError.message"
+                )
+            });
+        })
+    }
     
     return (
         <PageLayout
@@ -134,7 +180,11 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
                     )
                 }
             >
-                <EmailTemplateList templateList={ paginatedemailTemplates }/>
+                <EmailTemplateList 
+                    onDelete={ deleteTemplateType } 
+                    templateTypeId={ templateTypeId } 
+                    templateList={ paginatedemailTemplates }
+                />
             </ListLayout>
         </PageLayout>
     )
