@@ -17,7 +17,7 @@
  */
 
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
-import { Divider, Form, Grid } from "semantic-ui-react";
+import { Divider, Form, Grid, List } from "semantic-ui-react";
 import { EditSection, Hint, Section } from "@wso2is/react-components";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import { getAllPasswordPolicies, updateAllPasswordPolicies } from "../../api";
@@ -48,7 +48,8 @@ interface PasswordPoliciesProps {
  * @param {Props} props - Props injected to the password policies component.
  * @return {JSX.Element}
  */
-export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props: PasswordPoliciesProps): JSX.Element => {
+export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> =
+	(props: PasswordPoliciesProps): JSX.Element => {
 
 	const [editingForm, setEditingForm] = useState({
 		[PASSWORD_POLICIES_FORM_IDENTIFIER]: false
@@ -251,7 +252,7 @@ export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props
 		<Forms>
 			<Grid padded={ true }>
 				<Grid.Row columns={ 1 }>
-					<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+					<Grid.Column className="first-column" mobile={ 16 } tablet={ 16 } computer={ 14 }>
 						<Field
 							name={ ServerConfigurationsConstants.PASSWORD_HISTORY_ENABLE }
 							required={ false }
@@ -464,8 +465,12 @@ export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props
 			primaryActionIcon="key"
 			showActionBar={ !editingForm[PASSWORD_POLICIES_FORM_IDENTIFIER] }
 		>
-			{ showPasswordPoliciesSummary }
-			{ showAdvancedPasswordPoliciesView }
+			<List verticalAlign="middle" className="main-content-inner">
+				<List.Item className="inner-list-item">
+					{ showPasswordPoliciesSummary }
+					{ showAdvancedPasswordPoliciesView }
+				</List.Item>
+			</List>
 		</Section>
 	);
 };
