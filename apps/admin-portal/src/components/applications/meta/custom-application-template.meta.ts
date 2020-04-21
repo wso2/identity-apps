@@ -18,7 +18,7 @@
 import { ApplicationTemplateListItemInterface } from "../../../models";
 
 export const CustomApplicationTemplate: ApplicationTemplateListItemInterface = {
-    id: "",
+    id: "custom-application",
     name: "Custom Application",
     description: "Manually configure the inbound authentication protocol, authentication flow, etc.",
     image: "customApp",
