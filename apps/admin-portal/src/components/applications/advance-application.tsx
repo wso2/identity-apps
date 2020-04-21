@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { updateApplicationConfigurations } from "../../api";
 import { AdvancedConfigurationsInterface } from "../../models";
-import { AdvanceConfigurationsForm } from "./forms";
+import { AdvancedConfigurationsForm } from "./forms";
 
 /**
  * Proptypes for the advance settings component.
@@ -96,7 +96,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
             <div className="advanced-configuration-section">
                 <Heading as="h4">Advanced Configurations</Heading>
                 <Divider hidden/>
-                <AdvanceConfigurationsForm
+                <AdvancedConfigurationsForm
                     config={ advancedConfigurations }
                     onSubmit={ handleAdvancedConfigFormSubmit }
                 />

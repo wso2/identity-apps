@@ -64,9 +64,9 @@ interface GeneralDetailsFormPopsInterface {
      */
     triggerSubmit?: boolean;
     /**
-     * Enable simplified view of the form.
+     * Optimize for the creation wizard.
      */
-    simplify?: boolean;
+    enableWizardMode?: boolean;
 }
 
 /**
@@ -83,7 +83,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         imageUrl,
         onSubmit,
         triggerSubmit,
-        simplify,
+        enableWizardMode,
         isEnabled
     } = props;
 
@@ -97,6 +97,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      * Called when name field is modified.
      */
     useEffect(() => {
+        if (!enableWizardMode) {
+            return;
+        }
         setIsNameValid(false);
         validateIdpName(modifiedName);
     }, [modifiedName]);
@@ -150,7 +153,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             } }
             submitState={ triggerSubmit }
             onChange={ (isPure, values) => {
-                setModifiedName(values.get("name").toString());
+                if (!enableWizardMode) {
+                    setModifiedName(values.get("name").toString());
+                }
             } }
         >
             <Grid>
@@ -208,7 +213,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 </Grid.Row>
 
                 {
-                    !simplify ? (
+                    !enableWizardMode ? (
                         <>
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -243,6 +248,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 };
 
 GeneralDetailsForm.defaultProps = {
-    simplify: false,
+    enableWizardMode: false,
     triggerSubmit: false
 };

@@ -18,7 +18,6 @@
 
 import { ApplicationCreateWizard, QuickStartApplicationTemplates } from "../components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
-import _ from "lodash";
 import { ApplicationManagementUtils } from "../utils";
 import { ApplicationTemplateListItemInterface } from "../models";
 import { AppState } from "../store";
@@ -48,7 +47,7 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
      *  Get Application templates.
      */
     useEffect(() => {
-        if (!_.isEmpty(applicationTemplates)) {
+        if (applicationTemplates !== undefined) {
             return;
         }
 

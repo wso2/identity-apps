@@ -232,7 +232,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                             history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
                         } }
                     >
-                        <Icon name="add"/>Add Application
+                        <Icon name="add"/>New Application
                     </PrimaryButton>
                 ) }
                 image={ EmptyPlaceholderIllustrations.newList }
@@ -250,7 +250,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
     return (
         <PageLayout
             title="Applications"
-            description="Create applications based on templates and configure authentication."
+            description="Create and manage applications based on templates and configure authentication."
             showBottomDivider={ true }
         >
             <ListLayout
@@ -269,7 +269,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                                     history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
                                 } }
                             >
-                                <Icon name="add"/>Add Application
+                                <Icon name="add"/>New Application
                             </PrimaryButton>
                         )
                 }

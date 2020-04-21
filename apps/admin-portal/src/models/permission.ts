@@ -26,6 +26,7 @@ export interface Permission {
     children?: Permission[];
     fullPath?: string;
     isChecked: boolean;
+    isPartiallyChecked: boolean;
     id: string;
 }
 

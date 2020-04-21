@@ -1,0 +1,99 @@
+{
+  "id": "8ea23303-49c0-4253-b81f-82c0fe6fb4a0",
+  "name": "Google",
+  "description": "Provision users with Google.",
+  "image": "google",
+  "category": "DEFAULT",
+  "displayOrder": 1,
+  "services": ["provisioning"],
+  "idp": {
+    "name": "Google",
+    "description": "Identity provider for Google Federation",
+    "image": "",
+    "isPrimary": false,
+    "isFederationHub": false,
+    "homeRealmIdentifier": "",
+    "certificate": {
+      "certificates": []
+    },
+    "alias": "https://localhost:9444/oauth2/token",
+    "claims": {
+      "userIdClaim": {
+        "uri": "http://wso2.org/claims/username"
+      },
+      "roleClaim": {
+        "uri": "http://wso2.org/claims/role"
+      },
+      "provisioningClaims": []
+    },
+    "roles": {
+      "mappings": [],
+      "outboundProvisioningRoles": []
+    },
+    "federatedAuthenticators": {
+      "defaultAuthenticatorId": "",
+      "authenticators": []
+    },
+    "provisioning": {
+      "jit": {
+        "isEnabled": false,
+        "scheme": "PROVISION_SILENTLY",
+        "userstore": "PRIMARY"
+      },
+      "outboundConnectors": {
+        "defaultConnectorId": "Z29vZ2xlYXBwcw",
+        "connectors": [
+          {
+            "connectorId": "Z29vZ2xlYXBwcw",
+            "isEnabled": true,
+            "blockingEnabled": false,
+            "rulesEnabled": false,
+            "properties": [
+              {
+                "key": "google_prov_domain_name",
+                "value": ""
+              },
+              {
+                "key": "google_prov_email_claim_dropdown",
+                "value": ""
+              },
+              {
+                "key": "google_prov_givenname_claim_dropdown",
+                "value": ""
+              },
+              {
+                "key": "google_prov_familyname_claim_dropdown",
+                "value": ""
+              },
+              {
+                "key": "google_prov_service_acc_email",
+                "value": ""
+              },
+              {
+                "key": "google_prov_private_key",
+                "value": ""
+              },
+              {
+                "key": "google_prov_admin_email",
+                "value": ""
+              },
+              {
+                "key": "google_prov_application_name",
+                "value": ""
+              },
+              {
+                "key": "google_prov_pattern",
+                "value": ""
+              },
+              {
+                "key": "google_prov_separator",
+                "value": ""
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
+

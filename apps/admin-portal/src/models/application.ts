@@ -190,7 +190,8 @@ export interface AdvancedConfigurationsInterface {
     saas?: boolean;
     discoverableByEndUsers?: boolean;
     certificate?: CertificateInterface;
-    skipConsent?: boolean; // TODO  Add consent for logout
+    skipLoginConsent?: boolean;
+    skipLogoutConsent?: boolean;
     returnAuthenticatedIdpList?: boolean;
     enableAuthorization?: boolean;
 }
@@ -361,7 +362,8 @@ export const emptyApplication = (): ApplicationInterface => ({
         enableAuthorization: false,
         returnAuthenticatedIdpList: false,
         saas: false,
-        skipConsent: false,
+        skipLoginConsent: false,
+        skipLogoutConsent: false
     },
     authenticationSequence: undefined,
     claimConfiguration: undefined,

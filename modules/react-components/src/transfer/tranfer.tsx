@@ -67,7 +67,9 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                         handleListSearch={ handleUnelectedListSearch }
                                                         placeholder={ searchPlaceholder }
                                                     />
-                                                    { list }
+                                                    <Segment className="transfer-list-segment">
+                                                        { list }
+                                                    </Segment>
                                                 </Segment>
                                             </Grid.Column>
                                             )
@@ -100,7 +102,9 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                             handleListSearch={ handleSelectedListSearch }
                                                             placeholder={ searchPlaceholder }
                                                         />
-                                                        { list }
+                                                        <Segment className="transfer-list-segment">
+                                                            { list }
+                                                        </Segment>
                                                     </Segment>
                                                 </Grid.Column>
                                             )

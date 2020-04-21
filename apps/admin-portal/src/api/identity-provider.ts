@@ -23,9 +23,10 @@ import {
     HttpMethods,
     IdentityProviderInterface,
     IdentityProviderListResponseInterface,
-    IdentityProviderResponseInterface,
+    IdentityProviderResponseInterface, IdentityProviderRolesInterface,
     IdentityProviderTemplateListInterface,
     IdentityProviderTemplateListItemInterface,
+    IdentityProviderTemplateListResponseInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../models";
@@ -472,10 +473,10 @@ export const updateOutboundProvisioningConnector = (
  * @param {number} offset - Offset for get to start.
  * @param {string} filter - Search filter.
  *
- * @return {Promise<IdentityProviderTemplateListInterface>} A promise containing the response.
+ * @return {Promise<IdentityProviderTemplateListResponseInterface>} A promise containing the response.
  */
 export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
-                                           filter?: string): Promise<IdentityProviderTemplateListInterface> => {
+                                           filter?: string): Promise<IdentityProviderTemplateListResponseInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -504,7 +505,7 @@ export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
                     response.config);
             }
 
-            return Promise.resolve(response.data as IdentityProviderTemplateListInterface);
+            return Promise.resolve(response.data as IdentityProviderTemplateListResponseInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 IdentityProviderManagementConstants.IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR,
@@ -555,5 +556,39 @@ export const getIdentityProviderTemplate = (templateId: string): Promise<Identit
                 error.request,
                 error.response,
                 error.config);
+        });
+};
+
+/**
+ * Update role mappings of a specified IDP.
+ *
+ * @param idpId ID of the Identity Provider.
+ * @param mappings IDP role mappings.
+ * @return {Promise<any>} A promise containing the response.
+ */
+export const updateIDPRoleMappings = (
+    idpId: string,
+    mappings: IdentityProviderRolesInterface
+): Promise<any> => {
+
+    const requestConfig = {
+        data: mappings,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/roles"
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update identity provider: " + idpId));
+            }
+            return Promise.resolve(response.data as IdentityProviderInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
         });
 };

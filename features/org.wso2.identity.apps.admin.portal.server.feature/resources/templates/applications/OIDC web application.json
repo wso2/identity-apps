@@ -1,0 +1,40 @@
+{
+	"id": "b9c5e11e-fc78-484b-9bec-015d247561b8",
+    "name": "OIDC web application",
+    "description": "Regular web applications which uses redirections inside browsers.",
+    "image": "oidcWebApp",
+    "authenticationProtocol": "oidc",
+    "types": [
+        "java", "dotNet"
+    ],
+    "category": "DEFAULT",
+    "displayOrder": 1,
+    "application": {
+        "name": "",
+        "advancedConfigurations": {
+            "discoverableByEndUsers": false
+        },
+        "authenticationSequence": {
+            "type": "DEFAULT",
+            "steps": [
+                {
+                    "id": 1,
+                    "options": [
+                        {
+                            "idp": "LOCAL",
+                            "authenticator": "basic"
+                        }
+                    ]
+                }
+            ]
+        },
+        "inboundProtocolConfiguration": {
+            "oidc": {
+                "grantTypes": [
+                    "authorization_code"
+                ],
+                "publicClient": false
+            }
+        }
+    }
+}

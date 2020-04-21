@@ -18,11 +18,12 @@
  * under the License.
 -->
 
-<svg version="1.1" id="facebook-logo" class="icon" width="100" height="100" xmlns="http://www.w3.org/2000/svg"
-	 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 512 512" xml:space="preserve">
-	<path style="fill:#1976D2;" d="M448,0H64C28.704,0,0,28.704,0,64v384c0,35.296,28.704,64,64,64h384c35.296,0,64-28.704,64-64V64
-		C512,28.704,483.296,0,448,0z"/>
-	<path style="fill:#FAFAFA;" d="M432,256h-80v-64c0-17.664,14.336-16,32-16h32V96h-64l0,0c-53.024,0-96,42.976-96,96v64h-64v80h64
-		v176h96V336h48L432,256z"/>
+<svg version="1.1" id="facebook-logo" class="icon" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100" viewBox="-15 -15 100 100">
+    <path id="Path_128"
+          d="M60.758,0H8.68A8.688,8.688,0,0,0,0,8.68V60.758a8.688,8.688,0,0,0,8.68,8.68H60.758a8.688,8.688,0,0,0,8.68-8.68V8.68A8.688,8.688,0,0,0,60.758,0Z"
+          fill="#1976d2"/>
+    <path id="Path_129"
+          d="M224.549,117.7H213.7v-8.68c0-2.4,1.944-2.17,4.34-2.17h4.34V96H213.7a13.019,13.019,0,0,0-13.02,13.02v8.68H192v10.85h8.68v23.869H213.7V128.549h6.51Z"
+          transform="translate(-165.961 -82.98)" fill="#fafafa"/>
 </svg>

@@ -17,6 +17,7 @@
  */
 
 export * from "./advanced-search";
+export * from "./authenticator-accordion";
 export * from "./icon";
 export * from "./empty-placeholder";
 export * from "./modal";

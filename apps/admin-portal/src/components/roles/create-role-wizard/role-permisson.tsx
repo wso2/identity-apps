@@ -76,6 +76,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                                 isChecked: false,
                                 fullPath: permission,
                                 name: permission,
+                                isPartiallyChecked: false,
                                 isExpanded: true
                             })
                         })
@@ -90,6 +91,15 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
             getAllPermissions();
         }
     }, [availablePermissionsInRole.toString()])
+
+    useEffect(() => {
+        const collapsedTree = _.cloneDeep(permissionTree);
+        removeIndeterminateState(collapsedTree);
+        checkedPermissions.forEach((node: Permission) => {
+            markParentAsPartiallyChecked(collapsedTree, node, 0)
+        })
+        setPermissionTree(collapsedTree);
+    }, [checkedPermissions.length])
 
     /**
      * Retrieve all permissions to render permissions tree.
@@ -111,12 +121,18 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                     //Retrieved permissions of Role in edit mode
                     if (availablePermissionsInRole.length !== 0) {
                         setCheckedPermissions(availablePermissionsInRole);
+                        availablePermissionsInRole.forEach((node: Permission) => {
+                            markParentAsPartiallyChecked(permissionTree, node, 0)
+                        })
                         setCheckedStateForNodesInPermissionTree(availablePermissionsInRole, permissionTree, false);
                     }
 
                     //temporary selected roles in roles create wizard
                     if (initialValues && initialValues.length !== 0) {
                         setCheckedPermissions(initialValues);
+                        initialValues.forEach((node: Permission) => {
+                            markParentAsPartiallyChecked(permissionTree, node, 0)
+                        })
                         setCheckedStateForNodesInPermissionTree(initialValues, permissionTree, false);
                     }
 
@@ -138,6 +154,20 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     const setTopNodesCollapsed = (permissionNodes: Permission[]): void => {
         permissionNodes[0].children?.forEach((permissionNode: Permission) => {
             permissionNode.isExpanded = false;
+        })
+    }
+
+    /**
+     * Util method to remove indeterminate state.
+     * 
+     * @param nodeTree permission node tree
+     */
+    const removeIndeterminateState = (nodeTree: Permission[]): void => {
+        nodeTree.forEach(permission => {
+            permission.isPartiallyChecked = false;
+            if (permission.children) {
+                removeIndeterminateState(permission.children);
+            }
         })
     }
 
@@ -201,11 +231,31 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     }
 
     /**
+     * Add indeteminate state for parent node when checked on tree node.
+     * 
+     * @param nodes permission node list
+     * @param checkedNode current checked permission node
+     * @param depth depth of the current checked permission node
+     */
+    const markParentAsPartiallyChecked = (nodes: Permission[], checkedNode: Permission, depth: number): void => {
+        const permissionPath: string[] = checkedNode?.fullPath?.split('/').filter(String);
+        permissionPath.pop();
+        nodes.forEach((node: Permission) => {
+            if (permissionPath[depth] === node.name) {
+                node.isPartiallyChecked = true;
+                if (node.children) {
+                    markParentAsPartiallyChecked(node.children, checkedNode, ++depth);
+                }
+            }
+        });
+    }
+
+    /**
      * Click event handler for the permission tree checkboxes.
      * 
      * @param nodeData - array of checked elements returned.
      */
-    const handlePermssionCheck = (nodeData): void => {
+    const handlePermssionCheck = (nodeData: Permission[]): void => {
         const checkState = nodeData[0].isChecked;
 
         markChildrenAsChecked(nodeData, checkState);

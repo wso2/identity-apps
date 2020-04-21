@@ -174,7 +174,7 @@ export const UserStores = (): ReactElement => {
             }
             <PageLayout
                 title="Userstores"
-                description="View, edit, and add userstores"
+                description="Create and manage userstores"
                 showBottomDivider={ true }
             >
                 {
@@ -205,7 +205,7 @@ export const UserStores = (): ReactElement => {
                                                 setOpenModal(true);
                                             } }
                                         >
-                                            <Icon name="add"/>Add Userstore
+                                            <Icon name="add"/>New Userstore
                                         </PrimaryButton>
                                     )
                                 }
@@ -230,7 +230,7 @@ export const UserStores = (): ReactElement => {
                                         setOpenModal(true);
                                     } }
                                 >
-                                    <Icon name="add"/> Add Userstore
+                                    <Icon name="add"/> New Userstore
                                 </PrimaryButton>
                             }
                             title="Add Userstore"

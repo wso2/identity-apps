@@ -30,6 +30,7 @@ import React, {
     FunctionComponent,
     ReactElement
 } from "react";
+import { AttributeSettings } from "./settings";
 import { ResourceTab } from "@wso2is/react-components";
 
 /**
@@ -93,6 +94,17 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         </ResourceTab.Pane>
     );
 
+    const AttributeSettingsTabPane = (): ReactElement => (
+        <ResourceTab.Pane attached={ false }>
+            <AttributeSettings
+                idpId={ identityProvider.id }
+                claims={ identityProvider.claims }
+                initialRoleMappings={ identityProvider.roles.mappings }
+                outboundProvisioningRoles={ identityProvider.roles.outboundProvisioningRoles }
+            />
+        </ResourceTab.Pane>
+    );
+
     const AuthenticatorSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane attached={ false }>
             <AuthenticatorSettings
@@ -125,27 +137,49 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         </ResourceTab.Pane>
     );
 
+    const getPanes = () => {
+        const panes = [];
+
+        panes.push({
+            menuItem: "General",
+            render: GeneralIdentityProviderSettingsTabPane
+        });
+
+        panes.push({
+            menuItem: "Attributes",
+            render: AttributeSettingsTabPane
+        });
+
+        // todo Once multiple authenticator support added, this check needs to be removed and edit view should allow
+        //  adding authenticators.
+        if (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId) {
+            panes.push({
+                menuItem: "Authentication",
+                render: AuthenticatorSettingsTabPane
+            });
+        }
+
+        // todo Once multiple connector support added, this check needs to be removed and edit view should allow
+        //  adding connectors.
+        if (identityProvider?.provisioning?.outboundConnectors?.defaultConnectorId) {
+            panes.push({
+                menuItem: "Outbound Provisioning",
+                render: OutboundProvisioningSettingsTabPane
+            });
+        }
+
+        panes.push({
+            menuItem: "Advance",
+            render: AdvancedSettingsTabPane
+        });
+
+        return panes;
+    };
+
     return (
         identityProvider && (
             <ResourceTab
-                panes={ [
-                    {
-                        menuItem: "General",
-                        render: GeneralIdentityProviderSettingsTabPane
-                    },
-                    {
-                        menuItem: "Authentication",
-                        render: AuthenticatorSettingsTabPane
-                    },
-                    {
-                        menuItem: "Outbound Provisioning",
-                        render: OutboundProvisioningSettingsTabPane
-                    },
-                    {
-                        menuItem: "Advance",
-                        render: AdvancedSettingsTabPane
-                    }
-                ] }
+                panes={ getPanes() }
             />
         )
     );

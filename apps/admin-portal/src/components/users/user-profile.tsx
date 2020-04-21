@@ -241,7 +241,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
                 <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                     <Field
                         name={ schema.name }
-                        label={ fieldName }
+                        label={ schema.name === "profileUrl" ? "Profile image URL" : fieldName }
                         required={ schema.required }
                         requiredErrorMessage={ fieldName + " " + "is required" }
                         placeholder={ "Enter your" + " " + fieldName }
@@ -285,9 +285,9 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
             <Divider hidden />
             <DangerZoneGroup sectionHeader="Danger Zone">
                 <DangerZone
-                    actionTitle="Delete user"
-                    header="Delete the user"
-                    subheader="This action is irreversible. Please proceed with caution."
+                    actionTitle="Delete User"
+                    header="Delete user"
+                    subheader="Once you delete a user, there is no going back. Please be certain."
                     onActionClick={ (): void => {
                         setShowDeleteConfirmationModal(true);
                         setDeletingUser(user);

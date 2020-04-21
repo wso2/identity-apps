@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Field, Forms, Validation } from "@wso2is/forms";
+import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -24,7 +24,9 @@ import {
     Grid,
     Message,
 } from "semantic-ui-react";
-import { getUserStoreList } from "../../api";
+import { getUsersList, getUserStoreList } from "../../api";
+import { generate } from "generate-password";
+import { BasicUserDetailsInterface } from "../../models";
 
 /**
  * Proptypes for the add user component.
@@ -50,8 +52,45 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ passwordOption, setPasswordOption ] = useState(initialValues && initialValues.passwordOption);
+    const [ isUsernameValid, setIsUsernameValid ] = useState<boolean>(true);
+    const [ updatedUsername, setUpdatedUsername ] = useState<string>(initialValues?.userName);
+    const [ userStore, setUserStore ] = useState<string>("");
+    const [ randomPassword, setRandomPassword ] = useState<string>("");
+    const [ isPasswordGenerated, setIsPasswordGenerated ] = useState<boolean>(false);
 
     const { t } = useTranslation();
+
+    /**
+     * The following useEffect is triggered when a random password is generated.
+     */
+    useEffect(() => {
+        if (randomPassword && randomPassword !== "") {
+            setIsPasswordGenerated(true);
+        }
+    }, [ randomPassword ]);
+
+    /**
+     * The following useEffect is triggered when the username gets updated.
+     */
+    useEffect(() => {
+        setIsUsernameValid(false);
+        validateUsername(updatedUsername);
+    }, [ updatedUsername ]);
+
+    /**
+     * The following useEffect is triggered when the username gets updated.
+     */
+    useEffect(() => {
+        setIsUsernameValid(false);
+        validateUsername(updatedUsername);
+    }, [ userStore ]);
+
+    /**
+     * Fetch the list of available user stores.
+     */
+    useEffect(() => {
+        getUserStores();
+    }, []);
 
     const passwordOptions = [
         { label: "Invite user to set password", value: "askPw" },
@@ -59,9 +98,47 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     ];
 
     /**
+     * The following function validates whether the username entered by the user already exists in the
+     * user store selected by the user.
+     *
+     * @param username
+     */
+    const validateUsername = (username: string): void => {
+        getUsersList(null, null, "userName eq " + username, null, userStore)
+            .then((response) => {
+                setIsUsernameValid(response?.totalResults === 0);
+            });
+    };
+
+    /**
+     * The following function handles the change of the userstore.
+     *
+     * @param values
+     */
+    const handleUserStoreChange = (values: Map<string, FormValue>): void => {
+        setUserStore(values.get("domain").toString());
+    };
+
+    /**
+     * The following function handles the change of the username.
+     *
+     * @param values
+     */
+    const handleUserNameChange = (values: Map<string, FormValue>): void => {
+        setUpdatedUsername(values?.get("userName")?.toString());
+    };
+
+    /**
+     * The following function generate a random password.
+     */
+    const generateRandomPassword = (): void => {
+        setRandomPassword(generate({ length: 10, numbers: true }));
+    };
+
+    /**
      * The following function fetch the user store list and set it to the state.
      */
-    const getUserStores = () => {
+    const getUserStores = (): void => {
         const storeOptions = [{ text: "Primary", key: -1, value: "primary" }];
         let storeOption = { text: "", key: null, value: "" };
         getUserStoreList()
@@ -83,15 +160,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
         setUserStoresList(storeOptions);
     };
-    
-    /**
-     * Fetch the list of available user stores.
-     */
-    useEffect(() => {
-        getUserStores();
-    }, []);
 
-    const getFormValues = (values) => {
+    const getFormValues = (values: Map<string, FormValue>): BasicUserDetailsInterface => {
         return {
             domain: values.get("domain").toString(),
             email: values.get("email").toString(),
@@ -129,9 +199,20 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 ) }
                                 showPassword={ t("common:showPassword") }
                                 type="password"
-                                value={ initialValues && initialValues.newPassword }
+                                value={ isPasswordGenerated ? randomPassword : initialValues?.newPassword }
                             />
                         </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                className="generate-password-button"
+                                onClick={ generateRandomPassword }
+                                type="button"
+                                value="Generate Password"
+                                icon="random"
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 hidePassword={ t("common:hidePassword") }
@@ -150,7 +231,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 ) }
                                 showPassword={ t("common:showPassword") }
                                 type="password"
-                                value={ initialValues && initialValues.confirmPassword }
+                                value={ isPasswordGenerated ? randomPassword : initialValues?.confirmPassword }
                                 validation={ (value: string, validation: Validation, formValues) => {
                                     if (formValues.get("newPassword") !== value) {
                                         validation.isValid = false;
@@ -208,6 +289,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             ) }
                             required={ true }
                             value={ initialValues?.domain ? initialValues?.domain : userStoreOptions[0]?.value }
+                            listen={ handleUserStoreChange }
                         />
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -226,7 +308,14 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 "inputs.username.validations.empty"
                             ) }
                             type="text"
+                            validation={ (value: string, validation: Validation) => {
+                                if (isUsernameValid === false) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push("A user already exists with this username.");
+                                }
+                            } }
                             value={ initialValues && initialValues.userName }
+                            listen={ handleUserNameChange }
                         />
                     </Grid.Column>
                 </Grid.Row>

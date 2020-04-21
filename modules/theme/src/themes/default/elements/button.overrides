@@ -38,7 +38,15 @@
         &.info {
             color: @infoColor !important;
         }
+        &.loader {
+            &-left, &-right {
+                display: inline-flex;
 
+                .ui.loader {
+                    margin: 0 6px;
+                }
+            }
+        }
         &.with-hover {
             &:hover {
                 background: @backgroundColor;
@@ -246,5 +254,18 @@
 .ui.button {
     &.meta-columns-button {
         padding: @metaColumnsButtonPadding;
+    }
+}
+
+.ui.button {
+    &.generate-password-button {
+        padding: @generatePasswordButtonPadding;
+        margin-top: @generatePasswordButtonMarginTop;
+    }
+}
+
+.ui.button {
+    &.oidc-regenerate-button {
+        margin-top: 25px;
     }
 }
