@@ -31,10 +31,6 @@ export interface TransferComponentPropsInterface {
     searchPlaceholder: string;
     unselectedSegmentTestId?: string;
     selectedSegmentTestId?: string;
-    unselectedListSearchFieldTestId?: string;
-    selectedListSearchFieldTestId?: string;
-    addItemsButtonTestId?: string;
-    removeItemsButtonTestId?: string;
 }
 
 /**
@@ -54,12 +50,8 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         searchPlaceholder,
         handleUnelectedListSearch,
         handleSelectedListSearch,
-        unselectedListSearchFieldTestId,
-        selectedListSearchFieldTestId,
         unselectedSegmentTestId,
         selectedSegmentTestId,
-        addItemsButtonTestId,
-        removeItemsButtonTestId
     } = props;
 
     return (
@@ -79,7 +71,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                     className="transfer-segment"
                                                 >
                                                     <TransferListSearch
-                                                        searchFieldTestId={ unselectedListSearchFieldTestId }
+                                                        searchFieldTestId={ `${ unselectedSegmentTestId }_search_input` }
                                                         handleListSearch={ handleUnelectedListSearch }
                                                         placeholder={ searchPlaceholder }
                                                     />
@@ -99,7 +91,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                 >
                                                     <Grid.Row>
                                                         <Button
-                                                            data-testid={ addItemsButtonTestId }
+                                                            data-testid={ `${ unselectedSegmentTestId }_add_button` }
                                                             type="button"
                                                             basic
                                                             size="mini"
@@ -110,7 +102,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                     </Grid.Row>
                                                     <Grid.Row>
                                                         <Button
-                                                            data-testid={ removeItemsButtonTestId }
+                                                            data-testid={ `${ unselectedSegmentTestId }_remove_button` }
                                                             type="button"
                                                             basic
                                                             size="mini"
@@ -130,7 +122,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                         className="transfer-segment"
                                                     >
                                                         <TransferListSearch
-                                                            searchFieldTestId={ selectedListSearchFieldTestId }
+                                                            searchFieldTestId={ `${ selectedSegmentTestId }_search_input` }
                                                             handleListSearch={ handleSelectedListSearch }
                                                             placeholder={ searchPlaceholder }
                                                         />

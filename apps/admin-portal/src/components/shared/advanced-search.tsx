@@ -42,9 +42,7 @@ interface AdvancedSearchProps {
     resetSubmittedState?: () => void;
     searchOptionsHeader?: string;
     submitted?: boolean;
-    searchFieldTestId?: string;
-    clearSearchButtonTestId?: string;
-    showOptionsButtonTestId?: string;
+    testId?: string;
 }
 
 /**
@@ -72,9 +70,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
         resetSubmittedState,
         searchOptionsHeader,
         submitted,
-        searchFieldTestId,
-        clearSearchButtonTestId,
-        showOptionsButtonTestId
+        testId,
     } = props;
     const [ internalSearchQuery, setInternalSearchQuery ] = useState("");
     const [ showSearchFieldHint, setShowSearchFieldHint ] = useState(false);
@@ -191,7 +187,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
     return (
         <div className={ `advanced-search-wrapper ${ wrapperClasses }` }>
             <Input
-                data-testid={ searchFieldTestId }
+                data-testid={ `${ testId }_input` }
                 action={ (
                     <>
                         {
@@ -202,7 +198,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
                                         trigger={
                                             (
                                                 <Button
-                                                    data-testid={ clearSearchButtonTestId }
+                                                    data-testid={ `${ testId }_clear_button` }
                                                     basic
                                                     compact
                                                     className="input-add-on"
@@ -229,7 +225,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
                             trigger={
                                 (
                                     <Button
-                                        data-testid={ showOptionsButtonTestId }
+                                        data-testid={ `${ testId }_options_button` }
                                         basic
                                         compact
                                         className="input-add-on"

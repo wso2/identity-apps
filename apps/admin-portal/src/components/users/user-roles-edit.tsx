@@ -520,7 +520,11 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                     ? (
                         <>
                             <Modal.Content>
-                                <RolePermissions handleNavigateBack={ handleViewRolePermission } roleId={ roleId }/>
+                                <RolePermissions
+                                    testId="user_mgt_update_roles_modal_unselected_role_permissions"
+                                    handleNavigateBack={ handleViewRolePermission }
+                                    roleId={ roleId }
+                                />
                             </Modal.Content>
                             <Divider hidden/>
                         </>
@@ -532,12 +536,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                 removeItems={ removeRoles }
                                 handleUnelectedListSearch={ handleUnselectedListSearch }
                                 handleSelectedListSearch={ handleSelectedListSearch }
-                                unselectedSegmentTestId="user_mgt_update_roles_modal_unselected_groups_segment"
-                                selectedSegmentTestId="user_mgt_update_roles_modal_selected_groups_segment"
-                                unselectedListSearchFieldTestId="user_mgt_update_roles_modal_unselected_groups_search_input"
-                                selectedListSearchFieldTestId="user_mgt_update_roles_modal_selected_groups_search_input"
-                                addItemsButtonTestId="user_mgt_update_roles_modal_add_selected_groups_button"
-                                removeItemsButtonTestId="user_mgt_update_roles_modal_remove_selected_groups_button"
+                                unselectedSegmentTestId="user_mgt_update_roles_modal_unselected_roles"
+                                selectedSegmentTestId="user_mgt_update_roles_modal_selected_roles"
                             >
                                 <TransferList
                                     isListEmpty={ !(roleList.length > 0) }
@@ -545,7 +545,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     listHeaders={ ["Domain", "Name", ""] }
                                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                     isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
-                                    selectAllCheckboxId="user_mgt_update_roles_modal_unselected_groups_select_all_checkbox"
+                                    selectAllCheckboxId="user_mgt_update_roles_modal_unselected_roles_select_all_checkbox"
                                 >
                                     {
                                         roleList?.map((role, index) => {
@@ -562,10 +562,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                         isItemChecked={ checkedUnassignedListItems.includes(role) }
                                                         showSecondaryActions={ true }
                                                         handleOpenPermissionModal={ () => handleRoleIdSet(role.id) }
-                                                        checkboxTestId={ `user_mgt_update_roles_modal_unselected_groups_
-                                                        ${ role.displayName.replace(" ", "_") }_checkbox` }
-                                                        iconTestId={ `user_mgt_update_roles_modal_unselected_groups_
-                                                        ${ role.displayName.replace(" ", "_") }_icon` }
+                                                        listItemTestId="user_mgt_update_roles_modal_unselected_roles"
                                                     />
                                                 )
                                             }
@@ -578,7 +575,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     listHeaders={ ["Domain", "Name"] }
                                     handleHeaderCheckboxChange={ selectAllAssignedList }
                                     isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
-                                    selectAllCheckboxId="user_mgt_update_roles_modal_selected_groups_select_all_checkbox"
+                                    selectAllCheckboxId="user_mgt_update_roles_modal_selected_roles_select_all_checkbox"
                                 >
                                     {
                                         tempRoleList?.map((role, index) => {
@@ -594,8 +591,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                         listItemTypeLabel={ createItemLabel(role?.displayName) }
                                                         isItemChecked={ checkedAssignedListItems.includes(role) }
                                                         showSecondaryActions={ false }
-                                                        checkboxTestId={ `user_mgt_update_roles_modal_selected_groups_
-                                                        ${ role.displayName.replace(" ", "_") }_checkbox` }
+                                                        listItemTestId="user_mgt_update_roles_modal_selected_roles"
                                                     />
                                                 )
                                             }
@@ -672,8 +668,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     const viewRolesPermissionModal = () => {
         return (
             <UserRolePermissions
-                backButtonTestId="user_mgt_roles_list_roles_permission_modal_back_button"
-                rolePermissionModalTestId="user_mgt_roles_list_role_permission_modal"
+                testId="user_mgt_roles_list_roles_permission_modal"
                 openRolePermissionModal={ showRolePermissionModal }
                 handleCloseRolePermissionModal={ handleCloseRolePermissionModal }
                 roleId={ selectedRoleId }

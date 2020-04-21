@@ -142,9 +142,7 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (
 
     return (
         <AdvancedSearch
-            searchFieldTestId="user_mgt_user_list_user_search_input"
-            clearSearchButtonTestId="user_mgt_user_list_user_search_clear_button"
-            showOptionsButtonTestId="user_mgt_user_list_user_search_options_button"
+            testId="user_mgt_user_list_user_search"
             aligned="left"
             clearButtonPopupLabel={ t("devPortal:components.users.search.popups.clear") }
             clearIcon={ AdvancedSearchIcons.clear }

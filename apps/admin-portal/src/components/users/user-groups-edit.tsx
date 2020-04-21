@@ -463,8 +463,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         if (selectedGroupId) {
             return (
                 <UserRolePermissions
-                    backButtonTestId="user_mgt_groups_list_group_permission_modal_back_button"
-                    rolePermissionModalTestId="user_mgt_groups_list_group_permission_modal"
+                    testId="user_mgt_groups_list_group_permission_modal"
                     openRolePermissionModal={ showGroupPermissionModal }
                     handleCloseRolePermissionModal={ handleCloseRolePermissionModal }
                     roleId={ selectedGroupId }
@@ -501,7 +500,11 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                     ? (
                         <>
                             <Modal.Content>
-                                <RolePermissions handleNavigateBack={ handleViewGroupPermission } roleId={ groupId }/>
+                                <RolePermissions
+                                    testId="user_mgt_update_groups_modal_unselected_group_permissions"
+                                    handleNavigateBack={ handleViewGroupPermission }
+                                    roleId={ groupId }
+                                />
                             </Modal.Content>
                             <Divider hidden/>
                         </>
@@ -513,12 +516,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                 removeItems={ removeGroups }
                                 handleUnelectedListSearch={ handleUnselectedListSearch }
                                 handleSelectedListSearch={ handleSelectedListSearch }
-                                unselectedSegmentTestId="user_mgt_update_groups_modal_unselected_groups_segment"
-                                selectedSegmentTestId="user_mgt_update_groups_modal_selected_groups_segment"
-                                unselectedListSearchFieldTestId="user_mgt_update_groups_modal_unselected_groups_search_input"
-                                selectedListSearchFieldTestId="user_mgt_update_groups_modal_selected_groups_search_input"
-                                addItemsButtonTestId="user_mgt_update_groups_modal_add_selected_groups_button"
-                                removeItemsButtonTestId="user_mgt_update_groups_modal_remove_selected_groups_button"
+                                unselectedSegmentTestId="user_mgt_update_groups_modal_unselected_groups"
+                                selectedSegmentTestId="user_mgt_update_groups_modal_selected_groups"
                             >
                                 <TransferList
                                     isListEmpty={ !(groupList.length > 0) }
@@ -543,10 +542,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                                         isItemChecked={ checkedUnassignedListItems.includes(role) }
                                                         showSecondaryActions={ true }
                                                         handleOpenPermissionModal={ () => handleGroupIdSet(role.id) }
-                                                        checkboxTestId={ `user_mgt_update_groups_modal_unselected_groups_
-                                                        ${ role.displayName.replace(" ", "_") }_checkbox` }
-                                                        iconTestId={ `user_mgt_update_groups_modal_unselected_groups_
-                                                        ${ role.displayName.replace(" ", "_") }_icon` }
+                                                        listItemTestId="user_mgt_update_groups_modal_unselected_groups"
                                                     />
                                                 )
                                             }
@@ -575,8 +571,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                                         listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
                                                         isItemChecked={ checkedAssignedListItems.includes(role) }
                                                         showSecondaryActions={ false }
-                                                        checkboxTestId={ `user_mgt_update_groups_modal_selected_groups_
-                                                        ${ role.displayName.replace(" ", "_") }_checkbox` }
+                                                        listItemTestId="user_mgt_update_groups_modal_selected_groups"
                                                     />
                                                 )
                                             }

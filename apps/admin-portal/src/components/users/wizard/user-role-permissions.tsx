@@ -19,7 +19,7 @@
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { RolesInterface} from "../../../models";
 import { getRoleById } from "../../../api";
-import { Divider, Icon, Segment } from "semantic-ui-react";
+import { Icon, Segment } from "semantic-ui-react";
 import { PermissionList } from "../../roles";
 import { Heading, LinkButton } from "@wso2is/react-components";
 
@@ -27,8 +27,7 @@ import { Heading, LinkButton } from "@wso2is/react-components";
  * Proptypes for the role permission component.
  */
 interface RolePermissionsInterface {
-    rolePermissionSegmentTestId?: string;
-    backButtonTestId?: string;
+    testId?: string;
     roleId: string;
     handleNavigateBack: () => void;
 }
@@ -43,7 +42,11 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
     props: RolePermissionsInterface
 ): ReactElement => {
 
-    const { roleId, handleNavigateBack, backButtonTestId, rolePermissionSegmentTestId  } = props;
+    const {
+        roleId,
+        handleNavigateBack,
+        testId
+    } = props;
 
     const [ isRoleSet, setRoleCheck ] = useState(false);
     const [ role, setRole ] = useState<RolesInterface>();
@@ -84,13 +87,13 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
                 <Heading as="h5">
                     Permissions for { role.displayName }
                 </Heading>
-                <Segment data-testid={ rolePermissionSegmentTestId }>
+                <Segment data-testid={ testId }>
                     <div className="permissions-edit-container">
                         <PermissionList isEdit={ false } isRole roleObject={ role }/>
                     </div>
                 </Segment>
                 <LinkButton
-                    data-testid={ backButtonTestId }
+                    data-testid={ `${ testId }_back_button` }
                     floated="left"
                     onClick={ handleNavigateBack }
                 >
