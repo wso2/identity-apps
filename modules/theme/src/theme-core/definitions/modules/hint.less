@@ -1,4 +1,4 @@
-/**
+/*!
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -17,25 +17,39 @@
  *
  */
 
-import { StoryCategories } from "../../hierarchy";
-import { StoryMetaInterface } from "../../models";
+@type    : "module";
+@element : "markdown";
 
-export const meta: StoryMetaInterface = {
-    components: [ "Hint" ],
-    description: "Component to render UI hints.",
-    stories: [
-        {
-            description: "Default Hint component appearance.",
-            title: "Default"
-        },
-        {
-            description: "Hint with an icon.",
-            title: "With Icon"
-        },
-        {
-            description: "Shows a hint inside a popup.",
-            title: "As Popup"
-        }
-    ],
-    title: `${ StoryCategories.COMPONENTS }/Hint`
-};
+@import (multiple) '../../theme.less';
+.loadVariables();
+
+/*****************************************
+            UI Hints
+*****************************************/
+
+@uiHintColor: @doveGray;
+@uiHintFontSize: 12px;
+@uiHintMargin: 10px 0;;
+
+.ui-hint {
+    color: @uiHintColor;
+    font-size: @uiHintFontSize;
+    margin: @uiHintMargin;
+
+    &.inline {
+        display: inline-block;
+        margin-left: 5px;
+    }
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.45;
+    }
+    &.compact {
+        margin: 0;
+    }
+    &.hidden {
+        display: none;
+    }
+}
+
+.loadUIOverrides();

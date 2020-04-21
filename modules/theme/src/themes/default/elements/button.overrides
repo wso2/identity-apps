@@ -38,7 +38,15 @@
         &.info {
             color: @infoColor !important;
         }
+        &.loader {
+            &-left, &-right {
+                display: inline-flex;
 
+                .ui.loader {
+                    margin: 0 6px;
+                }
+            }
+        }
         &.with-hover {
             &:hover {
                 background: @backgroundColor;

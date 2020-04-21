@@ -16,14 +16,29 @@
  * under the License.
  */
 
+import { ButtonProps, Loader, LoaderProps, Button as SemanticButton } from "semantic-ui-react";
 import classNames from "classnames";
 import React from "react";
-import { Button as SemanticButton, ButtonProps } from "semantic-ui-react";
 
 interface LinkButtonPropsInterface extends ButtonProps {
-    warning?: boolean;
+    /**
+     * To represent info state.
+     */
     info?: boolean;
+    /**
+     * Loader position.
+     */
+    loaderPosition?: "left" | "right";
+    /**
+     * Loader size.
+     */
+    loaderSize?: LoaderProps["size"];
+    /**
+     * To represent warning state.
+     */
+    warning?: boolean;
 }
+
 /**
  * Link button component.
  *
@@ -34,18 +49,51 @@ export const LinkButton: React.FunctionComponent<LinkButtonPropsInterface> = (
     props: ButtonProps
 ): JSX.Element => {
 
-    const { className, warning, info } = props;
+    const {
+        children,
+        className,
+        info,
+        loading,
+        loaderPosition,
+        loaderSize,
+        warning,
+        ...rest
+    } = props;
 
     const classes = classNames(
         "link-button",
         {
-            warning,
-            info
+            info,
+            [ `loader-${ loaderPosition }` ]: loading && loaderPosition,
+            warning
         },
         className
     );
 
     return (
-        <SemanticButton { ...props } className={ classes } />
+        <SemanticButton
+            className={ classes }
+            loading={ loading && !loaderPosition }
+            { ...rest }
+        >
+            {
+                loading && loaderPosition === "left" && (
+                    <Loader active inline size={ loaderSize }/>
+                )
+            }
+            { children }
+            {
+                loading && loaderPosition === "right" && (
+                    <Loader active inline size={ loaderSize }/>
+                )
+            }
+        </SemanticButton>
     );
+};
+
+/**
+ * Prop types for the link button component.
+ */
+LinkButton.defaultProps = {
+    loaderSize: "mini"
 };
