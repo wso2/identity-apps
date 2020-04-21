@@ -17,13 +17,6 @@
  */
 
 /**
- * Help panel metadata interface.
- */
-export interface HelpPanelMetadataInterface {
-    applications: ApplicationsHelpPanelMetadataInterface;
-}
-
-/**
  * Application management help panel metadata.
  */
 export interface ApplicationsHelpPanelMetadataInterface {

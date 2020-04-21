@@ -17,6 +17,7 @@
  */
 
 export * from "./application";
+export * from "./help-panel";
 export * from "./users";
 export * from "./profile";
 export * from "./linked-accounts";

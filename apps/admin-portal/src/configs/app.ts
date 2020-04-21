@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { I18nConstants } from "../constants";
+import { HelpPanelConstants, I18nConstants } from "../constants";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "../models";
 
@@ -164,6 +164,7 @@ export class Config {
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID}/connectors/${
                 ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID}`,
             permission: `${this.getRuntimeConfig().serverHost}/api/server/v1/permission-management/permissions`,
+            portalDocumentationStructure: HelpPanelConstants.PORTAL_DOCUMENTATION_STRUCTURE_URL,
             profileSchemas: `${this.getRuntimeConfig().serverHost}/scim2/Schemas`,
             revoke: `${this.getRuntimeConfig().serverHost}/oauth2/revoke`,
             selfSignUp: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
