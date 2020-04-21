@@ -16,19 +16,19 @@
  * under the License.
  */
 
-import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useContext, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { getUserStores } from "../api";
 import { AddUserStore, UserStoresList, UserStoresSearch } from "../components";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { UserConstants } from "../constants";
-import { AppConfig } from "../helpers";
-import { ListLayout, PageLayout } from "../layouts";
 import { AlertLevels, AppConfigInterface, QueryParams, UserStoreListItem } from "../models";
-import { addAlert } from "../store/actions";
+import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import { filterList, sortList } from "../utils";
+import { ListLayout, PageLayout } from "../layouts";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
+import { addAlert } from "../store/actions";
+import { AppConfig } from "../helpers";
+import { EmptyPlaceholderIllustrations } from "../configs";
+import { getUserStores } from "../api";
+import { useDispatch } from "react-redux";
+import { UserConstants } from "../constants";
 
 /**
  * This renders the Userstores page.
@@ -234,7 +234,7 @@ export const UserStores = (): ReactElement => {
                                 </PrimaryButton>
                             }
                             title="Add Userstore"
-                            subtitle={ ["Currently, there are no Userstores available."] }
+                            subtitle={ ["Currently, there are no userstores available."] }
                             image={ EmptyPlaceholderIllustrations.emptyList }
                             imageSize="tiny"
                         />
