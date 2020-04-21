@@ -22,7 +22,7 @@
   */
 export interface EmailTemplateType {
     id: string;
-    displayName: string;
+    displayName?: string;
     self: string;
 }
 
@@ -39,9 +39,9 @@ export interface EmailTemplateDetails {
  * Interface to capture Email Template
  */
 export interface EmailTemplate {
-    contentType: string;
+    contentType?: string;
     subject: string;
     body: string;
     footer: string;
-    id: string;
+    id?: string;
 }
