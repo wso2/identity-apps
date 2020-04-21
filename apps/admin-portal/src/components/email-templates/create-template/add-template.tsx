@@ -35,6 +35,11 @@ interface AddLocaleTemplatePropsInterface {
     templateTypeId: string;
 }
 
+/**
+ * Component to handle ADD/EDIT of a locale based email template.
+ * 
+ * @param props - props required for component
+ */
 export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterface> = (
     props: AddLocaleTemplatePropsInterface
 ): ReactElement => {
@@ -52,6 +57,9 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
         templateTypeId
     } = props;
 
+    /**
+     * This will load the locales to the dropdown.
+     */
     useEffect(() => {
         const locales: string[] = CountryLanguage.getLocales(true);
         const localeDropDown: DropdownItemProps[] = [];
@@ -74,6 +82,9 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
 
     }, [localeList.length]);
 
+    /**
+     * Will get fired if there is a template ID to trigger edit flow.
+     */
     useEffect(() => {
         getTemplateDetails(templateTypeId, templateId).then((response: AxiosResponse<EmailTemplate>) => {
             if (response.status === 200) {
@@ -96,6 +107,11 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
         dispatch(addAlert(alert));
     };
 
+    /**
+     * Util method to handle create template based on the form data captured.
+     * 
+     * @param values - values from the form submit
+     */
     const createTemplate = (values: Map<string, FormValue>) => {
         const templateDate: EmailTemplate = {
             contentType: "text/html",
@@ -129,6 +145,12 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
         })
     }
 
+    /**
+     * Util method to handle update/replace content in template based on the form data
+     * captured.
+     * 
+     * @param values - values from the form submit
+     */
     const updateTemplate = (values: Map<string, FormValue>) => {
         const templateDate: EmailTemplate = {
             contentType: "text/html",
@@ -182,6 +204,10 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                             requiredErrorMessage="Select locale"
                             required={ true }
                             options={ localeList ? localeList : [] }
+                            /**
+                             * Drop down will be disabled on edit flow since 
+                             * locale is the ID of the template. 
+                             */
                             disabled={ templateId !== "" }
                             onChange={ (event: SyntheticEvent, data: DropdownProps) => {
                                 setLocale(data.value.toString());

@@ -27,6 +27,12 @@ interface EmailTemplateTypeWizardProps {
     onCloseHandler: () => void;
 }
 
+/**
+ * Wizard component to add a new email template type.
+ * TODO : This component is still WIP.
+ * 
+ * @param props - props required for the wizard component.
+ */
 export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardProps> = (
     props: EmailTemplateTypeWizardProps
 ): ReactElement => {

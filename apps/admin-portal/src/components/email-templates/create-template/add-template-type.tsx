@@ -27,6 +27,11 @@ interface AddEmailTemplateTypePropsInterface {
     onSubmit: (values: any) => void;
 }
 
+/**
+ * Form component to capture template type data.
+ * 
+ * @param props - props required for template type form component
+ */
 export const AddEmailTemplateType: FunctionComponent<AddEmailTemplateTypePropsInterface> = (
     props: AddEmailTemplateTypePropsInterface
 ): ReactElement => {

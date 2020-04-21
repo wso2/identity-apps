@@ -25,6 +25,10 @@ import { PageLayout } from "../layouts";
 import { history } from "../helpers";
 import { AddLocaleTemplate } from "../components/email-templates";
 
+/**
+ * Component will render add view for a email template based on 
+ * locale for selected email template type.
+ */
 export const AddTemplateLocale: FunctionComponent = (): ReactElement => {
     
     const [ templateTypeId, setTemplateTypeId ] = useState<string>('');

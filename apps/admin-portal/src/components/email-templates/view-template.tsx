@@ -32,6 +32,11 @@ interface ViewLocaleTemplatePropsInterface {
     templateId: string;
 }
 
+/**
+ * Component will render an output of the selected email template.
+ * 
+ * @param props - props required to render html email template
+ */
 export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterface> = (
     props: ViewLocaleTemplatePropsInterface
 ): ReactElement => {

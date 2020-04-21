@@ -31,8 +31,7 @@ import { addAlert } from "@wso2is/core/dist/src/store";
 import { AlertLevels } from "@wso2is/core/dist/src/models";
 
 /**
- * Component to list available email templates.
- * 
+ * Component to list available email template types.
  */
 export const EmailTemplateTypes = (): ReactElement => {
     const dispatch = useDispatch();

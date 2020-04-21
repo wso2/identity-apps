@@ -30,6 +30,10 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { addAlert } from "@wso2is/core/dist/src/store";
 
+/**
+ * Component will list all available locale based email templates for 
+ * the selected email template type.
+ */
 export const EmailTemplates: FunctionComponent = (): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -127,6 +131,13 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
         dispatch(addAlert(alert));
     };
 
+    /**
+     * Util method to delete locale email template based on the provided email template 
+     * type id and locale based email template id.
+     * 
+     * @param templateTypeId - template type id
+     * @param templateId - locale template id
+     */
     const deleteTemplateType = (templateTypeId: string, templateId: string) => {
         deleteLocaleTemplate(templateTypeId, templateId).then((response: AxiosResponse) => {
             if (response.status === 204) {

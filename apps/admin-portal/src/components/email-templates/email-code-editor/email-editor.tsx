@@ -25,6 +25,12 @@ interface EmailTemplateEditorPropsInterface {
     updateHtmlContent?: (value) => void;
 }
 
+/**
+ * Util component to handle email template editing functionality and 
+ * rendering the html content on an Iframe.
+ * 
+ * @param props - props required to edit email template
+ */
 export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInterface> = (
     props: EmailTemplateEditorPropsInterface
 ): ReactElement => {
