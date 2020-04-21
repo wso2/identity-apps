@@ -30,6 +30,7 @@ import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { ApplicationManagementConstants } from "../constants";
 import { store } from "../store";
+import { CustomApplicationTemplate } from "../components/applications/meta";
 
 /**
  * Utility class for application(service provider) operations.
@@ -87,7 +88,10 @@ export class ApplicationManagementUtils {
     public static getApplicationTemplates = (): Promise<void> => {
         return getApplicationTemplateList()
             .then((response) => {
-                store.dispatch(setApplicationTemplates((response as ApplicationTemplateListInterface).templates));
+                const applicationTemplates = (response as ApplicationTemplateListInterface).templates;
+                // Add on the custom application template to the application template list
+                applicationTemplates.unshift(CustomApplicationTemplate);
+                store.dispatch(setApplicationTemplates(applicationTemplates));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
