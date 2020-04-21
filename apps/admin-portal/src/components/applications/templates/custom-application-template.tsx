@@ -68,7 +68,8 @@ export const CustomApplicationTemplates: FunctionComponent<CustomApplicationTemp
                 <Grid.Row>
                     <Grid.Column>
                         {
-                            template ? (
+                            template ?
+                                (
                                     <ApplicationTemplateCard
                                         key={ 1 }
                                         description={ template.description }
@@ -80,12 +81,14 @@ export const CustomApplicationTemplates: FunctionComponent<CustomApplicationTemp
                                     />
                                 )
                                 :
-                                <EmptyPlaceholder
-                                    image={ EmptyPlaceholderIllustrations.newList }
-                                    imageSize="tiny"
-                                    title={ "No custom app template Available" }
-                                    subtitle={ ["Please add a template to display"] }
-                                />
+                                (
+                                    <EmptyPlaceholder
+                                        image={ EmptyPlaceholderIllustrations.newList }
+                                        imageSize="tiny"
+                                        title={ "No custom app template Available" }
+                                        subtitle={ ["Please add a template to display"] }
+                                    />
+                                )
                         }
                     </Grid.Column>
                 </Grid.Row>
