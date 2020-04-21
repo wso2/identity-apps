@@ -250,7 +250,7 @@ export const IdPIcons = {
     wsFed: WSFedLogo,
     smsOTP: SMSOTPIcon,
     emailOTP: EmailOTPIcon,
-	microsoft: GoogleIdPIcon,
+    microsoft: GoogleIdPIcon,
     yahoo: GoogleIdPIcon,
     iwaKerberos: GoogleIdPIcon,
     office365: GoogleIdPIcon

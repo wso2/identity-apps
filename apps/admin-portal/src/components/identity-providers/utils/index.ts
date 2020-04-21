@@ -17,4 +17,3 @@
  */
 
 export * from "./CommonPluggableComponentUtils"
-export * from "./authenticator-utils";

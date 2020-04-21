@@ -90,7 +90,6 @@ export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentP
             <Field
                 name={ propertyMetadata?.key }
                 key={ propertyMetadata?.key }
-                label={ propertyMetadata?.displayName }
                 type="checkbox"
                 required={ propertyMetadata?.isMandatory }
                 value={ eachProp?.value ? [eachProp?.key] : [] }
@@ -98,7 +97,7 @@ export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentP
                 children={
                     [
                         {
-                            label: propertyMetadata?.description,
+                            label: propertyMetadata?.displayName,
                             value: eachProp?.key
                         }
                     ]
@@ -195,8 +194,9 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
     );
 };
 
-export const getDropDownField = (eachProp: AuthenticatorProperty,
-                                    propertyMetadata: CommonMetaPropertyInterface): ReactElement => {
+export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInterface,
+                                 propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+                                 disable: boolean): ReactElement => {
     return (
         <>
             <Field
@@ -208,9 +208,10 @@ export const getDropDownField = (eachProp: AuthenticatorProperty,
                 value={ eachProp?.value }
                 key={ eachProp?.key }
                 children={ getDropDownChildren(eachProp?.key, propertyMetadata?.options) }
+                disabled={ disable }
             />
             { propertyMetadata?.description && (
-                <Hint>{ propertyMetadata?.description }</Hint>
+                <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
             )}
         </>
     );
@@ -265,6 +266,8 @@ export const getFieldType = (propertyMetadata: CommonPluggableComponentMetaPrope
         CommonConstants.FIELD_COMPONENT_KEYWORD_QUERY_PARAMETER)) {
         // todo Need proper backend support to identity Query parameter fields.
         return FieldType.QUERY_PARAMS;
+    } else if (propertyMetadata?.options?.length > 0) {
+        return FieldType.DROP_DOWN;
     }
     return FieldType.TEXT;
 };
@@ -280,7 +283,7 @@ export const getFieldType = (propertyMetadata: CommonPluggableComponentMetaPrope
  */
 export const getPropertyField = (property: CommonPluggableComponentPropertyInterface,
                                  propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                                 disable: boolean,
+                                 disable?: boolean,
                                  listen?: (key: string, values: Map<string, FormValue>) => void):
     ReactElement => {
 
@@ -299,6 +302,9 @@ export const getPropertyField = (property: CommonPluggableComponentPropertyInter
         }
         case FieldType.QUERY_PARAMS : {
             return getQueryParamsField(property, propertyMetadata, disable);
+        }
+        case FieldType.DROP_DOWN : {
+            return getDropDownField(property, propertyMetadata, disable);
         }
         default: {
             return getTextField(property, propertyMetadata, disable);

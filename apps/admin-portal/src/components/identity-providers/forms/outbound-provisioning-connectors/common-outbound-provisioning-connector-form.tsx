@@ -18,13 +18,13 @@
 
 import { Button, Grid } from "semantic-ui-react";
 import {
-    OutboundProvisioningConnectorMetaPropertyInterface,
-    OutboundProvisioningConnectorProperty
+    CommonPluggableComponentMetaPropertyInterface,
+    CommonPluggableComponentPropertyInterface,
+    CommonPluggableComponentFormPropsInterface
 } from "../../../../models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { CommonConstants } from "../helpers";
 import { CommonPluggableComponentForm } from "../components";
-import { CommonPluggableComponentFormPropsInterface } from "../../../../models";
 import { getPropertyField } from "../../utils";
 
 /**
@@ -45,8 +45,8 @@ export const CommonOutboundProvisioningConnectorForm: FunctionComponent<
         enableSubmitButton
     } = props;
 
-    const getInterpretedFormValue = (propertyMetadata: OutboundProvisioningConnectorMetaPropertyInterface, values: any,
-                                     eachProp: OutboundProvisioningConnectorProperty) => {
+    const getInterpretedFormValue = (propertyMetadata: CommonPluggableComponentMetaPropertyInterface, values: any,
+                                     eachProp: CommonPluggableComponentPropertyInterface) => {
         switch (propertyMetadata?.type.toUpperCase()) {
             case CommonConstants.BOOLEAN: {
                 return values.get(eachProp?.key)?.includes(eachProp?.key);
@@ -78,7 +78,7 @@ export const CommonOutboundProvisioningConnectorForm: FunctionComponent<
     };
 
     const getOutboundProvisioningConnectorPropertyFields = (): ReactElement[] => {
-        return initialValues?.properties?.map((eachProp: OutboundProvisioningConnectorProperty) => {
+        return initialValues?.properties?.map((eachProp: CommonPluggableComponentPropertyInterface) => {
             const propertyMetadata = metadata?.properties?.find(metaProperty => metaProperty.key === eachProp.key);
             return (
                 <Grid.Row columns={ 1 } key={ propertyMetadata?.displayOrder }>
