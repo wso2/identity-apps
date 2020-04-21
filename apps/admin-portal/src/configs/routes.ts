@@ -299,7 +299,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 exact: true,
                 icon: "serverConfigurations",
                 id: "emailTemplates",
-                name: "Role-Edit",
+                name: "Email-Templates",
                 path: "/email-templates/:typeId",
                 protected: true,
                 showOnSidePanel: false
@@ -308,8 +308,17 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 exact: true,
                 icon: "serverConfigurations",
                 id: "emailTemplates",
-                name: "Role-Edit",
+                name: "Add-Email-Template",
                 path: "/email-templates/:typeId/add-template",
+                protected: true,
+                showOnSidePanel: false
+            },{
+                component: AddTemplateLocale,
+                exact: true,
+                icon: "serverConfigurations",
+                id: "emailTemplates",
+                name: "Edit-Email-Template",
+                path: "/email-templates/:typeId/add-template/:templateId",
                 protected: true,
                 showOnSidePanel: false
             }
