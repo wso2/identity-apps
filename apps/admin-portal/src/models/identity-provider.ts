@@ -93,16 +93,18 @@ export interface CertificateConfigInterface {
     jwksUri?: string; // TODO  Check for upload option.
 }
 
-export interface FederatedAuthenticatorListItemInterface {
+export interface FederatedAuthenticatorListItemInterface extends FederatedAuthenticatorInterface{
+    self?: string;
+}
+
+export interface FederatedAuthenticatorInterface extends CommonPluggableComponentInterface {
     authenticatorId?: string;
     name?: string;
     isEnabled?: boolean;
     isDefault?: boolean;
-    properties?: AuthenticatorProperty[];
-    self?: string;
 }
 
-export interface AuthenticatorProperty {
+export interface AuthenticatorPropertyInterface {
     key: string;
     value: string;
 }
@@ -112,23 +114,10 @@ export interface FederatedAuthenticatorListResponseInterface {
     authenticators?: FederatedAuthenticatorListItemInterface[];
 }
 
-export interface FederatedAuthenticatorMetaPropertyInterface extends CommonMetaPropertyInterface{
-    subProperties?: FederatedAuthenticatorMetaPropertyInterface[];
-}
-
-export interface FederatedAuthenticatorMetaInterface {
+export interface FederatedAuthenticatorMetaInterface extends CommonPluggableComponentMetaInterface {
     authenticatorId?: string;
     name?: string;
     displayName?: string;
-    properties?: FederatedAuthenticatorMetaPropertyInterface[];
-}
-
-export interface AuthenticatorFormPropsInterface {
-    metadata?: FederatedAuthenticatorMetaInterface;
-    initialValues: FederatedAuthenticatorListItemInterface;
-    onSubmit: (values: FederatedAuthenticatorListItemInterface) => void;
-    triggerSubmit?: boolean;
-    enableSubmitButton?: boolean;
 }
 
 /**
@@ -280,42 +269,44 @@ export interface OutboundProvisioningConnectorListItemInterface {
     self?: string;
 }
 
-export interface OutboundProvisioningConnectorInterface {
+export interface OutboundProvisioningConnectorInterface extends CommonPluggableComponentInterface{
     connectorId?: string;
     isEnabled?: boolean;
     isDefault?: boolean;
     blockingEnabled?: boolean;
     rulesEnabled?: boolean;
-    properties?: OutboundProvisioningConnectorProperty[];
 }
 
-export interface OutboundProvisioningConnectorProperty {
-    key?: string;
-    value?: string;
-}
-
-export interface OutboundProvisioningConnectorFormPropsInterface {
-    metadata?: OutboundProvisioningConnectorMetaInterface;
-    initialValues: OutboundProvisioningConnectorInterface;
-    onSubmit: (values: OutboundProvisioningConnectorInterface) => void;
-    triggerSubmit?: boolean;
-    enableSubmitButton?: boolean;
-}
-
-export interface OutboundProvisioningConnectorMetaInterface {
+export interface OutboundProvisioningConnectorMetaInterface extends CommonPluggableComponentMetaInterface{
     connectorId?: string;
     name?: string;
     displayName?: string;
     blockingEnabled?: boolean;
     rulesEnabled?: boolean;
-    properties?: OutboundProvisioningConnectorMetaPropertyInterface[];
 }
 
-export interface OutboundProvisioningConnectorMetaPropertyInterface extends CommonMetaPropertyInterface{
-    subProperties?: OutboundProvisioningConnectorMetaPropertyInterface[];
+export interface CommonPluggableComponentFormPropsInterface {
+    metadata?: CommonPluggableComponentMetaInterface;
+    initialValues: CommonPluggableComponentInterface;
+    onSubmit: (values: CommonPluggableComponentInterface) => void;
+    triggerSubmit?: boolean;
+    enableSubmitButton?: boolean;
 }
 
-export interface CommonMetaPropertyInterface {
+export interface CommonPluggableComponentInterface {
+    properties?: CommonPluggableComponentPropertyInterface[];
+}
+
+export interface CommonPluggableComponentMetaInterface {
+    properties?: CommonPluggableComponentMetaPropertyInterface[];
+}
+
+export interface CommonPluggableComponentPropertyInterface {
+    key?: string;
+    value?: string;
+}
+
+export interface CommonPluggableComponentMetaPropertyInterface {
     key?: string;
     displayName?: string;
     description?: string;
@@ -326,7 +317,7 @@ export interface CommonMetaPropertyInterface {
     isConfidential?: boolean;
     options?: string[];
     defaultValue?: string;
-    subProperties?: CommonMetaPropertyInterface[];
+    subProperties?: CommonPluggableComponentMetaPropertyInterface[];
 }
 
 /**

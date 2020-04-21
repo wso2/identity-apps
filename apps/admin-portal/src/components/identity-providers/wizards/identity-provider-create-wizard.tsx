@@ -18,11 +18,11 @@
 
 import { AppState, store } from "../../../store";
 import {
-    AuthenticatorProperty,
+    AuthenticatorPropertyInterface,
+    CommonPluggableComponentPropertyInterface,
     FederatedAuthenticatorMetaInterface,
     IdentityProviderInterface,
     OutboundProvisioningConnectorMetaInterface,
-    OutboundProvisioningConnectorProperty,
     ProvisioningInterface
 } from "../../../models";
 import { AuthenticatorSettings, GeneralSettings, WizardSummary } from "./steps";
@@ -428,7 +428,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      */
     const getValidatedAuthenticators = () => {
         const defaultAuthenticatorPropertiesFromMetadata = defaultAuthenticatorMetadata?.properties.map(
-            (eachProp): AuthenticatorProperty => {
+            (eachProp): AuthenticatorPropertyInterface => {
                 return {
                     key: eachProp?.key,
                     value: eachProp?.defaultValue
@@ -458,7 +458,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      */
     const getValidatedOutboundProvisioningConnectors = () => {
         const defaultConnectorPropertiesFromMetadata = defaultOutboundProvisioningConnectorMetadata?.properties.map(
-            (eachProp): OutboundProvisioningConnectorProperty => {
+            (eachProp): CommonPluggableComponentPropertyInterface => {
                 return {
                     key: eachProp?.key,
                     value: eachProp?.defaultValue
@@ -643,7 +643,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                         ))}
                     </Steps.Group>
                 </Modal.Content>
-                <Modal.Content className="content-container" scrolling>{resolveStepContent(currentWizardStep)}
+                <Modal.Content className="content-container" scrolling>{ resolveStepContent(currentWizardStep) }
                 </Modal.Content>
                 <Modal.Actions>
                     <Grid>
