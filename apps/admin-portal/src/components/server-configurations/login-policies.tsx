@@ -17,7 +17,7 @@
  */
 
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
-import { Divider, Form, Grid } from "semantic-ui-react";
+import { Divider, Form, Grid, List } from "semantic-ui-react";
 import { EditSection, Hint, Section } from "@wso2is/react-components";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import { getAllLoginPolicies, updateAllLoginPolicies } from "../../api";
@@ -299,7 +299,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 		<Forms>
 			<Grid padded={ true }>
 				<Grid.Row columns={ 1 }>
-					<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+					<Grid.Column className="first-column" mobile={ 16 } tablet={ 16 } computer={ 14 }>
 						<Field
 							name={ ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE }
 							required={ false }
@@ -566,8 +566,12 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 			primaryActionIcon="key"
 			showActionBar={ !editingForm[LOGIN_POLICIES_FORM_IDENTIFIER] }
 		>
-			{ showLoginPoliciesSummary }
-			{ showAdvancedLoginPoliciesView }
+			<List verticalAlign="middle" className="main-content-inner">
+				<List.Item className="inner-list-item">
+					{ showLoginPoliciesSummary }
+					{ showAdvancedLoginPoliciesView }
+				</List.Item>
+			</List>
 		</Section>
 	);
 };

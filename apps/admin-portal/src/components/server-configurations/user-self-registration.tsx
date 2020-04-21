@@ -17,9 +17,9 @@
  */
 
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { Divider, Form, Grid, List } from "semantic-ui-react";
 import { EditSection, Hint, Section } from "@wso2is/react-components";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
-import { Divider, Form, Grid } from "semantic-ui-react";
 import { getSelfSignUpConfigurations, updateSelfSignUpConfigurations } from "../../api";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
@@ -233,7 +233,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		<Forms>
 			<Grid padded={ true }>
 				<Grid.Row columns={ 1 }>
-					<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+					<Grid.Column className="first-column" mobile={ 16 } tablet={ 16 } computer={ 14 }>
 						<Field
 							name={ ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE }
 							required={ false }
@@ -449,8 +449,12 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 			primaryActionIcon="key"
 			showActionBar={ !editingForm[USER_SELF_REGISTRATION_FORM_IDENTIFIER] }
 		>
-			{ userSelfRegistrationSummary }
-			{ showUserSelfRegistrationView }
+			<List verticalAlign="middle" className="main-content-inner">
+				<List.Item className="inner-list-item">
+					{ userSelfRegistrationSummary }
+					{ showUserSelfRegistrationView }
+				</List.Item>
+			</List>
 		</Section>
 	);
 };

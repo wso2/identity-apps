@@ -37,6 +37,12 @@ export const AuthenticateTokenKeys = constantToken;
 export const AuthenticateUserKeys = constantUser;
 
 /**
- * Export models
+ * Export Models
  */
 export * from "./models/oidc-request-params";
+export * from "./models/client";
+
+/**
+ * Export Client SDK
+ */
+export * from "./client";

@@ -76,23 +76,9 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
 
     const dispatch = useDispatch();
 
-    const [connectorMeta, setConnectorMeta] = useState<OutboundProvisioningConnectorMetaInterface>({
-        blockingEnabled: false,
-        connectorId: "",
-        displayName: "",
-        name: "",
-        properties: [],
-        rulesEnabled: false
-    });
+    const [connectorMeta, setConnectorMeta] = useState<OutboundProvisioningConnectorMetaInterface>(undefined);
 
-    const [connectorDetails, setConnectorDetails] = useState<OutboundProvisioningConnectorInterface>({
-        blockingEnabled: false,
-        connectorId: "",
-        isDefault: false,
-        isEnabled: false,
-        properties: [],
-        rulesEnabled: false
-    });
+    const [connectorDetails, setConnectorDetails] = useState<OutboundProvisioningConnectorInterface>(undefined);
 
     /**
      * Handles the connector config form submit action.
@@ -178,13 +164,13 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     }, [props]);
 
     return (
-        (!isLoading)
+        (!isLoading && connectorMeta && connectorDetails)
             ? (
                 <div className="default-provisioning-connector-section">
                     {
                         (
                             <>
-                                <Heading as="h4">{connectorMeta?.name}</Heading>
+                                <Heading as="h4">{connectorMeta?.displayName}</Heading>
                                 {
                                     outboundConnectors.defaultConnectorId &&
                                     <OutboundProvisioningConnectorFormFactory
