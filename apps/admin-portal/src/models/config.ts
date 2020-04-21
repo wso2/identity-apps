@@ -51,6 +51,10 @@ export interface AppConfigInterface {
      * Role management feature.
      */
     roles: FeatureConfigInterface;
+    /**
+     * Certificates configurations feature.
+     */
+    certificates: FeatureConfigInterface<CertificatesConfigInterface>;
 }
 
 /**
@@ -105,6 +109,20 @@ export interface ClaimDialectsConfigInterface {
      * External claims configuration feature.
      */
     externalClaims: FeatureConfigInterface;
+}
+
+/**
+ * Certificates configs.
+ */
+export interface CertificatesConfigInterface {
+    /**
+     * Keystore certificates configuration feature.
+     */
+    keystore: FeatureConfigInterface;
+    /**
+     * Truststore certificates configuration feature.
+     */
+    truststore: FeatureConfigInterface;
 }
 
 /**
