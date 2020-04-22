@@ -27,33 +27,43 @@ export interface PortalDocumentationStructureInterface extends StrictPortalDocum
  * Strict interface for the portal documentation structure.
  */
 interface StrictPortalDocumentationStructureInterface {
-    adminPortal: {
-        applications: {
-            overview: string;
-            createNewApplication: {
-                overview: string;
-                singlePageApplication: string;
-                oidcWebApplication: string;
-                samlWebApplication: string;
+    "Admin Portal": {
+        "Applications": {
+            Overview: string;
+            "Create New Application": {
+                Overview: string;
+                "Single Page Application": string;
+                "OIDC Web Application": string;
+                "SAML Web Application": string;
             };
-            editApplication: {
-                singlePageAplication: string;
-                oidcWebApplication: string;
-                samlWebApplication: string;
+            "Edit Application": {
+                "Single Page Aplication": string;
+                "OIDC Web Application": string;
+                "SAML Web Application": string;
             };
         };
     };
-    samples: {
-        overview: string;
-        authentication: {
-            android: string;
-            iOs: string;
-            angular: string;
-            react: string;
-            java: string;
-            nodeJs: string;
-            openIdConnect: string;
-            saml: string;
+    Samples: {
+        Overview: string;
+        Authentication: {
+            Android: string;
+            iOS: string;
+            Angular: string;
+            React: string;
+            Java: string;
+            NodeJs: string;
+            "OpenID Connect": string;
+            SAML: string;
         };
     };
+}
+
+/**
+ * Application sample interface.
+ */
+export interface ApplicationSampleInterface {
+    name: string;
+    displayName: string;
+    image: string;
+    docs: string;
 }
