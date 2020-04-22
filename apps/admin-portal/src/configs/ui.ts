@@ -64,6 +64,7 @@ import {
     MagnifierIcon,
     MaximizeIcon,
     MinimizeIcon,
+    NodeJSLogo,
     OIDCLogo,
     OIDCWebAppTemplateIllustration,
     OpenIDLogo,
@@ -199,9 +200,13 @@ export const TechnologyLogos = {
     cordova: CordovaLogo,
     dotNet: DotNetLogo,
     html: HTMLLogo,
+    ios: AppleLogo,
     java: JavaLogo,
     javascript: JavaScriptLogo,
+    nodejs: NodeJSLogo,
+    openidconnect: OIDCLogo,
     react: ReactLogo,
+    saml: SamlLogo,
     vue: VueLogo
 };
 
