@@ -18,12 +18,14 @@
 
 import {
     AUTHORIZATION_ENDPOINT,
+    CALLBACK_URL,
     END_SESSION_ENDPOINT,
     ISSUER,
     JWKS_ENDPOINT,
     OP_CONFIG_INITIATED,
     REVOKE_TOKEN_ENDPOINT,
     SERVICE_RESOURCES,
+    TENANT,
     TOKEN_ENDPOINT,
     USERNAME
 } from "../constants";
@@ -93,6 +95,20 @@ export const setOPConfigInitiated = (): void => {
 };
 
 /**
+ * Set callback URL.
+ */
+export const setCallbackURL = (url: string): void => {
+    setSessionParameter(CALLBACK_URL, url);
+};
+
+/**
+ * Set tenant name.
+ */
+export const setTenant = (tenant: string): void => {
+    setSessionParameter(TENANT, tenant);
+};
+
+/**
  * Set id_token issuer.
  *
  * @param issuer id_token issuer.
@@ -115,8 +131,7 @@ export const initOPConfiguration = (
         forceInit: boolean
     ): Promise<any> => {
 
-    if (!forceInit && isOPConfigInitiated()) {
-
+    if (!forceInit && isValidOPConfig(requestParams.tenant)) {
         return Promise.resolve();
     }
 
@@ -136,15 +151,19 @@ export const initOPConfiguration = (
             setRevokeTokenEndpoint(response.data.token_endpoint
                 .substring(0, response.data.token_endpoint.lastIndexOf("token")) + "revoke");
             setIssuer(response.data.issuer);
+            setTenant(requestParams.tenant);
+            setCallbackURL(requestParams.callbackURL);
             setOPConfigInitiated();
 
             return Promise.resolve();
         }).catch(() => {
-            setTokenEndpoint(serverHost + SERVICE_RESOURCES.token);
-            setRevokeTokenEndpoint(serverHost + SERVICE_RESOURCES.revoke);
-            setEndSessionEndpoint(serverHost + SERVICE_RESOURCES.logout);
+            setTokenEndpoint(requestParams.serverOrigin + SERVICE_RESOURCES.token);
+            setRevokeTokenEndpoint(requestParams.serverOrigin + SERVICE_RESOURCES.revoke);
+            setEndSessionEndpoint(requestParams.serverOrigin + SERVICE_RESOURCES.logout);
             setJwksUri(serverHost + SERVICE_RESOURCES.jwks);
-            setIssuer(serverHost + SERVICE_RESOURCES.token);
+            setIssuer(requestParams.serverOrigin + SERVICE_RESOURCES.token);
+            setTenant(requestParams.tenant);
+            setCallbackURL(requestParams.callbackURL);
             setOPConfigInitiated();
 
             return Promise.resolve();
@@ -162,6 +181,8 @@ export const resetOPConfiguration = (): void => {
     removeSessionParameter(REVOKE_TOKEN_ENDPOINT);
     removeSessionParameter(OP_CONFIG_INITIATED);
     removeSessionParameter(ISSUER);
+    removeSessionParameter(TENANT);
+    removeSessionParameter(CALLBACK_URL);
 };
 
 /**
@@ -223,16 +244,8 @@ export const getUsername = (): string|null => {
  *
  * @returns {any}
  */
-export const getTenant = (): string|string[] => {
-    if (getUsername()) {
-        const usernameSplit = getUsername().split("@");
-
-        if (usernameSplit.length > 1) {
-            return usernameSplit[usernameSplit.length - 1];
-        }
-    }
-
-    return "";
+export const getTenant = (): string|null => {
+    return getSessionParameter(TENANT);
 };
 
 /**
@@ -250,5 +263,5 @@ export const getIssuer = (): string => {
  * @returns {boolean}
  */
 export const isValidOPConfig = (tenant): boolean => {
-    return isOPConfigInitiated() && ((getTenant() !== "") && (getTenant() !== tenant));
+    return isOPConfigInitiated() && (getTenant() && (getTenant() === tenant));
 };

@@ -80,6 +80,7 @@ export const endAuthenticatedSession = (): void => {
     removeSessionParameter(EMAIL);
     removeSessionParameter(ID_TOKEN);
     removeSessionParameter(REFRESH_TOKEN);
+    removeSessionParameter(REQUEST_PARAMS);
     removeSessionParameter(SCOPE);
     removeSessionParameter(TOKEN_TYPE);
     removeSessionParameter(USERNAME);
