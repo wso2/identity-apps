@@ -31,7 +31,6 @@ export * from "./profile";
 export * from "./global";
 export * from "./help-panel";
 export * from "./loaders";
-export * from "./meta";
 export * from "./application-inbound";
 export * from "./user";
 export * from "./identity-provider";
