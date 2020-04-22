@@ -443,6 +443,12 @@ export const handleSignIn = (requestParams: ConfigInterface, callback?: () => vo
 
             return handleSignOut(requestParams);
         }
+
+        if (callback) {
+            callback();
+        }
+
+        return Promise.resolve("Sign In successful!");
     } else {
         initOPConfiguration(requestParams, false)
             .then(() => {

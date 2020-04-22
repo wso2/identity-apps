@@ -140,11 +140,11 @@ export const initOPConfiguration = (
 
             return Promise.resolve();
         }).catch(() => {
-            setTokenEndpoint(SERVICE_RESOURCES.token);
-            setRevokeTokenEndpoint(SERVICE_RESOURCES.revoke);
-            setEndSessionEndpoint(SERVICE_RESOURCES.logout);
-            setJwksUri(SERVICE_RESOURCES.jwks);
-            setIssuer(SERVICE_RESOURCES.token);
+            setTokenEndpoint(serverHost + SERVICE_RESOURCES.token);
+            setRevokeTokenEndpoint(serverHost + SERVICE_RESOURCES.revoke);
+            setEndSessionEndpoint(serverHost + SERVICE_RESOURCES.logout);
+            setJwksUri(serverHost + SERVICE_RESOURCES.jwks);
+            setIssuer(serverHost + SERVICE_RESOURCES.token);
             setOPConfigInitiated();
 
             return Promise.resolve();
