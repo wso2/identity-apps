@@ -22,7 +22,7 @@ import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import * as forge from "node-forge";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Card, Divider, Form, Grid, Icon, Image, Message, Modal, Segment, TextArea } from "semantic-ui-react";
+import { Divider, Form, Grid, Icon, Message, Modal, Segment, TextArea } from "semantic-ui-react";
 import { createKeystoreCertificate } from "../../api";
 import { CertificateImage, FileUploadPlaceholder } from "../../configs";
 import { Certificate } from "../../models";

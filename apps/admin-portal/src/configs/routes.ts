@@ -32,7 +32,6 @@ import {
     ApplicationTemplateSelectPage,
     ApplicationsPage,
     CertificatesKeystore,
-    CertificatesTruststore,
     ClaimDialectsPage,
     CustomizePage,
     ExternalDialectEditPage,
