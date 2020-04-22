@@ -123,7 +123,7 @@ export const initOPConfiguration = (
         forceInit: boolean
     ): Promise<any> => {
 
-    if (!forceInit && isOPConfigInitiated()) {
+    if (!forceInit && isValidOPConfig(requestParams.tenant)) {
         return Promise.resolve();
     }
 
@@ -252,5 +252,5 @@ export const getIssuer = (): string => {
  * @returns {boolean}
  */
 export const isValidOPConfig = (tenant): boolean => {
-    return isOPConfigInitiated() && ((getTenant() !== "") && (getTenant() !== tenant));
+    return isOPConfigInitiated() && (getTenant() && (getTenant() === tenant));
 };

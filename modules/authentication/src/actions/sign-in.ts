@@ -437,8 +437,11 @@ export const sendSignInRequest = (requestParams: ConfigInterface, callback?: () 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const handleSignIn = (requestParams: ConfigInterface, callback?: () => void): Promise<any> => {
     if (getSessionParameter(ACCESS_TOKEN)) {
-        if (isValidOPConfig(requestParams.tenant)) {
-            handleSignOut(requestParams);
+        if (!isValidOPConfig(requestParams.tenant)) {
+            initOPConfiguration(requestParams, true)
+                .then(() => {
+                    sendSignInRequest(requestParams, callback);
+                });
         }
 
         if (callback) {
@@ -447,7 +450,7 @@ export const handleSignIn = (requestParams: ConfigInterface, callback?: () => vo
 
         return Promise.resolve("Sign In successful!");
     } else {
-        initOPConfiguration(requestParams, isValidOPConfig(requestParams.tenant))
+        initOPConfiguration(requestParams, false)
             .then(() => {
                 sendSignInRequest(requestParams, callback);
             });
