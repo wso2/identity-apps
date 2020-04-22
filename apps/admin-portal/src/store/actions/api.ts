@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { HttpRequestConfig } from "../../models";
 import {
     API_REQUEST,
     API_REQUEST_END,
@@ -25,6 +24,7 @@ import {
     ApiRequestEndAction,
     ApiRequestStartAction
 } from "./types";
+import { HttpRequestConfig } from "../../models";
 
 /**
  * Dispatches an action of type `API_REQUEST_START` with the type

@@ -17,20 +17,20 @@
  *
  */
 
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import _ from "lodash";
+import { getApplicationTemplateList, getAvailableInboundProtocols } from "../api";
+import { CustomApplicationTemplate } from "../components/applications/meta";
+import { ApplicationManagementConstants } from "../constants";
 import {
     ApplicationTemplateListInterface,
     ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
     MainApplicationInterface
 } from "../models";
-import { getApplicationTemplateList, getAvailableInboundProtocols } from "../api";
-import { setApplicationTemplates, setAvailableInboundAuthProtocolMeta } from "../store/actions";
-import _ from "lodash";
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
-import { ApplicationManagementConstants } from "../constants";
 import { store } from "../store";
-import { CustomApplicationTemplate } from "../components/applications/meta";
+import { setApplicationTemplates, setAvailableInboundAuthProtocolMeta } from "../store/actions";
 
 /**
  * Utility class for application(service provider) operations.

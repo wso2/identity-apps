@@ -16,18 +16,18 @@
  * under the License.
  */
 
+import { commonConfigReducer } from "@wso2is/core/store";
+import { combineReducers } from "redux";
 import {
+    LoadersReducer,
     applicationReducer,
     authenticateReducer,
     commonConfigReducerInitialState,
     globalReducer,
-    identityProviderReducer,
-    LoadersReducer
+    identityProviderReducer
 } from "./reducers";
-import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "../models";
-import { combineReducers } from "redux";
-import { commonConfigReducer } from "@wso2is/core/store";
 import { helpPanelReducer } from "./reducers/help-panel";
+import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "../models";
 
 /**
  * Combines all the reducers.
