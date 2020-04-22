@@ -141,7 +141,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                                     { authenticator.title }
                                 </>
                             ) }
-                            actions={ [ ...authenticator.actions, ...globalActions ] }
+                            actions={ authenticator.actions && [ ...authenticator.actions, ...globalActions ] }
                             hideChevron={ hideChevron }
                         />
                         <SegmentedAccordion.Content
