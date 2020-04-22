@@ -269,3 +269,9 @@
         margin-top: 25px;
     }
 }
+
+.ui.button {
+    &.show-more-templates-button {
+        margin-right: @showMoreTemplatesButtonMarginRight;
+    }
+}

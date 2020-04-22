@@ -121,7 +121,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
             return;
         }
 
-        dispatch(setHelpPanelDocsContentURL(helpPanelMetadata.applications.docs.inbound[ selectedInboundProtocol.id ]));
+        dispatch(setHelpPanelDocsContentURL(helpPanelMetadata.applications.docs.inbound[ selectedInboundProtocol?.id ]));
     }, [ selectedInboundProtocol?.id, helpPanelMetadata ]);
 
     /**
