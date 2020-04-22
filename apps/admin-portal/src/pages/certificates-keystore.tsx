@@ -16,20 +16,20 @@
  * under the License.
  */
 
-import { AddCertificate, CertificatesKeystoreSearch, CertificatesList } from "../components";
-import { AlertLevels, AppConfigInterface, Certificate } from "../models";
-import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import { filterList, sortList } from "../utils";
 import { ListLayout, PageLayout } from "../layouts";
 import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addAlert } from "../store/actions";
+import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { AppConfig } from "../helpers";
 import { AppState } from "../store";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { listCertificateAliases } from "../api";
+import { AddCertificate, CertificatesKeystoreSearch, CertificatesList } from "../components";
 import { UserConstants } from "../constants";
+import { AlertLevels, AppConfigInterface, Certificate } from "../models";
+import { addAlert } from "../store/actions";
 
 /**
  * This renders the Userstores page.
@@ -168,6 +168,7 @@ export const CertificatesKeystore = (): ReactElement => {
                     <AddCertificate
                         open={ openModal }
                         onClose={ () => setOpenModal(false) }
+                        update={ fetchCertificatesKeystore }
                     />
                 )
             }
@@ -204,7 +205,7 @@ export const CertificatesKeystore = (): ReactElement => {
                                             setOpenModal(true);
                                         } }
                                     >
-                                        <Icon name="add" />Upload Certificate
+                                        <Icon name="download" />Import Certificate
                                     </PrimaryButton>
                                 )
                             }
@@ -231,11 +232,11 @@ export const CertificatesKeystore = (): ReactElement => {
                                                 setOpenModal(true);
                                             } }
                                         >
-                                            <Icon name="add" /> Upload Certificate
+                                            <Icon name="download" /> Import Certificate
                                         </PrimaryButton>
                                     )
                                 }
-                                title="Add Certificate"
+                                title="Import Certificate"
                                 subtitle={ [ "Currently, there are no certificates available." ] }
                                 image={ EmptyPlaceholderIllustrations.emptyList }
                                 imageSize="tiny"
