@@ -27,7 +27,7 @@ import { getRoleById } from "../../api";
  * Proptypes for the user role permission component.
  */
 interface UserRolePermissionsInterface {
-    testId?: string;
+    [ "data-testid" ]?: string;
     openRolePermissionModal: boolean;
     handleCloseRolePermissionModal: () => void;
     roleId: string;
@@ -46,8 +46,7 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
     const {
         openRolePermissionModal,
         handleCloseRolePermissionModal,
-        roleId,
-        testId
+        roleId
     } = props;
 
     const [ isRoleSet, setRoleCheck ] = useState(false);
@@ -86,7 +85,7 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
     return (
         isRoleSet && (
             <Modal
-                data-testid={ testId }
+                data-testid={ props[ `data-testid` ] }
                 open={ openRolePermissionModal }
                 size="small"
                 className="user-roles"
@@ -104,7 +103,7 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
                         <Grid.Row column={ 1 }>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                 <LinkButton
-                                    data-testid={ `${ testId }_back_button` }
+                                    data-testid={ `${ props[ `data-testid` ] }_back_button` }
                                     floated="left"
                                     onClick={ handleCloseRolePermissionModal }
                                 >

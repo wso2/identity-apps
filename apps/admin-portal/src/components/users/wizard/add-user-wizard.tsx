@@ -577,7 +577,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             content: (
                 viewGroupPermissions
                      ? <RolePermissions
-                            testId="user_mgt_add_user_wizard_modal_group_permission"
+                            data-testid="user_mgt_add_user_wizard_modal_group_permission"
                             handleNavigateBack={ handleViewGroupPermission }
                             roleId={ selectedGroupId }
                         />
@@ -606,7 +606,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             content: (
                 viewRolePermissions
                 ? <RolePermissions
-                        testId="user_mgt_add_user_wizard_modal_role_permission"
+                        data-testid="user_mgt_add_user_wizard_modal_role_permission"
                         handleNavigateBack={ handleViewRolePermission }
                         roleId={ selectedRoleId }
                     />

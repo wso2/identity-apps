@@ -35,7 +35,7 @@ export interface TransferListPropsInterface extends TableProps {
     isListEmpty: boolean;
     handleHeaderCheckboxChange: () => void;
     isHeaderCheckboxChecked: boolean;
-    selectAllCheckboxId?: string;
+    [ "data-testid" ]?: string;
 }
 
 /**
@@ -56,8 +56,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
         listHeaders,
         isListEmpty,
         handleHeaderCheckboxChange,
-        isHeaderCheckboxChecked,
-        selectAllCheckboxId
+        isHeaderCheckboxChecked
     } = props;
 
     return (
@@ -71,7 +70,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                                 <Table.Row>
                                     <Table.HeaderCell>
                                         <Checkbox
-                                            data-testid={ selectAllCheckboxId }
+                                            data-testid={ props[ `data-testid` ] }
                                             checked={ isHeaderCheckboxChecked }
                                             onChange={ handleHeaderCheckboxChange }
                                         />

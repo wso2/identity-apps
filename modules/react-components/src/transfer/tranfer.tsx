@@ -29,8 +29,7 @@ export interface TransferComponentPropsInterface {
     addItems: () => void;
     removeItems: () => void;
     searchPlaceholder: string;
-    unselectedSegmentTestId?: string;
-    selectedSegmentTestId?: string;
+    [ "data-testid" ]?: string;
 }
 
 /**
@@ -50,8 +49,6 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         searchPlaceholder,
         handleUnelectedListSearch,
         handleSelectedListSearch,
-        unselectedSegmentTestId,
-        selectedSegmentTestId,
     } = props;
 
     return (
@@ -67,11 +64,11 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                             list.props.listType === "unselected" && (
                                             <Grid.Column width={ 7 }>
                                                 <Segment
-                                                    data-testid={ unselectedSegmentTestId }
+                                                    data-testid={ `${ props[ `data-testid` ] }_unselected_groups` }
                                                     className="transfer-segment"
                                                 >
                                                     <TransferListSearch
-                                                        searchFieldTestId={ `${ unselectedSegmentTestId }_search_input` }
+                                                        searchFieldTestId={ `${ props[ `data-testid` ] }_unselected_groups_search_input` }
                                                         handleListSearch={ handleUnelectedListSearch }
                                                         placeholder={ searchPlaceholder }
                                                     />
@@ -91,7 +88,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                 >
                                                     <Grid.Row>
                                                         <Button
-                                                            data-testid={ `${ unselectedSegmentTestId }_add_button` }
+                                                            data-testid={ `${  props[ `data-testid` ] }_unselected_groups_add_button` }
                                                             type="button"
                                                             basic
                                                             size="mini"
@@ -102,7 +99,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                     </Grid.Row>
                                                     <Grid.Row>
                                                         <Button
-                                                            data-testid={ `${ unselectedSegmentTestId }_remove_button` }
+                                                            data-testid={ `${  props[ `data-testid` ] }_unselected_groups_remove_button` }
                                                             type="button"
                                                             basic
                                                             size="mini"
@@ -118,11 +115,11 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                             list.props.listType === "selected" && (
                                                 <Grid.Column width={ 7 } className="transfer-list-assigned-column">
                                                     <Segment
-                                                        data-testid={ selectedSegmentTestId }
+                                                        data-testid={ `${ props[ `data-testid` ] }_selected_groups` }
                                                         className="transfer-segment"
                                                     >
                                                         <TransferListSearch
-                                                            searchFieldTestId={ `${ selectedSegmentTestId }_search_input` }
+                                                            searchFieldTestId={ `${ props[ `data-testid` ] }_selected_groups_search_input` }
                                                             handleListSearch={ handleSelectedListSearch }
                                                             placeholder={ searchPlaceholder }
                                                         />

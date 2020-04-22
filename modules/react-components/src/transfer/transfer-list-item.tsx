@@ -43,7 +43,7 @@ interface TransferListItemPropsInterface extends TableRowProps {
     handleOpenPermissionModal?: () => void;
     showListSubItem?: boolean;
     listSubItem?: string;
-    listItemTestId?: string;
+    [ "data-testid" ]?: string;
 }
 
 /**
@@ -67,15 +67,14 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
         showSecondaryActions,
         handleOpenPermissionModal,
         showListSubItem,
-        listSubItem,
-        listItemTestId
+        listSubItem
     } = props;
 
     return (
         <Table.Row key={ listItemIndex }>
             <Table.Cell id={ listItemId } collapsing>
                 <Checkbox
-                    data-testid={ `${ listItemTestId }_${ listItem.replace(" ", "_") }_checkbox` }
+                    data-testid={ `${ props[ `data-testid` ] }_${ listItem.replace(" ", "_") }_checkbox` }
                     checked={ isItemChecked }
                     onChange={ handleItemChange }
                     onClick={ handleItemClick }
@@ -115,7 +114,7 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
                             content="View permissions"
                             trigger={
                                 <Icon
-                                    data-testid={ `${ listItemTestId }_${ listItem.replace(" ", "_") }_icon` }
+                                    data-testid={ `${ props[ `data-testid` ] }_${ listItem.replace(" ", "_") }_icon` }
                                     color="grey"
                                     name="key"
                                     onClick={ handleOpenPermissionModal }

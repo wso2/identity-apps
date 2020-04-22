@@ -27,7 +27,7 @@ import { Heading, LinkButton } from "@wso2is/react-components";
  * Proptypes for the role permission component.
  */
 interface RolePermissionsInterface {
-    testId?: string;
+    [ "data-testid" ]?: string;
     roleId: string;
     handleNavigateBack: () => void;
 }
@@ -44,8 +44,7 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
 
     const {
         roleId,
-        handleNavigateBack,
-        testId
+        handleNavigateBack
     } = props;
 
     const [ isRoleSet, setRoleCheck ] = useState(false);
@@ -87,13 +86,13 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
                 <Heading as="h5">
                     Permissions for { role.displayName }
                 </Heading>
-                <Segment data-testid={ testId }>
+                <Segment data-testid={ props[ `data-testid`] }>
                     <div className="permissions-edit-container">
                         <PermissionList isEdit={ false } isRole roleObject={ role }/>
                     </div>
                 </Segment>
                 <LinkButton
-                    data-testid={ `${ testId }_back_button` }
+                    data-testid={ `${ props[ `data-testid`] }_back_button` }
                     floated="left"
                     onClick={ handleNavigateBack }
                 >

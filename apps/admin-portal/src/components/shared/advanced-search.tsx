@@ -42,7 +42,7 @@ interface AdvancedSearchProps {
     resetSubmittedState?: () => void;
     searchOptionsHeader?: string;
     submitted?: boolean;
-    testId?: string;
+    [ "data-testid" ]?: string;
 }
 
 /**
@@ -69,8 +69,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
         placeholder,
         resetSubmittedState,
         searchOptionsHeader,
-        submitted,
-        testId,
+        submitted
     } = props;
     const [ internalSearchQuery, setInternalSearchQuery ] = useState("");
     const [ showSearchFieldHint, setShowSearchFieldHint ] = useState(false);
@@ -187,7 +186,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
     return (
         <div className={ `advanced-search-wrapper ${ wrapperClasses }` }>
             <Input
-                data-testid={ `${ testId }_input` }
+                data-testid={ `${ props[ `data-testid` ] }_input` }
                 action={ (
                     <>
                         {
@@ -198,7 +197,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
                                         trigger={
                                             (
                                                 <Button
-                                                    data-testid={ `${ testId }_clear_button` }
+                                                    data-testid={ `${ props[ `data-testid` ] }_clear_button` }
                                                     basic
                                                     compact
                                                     className="input-add-on"
@@ -225,7 +224,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
                             trigger={
                                 (
                                     <Button
-                                        data-testid={ `${ testId }_options_button` }
+                                        data-testid={ `${ props[ `data-testid` ] }_options_button` }
                                         basic
                                         compact
                                         className="input-add-on"
