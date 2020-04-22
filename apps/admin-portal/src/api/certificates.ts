@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { Certificate, HttpMethods } from "../models";
 import { AxiosHttpClient } from "@wso2is/http";
+import { Certificate, HttpMethods } from "../models";
 import { store } from "../store";
 
 /**
@@ -72,9 +72,9 @@ export const listCertificateAliases = (filter?: string): Promise<any> => {
 export const retrieveCertificateAlias = (alias: string, encode?: boolean): Promise<any> => {
     const requestConfig = {
         headers: {
-            Accept: "application/json",
+            Accept: "application/pkix-cert",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
+            "Content-Type": "application/pkix-cert"
         },
         method: HttpMethods.GET,
         params: {
@@ -105,9 +105,9 @@ export const retrieveCertificateAlias = (alias: string, encode?: boolean): Promi
 export const retrievePublicCertificate = (encode?: boolean): Promise<any> => {
     const requestConfig = {
         headers: {
-            Accept: "application/json",
+            Accept: "application/pkix-cert",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
+            "Content-Type": "application/pkix-cert"
         },
         method: HttpMethods.GET,
         params: {
@@ -172,9 +172,9 @@ export const listClientCertificates = (filter?: string): Promise<any> => {
 export const retrieveClientCertificate = (alias: string, encode?: boolean): Promise<any> => {
     const requestConfig = {
         headers: {
-            Accept: "application/json",
+            Accept: "application/pkix-cert",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
+            "Content-Type": "application/pkix-cert"
         },
         method: HttpMethods.GET,
         params: {
@@ -240,7 +240,7 @@ export const createKeystoreCertificate = (data: Certificate): Promise<any> => {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PUT,
+        method: HttpMethods.POST,
         url: store.getState().config.endpoints.certificates
     };
     return httpClient
