@@ -18,5 +18,8 @@
                 }
             }
         }
+        .segmented-accordion-content {
+            margin-bottom: 1em;
+        }
     }
 }
