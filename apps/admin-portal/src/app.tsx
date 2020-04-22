@@ -29,11 +29,11 @@ import { Helmet } from "react-helmet";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
+import { getPortalDocumentationStructure } from "./api";
 import { ProtectedRoute } from "./components";
 import { Config, baseRoutes } from "./configs";
 import { ApplicationConstants } from "./constants";
 import { AppConfig, history } from "./helpers";
-import { helpPanelMetadata } from "./meta";
 import {
     AppConfigInterface,
     ConfigReducerStateInterface,
@@ -41,7 +41,7 @@ import {
     ServiceResourceEndpointsInterface
 } from "./models";
 import { AppState } from "./store";
-import { setHelpPanelMetadata } from "./store/actions";
+import { setHelpPanelDocStructure } from "./store/actions";
 
 /**
  * Main App component.
@@ -71,10 +71,13 @@ export const App = (): ReactElement => {
     }, []);
 
     /**
-     * Set the help panel metadata in redux state.
+     * Set the help panel documentation structure in redux state.
      */
     useEffect(() => {
-        dispatch(setHelpPanelMetadata(helpPanelMetadata));
+        getPortalDocumentationStructure()
+            .then((response) => {
+                dispatch(setHelpPanelDocStructure(response));
+            });
     }, []);
 
     /**
