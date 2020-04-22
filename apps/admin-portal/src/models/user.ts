@@ -137,7 +137,7 @@ export const createEmptyUserDetails = (): UserDetailsInterface => ({
     "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
         askPassword: ""
     },
-    profileUrl: "",
+    profileUrl: ""
 });
 
 /**

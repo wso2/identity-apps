@@ -17,25 +17,25 @@
  */
 
 import { ContextUtils, HttpUtils } from "@wso2is/core/utils";
-import { ThemeProvider } from "@wso2is/react-components";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import axios from "axios";
-import { BrowserRouter } from "react-router-dom";
-import { App } from "./app";
-import { Config } from "./configs";
-import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
+import { StringUtils } from "@wso2is/core/utils";
 import {
     I18n,
     I18nInstanceInitException,
     I18nModuleConstants,
-    isLanguageSupported,
-    LanguageChangeException
+    LanguageChangeException,
+    isLanguageSupported
 } from "@wso2is/i18n";
+import { ThemeProvider } from "@wso2is/react-components";
+import axios from "axios";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+import { App } from "./app";
+import { Config } from "./configs";
 import { store } from "./store";
 import { setSupportedI18nLanguages } from "./store/actions";
-import { StringUtils } from "@wso2is/core/utils";
-import { Provider } from "react-redux";
+import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getRuntimeConfig());

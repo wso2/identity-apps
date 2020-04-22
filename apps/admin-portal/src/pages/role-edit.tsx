@@ -17,12 +17,12 @@
  */
 
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { PageLayout } from "../layouts";
-import { history } from "../helpers";
 import { getRoleById } from "../api";
 import { EditRole } from "../components/roles/edit-role/edit-role";
-import { RolesInterface } from "../models";
 import { ROLE_VIEW_PATH } from "../constants";
+import { history } from "../helpers";
+import { PageLayout } from "../layouts";
+import { RolesInterface } from "../models";
 
 export const RoleEditPage: FunctionComponent<any> = (props: any): ReactElement => {
 

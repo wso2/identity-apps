@@ -17,8 +17,8 @@
  */
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
-import { LocalStorageUtils } from "@wso2is/core/utils";
 import { CommonHelpers } from "@wso2is/core/helpers";
+import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Button, EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -31,17 +31,17 @@ import {
     PaginationProps,
     Popup
 } from "semantic-ui-react";
-import { deleteUser, getUsersList, getUserStoreList } from "../api";
+import { deleteUser, getUserStoreList, getUsersList } from "../api";
 import { UserSearch, UsersList } from "../components/users";
+import { UsersListOptionsComponent } from "../components/users";
 import { AddUserWizard } from "../components/users/wizard";
+import { EmptyPlaceholderIllustrations } from "../configs";
+import { UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertInterface, AlertLevels } from "../models";
 import { UserListInterface } from "../models/user";
-import { addAlert } from "../store/actions";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { UserConstants } from "../constants";
-import { UsersListOptionsComponent } from "../components/users";
 import { store } from "../store";
+import { addAlert } from "../store/actions";
 
 
 /**

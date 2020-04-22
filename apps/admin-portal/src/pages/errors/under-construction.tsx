@@ -18,13 +18,13 @@
 
 import * as React from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import { EmptyPlaceholder } from "../../components/shared";
 import { EmptyPlaceholderIllustrations } from "../../configs";
 import { ErrorPageLayout } from "../../layouts";
 import { ConfigReducerStateInterface } from "../../models";
-import { useSelector } from "react-redux";
 import { AppState } from "../../store";
 
 /**

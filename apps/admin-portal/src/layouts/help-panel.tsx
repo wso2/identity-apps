@@ -17,9 +17,9 @@
  */
 
 import { HelpPanel, HelpPanelPropsInterface } from "@wso2is/react-components";
-import { Menu, Sidebar } from "semantic-ui-react";
-import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useRef } from "react";
 import classNames from "classnames";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useRef } from "react";
+import { Menu, Sidebar } from "semantic-ui-react";
 
 /**
  * Sidebar pusher layout Prop types.

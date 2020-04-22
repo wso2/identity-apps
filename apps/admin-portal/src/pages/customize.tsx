@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { Button, Card, Divider, Form, Grid, Header, Image, Label } from "semantic-ui-react";
-import { ColorResult, RGBColor, SketchPicker } from "react-color";
-import { defaultThemeVariables, Theme, ThemeLessIndex, Themes } from "@wso2is/theme";
-import React, { ChangeEvent, ReactElement, useContext, useState } from "react";
 import { ThemeContext, ThemeTypes } from "@wso2is/react-components";
+import { Theme, ThemeLessIndex, Themes, defaultThemeVariables } from "@wso2is/theme";
+import React, { ChangeEvent, ReactElement, useContext, useState } from "react";
+import { ColorResult, RGBColor, SketchPicker } from "react-color";
+import { Button, Card, Divider, Form, Grid, Header, Image, Label } from "semantic-ui-react";
 
 /**
  * Util method to convert hex color code string to RGBA color object.
