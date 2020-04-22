@@ -24,6 +24,7 @@ import { getEmailTemplate } from "../api";
 import { PageLayout } from "../layouts";
 import { history } from "../helpers";
 import { AddLocaleTemplate } from "../components/email-templates";
+import * as CountryLanguage from "country-language";
 
 /**
  * Component will render add view for a email template based on 
@@ -33,6 +34,7 @@ export const AddTemplateLocale: FunctionComponent = (): ReactElement => {
     
     const [ templateTypeId, setTemplateTypeId ] = useState<string>('');
     const [ templateId, setTemplateId ] = useState<string>('');
+    const [ localeName, setLocaleName ] = useState<string>('');
     const [ emailTemplateTypeDetails, setEmailTemplateTypeDetails ] = useState<EmailTemplateDetails>(undefined);
     const [ emailTemplateName, setEmailTemplateName ] = useState<string>('');
 
@@ -47,11 +49,26 @@ export const AddTemplateLocale: FunctionComponent = (): ReactElement => {
         const path: string[] = history.location.pathname.split("/");
         let templateTypeId = '';
         let templateId = '';
+        let countryCode = "";
+        let languageCode = "";
         
         //Handle edit flow if length is 5
         if (path.length === 5) {
             templateTypeId = path[ path.length - 3 ];
             templateId =  path[ path.length - 1 ];
+
+            if (templateId.indexOf("_") !== -1) {
+                countryCode = templateId.split("_")[1];
+                languageCode = templateId.split("_")[0];
+            } else {
+                countryCode = templateId.split("-")[1];
+                languageCode = templateId.split("-")[0];
+            }
+
+            const language = CountryLanguage.getLanguage(languageCode).name;
+            const country = CountryLanguage.getCountry(countryCode).name;
+
+            setLocaleName(country ? language + " (" + country + ")" : language);
         } else if (path.length === 4) {
             templateTypeId = path[ path.length - 2 ];
         }
@@ -69,7 +86,9 @@ export const AddTemplateLocale: FunctionComponent = (): ReactElement => {
 
     return (
         <PageLayout
-            title={ templateId === "" ? "Add new locale for template" : "Edit " + templateId + " locale  template" }
+            title={ templateId === "" ? 
+                "Add new template for " + emailTemplateTypeDetails?.displayName : 
+                "Edit " + localeName + " template" }
             backButton={ {
                 onClick: handleBackButtonClick,
                 text: "Go back to " + emailTemplateName + " template"

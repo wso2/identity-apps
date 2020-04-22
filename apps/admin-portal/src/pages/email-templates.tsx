@@ -186,7 +186,7 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
                     (
                         <PrimaryButton onClick={ () => handleAddNewTemplate() }>
                             <Icon name="add"/>
-                            New Locale
+                            New Template
                         </PrimaryButton>
                     )
                 }

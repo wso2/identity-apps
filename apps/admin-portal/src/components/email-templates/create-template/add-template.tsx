@@ -118,7 +118,7 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
             subject: values.get("emailSubject").toString(),
             body: htmlBodyContent,
             footer: htmlFooterContent,
-            id: values.get("locale").toString(),
+            id: locale,
         }
 
         createLocaleTemplate(templateTypeId, templateDate).then((response: AxiosResponse<EmailTemplateType>) => {
@@ -161,7 +161,7 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
         }
 
         replaceLocaleTemplateContent(templateTypeId, templateId, templateDate).then((response: AxiosResponse) => {
-            if (response.status === 201) {
+            if (response.status === 200) {
                 handleAlerts({
                     description: t(
                         "devPortal:components.emailTemplates.notifications.updateTemplate.success.description"
@@ -171,7 +171,6 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                         "devPortal:components.emailTemplates.notifications.updateTemplate.success.message"
                     )
                 });
-                history.push(EMAIL_TEMPLATE_VIEW_PATH + templateTypeId);
             }
         }).catch(error => {
             handleAlerts({
@@ -195,38 +194,37 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
             } }
         >
             <Grid>
+                {
+                    templateId === "" &&
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 4 }>
+                            <Dropdown
+                                placeholder="Select Locale"
+                                label="Locale "
+                                name="locale"
+                                requiredErrorMessage="Select locale"
+                                required={ true }
+                                options={ localeList ? localeList : [] }
+                                onChange={ (event: SyntheticEvent, data: DropdownProps) => {
+                                    setLocale(data.value.toString());
+                                } }
+                                value={ locale }
+                                selection
+                                fluid
+                                scrolling
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                }
+                
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 4 }>
-                        <Dropdown
-                            placeholder="Select Locale"
-                            label="Locale "
-                            name="locale"
-                            requiredErrorMessage="Select locale"
-                            required={ true }
-                            options={ localeList ? localeList : [] }
-                            /**
-                             * Drop down will be disabled on edit flow since 
-                             * locale is the ID of the template. 
-                             */
-                            disabled={ templateId !== "" }
-                            onChange={ (event: SyntheticEvent, data: DropdownProps) => {
-                                setLocale(data.value.toString());
-                            } }
-                            value={ locale }
-                            selection
-                            fluid
-                            scrolling
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                         <Field
                             name={ "emailSubject" }
                             label={ "Subject" }
                             required={ true }
                             requiredErrorMessage={ "Email Subject is required" }
-                            placeholder={ "Enter your Email Subject" }
+                            placeholder={ "Enter your email subject" }
                             type="text"
                             value={ subject }
                         />
@@ -247,7 +245,7 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 12 }>
                         <Form.Field>
-                            <label>Footer</label>
+                            <label>Mail signature</label>
                             <EmailTemplateEditor 
                                 htmlContent={ htmlFooterContent } 
                                 isReadOnly={ false }

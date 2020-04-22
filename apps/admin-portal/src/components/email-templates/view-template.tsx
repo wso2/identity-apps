@@ -63,6 +63,7 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
         content: (
             <EmailTemplateEditor 
                 htmlContent={ templateData?.body }
+                isPreviewOnly
                 isReadOnly
             />
         ),
@@ -79,8 +80,8 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
             closeOnEscape={ false }
         >
             <Modal.Header className="wizard-header template-type-wizard">
-                Preview Email Template
-                <Heading as="h6">{ templateData.subject }</Heading>
+                { templateData?.subject }
+                <Heading as="h6">Preview Email Template</Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
                 {WIZARD_STEPS[0].content}

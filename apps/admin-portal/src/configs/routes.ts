@@ -273,6 +273,12 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: false
     },
     {
+        exact: true,
+        icon: "serverConfigurations",
+        id: "serverConfigurations",
+        name: "Configurations",
+        protected: true,
+        showOnSidePanel: true,
         children: [
             {
                 component: ServerConfigurationsPage,
@@ -280,7 +286,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 icon: "childIcon",
                 id: "serverConfigurations",
                 level: 2,
-                name: "Server Configurations",
+                name: "General",
                 path: "/server-configurations",
                 protected: true,
                 showOnSidePanel: true
@@ -323,12 +329,6 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             }
         ],
-        exact: true,
-        icon: "serverConfigurations",
-        id: "serverConfigurations",
-        name: "Settings",
-        protected: true,
-        showOnSidePanel: true
     },
     {
         component: CustomizePage,

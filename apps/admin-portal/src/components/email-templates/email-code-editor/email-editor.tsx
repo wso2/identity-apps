@@ -22,6 +22,7 @@ import { ResourceTab, CodeEditor } from "@wso2is/react-components";
 interface EmailTemplateEditorPropsInterface {
     htmlContent: string;
     isReadOnly: boolean;
+    isPreviewOnly?: boolean;
     updateHtmlContent?: (value) => void;
 }
 
@@ -38,44 +39,58 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
     const {
         htmlContent,
         isReadOnly,
-        updateHtmlContent
+        updateHtmlContent,
+        isPreviewOnly
     } = props;
 
     return (
         <div className="email-code-editor">
-            <ResourceTab panes={ [
-                {
-                    menuItem: "Code",
-                    render: () => (
-                        <ResourceTab.Pane attached={ false }>
-                            <CodeEditor
-                                lint
-                                language="htmlmixed"
-                                sourceCode={ htmlContent }
-                                options={ {
-                                    lineWrapping: true
-                                } }
-                                onChange={ (editor, data, value) => {
-                                    if (updateHtmlContent) {
-                                        updateHtmlContent(value);
-                                    }
-                                } }
-                                readOnly={ isReadOnly }
-                                theme={  "dark" }
-                            />
-                        </ResourceTab.Pane>
-                    ),
-                },{
-                    menuItem: "Preview",
-                    render: () => (
-                        <ResourceTab.Pane className="render-view" attached={ false }>
-                            <iframe id="iframe" srcDoc={ htmlContent }>
-                                <p>Your browser does not support iframes.</p>
-                            </iframe>
-                        </ResourceTab.Pane>
-                    ),
-                }
-            ] } />
+            {
+                isPreviewOnly ? 
+                    <div className="render-view">
+                        <iframe id="iframe" srcDoc={ htmlContent }>
+                            <p>Your browser does not support iframes.</p>
+                        </iframe>
+                    </div>
+                :
+                    <ResourceTab panes={ [
+                        {
+                            menuItem: "Code",
+                            render: () => (
+                                <ResourceTab.Pane attached={ false }>
+                                    <CodeEditor
+                                        lint
+                                        language="htmlmixed"
+                                        sourceCode={ htmlContent }
+                                        options={ {
+                                            lineWrapping: true
+                                        } }
+                                        onChange={ (editor, data, value) => {
+                                            if (updateHtmlContent) {
+                                                updateHtmlContent(value);
+                                            }
+                                        } }
+                                        readOnly={ isReadOnly }
+                                        theme={  "dark" }
+                                    />
+                                </ResourceTab.Pane>
+                            ),
+                        },{
+                            menuItem: "Preview",
+                            render: () => (
+                                <ResourceTab.Pane className="render-view" attached={ false }>
+                                    <iframe id="iframe" srcDoc={ htmlContent }>
+                                        <p>Your browser does not support iframes.</p>
+                                    </iframe>
+                                </ResourceTab.Pane>
+                            ),
+                        }
+                    ] } />
+            }
         </div>
     )
+}
+
+EmailTemplateEditor.defaultProps = {
+    isPreviewOnly: false
 }

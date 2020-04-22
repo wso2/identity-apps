@@ -146,7 +146,7 @@ export const EmailTemplateTypes = (): ReactElement => {
                     (
                         <PrimaryButton onClick={ () => setShowNewTypeWizard(true) }>
                             <Icon name="add"/>
-                            New Template
+                            New Template Type
                         </PrimaryButton>
                     )
                 }
