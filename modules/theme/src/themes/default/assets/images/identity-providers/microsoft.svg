@@ -18,9 +18,12 @@
  * under the License.
 -->
 
-<svg id="arrow-right-icon" class="icon" xmlns="http://www.w3.org/2000/svg" width="14px" height="14px"
-     viewBox="0 0 521.569 358.948">
-    <path class="path fill primary"
-          d="M312.327,361.57a27.5,27.5,0,0,1,1.357-38.867L425.648,218.295H27.5a27.5,27.5,0,1,1,0-55H425.549L313.684,58.98a27.5,27.5,0,1,1,37.51-40.225L512.824,169.476a27.5,27.5,0,0,1,2.635,37.4,27.414,27.414,0,0,1-6.292,8.742L351.194,362.927a27.5,27.5,0,0,1-38.867-1.357Z"
-          transform="translate(0 -11.367)" fill="#000"/>
+<svg version="1.1" id="microsoft" class="icon" xmlns="http://www.w3.org/2000/svg"
+	 xmlns:xlink="http://www.w3.org/1999/xlink"
+	 x="0px" y="0px"
+	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+    <path style="fill:#4CAF50;" d="M272,240h240V16c0-8.832-7.168-16-16-16H272V240z"/>
+	<path style="fill:#F44336;" d="M240,240V0H16C7.168,0,0,7.168,0,16v224H240z"/>
+	<path style="fill:#2196F3;" d="M240,272H0v224c0,8.832,7.168,16,16,16h224V272z"/>
+	<path style="fill:#FFC107;" d="M272,272v240h224c8.832,0,16-7.168,16-16V272H272z"/>
 </svg>
