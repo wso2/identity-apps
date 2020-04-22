@@ -19,13 +19,12 @@
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GeneralDetailsForm } from "./forms";
-import { deleteApplication, regenerateClientSecret, revokeClientSecret, updateApplicationDetails } from "../../api";
+import { deleteApplication, revokeClientSecret, updateApplicationDetails } from "../../api";
 import { ApplicationInterface, ApplicationTemplateListItemInterface, ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
-import { setHelpPanelDocsContentURL } from "../../store/actions";
 import { ApplicationManagementUtils } from "../../utils";
 
 /**
@@ -114,21 +113,9 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
     const dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const helpPanelMetadata = useSelector((state: AppState) => state.helpPanel.metadata);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showRevokeConfirmationModal, setShowRevokeConfirmationModal ] = useState<boolean>(false);
-
-    /**
-     * Set the default doc content URL for the tab.
-     */
-    useEffect(() => {
-        if (!helpPanelMetadata?.applications?.docs?.general) {
-            return;
-        }
-
-        dispatch(setHelpPanelDocsContentURL(helpPanelMetadata.applications.docs.general));
-    }, [ helpPanelMetadata ]);
 
     /**
      * Deletes an application.
