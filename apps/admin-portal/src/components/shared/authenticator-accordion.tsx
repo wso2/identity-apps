@@ -17,14 +17,14 @@
  */
 
 import { GenericIcon, GenericIconProps } from "@wso2is/react-components";
+import { SegmentedAccordion, SegmentedAccordionTitlePropsInterface } from "@wso2is/react-components";
+import _ from "lodash";
 import React, {
     FunctionComponent,
     ReactElement,
     SyntheticEvent,
     useState
 } from "react";
-import { SegmentedAccordion, SegmentedAccordionTitlePropsInterface } from "@wso2is/react-components";
-import _ from "lodash";
 
 /**
  * Proptypes for the Authenticator Accordion component.
@@ -42,6 +42,10 @@ export interface AuthenticatorAccordionPropsInterface {
      * Accordion actions.
      */
     globalActions?: SegmentedAccordionTitlePropsInterface["actions"];
+    /**
+     * Hides the chevron icon.
+     */
+    hideChevron?: SegmentedAccordionTitlePropsInterface["hideChevron"];
     /**
      * Attribute to sort the array.
      */
@@ -88,6 +92,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
         globalActions,
         authenticators,
         defaultActiveIndexes,
+        hideChevron,
         orderBy
     } = props;
 
@@ -137,6 +142,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                                 </>
                             ) }
                             actions={ [ ...authenticator.actions, ...globalActions ] }
+                            hideChevron={ hideChevron }
                         />
                         <SegmentedAccordion.Content
                             active={ accordionActiveIndexes.includes(index) }
@@ -155,5 +161,6 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
  */
 AuthenticatorAccordion.defaultProps = {
     defaultActiveIndexes: [ -1 ],
+    hideChevron: false,
     orderBy: undefined
 };
