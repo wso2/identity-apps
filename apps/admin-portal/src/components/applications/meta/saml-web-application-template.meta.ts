@@ -42,8 +42,8 @@ export const SAMLWebApplicationTemplate: MainApplicationInterface = {
     inboundProtocolConfiguration: {
         saml: {
             manualConfiguration: {
-                issuer: "",
-                assertionConsumerUrls: [""]
+                assertionConsumerUrls: [""],
+                issuer: ""
             }
         }
     },

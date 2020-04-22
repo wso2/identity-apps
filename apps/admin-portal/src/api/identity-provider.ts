@@ -27,7 +27,6 @@ import {
     IdentityProviderInterface,
     IdentityProviderListResponseInterface,
     IdentityProviderResponseInterface, IdentityProviderRolesInterface,
-    IdentityProviderTemplateListInterface,
     IdentityProviderTemplateListItemInterface,
     IdentityProviderTemplateListResponseInterface,
     OutboundProvisioningConnectorInterface,

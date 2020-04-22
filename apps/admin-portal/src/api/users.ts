@@ -40,11 +40,11 @@ export const getUsersList = (count: number, startIndex: number, filter: string, 
         },
         method: HttpMethods.GET,
         params: {
+            attributes,
             count,
             domain,
             filter,
-            startIndex,
-            attributes
+            startIndex
         },
         url: store.getState().config.endpoints.users
     };

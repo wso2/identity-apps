@@ -35,13 +35,13 @@ export const addPath = (permObj: PermissionObject, pathcomponents: string[],
 
     if (!comp) {
         comp = {
-            label: permObj.displayName,
             fullPath: permObj.resourcePath,
-            isExpanded: true,
-            isChecked: false,
-            name: component,
             id: permObj.resourcePath,
-            isPartiallyChecked: false
+            isChecked: false,
+            isExpanded: true,
+            isPartiallyChecked: false,
+            label: permObj.displayName,
+            name: component
         }
         permissionTreeArray.push(comp)
     }

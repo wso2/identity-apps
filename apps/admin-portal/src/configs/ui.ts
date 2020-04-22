@@ -89,7 +89,6 @@ import {
     WSTrustLogo,
     WSTrustTemplateIllustration,
     WarningIcon,
-    WebAppTemplateIllustration,
     WindowsTemplateIllustration
 } from "@wso2is/theme";
 import { SupportedServices } from "../models";
@@ -183,13 +182,13 @@ export const InboundProtocolLogos = {
 };
 
 export const ApplicationTemplateIllustrations = {
+    customApp: CustomApplicationTemplateIllustration,
     oidcWebApp: OIDCWebAppTemplateIllustration,
     passiveSTS: PassiveSTSTemplateIllustration,
     samlWebApp: SAMLWebAppTemplateIllustration,
     spa: SPATemplateIllustration,
     windowsNative: WindowsTemplateIllustration,
-    wsTrust: WSTrustTemplateIllustration,
-    customApp: CustomApplicationTemplateIllustration
+    wsTrust: WSTrustTemplateIllustration
 };
 
 export const TechnologyLogos = {
@@ -243,19 +242,19 @@ export const PlaceHolderIcons = {
 };
 
 export const IdPIcons = {
+    emailOTP: EmailOTPIcon,
     facebook: FacebookIdPIcon,
     github: GithubIdPIcon,
     google: GoogleIdPIcon,
-    twitter: TwitterIdPIcon,
-    saml: SamlLogo,
-    oidc: OIDCLogo,
-    wsFed: WSFedLogo,
-    smsOTP: SMSOTPIcon,
-    emailOTP: EmailOTPIcon,
-    microsoft: GoogleIdPIcon,
-    yahoo: GoogleIdPIcon,
     iwaKerberos: GoogleIdPIcon,
-    office365: GoogleIdPIcon
+    microsoft: GoogleIdPIcon,
+    office365: GoogleIdPIcon,
+    oidc: OIDCLogo,
+    saml: SamlLogo,
+    smsOTP: SMSOTPIcon,
+    twitter: TwitterIdPIcon,
+    wsFed: WSFedLogo,
+    yahoo: GoogleIdPIcon
 };
 
 export const IdPCapabilityIcons = {

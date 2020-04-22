@@ -109,7 +109,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
             const profileResponse: BasicProfileInterface = {
                 emails: response.data.emails || "",
                 id: response.data.id || "",
-                name: response.data.name || { givenName: "", familyName: "" },
+                name: response.data.name || { familyName: "", givenName: "" },
                 organisation: response.data[orgKey] ? response.data[orgKey].organization : "",
                 phoneNumbers: response.data.phoneNumbers || [],
                 profileUrl: response.data.profileUrl || "",
