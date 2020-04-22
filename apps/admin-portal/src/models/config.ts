@@ -187,6 +187,7 @@ export interface ServiceResourceEndpointsInterface {
     logout: string;
     me: string;
     permission: string;
+    portalDocumentationRawContent: string;
     portalDocumentationStructure: string;
     profileSchemas: string;
     sessions: string;

@@ -164,7 +164,8 @@ export class Config {
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID}/connectors/${
                 ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID}`,
             permission: `${this.getRuntimeConfig().serverHost}/api/server/v1/permission-management/permissions`,
-            portalDocumentationStructure: HelpPanelConstants.PORTAL_DOCUMENTATION_STRUCTURE_URL,
+            portalDocumentationRawContent: `${ HelpPanelConstants.GITHUB_CONTENTS_API_ENDPOINT }/docs`,
+            portalDocumentationStructure: `${ HelpPanelConstants.GITHUB_CONTENTS_API_ENDPOINT }/mkdocs.yml`,
             profileSchemas: `${this.getRuntimeConfig().serverHost}/scim2/Schemas`,
             revoke: `${this.getRuntimeConfig().serverHost}/oauth2/revoke`,
             selfSignUp: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${

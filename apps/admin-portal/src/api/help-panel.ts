@@ -36,6 +36,9 @@ export const getPortalDocumentationStructure = (): Promise<PortalDocumentationSt
             "Accept": "application/vnd.github.v3.raw"
         },
         method: HttpMethods.GET,
+        params: {
+            ref: HelpPanelConstants.PORTAL_DOCUMENTATION_BRANCH
+        },
         url: store.getState().config.endpoints.portalDocumentationStructure
     };
 
@@ -45,6 +48,37 @@ export const getPortalDocumentationStructure = (): Promise<PortalDocumentationSt
         }).catch((error) => {
             throw new IdentityAppsApiException(
                 HelpPanelConstants.PORTAL_DOCUMENTATION_STRUCTURE_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Gets the raw content from Github consuming content endpoint.
+ *
+ * @return {Promise<T>} A promise containing the response.
+ */
+export const getRawDocumentation = <T = {}>(path: string): Promise<T> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/vnd.github.v3.raw"
+        },
+        method: HttpMethods.GET,
+        params: {
+            ref: HelpPanelConstants.PORTAL_DOCUMENTATION_BRANCH
+        },
+        url: `${ store.getState().config.endpoints.portalDocumentationRawContent }/${ path }`
+    };
+
+    return axios.request(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response.data);
+        }).catch((error) => {
+            throw new IdentityAppsApiException(
+                HelpPanelConstants.PORTAL_DOCUMENTATION_RAW_CONTENT__FETCH_ERROR,
                 error.stack,
                 error.code,
                 error.request,

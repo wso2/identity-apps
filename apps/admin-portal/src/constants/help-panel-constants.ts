@@ -31,15 +31,45 @@ export class HelpPanelConstants {
     private constructor() { }
 
     /**
-     * URL to get the document structure for Admin Portal. This URL will be used to fetch the
-     * doc structure for the contents used in the help side panel.
+     * Base URL of the Github API.
      * @constant
      * @type {string}
      */
-    public static readonly PORTAL_DOCUMENTATION_STRUCTURE_URL: string = "https://api.github.com/repos/wso2/docs-is/" +
-        "contents/en/mkdocs.yml?ref=new_restructure";
+    public static readonly GITHUB_API_BASE_URL: string = "https://api.github.com";
+
+    /**
+     * Fetches the documentation from the specified branch
+     * @constant
+     * @type {string}
+     */
+    public static readonly PORTAL_DOCUMENTATION_BRANCH: string = "new_restructure";
+
+    /**
+     * Base path used by `markdown_include`plugin.
+     * @constant
+     * @type {string}
+     */
+    public static readonly PORTAL_DOCUMENTATION_CONTENT_BASE_PATH: string = "docs";
+
+    /**
+     * Documentation default locale.
+     * @constant
+     * @type {string}
+     */
+    public static readonly PORTAL_DOCUMENTATION_DEFAULT_LOCALE: string = "en";
+
+    /**
+     * Github contents API endpoint.
+     * @constant
+     * @type {string}
+     */
+    public static readonly GITHUB_CONTENTS_API_ENDPOINT: string = `${
+        HelpPanelConstants.GITHUB_API_BASE_URL }/repos/wso2/docs-is/contents/${
+        HelpPanelConstants.PORTAL_DOCUMENTATION_DEFAULT_LOCALE }`;
 
     // API errors
-    public static readonly PORTAL_DOCUMENTATION_STRUCTURE_FETCH_ERROR: string = "Failed to fetch the content from " +
-        "Github API.";
+    public static readonly PORTAL_DOCUMENTATION_STRUCTURE_FETCH_ERROR: string = "Failed to fetch the documentation " +
+        "structure from Github API.";
+    public static readonly PORTAL_DOCUMENTATION_RAW_CONTENT__FETCH_ERROR: string = "Failed to fetch the " +
+        "documentation raw content from Github API.";
 }
