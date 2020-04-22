@@ -27,9 +27,13 @@ import { ApplicationSampleInterface, PortalDocumentationStructureInterface } fro
  *
  * @return {PortalDocumentationStructureInterface} Parsed portal documentation structure.
  */
-export const parsePortalDocumentationStructureYAML = (rawYAMLString: string): PortalDocumentationStructureInterface => {
-    const parsedStructure = yaml.safeLoad(sanitizeYAMLString(rawYAMLString),
-        { json: true, schema: getCustomYAMLSchema() });
+export const parsePortalDocumentationStructureYAML = (
+    rawYAMLString: string): PortalDocumentationStructureInterface => {
+
+    const parsedStructure = yaml.safeLoad(
+        sanitizeYAMLString(rawYAMLString),
+        { json: true, schema: getCustomYAMLSchema() }
+    );
 
     return convertYAMLArrayToObject<PortalDocumentationStructureInterface>(parsedStructure.nav);
 };

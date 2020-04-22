@@ -78,7 +78,7 @@ export const getRawDocumentation = <T = {}>(path: string): Promise<T> => {
             return Promise.resolve(response.data);
         }).catch((error) => {
             throw new IdentityAppsApiException(
-                HelpPanelConstants.PORTAL_DOCUMENTATION_RAW_CONTENT__FETCH_ERROR,
+                HelpPanelConstants.PORTAL_DOCUMENTATION_RAW_CONTENT_FETCH_ERROR,
                 error.stack,
                 error.code,
                 error.request,

@@ -96,6 +96,6 @@ export class HelpPanelConstants {
     // API errors
     public static readonly PORTAL_DOCUMENTATION_STRUCTURE_FETCH_ERROR: string = "Failed to fetch the documentation " +
         "structure from Github API.";
-    public static readonly PORTAL_DOCUMENTATION_RAW_CONTENT__FETCH_ERROR: string = "Failed to fetch the " +
+    public static readonly PORTAL_DOCUMENTATION_RAW_CONTENT_FETCH_ERROR: string = "Failed to fetch the " +
         "documentation raw content from Github API.";
 }
