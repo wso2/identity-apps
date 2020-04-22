@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import { Button, Grid } from "semantic-ui-react";
-import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Button, Grid } from "semantic-ui-react";
 import { getIdentityProviderList } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";
-import { useDispatch } from "react-redux";
 
 
 /**

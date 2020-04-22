@@ -16,25 +16,25 @@
  * under the License.
  */
 
-import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, PrimaryButton } from "@wso2is/react-components";
-import {
-    FederatedAuthenticatorInterface,
-    FederatedAuthenticatorListItemInterface,
-    FederatedAuthenticatorListResponseInterface
-} from "../../../models";
+import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,
     updateFederatedAuthenticator
 } from "../../../api";
-import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
+import {
+    FederatedAuthenticatorInterface,
+    FederatedAuthenticatorListItemInterface,
+    FederatedAuthenticatorListResponseInterface
+} from "../../../models";
 import { AuthenticatorAccordion } from "../../shared";
 import { AuthenticatorFormFactory } from "../forms";
 import { FederatedAuthenticators } from "../meta/authenticators";
-import { useDispatch } from "react-redux";
 
 /**
  * Proptypes for the identity providers settings component.

@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import React, { FunctionComponent, ReactElement } from "react";
 import {
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../../../../models";
-import React, { FunctionComponent, ReactElement } from "react";
 import { OutboundProvisioningConnectorFormFactory } from "../../forms";
 
 /**

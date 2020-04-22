@@ -16,7 +16,15 @@
  * under the License.
  */
 
-import { AppState, store } from "../../../store";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { useTrigger } from "@wso2is/forms";
+import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import _ from "lodash";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Grid, Icon, Modal } from "semantic-ui-react";
+import { AuthenticatorSettings, GeneralSettings, WizardSummary } from "./steps";
 import {
     AuthenticatorPropertyInterface,
     CommonPluggableComponentPropertyInterface,
@@ -25,25 +33,17 @@ import {
     OutboundProvisioningConnectorMetaInterface,
     ProvisioningInterface
 } from "../../../models";
-import { AuthenticatorSettings, GeneralSettings, WizardSummary } from "./steps";
+import { AppState, store } from "../../../store";
 import {
     createIdentityProvider,
     getFederatedAuthenticatorMetadata,
     getOutboundProvisioningConnectorMetadata
 } from "../../../api";
-import { Grid, Icon, Modal } from "semantic-ui-react";
-import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import _ from "lodash";
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
 import { history } from "../../../helpers";
 import { IdentityProviderConstants } from "../../../constants";
 import { IdentityProviderManagementUtils } from "../../../utils";
 import { IdentityProviderWizardStepIcons } from "../../../configs";
 import { OutboundProvisioningSettings } from "./steps";
-import { useTrigger } from "@wso2is/forms";
 
 /**
  * Proptypes for the identity provider creation wizard component.

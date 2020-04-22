@@ -17,8 +17,8 @@
  */
 
 import React, { FunctionComponent, ReactElement } from "react";
-import { CommonPluggableComponentForm } from "../components";
 import { CommonPluggableComponentFormPropsInterface } from "../../../../models";
+import { CommonPluggableComponentForm } from "../components";
 
 /**
  * Common authenticator configurations form.

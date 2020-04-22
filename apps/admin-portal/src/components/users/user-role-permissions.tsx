@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { PermissionList } from "../roles";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Grid, Modal} from "semantic-ui-react";
 import { LinkButton } from "@wso2is/react-components";
-import { RolesInterface } from "../../models";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Grid, Modal } from "semantic-ui-react";
 import { getRoleById } from "../../api";
+import { RolesInterface } from "../../models";
+import { PermissionList } from "../roles";
 
 /**
  * Proptypes for the user role permission component.

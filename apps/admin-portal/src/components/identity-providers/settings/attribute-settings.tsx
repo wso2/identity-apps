@@ -16,21 +16,21 @@
  * under the License.
  */
 
+import { AlertLevels } from "@wso2is/core/dist/src/models";
+import { addAlert } from "@wso2is/core/dist/src/store";
+import { useTrigger } from "@wso2is/forms";
+import { Heading, Hint } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { getRolesList, updateIDPRoleMappings } from "../../../api";
-import { Heading, Hint } from "@wso2is/react-components";
 import {
     IdentityProviderClaimsInterface,
     IdentityProviderRoleMappingInterface, IdentityProviderRolesInterface,
     RoleListInterface,
     RolesInterface
 } from "../../../models";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { addAlert } from "@wso2is/core/dist/src/store";
-import { AlertLevels } from "@wso2is/core/dist/src/models";
 import { DynamicField } from "../../claims";
-import { useDispatch } from "react-redux";
-import { useTrigger } from "@wso2is/forms";
 
 /**
  * Proptypes for the identity providers settings component.

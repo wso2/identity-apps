@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { PermissionObject, Permission } from "../../models/permission"
+import { Permission, PermissionObject } from "../../models/permission"
 
 /**
  * A Util method to create an array of permission object with heirarchy.

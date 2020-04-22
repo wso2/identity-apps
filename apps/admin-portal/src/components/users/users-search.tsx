@@ -17,12 +17,12 @@
  */
 
 import { Field, Forms } from "@wso2is/forms";
+import { AdvancedSearch } from "@wso2is/react-components";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
-import { buildSearchQuery } from "../../utils";
-import { AdvancedSearch } from "@wso2is/react-components";
 import { AdvancedSearchIcons } from "../../configs";
+import { buildSearchQuery } from "../../utils";
 
 /**
  * Filter attribute field identifier.
@@ -91,7 +91,7 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (
         { value: "sw", text: t("common:startsWith") },
         { value: "ew", text: t("common:endsWith") },
         { value: "co", text: t("common:contains") },
-        { value: "eq", text: t("common:equals") },
+        { value: "eq", text: t("common:equals") }
     ];
 
     /**

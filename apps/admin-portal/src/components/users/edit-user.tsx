@@ -19,11 +19,11 @@
 import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
 import { useDispatch } from "react-redux";
-import { AlertInterface, BasicProfileInterface } from "../../models";
-import { addAlert } from "../../store/actions";
+import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
 import { UserRolesList } from "./user-roles-edit";
-import { UserGroupsList } from "./user-groups-edit";
+import { AlertInterface, BasicProfileInterface } from "../../models";
+import { addAlert } from "../../store/actions";
 
 interface EditUserPropsInterface {
     user: BasicProfileInterface;
@@ -41,7 +41,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     const {
         user,
-        handleUserUpdate,
+        handleUserUpdate
     } = props;
     const dispatch = useDispatch();
 
@@ -60,7 +60,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         handleUserUpdate={ handleUserUpdate }
                     />
                 </ResourceTab.Pane>
-            ),
+            )
         },
         {
             menuItem: "Groups",
@@ -72,7 +72,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         handleUserUpdate={ handleUserUpdate }
                     />
                 </ResourceTab.Pane>
-            ),
+            )
         },
         {
             menuItem: "Roles",
@@ -84,7 +84,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         handleUserUpdate={ handleUserUpdate }
                     />
                 </ResourceTab.Pane>
-            ),
+            )
         }
     ]);
 

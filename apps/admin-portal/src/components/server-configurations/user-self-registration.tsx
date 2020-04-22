@@ -17,17 +17,17 @@
  */
 
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
-import { Divider, Form, Grid, List } from "semantic-ui-react";
-import { EditSection, Hint, Section } from "@wso2is/react-components";
-import { Field, Forms, useTrigger } from "@wso2is/forms";
-import { getSelfSignUpConfigurations, updateSelfSignUpConfigurations } from "../../api";
-import React, { FunctionComponent, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
-import { SelfSignUpConfigurationsInterface } from "../../models/server-configurations";
-import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
-import { SettingsSectionIcons } from "../../configs";
-import { useDispatch } from "react-redux";
+import { Field, Forms, useTrigger } from "@wso2is/forms";
+import { EditSection, Hint, Section } from "@wso2is/react-components";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Divider, Form, Grid, List } from "semantic-ui-react";
+import { getSelfSignUpConfigurations, updateSelfSignUpConfigurations } from "../../api";
+import { SettingsSectionIcons } from "../../configs";
+import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
+import { SelfSignUpConfigurationsInterface } from "../../models/server-configurations";
 
 /**
  * Constant to store the self registration from identifier.

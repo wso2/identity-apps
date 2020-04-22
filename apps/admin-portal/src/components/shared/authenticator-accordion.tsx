@@ -17,14 +17,14 @@
  */
 
 import { GenericIcon, GenericIconProps } from "@wso2is/react-components";
+import { SegmentedAccordion, SegmentedAccordionTitlePropsInterface } from "@wso2is/react-components";
+import _ from "lodash";
 import React, {
     FunctionComponent,
     ReactElement,
     SyntheticEvent,
     useState
 } from "react";
-import { SegmentedAccordion, SegmentedAccordionTitlePropsInterface } from "@wso2is/react-components";
-import _ from "lodash";
 
 /**
  * Proptypes for the Authenticator Accordion component.

@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import React, { FunctionComponent, ReactElement } from "react";
 import {
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface,
     IdentityProviderInterface
 } from "../../../../models";
-import React, { FunctionComponent, ReactElement } from "react";
 import { AuthenticatorFormFactory } from "../../forms";
 
 /**
