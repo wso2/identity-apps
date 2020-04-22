@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import yaml from "js-yaml";
+import yaml, { Schema } from "js-yaml";
 import _ from "lodash";
-import { PortalDocumentationStructureInterface } from "../models";
+import { ApplicationSampleInterface, PortalDocumentationStructureInterface } from "../models";
 
 /**
  * Parses a raw YAML string to extract the portal document structure.
@@ -31,22 +31,22 @@ export const parsePortalDocumentationStructureYAML = (rawYAMLString: string): Po
     const parsedStructure = yaml.safeLoad(sanitizeYAMLString(rawYAMLString),
         { json: true, schema: getCustomYAMLSchema() });
 
-    return formatPortalDocumentationStructure(parsedStructure.nav);
+    return convertYAMLArrayToObject<PortalDocumentationStructureInterface>(parsedStructure.nav);
 };
 
 /**
- * Formats the parsed YAML to create a better object structure.
+ * Converts the parsed YAML attributes which are in array form to objects.
  *
  * @example
  * // returns {"Applications": { "Overview": "overview.md", "Create Application": "new-application.md" }}
- * formatPortalDocumentationStructure({"applications": ["overview.md", { "createApplication": "new-application.md" }]});
+ * convertYAMLArrayToObject([{"applications": ["overview.md", { "createApplication": "new-application.md" }]}]);
  *
  * @param {object[]} parsed - Parsed doc structure.
  *
- * @return {PortalDocumentationStructureInterface} Formated documentation structure.
+ * @return {T} Converted object.
  */
-const formatPortalDocumentationStructure = (parsed: object[]): PortalDocumentationStructureInterface => {
-    let formatted: PortalDocumentationStructureInterface = null;
+const convertYAMLArrayToObject = <T = {}>(parsed: object[]): T => {
+    let formatted: T = null;
 
     if (!(parsed instanceof Array) || parsed.length < 1) {
         return formatted;
@@ -58,20 +58,20 @@ const formatPortalDocumentationStructure = (parsed: object[]): PortalDocumentati
                 if (value instanceof Array) {
                     formatted = {
                         ...formatted,
-                        [ _.camelCase(key) ]: formatPortalDocumentationStructure(value)
+                        [ key ]: convertYAMLArrayToObject(value)
                     }
                 }
                 if (typeof value === "string") {
                     formatted = {
                         ...formatted,
-                        [ _.camelCase(key) ] : value
+                        [ key ] : value
                     }
                 }
             }
         } else if (typeof item === "string") {
             formatted = {
                 ...formatted,
-                [ "overview" ]: item
+                [ "Overview" ]: item
             }
         }
     });
@@ -82,9 +82,9 @@ const formatPortalDocumentationStructure = (parsed: object[]): PortalDocumentati
 /**
  * Get all the custom tags to help the parser.
  *
- * @return {Schema} Custom schema.
+ * @return {Schema} Custom YAML schema.
  */
-const getCustomYAMLSchema = () => {
+const getCustomYAMLSchema = (): Schema => {
     const customYamlType = new yaml.Type("!python/name:pymdownx.emoji.to_svg", { kind: "sequence" });
     return yaml.Schema.create([ customYamlType ]);
 };
@@ -98,4 +98,30 @@ const getCustomYAMLSchema = () => {
  */
 const sanitizeYAMLString = (raw: string): string => {
     return raw.replace("!!", "");
+};
+
+/**
+ * Generate the application samples for the help panel.
+ *
+ * @param {object} raw  - Set of samples.
+ *
+ * @return {ApplicationSampleInterface[]} Generated application samples.
+ */
+export const generateApplicationSamples = (raw: object): ApplicationSampleInterface[] => {
+    if (typeof raw !== "object") {
+        return [];
+    }
+
+    const samples: ApplicationSampleInterface[] = [];
+
+    for (const [ key, value ] of Object.entries(raw)) {
+        samples.push({
+            displayName: key,
+            docs: value.toString(),
+            image: _.camelCase(key).toLowerCase(),
+            name: _.camelCase(key).toLowerCase()
+        })
+    }
+
+    return samples;
 };
