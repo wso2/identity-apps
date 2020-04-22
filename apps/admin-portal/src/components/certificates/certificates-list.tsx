@@ -16,15 +16,16 @@
 * under the License.
 */
 
-import { AlertLevels, AppConfigInterface, Certificate } from "../../models";
-import { deleteKeystoreCertificate, retrieveCertificateAlias } from "../../api";
 import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components";
-import React, { ReactElement, useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addAlert } from "../../store/actions";
 import { AppConfig } from "../../helpers";
 import { AppState } from "../../store";
+import { pki } from "forge";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { Modal } from "semantic-ui-react";
+import { deleteKeystoreCertificate, retrieveCertificateAlias } from "../../api";
+import { AlertLevels, AppConfigInterface, Certificate } from "../../models";
 
 /**
  * @constant
@@ -72,8 +73,6 @@ export const CertificatesList = (props: CertificatesListPropsInterface): ReactEl
     const dispatch = useDispatch();
 
     const appConfig: AppConfigInterface = useContext(AppConfig);
-
-    const download = useRef<HTMLAnchorElement>(null);
 
     /**
      * Delete a certificate
@@ -148,27 +147,9 @@ export const CertificatesList = (props: CertificatesListPropsInterface): ReactEl
         )
     };
 
-    useEffect(() => {
-        if (startDownload && download.current) {
-            download.current.click();
-            dispatch(addAlert({
-                description: "The certificate has started downloading.",
-                level: AlertLevels.SUCCESS,
-                message: "Certificate download started"
-            }));
-            download.current = null;
-            setStartDownload("");
-        }
-    }, [ startDownload ]);
-
     return (
         <>
             { showDeleteConfirm() }
-            {
-                startDownload && (
-                    <a href={ "file://"+startDownload } ref={ download }/>
-                )
-            }
             <ResourceList>
                 {
                     (
@@ -185,7 +166,7 @@ export const CertificatesList = (props: CertificatesListPropsInterface): ReactEl
                                 key={ index }
                                 actions={ [
                                     {
-                                        icon: "cloud download",
+                                        icon: "upload",
                                         onClick: () => {
                                             retrieveCertificateAlias(certificate.alias).then((response) => {
                                                 setStartDownload(response);
@@ -198,7 +179,7 @@ export const CertificatesList = (props: CertificatesListPropsInterface): ReactEl
                                                 }));
                                             })
                                         },
-                                        popupText: "Download",
+                                        popupText: "Export",
                                         type: "button"
                                     },
                                     {
