@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import axios from "axios";
+import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
 import {
     AUTHORIZATION_ENDPOINT,
     CALLBACK_URL,
@@ -29,9 +31,7 @@ import {
     TOKEN_ENDPOINT,
     USERNAME
 } from "../constants";
-import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
 import { ConfigInterface } from "../models/client";
-import axios from "axios";
 
 /**
  * Checks whether openid configuration initiated.

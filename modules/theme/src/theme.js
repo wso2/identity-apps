@@ -17,8 +17,8 @@
  *
  */
 
-const less = require("less");
 const path = require("path");
+const less = require("less");
 const RewriteVariablePlugin = require("less-plugin-rewrite-variable");
 
 export const Theme = {

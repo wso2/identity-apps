@@ -16,21 +16,8 @@
  * under the License.
  */
 
-import {
-    ACCESS_TOKEN,
-    AUTHORIZATION_CODE,
-    OIDC_SCOPE,
-    PKCE_CODE_VERIFIER,
-    REQUEST_PARAMS,
-    SERVICE_RESOURCES
-} from "../constants";
-import { TokenResponseInterface, TokenRequestHeader } from "../models/token-response";
-import {
-    getSessionParameter,
-    initUserSession,
-    removeSessionParameter,
-    setSessionParameter
-} from "./session";
+import axios from "axios";
+import { getCodeChallenge, getCodeVerifier, getEmailHash, getJWKForTheIdToken, isValidIdToken } from "./crypto";
 import {
     getAuthorizeEndpoint,
     getIssuer,
@@ -40,12 +27,20 @@ import {
     initOPConfiguration,
     isValidOPConfig
 } from "./op-config";
-import { getCodeChallenge, getCodeVerifier, getEmailHash, getJWKForTheIdToken, isValidIdToken } from "./crypto";
-import { AccountSwitchRequestParams } from "../models/oidc-request-params";
+import { getSessionParameter, initUserSession, removeSessionParameter, setSessionParameter } from "./session";
+import { handleSignOut } from "./sign-out";
+import {
+    ACCESS_TOKEN,
+    AUTHORIZATION_CODE,
+    OIDC_SCOPE,
+    PKCE_CODE_VERIFIER,
+    REQUEST_PARAMS,
+    SERVICE_RESOURCES
+} from "../constants";
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { ConfigInterface } from "../models/client";
-import axios from "axios";
-import { handleSignOut } from "./sign-out";
+import { AccountSwitchRequestParams } from "../models/oidc-request-params";
+import { TokenRequestHeader, TokenResponseInterface } from "../models/token-response";
 
 /**
  * Checks whether authorization code present in the request.

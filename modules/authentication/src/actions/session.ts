@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { Semaphore } from "await-semaphore";
+import { getAuthenticatedUser, sendRefreshTokenRequest } from "./sign-in";
 import {
     ACCESS_TOKEN,
     ACCESS_TOKEN_EXPIRE_IN,
@@ -29,9 +31,7 @@ import {
     TOKEN_TYPE,
     USERNAME
 } from "../constants";
-import { getAuthenticatedUser, sendRefreshTokenRequest } from "./sign-in";
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
-import { Semaphore } from "await-semaphore";
 import { SessionInterface } from "../models/session";
 import { TokenResponseInterface } from "../models/token-response";
 

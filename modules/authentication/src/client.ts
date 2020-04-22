@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import * as AUTHENTICATION_TYPES from "./constants";
-import { ConfigInterface } from "./models/client";
 import { handleSignIn } from "./actions/sign-in";
 import { handleSignOut } from "./actions/sign-out";
+import * as AUTHENTICATION_TYPES from "./constants";
+import { ConfigInterface } from "./models/client";
 
 /**
  * The login scope.

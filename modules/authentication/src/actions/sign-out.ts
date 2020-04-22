@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { endAuthenticatedSession, getSessionParameter } from "./session";
 import { getEndSessionEndpoint, resetOPConfiguration } from "./op-config";
+import { endAuthenticatedSession, getSessionParameter } from "./session";
 import { CALLBACK_URL, ID_TOKEN } from "../constants";
 
 /**
