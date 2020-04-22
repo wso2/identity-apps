@@ -65,6 +65,10 @@ export interface AuthenticatorAccordionItemInterface {
      */
     id: string;
     /**
+     * Flag to show/hide the authenticator inside the accordion.
+     */
+    hidden?: boolean;
+    /**
      * Title of the authenticator.
      */
     title: string;
@@ -123,33 +127,37 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
         >
             {
                 _.sortBy(authenticators, orderBy).map((authenticator, index) => (
-                    <>
-                        <SegmentedAccordion.Title
-                            id={ authenticator.id }
-                            active={ accordionActiveIndexes.includes(index) }
-                            index={ index }
-                            onClick={ handleAccordionOnClick }
-                            content={ (
-                                <>
-                                    <GenericIcon
-                                        floated="left"
-                                        size="micro"
-                                        spaced="right"
-                                        transparent
-                                        { ...authenticator.icon }
-                                    />
-                                    { authenticator.title }
-                                </>
-                            ) }
-                            actions={ authenticator.actions && [ ...authenticator.actions, ...globalActions ] }
-                            hideChevron={ hideChevron }
-                        />
-                        <SegmentedAccordion.Content
-                            active={ accordionActiveIndexes.includes(index) }
-                        >
-                            { authenticator.content }
-                        </SegmentedAccordion.Content>
-                    </>
+                    !authenticator.hidden
+                        ? (
+                            <>
+                                <SegmentedAccordion.Title
+                                    id={ authenticator.id }
+                                    active={ accordionActiveIndexes.includes(index) }
+                                    index={ index }
+                                    onClick={ handleAccordionOnClick }
+                                    content={ (
+                                        <>
+                                            <GenericIcon
+                                                floated="left"
+                                                size="micro"
+                                                spaced="right"
+                                                transparent
+                                                { ...authenticator.icon }
+                                            />
+                                            { authenticator.title }
+                                        </>
+                                    ) }
+                                    actions={ authenticator.actions && [ ...authenticator.actions, ...globalActions ] }
+                                    hideChevron={ hideChevron }
+                                />
+                                <SegmentedAccordion.Content
+                                    active={ accordionActiveIndexes.includes(index) }
+                                >
+                                    { authenticator.content }
+                                </SegmentedAccordion.Content>
+                            </>
+                        )
+                        : null
                 ))
             }
         </SegmentedAccordion>
