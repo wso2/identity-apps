@@ -24,23 +24,23 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
+import { GeneralSettingsWizardForm } from "./general-settings-wizard-form";
+import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
+import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
+import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
+import { WizardSummary } from "./wizard-summary";
+import { WSTrustProtocolSettingsWizardForm } from "./ws-trust-protocol-settings-wizard-form";
 import { createApplication, getApplicationTemplateData } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
+import { ApplicationConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import {
     ApplicationTemplateInterface,
     ApplicationTemplateListItemInterface,
-    emptyApplication,
     MainApplicationInterface,
-    SupportedAuthProtocolTypes
+    SupportedAuthProtocolTypes,
+    emptyApplication
 } from "../../../models";
-import { GeneralSettingsWizardForm } from "./general-settings-wizard-form";
-import { ApplicationConstants } from "../../../constants";
-import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
-import { WizardSummary } from "./wizard-summary";
-import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
-import { WSTrustProtocolSettingsWizardForm } from "./ws-trust-protocol-settings-wizard-form";
-import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
 import { ApplicationManagementUtils } from "../../../utils";
 
 /**

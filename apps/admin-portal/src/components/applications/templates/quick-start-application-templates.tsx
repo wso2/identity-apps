@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import React, { FunctionComponent, SyntheticEvent, useState } from "react";
-import { ApplicationTemplateListItemInterface } from "../../../models";
-import { EmptyPlaceholderIllustrations } from "../../../configs";
-import { ApplicationTemplateCard } from "./application-template-card";
 import { EmptyPlaceholder, Heading, LinkButton } from "@wso2is/react-components";
-import { Grid } from "semantic-ui-react";
 import _ from "lodash";
+import React, { FunctionComponent, SyntheticEvent, useState } from "react";
+import { Grid } from "semantic-ui-react";
+import { ApplicationTemplateCard } from "./application-template-card";
+import { EmptyPlaceholderIllustrations } from "../../../configs";
+import { ApplicationTemplateListItemInterface } from "../../../models";
 
 /**
  * Proptypes for the quick start templates component.

@@ -16,6 +16,19 @@
 * under the License.
 */
 
+import { addAlert } from "@wso2is/core/store";
+import { FormValue, useTrigger } from "@wso2is/forms";
+import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components"
+import { CopyInputField } from "@wso2is/react-components";
+import React, { ReactElement, useContext, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Icon, List, Modal, Popup } from "semantic-ui-react";
+import { Image } from "semantic-ui-react";
+import { ClaimsAvatarBackground } from ".";
+import { EditExternalClaim } from "./edit";
+import { deleteAClaim, deleteADialect, deleteAnExternalClaim, getUserStores } from "../../api";
+import { EDIT_EXTERNAL_DIALECT, EDIT_LOCAL_CLAIMS_PATH } from "../../constants";
+import { AppConfig, history } from "../../helpers";
 import {
     AddExternalClaim,
     AlertLevels,
@@ -25,19 +38,6 @@ import {
     ExternalClaim,
     UserStoreListItem
 } from "../../models";
-import { AppConfig, history } from "../../helpers";
-import { deleteAClaim, deleteADialect, deleteAnExternalClaim, getUserStores } from "../../api";
-import { EDIT_EXTERNAL_DIALECT, EDIT_LOCAL_CLAIMS_PATH } from "../../constants";
-import { FormValue, useTrigger } from "@wso2is/forms";
-import { Icon, List, Modal, Popup } from "semantic-ui-react";
-import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components"
-import React, { ReactElement, useContext, useEffect, useRef, useState } from "react";
-import { addAlert } from "@wso2is/core/store";
-import { ClaimsAvatarBackground } from ".";
-import { CopyInputField } from "@wso2is/react-components";
-import { EditExternalClaim } from "./edit";
-import { Image } from "semantic-ui-react";
-import { useDispatch } from "react-redux";
 
 /**
  * Enum containing the list types.

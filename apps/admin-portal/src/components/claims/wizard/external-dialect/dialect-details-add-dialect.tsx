@@ -17,7 +17,7 @@
 * under the License.
 */
 
-import { Field, Forms, FormValue } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { ReactElement } from "react";
 
 /**

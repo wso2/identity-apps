@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { useDispatch, useSelector } from "react-redux"; 
-import { AppState } from "../../store";
-import { ConfigReducerStateInterface } from "../../models";
-import { handleSignIn } from "../../store/actions";
-import { history } from "../../helpers";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux"; 
 import { USER_DENIED_CONSENT } from "../../constants";
+import { history } from "../../helpers";
+import { ConfigReducerStateInterface } from "../../models";
+import { AppState } from "../../store";
+import { handleSignIn } from "../../store/actions";
 
 /**
  * This component handles the sign-in function

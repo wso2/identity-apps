@@ -16,17 +16,17 @@
  * under the License.
  */
 
+import { Heading } from "@wso2is/react-components";
 import _ from "lodash";
 import React, {
-    forwardRef,
     FunctionComponent,
     ReactElement,
     ReactNode,
     SyntheticEvent,
+    forwardRef,
     useState
 } from "react";
 import { Accordion, Icon, Menu, Popup, Segment, Sidebar } from "semantic-ui-react";
-import { Heading } from "@wso2is/react-components";
 import { AdaptiveAuthTemplateInterface } from "../../../../models";
 
 /**

@@ -16,14 +16,14 @@
 * under the License.
 */
 
-import { AlertLevels, Claim, UserStoreListItem } from "../../../../models";
-import { Divider, Grid } from "semantic-ui-react";
-import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
-import { getUserStoreList, updateAClaim } from "../../../../api";
-import React, { ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
+import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Divider, Grid } from "semantic-ui-react";
+import { getUserStoreList, updateAClaim } from "../../../../api";
+import { AlertLevels, Claim, UserStoreListItem } from "../../../../models";
 
 /**
  * Prop types of `EditMappedAttributesLocalClaims` component

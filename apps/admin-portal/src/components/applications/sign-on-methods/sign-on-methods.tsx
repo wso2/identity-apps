@@ -16,21 +16,21 @@
  * under the License.
  */
 
+import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Divider } from "semantic-ui-react";
+import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
+import { updateAuthenticationSequence } from "../../../api";
 import {
     AdaptiveAuthTemplateInterface,
     AuthenticationSequenceInterface,
     AuthenticationStepInterface
 } from "../../../models";
-import { useDispatch, useSelector } from "react-redux";
-import { ScriptBasedFlow } from "./script-based-flow";
-import { Divider } from "semantic-ui-react";
-import { updateAuthenticationSequence } from "../../../api";
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { AppState } from "../../../store";
-import { PrimaryButton } from "@wso2is/react-components";
 import { setHelpPanelDocsContentURL } from "../../../store/actions";
 
 /**
