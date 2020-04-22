@@ -59,6 +59,32 @@ export class HelpPanelConstants {
     public static readonly PORTAL_DOCUMENTATION_DEFAULT_LOCALE: string = "en";
 
     /**
+     * Key for the `Edit Application` tag in the docs structure object.
+     * @constant
+     * @type {string}
+     */
+    public static readonly EDIT_APPLICATIONS_DOCS_KEY = "[\"Admin Portal\"].Applications[\"Edit Application\"]";
+
+    /**
+     * Key for the application samples tag in the docs structure object.
+     * @constant
+     * @type {string}
+     */
+    public static readonly APPLICATION_SAMPLES_DOCS_KEY = "Samples.Authentication";
+
+    /**
+     * Mapping for template and template DOC in the doc structure. i.e `<"TEMPLATE_NAME", "TAG_NAME_IN_DOC_STRUCTURE">`
+     * @remarks
+     * If the template name is changed, this map has to be changed.
+     * @constant
+     * @type {Map<string, string>}
+     */
+    public static readonly APPLICATION_TEMPLATE_DOC_MAPPING: Map<string, string> = new Map<string, string>()
+            .set("SAML web application", "SAML Web Application")
+            .set("OIDC web application", "OIDC Web Application")
+            .set("Single page application", "Single Page Aplication");
+
+    /**
      * Github contents API endpoint.
      * @constant
      * @type {string}

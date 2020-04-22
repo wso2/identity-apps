@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { fetchFromURL } from "@wso2is/core/api";
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
@@ -26,7 +25,6 @@ import {
     Heading,
     HelpPanelTabInterface,
     Hint,
-    InfoCard,
     Markdown,
     PageHeader,
     SelectionCard
@@ -36,24 +34,23 @@ import React, { FunctionComponent, ReactElement, useContext, useEffect, useState
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Label, SemanticICONS } from "semantic-ui-react";
-import { getApplicationDetails } from "../api";
+import { getApplicationDetails, getRawDocumentation } from "../api";
 import { EditApplication } from "../components";
 import { HelpSidebarIcons, TechnologyLogos } from "../configs";
-import { ApplicationConstants, ApplicationManagementConstants, UIConstants } from "../constants";
-import { AppConfig, history, isGithubApiURL } from "../helpers";
+import { ApplicationConstants, ApplicationManagementConstants, HelpPanelConstants, UIConstants } from "../constants";
+import { AppConfig, generateApplicationSamples, history } from "../helpers";
 import { HelpPanelLayout, PageLayout } from "../layouts";
 import {
     AppConfigInterface,
     ApplicationEditFeaturesConfigInterface,
     ApplicationInterface,
-    ApplicationSDKInterface,
     ApplicationSampleInterface,
     ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
-    GithubRepoCategoryTypes,
     emptyApplication
 } from "../models";
 import { AppState } from "../store";
+import { setHelpPanelDocsContentURL } from "../store/actions";
 import { ApplicationManagementUtils } from "../utils";
 
 /**
@@ -68,7 +65,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
     const dispatch = useDispatch();
 
     const helpPanelDocURL = useSelector((state: AppState) => state.helpPanel.docURL);
-    const helpPanelMetadata = useSelector((state: AppState) => state.helpPanel.metadata);
+    const helpPanelDocStructure = useSelector((state: AppState) => state.helpPanel.docStructure);
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
 
@@ -87,7 +84,6 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
     const [ selectedInboundProtocol, setSelectedInboundProtocol ] = useState<AuthProtocolMetaListItemInterface>(null);
     const [ helpPanelSelectedSample, setHelpPanelSelectedSample ] = useState<ApplicationSampleInterface>(undefined);
     const [ samplesTabBackButtonEnabled, setSamplesTabBackButtonEnabled ] = useState<boolean>(true);
-    const [ sdks, setSdks ] = useState<ApplicationSDKInterface[]>(undefined);
     const [ samples, setSamples ] = useState<ApplicationSampleInterface[]>(undefined);
     const [
         isHelpPanelDocContentRequestLoading,
@@ -138,54 +134,42 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
     }, [ applicationTemplateName, applicationTemplates ]);
 
     /**
-     * Filter SDKs based on the template type.
+     * Set the default doc content URL for the tab.
      */
     useEffect(() => {
-        if (!(helpPanelMetadata?.applications?.sdks[ selectedInboundProtocol?.id ])
-            || !(helpPanelMetadata.applications.sdks[ selectedInboundProtocol.id ] instanceof Array)
-            || helpPanelMetadata.applications.sdks[ selectedInboundProtocol.id ].length < 1) {
-
+        if (!applicationTemplateName) {
             return;
         }
 
-        if (!applicationTemplate?.name) {
-            setSdks(helpPanelMetadata.applications.sdks[ selectedInboundProtocol.id ]);
+        const editApplicationDocs = _.get(helpPanelDocStructure, HelpPanelConstants.EDIT_APPLICATIONS_DOCS_KEY);
 
+        if (!editApplicationDocs) {
             return;
         }
 
-        setSdks(helpPanelMetadata.applications.sdks[ selectedInboundProtocol.id ]
-            .filter((sdk) => sdk?.category?.includes(applicationTemplate.name as GithubRepoCategoryTypes))
-        );
-    }, [ helpPanelMetadata?.applications?.sdks[ selectedInboundProtocol?.id ] ]);
+        dispatch(setHelpPanelDocsContentURL(editApplicationDocs[ HelpPanelConstants.APPLICATION_TEMPLATE_DOC_MAPPING
+            .get(applicationTemplateName) ]));
+    }, [ applicationTemplateName, helpPanelDocStructure ]);
 
     /**
      * Filter application samples based on the template type.
      */
     useEffect(() => {
-        if (!(helpPanelMetadata?.applications?.samples[ selectedInboundProtocol?.id ])
-            || !(helpPanelMetadata.applications.samples[ selectedInboundProtocol.id ] instanceof Array)
-            || helpPanelMetadata.applications.samples[ selectedInboundProtocol.id ].length < 1) {
+        const samplesDocs = _.get(helpPanelDocStructure, HelpPanelConstants.APPLICATION_SAMPLES_DOCS_KEY);
 
+        if (!samplesDocs) {
             return;
         }
 
-        if (!applicationTemplate?.name) {
-            setSamples(helpPanelMetadata.applications.samples[ selectedInboundProtocol.id ]);
+        const samples = generateApplicationSamples(samplesDocs);
 
-            return;
-        }
-
-        const filtered = helpPanelMetadata.applications.samples[ selectedInboundProtocol.id ]
-            .filter((sample) => sample?.repo?.category?.includes(applicationTemplate.name as GithubRepoCategoryTypes));
-
-        if (filtered instanceof Array && filtered.length === 1) {
-            setHelpPanelSelectedSample(filtered[0]);
+        if (samples instanceof Array && samples.length === 1) {
+            setHelpPanelSelectedSample(samples[ 0 ]);
             setSamplesTabBackButtonEnabled(false);
         }
 
-        setSamples(filtered);
-    }, [ helpPanelMetadata?.applications?.samples[ selectedInboundProtocol?.id ] ]);
+        setSamples(samples);
+    }, [ helpPanelDocStructure ]);
 
     /**
      * Called when help panel doc URL status changes.
@@ -197,7 +181,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
 
         setHelpPanelDocContentRequestLoadingStatus(true);
 
-        fetchFromURL<string>(helpPanelDocURL)
+        getRawDocumentation<string>(helpPanelDocURL)
             .then((response) => {
                 setHelpPanelDocContent(response);
             })
@@ -216,14 +200,8 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
 
         setHelpPanelSamplesContentRequestLoadingStatus(true);
 
-        fetchFromURL<any>(helpPanelSelectedSample.docs)
+        getRawDocumentation<string>(helpPanelSelectedSample.docs)
             .then((response) => {
-                if (isGithubApiURL(helpPanelSelectedSample.docs)) {
-                    setHelpPanelSampleContent(response.body);
-
-                    return;
-                }
-
                 setHelpPanelSampleContent(response);
             })
             .finally(() => {
@@ -354,7 +332,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
         {
             content: (
                 isHelpPanelDocContentRequestLoading
-                    ? <ContentLoader dimmer />
+                    ? <ContentLoader dimmer/>
                     : (
                         <Markdown
                             source={ helpPanelDocContent }
@@ -368,7 +346,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                     )
             ),
             heading: t("common:docs"),
-            hidden: false,
+            hidden: !helpPanelDocURL,
             icon: "file alternate outline" as SemanticICONS
         },
         {
@@ -386,43 +364,13 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                                 } }
                                 bottomMargin={ false }
                             />
-
-                            <Heading as="h5">{ t("common:download") }</Heading>
-                            <Hint>
-                                { t("devPortal:components.applications.helpPanel.tabs.samples.content.sample.hint") }
-                            </Hint>
-
-                            <InfoCard
-                                fluid
-                                githubRepoCard={ true }
-                                header={ helpPanelSelectedSample.repo.owner.login }
-                                subHeader={ helpPanelSelectedSample.repo.name }
-                                description={ helpPanelSelectedSample.repo.description }
-                                image={ helpPanelSelectedSample.repo.owner.avatar }
-                                tags={ helpPanelSelectedSample.repo.topics }
-                                githubRepoMetaInfo={ {
-                                    forks: helpPanelSelectedSample.repo.forks,
-                                    stars: helpPanelSelectedSample.repo.stars,
-                                    watchers: helpPanelSelectedSample.repo.watchers
-                                } }
-                                onClick={ () => window.open(helpPanelSelectedSample.repo.url) }
-                            />
                             <Divider hidden/>
                             {
                                 helpPanelSelectedSample?.docs && (
-                                    <>
-                                        <Divider horizontal>
-                                            <Heading as="h5">
-                                                { t("common:documentation") }
-                                            </Heading>
-                                        </Divider>
-                                        <Divider hidden/>
-                                        {
-                                            isHelpPanelSamplesContentRequestLoading
-                                                ? <ContentLoader dimmer/>
-                                                : <Markdown source={ helpPanelSampleContent }/>
-                                        }
-                                    </>
+                                    isHelpPanelSamplesContentRequestLoading
+                                        ? <ContentLoader dimmer/>
+                                        : <Markdown source={ helpPanelSampleContent }/>
+
                                 )
                             }
                         </>
@@ -463,49 +411,6 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
             heading: t("common:samples"),
             hidden: !samples || (samples instanceof Array && samples.length < 1),
             icon: "code" as SemanticICONS
-        },
-        {
-            content: (
-                <>
-                    <Heading as="h4">
-                        { t("devPortal:components.applications.helpPanel.tabs.samples.content.sdks.title") }
-                    </Heading>
-                    <Hint>
-                        { t("devPortal:components.applications.helpPanel.tabs.samples.content.sdks.subTitle") }
-                    </Hint>
-                    <Divider hidden/>
-
-                    <Grid>
-                        <Grid.Row columns={ 2 }>
-                            {
-                                sdks && sdks.map((sdk, index) => (
-                                    <Grid.Column key={ index }>
-                                        <InfoCard
-                                            githubRepoCard={ true }
-                                            header={ sdk.owner.login }
-                                            subHeader={ sdk.name }
-                                            description={ sdk.description }
-                                            image={ sdk.owner.avatar }
-                                            tags={ sdk.topics }
-                                            githubRepoMetaInfo={ {
-                                                forks: sdk.forks,
-                                                language: sdk.language,
-                                                languageLogo: TechnologyLogos[ sdk.languageLogo ],
-                                                stars: sdk.stars,
-                                                watchers: sdk.watchers
-                                            } }
-                                            onClick={ () => window.open(sdk.url) }
-                                        />
-                                    </Grid.Column>
-                                ))
-                            }
-                        </Grid.Row>
-                    </Grid>
-                </>
-            ),
-            heading: t("common:sdks"),
-            hidden: !sdks || (sdks instanceof Array && sdks.length < 1),
-            icon: "box" as SemanticICONS
         }
     ];
 
