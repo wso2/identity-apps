@@ -276,32 +276,13 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: false
     },
     {
+        component: CertificatesKeystore,
         icon: "userStore",
         id: "certificates",
         name: "Certificates",
+        path: "/certificates",
         protected: true,
-        showOnSidePanel: true,
-        exact: true,
-        children: [
-            {
-                component: CertificatesKeystore,
-                icon: "childIcon",
-                id: "certificatesKeystore",
-                name: "Keystore",
-                path: "/certificates-keystore",
-                protected: true,
-                showOnSidePanel: true
-            },
-            {
-                component: CertificatesTruststore,
-                icon: "childIcon",
-                id: "certificatesTruststore",
-                name: "Truststore",
-                path: "/certificates-truststore",
-                protected: true,
-                showOnSidePanel: true
-            }
-        ]
+        showOnSidePanel: true
     },
     {
         exact: true,
