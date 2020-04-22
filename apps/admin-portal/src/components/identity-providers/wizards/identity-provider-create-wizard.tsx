@@ -25,6 +25,15 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AuthenticatorSettings, GeneralSettings, WizardSummary } from "./steps";
+import { OutboundProvisioningSettings } from "./steps";
+import {
+    createIdentityProvider,
+    getFederatedAuthenticatorMetadata,
+    getOutboundProvisioningConnectorMetadata
+} from "../../../api";
+import { IdentityProviderWizardStepIcons } from "../../../configs";
+import { IdentityProviderConstants } from "../../../constants";
+import { history } from "../../../helpers";
 import {
     AuthenticatorPropertyInterface,
     CommonPluggableComponentPropertyInterface,
@@ -34,16 +43,7 @@ import {
     ProvisioningInterface
 } from "../../../models";
 import { AppState, store } from "../../../store";
-import {
-    createIdentityProvider,
-    getFederatedAuthenticatorMetadata,
-    getOutboundProvisioningConnectorMetadata
-} from "../../../api";
-import { history } from "../../../helpers";
-import { IdentityProviderConstants } from "../../../constants";
 import { IdentityProviderManagementUtils } from "../../../utils";
-import { IdentityProviderWizardStepIcons } from "../../../configs";
-import { OutboundProvisioningSettings } from "./steps";
 
 /**
  * Proptypes for the identity provider creation wizard component.

@@ -26,10 +26,10 @@ import { AddLocalClaims } from "../components";
 import { CLAIM_DIALECTS_PATH, UserConstants } from "../constants";
 import { AppConfig, history } from "../helpers";
 import { ListLayout } from "../layouts";
+import { PageLayout } from "../layouts";
 import { AlertLevels, AppConfigInterface, Claim, ClaimsGetParams } from "../models";
 import { addAlert } from "../store/actions";
 import { filterList, sortList } from "../utils";
-import { PageLayout } from "../layouts";
 
 /**
  * This returns the list of local claims.

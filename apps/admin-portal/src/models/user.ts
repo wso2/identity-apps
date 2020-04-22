@@ -129,29 +129,29 @@ export const createEmptyUserDetails = (): UserDetailsInterface => ({
         value: ""
     }],
     name: {
-        givenName: "",
-        familyName: ""
+        familyName: "",
+        givenName: ""
     },
-    userName: "",
     password: "",
+    profileUrl: "",   
     "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
         askPassword: ""
     },
-    profileUrl: ""
+    userName: ""
 });
 
 /**
  * The following function creates an empty add user wizard object
  */
 export const createEmptyUserBasicWizard = (): AddUserWizardStateInterface => ({
+    confirmPassword: "",
     domain: "",
     email: "",
     firstName: "",
+    groups: [],
     lastName: "",
     newPassword: "",
     passwordOption: "",
-    userName: "",
-    confirmPassword: "",
-    groups: [],
-    roles: []
+    roles: [],
+    userName: ""
 });

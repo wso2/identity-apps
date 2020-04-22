@@ -58,9 +58,9 @@ export const apiRequestEnd = (actionType: string): ApiRequestEndAction => ({
  * @returns An action of type `API_REQUEST`
  */
 export const apiRequest = (config: HttpRequestConfig): ApiRequestAction => {
-    const { auth, data, dispatcher, headers, method, onSuccess, onError, url  } = config;
+    const { auth, data, dispatcher, headers, method, onError, onSuccess, url  } = config;
     return {
-        meta: { auth, dispatcher, headers, method, onSuccess, onError, url },
+        meta: { auth, dispatcher, headers, method, onError, onSuccess, url },
         payload: data,
         type: API_REQUEST
     };

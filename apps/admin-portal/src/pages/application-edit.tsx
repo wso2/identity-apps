@@ -36,25 +36,25 @@ import React, { FunctionComponent, ReactElement, useContext, useEffect, useState
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Label, SemanticICONS } from "semantic-ui-react";
+import { getApplicationDetails } from "../api";
+import { EditApplication } from "../components";
 import { HelpSidebarIcons, TechnologyLogos } from "../configs";
 import { ApplicationConstants, ApplicationManagementConstants, UIConstants } from "../constants";
 import { AppConfig, history, isGithubApiURL } from "../helpers";
+import { HelpPanelLayout, PageLayout } from "../layouts";
 import {
     AppConfigInterface,
     ApplicationEditFeaturesConfigInterface,
     ApplicationInterface,
-    ApplicationSampleInterface,
     ApplicationSDKInterface,
+    ApplicationSampleInterface,
     ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
-    emptyApplication,
-    GithubRepoCategoryTypes
+    GithubRepoCategoryTypes,
+    emptyApplication
 } from "../models";
-import { HelpPanelLayout, PageLayout } from "../layouts";
 import { AppState } from "../store";
 import { ApplicationManagementUtils } from "../utils";
-import { EditApplication } from "../components";
-import { getApplicationDetails } from "../api";
 
 /**
  * Application Edit page.

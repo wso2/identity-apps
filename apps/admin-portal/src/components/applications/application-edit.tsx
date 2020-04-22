@@ -31,11 +31,11 @@ import { ApplicationSettings } from "./settings-application";
 import { SignOnMethods } from "./sign-on-methods";
 import { getInboundProtocolConfig } from "../../api";
 import {
-    ApplicationInterface,
     ApplicationEditFeaturesConfigInterface,
+    ApplicationInterface,
+    ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
-    SupportedAuthProtocolTypes,
-    ApplicationTemplateListItemInterface
+    SupportedAuthProtocolTypes
 } from "../../models";
 import { AppState } from "../../store";
 import { ApplicationManagementUtils } from "../../utils";
