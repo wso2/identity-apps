@@ -22,9 +22,9 @@ import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
 import { Divider } from "semantic-ui-react";
+import { AdvancedConfigurationsForm } from "./forms";
 import { updateApplicationConfigurations } from "../../api";
 import { AdvancedConfigurationsInterface } from "../../models";
-import { AdvancedConfigurationsForm } from "./forms";
 
 /**
  * Proptypes for the advance settings component.

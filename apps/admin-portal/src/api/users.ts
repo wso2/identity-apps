@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { HttpMethods, UserListInterface } from "../models";
 import { AxiosHttpClient } from "@wso2is/http";
+import { HttpMethods, UserListInterface } from "../models";
 import { store } from "../store";
 
 /**

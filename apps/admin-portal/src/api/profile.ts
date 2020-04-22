@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { BasicProfileInterface, HttpMethods, ProfileSchema } from "../models";
-import _ from "lodash";
-import axios from "axios";
-import { AxiosHttpClient } from "@wso2is/http";
 import { SignInUtil } from "@wso2is/authentication";
+import { AxiosHttpClient } from "@wso2is/http";
+import axios from "axios";
+import _ from "lodash";
+import { BasicProfileInterface, HttpMethods, ProfileSchema } from "../models";
 import { store } from "../store";
 
 /**

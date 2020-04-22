@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { AddExternalClaim, Claim, ClaimsGetParams, HttpMethods } from "../models";
 import { AxiosHttpClient } from "@wso2is/http";
+import { AddExternalClaim, Claim, ClaimsGetParams, HttpMethods } from "../models";
 import { store } from "../store";
 
 /**

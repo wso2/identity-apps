@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { ApplicationManagementConstants } from "../constants";
+import { IdentityAppsApiException } from "@wso2is/core/dist/src/exceptions";
 import { AxiosHttpClient } from "@wso2is/http";
 import { AxiosResponse } from "axios";
+import { ApplicationManagementConstants } from "../constants";
 import { HttpMethods } from "../models";
-import { IdentityAppsApiException } from "@wso2is/core/dist/src/exceptions";
 import { store } from "../store";
 
 /**

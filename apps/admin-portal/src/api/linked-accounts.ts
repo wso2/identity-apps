@@ -17,10 +17,10 @@
  */
 
 import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authentication";
-import { HttpMethods, LinkedAccountInterface } from "../models";
 import { AxiosHttpClient } from "@wso2is/http";
-import { store } from "../store";
 import { SYSTEM_SCOPE } from "../constants";
+import { HttpMethods, LinkedAccountInterface } from "../models";
+import { store } from "../store";
 
 /**
  * Get an axios instance.

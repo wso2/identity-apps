@@ -16,10 +16,20 @@
  * under the License.
  */
 
-import { ResourceTab } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { addAlert } from "@wso2is/core/store";
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { ResourceTab } from "@wso2is/react-components";
+import _ from "lodash";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AdvanceSettings } from "./advance-application";
+import { AttributeSettings } from "./attribute-management";
+import { GeneralApplicationSettings } from "./general-application-settings";
+import { InboundProtocolsMeta } from "./meta";
+import { ProvisioningSettings } from "./provisioning";
+import { ApplicationSettings } from "./settings-application";
+import { SignOnMethods } from "./sign-on-methods";
+import { getInboundProtocolConfig } from "../../api";
 import {
     ApplicationInterface,
     ApplicationEditFeaturesConfigInterface,
@@ -27,18 +37,8 @@ import {
     SupportedAuthProtocolTypes,
     ApplicationTemplateListItemInterface
 } from "../../models";
-import { AdvanceSettings } from "./advance-application";
-import { GeneralApplicationSettings } from "./general-application-settings";
-import { ApplicationSettings } from "./settings-application";
-import { SignOnMethods } from "./sign-on-methods";
-import { AttributeSettings } from "./attribute-management";
-import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../store";
-import { getInboundProtocolConfig } from "../../api";
 import { ApplicationManagementUtils } from "../../utils";
-import { InboundProtocolsMeta } from "./meta";
-import _ from "lodash";
-import { ProvisioningSettings } from "./provisioning";
 
 /**
  * Proptypes for the applications edit component.
@@ -312,21 +312,21 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
                 panes.push({
                     menuItem: "Sign-on Method",
-                    render: SignOnMethodsTabPane,
+                    render: SignOnMethodsTabPane
                 });
             }
             if (features === undefined || features.provisioningSettings.enabled !== false) {
 
                 panes.push({
                     menuItem: "Provisioning",
-                    render: ProvisioningSettingsTabPane,
+                    render: ProvisioningSettingsTabPane
                 });
             }
             if (features.advanceSettings === undefined || features.advanceSettings.enabled !== false) {
 
                 panes.push({
                     menuItem: "Advanced",
-                    render: AdvancedSettingsTabPane,
+                    render: AdvancedSettingsTabPane
                 });
             }
 
@@ -347,15 +347,15 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             },
             {
                 menuItem: "Sign-on Method",
-                render: SignOnMethodsTabPane,
+                render: SignOnMethodsTabPane
             },
             {
                 menuItem: "Provisioning",
-                render: ProvisioningSettingsTabPane,
+                render: ProvisioningSettingsTabPane
             },
             {
                 menuItem: "Advanced",
-                render: AdvancedSettingsTabPane,
+                render: AdvancedSettingsTabPane
             }
         ];
     };

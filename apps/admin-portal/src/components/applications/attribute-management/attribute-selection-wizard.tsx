@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Modal } from "semantic-ui-react";
 import {
     Heading,
     LinkButton,
@@ -26,6 +24,8 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Modal } from "semantic-ui-react";
 import { ExtendedClaimInterface } from "./attribute-settings";
 
 
