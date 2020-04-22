@@ -140,6 +140,6 @@ export class IdentityClient implements ConfigInterface {
      * @memberof IdentityClient
      */
     public async signOut(callback?: () => void): Promise<any> {
-        return handleSignOut(this, callback);
+        return handleSignOut(callback);
     }
 }

@@ -18,6 +18,7 @@
 
 import {
     AUTHORIZATION_ENDPOINT,
+    CALLBACK_URL,
     END_SESSION_ENDPOINT,
     ISSUER,
     JWKS_ENDPOINT,
@@ -94,7 +95,14 @@ export const setOPConfigInitiated = (): void => {
 };
 
 /**
- * Set openid configuration initiated.
+ * Set callback URL.
+ */
+export const setCallbackURL = (url: string): void => {
+    setSessionParameter(CALLBACK_URL, url);
+};
+
+/**
+ * Set tenant name.
  */
 export const setTenant = (tenant: string): void => {
     setSessionParameter(TENANT, tenant);
@@ -144,6 +152,7 @@ export const initOPConfiguration = (
                 .substring(0, response.data.token_endpoint.lastIndexOf("token")) + "revoke");
             setIssuer(response.data.issuer);
             setTenant(requestParams.tenant);
+            setCallbackURL(requestParams.callbackURL);
             setOPConfigInitiated();
 
             return Promise.resolve();
@@ -154,6 +163,7 @@ export const initOPConfiguration = (
             setJwksUri(serverHost + SERVICE_RESOURCES.jwks);
             setIssuer(requestParams.serverOrigin + SERVICE_RESOURCES.token);
             setTenant(requestParams.tenant);
+            setCallbackURL(requestParams.callbackURL);
             setOPConfigInitiated();
 
             return Promise.resolve();
@@ -172,6 +182,7 @@ export const resetOPConfiguration = (): void => {
     removeSessionParameter(OP_CONFIG_INITIATED);
     removeSessionParameter(ISSUER);
     removeSessionParameter(TENANT);
+    removeSessionParameter(CALLBACK_URL);
 };
 
 /**

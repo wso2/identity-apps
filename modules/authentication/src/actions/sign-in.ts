@@ -26,7 +26,6 @@ import {
 } from "../constants";
 import { TokenResponseInterface, TokenRequestHeader } from "../models/token-response";
 import {
-    endAuthenticatedSession,
     getSessionParameter,
     initUserSession,
     removeSessionParameter,
@@ -39,8 +38,7 @@ import {
     getRevokeTokenEndpoint,
     getTokenEndpoint,
     initOPConfiguration,
-    isValidOPConfig,
-    resetOPConfiguration
+    isValidOPConfig
 } from "./op-config";
 import { getCodeChallenge, getCodeVerifier, getEmailHash, getJWKForTheIdToken, isValidIdToken } from "./crypto";
 import { AccountSwitchRequestParams } from "../models/oidc-request-params";
@@ -438,10 +436,7 @@ export const sendSignInRequest = (requestParams: ConfigInterface, callback?: () 
 export const handleSignIn = (requestParams: ConfigInterface, callback?: () => void): Promise<any> => {
     if (getSessionParameter(ACCESS_TOKEN)) {
         if (!isValidOPConfig(requestParams.tenant)) {
-            initOPConfiguration(requestParams, true)
-                .then(() => {
-                    sendSignInRequest(requestParams, callback);
-                });
+            handleSignOut();
         }
 
         if (callback) {
