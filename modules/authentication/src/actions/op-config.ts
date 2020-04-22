@@ -24,6 +24,7 @@ import {
     OP_CONFIG_INITIATED,
     REVOKE_TOKEN_ENDPOINT,
     SERVICE_RESOURCES,
+    TENANT,
     TOKEN_ENDPOINT,
     USERNAME
 } from "../constants";
@@ -93,6 +94,13 @@ export const setOPConfigInitiated = (): void => {
 };
 
 /**
+ * Set openid configuration initiated.
+ */
+export const setTenant = (tenant: string): void => {
+    setSessionParameter(TENANT, tenant);
+};
+
+/**
  * Set id_token issuer.
  *
  * @param issuer id_token issuer.
@@ -116,7 +124,6 @@ export const initOPConfiguration = (
     ): Promise<any> => {
 
     if (!forceInit && isOPConfigInitiated()) {
-
         return Promise.resolve();
     }
 
@@ -136,15 +143,17 @@ export const initOPConfiguration = (
             setRevokeTokenEndpoint(response.data.token_endpoint
                 .substring(0, response.data.token_endpoint.lastIndexOf("token")) + "revoke");
             setIssuer(response.data.issuer);
+            setTenant(requestParams.tenant);
             setOPConfigInitiated();
 
             return Promise.resolve();
         }).catch(() => {
-            setTokenEndpoint(serverHost + SERVICE_RESOURCES.token);
-            setRevokeTokenEndpoint(serverHost + SERVICE_RESOURCES.revoke);
-            setEndSessionEndpoint(serverHost + SERVICE_RESOURCES.logout);
+            setTokenEndpoint(requestParams.serverOrigin + SERVICE_RESOURCES.token);
+            setRevokeTokenEndpoint(requestParams.serverOrigin + SERVICE_RESOURCES.revoke);
+            setEndSessionEndpoint(requestParams.serverOrigin + SERVICE_RESOURCES.logout);
             setJwksUri(serverHost + SERVICE_RESOURCES.jwks);
-            setIssuer(serverHost + SERVICE_RESOURCES.token);
+            setIssuer(requestParams.serverOrigin + SERVICE_RESOURCES.token);
+            setTenant(requestParams.tenant);
             setOPConfigInitiated();
 
             return Promise.resolve();
@@ -162,6 +171,7 @@ export const resetOPConfiguration = (): void => {
     removeSessionParameter(REVOKE_TOKEN_ENDPOINT);
     removeSessionParameter(OP_CONFIG_INITIATED);
     removeSessionParameter(ISSUER);
+    removeSessionParameter(TENANT);
 };
 
 /**
@@ -223,16 +233,8 @@ export const getUsername = (): string|null => {
  *
  * @returns {any}
  */
-export const getTenant = (): string|string[] => {
-    if (getUsername()) {
-        const usernameSplit = getUsername().split("@");
-
-        if (usernameSplit.length > 1) {
-            return usernameSplit[usernameSplit.length - 1];
-        }
-    }
-
-    return "";
+export const getTenant = (): string|null => {
+    return getSessionParameter(TENANT);
 };
 
 /**
