@@ -17,6 +17,5 @@
  */
 
 import { createBrowserHistory } from "history";
-import { Config } from "../configs";
 
-export const history = createBrowserHistory({ basename: Config.getRuntimeConfig().appBaseName });
+export const history = createBrowserHistory({ basename: window["runConfig"].appBaseName });
