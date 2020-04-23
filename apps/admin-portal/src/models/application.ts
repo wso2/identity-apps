@@ -237,7 +237,7 @@ export interface ApplicationTemplateListItemInterface {
     description: string;
     image: string;
     authenticationProtocol: string;
-    types: string[];
+    types: any[];
     category: string;
     displayOrder: number;
     self?: string;

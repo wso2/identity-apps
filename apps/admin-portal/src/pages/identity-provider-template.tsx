@@ -18,17 +18,20 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Divider } from "semantic-ui-react";
 import {
     getIdentityProviderList,
     getIdentityProviderTemplate,
     getIdentityProviderTemplateList
 } from "../api";
 import { ExpertModeTemplate } from "../components/identity-providers/meta";
-import { QuickStartIdentityProviderTemplates } from "../components/identity-providers/templates";
 import { IdentityProviderCreateWizard } from "../components/identity-providers/wizards";
-import { IdPCapabilityIcons } from "../configs";
+import { TemplateGrid } from "../components/shared";
+import { IdPCapabilityIcons, IdPIcons } from "../configs";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import {
@@ -49,12 +52,18 @@ import { setAvailableAuthenticatorsMeta } from "../store/actions/identity-provid
  */
 export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): ReactElement => {
 
+    const { t } = useTranslation();
+
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateListItemInterface>(undefined);
     const [ selectedTemplateWithUniqueName, setSelectedTemplateWithUniqueName ] =
         useState<IdentityProviderTemplateListItemInterface>(undefined);
     const [ availableTemplates, setAvailableTemplates ] = useState<IdentityProviderTemplateListItemInterface[]>([]);
     const [ possibleListOfDuplicateIdps, setPossibleListOfDuplicateIdps ] = useState<string[]>(undefined);
+    const [
+        isIDPTemplateRequestLoading,
+        setIDPTemplateRequestLoadingStatus
+    ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
@@ -113,6 +122,8 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
      */
     const getTemplateList = (): void => {
 
+        setIDPTemplateRequestLoadingStatus(true);
+
         getIdentityProviderTemplateList()
             .then((response: IdentityProviderTemplateListResponseInterface) => {
                 if (!response?.totalResults) {
@@ -144,6 +155,9 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
                     message: "Retrieval Error"
                 }));
             })
+            .finally(() => {
+                setIDPTemplateRequestLoadingStatus(false);
+            });
     };
 
     /**
@@ -262,27 +276,44 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
 
     return (
         <PageLayout
-            title="Select identity provider type"
+            title={ t("devPortal:pages.idpTemplate.title") }
             contentTopMargin={ true }
-            description="Please choose one of the following identity provider types."
+            description={ t("devPortal:pages.idpTemplate.subTitle") }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: "Go back to Identity Providers"
+                text: t("devPortal:pages.idpTemplate.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
             showBottomDivider
         >
-            { availableTemplates && (
-                <div className="quick-start-templates">
-                    <QuickStartIdentityProviderTemplates
-                        templates={ availableTemplates }
-                        onTemplateSelect={ (e, { id }) => {
-                            handleTemplateSelection(e, { id });
-                        } }
-                    />
-                </div>
-            ) }
+            {
+                (availableTemplates && !isIDPTemplateRequestLoading)
+                    ? (
+                        <div className="quick-start-templates">
+                            <TemplateGrid
+                                type="idp"
+                                templates={ availableTemplates.filter((template) => template.id !== "expert-mode") }
+                                templateIcons={ IdPIcons }
+                                heading={ t("devPortal:components.idp.templates.quickSetup.heading") }
+                                subHeading={ t("devPortal:components.idp.templates.quickSetup.subHeading") }
+                                onTemplateSelect={ handleTemplateSelection }
+                            />
+                        </div>
+                    )
+                    : <ContentLoader dimmer />
+            }
+            <Divider hidden />
+            <div className="custom-templates">
+                <TemplateGrid
+                    type="idp"
+                    templates={ [ ExpertModeTemplate ] }
+                    templateIcons={ IdPIcons }
+                    heading={ t("devPortal:components.idp.templates.manualSetup.heading") }
+                    subHeading={ t("devPortal:components.idp.templates.manualSetup.subHeading") }
+                    onTemplateSelect={ handleTemplateSelection }
+                />
+            </div>
             { showWizard && (
                 <IdentityProviderCreateWizard
                     title={ selectedTemplateWithUniqueName?.name }

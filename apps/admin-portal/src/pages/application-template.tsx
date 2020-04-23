@@ -18,11 +18,13 @@
 
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import { ApplicationCreateWizard, QuickStartApplicationTemplates } from "../components";
+import { ApplicationCreateWizard } from "../components";
 import { CustomApplicationTemplate } from "../components/applications/meta";
-import { CustomApplicationTemplates } from "../components/applications/templates";
+import { TemplateGrid } from "../components/shared";
+import { ApplicationTemplateIllustrations } from "../configs";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import { ApplicationTemplateListItemInterface } from "../models";
@@ -35,6 +37,8 @@ import { ApplicationManagementUtils } from "../utils";
  * @return {React.ReactElement}
  */
 export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactElement => {
+
+    const { t } = useTranslation();
 
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
@@ -92,38 +96,44 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
 
     return (
         <PageLayout
-            title="Select Application Type"
+            title={ t("devPortal:pages.applicationTemplate.title") }
             contentTopMargin={ true }
-            description="Please choose one of the following application types."
+            description={ t("devPortal:pages.applicationTemplate.subTitle") }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: "Go back to applications"
+                text: t("devPortal:pages.applicationTemplate.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
             showBottomDivider
         >
             {
-                !isApplicationTemplateRequestLoading
+                (applicationTemplates && !isApplicationTemplateRequestLoading)
                     ? (
                         <div className="quick-start-templates">
-                            <QuickStartApplicationTemplates
-                                templates={ applicationTemplates }
-                                onTemplateSelect={ (e, { id }) =>
-                                    handleTemplateSelection(e, { id })
+                            <TemplateGrid
+                                type="application"
+                                templates={
+                                    applicationTemplates.filter((template) => template.id !== "custom-application")
                                 }
+                                templateIcons={ ApplicationTemplateIllustrations }
+                                heading={ t("devPortal:components.applications.templates.quickSetup.heading") }
+                                subHeading={ t("devPortal:components.applications.templates.quickSetup.subHeading") }
+                                onTemplateSelect={ handleTemplateSelection }
                             />
                         </div>
                     )
                     : <ContentLoader dimmer />
             }
             <Divider hidden />
-            <div className="quick-start-templates">
-                <CustomApplicationTemplates
-                    template={ CustomApplicationTemplate }
-                    onTemplateSelect={ (e, { id }) =>
-                        handleTemplateSelection(e, { id })
-                    }
+            <div className="custom-templates">
+                <TemplateGrid
+                    type="application"
+                    templates={ [ CustomApplicationTemplate ] }
+                    templateIcons={ ApplicationTemplateIllustrations }
+                    heading={ t("devPortal:components.applications.templates.manualSetup.heading") }
+                    subHeading={ t("devPortal:components.applications.templates.manualSetup.subHeading") }
+                    onTemplateSelect={ handleTemplateSelection }
                 />
             </div>
             { showWizard && (
