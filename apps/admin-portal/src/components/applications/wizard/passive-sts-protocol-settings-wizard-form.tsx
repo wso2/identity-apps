@@ -17,10 +17,11 @@
  */
 
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { Hint } from "@wso2is/react-components";
+import { ContentLoader,  Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
+
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -66,49 +67,49 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
         };
     };
 
-    return (templateValues &&
-        <Forms
-            onSubmit={ (values: Map<string, FormValue>): void => {
-                onSubmit(getFormValues(values));
-            } }
-            submitState={ triggerSubmit }
-        >
-            <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            name="realm"
-                            label="Realm"
-                            required={ true }
-                            requiredErrorMessage="Enter the realm."
-                            placeholder="Enter realm."
-                            type="text"
-                            value={ initialValues?.realm || templateValues?.realm }
-                        />
-                        <Hint>Enter realm identifier for passive sts</Hint>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            name="replyTo"
-                            label="Reply URL"
-                            required={ true }
-                            requiredErrorMessage="Enter the reply url."
-                            placeholder="Enter url."
-                            validation={ (value: string, validation: Validation) => {
-                                if (!FormValidation.url(value)) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push("This is not a valid URL");
-                                }
-                            } }
-                            type="text"
-                            value={ initialValues?.replyTo || templateValues?.replyTo }
-                        />
-                        <Hint>Enter RP endpoint URL that handles the response.</Hint>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </Forms>
+    return (templateValues ?
+            <Forms
+                onSubmit={ (values: Map<string, FormValue>): void => {
+                    onSubmit(getFormValues(values));
+                } }
+                submitState={ triggerSubmit }
+            >
+                <Grid>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                name="realm"
+                                label="Realm"
+                                required={ true }
+                                requiredErrorMessage="Enter the realm."
+                                placeholder="Enter realm."
+                                type="text"
+                                value={ initialValues ? initialValues?.realm : templateValues?.realm }
+                            />
+                            <Hint>Enter realm identifier for passive sts</Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                name="replyTo"
+                                label="Reply URL"
+                                required={ true }
+                                requiredErrorMessage="Enter the reply url."
+                                placeholder="Enter url."
+                                validation={ (value: string, validation: Validation) => {
+                                    if (!FormValidation.url(value)) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push("This is not a valid URL");
+                                    }
+                                } }
+                                type="text"
+                                value={ initialValues ? initialValues?.replyTo : templateValues?.replyTo }
+                            />
+                            <Hint>Enter RP endpoint URL that handles the response.</Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Forms> :  <ContentLoader/>
     );
 };

@@ -17,7 +17,7 @@
  */
 
 import { Field, Forms } from "@wso2is/forms";
-import { Hint } from "@wso2is/react-components";
+import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
@@ -151,7 +151,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     // }, [initialValues]);
 
     useEffect(() => {
-        const allowedGrantTypes = templateValues.inboundProtocolConfiguration.oidc.grantTypes;
+        const allowedGrantTypes = templateValues?.inboundProtocolConfiguration?.oidc?.grantTypes;
         if (_.intersection(allowedGrantTypes, ["refresh_token"]).length > 0) {
             setShowRefreshToken(true);
         }
@@ -183,7 +183,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         return configs;
     };
 
-    return (templateValues &&
+    return (templateValues ?
         <Forms
             onSubmit={ (values) => {
                 // check whether callback url is empty or not
@@ -257,7 +257,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                 </Grid.Row>
                 }
             </Grid>
-        </Forms>
+        </Forms> : <ContentLoader/>
     );
 };
 
