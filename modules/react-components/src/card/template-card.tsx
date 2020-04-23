@@ -17,47 +17,98 @@
  */
 
 import classNames from "classnames";
-import React, { FunctionComponent, MouseEvent } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode } from "react";
 import { Card, CardProps, Popup } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
 
 /**
- * Proptypes for the application template card component.
+ * Proptypes for the template card component.
  */
-interface ApplicationTemplateCardPropsInterface {
+export interface TemplateCardPropsInterface {
     /**
      * Additional classes.
      */
     className?: string;
+    /**
+     * Template description
+     */
     description: string;
-    technologies?: TechnologyInterface[];
+    /**
+     * Set of tags for the template.
+     */
+    tags?: TemplateCardTagInterface[];
+    /**
+     * Title for the tags section.
+     */
+    tagsSectionTitle?: ReactNode;
+    /**
+     * Disabled mode.
+     */
     disabled?: boolean;
+    /**
+     * Template Name.
+     */
     name: string;
+    /**
+     * Template ID.
+     */
     id?: string;
+    /**
+     * Template image.
+     */
     image?: any;
+    /**
+     * Size of the image.
+     */
     imageSize?: GenericIconSizes;
+    /**
+     * Template card onclick event.
+     * @param {React.MouseEvent<HTMLAnchorElement>} e - Event,
+     * @param {CardProps} data - Card data.
+     */
     onClick: (e: MouseEvent<HTMLAnchorElement>, data: CardProps) => void;
+    /**
+     * Selected mode flag.
+     */
     selected?: boolean;
+    /**
+     * Text align direction.
+     */
     textAlign?: "center" | "left" | "right";
+    /**
+     * Inline mode.
+     */
     inline?: boolean;
 }
 
-interface TechnologyInterface {
+/**
+ * Template card tag interface.
+ */
+export interface TemplateCardTagInterface {
+    /**
+     * Tag name.
+     */
     name: string;
+    /**
+     * Tag display name.
+     */
     displayName: string;
+    /**
+     * Tag image.
+     */
     logo: any;
 }
 
 /**
- * Application template card component.
+ * Template card component that can be used to represent application and IDP templates.
  *
- * @param {ApplicationTemplateCardPropsInterface} props - Props injected to the components.
- * @return {JSX.Element}
- * @constructor
+ * @param {TemplateCardPropsInterface} props - Props injected to the components.
+ *
+ * @return {React.ReactElement}
  */
-export const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInterface> = (
-    props: ApplicationTemplateCardPropsInterface
-): JSX.Element => {
+export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
+    props: TemplateCardPropsInterface
+): ReactElement => {
 
     const {
         className,
@@ -70,14 +121,15 @@ export const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardP
         imageSize,
         onClick,
         selected,
-        technologies,
+        tags,
+        tagsSectionTitle,
         textAlign
     } = props;
 
     const classes = classNames(
-        "app-template-card",
+        "template-card",
         {
-            ["with-image"]: image,
+            [ "with-image" ]: image,
             disabled,
             inline,
             selected
@@ -110,18 +162,19 @@ export const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardP
                 <Card.Header>{ name }</Card.Header>
                 <Card.Description>{ description }</Card.Description>
                 {
-                    technologies && (
-                        <div className="technologies">
-                            <div className="title">Technologies</div>
-                            <div className="logos">
-                                {
-                                    technologies.map((technology, index) => (
-                                        <Popup
-                                            key={ index }
-                                            trigger={ (
+                    (tags && tags instanceof Array && tags.length > 0)
+                        ? (
+                            <div className="tags">
+                                <div className="title">{ tagsSectionTitle }</div>
+                                <div className="logos">
+                                    {
+                                        tags.map((tag, index) => (
+                                            <Popup
+                                                key={ index }
+                                                trigger={ (
                                                     <span className="icon-wrapper">
                                                         <GenericIcon
-                                                            icon={ technology.logo }
+                                                            icon={ tag.logo }
                                                             size="micro"
                                                             spaced="right"
                                                             inline
@@ -129,15 +182,16 @@ export const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardP
                                                         />
                                                     </span>
                                                 ) }
-                                            position="top center"
-                                            content={ technology.displayName }
-                                            inverted
-                                        />
-                                    ))
-                                }
+                                                position="top center"
+                                                content={ tag.displayName }
+                                                inverted
+                                            />
+                                        ))
+                                    }
+                                </div>
                             </div>
-                        </div>
-                    )
+                        )
+                        : null
                 }
             </Card.Content>
         </Card>
@@ -147,7 +201,7 @@ export const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardP
 /**
  * Default props for the application template card.
  */
-ApplicationTemplateCard.defaultProps = {
+TemplateCard.defaultProps = {
     imageSize: "auto",
     inline: true,
     textAlign: "center"
