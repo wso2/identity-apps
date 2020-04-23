@@ -16,7 +16,6 @@
  * under the License.
  */
 
-export * from "./templates";
 export * from "./application-list";
 export * from "./application-edit";
 export * from "./application-search";
