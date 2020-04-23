@@ -117,11 +117,125 @@ export const devPortal: DevPortalNS = {
                     clear: "clear search",
                     dropdown: "Show options"
                 },
-                resultsIndicator: 'Showing results for the query "{{query}}"'
+                resultsIndicator: "Showing results for the query \"{{query}}\""
+            },
+            templates: {
+                manualSetup: {
+                    heading: "Manual Setup",
+                    subHeading: "Create an applications with custom configurations."
+                },
+                quickSetup: {
+                    heading: "Quick Setup",
+                    subHeading: "Predefined set of application templates to speed up your application creation."
+                }
+            }
+        },
+        emailTemplateTypes: {
+            notifications: {
+                createTemplateType: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error creating email template type."
+                    },
+                    genericError: {
+                        description: "Couldn't create email template type.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully created the email template type.",
+                        message: "Creating email template type is successful"
+                    }
+                },
+                deleteTemplateType: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error deleting email template type."
+                    },
+                    genericError: {
+                        description: "Couldn't delete email template type.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully deleted the email template type.",
+                        message: "Email template type delete successful"
+                    }
+                },
+                updateTemplateType: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error updating email template type."
+                    },
+                    genericError: {
+                        description: "Couldn't update email template type.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully updated the email template type.",
+                        message: "Email template type update successful"
+                    }
+                }
+            }
+        },
+        emailTemplates: {
+            notifications: {
+                createTemplate: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error creating email template."
+                    },
+                    genericError: {
+                        description: "Couldn't create email template.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully created the email template.",
+                        message: "Creating email template is successful"
+                    }
+                },
+                deleteTemplate: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error deleting email template."
+                    },
+                    genericError: {
+                        description: "Couldn't delete email template.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully deleted the email template .",
+                        message: "Email template delete successful"
+                    }
+                },
+                updateTemplate: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error updating email template."
+                    },
+                    genericError: {
+                        description: "Couldn't update email template.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully updated the email template.",
+                        message: "Email template update successful"
+                    }
+                }
             }
         },
         footer: {
             copyright: "WSO2 Identity Server © {{year}}"
+        },
+        idp: {
+            templates: {
+                manualSetup: {
+                    heading: "Manual Setup",
+                    subHeading: "Create an applications with custom configurations."
+                },
+                quickSetup: {
+                    heading: "Quick Setup",
+                    subHeading: "Predefined set of application templates to speed up your application creation."
+                }
+            }
         },
         privacy: {
             about: {
@@ -331,98 +445,6 @@ export const devPortal: DevPortalNS = {
                 }
             }
         },
-        emailTemplateTypes: {
-            notifications: {
-                createTemplateType: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error creating email template type."
-                    },
-                    genericError: {
-                        description: "Couldn't create email template type.",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "Successfully created the email template type.",
-                        message: "Creating email template type is successful"
-                    }
-                },
-                deleteTemplateType: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error deleting email template type."
-                    },
-                    genericError: {
-                        description: "Couldn't delete email template type.",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "Successfully deleted the email template type.",
-                        message: "Email template type delete successful"
-                    }
-                },
-                updateTemplateType: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error updating email template type."
-                    },
-                    genericError: {
-                        description: "Couldn't update email template type.",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "Successfully updated the email template type.",
-                        message: "Email template type update successful"
-                    }
-                }
-            },
-        },
-        emailTemplates: {
-            notifications: {
-                createTemplate: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error creating email template."
-                    },
-                    genericError: {
-                        description: "Couldn't create email template.",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "Successfully created the email template.",
-                        message: "Creating email template is successful"
-                    }
-                },
-                deleteTemplate: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error deleting email template."
-                    },
-                    genericError: {
-                        description: "Couldn't delete email template.",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "Successfully deleted the email template .",
-                        message: "Email template delete successful"
-                    }
-                },
-                updateTemplate: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error updating email template."
-                    },
-                    genericError: {
-                        description: "Couldn't update email template.",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "Successfully updated the email template.",
-                        message: "Email template update successful"
-                    }
-                }
-            },
-        },
         user: {
             forms: {
                 addUserForm: {
@@ -439,7 +461,7 @@ export const devPortal: DevPortalNS = {
                             label: "Userstore",
                             placeholder: "Select user store",
                             validations: {
-                                empty: "User store name cannot be empty.",
+                                empty: "User store name cannot be empty."
                             }
                         },
                         email: {
@@ -514,7 +536,7 @@ export const devPortal: DevPortalNS = {
                         basicDetails: "Basic details",
                         roles: "User roles",
                         groups: "User groups",
-                        summary: "Summary",
+                        summary: "Summary"
                     },
                     buttons: {
                         next: "Next",
@@ -705,7 +727,7 @@ export const devPortal: DevPortalNS = {
                     action: "Refresh list",
                     subtitles: {
                         0: "The users list returned empty.",
-                        1: "Something went wrong while fetching the user list",
+                        1: "Something went wrong while fetching the user list"
                     },
                     title: "No Users Found"
                 }
@@ -734,7 +756,7 @@ export const devPortal: DevPortalNS = {
                                 validations: {
                                     empty: "Filter value is a required field"
                                 }
-                            },
+                            }
                         }
                     }
                 },
@@ -745,7 +767,7 @@ export const devPortal: DevPortalNS = {
                     }
                 },
                 options: {
-                    header: "Advanced search",
+                    header: "Advanced search"
                 },
                 placeholder: "Search by  username",
                 popups: {
@@ -845,7 +867,7 @@ export const devPortal: DevPortalNS = {
                                 validations: {
                                     empty: "Filter value is a required field"
                                 }
-                            },
+                            }
                         }
                     }
                 },
@@ -856,7 +878,7 @@ export const devPortal: DevPortalNS = {
                     }
                 },
                 options: {
-                    header: "Advanced Search",
+                    header: "Advanced Search"
                 },
                 placeholder: "Search by role name",
                 popups: {
@@ -1374,17 +1396,34 @@ export const devPortal: DevPortalNS = {
 
                 }
             }
+        },
+        templates: {
+            emptyPlaceholder: {
+                action: null,
+                subtitles: "Please add templates to display here.",
+                title: "No templates to display."
+            }
         }
     },
     pages: {
+        applicationTemplate: {
+            backButton: "Select Application Type",
+            subTitle: "Please choose one of the following application types.",
+            title: "Applications"
+        },
         applications: {
             subTitle: "Create applications based on templates and configure authentication.",
             title: "Applications"
         },
         applicationsEdit: {
-            backButton: "Go back to applications",
+            backButton: "Go back to Applications",
             subTitle: null,
             title: null
+        },
+        idpTemplate: {
+            backButton: "Go back to Identity Providers",
+            subTitle: "Please choose one of the following identity provider types.",
+            title: "Select Identity Provider Type"
         },
         overView: {
             subTitle: "The following section would give you an overview of the system statistics",

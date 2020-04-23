@@ -84,6 +84,7 @@ export interface CommonNS {
     revokeAll: string;
     samples: string;
     save: string;
+    services: string;
     sdks: string;
     search: string;
     security: string;
@@ -94,6 +95,7 @@ export interface CommonNS {
     startsWith: string;
     submit: string;
     switch: string;
+    technologies: string;
     terminate: string;
     terminateAll: string;
     terminateSession: string;

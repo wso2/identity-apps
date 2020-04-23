@@ -75,21 +75,43 @@ export interface DevPortalNS {
                 };
                 resultsIndicator: string;
             };
+            templates: {
+                manualSetup: {
+                    heading: string;
+                    subHeading: string;
+                };
+                quickSetup: {
+                    heading: string;
+                    subHeading: string;
+                };
+            };
         };
         emailTemplateTypes: {
             notifications: {
                 deleteTemplateType: Notification;
                 updateTemplateType: Notification;
                 createTemplateType: Notification;
-            }
-        }
+            };
+        };
         emailTemplates: {
             notifications: {
                 deleteTemplate: Notification;
                 updateTemplate: Notification;
                 createTemplate: Notification;
-            }
-        }
+            };
+        };
+        idp: {
+            templates: {
+                manualSetup: {
+                    heading: string;
+                    subHeading: string;
+                };
+                quickSetup: {
+                    heading: string;
+                    subHeading: string;
+                };
+            };
+        };
         users: {
             all: {
                 heading: string;
@@ -857,10 +879,15 @@ export interface DevPortalNS {
                 };
             };
         };
+        templates: {
+            emptyPlaceholder: Placeholder;
+        };
     };
     pages: {
+        applicationTemplate: EditPage;
         applications: Page;
         applicationsEdit: EditPage;
+        idpTemplate: EditPage;
         overView: Page;
     };
     placeholders: {
