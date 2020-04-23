@@ -28,7 +28,6 @@ import { Forms, FormValue } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { getPropertyMetadata } from "../../utils";
 
-
 /**
  * Common pluggable connector configurations form.
  *
@@ -182,12 +181,8 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             submitState={ triggerSubmit }
         >
             <Grid>
-                {
-                    dynamicValues && getSortedPropertyFields(metadata?.properties, false)
-                }
-                {
-                    enableSubmitButton && getSubmitButton("Update")
-                }
+                { dynamicValues && getSortedPropertyFields(metadata?.properties, false) }
+                { enableSubmitButton && getSubmitButton("Update") }
             </Grid>
         </Forms>
     );

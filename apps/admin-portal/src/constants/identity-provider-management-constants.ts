@@ -29,4 +29,6 @@ export class IdentityProviderManagementConstants {
         "invalid status code while fetching identity provider templates list.";
     public static readonly IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR: string = "An error occurred while fetching " +
         "the required identity provider templates list.";
+    public static readonly IDENTITY_PROVIDER_JIT_PROVISIONING_UPDATE_ERROR: string = "An error occurred while" +
+        " updating the JIT provisioning configurations of the identity provider.";
 }
