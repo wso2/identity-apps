@@ -23,8 +23,8 @@ import { HelpPanelActionTypes, HelpPanelActions } from "../actions/types";
  * Help panel reducer initial state.
  */
 const initialState: HelpPanelReducerStateInterface = {
-    docURL: null,
-    metadata: null
+    docStructure: null,
+    docURL: null
 };
 
 /**
@@ -43,10 +43,10 @@ export const helpPanelReducer = (state: HelpPanelReducerStateInterface = initial
                 ...state,
                 docURL: action.payload
             };
-        case HelpPanelActionTypes.SET_HELP_PANEL_METADATA:
+        case HelpPanelActionTypes.SET_HELP_PANEL_DOC_STRUCTURE:
             return {
                 ...state,
-                metadata: action.payload
+                docStructure: action.payload
             };
         default:
             return state;

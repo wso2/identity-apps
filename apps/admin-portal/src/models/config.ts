@@ -155,6 +155,10 @@ export interface RuntimeConfigInterface extends DeploymentConfigInterface {
      */
     i18nModuleOptions?: I18nModuleOptionsInterface;
     /**
+     * Portal document structure URL.
+     */
+    portalDocumentationStructureURL?: string;
+    /**
      * Title text.
      * ex: `WSO2 Identity Server`
      */
@@ -183,6 +187,8 @@ export interface ServiceResourceEndpointsInterface {
     logout: string;
     me: string;
     permission: string;
+    portalDocumentationRawContent: string;
+    portalDocumentationStructure: string;
     profileSchemas: string;
     sessions: string;
     token: string;

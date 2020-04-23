@@ -18,10 +18,10 @@
 
 import {
     HelpPanelActionTypes,
-    SetHelpPanelDocsContentURLActionInterface,
-    SetHelpPanelMetadataActionInterface
+    SetHelpPanelDocStructureActionInterface,
+    SetHelpPanelDocsContentURLActionInterface
 } from "./types";
-import { HelpPanelMetadataInterface } from "../../models";
+import { PortalDocumentationStructureInterface } from "../../models";
 
 /**
  * Redux action to set the help panel docs tab content URL.
@@ -35,12 +35,14 @@ export const setHelpPanelDocsContentURL = (url: string): SetHelpPanelDocsContent
 });
 
 /**
- * Redux action to set the help panel metadata.
+ * Redux action to set the help panel doc structure.
  *
- * @param {HelpPanelMetadataInterface} meta - Metadata.
- * @return {SetHelpPanelMetadataActionInterface} An action of type `SET_HELP_PANEL_METADATA`
+ * @param {PortalDocumentationStructureInterface} structure - Doc structure.
+ * @return {SetHelpPanelDocStructureActionInterface} An action of type `SET_HELP_PANEL_DOC_STRUCTURE`
  */
-export const setHelpPanelMetadata = (meta: HelpPanelMetadataInterface): SetHelpPanelMetadataActionInterface => ({
-    payload: meta,
-    type: HelpPanelActionTypes.SET_HELP_PANEL_METADATA
+export const setHelpPanelDocStructure = (
+    structure: PortalDocumentationStructureInterface
+): SetHelpPanelDocStructureActionInterface => ({
+    payload: structure,
+    type: HelpPanelActionTypes.SET_HELP_PANEL_DOC_STRUCTURE
 });

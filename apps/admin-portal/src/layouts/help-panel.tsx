@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -25,7 +25,17 @@ import { Menu, Sidebar } from "semantic-ui-react";
  * Sidebar pusher layout Prop types.
  */
 interface SidebarPusherLayoutPropsInterface extends HelpPanelPropsInterface {
+    /**
+     * Completely disables the sidebar.
+     */
+    enabled?: boolean;
+    /**
+     * Direction of the sidebar.
+     */
     sidebarDirection?: HelpPanelPropsInterface["direction"];
+    /**
+     * Toggle the visibility of the sidebar. Mini version will be shown if it is enabled.
+     */
     sidebarVisibility?: HelpPanelPropsInterface["visible"];
 }
 
@@ -44,6 +54,7 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<SidebarPusherL
 
     const {
         children,
+        enabled,
         sidebarDirection,
         sidebarVisibility,
         ...rest
@@ -61,24 +72,28 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<SidebarPusherL
     }, [ sidebarVisibility ]);
 
     return (
-        <Sidebar.Pushable className={ layoutClasses }>
-            <HelpPanel
-                as={ Menu }
-                animation="overlay"
-                direction={ sidebarDirection }
-                icon="labeled"
-                vertical
-                visible={ sidebarVisibility }
-                ref={ sidebarRef }
-                { ...rest }
-            />
+        enabled
+            ? (
+                <Sidebar.Pushable className={ layoutClasses }>
+                    <HelpPanel
+                        as={ Menu }
+                        animation="overlay"
+                        direction={ sidebarDirection }
+                        icon="labeled"
+                        vertical
+                        visible={ sidebarVisibility }
+                        ref={ sidebarRef }
+                        { ...rest }
+                    />
 
-            <Sidebar.Pusher className={ layoutContentClasses }>
-                <div ref={ contentRef }>
-                    { children }
-                </div>
-            </Sidebar.Pusher>
-        </Sidebar.Pushable>
+                    <Sidebar.Pusher className={ layoutContentClasses }>
+                        <div ref={ contentRef }>
+                            { children }
+                        </div>
+                    </Sidebar.Pusher>
+                </Sidebar.Pushable>
+            )
+            : <>{ children }</>
     );
 };
 
@@ -86,6 +101,7 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<SidebarPusherL
  * Default props for the sidebar pusher layout.
  */
 HelpPanelLayout.defaultProps = {
+    enabled: true,
     sidebarMiniEnabled: true,
     sidebarVisibility: false
 };

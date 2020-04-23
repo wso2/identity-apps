@@ -19,7 +19,7 @@
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, Heading, Hint, SelectionCard } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { InboundFormFactory } from "./forms";
@@ -32,7 +32,7 @@ import {
     SupportedAuthProtocolTypes
 } from "../../models";
 import { AppState } from "../../store";
-import { setAuthProtocolMeta, setHelpPanelDocsContentURL } from "../../store/actions";
+import { setAuthProtocolMeta } from "../../store/actions";
 
 /**
  * Proptypes for the applications settings component.
@@ -106,23 +106,6 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
 
     const availableInboundProtocols = useSelector((state: AppState) => state.application.meta.inboundProtocols);
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
-    const helpPanelMetadata = useSelector((state: AppState) => state.helpPanel.metadata);
-
-    const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
-
-    /**
-     * Set the default doc content URL for the tab.
-     */
-    useEffect(() => {
-        if (!selectedInboundProtocol?.id) {
-            return;
-        }
-        if (!helpPanelMetadata?.applications?.docs?.inbound[ selectedInboundProtocol.id ]) {
-            return;
-        }
-
-        dispatch(setHelpPanelDocsContentURL(helpPanelMetadata.applications.docs.inbound[ selectedInboundProtocol?.id ]));
-    }, [ selectedInboundProtocol?.id, helpPanelMetadata ]);
 
     /**
      * Handles the inbound protocol selection.
@@ -329,7 +312,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
     }, [ selectedInboundProtocol ]);
 
     return (
-        (!isLoading && !isInboundProtocolsRequestLoading)
+        !isLoading
             ? (
                 <div className="inbound-protocols-section">
                     { !isInboundProtocolConfigRequestLoading && showProtocolSelection && (

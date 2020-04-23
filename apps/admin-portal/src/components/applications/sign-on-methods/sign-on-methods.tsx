@@ -20,7 +20,7 @@ import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
@@ -30,8 +30,6 @@ import {
     AuthenticationSequenceInterface,
     AuthenticationStepInterface
 } from "../../../models";
-import { AppState } from "../../../store";
-import { setHelpPanelDocsContentURL } from "../../../store/actions";
 
 /**
  * Proptypes for the sign on methods component.
@@ -78,22 +76,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
     const dispatch = useDispatch();
 
-    const helpPanelMetadata = useSelector((state: AppState) => state.helpPanel.metadata);
-
     const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
     const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
     const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
-
-    /**
-     * Set the default doc content URL for the tab.
-     */
-    useEffect(() => {
-        if (!helpPanelMetadata?.applications?.docs?.adaptiveAuthentication?.introduction) {
-            return;
-        }
-
-        dispatch(setHelpPanelDocsContentURL(helpPanelMetadata.applications.docs.adaptiveAuthentication.introduction));
-    }, [ helpPanelMetadata ]);
 
     /**
      * Toggles the update trigger.
@@ -134,8 +119,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     id: parseInt(key, 10),
                     options: value.local.map((authenticator) => {
                         return {
-                            idp: "LOCAL",
-                            authenticator
+                            authenticator,
+                            idp: "LOCAL"
                         }
                     })
                 })
@@ -143,9 +128,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
             newSequence = {
                 ...newSequence,
-                subjectStepId: 1,
                 attributeStepId: 1,
-                steps
+                steps,
+                subjectStepId: 1
             }
         }
 

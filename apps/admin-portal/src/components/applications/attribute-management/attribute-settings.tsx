@@ -19,9 +19,9 @@
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { isEmpty } from "lodash";
+import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
@@ -39,8 +39,6 @@ import {
     SubjectConfigInterface,
     SupportedAuthProtocolTypes
 } from "../../../models";
-import { AppState } from "../../../store";
-import { setHelpPanelDocsContentURL } from "../../../store/actions";
 
 export interface SelectedDialectInterface {
     dialectURI: string;
@@ -99,7 +97,7 @@ export const getLocalDialectURI = (): string => {
         .then((response) => {
             // setClaims(response.slice(0, 10));
             const retrieved = response.slice(0, 1)[0].dialectURI;
-            if (!isEmpty(retrieved)) {
+            if (!_.isEmpty(retrieved)) {
                 localDialect = retrieved;
             }
         });
@@ -150,19 +148,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     // Role Mapping.
     const [roleMapping, setRoleMapping] = useState<RoleMappingInterface[]>([]);
-
-    const helpPanelMetadata = useSelector((state: AppState) => state.helpPanel.metadata);
-
-    /**
-     * Set the default doc content URL for the tab.
-     */
-    useEffect(() => {
-        if (!helpPanelMetadata?.applications?.docs?.claimMapping) {
-            return;
-        }
-
-        dispatch(setHelpPanelDocsContentURL(helpPanelMetadata.applications.docs.claimMapping));
-    }, [ helpPanelMetadata ]);
 
     const getClaims = () => {
         getAllLocalClaims(null)
@@ -342,7 +327,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     // Set local claim URI and maintain it in a state
     const findLocalClaimDialectURI = () => {
         getLocalDialectURI();
-        if (isEmpty(localDialectURI)) {
+        if (_.isEmpty(localDialectURI)) {
             setLocalDialectURI(getLocalDialectURI());
         }
     };
@@ -355,7 +340,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 const claimMappingOption: DropdownOptionsInterface[] = [];
                 claimMapping.map((element: ExtendedClaimMappingInterface) => {
                     let option: DropdownOptionsInterface;
-                    if (!isEmpty(element.applicationClaim)) {
+                    if (!_.isEmpty(element.applicationClaim)) {
                         option = {
                             key: element.localClaim.id,
                             text: element.applicationClaim,
@@ -415,7 +400,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         const createdClaimMappings: ExtendedClaimMappingInterface[] = [...claimMapping];
         createdClaimMappings.map((claimMapping) => {
             if (claimMapping.addMapping) {
-                if (isEmpty(claimMapping.applicationClaim)) {
+                if (_.isEmpty(claimMapping.applicationClaim)) {
                     setClaimMappingError(true)
                     returnList = false;
                 } else {
@@ -500,10 +485,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             }
         };
 
-        if (isEmpty(submitValue.claimConfiguration.claimMappings)) {
+        if (_.isEmpty(submitValue.claimConfiguration.claimMappings)) {
             delete submitValue.claimConfiguration.claimMappings;
         }
-        if (isEmpty(submitValue.claimConfiguration.role.mappings)) {
+        if (_.isEmpty(submitValue.claimConfiguration.role.mappings)) {
             delete submitValue.claimConfiguration.role.mappings;
         }
 
@@ -532,7 +517,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     // Set the dialects for inbound protocols
     useEffect(() => {
-        if (isEmpty(dialect)) {
+        if (_.isEmpty(dialect)) {
             return
         }
         //TODO  move this logic to backend
@@ -566,7 +551,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     }, [claimConfigurations]);
 
     return (
-        !isClaimRequestLoading && selectedDialect && !(isEmpty(claims) && isEmpty(externalClaims)) ?
+        !isClaimRequestLoading && selectedDialect && !(_.isEmpty(claims) && _.isEmpty(externalClaims)) ?
             <Grid className="claim-mapping">
                 <AttributeSelection
                     claims={ claims }
