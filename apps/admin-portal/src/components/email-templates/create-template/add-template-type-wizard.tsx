@@ -112,8 +112,8 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
             closeOnEscape={ false }
         >
             <Modal.Header className="wizard-header template-type-wizard">
-                Create Email Template
-                <Heading as="h6">Create a new email template.</Heading>
+                Create Email Template Type
+                <Heading as="h6">Create a new template type to associate with email requirements.</Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
                 {WIZARD_STEPS[currentStep].content}
@@ -126,7 +126,7 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <PrimaryButton floated="right" onClick={ setFinishSubmit }>
-                                Create Template
+                                Create Template Type
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>

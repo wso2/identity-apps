@@ -23,6 +23,7 @@ interface EmailTemplateEditorPropsInterface {
     htmlContent: string;
     isReadOnly: boolean;
     isPreviewOnly?: boolean;
+    customClass?: string;
     updateHtmlContent?: (value) => void;
 }
 
@@ -40,11 +41,12 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
         htmlContent,
         isReadOnly,
         updateHtmlContent,
+        customClass,
         isPreviewOnly
     } = props;
 
     return (
-        <div className="email-code-editor">
+        <div className={ "email-code-editor " + customClass } >
             {
                 isPreviewOnly ? 
                     <div className="render-view">

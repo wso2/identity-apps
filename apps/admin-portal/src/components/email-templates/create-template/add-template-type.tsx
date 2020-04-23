@@ -66,10 +66,10 @@ export const AddEmailTemplateType: FunctionComponent<AddEmailTemplateTypePropsIn
                         <Field
                             type="text"
                             name="templatetype"
-                            label="Template Name"
-                            placeholder="Enter a template name"
+                            label="Template Type Name"
+                            placeholder="Enter a template type name"
                             required={ true }
-                            requiredErrorMessage="Template name is required to proceed."
+                            requiredErrorMessage="Template type name is required to proceed."
                         />
                     </GridColumn>
                 </GridRow>

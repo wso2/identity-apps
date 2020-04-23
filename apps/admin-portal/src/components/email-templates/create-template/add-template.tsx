@@ -249,6 +249,7 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                             <EmailTemplateEditor 
                                 htmlContent={ htmlFooterContent } 
                                 isReadOnly={ false }
+                                customClass="mail-signature"
                                 updateHtmlContent={ setHtmlFooterContent }
                             />
                         </Form.Field>

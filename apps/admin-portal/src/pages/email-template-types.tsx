@@ -130,8 +130,8 @@ export const EmailTemplateTypes = (): ReactElement => {
 
     return (
         <PageLayout
-            title="Email Templates"
-            description="Create and manage templates."
+            title="Email Templates Types"
+            description="Create and manage templates types."
             showBottomDivider={ true } 
         >
             <ListLayout

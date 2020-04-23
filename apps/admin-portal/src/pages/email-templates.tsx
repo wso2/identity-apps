@@ -166,7 +166,8 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
     return (
         <PageLayout
             title={ emailTemplateTypeDetails && 
-                    emailTemplateTypeDetails.displayName ? emailTemplateTypeDetails.displayName : "Email Templates" }
+                    emailTemplateTypeDetails.displayName ? emailTemplateTypeDetails.displayName + " - Template Type" 
+                    : "Email Templates" }
             backButton={ {
                 onClick: handleBackButtonClick,
                 text: "Go back to email templates"
