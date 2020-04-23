@@ -196,4 +196,19 @@ export class ApplicationManagementUtils {
             }
         });
     }
+
+    /**
+     * Finds the icon from the given object.
+     *
+     * @param imageName Name on the image to be found.
+     * @param illustrationObject Collection of images.
+     */
+    public static findIcon(imageName: string, illustrationObject) {
+        const key: string = Object.keys(illustrationObject).find((key) => key === imageName);
+        if (key) {
+            return illustrationObject[key];
+        } else {
+            return imageName;
+        }
+    }
 }
