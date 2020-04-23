@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import React, { ReactElement, FunctionComponent } from "react";
+import React, { ReactElement, FunctionComponent, useEffect, useState } from "react";
 import { Forms, Field } from "@wso2is/forms";
 import { Grid, GridRow, GridColumn } from "semantic-ui-react";
 
@@ -25,6 +25,7 @@ import { Grid, GridRow, GridColumn } from "semantic-ui-react";
  */
 interface AddEmailTemplateTypePropsInterface {
     onSubmit: (values: any) => void;
+    triggerSubmit: boolean;
 }
 
 /**
@@ -37,7 +38,8 @@ export const AddEmailTemplateType: FunctionComponent<AddEmailTemplateTypePropsIn
 ): ReactElement => {
 
     const {
-        onSubmit
+        onSubmit,
+        triggerSubmit
     } = props;
 
     /**
@@ -56,6 +58,7 @@ export const AddEmailTemplateType: FunctionComponent<AddEmailTemplateTypePropsIn
             onSubmit={ (values) => {
                 onSubmit(getFormValues(values));
             } }
+            submitState={ triggerSubmit }
         >
              <Grid>
                 <GridRow columns={ 2 }>

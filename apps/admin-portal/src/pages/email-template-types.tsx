@@ -158,7 +158,10 @@ export const EmailTemplateTypes = (): ReactElement => {
                 {
                     showNewTypeWizard && (
                         <EmailTemplateTypeWizard
-                            onCloseHandler={ () => setShowNewTypeWizard(false) }
+                            onCloseHandler={ () => {
+                                getTemplateTypes();
+                                setShowNewTypeWizard(false);
+                            } }
                         />
                     ) 
                 }

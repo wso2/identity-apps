@@ -22,6 +22,12 @@ import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { AddEmailTemplateType } from "./add-template-type";
 import { ApplicationWizardStepIcons } from "../../../configs";
 import { useTrigger } from "@wso2is/forms";
+import { createNewTemplateType } from "../../../api";
+import { AxiosResponse } from "axios";
+import { AlertLevels, AlertInterface } from "@wso2is/core/dist/src/models";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { addAlert } from "@wso2is/core/dist/src/store";
 
 interface EmailTemplateTypeWizardProps {
     onCloseHandler: () => void;
@@ -36,6 +42,8 @@ interface EmailTemplateTypeWizardProps {
 export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardProps> = (
     props: EmailTemplateTypeWizardProps
 ): ReactElement => {
+    const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const {
         onCloseHandler
@@ -45,18 +53,53 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
     const handleFormSubmit = (values: any): void => {
-        //TODO handle form submit
+        createTemplateType(values.templateType);
     }
+
+    /**
+     * Dispatches the alert object to the redux store.
+     *
+     * @param {AlertInterface} alert - Alert object.
+     */
+    const handleAlerts = (alert: AlertInterface) => {
+        dispatch(addAlert(alert));
+    };
 
     const WIZARD_STEPS = [{
         content: (
             <AddEmailTemplateType 
                 onSubmit={ (values) =>  handleFormSubmit(values) }
+                triggerSubmit={ finishSubmit }
             />
         ),
         icon: ApplicationWizardStepIcons.general,
         title: "Template Type"
     }]
+
+    const createTemplateType = (templateTypeName: string): void => {
+        createNewTemplateType(templateTypeName).then((response: AxiosResponse) => {
+            if (response.status === 201) {
+                handleAlerts({
+                    description: t(
+                        "devPortal:components.emailTemplateTypes.notifications.createTemplateType.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "devPortal:components.emailTemplateTypes.notifications.createTemplateType.success.message"
+                    )
+                });
+            }
+            onCloseHandler();
+        }).catch(error => {
+            handleAlerts({
+                description: error.response.data.description,
+                level: AlertLevels.ERROR,
+                message: t(
+                    "devPortal:components.emailTemplateTypes.notifications.createTemplateType.genericError.message"
+                )
+            });
+        })
+    }
 
     return (
         <Modal

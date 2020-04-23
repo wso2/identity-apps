@@ -51,6 +51,33 @@ export const getEmailTemplateTypes = (): Promise<AxiosResponse<EmailTemplateType
 }
 
 /**
+ * Create new email template type.
+ * 
+ * @param templateType - template type name
+ */
+export const createNewTemplateType = (templateType: string): Promise<AxiosResponse<EmailTemplateType>> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        data: {
+            "displayName": templateType
+        },
+        url: store.getState().config.endpoints.emailTemplateType,
+    };
+
+    return httpClient.request<EmailTemplateType>(requestConfig)
+        .then((response: AxiosResponse<EmailTemplateType>) => {
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+}
+
+/**
  * Delete selected email template type for a given template type id.
  * 
  * @param templateTypeId - selected template type id.
