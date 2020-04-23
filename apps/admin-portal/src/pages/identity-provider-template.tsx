@@ -101,7 +101,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
     const interpretAvailableTemplates = (templates: IdentityProviderTemplateListItemResponseInterface[]):
         IdentityProviderTemplateListItemInterface[] => {
         return templates?.map(eachTemplate => {
-            if (eachTemplate.services[0] === "") {
+            if (eachTemplate?.services[0] === "") {
                 return {
                     ...eachTemplate,
                     services: []

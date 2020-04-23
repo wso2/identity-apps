@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { IdPIcons } from "../configs";
-
 /**
  * Available Identity Provider list.
  */
@@ -74,13 +72,31 @@ export interface IdentityProviderRoleMappingInterface {
 }
 
 export interface IdentityProviderClaimsInterface {
-    userIdClaim?: {
-        uri?: string;
-    };
-    roleClaim?: {
-        uri?: string;
-    };
-    provisioningClaims?: string[];
+    userIdClaim?: IdentityProviderClaimInterface;
+    roleClaim?: IdentityProviderClaimInterface;
+    mappings?: IdentityProviderClaimMappingInterface[];
+    provisioningClaims?: IdentityProviderProvisioningClaimInterface[];
+}
+
+export interface IdentityProviderClaimMappingInterface {
+    idpClaim: string;
+    localClaim: IdentityProviderClaimInterface;
+}
+
+export interface IdentityProviderCommonClaimMappingInterface {
+    mappedValue: string;
+    claim: IdentityProviderClaimInterface;
+}
+
+export interface IdentityProviderProvisioningClaimInterface {
+    claim: IdentityProviderClaimInterface;
+    defaultValue: string;
+}
+
+export interface IdentityProviderClaimInterface {
+    id?: string;
+    uri: string;
+    displayName?: string;
 }
 
 export interface IdentityProviderAdvanceInterface {
