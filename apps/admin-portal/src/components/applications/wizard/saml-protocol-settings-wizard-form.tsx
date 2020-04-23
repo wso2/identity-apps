@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { Field, Forms, FormValue } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
+import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { URLInputComponent } from "../components";
-import _ from "lodash";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.

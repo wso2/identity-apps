@@ -16,17 +16,17 @@
  * under the License.
  */
 
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { AppAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { getIdentityProviderDetail } from "../api";
+import { EditIdentityProvider } from "../components";
+import { IdentityProviderConstants } from "../constants";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
-import { emptyIdentityProvider, IdentityProviderInterface } from "../models";
-import { IdentityProviderConstants } from "../constants";
-import { useDispatch } from "react-redux";
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
-import { EditIdentityProvider } from "../components";
+import { IdentityProviderInterface, emptyIdentityProvider } from "../models";
 
 /**
  * Identity Provider Edit page.

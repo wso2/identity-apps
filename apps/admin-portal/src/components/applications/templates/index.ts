@@ -17,3 +17,4 @@
  */
 
 export * from "./quick-start-application-templates";
+export * from "./custom-application-template";

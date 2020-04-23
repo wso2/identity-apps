@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement } from "react";
-import { RolesInterface } from "../../../models";
 import { ResourceTab } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement } from "react";
 import { BaiscRoleDetails } from "./edit-role-basic";
 import { RolePermissionDetails } from "./edit-role-permission";
 import { RoleUserDetails } from "./edit-role-users";
+import { RolesInterface } from "../../../models";
 
 /**
  * Captures props needed for edit role component
@@ -51,21 +51,21 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 <ResourceTab.Pane attached={ false }>
                     <BaiscRoleDetails roleObject={ roleObject } onRoleUpdate={ onRoleUpdate } />
                 </ResourceTab.Pane>
-            ),
+            )
         },{
             menuItem: "Permissions",
             render: () => (
                 <ResourceTab.Pane attached={ false }>
                     <RolePermissionDetails roleObject={ roleObject } onRoleUpdate={ onRoleUpdate }/>
                 </ResourceTab.Pane>
-            ),
+            )
         },{
             menuItem: "Users",
             render: () => (
                 <ResourceTab.Pane attached={ false }>
                     <RoleUserDetails roleObject={ roleObject } onRoleUpdate={ onRoleUpdate }/>
                 </ResourceTab.Pane>
-            ),
+            )
         }
     ]);
 

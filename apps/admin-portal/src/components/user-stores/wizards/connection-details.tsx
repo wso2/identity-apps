@@ -16,14 +16,14 @@
 * under the License.
 */
 
-import { AlertLevels, TestConnection, Type, TypeProperty } from "../../../models";
-import { Button, Divider, Grid, Header, Icon } from "semantic-ui-react";
-import { Field, Forms, FormValue } from "@wso2is/forms";
-import { getAType, testConnection } from "../../../api";
-import React, { ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
-import { JDBC } from "../../../constants";
+import { Field, FormValue, Forms } from "@wso2is/forms";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Button, Divider, Grid, Header, Icon } from "semantic-ui-react";
+import { getAType, testConnection } from "../../../api";
+import { JDBC } from "../../../constants";
+import { AlertLevels, TestConnection, Type, TypeProperty } from "../../../models";
 
 /**
  * Prop types of the `ConnectionDetails` component 

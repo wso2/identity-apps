@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "../../models";
 import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
+import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "../../models";
 
 /**
  * Initial state for the common config reducer.

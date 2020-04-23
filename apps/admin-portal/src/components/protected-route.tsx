@@ -21,9 +21,9 @@ import { useSelector } from "react-redux";
 import { Redirect, Route, RouteProps } from "react-router-dom";
 import * as ApplicationConstants from "../constants/application-constants";
 import { history } from "../helpers";
-import { updateAuthenticationCallbackUrl } from "../store/actions";
 import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
+import { updateAuthenticationCallbackUrl } from "../store/actions";
 
 /**
  * Protected route component.

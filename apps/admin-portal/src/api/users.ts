@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { HttpMethods, UserListInterface } from "../models";
 import { AxiosHttpClient } from "@wso2is/http";
+import { HttpMethods, UserListInterface } from "../models";
 import { store } from "../store";
 
 /**
@@ -40,11 +40,11 @@ export const getUsersList = (count: number, startIndex: number, filter: string, 
         },
         method: HttpMethods.GET,
         params: {
+            attributes,
             count,
             domain,
             filter,
-            startIndex,
-            attributes
+            startIndex
         },
         url: store.getState().config.endpoints.users
     };

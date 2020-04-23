@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import React, { ReactElement, useState } from "react";
 import {
     ConfirmationModal,
     ResourceList,
     ResourceListItem,
     UserAvatar
 } from "@wso2is/react-components";
+import React, { ReactElement, useState } from "react";
 import { Grid, List, SemanticWIDTHS } from "semantic-ui-react";
 import { history } from "../../helpers";
 import { UserBasicInterface, UserListInterface } from "../../models";

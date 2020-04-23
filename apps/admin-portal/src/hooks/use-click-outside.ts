@@ -49,5 +49,5 @@ export function useClickOutside(initialValue = false): Record<string, any> {
         };
     });
 
-    return { ref, isComponentVisible, setIsComponentVisible };
+    return { isComponentVisible, ref, setIsComponentVisible };
 }

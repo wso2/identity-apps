@@ -16,6 +16,10 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { AxiosHttpClient } from "@wso2is/http";
+import { AxiosError, AxiosResponse } from "axios";
+import { ApplicationManagementConstants } from "../constants";
 import {
     AdaptiveAuthTemplatesListInterface,
     ApplicationBasicInterface,
@@ -29,10 +33,6 @@ import {
     SupportedAuthProtocolMetaTypes,
     SupportedAuthProtocolTypes
 } from "../models";
-import { AxiosError, AxiosResponse } from "axios";
-import { ApplicationManagementConstants } from "../constants";
-import { AxiosHttpClient } from "@wso2is/http";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { store } from "../store";
 
 /**

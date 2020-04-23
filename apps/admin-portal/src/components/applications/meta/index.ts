@@ -20,4 +20,5 @@ export * from "./spa-application-template.meta";
 export * from "./oauth-web-application-template.meta";
 export * from "./inbound-protocols.meta";
 export * from "./authenticators";
-export * from "./saml-web-application-template.meta"
+export * from "./saml-web-application-template.meta";
+export * from "./custom-application-template.meta";

@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import _ from "lodash";
 import { Forms } from "@wso2is/forms";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
+import _ from "lodash";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { RolesInterface } from "../../models";
 
 /**
@@ -94,7 +94,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         const filteredRoleList = [];
 
         if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
+            const re = new RegExp(_.escapeRegExp(value), "i");
 
             initialValues.roleList && initialValues.roleList.map((role) => {
                 isMatch = re.test(role.displayName);
@@ -113,7 +113,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         const filteredRoleList = [];
 
         if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
+            const re = new RegExp(_.escapeRegExp(value), "i");
 
             initialValues.tempRoleList && initialValues.tempRoleList.map((role) => {
                 isMatch = re.test(role.displayName);

@@ -16,18 +16,18 @@
 * under the License.
 */
 
-import { addDialect, addExternalClaim } from "../../../api";
-import { AddExternalClaim, AlertLevels } from "../../../models";
+import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
-import { Grid, Icon, Modal } from "semantic-ui-react";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
-import { addAlert } from "@wso2is/core/store";
+import { useDispatch } from "react-redux";
+import { Grid, Icon, Modal } from "semantic-ui-react";
+import { addDialect, addExternalClaim } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
+import { AddExternalClaim, AlertLevels } from "../../../models";
 import { DialectDetails } from "../wizard";
 import { ExternalClaims } from "../wizard";
 import { SummaryAddDialect } from "../wizard";
-import { useDispatch } from "react-redux";
 
 /**
  * Prop types for `AddDialect` component.

@@ -57,3 +57,9 @@
 
 @generatePasswordButtonPadding: 12px 27px;
 @generatePasswordButtonMarginTop: 22px;
+
+/*----------------------------
+    Show more templates
+------------------------------*/
+
+@showMoreTemplatesButtonMarginRight: 10px;

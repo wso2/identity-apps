@@ -40,3 +40,5 @@ export const REVOKE_TOKEN_ENDPOINT = "revoke_token_endpoint";
 export const END_SESSION_ENDPOINT = "end_session_endpoint";
 export const JWKS_ENDPOINT = "jwks_uri";
 export const OP_CONFIG_INITIATED = "op_config_initiated";
+export const TENANT = "tenant";
+export const CALLBACK_URL = "callback_url";

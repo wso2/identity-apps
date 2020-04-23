@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { CreateRoleInterface, HttpMethods, PatchRoleDataInterface, SearchRoleInterface } from "../models";
 import { AxiosHttpClient } from "@wso2is/http";
+import { CreateRoleInterface, HttpMethods, PatchRoleDataInterface, SearchRoleInterface } from "../models";
 import { store } from "../store";
 
 /**

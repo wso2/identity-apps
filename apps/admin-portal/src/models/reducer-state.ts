@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
+import { ApplicationTemplateListItemInterface } from "./application";
 import { AuthProtocolMetaListItemInterface, OIDCMetadataInterface } from "./application-inbound";
 import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "./config";
-import { ApplicationTemplateListItemInterface } from "./application";
-import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
 import { HelpPanelMetadataInterface } from "./meta";
 
 /**

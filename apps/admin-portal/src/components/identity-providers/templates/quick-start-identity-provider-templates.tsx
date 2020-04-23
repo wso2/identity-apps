@@ -17,8 +17,8 @@
  */
 
 import { EmptyPlaceholder, IdentityProviderTemplateCard } from "@wso2is/react-components";
-import { EmptyPlaceholderIllustrations, IdPIcons } from "../../../configs";
 import React, { FunctionComponent, SyntheticEvent } from "react";
+import { EmptyPlaceholderIllustrations, IdPIcons } from "../../../configs";
 import { IdentityProviderTemplateListItemInterface } from "../../../models";
 
 /**

@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useEffect, useState} from "react";
-import { getPermissionList, getPermissionsForRole } from "../../../api";
-import { Permission } from "../../../models/permission";
-import { TreeView, ContentLoader } from "@wso2is/react-components";
 import { Forms } from "@wso2is/forms";
-import { addPath } from "../role-utils";
-import { Segment, Button, Grid } from "semantic-ui-react";
+import { ContentLoader, TreeView } from "@wso2is/react-components";
 import _ from "lodash";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Button, Grid, Segment } from "semantic-ui-react";
+import { getPermissionList, getPermissionsForRole } from "../../../api";
 import { RolesInterface } from "../../../models";
+import { Permission } from "../../../models/permission";
+import { addPath } from "../role-utils";
 
 /**
  * Interface to capture permission list props
@@ -112,7 +112,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                     let permissionTree: Permission[] = [];
 
                     permissionTree = permissionStringArray.reduce((arr, path) => addPath(
-                        path, path.resourcePath.replace(/^\/|\/$/g, "").split('/'), arr,
+                        path, path.resourcePath.replace(/^\/|\/$/g, "").split("/"), arr
                     ),[]);
 
                     //Will collapse top level nodes in initial load
@@ -238,7 +238,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
      * @param depth depth of the current checked permission node
      */
     const markParentAsPartiallyChecked = (nodes: Permission[], checkedNode: Permission, depth: number): void => {
-        const permissionPath: string[] = checkedNode?.fullPath?.split('/').filter(String);
+        const permissionPath: string[] = checkedNode?.fullPath?.split("/").filter(String);
         permissionPath.pop();
         nodes.forEach((node: Permission) => {
             if (permissionPath[depth] === node.name) {

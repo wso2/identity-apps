@@ -27,13 +27,14 @@ import {
     BasicAuthIcon,
     BlockedMagnifierIcon,
     BoxIcon,
+    CSharpLogo,
     CaretRightIcon,
     ClaimsIcon,
     CloseIcon,
     CodeIcon,
     CordovaLogo,
     CrossIcon,
-    CSharpLogo,
+    CustomApplicationTemplateIllustration,
     DashboardIcon,
     DatabaseIcon,
     DocumentIcon,
@@ -44,24 +45,24 @@ import {
     EmailOTPIcon,
     EmptySearchResultsIllustration,
     ErrorIcon,
+    FIDOLogo,
     FacebookIdPIcon,
     FacebookLogo,
-    FIDOLogo,
     ForbiddenIcon,
     GearsIcon,
     GithubIdPIcon,
     GoogleIdPIcon,
     GoogleLogo,
-    HomeTileIcons,
     HTMLLogo,
+    HomeTileIcons,
     InfoIcon,
     JavaLogo,
     JavaScriptLogo,
     LaunchIcon,
     Logo,
+    MFAIconSet,
     MagnifierIcon,
     MaximizeIcon,
-    MFAIconSet,
     MinimizeIcon,
     OIDCLogo,
     OIDCWebAppTemplateIllustration,
@@ -72,11 +73,11 @@ import {
     ProvisionCapabilityIcon,
     ReactLogo,
     ReportIcon,
-    SamlLogo,
     SAMLWebAppTemplateIllustration,
-    SettigsSectionIconSet,
     SMSOTPIcon,
     SPATemplateIllustration,
+    SamlLogo,
+    SettigsSectionIconSet,
     SpinWheelIcon,
     SuccessIcon,
     TOTPIcon,
@@ -84,12 +85,11 @@ import {
     TwitterLogo,
     UserIcon,
     VueLogo,
-    WarningIcon,
-    WebAppTemplateIllustration,
-    WindowsTemplateIllustration,
     WSFedLogo,
     WSTrustLogo,
-    WSTrustTemplateIllustration
+    WSTrustTemplateIllustration,
+    WarningIcon,
+    WindowsTemplateIllustration
 } from "@wso2is/theme";
 import { SupportedServices } from "../models";
 
@@ -182,6 +182,7 @@ export const InboundProtocolLogos = {
 };
 
 export const ApplicationTemplateIllustrations = {
+    customApp: CustomApplicationTemplateIllustration,
     oidcWebApp: OIDCWebAppTemplateIllustration,
     passiveSTS: PassiveSTSTemplateIllustration,
     samlWebApp: SAMLWebAppTemplateIllustration,
@@ -241,19 +242,19 @@ export const PlaceHolderIcons = {
 };
 
 export const IdPIcons = {
+    emailOTP: EmailOTPIcon,
     facebook: FacebookIdPIcon,
     github: GithubIdPIcon,
     google: GoogleIdPIcon,
-    twitter: TwitterIdPIcon,
-    saml: SamlLogo,
-    oidc: OIDCLogo,
-    wsFed: WSFedLogo,
-    smsOTP: SMSOTPIcon,
-    emailOTP: EmailOTPIcon,
-    microsoft: GoogleIdPIcon,
-    yahoo: GoogleIdPIcon,
     iwaKerberos: GoogleIdPIcon,
-    office365: GoogleIdPIcon
+    microsoft: GoogleIdPIcon,
+    office365: GoogleIdPIcon,
+    oidc: OIDCLogo,
+    saml: SamlLogo,
+    smsOTP: SMSOTPIcon,
+    twitter: TwitterIdPIcon,
+    wsFed: WSFedLogo,
+    yahoo: GoogleIdPIcon
 };
 
 export const IdPCapabilityIcons = {

@@ -16,8 +16,8 @@
 * under the License.
 */
 
-import { Grid, Table } from "semantic-ui-react";
 import React, { ReactElement } from "react";
+import { Grid, Table } from "semantic-ui-react";
 import { AddExternalClaim } from "../../../../models";
 
 /**

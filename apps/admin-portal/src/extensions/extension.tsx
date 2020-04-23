@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import * as getConfig from "./config";
 import { EmptyPlaceholder, ErrorBoundary  } from "@wso2is/react-components";
-import React, { lazy, Suspense, ReactElement } from "react";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { Placeholder } from "semantic-ui-react";
+import React, { ReactElement, Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
+import { Placeholder } from "semantic-ui-react";
+import * as getConfig from "./config";
+import { EmptyPlaceholderIllustrations } from "../configs";
 
 /**
  * Extension Interface.

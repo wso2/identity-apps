@@ -86,7 +86,11 @@ export const getJWKForTheIdToken = (jwtHeader: string, keys: JWKInterface[]): Er
 
     for (const key of keys) {
         if (headerJSON.kid === key.kid) {
-            return KEYUTIL.getKey({ kty: key.kty, e: key.e, n: key.n });
+            return KEYUTIL.getKey({
+                e: key.e,
+                kty: key.kty,
+                n: key.n
+            });
         }
     }
 

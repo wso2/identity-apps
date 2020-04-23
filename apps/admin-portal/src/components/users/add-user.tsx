@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
+import { generate } from "generate-password";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     Grid,
-    Message,
+    Message
 } from "semantic-ui-react";
-import { getUsersList, getUserStoreList } from "../../api";
-import { generate } from "generate-password";
+import { getUserStoreList, getUsersList } from "../../api";
 import { BasicUserDetailsInterface } from "../../models";
 
 /**
@@ -47,7 +47,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const {
         initialValues,
         triggerSubmit,
-        onSubmit,
+        onSubmit
     } = props;
 
     const [ userStoreOptions, setUserStoresList ] = useState([]);
@@ -94,7 +94,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
     const passwordOptions = [
         { label: "Invite user to set password", value: "askPw" },
-        { label: "Set user password", value: "createPw" },
+        { label: "Set user password", value: "createPw" }
     ];
 
     /**
@@ -172,7 +172,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             confirmPassword: values.get("confirmPassword") && values.get("confirmPassword") !== undefined  ?
                 values.get("confirmPassword").toString() : "",
             passwordOption: values.get("passwordOption").toString(),
-            userName: values.get("userName").toString(),
+            userName: values.get("userName").toString()
         };
     };
 

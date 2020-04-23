@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import classNames from "classnames";
 import { EmptyPlaceholder, Heading, LabeledCard } from "@wso2is/react-components";
+import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Droppable, DroppableProvided } from "react-beautiful-dnd";
 import { Checkbox, Icon } from "semantic-ui-react";
@@ -95,7 +95,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         onSubjectCheckboxChange,
         step,
         stepIndex,
-        subjectStepId,
+        subjectStepId
     } = props;
 
     const classes = classNames("authentication-step-container", className);

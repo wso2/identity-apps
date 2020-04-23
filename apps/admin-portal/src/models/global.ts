@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { AlertInterface } from "./alert";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
+import { AlertInterface } from "./alert";
 
 export interface GlobalInterface {
     alert: AlertInterface;

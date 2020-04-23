@@ -16,17 +16,17 @@
  * under the License
  */
 
-import React, { FunctionComponent, ReactElement, useState } from "react"
-import { Grid, Divider, Button } from "semantic-ui-react"
 import { Field, Forms } from "@wso2is/forms"
+import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useState } from "react"
 import { useTranslation } from "react-i18next";
-import { DangerZoneGroup, DangerZone, ConfirmationModal } from "@wso2is/react-components";
-import { deleteRoleById, updateRoleDetails } from "../../../api";
-import { AlertLevels, AlertInterface, RolesInterface, PatchRoleDataInterface } from "../../../models";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../../../store/actions";
-import { history } from "../../../helpers";
+import { Button, Divider, Grid } from "semantic-ui-react"
+import { deleteRoleById, updateRoleDetails } from "../../../api";
 import { ROLE_VIEW_PATH } from "../../../constants";
+import { history } from "../../../helpers";
+import { AlertInterface, AlertLevels, PatchRoleDataInterface, RolesInterface } from "../../../models";
+import { addAlert } from "../../../store/actions";
 
 /**
  * Interface to contain props needed for component

@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { UserAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { Grid, Label } from "semantic-ui-react";
-import { UserAvatar } from "@wso2is/react-components";
 
 interface AddUserWizardSummaryProps {
     summary: any;

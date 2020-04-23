@@ -16,20 +16,20 @@
 * under the License.
 */
 
-import { AlertLevels, Type, UserStore } from "../models";
+import { ResourceTab } from "@wso2is/react-components";
+import React, { ReactElement, useEffect, useState } from "react"
+import { useDispatch } from "react-redux";
+import { getAType, getAUserStore } from "../api";
 import {
     EditBasicDetailsUserStore,
     MemoEditAdvancedProperties,
     MemoEditConnectionDetails,
     MemoEditOptionalProperties
 } from "../components";
-import { getAType, getAUserStore } from "../api";
-import React, { ReactElement, useEffect, useState } from "react"
-import { addAlert } from "../store/actions";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts"
-import { ResourceTab } from "@wso2is/react-components";
-import { useDispatch } from "react-redux";
+import { AlertLevels, Type, UserStore } from "../models";
+import { addAlert } from "../store/actions";
 
 /**
  * This renders the userstore edit page

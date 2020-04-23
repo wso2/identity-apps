@@ -20,6 +20,7 @@ import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import { isEmpty } from "lodash";
+import * as _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -29,7 +30,6 @@ import { history } from "../../helpers";
 import { AuthStateInterface, BasicProfileInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
 import { flattenSchemas } from "../../utils";
-import * as _ from "lodash";
 
 /**
  * Prop types for the basic details component.

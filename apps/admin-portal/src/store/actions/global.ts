@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertInterface } from "../../models";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
     AddAlertAction,
     GlobalActionTypes,
@@ -26,7 +26,7 @@ import {
     ShowGlobalLoaderAction,
     ToggleApplicationsPageVisibilityAction
 } from "./types";
-import { SupportedLanguagesMeta } from "@wso2is/i18n";
+import { AlertInterface } from "../../models";
 
 /**
  * Show global loader action.

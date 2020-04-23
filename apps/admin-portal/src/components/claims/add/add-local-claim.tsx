@@ -16,16 +16,16 @@
 * under the License.
 */
 
-import { AlertLevels, Claim } from "../../../models";
-import { BasicDetailsLocalClaims, MappedAttributes, SummaryLocalClaims } from "../wizard";
+import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
-import { Grid, Icon, Modal } from "semantic-ui-react";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
-import { addAlert } from "@wso2is/core/store";
+import { useDispatch } from "react-redux";
+import { Grid, Icon, Modal } from "semantic-ui-react";
 import { addLocalClaim } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
-import { useDispatch } from "react-redux";
+import { AlertLevels, Claim } from "../../../models";
+import { BasicDetailsLocalClaims, MappedAttributes, SummaryLocalClaims } from "../wizard";
 
 /**
  * Prop types for `AddLocalClaims` component

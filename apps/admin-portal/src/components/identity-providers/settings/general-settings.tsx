@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { ConfigReducerStateInterface, IdentityProviderInterface } from "../../../models";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import { deleteIdentityProvider, updateIdentityProviderDetails } from "../../../api";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
+import { deleteIdentityProvider, updateIdentityProviderDetails } from "../../../api";
+import { ConfigReducerStateInterface, IdentityProviderInterface } from "../../../models";
 import { AppState } from "../../../store";
 import { GeneralDetailsForm } from "../forms";
 

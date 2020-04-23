@@ -16,20 +16,19 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels, RoleListInterface, SearchRoleInterface, RolesInterface } from "../models"
-import { DropdownProps, Icon, PaginationProps, DropdownItemProps, Dropdown } from "semantic-ui-react";
-import { ListLayout, PageLayout } from "../layouts";
-import React, { ReactElement, useEffect, useState, SyntheticEvent } from "react";
-import { deleteRoleById, getRolesList, searchRoleList, getUserStoreList } from "../api";
-
+import { PrimaryButton } from "@wso2is/react-components";
+import _ from "lodash";
+import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { deleteRoleById, getRolesList, getUserStoreList, searchRoleList } from "../api";
+import { RoleList, RoleSearch } from "../components/roles";
 import { CreateRoleWizard } from "../components/roles/create-role-wizard";
 import { UserConstants } from "../constants";
-import { PrimaryButton } from "@wso2is/react-components";
-import { RoleList, RoleSearch } from "../components/roles";
+import { ListLayout, PageLayout } from "../layouts";
+import { AlertInterface, AlertLevels, RoleListInterface, RolesInterface, SearchRoleInterface } from "../models"
 import { addAlert } from "../store/actions";
-import { useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
-import _ from "lodash";
 
 const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -109,10 +108,24 @@ export const GroupsPage = (): ReactElement => {
      */
     const getUserStores = () => {
         const storeOptions = [
-                { text: "All user stores", key: -2, value: null },
-                { text: "Primary", key: -1, value: "primary" }
+                {
+                    key: -2,
+                    text: "All user stores",
+                    value: null
+                },
+                {
+                    key: -1,
+                    text: "Primary",
+                    value: "primary"
+                }
             ];
-        let storeOption = { text: "", key: null, value: "" };
+
+        let storeOption = {
+            key: null,
+            text: "", 
+            value: ""
+        };
+
         getUserStoreList()
             .then((response) => {
                 if (storeOptions === []) {
@@ -127,7 +140,7 @@ export const GroupsPage = (): ReactElement => {
                         storeOptions.push(storeOption);
                     }
                 );
-                console.log(storeOption);
+
                 setUserStoresList(storeOptions);
             });
 
@@ -148,11 +161,11 @@ export const GroupsPage = (): ReactElement => {
 
     const searchRoleListHandler = (searchQuery: string) => {
         const searchData: SearchRoleInterface = {
+            filter: searchQuery,
             schemas: [
                 "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
             ],
-            startIndex: 1,
-            filter: searchQuery,
+            startIndex: 1
         }
 
         searchRoleList(searchData).then(response => {

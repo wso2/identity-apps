@@ -30,8 +30,8 @@ export interface MultiValue {
  * Name model
  */
 export interface Name {
-    givenName: string;
     familyName: string;
+    givenName: string;
 }
 
 /**
@@ -110,7 +110,10 @@ export const createEmptyProfile = (): BasicProfileInterface => ({
     groups: [],
     id: "",
     isSecurity: false,
-    name: { givenName: "", familyName: "" },
+    name: {
+        familyName: "",
+        givenName: ""
+    },
     organisation: "",
     phoneNumbers: [],
     profileUrl: "",

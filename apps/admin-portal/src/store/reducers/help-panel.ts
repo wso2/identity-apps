@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { HelpPanelActions, HelpPanelActionTypes } from "../actions/types";
 import { HelpPanelReducerStateInterface } from "../../models";
+import { HelpPanelActionTypes, HelpPanelActions } from "../actions/types";
 
 /**
  * Help panel reducer initial state.

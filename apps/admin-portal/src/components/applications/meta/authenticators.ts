@@ -39,15 +39,15 @@ export const selectedLocalAuthenticators: AuthenticatorListItemInterface[] = [
         authenticator: "BasicAuthenticator",
         displayName: "Basic",
         idp: "LOCAL",
-        image: AuthenticatorIcons.basic,
-        type: AuthenticatorTypes.FIRST_FACTOR,
+        image: AuthenticatorIcons?.basic,
+        type: AuthenticatorTypes?.FIRST_FACTOR
     },
     {
         authenticator: "FIDOAuthenticator",
         displayName: "FIDO",
         idp: "LOCAL",
-        image: AuthenticatorIcons.fido,
-        type: AuthenticatorTypes.SECOND_FACTOR,
+        image: AuthenticatorIcons?.fido,
+        type: AuthenticatorTypes?.SECOND_FACTOR
     }
 ];
 
@@ -56,35 +56,35 @@ export const selectedFederatedAuthenticators: AuthenticatorListItemInterface[] =
         authenticator: "EmailOTP",
         authenticatorId: "RW1haWxPVFA",
         displayName: "Email OTP",
-        image: AuthenticatorIcons.emailOTP,
-        type: AuthenticatorTypes.SECOND_FACTOR,
+        image: AuthenticatorIcons?.emailOTP,
+        type: AuthenticatorTypes?.SECOND_FACTOR
     },
     {
         authenticator: "SMSOTP",
         authenticatorId: "U01TT1RQ",
         displayName: "SMS OTP",
-        image: AuthenticatorIcons.smsOTP,
-        type: AuthenticatorTypes.SECOND_FACTOR,
+        image: AuthenticatorIcons?.smsOTP,
+        type: AuthenticatorTypes?.SECOND_FACTOR
     },
     {
         authenticator: "GoogleOIDCAuthenticator",
         authenticatorId: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
         displayName: "Google",
-        image: AuthenticatorIcons.google,
-        type: AuthenticatorTypes.SOCIAL,
+        image: AuthenticatorIcons?.google,
+        type: AuthenticatorTypes?.SOCIAL
     },
     {
         authenticator: "FacebookAuthenticator",
         authenticatorId: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
         displayName: "Facebook",
-        image: AuthenticatorIcons.facebook,
-        type: AuthenticatorTypes.SOCIAL,
+        image: AuthenticatorIcons?.facebook,
+        type: AuthenticatorTypes?.SOCIAL
     },
     {
         authenticator: "TwitterAuthenticator",
         authenticatorId: "VHdpdHRlckF1dGhlbnRpY2F0b3I",
         displayName: "Twitter",
-        image: AuthenticatorIcons.twitter,
-        type: AuthenticatorTypes.SOCIAL,
+        image: AuthenticatorIcons?.twitter,
+        type: AuthenticatorTypes?.SOCIAL
     }
 ];

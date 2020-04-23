@@ -16,19 +16,19 @@
  * under the License.
  */
 
-import { AlertLevels, ClaimDialect, ExternalClaim } from "../../../../models";
-import { ClaimsList, ExternalClaimsSearch, ListType } from "../../..";
-import { Divider, DropdownProps, PaginationProps } from "semantic-ui-react";
-import { filterList, sortList } from "../../../../utils";
-import { getADialect, getAllExternalClaims } from "../../../../api";
-import React, { ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
-import { AddExternalClaims } from "../../add";
-import { UserConstants } from "../../../../constants";
-import { EmptyPlaceholder } from "../../../shared";
-import { EmptyPlaceholderIllustrations } from "../../../../configs";
-import { ListLayout } from "../../../../layouts";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Divider, DropdownProps, PaginationProps } from "semantic-ui-react";
+import { ClaimsList, ExternalClaimsSearch, ListType } from "../../..";
+import { getADialect, getAllExternalClaims } from "../../../../api";
+import { EmptyPlaceholderIllustrations } from "../../../../configs";
+import { UserConstants } from "../../../../constants";
+import { ListLayout } from "../../../../layouts";
+import { AlertLevels, ClaimDialect, ExternalClaim } from "../../../../models";
+import { filterList, sortList } from "../../../../utils";
+import { EmptyPlaceholder } from "../../../shared";
+import { AddExternalClaims } from "../../add";
 
 interface EditExternalClaimsPropsInterface {
     /**
