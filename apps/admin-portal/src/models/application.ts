@@ -234,12 +234,12 @@ export interface AuthenticationSequenceInterface  {
 export interface ApplicationTemplateListItemInterface {
     id: string;
     name: string;
-    description: string;
+    description?: string;
     image: string;
     authenticationProtocol: string;
-    types: any[];
-    category: string;
-    displayOrder: number;
+    types?: any[];
+    category?: string;
+    displayOrder?: number;
     self?: string;
 }
 
