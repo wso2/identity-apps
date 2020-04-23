@@ -26,3 +26,4 @@ export * from "./route-utils";
 export * from "./search-utils";
 export * from "./storage-utils";
 export * from "./string-utils";
+export * from "./url-utils";
