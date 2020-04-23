@@ -23,7 +23,7 @@ import { ROLE_VIEW_PATH } from "../../constants";
 import { history } from "../../helpers";
 import { RolesInterface } from "../../models";
 import { CommonUtils } from "../../utils";
-import { ClaimsAvatarBackground } from "../claims";
+import { AvatarBackground } from "../shared";
 
 interface RoleListProps {
     roleList: RolesInterface[];
@@ -80,7 +80,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                     centered
                                     size="mini"
                                 >
-                                    <ClaimsAvatarBackground />
+                                    <AvatarBackground />
                                     <span className="claims-letter">
                                         { role.displayName[0].toLocaleUpperCase() }
                                     </span>

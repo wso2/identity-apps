@@ -24,7 +24,6 @@ import React, { ReactElement, useContext, useEffect, useRef, useState } from "re
 import { useDispatch } from "react-redux";
 import { Icon, List, Modal, Popup } from "semantic-ui-react";
 import { Image } from "semantic-ui-react";
-import { ClaimsAvatarBackground } from ".";
 import { EditExternalClaim } from "./edit";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim, getUserStores } from "../../api";
 import { EDIT_EXTERNAL_DIALECT, EDIT_LOCAL_CLAIMS_PATH } from "../../constants";
@@ -38,6 +37,7 @@ import {
     ExternalClaim,
     UserStoreListItem
 } from "../../models";
+import { AvatarBackground } from "../shared";
 
 /**
  * Enum containing the list types.
@@ -443,7 +443,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                 centered
                                                 size="mini"
                                             >
-                                                <ClaimsAvatarBackground />
+                                                <AvatarBackground />
                                                 <span className="claims-letter">
                                                     { generateClaimLetter(claim.claimURI) }
                                                 </span>
@@ -477,7 +477,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                 centered
                                                 size="mini"
                                             >
-                                                <ClaimsAvatarBackground />
+                                                <AvatarBackground />
                                                 <span className="claims-letter">
                                                     { generateDialectLetter(dialect.dialectURI) }
                                                 </span>
@@ -550,7 +550,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                     centered
                                                     size="mini"
                                                 >
-                                                    <ClaimsAvatarBackground />
+                                                    <AvatarBackground />
                                                     <span className="claims-letter">
                                                         { generateClaimLetter(claim.claimURI) }
                                                     </span>
@@ -614,7 +614,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                             centered
                                                             size="mini"
                                                         >
-                                                            <ClaimsAvatarBackground />
+                                                            <AvatarBackground />
                                                             <span className="claims-letter">
                                                                 { generateClaimLetter(claim.claimURI) }
                                                             </span>
