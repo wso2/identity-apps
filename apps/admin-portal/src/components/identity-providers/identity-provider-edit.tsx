@@ -32,6 +32,7 @@ import {
     IdentityProviderAdvanceInterface,
     IdentityProviderInterface
 } from "../../models";
+import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 
 /**
  * Proptypes for the idp edit component.
@@ -127,6 +128,17 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         </ResourceTab.Pane>
     );
 
+    const JITProvisioningSettingsTabPane = (): ReactElement => (
+        <ResourceTab.Pane attached={ false }>
+            <JITProvisioningSettings
+                idpId={ identityProvider.id }
+                jitProvisioningConfigurations={ identityProvider.provisioning?.jit }
+                isLoading={ isLoading }
+                onUpdate={ onUpdate }
+            />
+        </ResourceTab.Pane>
+    );
+
     const AdvancedSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane attached={ false }>
             <AdvanceSettings
@@ -167,6 +179,11 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 render: OutboundProvisioningSettingsTabPane
             });
         }
+
+        panes.push({
+            menuItem: "Just-in-time Provisioning",
+            render: JITProvisioningSettingsTabPane
+        });
 
         panes.push({
             menuItem: "Advance",

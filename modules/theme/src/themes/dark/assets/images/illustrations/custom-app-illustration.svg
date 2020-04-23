@@ -18,7 +18,7 @@
  * under the License.
 -->
 
-<svg xmlns="http://www.w3.org/2000/svg" id="custom-app-illustration" class="icon" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100" viewBox="0 0 92.778 80">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" id="custom-app-illustration" class="icon" width="100" height="100" viewBox="0 0 92.778 80">
   <defs>
     <linearGradient id="linear-gradient" x1="0.292" y1="0.5" x2="2.192" y2="0.5" gradientUnits="objectBoundingBox">
       <stop offset="0" stop-color="#fff0d5"/>
