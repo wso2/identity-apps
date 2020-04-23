@@ -16,13 +16,14 @@
  * under the License.
  */
 
-import { Avatar, ConfirmationModal, ResourceList, ResourceListItem } from "@wso2is/react-components";
+import { ConfirmationModal, ResourceList, ResourceListItem } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
-import { Icon } from "semantic-ui-react";
+import { Image } from "semantic-ui-react";
 import { ROLE_VIEW_PATH } from "../../constants";
 import { history } from "../../helpers";
 import { RolesInterface } from "../../models";
 import { CommonUtils } from "../../utils";
+import { ClaimsAvatarBackground } from "../claims";
 
 interface RoleListProps {
     roleList: RolesInterface[];
@@ -72,13 +73,18 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                     type: "button"
                             }] }
                             avatar={ (
-                                <Avatar
-                                    name={ role.displayName }
-                                    size="small"
-                                    image={ 
-                                        <Icon size="large" name='users' />
-                                    }
-                                />
+                                <Image
+                                    floated="left"
+                                    verticalAlign="middle"
+                                    rounded
+                                    centered
+                                    size="mini"
+                                >
+                                    <ClaimsAvatarBackground />
+                                    <span className="claims-letter">
+                                        { role.displayName[0].toLocaleUpperCase() }
+                                    </span>
+                                </Image>
                             ) }
                             itemHeader={ role.displayName }
                             metaContent={ CommonUtils.humanizeDateDifference(role.meta.created) }
