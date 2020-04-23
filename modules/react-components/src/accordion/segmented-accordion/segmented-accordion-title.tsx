@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import classNames from "classnames";
+import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement } from "react";
 import {
     Accordion,
     AccordionTitleProps,
@@ -28,8 +30,6 @@ import {
     SemanticICONS
 } from "semantic-ui-react";
 import { GenericIcon, GenericIconProps } from "../../icon";
-import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement } from "react";
-import classNames from "classnames";
 
 /**
  * Proptypes for the segmented accordion title component.
@@ -47,6 +47,10 @@ export interface SegmentedAccordionTitlePropsInterface extends AccordionTitlePro
      * Clearing
      */
     clearing?: boolean;
+    /**
+     * Hides the chevron icon.
+     */
+    hideChevron?: boolean;
 }
 
 /**
@@ -110,6 +114,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
         className,
         clearing,
         content,
+        hideChevron,
         id,
         ...rest
     } = props;
@@ -253,20 +258,22 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                         { content || children }
                     </Grid.Column>
                     <Grid.Column computer={ 8 } tablet={ 8 } mobile={ 16 } verticalAlign="middle">
-                        {
-                            actions && actions instanceof Array && actions.length > 0 && (
-                                <div className="flex floated right">
-                                    {
-                                        actions.map((action, index) => (
-                                            <div
-                                                key={ index }
-                                                className="mr-3 m-auto"
-                                                onClick={ (e: MouseEvent<HTMLDivElement>) => e.stopPropagation() }
-                                            >
-                                                { resolveAction(action) }
-                                            </div>
-                                        ))
-                                    }
+                        <div className="flex floated right">
+                            {
+                                (actions && actions instanceof Array && actions.length > 0)
+                                    ? actions.map((action, index) => (
+                                        <div
+                                            key={ index }
+                                            className="mr-3 m-auto"
+                                            onClick={ (e: MouseEvent<HTMLDivElement>) => e.stopPropagation() }
+                                        >
+                                            { resolveAction(action) }
+                                        </div>
+                                    ))
+                                    : null
+                            }
+                            {
+                                !hideChevron && (
                                     <GenericIcon
                                         size="default"
                                         defaultIcon
@@ -275,11 +282,11 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                                         transparent
                                         verticalAlign="middle"
                                         floated="right"
-                                        icon={ <Icon name="angle right" className="chevron" /> }
+                                        icon={ <Icon name="angle right" className="chevron"/> }
                                     />
-                                </div>
-                            )
-                        }
+                                )
+                            }
+                        </div>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -287,7 +294,11 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
     );
 };
 
+/**
+ * Default props for the segmented accordion title component.
+ */
 SegmentedAccordionTitle.defaultProps = {
     attached: true,
-    clearing: false
+    clearing: false,
+    hideChevron: false
 };

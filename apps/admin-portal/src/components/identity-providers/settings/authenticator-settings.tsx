@@ -248,9 +248,30 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         // TODO: Implement deletion logic here.
     };
 
+    /**
+     * Handles Authenticator delete button on click action.
+     *
+     * @param {React.MouseEvent<HTMLDivElement>} e - Click event.
+     * @param {string} id - Id of the authenticator.
+     */
+    const handleAuthenticatorDeleteOnClick = (e: MouseEvent<HTMLDivElement>, id: string): void => {
+        if (!id) {
+            return;
+        }
+
+        const deletingAuthenticator = availableAuthenticators
+            .find((authenticator) => authenticator.id === id);
+
+        if (!deletingAuthenticator) {
+            return;
+        }
+
+        setDeletingAuthenticator(deletingAuthenticator.data);
+        setShowDeleteConfirmationModal(true);
+    };
+
     const handleAddAuthenticator = () => {
         // TODO: Implement method
-        console.log("Add authenticator...")
     };
 
     return (
@@ -267,61 +288,54 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         </Grid.Row>
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
-                                { availableAuthenticators.map((authenticator) => {
-                                    return (
-                                        <AuthenticatorAccordion
-                                            key={ authenticator.id }
-                                            globalActions={ [
-                                                {
-                                                    icon: "trash alternate",
-                                                    onClick: (e: MouseEvent<HTMLDivElement>, id: string): void => {
-                                                        setShowDeleteConfirmationModal(true);
-                                                        setDeletingAuthenticator(authenticator.data);
+                                <AuthenticatorAccordion
+                                    globalActions={ [
+                                        {
+                                            icon: "trash alternate",
+                                            onClick: handleAuthenticatorDeleteOnClick,
+                                            type: "icon"
+                                        }
+                                    ] }
+                                    authenticators={
+                                        availableAuthenticators.map((authenticator) => {
+                                            return {
+                                                actions: [
+                                                    {
+                                                        defaultChecked: authenticator.data?.isDefault,
+                                                        disabled: (authenticator.data?.isDefault ||
+                                                            !authenticator.data?.isEnabled),
+                                                        label: (authenticator.data?.isDefault ?
+                                                            "Default" : "Make default"),
+                                                        onChange: handleDefaultAuthenticatorChange,
+                                                        type: "checkbox"
                                                     },
-                                                    type: "icon"
-                                                }
-                                            ] }
-                                            authenticators={ [
-                                                {
-                                                    actions: [
-                                                        {
-                                                            defaultChecked: authenticator.data?.isDefault,
-                                                            disabled: (authenticator.data?.isDefault ||
-                                                                !authenticator.data?.isEnabled),
-                                                            label: (authenticator.data?.isDefault ?
-                                                                "Default" : "Make default"),
-                                                            onChange: handleDefaultAuthenticatorChange,
-                                                            type: "checkbox"
-                                                        },
-                                                        {
-                                                            defaultChecked: authenticator.data?.isEnabled,
-                                                            label: (authenticator.data?.isEnabled ?
-                                                                "Enabled" : "Disabled"),
-                                                            onChange: handleAuthenticatorEnableToggle,
-                                                            type: "toggle"
-                                                        }
-                                                    ],
-                                                    content: authenticator && (
-                                                        <AuthenticatorFormFactory
-                                                            metadata={ authenticator.meta }
-                                                            initialValues={ authenticator.data }
-                                                            onSubmit={ handleInboundConfigFormSubmit }
-                                                            type={ authenticator.meta?.name }
-                                                        />
-                                                    ),
-                                                    icon: {
-                                                        icon: authenticator.id &&
-                                                            (FederatedAuthenticators.find((fedAuth) =>
-                                                                (fedAuth.authenticatorId === authenticator.id ))).icon
-                                                    },
-                                                    id: authenticator?.id,
-													title: authenticator.meta?.displayName
-                                                }
-                                            ] }
-                                        />
-                                    )
-                                })}
-
+                                                    {
+                                                        defaultChecked: authenticator.data?.isEnabled,
+                                                        label: (authenticator.data?.isEnabled ?
+                                                            "Enabled" : "Disabled"),
+                                                        onChange: handleAuthenticatorEnableToggle,
+                                                        type: "toggle"
+                                                    }
+                                                ],
+                                                content: authenticator && (
+                                                    <AuthenticatorFormFactory
+                                                        metadata={ authenticator.meta }
+                                                        initialValues={ authenticator.data }
+                                                        onSubmit={ handleInboundConfigFormSubmit }
+                                                        type={ authenticator.meta?.name }
+                                                    />
+                                                ),
+                                                icon: {
+                                                    icon: authenticator.id &&
+                                                        (FederatedAuthenticators.find((fedAuth) =>
+                                                            (fedAuth.authenticatorId === authenticator.id))).icon
+                                                },
+                                                id: authenticator?.id,
+                                                title: authenticator.meta?.displayName
+                                            }
+                                        })
+                                    }
+                                />
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
