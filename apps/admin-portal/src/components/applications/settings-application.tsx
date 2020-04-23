@@ -18,8 +18,8 @@
 
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader, Heading, Hint, SelectionCard } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect } from "react";
+import { ContentLoader, GenericIconProps } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { InboundFormFactory } from "./forms";
@@ -33,6 +33,11 @@ import {
 } from "../../models";
 import { AppState } from "../../store";
 import { setAuthProtocolMeta } from "../../store/actions";
+import { InboundFormFactory } from "./forms";
+import { Button, Grid } from "semantic-ui-react";
+import { InboundProtocolLogos } from "../../configs";
+import { AuthenticatorAccordion } from "../shared";
+import { ApplicationProtocolAddWizard } from "./wizard/application-add-protocol-wizard";
 
 /**
  * Proptypes for the applications settings component.
@@ -67,6 +72,10 @@ interface ApplicationSettingsPropsInterface {
      */
     selectedInboundProtocol: AuthProtocolMetaListItemInterface;
     /**
+     *  All the selected inbound protocol.
+     */
+    allSelectedInboundProtocol: AuthProtocolMetaListItemInterface[];
+    /**
      *  Change selected inbound protocol
      */
     setSelectedInboundProtocol: (protocol: AuthProtocolMetaListItemInterface) => void;
@@ -95,32 +104,33 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
         inboundProtocols,
         isLoading,
         onUpdate,
-        showProtocolSelection,
         selectedInboundProtocol,
         selectedInboundProtocolConfig,
-        setSelectedInboundProtocol,
-        isInboundProtocolConfigRequestLoading
+        allSelectedInboundProtocol,
     } = props;
 
     const dispatch = useDispatch();
 
     const availableInboundProtocols = useSelector((state: AppState) => state.application.meta.inboundProtocols);
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
+    const helpPanelMetadata = useSelector((state: AppState) => state.helpPanel.metadata);
+
+    const [isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading] = useState<boolean>(false);
+    const [showWizard, setShowWizard] = useState<boolean>(false);
 
     /**
-     * Handles the inbound protocol selection.
-     *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {string} id - Identifier.
+     * Set the default doc content URL for the tab.
      */
-    const handleInboundProtocolSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
-        // Return if the already selected protocol is clicked again.
-        if (selectedInboundProtocol?.name === id) {
+    useEffect(() => {
+        if (!selectedInboundProtocol?.id) {
+            return;
+        }
+        if (!helpPanelMetadata?.applications?.docs?.inbound[selectedInboundProtocol.id]) {
             return;
         }
 
-        setSelectedInboundProtocol([ ...availableInboundProtocols ].find((protocol) => protocol.name === id));
-    };
+        dispatch(setHelpPanelDocsContentURL(helpPanelMetadata.applications.docs.inbound[selectedInboundProtocol.id]));
+    }, [selectedInboundProtocol?.id, helpPanelMetadata]);
 
     /**
      * Handles the inbound config form submit action.
@@ -190,75 +200,123 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
     };
 
     /**
+     * Filter the available protocol names.
+     */
+    const getSelectedProtocols = (): string[] => {
+        const protocols: string[] = [];
+        allSelectedInboundProtocol.map((selectedProtocol) => {
+            protocols.push(selectedProtocol.id)
+        });
+        return protocols;
+    };
+
+    /**
+     * Check if the protocol is selected or not.
+     * @param protocolName Protocol name to be checked.
+     */
+    const checkSelectedProtocol = (protocolName: string): boolean => {
+        let selected = false;
+        allSelectedInboundProtocol.map((selectedProtocol) => {
+            if (selectedProtocol.id === protocolName) {
+                selected = true
+            }
+        });
+        return selected;
+    };
+
+    /**
      * Resolves the corresponding protocol config form when a
      * protocol is selected.
      * @return {React.ReactElement}
      */
     const resolveInboundProtocolSettingsForm = (): ReactElement => {
-        switch (selectedInboundProtocol.id as SupportedAuthProtocolTypes) {
-            case SupportedAuthProtocolTypes.OIDC:
-                return (
-                    <InboundFormFactory
-                        metadata={ authProtocolMeta[ selectedInboundProtocol.name ] }
-                        initialValues={
-                            selectedInboundProtocolConfig
-                            && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
-                                selectedInboundProtocol.name)
-                                ? selectedInboundProtocolConfig[ selectedInboundProtocol.name ]
-                                : undefined
-                        }
-                        onSubmit={ handleInboundConfigFormSubmit }
-                        type={ SupportedAuthProtocolTypes.OIDC }
-                        handleApplicationRegenerate={ handleApplicationRegenerate }
-                    />
-                );
-            case SupportedAuthProtocolTypes.SAML:
-                return (
-                    <InboundFormFactory
-                        metadata={ authProtocolMeta[ selectedInboundProtocol.name ] }
-                        initialValues={
-                            selectedInboundProtocolConfig
-                            && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
-                                selectedInboundProtocol.name)
-                                ? selectedInboundProtocolConfig[ selectedInboundProtocol.name ]
-                                : undefined
-                        }
-                        onSubmit={ handleInboundConfigFormSubmit }
-                        type={ SupportedAuthProtocolTypes.SAML }
-                    />
-                );
-            case SupportedAuthProtocolTypes.WS_TRUST:
-                return (
-                    <InboundFormFactory
-                        metadata={ authProtocolMeta[selectedInboundProtocol.name] }
-                        initialValues={
-                            selectedInboundProtocolConfig
-                            && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
-                                selectedInboundProtocol.name)
-                                ? selectedInboundProtocolConfig[selectedInboundProtocol.name]
-                                : undefined
-                        }
-                        onSubmit={ handleInboundConfigFormSubmit }
-                        type={ SupportedAuthProtocolTypes.WS_TRUST }
-                    />
-                );
-            case SupportedAuthProtocolTypes.WS_FEDERATION:
-                return (
-                    <InboundFormFactory
-                        initialValues={
-                            selectedInboundProtocolConfig
-                            && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
-                                selectedInboundProtocol.id)
-                                ? selectedInboundProtocolConfig[selectedInboundProtocol.id]
-                                : undefined
-                        }
-                        onSubmit={ handleInboundConfigFormSubmit }
-                        type={ SupportedAuthProtocolTypes.WS_FEDERATION }
-                    />
-                );
-            default:
-                return null;
-        }
+        return (
+            <AuthenticatorAccordion
+                globalActions={ [] }
+                authenticators={ [
+                    {
+                        actions: [],
+                        icon: { icon: InboundProtocolLogos.oidc, size: "micro" } as GenericIconProps,
+                        content: (checkSelectedProtocol(SupportedAuthProtocolTypes.OIDC)) && (
+                            <InboundFormFactory
+                                metadata={ authProtocolMeta[SupportedAuthProtocolTypes.OIDC] }
+                                initialValues={
+                                    selectedInboundProtocolConfig
+                                    && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+                                        SupportedAuthProtocolTypes.OIDC)
+                                        ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.OIDC]
+                                        : undefined
+                                }
+                                onSubmit={ handleInboundConfigFormSubmit }
+                                type={ SupportedAuthProtocolTypes.OIDC }
+                                handleApplicationRegenerate={ handleApplicationRegenerate }
+                            />
+                        ),
+                        id: SupportedAuthProtocolTypes.OIDC,
+                        title: "OIDC",
+                    },
+                    {
+                        actions: [],
+                        icon: { icon: InboundProtocolLogos.saml, size: "micro" } as GenericIconProps,
+                        content: (checkSelectedProtocol(SupportedAuthProtocolTypes.SAML)) && (
+                            <InboundFormFactory
+                                metadata={ authProtocolMeta[SupportedAuthProtocolTypes.SAML] }
+                                initialValues={
+                                    selectedInboundProtocolConfig
+                                    && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+                                        SupportedAuthProtocolTypes.SAML)
+                                        ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.SAML]
+                                        : undefined
+                                }
+                                onSubmit={ handleInboundConfigFormSubmit }
+                                type={ SupportedAuthProtocolTypes.SAML }
+                            />
+                        ),
+                        id: SupportedAuthProtocolTypes.SAML,
+                        title: "SAML"
+                    },
+                    {
+                        actions: [],
+                        icon: { icon: InboundProtocolLogos.wsFed, size: "micro" } as GenericIconProps,
+                        content: (checkSelectedProtocol(SupportedAuthProtocolTypes.WS_FEDERATION)) && (
+                            <InboundFormFactory
+                                initialValues={
+                                    selectedInboundProtocolConfig
+                                    && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+                                        SupportedAuthProtocolTypes.WS_FEDERATION)
+                                        ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.WS_FEDERATION]
+                                        : undefined
+                                }
+                                onSubmit={ handleInboundConfigFormSubmit }
+                                type={ SupportedAuthProtocolTypes.WS_FEDERATION }
+                            />
+                        ),
+                        id: SupportedAuthProtocolTypes.WS_FEDERATION,
+                        title: "Passive STS",
+                    },
+                    {
+                        actions: [],
+                        icon: { icon: InboundProtocolLogos.wsTrust, size: "micro" } as GenericIconProps,
+                        content: (checkSelectedProtocol(SupportedAuthProtocolTypes.WS_TRUST)) && (
+                            <InboundFormFactory
+                                metadata={ authProtocolMeta[SupportedAuthProtocolTypes.WS_TRUST] }
+                                initialValues={
+                                    selectedInboundProtocolConfig
+                                    && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+                                        SupportedAuthProtocolTypes.WS_TRUST)
+                                        ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.WS_TRUST]
+                                        : undefined
+                                }
+                                onSubmit={ handleInboundConfigFormSubmit }
+                                type={ SupportedAuthProtocolTypes.WS_TRUST }
+                            />
+                        ),
+                        id: SupportedAuthProtocolTypes.WS_TRUST,
+                        title: "WS Trust",
+                    }
+                ] }
+            />
+        )
     };
 
     /**
@@ -277,81 +335,77 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
             return;
         }
 
-        if (!Object.values(SupportedAuthProtocolMetaTypes).includes(
-            selectedInboundProtocol.name as SupportedAuthProtocolMetaTypes)) {
-            return;
-        }
+        allSelectedInboundProtocol.map((selected) => {
+            const selectedProtocol = selected.name as SupportedAuthProtocolMetaTypes;
 
-        const selectedProtocol = selectedInboundProtocol.name as SupportedAuthProtocolMetaTypes;
+            if (!Object.values(SupportedAuthProtocolMetaTypes).includes(
+                selected.name as SupportedAuthProtocolMetaTypes)) {
+                return;
+            }
 
-        // Check if the metadata for the selected auth protocol is available in redux store.
-        // If not, fetch the metadata related to the selected auth protocol.
-        if (!Object.prototype.hasOwnProperty.call(authProtocolMeta, selectedProtocol)) {
-            getAuthProtocolMetadata(selectedProtocol)
-                .then((response) => {
-                    dispatch(setAuthProtocolMeta(selectedProtocol, response));
-                })
-                .catch((error) => {
-                    if (error.response && error.response.data && error.response.data.description) {
+                // Check if the metadata for the selected auth protocol is available in redux store.
+            // If not, fetch the metadata related to the selected auth protocol.
+            else if (!Object.prototype.hasOwnProperty.call(authProtocolMeta, selectedProtocol)) {
+                getAuthProtocolMetadata(selectedProtocol)
+                    .then((response) => {
+                        dispatch(setAuthProtocolMeta(selectedProtocol, response));
+                    })
+                    .catch((error) => {
+                        if (error.response && error.response.data && error.response.data.description) {
+                            dispatch(addAlert({
+                                description: error.response.data.description,
+                                level: AlertLevels.ERROR,
+                                message: "Retrieval error"
+                            }));
+
+                            return;
+                        }
+
                         dispatch(addAlert({
-                            description: error.response.data.description,
+                            description: "An error occurred retrieving the protocol metadata.",
                             level: AlertLevels.ERROR,
                             message: "Retrieval error"
                         }));
+                    });
+            }
+        })
 
-                        return;
-                    }
-
-                    dispatch(addAlert({
-                        description: "An error occurred retrieving the protocol metadata.",
-                        level: AlertLevels.ERROR,
-                        message: "Retrieval error"
-                    }));
-                });
-        }
-    }, [ selectedInboundProtocol ]);
+    }, [selectedInboundProtocol, allSelectedInboundProtocol]);
 
     return (
         !isLoading
             ? (
-                <div className="inbound-protocols-section">
-                    { !isInboundProtocolConfigRequestLoading && showProtocolSelection && (
-                        <>
-                            <Heading as="h4">Inbound protocol</Heading>
-
-                            {/* TODO enable this after having multiple inbound protocols*/ }
-                            <Hint icon="info circle">Please select one of the following inbound protocols.</Hint>
-                            {
-                                (availableInboundProtocols
-                                    && availableInboundProtocols instanceof Array
-                                    && availableInboundProtocols.length > 0)
-                                    ? availableInboundProtocols.map((protocol, index) => (
-                                        protocol.enabled && (
-                                            <SelectionCard
-                                                inline
-                                                disabled={ !protocol.enabled }
-                                                selected={
-                                                    selectedInboundProtocol && selectedInboundProtocol.name
-                                                        ? protocol.name === selectedInboundProtocol.name
-                                                        : false
-                                                }
-                                                id={ protocol.name }
-                                                key={ index }
-                                                header={ protocol.displayName }
-                                                image={ InboundProtocolLogos[ protocol.logo ] }
-                                                onClick={ handleInboundProtocolSelection }
-                                            />
-                                        )
-                                    ))
-                                    : null
-                            }
-                            <Divider hidden/>
-                        </>
-                    ) }
-                    <div className="protocol-settings-section">
-                        { selectedInboundProtocol && resolveInboundProtocolSettingsForm() }
-                    </div>
-                </div>
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            { selectedInboundProtocol && resolveInboundProtocolSettingsForm() }
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Button
+                                floated="left"
+                                primary
+                                onClick={ () => setShowWizard(true) }
+                            >
+                                { "+ Protocol" }
+                            </Button>
+                        </Grid.Column>
+                    </Grid.Row>
+                    {
+                        showWizard && (
+                            <ApplicationProtocolAddWizard
+                                title={ "Add new protocol" }
+                                subTitle={ "Add new protocol to this application " }
+                                closeWizard={ (): void => setShowWizard(false) }
+                                addProtocol={ true }
+                                selectedProtocols={ getSelectedProtocols() }
+                                onUpdate={ onUpdate }
+                                appId={ appId }
+                            />
+                        )
+                    }
+                </Grid>
             )
             : <ContentLoader/>
     );
