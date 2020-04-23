@@ -16,9 +16,9 @@
 * under the License.
 */
 
-import { Divider, Grid } from "semantic-ui-react";
-import { Field, Forms, FormValue } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { ReactElement, useEffect, useState } from "react";
+import { Divider, Grid } from "semantic-ui-react";
 import { getUserStoreList } from "../../../../api";
 import { UserStoreListItem } from "../../../../models";
 

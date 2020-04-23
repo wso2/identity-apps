@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { HttpMethods, PatchData, QueryParams, TestConnection, UserStorePostData } from "../models";
 import { AxiosHttpClient } from "@wso2is/http";
+import { HttpMethods, PatchData, QueryParams, TestConnection, UserStorePostData } from "../models";
 import { store } from "../store";
 
 /**

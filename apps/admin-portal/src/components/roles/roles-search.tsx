@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Field, Forms } from "@wso2is/forms";
-import { Form, Grid } from "semantic-ui-react";
 import { AdvancedSearch } from "@wso2is/react-components";
-import { buildSearchQuery } from "../../utils";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Form, Grid } from "semantic-ui-react";
 import { AdvancedSearchIcons } from "../../configs";
+import { buildSearchQuery } from "../../utils";
 
 /**
  * Filter condition field identifier.
@@ -71,7 +71,7 @@ export const RoleSearch: FunctionComponent<RoleSearchProps> = (props: RoleSearch
         { value: "sw", text: t("common:startsWith") },
         { value: "ew", text: t("common:endsWith") },
         { value: "co", text: t("common:contains") },
-        { value: "eq", text: t("common:equals") },
+        { value: "eq", text: t("common:equals") }
     ];
 
     /**

@@ -16,15 +16,15 @@
  * under the License.
  */
 
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { AppAvatar, ResourceList } from "@wso2is/react-components";
-import { ConfigReducerStateInterface, IdentityProviderListResponseInterface } from "../../models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
-import { AppState } from "../../store";
 import { deleteIdentityProvider } from "../../api";
 import { history } from "../../helpers";
+import { ConfigReducerStateInterface, IdentityProviderListResponseInterface } from "../../models";
+import { AppState } from "../../store";
 
 /**
  * Proptypes for the identity provider list component.

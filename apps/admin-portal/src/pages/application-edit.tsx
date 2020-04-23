@@ -16,7 +16,10 @@
  * under the License.
  */
 
+import { fetchFromURL } from "@wso2is/core/api";
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { StringUtils } from "@wso2is/core/utils";
 import {
     AppAvatar,
     ContentLoader,
@@ -28,33 +31,30 @@ import {
     PageHeader,
     SelectionCard
 } from "@wso2is/react-components";
+import _ from "lodash";
+import React, { FunctionComponent, ReactElement, useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Divider, Grid, Label, SemanticICONS } from "semantic-ui-react";
+import { getApplicationDetails } from "../api";
+import { EditApplication } from "../components";
+import { HelpSidebarIcons, TechnologyLogos } from "../configs";
+import { ApplicationConstants, ApplicationManagementConstants, UIConstants } from "../constants";
 import { AppConfig, history, isGithubApiURL } from "../helpers";
+import { HelpPanelLayout, PageLayout } from "../layouts";
 import {
     AppConfigInterface,
     ApplicationEditFeaturesConfigInterface,
     ApplicationInterface,
-    ApplicationSampleInterface,
     ApplicationSDKInterface,
+    ApplicationSampleInterface,
     ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
-    emptyApplication,
-    GithubRepoCategoryTypes
+    GithubRepoCategoryTypes,
+    emptyApplication
 } from "../models";
-import { ApplicationConstants, ApplicationManagementConstants, UIConstants } from "../constants";
-import { Divider, Grid, Label, SemanticICONS } from "semantic-ui-react";
-import { HelpPanelLayout, PageLayout } from "../layouts";
-import { HelpSidebarIcons, TechnologyLogos } from "../configs";
-import React, { FunctionComponent, ReactElement, useContext, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import _ from "lodash";
-import { addAlert } from "@wso2is/core/store";
-import { ApplicationManagementUtils } from "../utils";
 import { AppState } from "../store";
-import { EditApplication } from "../components";
-import { fetchFromURL } from "@wso2is/core/api";
-import { getApplicationDetails } from "../api";
-import { StringUtils } from "@wso2is/core/utils";
-import { useTranslation } from "react-i18next";
+import { ApplicationManagementUtils } from "../utils";
 
 /**
  * Application Edit page.

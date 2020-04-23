@@ -18,26 +18,26 @@
 
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { LinkButton, PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
+import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, {
     FunctionComponent,
+    MouseEvent,
     ReactElement,
     SyntheticEvent,
-    MouseEvent,
+    useContext,
     useEffect,
-    useState,
-    useContext
+    useState
 } from "react";
 import { useDispatch } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getApplicationList } from "../api";
 import { ApplicationList, ApplicationSearch } from "../components";
+import { EmptyPlaceholderIllustrations } from "../configs";
+import { ApplicationConstants, ApplicationManagementConstants } from "../constants";
 import { AppConfig, history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
 import { AppConfigInterface, ApplicationListInterface } from "../models";
-import { ApplicationConstants, ApplicationManagementConstants } from "../constants";
-import { EmptyPlaceholderIllustrations } from "../configs";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -218,7 +218,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                     title={ "No results found" }
                     subtitle={ [
                         `We couldn't find any results for ${ searchQuery }`,
-                        "Please try a different search term.",
+                        "Please try a different search term."
                     ] }
                 />
             );

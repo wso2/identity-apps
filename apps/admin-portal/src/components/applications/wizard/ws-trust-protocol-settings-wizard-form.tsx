@@ -18,14 +18,14 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Grid } from "semantic-ui-react";
-import { MetadataPropertyInterface, SupportedAuthProtocolMetaTypes, WSTrustMetaDataInterface } from "../../../models";
-import { getAuthProtocolMetadata } from "../../../api";
-import { useDispatch } from "react-redux";
 import { FormValidation } from "@wso2is/validation";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Grid } from "semantic-ui-react";
+import { getAuthProtocolMetadata } from "../../../api";
+import { MetadataPropertyInterface, SupportedAuthProtocolMetaTypes, WSTrustMetaDataInterface } from "../../../models";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.

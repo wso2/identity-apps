@@ -17,10 +17,10 @@
  */
 
 import { Hint, SelectionCard } from "@wso2is/react-components";
+import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { InboundProtocolLogos } from "../../../configs";
-import { Heading } from "@wso2is/react-components";
 import { AuthProtocolMetaListItemInterface } from "../../../models";
 
 /**

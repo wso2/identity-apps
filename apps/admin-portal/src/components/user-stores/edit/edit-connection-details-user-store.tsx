@@ -16,15 +16,15 @@
 * under the License.
 */
 
-import { AlertLevels, TestConnection, Type, UserStore, UserStoreProperty } from "../../../models";
-import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
-import { LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { patchUserStore, testConnection } from "../../../api";
-import React, { ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
-import { Grid } from "semantic-ui-react";
-import { JDBC } from "../../../constants";
+import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
+import { LinkButton, PrimaryButton } from "@wso2is/react-components";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Grid } from "semantic-ui-react";
+import { patchUserStore, testConnection } from "../../../api";
+import { JDBC } from "../../../constants";
+import { AlertLevels, TestConnection, Type, UserStore, UserStoreProperty } from "../../../models";
 
 /**
  * Type of the property object

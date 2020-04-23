@@ -17,21 +17,21 @@
  */
 
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { AppAvatar, ConfirmationModal, ResourceList, ResourceListActionInterface } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Label } from "semantic-ui-react";
+import { deleteApplication } from "../../api";
+import { history } from "../../helpers";
 import {
     ApplicationListInterface,
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface,
     ConfigReducerStateInterface
 } from "../../models";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addAlert } from "@wso2is/core/store";
-import { ApplicationManagementUtils } from "../../utils";
 import { AppState } from "../../store";
-import { deleteApplication } from "../../api";
-import { history } from "../../helpers";
-import { Label } from "semantic-ui-react";
+import { ApplicationManagementUtils } from "../../utils";
 
 /**
  *

@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { Accordion, AccordionProps } from "semantic-ui-react";
-import React, { FunctionComponent, ReactElement } from "react";
 import classNames from "classnames";
+import React, { FunctionComponent, ReactElement } from "react";
+import { Accordion, AccordionProps } from "semantic-ui-react";
 import { SegmentedAccordionContent } from "./segmented-accordion-content";
 import { SegmentedAccordionTitle } from "./segmented-accordion-title";
 

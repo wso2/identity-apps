@@ -16,9 +16,9 @@
 * under the License.
 */
 
-import { Field, Forms, FormValue } from "@wso2is/forms";
-import { Grid, Label, Popup } from "semantic-ui-react";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
+import { Grid, Label, Popup } from "semantic-ui-react";
 
 /**
  * Prop types of `BasicDetailsLocalClaims` component

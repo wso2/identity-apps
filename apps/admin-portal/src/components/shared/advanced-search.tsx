@@ -19,9 +19,9 @@
 import classNames from "classnames";
 import React, { ChangeEvent, FunctionComponent, useEffect, useState } from "react";
 import { Button, Icon, Input, Popup } from "semantic-ui-react";
+import { ThemeIcon } from "./icon";
 import { AdvancedSearchIcons } from "../../configs";
 import { useClickOutside } from "../../hooks";
-import { ThemeIcon } from "./icon";
 
 /**
  *

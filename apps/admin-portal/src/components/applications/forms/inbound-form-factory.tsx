@@ -17,11 +17,11 @@
  */
 
 import React, { FunctionComponent } from "react";
-import { SupportedAuthProtocolTypes } from "../../../models";
 import { InboundOIDCForm } from "./inbound-oidc-form";
+import { InboundPassiveStsForm } from "./inbound-passive-sts-form";
 import { InboundSAMLForm } from "./inbound-saml-form";
 import { InboundWSTrustForm } from "./inbound-ws-trust-form";
-import { InboundPassiveStsForm } from "./inbound-passive-sts-form";
+import { SupportedAuthProtocolTypes } from "../../../models";
 
 /**
  * Proptypes for the inbound form factory component.

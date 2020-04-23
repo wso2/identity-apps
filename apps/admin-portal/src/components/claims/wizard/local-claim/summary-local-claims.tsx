@@ -16,10 +16,10 @@
 * under the License.
 */
 
-import { AttributeMapping, Claim } from "../../../../models";
-import { Form, Grid, Label, List, Table } from "semantic-ui-react";
-import React, { ReactElement } from "react";
 import { CopyInputField } from "@wso2is/react-components";
+import React, { ReactElement } from "react";
+import { Form, Grid, Label, List, Table } from "semantic-ui-react";
+import { AttributeMapping, Claim } from "../../../../models";
 
 /**
  * Prop types of `SummaryLocalClaims` component

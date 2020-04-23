@@ -69,7 +69,7 @@ Recent Application Card
     Application Template Card
 --------------------------------*/
 
-@appTemplateCardDefaultWidth: 265px;
+@appTemplateCardDefaultWidth: 242px;
 @appTemplateCardRightSpacing: 30px;
 @appTemplateCardHoverBoxShadow: @defaultCardHoverBoxShadow;
 @appTemplateCardTransition: @defaultCardTransition;

@@ -17,11 +17,11 @@
  */
 
 import { Field, Forms } from "@wso2is/forms";
+import { Hint } from "@wso2is/react-components";
+import _ from "lodash";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Button, Grid } from "semantic-ui-react";
 import { MetadataPropertyInterface, WSTrustConfigurationInterface, WSTrustMetaDataInterface } from "../../../models";
-import { Hint } from "@wso2is/react-components";
-import _ from "lodash";
 
 /**
  * Proptypes for the inbound WS Trust form component.

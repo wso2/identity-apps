@@ -53,7 +53,7 @@ const authenticateReducer = (state = authenticateInitialState, action): AuthStat
                     isAuth: true,
                     loginInit: true,
                     logoutInit: false,
-                    username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME),
+                    username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME)
                 };
             }
             break;

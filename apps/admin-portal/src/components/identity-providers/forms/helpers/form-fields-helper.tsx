@@ -17,16 +17,16 @@
  */
 
 import {
-    CommonPluggableComponentMetaPropertyInterface,
-    CommonPluggableComponentPropertyInterface
-} from "../../../../models";
-import {
     Field,
     FormValue
 } from "@wso2is/forms";
-import React, { ReactElement } from "react";
-import { FormValidation } from "@wso2is/validation";
 import { Hint } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
+import React, { ReactElement } from "react";
+import {
+    CommonPluggableComponentMetaPropertyInterface,
+    CommonPluggableComponentPropertyInterface
+} from "../../../../models";
 
 export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyInterface,
                                      propertyMetadata: CommonPluggableComponentMetaPropertyInterface,

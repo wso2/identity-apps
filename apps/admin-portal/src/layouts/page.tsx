@@ -17,8 +17,8 @@
  */
 
 import { PageHeader, PageHeaderPropsInterface } from "@wso2is/react-components";
-import React, { PropsWithChildren } from "react";
 import classNames from "classnames";
+import React, { PropsWithChildren } from "react";
 import { Divider } from "semantic-ui-react";
 
 /**

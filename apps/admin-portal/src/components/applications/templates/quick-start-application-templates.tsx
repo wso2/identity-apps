@@ -16,11 +16,13 @@
  * under the License.
  */
 
-import React, { FunctionComponent, SyntheticEvent } from "react";
-import { ApplicationTemplateListItemInterface } from "../../../models";
-import { EmptyPlaceholderIllustrations } from "../../../configs";
+import { EmptyPlaceholder, Heading, LinkButton } from "@wso2is/react-components";
+import _ from "lodash";
+import React, { FunctionComponent, SyntheticEvent, useState } from "react";
+import { Grid } from "semantic-ui-react";
 import { ApplicationTemplateCard } from "./application-template-card";
-import { EmptyPlaceholder } from "@wso2is/react-components";
+import { EmptyPlaceholderIllustrations } from "../../../configs";
+import { ApplicationTemplateListItemInterface } from "../../../models";
 
 /**
  * Proptypes for the quick start templates component.
@@ -51,29 +53,88 @@ export const QuickStartApplicationTemplates: FunctionComponent<QuickStartApplica
         templates
     } = props;
 
+    const [ templateList, setTemplateList ] = useState<ApplicationTemplateListItemInterface[]>(_.take(templates, 6));
+    const [ isShowMoreClicked, setIsShowMoreClicked ] = useState<boolean>(false);
+
+    /**
+     * Handles the view more button action
+     */
+    const viewMoreTemplates = (): void => {
+        setIsShowMoreClicked(true);
+        setTemplateList(templates);
+    };
+
+    /**
+     * Handles the view less button action
+     */
+    const viewLessTemplates = (): void => {
+        setIsShowMoreClicked(false);
+        setTemplateList(_.take(templates, 6));
+    };
+
     return (
         <>
-            {
-                (templates && templates instanceof Array && templates.length > 0)
-                    ? templates.map((template, index) => (
-                        <ApplicationTemplateCard
-                            key={ index }
-                            description={ template.description }
-                            image={ template.image }
-                            technologyTypes={ template.types }
-                            name={ template.name }
-                            id={ template.id }
-                            onClick={ onTemplateSelect }
-                        />
-                    ))
-                    :
-                    <EmptyPlaceholder
-                        image={ EmptyPlaceholderIllustrations.newList }
-                        imageSize="tiny"
-                        title={ "No Templates Available" }
-                        subtitle={ ["Please add templates to display"] }
-                    />
-            }
+            <Grid>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column><Heading as="h4">
+                        Quick Setup
+                        <Heading subHeading ellipsis as="h6">
+                            Predefined set of application templates to speed up your application creation.
+                        </Heading>
+                    </Heading></Grid.Column>
+                    <Grid.Column>
+                        {
+                            (templates && templates instanceof Array && templates.length > 5) ? (
+                                isShowMoreClicked ? (
+                                    <LinkButton
+                                        className="show-more-templates-button"
+                                        floated="right"
+                                        onClick={ viewLessTemplates }
+                                    >
+                                        Show Less
+                                    </LinkButton>
+                                ) : (
+                                    <LinkButton
+                                        className="show-more-templates-button"
+                                        floated="right"
+                                        onClick={ viewMoreTemplates }
+                                    >
+                                        Show More
+                                    </LinkButton>
+                                )
+                            )
+                            : null
+                        }
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column>
+                        {
+                            (templateList && templateList instanceof Array && templateList.length > 0)
+                                ? templateList.map((template, index) => (
+                                    template.id !== "custom-application" && (
+                                        <ApplicationTemplateCard
+                                            key={ index }
+                                            description={ template.description }
+                                            image={ template.image }
+                                            technologyTypes={ template.types }
+                                            name={ template.name }
+                                            id={ template.id }
+                                            onClick={ onTemplateSelect }
+                                        />
+                                    )
+                                ))
+                                :
+                                <EmptyPlaceholder
+                                    image={ EmptyPlaceholderIllustrations.newList }
+                                    imageSize="tiny"
+                                    title={ "No Templates Available" }
+                                    subtitle={ ["Please add templates to display"] }
+                                />
+                        }
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         </>
     );
 };

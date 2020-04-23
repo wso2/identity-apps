@@ -45,20 +45,20 @@ export const AppDetails: FunctionComponent<AppDetailsProps> = (props): JSX.Eleme
                                 description={ props.appDescription }
                             />
                         </Tab.Pane>
-                    ),
+                    )
             },
             {
                 menuItem: "Settings",
-                render: () => <Tab.Pane attached={ false }>settings</Tab.Pane>,
+                render: () => <Tab.Pane attached={ false }>settings</Tab.Pane>
             },
             {
                 menuItem: "Attributes",
-                render: () => <Tab.Pane attached={ false }>mapping</Tab.Pane>,
+                render: () => <Tab.Pane attached={ false }>mapping</Tab.Pane>
             },
             {
                 menuItem: "Connections",
-                render: () => <Tab.Pane attached={ false }>connections</Tab.Pane>,
-            },
+                render: () => <Tab.Pane attached={ false }>connections</Tab.Pane>
+            }
         ];
     };
 

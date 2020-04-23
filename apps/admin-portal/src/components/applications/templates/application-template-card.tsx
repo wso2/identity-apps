@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { GenericIcon, GenericIconSizes } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import { Card, CardProps, Popup } from "semantic-ui-react";
-import { GenericIcon, GenericIconSizes } from "@wso2is/react-components";
 import { ApplicationTemplateIllustrations, TechnologyLogos } from "../../../configs";
 
 /**

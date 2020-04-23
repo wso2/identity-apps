@@ -17,18 +17,18 @@
  */
 
 import React, { FunctionComponent, ReactElement } from "react";
-import { AddRoleUsers } from "../create-role-wizard/role-user-assign";
-import { 
-    RolesInterface,     
-    AlertLevels,
-    AlertInterface,
-    CreateRoleMemberInterface,
-    PatchRoleDataInterface
-} from "../../../models";
-import { updateRoleDetails } from "../../../api";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { updateRoleDetails } from "../../../api";
+import { 
+    AlertInterface,     
+    AlertLevels,
+    CreateRoleMemberInterface,
+    PatchRoleDataInterface,
+    RolesInterface
+} from "../../../models";
 import { addAlert } from "../../../store/actions";
+import { AddRoleUsers } from "../create-role-wizard/role-user-assign";
 
 interface RoleUserDetailsProps {
     roleObject: RolesInterface;

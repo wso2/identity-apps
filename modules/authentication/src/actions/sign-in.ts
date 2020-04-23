@@ -16,6 +16,19 @@
  * under the License.
  */
 
+import axios from "axios";
+import { getCodeChallenge, getCodeVerifier, getEmailHash, getJWKForTheIdToken, isValidIdToken } from "./crypto";
+import {
+    getAuthorizeEndpoint,
+    getIssuer,
+    getJwksUri,
+    getRevokeTokenEndpoint,
+    getTokenEndpoint,
+    initOPConfiguration,
+    isValidOPConfig
+} from "./op-config";
+import { getSessionParameter, initUserSession, removeSessionParameter, setSessionParameter } from "./session";
+import { handleSignOut } from "./sign-out";
 import {
     ACCESS_TOKEN,
     AUTHORIZATION_CODE,
@@ -24,30 +37,10 @@ import {
     REQUEST_PARAMS,
     SERVICE_RESOURCES
 } from "../constants";
-import { TokenResponseInterface, TokenRequestHeader } from "../models/token-response";
-import {
-    endAuthenticatedSession,
-    getSessionParameter,
-    initUserSession,
-    removeSessionParameter,
-    setSessionParameter
-} from "./session";
-import {
-    getAuthorizeEndpoint,
-    getIssuer,
-    getJwksUri,
-    getRevokeTokenEndpoint,
-    getTokenEndpoint,
-    initOPConfiguration,
-    isValidOPConfig,
-    resetOPConfiguration
-} from "./op-config";
-import { getCodeChallenge, getCodeVerifier, getEmailHash, getJWKForTheIdToken, isValidIdToken } from "./crypto";
-import { AccountSwitchRequestParams } from "../models/oidc-request-params";
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { ConfigInterface } from "../models/client";
-import axios from "axios";
-import { handleSignOut } from "./sign-out";
+import { AccountSwitchRequestParams } from "../models/oidc-request-params";
+import { TokenRequestHeader, TokenResponseInterface } from "../models/token-response";
 
 /**
  * Checks whether authorization code present in the request.
@@ -437,12 +430,15 @@ export const sendSignInRequest = (requestParams: ConfigInterface, callback?: () 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const handleSignIn = (requestParams: ConfigInterface, callback?: () => void): Promise<any> => {
     if (getSessionParameter(ACCESS_TOKEN)) {
-        if (isValidOPConfig(requestParams.tenant)) {
-            endAuthenticatedSession();
-            resetOPConfiguration();
-
-            return handleSignOut(requestParams);
+        if (!isValidOPConfig(requestParams.tenant)) {
+            handleSignOut();
         }
+
+        if (callback) {
+            callback();
+        }
+
+        return Promise.resolve("Sign In successful!");
     } else {
         initOPConfiguration(requestParams, false)
             .then(() => {

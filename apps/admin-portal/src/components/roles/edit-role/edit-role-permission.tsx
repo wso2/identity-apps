@@ -17,13 +17,13 @@
  */
 
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react"
-import { PermissionList } from "../create-role-wizard/role-permisson";
-import { updateRolePermissions } from "../../../api";
-import { addAlert } from "../../../store/actions";
-import { AlertLevels, RolesInterface } from "../../../models";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { updateRolePermissions } from "../../../api";
+import { AlertLevels, RolesInterface } from "../../../models";
 import { Permission } from "../../../models/permission";
+import { addAlert } from "../../../store/actions";
+import { PermissionList } from "../create-role-wizard/role-permisson";
 
 /**
  * Interface to capture permission edit props.

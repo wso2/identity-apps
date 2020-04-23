@@ -27,6 +27,7 @@ export interface ConfigInterface {
     clientSecret?: string;
     consentDenied?: boolean;
     enablePKCE?: boolean;
+    prompt?: string;
     scope?: string[];
     serverOrigin: string;
     tenant?: string;

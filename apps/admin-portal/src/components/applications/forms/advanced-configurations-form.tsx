@@ -18,10 +18,10 @@
 
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AdvancedConfigurationsInterface } from "../../../models";
-import { FormValidation } from "@wso2is/validation";
 
 /**
  *  Advanced Configurations for the Application.
@@ -59,7 +59,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
             advancedConfigurations: {
                 certificate: {
                     type: values.get("type"),
-                    value: values.get("value"),
+                    value: values.get("value")
                 },
                 enableAuthorization: !!values.get("enableAuthorization")?.includes("enableAuthorization"),
                 returnAuthenticatedIdpList: !!values.get("returnAuthenticatedIdpList")?.includes("returnAuthenticatedIdpList"),

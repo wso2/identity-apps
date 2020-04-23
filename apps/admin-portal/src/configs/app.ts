@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "../models";
 import { I18nConstants } from "../constants";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
+import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "../models";
 
 /**
  * Class to handle application config operations.

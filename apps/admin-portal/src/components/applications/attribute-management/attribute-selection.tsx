@@ -16,25 +16,24 @@
  * under the License.
  */
 
+import { EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Button, Checkbox, Divider, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
-import {
-    ClaimConfigurationInterface,
-    ClaimMappingInterface,
-    RequestedClaimConfigurationInterface
-} from "../../../models";
-import { EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
-import { EmptyPlaceholderIllustrations } from "../../../configs";
+import { AttributeSelectionWizardOtherDialect } from "./attirbute-selection-wizard-other-dialect";
+import { AttributeListItem } from "./attribute-list-item";
+import { AttributeSelectionWizard } from "./attribute-selection-wizard";
 import {
     ExtendedClaimInterface,
     ExtendedClaimMappingInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "./attribute-settings";
-import { AttributeListItem } from "./attribute-list-item";
-import { AttributeSelectionWizard } from "./attribute-selection-wizard";
-import { AttributeSelectionWizardOtherDialect } from "./attirbute-selection-wizard-other-dialect";
-
+import { EmptyPlaceholderIllustrations } from "../../../configs";
+import {
+    ClaimConfigurationInterface,
+    ClaimMappingInterface,
+    RequestedClaimConfigurationInterface
+} from "../../../models";
 
 interface AttributeSelectionPropsInterface {
     claims: ExtendedClaimInterface[];

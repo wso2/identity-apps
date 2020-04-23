@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { ApplicationActions, ApplicationActionTypes } from "../actions/types";
 import { ApplicationReducerStateInterface } from "../../models";
+import { ApplicationActionTypes, ApplicationActions } from "../actions/types";
 
 /**
  * Common profile reducer initial state.
