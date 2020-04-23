@@ -22,8 +22,8 @@ import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
 import { getDialects } from "../api";
-import { AddDialect, DialectSearch } from "../components";
-import { ClaimsAvatarBackground, ClaimsList, ListType } from "../components";
+import { AddDialect, DialectSearch, AvatarBackground } from "../components";
+import { ClaimsList, ListType } from "../components";
 import { LOCAL_CLAIMS_PATH, UserConstants } from "../constants";
 import { AppConfig, history } from "../helpers";
 import { ListLayout } from "../layouts";
@@ -190,7 +190,7 @@ export const ClaimDialectsPage = (): ReactElement => {
                                                     centered
                                                     size="mini"
                                                 >
-                                                    <ClaimsAvatarBackground primary />
+                                                    <AvatarBackground primary />
                                                     <span className="claims-letter">
                                                         L
                                                     </span>

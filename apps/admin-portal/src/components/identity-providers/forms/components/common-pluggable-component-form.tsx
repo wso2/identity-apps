@@ -28,7 +28,6 @@ import {
 import { getPropertyMetadata } from "../../utils";
 import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../helpers";
 
-
 /**
  * Common pluggable connector configurations form.
  *
