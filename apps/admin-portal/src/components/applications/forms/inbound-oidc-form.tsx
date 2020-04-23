@@ -23,11 +23,11 @@ import { isEmpty } from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Button, Divider, Form, Grid } from "semantic-ui-react";
 import {
-    emptyOIDCConfig,
     MetadataPropertyInterface,
     OAuth2PKCEConfigurationInterface,
     OIDCDataInterface,
-    OIDCMetadataInterface
+    OIDCMetadataInterface,
+    emptyOIDCConfig
 } from "../../../models";
 import { URLInputComponent } from "../components";
 
@@ -197,7 +197,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             accessToken: {
                 applicationAccessTokenExpiryInSeconds: Number(metadata.defaultApplicationAccessTokenExpiryTime),
                 type: values.get("type"),
-                userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
+                userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds"))
             },
             allowedOrigins: [],
             callbackURLs: [buildCallBackUrlWithRegExp(callBackUrls)],
@@ -238,7 +238,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         return {
             ...formValues,
             clientId: initialValues?.clientId,
-            clientSecret: values.get("clientSecret"),
+            clientSecret: values.get("clientSecret")
         };
     };
 
@@ -441,7 +441,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         {
                                             label: "Support PKCE 'Plain' Transform Algorithm",
                                             value: "supportPlainTransformAlgorithm"
-                                        },
+                                        }
                                     ] }
                                 />
                             </Grid.Column>
@@ -525,7 +525,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         {
                                             label: "Renew refresh token",
                                             value: "refreshToken"
-                                        },
+                                        }
                                     ] }
                                 />
                                 <Hint>Issue a new refresh token per request when Refresh Token Grant is used.</Hint>
@@ -590,7 +590,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         {
                                             label: "Enable encryption",
                                             value: "enableEncryption"
-                                        },
+                                        }
                                     ] }
                                 />
                                 <Hint>Enable ID token encryption.</Hint>

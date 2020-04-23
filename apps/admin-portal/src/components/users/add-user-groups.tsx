@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import _ from "lodash";
 import { Forms } from "@wso2is/forms";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
+import _ from "lodash";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { RolesInterface } from "../../models";
 
 /**
@@ -89,7 +89,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         const filteredGroupList = [];
 
         if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
+            const re = new RegExp(_.escapeRegExp(value), "i");
 
             initialValues.groupList && initialValues.groupList.map((group) => {
                 isMatch = re.test(group.displayName);
@@ -108,7 +108,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         const filteredGroupList = [];
 
         if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
+            const re = new RegExp(_.escapeRegExp(value), "i");
 
             initialValues.tempGroupList && initialValues.tempGroupList.map((group) => {
                 isMatch = re.test(group.displayName);

@@ -17,12 +17,12 @@
  */
 
 import { Field, Forms, Validation } from "@wso2is/forms";
-import React, { FunctionComponent, ReactElement } from "react";
-import { Button, Grid } from "semantic-ui-react";
-import { PassiveStsConfigurationInterface } from "../../../models";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
+import React, { FunctionComponent, ReactElement } from "react";
+import { Button, Grid } from "semantic-ui-react";
+import { PassiveStsConfigurationInterface } from "../../../models";
 
 /**
  * Proptypes for the inbound Passive Sts form component.

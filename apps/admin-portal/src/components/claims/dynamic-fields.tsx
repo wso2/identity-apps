@@ -16,9 +16,9 @@
 * under the License.
 */
 
-import { Button, Divider, Label, List, Popup } from "semantic-ui-react";
-import { Field, Forms, FormValue, useTrigger, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
+import { Button, Divider, Label, List, Popup } from "semantic-ui-react";
 
 /**
  * Type of key-value object

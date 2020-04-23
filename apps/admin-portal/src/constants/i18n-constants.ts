@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { generateBackendPaths, I18nModuleConstants, I18nModuleInitOptions } from "@wso2is/i18n";
+import { I18nModuleConstants, I18nModuleInitOptions, generateBackendPaths } from "@wso2is/i18n";
 import { store } from "../store";
 
 /**

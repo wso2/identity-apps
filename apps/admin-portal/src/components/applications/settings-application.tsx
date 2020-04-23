@@ -21,18 +21,18 @@ import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, Heading, Hint, SelectionCard } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Divider } from "semantic-ui-react";
+import { InboundFormFactory } from "./forms";
 import { getAuthProtocolMetadata, regenerateClientSecret, updateAuthProtocolConfig } from "../../api";
+import { InboundProtocolLogos } from "../../configs";
 import {
     AuthProtocolMetaListItemInterface,
     InboundProtocolListItemInterface,
     SupportedAuthProtocolMetaTypes,
     SupportedAuthProtocolTypes
 } from "../../models";
-import { setAuthProtocolMeta, setHelpPanelDocsContentURL } from "../../store/actions";
 import { AppState } from "../../store";
-import { InboundFormFactory } from "./forms";
-import { Divider } from "semantic-ui-react";
-import { InboundProtocolLogos } from "../../configs";
+import { setAuthProtocolMeta, setHelpPanelDocsContentURL } from "../../store/actions";
 
 /**
  * Proptypes for the applications settings component.

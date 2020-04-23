@@ -24,7 +24,6 @@ import React, {
     ReactElement,
     ReactPortal
 } from "react";
-import ReactDOM from "react-dom";
 import {
     Draggable,
     DraggableProvided,
@@ -32,6 +31,7 @@ import {
     Droppable,
     DroppableProvided
 } from "react-beautiful-dnd";
+import ReactDOM from "react-dom";
 import { AuthenticatorListItemInterface } from "../../meta";
 
 /**

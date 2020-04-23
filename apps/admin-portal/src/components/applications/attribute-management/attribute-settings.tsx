@@ -17,11 +17,15 @@
  */
 
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { useTrigger } from "@wso2is/forms";
+import { isEmpty } from "lodash";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Grid } from "semantic-ui-react";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
-import { addAlert } from "@wso2is/core/store";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Grid } from "semantic-ui-react";
+import { RoleMapping } from "./role-mapping";
 import { getAllExternalClaims, getAllLocalClaims, getDialects, updateClaimConfiguration } from "../../../api/";
 import {
     AuthProtocolMetaListItemInterface,
@@ -35,13 +39,8 @@ import {
     SubjectConfigInterface,
     SupportedAuthProtocolTypes
 } from "../../../models";
-import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../../store";
-import { isEmpty } from "lodash";
-import { RoleMapping } from "./role-mapping";
 import { setHelpPanelDocsContentURL } from "../../../store/actions";
-import { useTrigger } from "@wso2is/forms";
-
 
 export interface SelectedDialectInterface {
     dialectURI: string;
@@ -295,7 +294,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             const option: DropdownOptionsInterface = {
                 key: element.id,
                 text: element.dialectURI,
-                value: element.dialectURI,
+                value: element.dialectURI
             };
             newDialectOptions.push(option);
         });
@@ -360,7 +359,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         option = {
                             key: element.localClaim.id,
                             text: element.applicationClaim,
-                            value: element.applicationClaim,
+                            value: element.applicationClaim
                         };
                         claimMappingOption.push(option);
                     }
@@ -371,7 +370,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     const option: DropdownOptionsInterface = {
                         key: element.id,
                         text: element.claimURI,
-                        value: element.claimURI,
+                        value: element.claimURI
                     };
                     options.push(option);
                 });
@@ -381,7 +380,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 const option: DropdownOptionsInterface = {
                     key: element.id,
                     text: element.claimURI,
-                    value: element.mappedLocalClaimURI,
+                    value: element.mappedLocalClaimURI
                 };
                 options.push(option);
             });
@@ -424,7 +423,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         applicationClaim: claimMapping.applicationClaim,
                         localClaim: {
                             uri: claimMapping.localClaim.uri
-                        },
+                        }
                     };
                     claimMappingFinal.push(claimMappedObject);
                 }
@@ -496,7 +495,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     claim: {
                         uri: advanceSettingValues?.role.claim
                     },
-                    includeUserDomain: advanceSettingValues?.role.includeUserDomain,
+                    includeUserDomain: advanceSettingValues?.role.includeUserDomain
                 }
             }
         };

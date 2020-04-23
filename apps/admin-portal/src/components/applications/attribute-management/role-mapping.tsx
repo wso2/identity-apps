@@ -18,13 +18,13 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import React, { useEffect, useState } from "react";
-import { Divider, Grid } from "semantic-ui-react";
-import { DynamicField } from "../../claims"
 import { Heading } from "@wso2is/react-components";
-import { RoleListInterface, RoleMappingInterface, RolesInterface } from "../../../models";
-import { getRolesList } from "../../../api";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Divider, Grid } from "semantic-ui-react";
+import { getRolesList } from "../../../api";
+import { RoleListInterface, RoleMappingInterface, RolesInterface } from "../../../models";
+import { DynamicField } from "../../claims"
 
 interface RoleMappingPropsInterface {
     /**

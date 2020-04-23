@@ -22,13 +22,13 @@ import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Divider } from "semantic-ui-react";
+import { AdvancedConfigurationsForm, ProvisioningConfigurationsForm } from "./forms";
 import { getUserStoreList, updateApplicationConfigurations } from "../../api";
 import {
     AdvancedConfigurationsInterface,
     ProvisioningConfigurationInterface,
     SimpleUserStoreListItemInterface
 } from "../../models";
-import { AdvancedConfigurationsForm, ProvisioningConfigurationsForm } from "./forms";
 
 /**
  * Proptypes for the provision settings component.

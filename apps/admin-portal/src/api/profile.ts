@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { BasicProfileInterface, HttpMethods, ProfileSchema } from "../models";
-import _ from "lodash";
-import axios from "axios";
-import { AxiosHttpClient } from "@wso2is/http";
 import { SignInUtil } from "@wso2is/authentication";
+import { AxiosHttpClient } from "@wso2is/http";
+import axios from "axios";
+import _ from "lodash";
+import { BasicProfileInterface, HttpMethods, ProfileSchema } from "../models";
 import { store } from "../store";
 
 /**
@@ -109,7 +109,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
             const profileResponse: BasicProfileInterface = {
                 emails: response.data.emails || "",
                 id: response.data.id || "",
-                name: response.data.name || { givenName: "", familyName: "" },
+                name: response.data.name || { familyName: "", givenName: "" },
                 organisation: response.data[orgKey] ? response.data[orgKey].organization : "",
                 phoneNumbers: response.data.phoneNumbers || [],
                 profileUrl: response.data.profileUrl || "",

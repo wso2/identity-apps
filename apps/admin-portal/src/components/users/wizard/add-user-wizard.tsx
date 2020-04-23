@@ -16,28 +16,28 @@
  * under the License.
  */
 
+import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
+import { RolePermissions } from "./user-role-permissions";
+import { AddUserWizardSummary } from "./wizard-summary";
 import { addUser, addUserRole, getGravatarImage, getRolesList } from "../../../api";
 import { UserWizardStepIcons } from "../../../configs";
 import { AlertLevels } from "../../../models";
-import { addAlert } from "../../../store/actions";
-import { AddUser } from "../add-user";
-import { AddUserWizardSummary } from "./wizard-summary";
-import { useTrigger } from "@wso2is/forms";
-import { AddUserRole } from "../add-user-role";
-import { AddUserGroup } from "../add-user-groups";
 import {
-    RolesInterface,
     AddUserWizardStateInterface,
+    RolesInterface,
     UserDetailsInterface,
     createEmptyUserDetails
 } from "../../../models";
-import { RolePermissions } from "./user-role-permissions";
+import { addAlert } from "../../../store/actions";
+import { AddUser } from "../add-user";
+import { AddUserGroup } from "../add-user-groups";
+import { AddUserRole } from "../add-user-role";
 
 interface AddUserWizardPropsInterface {
     closeWizard: () => void;
@@ -79,7 +79,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const {
         updateList,
         closeWizard,
-        currentStep,
+        currentStep
     } = props;
 
     const { t } = useTranslation();
@@ -300,7 +300,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     }
                 }
             ],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
 
         if (roles.length > 0) {
@@ -414,40 +414,39 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         userInfo.passwordOption && userInfo.passwordOption !== "askPw" ?
             (
                 userDetails = {
-                    emails:
-                        [{
+                    emails:[
+                        {
                             primary: true,
                             value: userInfo.email
-                        }],
-                    name:
-                        {
-                            familyName: userInfo.lastName,
-                            givenName: userInfo.firstName
-                        },
-                    profileUrl,
+                        }
+                    ],
+                    name: {
+                        familyName: userInfo.lastName,
+                        givenName: userInfo.firstName
+                    },
                     password,
+                    profileUrl, 
                     userName
                 }
             ) :
             (
                 userDetails = {
-                    emails:
-                        [{
+                    emails: [
+                        {
                             primary: true,
                             value: userInfo.email
-                        }],
-                    name:
-                        {
-                            familyName: userInfo.lastName,
-                            givenName: userInfo.firstName
-                        },
+                        }
+                    ],
+                    name: {
+                        familyName: userInfo.lastName,
+                        givenName: userInfo.firstName
+                    },
                     password: "password",
-                    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User":
-                        {
-                            askPassword: "true"
-                        },
-                    userName,
-                    profileUrl
+                    profileUrl,
+                    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+                        askPassword: "true"
+                    },
+                    userName
                 }
             );
 

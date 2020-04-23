@@ -16,7 +16,19 @@
  * under the License.
  */
 
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    getIdentityProviderList,
+    getIdentityProviderTemplate,
+    getIdentityProviderTemplateList
+} from "../api";
+import { ExpertModeTemplate } from "../components/identity-providers/meta";
+import { QuickStartIdentityProviderTemplates } from "../components/identity-providers/templates";
+import { IdentityProviderCreateWizard } from "../components/identity-providers/wizards";
+import { IdPCapabilityIcons } from "../configs";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import {
@@ -26,21 +38,9 @@ import {
     IdentityProviderTemplateListResponseInterface,
     SupportedServices
 } from "../models";
-import { IdentityProviderCreateWizard } from "../components/identity-providers/wizards";
-import { QuickStartIdentityProviderTemplates } from "../components/identity-providers/templates";
-import {
-    getIdentityProviderList,
-    getIdentityProviderTemplate,
-    getIdentityProviderTemplateList
-} from "../api";
-import { useDispatch, useSelector } from "react-redux";
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
+import { SupportedServicesInterface } from "../models";
 import { AppState } from "../store";
 import { setAvailableAuthenticatorsMeta } from "../store/actions/identity-provider";
-import { SupportedServicesInterface } from "../models";
-import { IdPCapabilityIcons } from "../configs";
-import { ExpertModeTemplate } from "../components/identity-providers/meta";
 
 /**
  * Choose the application template from this page.

@@ -16,17 +16,17 @@
  * under the License.
  */
 
+import { FormValue, Forms } from "@wso2is/forms";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Button, Grid } from "semantic-ui-react";
-import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../helpers";
 import {
     CommonPluggableComponentFormPropsInterface,
     CommonPluggableComponentInterface,
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../../models";
-import { Forms, FormValue } from "@wso2is/forms";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { getPropertyMetadata } from "../../utils";
+import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../helpers";
 
 
 /**

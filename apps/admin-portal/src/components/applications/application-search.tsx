@@ -96,7 +96,7 @@ export const ApplicationSearch: FunctionComponent<ApplicationSearchPropsInterfac
         { value: "sw", text: t("common:startsWith") },
         { value: "ew", text: t("common:endsWith") },
         { value: "co", text: t("common:contains") },
-        { value: "eq", text: t("common:equals") },
+        { value: "eq", text: t("common:equals") }
     ];
 
     /**

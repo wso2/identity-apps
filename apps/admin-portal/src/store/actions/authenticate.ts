@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import { AlertLevels, ProfileSchema } from "../../models";
-import { AuthAction, authenticateActionTypes } from "./types";
 import { ConfigInterface, IdentityClient } from "@wso2is/authentication";
-import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
-import _ from "lodash";
-import { addAlert } from "@wso2is/core/store";
 import { getProfileInfo } from "@wso2is/core/api";
-import { getProfileSchemas } from "../../api";
-import { history } from "../../helpers";
+import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import { store } from "../index";
+import _ from "lodash";
+import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
+import { AuthAction, authenticateActionTypes } from "./types";
+import { getProfileSchemas } from "../../api";
 import { SYSTEM_SCOPE } from "../../constants";
+import { history } from "../../helpers";
+import { AlertLevels, ProfileSchema } from "../../models";
+import { store } from "../index";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.

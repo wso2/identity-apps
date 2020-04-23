@@ -16,12 +16,12 @@
 * under the License.
 */
 
-import { AlertLevels, TypeResponse } from "../../../models";
-import { Field, Forms, FormValue } from "@wso2is/forms";
-import React, { ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
-import { getTypes } from "../../../api";
+import { Field, FormValue, Forms } from "@wso2is/forms";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { getTypes } from "../../../api";
+import { AlertLevels, TypeResponse } from "../../../models";
 
 /**
  * Prop types of `BasicDetailsUserStore` component

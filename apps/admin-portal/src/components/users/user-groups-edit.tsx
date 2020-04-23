@@ -16,8 +16,18 @@
  * under the License.
  */
 
+import { AlertLevels } from "@wso2is/core/models";
+import {
+    EmptyPlaceholder,
+    Heading,
+    LinkButton,
+    PrimaryButton,
+    TransferComponent,
+    TransferList,
+    TransferListItem
+} from "@wso2is/react-components";
+import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { AlertInterface, BasicProfileInterface } from "../../models";
 import {
     Button,
     Divider,
@@ -30,23 +40,13 @@ import {
     Segment,
     Table
 } from "semantic-ui-react";
-import {
-    Heading,
-    TransferComponent,
-    TransferList,
-    TransferListItem,
-    EmptyPlaceholder,
-    LinkButton,
-    PrimaryButton
-} from "@wso2is/react-components";
-import { RolesMemberInterface } from "../../models";
-import _ from "lodash";
+import { UserRolePermissions } from "./user-role-permissions";
+import { RolePermissions } from "./wizard";
 import { getRolesList } from "../../api";
 import { updateUserRoles } from "../../api";
 import { EmptyPlaceholderIllustrations } from "../../configs";
-import { AlertLevels } from "@wso2is/core/models";
-import { UserRolePermissions } from "./user-role-permissions";
-import { RolePermissions } from "./wizard";
+import { RolesMemberInterface } from "../../models";
+import { AlertInterface, BasicProfileInterface } from "../../models";
 
 interface UserGroupsPropsInterface {
     user: BasicProfileInterface;
@@ -279,7 +279,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         const filteredGroupList = [];
 
         if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
+            const re = new RegExp(_.escapeRegExp(value), "i");
 
             groupList && groupList.map((role) => {
                 isMatch = re.test(role.displayName);
@@ -298,7 +298,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         const filteredGroupList = [];
 
         if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
+            const re = new RegExp(_.escapeRegExp(value), "i");
 
             tempGroupList && tempGroupList?.map((role) => {
                 isMatch = re.test(role.displayName);
@@ -596,7 +596,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         const filteredGroupList = [];
 
         if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
+            const re = new RegExp(_.escapeRegExp(value), "i");
 
             assignedGroups && assignedGroups?.map((group) => {
                 const groupName = group.display.split("/");

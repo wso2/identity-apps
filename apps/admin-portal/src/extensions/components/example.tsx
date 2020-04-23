@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import React, { ReactElement } from "react";
 import { Section } from "@wso2is/react-components";
+import React, { ReactElement } from "react";
 
 export default (): ReactElement => {
     return (

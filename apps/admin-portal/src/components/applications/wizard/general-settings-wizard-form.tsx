@@ -62,11 +62,11 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
         return {
             accessUrl: values.get("accessUrl").toString(),
             advancedConfigurations: {
-                discoverableByEndUsers: !!values.get("discoverableByEndUsers").includes("discoverableByEndUsers"),
+                discoverableByEndUsers: !!values.get("discoverableByEndUsers").includes("discoverableByEndUsers")
             },
             description: values.get("description").toString(),
             imageUrl: values.get("imageUrl").toString(),
-            name: values.get("name").toString(),
+            name: values.get("name").toString()
         };
     };
 

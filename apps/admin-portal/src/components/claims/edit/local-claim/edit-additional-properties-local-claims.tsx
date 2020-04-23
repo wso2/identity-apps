@@ -16,15 +16,15 @@
 * under the License.
 */
 
-import { AlertLevels, Claim } from "../../../../models";
-import React, { ReactElement } from "react";
 import { addAlert } from "@wso2is/core/store";
-import { DynamicField } from "../../dynamic-fields";
-import { Grid } from "semantic-ui-react";
-import { PrimaryButton } from "@wso2is/react-components";
-import { updateAClaim } from "../../../../api";
-import { useDispatch } from "react-redux";
 import { useTrigger } from "@wso2is/forms";
+import { PrimaryButton } from "@wso2is/react-components";
+import React, { ReactElement } from "react";
+import { useDispatch } from "react-redux";
+import { Grid } from "semantic-ui-react";
+import { updateAClaim } from "../../../../api";
+import { AlertLevels, Claim } from "../../../../models";
+import { DynamicField } from "../../dynamic-fields";
 
 /**
  * Prop types for `EditAdditionalPropertiesLocalClaims` component

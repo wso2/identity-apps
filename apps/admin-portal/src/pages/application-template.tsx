@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import { ApplicationCreateWizard, QuickStartApplicationTemplates } from "../components";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
-import { ApplicationManagementUtils } from "../utils";
-import { ApplicationTemplateListItemInterface } from "../models";
-import { AppState } from "../store";
 import { ContentLoader } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Divider } from "semantic-ui-react";
+import { ApplicationCreateWizard, QuickStartApplicationTemplates } from "../components";
+import { CustomApplicationTemplate } from "../components/applications/meta";
+import { CustomApplicationTemplates } from "../components/applications/templates";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
-import { useSelector } from "react-redux";
-import { CustomApplicationTemplate } from "../components/applications/meta";
-import { Divider } from "semantic-ui-react";
-import { CustomApplicationTemplates } from "../components/applications/templates";
+import { ApplicationTemplateListItemInterface } from "../models";
+import { AppState } from "../store";
+import { ApplicationManagementUtils } from "../utils";
 
 /**
  * Choose the application template from this page.

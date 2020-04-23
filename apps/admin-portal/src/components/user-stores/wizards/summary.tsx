@@ -17,8 +17,8 @@
 */
 
 import React, { ReactElement } from "react";
-import { TypeProperty, UserStorePostData, UserStoreProperty } from "../../../models";
 import { Grid } from "semantic-ui-react";
+import { TypeProperty, UserStorePostData, UserStoreProperty } from "../../../models";
 
 /**
  * Prop types of the `SummaryUserStores` component

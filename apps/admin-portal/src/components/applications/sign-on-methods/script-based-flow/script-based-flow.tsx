@@ -16,23 +16,23 @@
  * under the License.
  */
 
+import { UIConstants } from "@wso2is/core/constants";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { StringUtils } from "@wso2is/core/utils";
 import { CodeEditor, Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Checkbox, Grid, Icon, Menu, Sidebar } from "semantic-ui-react";
+import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
+import { getAdaptiveAuthTemplates } from "../../../../api";
+import { ApplicationManagementConstants } from "../../../../constants";
 import {
     AdaptiveAuthTemplateInterface,
     AdaptiveAuthTemplatesListInterface,
     AuthenticationSequenceInterface
 } from "../../../../models";
 import { AdaptiveScriptUtils } from "../../../../utils";
-import { getAdaptiveAuthTemplates } from "../../../../api";
-import { useDispatch } from "react-redux";
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
-import { ApplicationManagementConstants } from "../../../../constants";
-import { UIConstants } from "@wso2is/core/constants";
-import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
-import { StringUtils } from "@wso2is/core/utils";
 
 /**
  * Proptypes for the adaptive scripts component.

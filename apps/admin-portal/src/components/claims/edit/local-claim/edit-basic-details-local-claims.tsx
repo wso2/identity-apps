@@ -16,14 +16,14 @@
 * under the License.
 */
 
-import { AlertLevels, Claim } from "../../../../models";
-import { Divider, Form, Grid, Popup } from "semantic-ui-react";
-import { Field, Forms, FormValue } from "@wso2is/forms";
-import React, { ReactElement, useRef, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import { CopyInputField } from "@wso2is/react-components";
-import { updateAClaim } from "../../../../api";
+import React, { ReactElement, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Divider, Form, Grid, Popup } from "semantic-ui-react";
+import { updateAClaim } from "../../../../api";
+import { AlertLevels, Claim } from "../../../../models";
 
 /**
  * Prop types for `EditBasicDetailsLocalClaims` component

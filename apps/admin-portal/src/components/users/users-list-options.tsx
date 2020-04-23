@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { Field, Forms } from "@wso2is/forms";
 import React, { ReactElement } from "react";
 import { Divider, Header, List } from "semantic-ui-react";
-import { Field, Forms } from "@wso2is/forms";
 
 /**
  * Prop types for user list options component.

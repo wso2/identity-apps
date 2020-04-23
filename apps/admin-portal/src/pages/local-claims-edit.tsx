@@ -16,20 +16,20 @@
 * under the License.
 */
 
-import { AlertLevels, Claim } from "../models";
+import { ResourceTab } from "@wso2is/react-components";
+import React, { ReactElement, useEffect, useState } from "react"
+import { useDispatch } from "react-redux";
+import { getAClaim } from "../api";
 import {
     EditAdditionalPropertiesLocalClaims,
     EditBasicDetailsLocalClaims,
     EditMappedAttributesLocalClaims
 } from "../components";
-import React, { ReactElement, useEffect, useState } from "react"
-import { addAlert } from "../store/actions";
-import { getAClaim } from "../api";
-import { history } from "../helpers";
 import { LOCAL_CLAIMS_PATH } from "../constants";
+import { history } from "../helpers";
 import { PageLayout } from "../layouts"
-import { ResourceTab } from "@wso2is/react-components";
-import { useDispatch } from "react-redux";
+import { AlertLevels, Claim } from "../models";
+import { addAlert } from "../store/actions";
 
 /**
  * This renders the edit local claims page

@@ -17,17 +17,17 @@
  */
 
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
-import { Divider, Form, Grid, List } from "semantic-ui-react";
-import { EditSection, Hint, Section } from "@wso2is/react-components";
-import { Field, Forms, useTrigger } from "@wso2is/forms";
-import { getAllPasswordPolicies, updateAllPasswordPolicies } from "../../api";
-import React, { FunctionComponent, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
-import { PasswordPoliciesInterface } from "../../models/server-configurations";
-import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
-import { SettingsSectionIcons } from "../../configs";
-import { useDispatch } from "react-redux";
+import { Field, Forms, useTrigger } from "@wso2is/forms";
+import { EditSection, Hint, Section } from "@wso2is/react-components";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Divider, Form, Grid, List } from "semantic-ui-react";
+import { getAllPasswordPolicies, updateAllPasswordPolicies } from "../../api";
+import { SettingsSectionIcons } from "../../configs";
+import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
+import { PasswordPoliciesInterface } from "../../models/server-configurations";
 
 /**
  * Constant to store the password policies from identifier.

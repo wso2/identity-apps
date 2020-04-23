@@ -17,16 +17,16 @@
  */
 
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
-import { ApplicationInterface, ApplicationTemplateListItemInterface, ConfigReducerStateInterface } from "../../models";
+import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import { deleteApplication, regenerateClientSecret, revokeClientSecret, updateApplicationDetails } from "../../api";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addAlert } from "@wso2is/core/store";
-import { ApplicationManagementUtils } from "../../utils";
-import { AppState } from "../../store";
 import { GeneralDetailsForm } from "./forms";
+import { deleteApplication, regenerateClientSecret, revokeClientSecret, updateApplicationDetails } from "../../api";
+import { ApplicationInterface, ApplicationTemplateListItemInterface, ConfigReducerStateInterface } from "../../models";
+import { AppState } from "../../store";
 import { setHelpPanelDocsContentURL } from "../../store/actions";
+import { ApplicationManagementUtils } from "../../utils";
 
 /**
  * Proptypes for the applications general details component.
