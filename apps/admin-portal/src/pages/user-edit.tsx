@@ -84,6 +84,7 @@ export const UserEditPage = (): JSX.Element => {
                 />
             ) }
             backButton={ {
+                testId: "user_mgt_edit_user_back_button",
                 onClick: handleBackButtonClick,
                 text: "Go back to users"
             } }

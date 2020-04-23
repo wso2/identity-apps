@@ -42,6 +42,7 @@ interface AdvancedSearchProps {
     resetSubmittedState?: () => void;
     searchOptionsHeader?: string;
     submitted?: boolean;
+    [ "data-testid" ]?: string;
 }
 
 /**
@@ -185,6 +186,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
     return (
         <div className={ `advanced-search-wrapper ${ wrapperClasses }` }>
             <Input
+                data-testid={ `${ props[ `data-testid` ] }_input` }
                 action={ (
                     <>
                         {
@@ -195,6 +197,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
                                         trigger={
                                             (
                                                 <Button
+                                                    data-testid={ `${ props[ `data-testid` ] }_clear_button` }
                                                     basic
                                                     compact
                                                     className="input-add-on"
@@ -220,7 +223,13 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
                             disabled={ !dropdownTriggerPopupLabel }
                             trigger={
                                 (
-                                    <Button basic compact className="input-add-on" onClick={ handleShowOptionsClick }>
+                                    <Button
+                                        data-testid={ `${ props[ `data-testid` ] }_options_button` }
+                                        basic
+                                        compact
+                                        className="input-add-on"
+                                        onClick={ handleShowOptionsClick }
+                                    >
                                         <Icon name="caret down"/>
                                     </Button>
                                 )

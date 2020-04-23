@@ -90,6 +90,7 @@ export interface ResourceListActionInterface {
     popupText?: string;
     subActions?: DropdownItemProps[];
     type: "button" | "dropdown";
+    elementTestId?: string;
 }
 
 /**
@@ -178,6 +179,7 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                                                                         disabled={ action.disabled }
                                                                         trigger={ (
                                                                             <Icon
+                                                                                data-testid={ action.elementTestId }
                                                                                 link
                                                                                 className="list-icon"
                                                                                 disabled={ action.disabled }
@@ -200,6 +202,7 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                                                                 disabled={ action.disabled }
                                                                 trigger={ (
                                                                     <Icon
+                                                                        data-testid={ action.elementTestId }
                                                                         link
                                                                         className="list-icon"
                                                                         disabled={ action.disabled }

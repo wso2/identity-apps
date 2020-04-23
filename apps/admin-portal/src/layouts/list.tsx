@@ -46,6 +46,7 @@ interface ListLayoutPropsInterface extends PaginationProps {
     sortOptions?: DropdownItemProps[];
     sortStrategy?: DropdownItemProps;
     totalListSize?: number;
+    itemsPerPageDropDownTestId?: string;
 }
 
 /**
@@ -72,6 +73,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         sortStrategy,
         totalListSize,
         totalPages,
+        itemsPerPageDropDownTestId,
         ...rest
     } = props;
 
@@ -162,6 +164,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                     (showPagination && totalListSize)
                         ? (
                             <Pagination
+                                itemsPerPageDropDownTestId={ itemsPerPageDropDownTestId }
                                 totalListSize={ totalListSize }
                                 totalPages={ totalPages }
                                 { ...rest }
