@@ -21,4 +21,3 @@ export * from "./add";
 export * from "./edit";
 export * from "./advanced-search";
 export * from "./dynamic-fields";
-export * from "./claims-avatar-background";

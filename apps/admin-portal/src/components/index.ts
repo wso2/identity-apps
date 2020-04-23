@@ -23,6 +23,7 @@ export * from "./notification";
 export * from "./protected-route";
 export * from "./ui";
 export * from "./shared/icon";
+export * from "./shared/avatar-svg-background";
 export * from "./users/users-search";
 export * from "./users/users-list";
 export * from "./claims";

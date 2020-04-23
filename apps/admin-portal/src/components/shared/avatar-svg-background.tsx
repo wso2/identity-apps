@@ -19,9 +19,9 @@
 import React, { ReactElement } from "react";
 
 /**
- * Prop types of `ClaimsAvatarBackground` component
+ * Prop types of `AvataBackground` component
  */
-interface ClaimsAvatarBackgroundPropsInterface {
+interface AvataBackgroundPropsInterface {
     /**
      * Sets if the avatar is of primary color or not
      */
@@ -31,10 +31,10 @@ interface ClaimsAvatarBackgroundPropsInterface {
 /**
  * This component renders the Claim Avatar Background
  * This is a mosaic of 6x6 squares with random opacity values between `0.8` and `1`.
- * @param {ClaimsAvatarBackgroundPropsInterface} props
+ * @param {AvataBackgroundPropsInterface} props
  * @return {ReactElement}
  */
-export const ClaimsAvatarBackground = (props: ClaimsAvatarBackgroundPropsInterface): ReactElement => {
+export const AvatarBackground = (props: AvataBackgroundPropsInterface): ReactElement => {
 
     const { primary } = props;
 
