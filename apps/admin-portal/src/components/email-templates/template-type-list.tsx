@@ -22,7 +22,7 @@ import { Image } from "semantic-ui-react";
 import { EmailTemplateType } from "../../models";
 import { history } from "../../helpers";
 import { EMAIL_TEMPLATE_VIEW_PATH } from "../../constants";
-import { ClaimsAvatarBackground } from "../claims";
+import { AvatarBackground } from "../shared";
 
 interface EmailTemplateListPropsInterface {
     onDelete: (templateId: string) => void;
@@ -81,7 +81,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                                     centered
                                     size="mini"
                                 >
-                                    <ClaimsAvatarBackground />
+                                    <AvatarBackground />
                                     <span className="claims-letter">
                                         { template.displayName[0].toLocaleUpperCase() }
                                     </span>
