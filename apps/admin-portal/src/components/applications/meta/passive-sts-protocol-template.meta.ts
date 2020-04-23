@@ -15,14 +15,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import {
+    ApplicationTemplateInterface,
+    ApplicationTemplateListItemInterface,
+    DefaultProtocolTemplate
+} from "../../../models";
 
-export * from "./spa-application-template.meta";
-export * from "./oauth-web-application-template.meta";
-export * from "./inbound-protocols.meta";
-export * from "./authenticators";
-export * from "./saml-web-application-template.meta";
-export * from "./custom-application-template.meta";
-export * from "./oauth-protocol-template.meta";
-export * from  "./saml-protocol-template.meta";
-export * from "./passive-sts-protocol-template.meta";
-export * from "./ws-trust-protocol-template.meta";
+
+export const PassiveStsProtocolTemplateItem: ApplicationTemplateListItemInterface = {
+    id: DefaultProtocolTemplate.WS_FEDERATION,
+    name: "Passive STS",
+    image: "wsFed",
+    authenticationProtocol: "passive-sts",
+};
+
+export const PassiveStsProtocolTemplate: ApplicationTemplateInterface = {
+    ...PassiveStsProtocolTemplateItem,
+    application: {
+        inboundProtocolConfiguration: {
+            passiveSts: {
+                realm: "",
+                replyTo: ""
+            }
+        },
+        name: ""
+    }
+};
