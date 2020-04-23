@@ -183,6 +183,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
+                                data-testid="user_mgt_add_user_form_newPassword_input"
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
                                     "devPortal:components.user.forms.addUserForm.inputs.newPassword.label"
@@ -215,6 +216,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
+                                data-testid="user_mgt_add_user_form_confirmPassword_input"
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
                                     "devPortal:components.user.forms.addUserForm.inputs.confirmPassword.label"
@@ -269,6 +271,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     const addUserBasicForm = () => (
         <Forms
+            data-testid="user_mgt_add_user_form"
             onSubmit={ (values) => {
                 onSubmit(getFormValues(values));
             } }
@@ -278,6 +281,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
+                            data-testid="user_mgt_add_user_form_domain_dropdown"
                             type="dropdown"
                             label={ t(
                                 "devPortal:components.user.forms.addUserForm.inputs.domain.label"
@@ -294,6 +298,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
+                            data-testid="user_mgt_add_user_form_username_input"
                             label={ t(
                                 "devPortal:components.user.forms.addUserForm.inputs.username.label"
                             ) }
@@ -322,6 +327,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
+                            data-testid="user_mgt_add_user_form_firstName_input"
                             label={ t(
                                 "devPortal:components.user.forms.addUserForm.inputs.firstName.label"
                             ) }
@@ -341,6 +347,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
+                            data-testid="user_mgt_add_user_form_lastName_input"
                             label={ t(
                                 "devPortal:components.user.forms.addUserForm.inputs.lastName.label"
                             ) }
@@ -362,6 +369,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
+                            data-testid="user_mgt_add_user_form_email_input"
                             label="Email address"
                             name="email"
                             placeholder={ t(
@@ -392,6 +400,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Field
+                            data-testid="user_mgt_add_user_form_passwordOption_radio_button"
                             type="radio"
                             label="Select the method to set the user password"
                             name="passwordOption"

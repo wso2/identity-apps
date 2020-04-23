@@ -27,6 +27,7 @@ import { PermissionList } from "../../roles";
  * Proptypes for the role permission component.
  */
 interface RolePermissionsInterface {
+    [ "data-testid" ]?: string;
     roleId: string;
     handleNavigateBack: () => void;
 }
@@ -41,7 +42,10 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
     props: RolePermissionsInterface
 ): ReactElement => {
 
-    const { roleId, handleNavigateBack  } = props;
+    const {
+        roleId,
+        handleNavigateBack
+    } = props;
 
     const [ isRoleSet, setRoleCheck ] = useState(false);
     const [ role, setRole ] = useState<RolesInterface>();
@@ -82,12 +86,13 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
                 <Heading as="h5">
                     Permissions for { role.displayName }
                 </Heading>
-                <Segment>
+                <Segment data-testid={ props[ `data-testid`] }>
                     <div className="permissions-edit-container">
                         <PermissionList isEdit={ false } isRole roleObject={ role }/>
                     </div>
                 </Segment>
                 <LinkButton
+                    data-testid={ `${ props[ `data-testid`] }_back_button` }
                     floated="left"
                     onClick={ handleNavigateBack }
                 >
