@@ -331,6 +331,98 @@ export const devPortal: DevPortalNS = {
                 }
             }
         },
+        emailTemplateTypes: {
+            notifications: {
+                createTemplateType: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error creating email template type."
+                    },
+                    genericError: {
+                        description: "Couldn't create email template type.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully created the email template type.",
+                        message: "Creating email template type is successful"
+                    }
+                },
+                deleteTemplateType: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error deleting email template type."
+                    },
+                    genericError: {
+                        description: "Couldn't delete email template type.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully deleted the email template type.",
+                        message: "Email template type delete successful"
+                    }
+                },
+                updateTemplateType: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error updating email template type."
+                    },
+                    genericError: {
+                        description: "Couldn't update email template type.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully updated the email template type.",
+                        message: "Email template type update successful"
+                    }
+                }
+            },
+        },
+        emailTemplates: {
+            notifications: {
+                createTemplate: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error creating email template."
+                    },
+                    genericError: {
+                        description: "Couldn't create email template.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully created the email template.",
+                        message: "Creating email template is successful"
+                    }
+                },
+                deleteTemplate: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error deleting email template."
+                    },
+                    genericError: {
+                        description: "Couldn't delete email template.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully deleted the email template .",
+                        message: "Email template delete successful"
+                    }
+                },
+                updateTemplate: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error updating email template."
+                    },
+                    genericError: {
+                        description: "Couldn't update email template.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully updated the email template.",
+                        message: "Email template update successful"
+                    }
+                }
+            },
+        },
         user: {
             forms: {
                 addUserForm: {

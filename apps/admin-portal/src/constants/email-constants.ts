@@ -16,14 +16,4 @@
  * under the License.
  */
 
-export * from "./application-constants";
-export * from "./application-management";
-export * from "./email-constants";
-export * from "./i18n-constants";
-export * from "./identity-provider-constants";
-export * from "./token-constants";
-export * from "./ui-constants";
-export * from "./user-constants";
-export * from "./role-constants";
-export * from "./identity-provider-management-constants";
-export * from "./user-store-constants";
+export const EMAIL_TEMPLATE_VIEW_PATH = "/email-templates/";

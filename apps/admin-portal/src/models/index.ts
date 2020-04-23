@@ -24,6 +24,7 @@ export * from "./authenticated-user";
 export * from "./claim";
 export * from "./config";
 export * from "./crypto";
+export * from "./email-template";
 export * from "./notifications";
 export * from "./tokens";
 export * from "./profile";

@@ -16,14 +16,32 @@
  * under the License.
  */
 
-export * from "./application-constants";
-export * from "./application-management";
-export * from "./email-constants";
-export * from "./i18n-constants";
-export * from "./identity-provider-constants";
-export * from "./token-constants";
-export * from "./ui-constants";
-export * from "./user-constants";
-export * from "./role-constants";
-export * from "./identity-provider-management-constants";
-export * from "./user-store-constants";
+
+ /**
+  * Interface to campture Email Template type
+  */
+export interface EmailTemplateType {
+    id: string;
+    displayName?: string;
+    self: string;
+}
+
+/**
+ * Interface to capture Email Template Type Details
+ */
+export interface EmailTemplateDetails {
+    displayName: string;
+    templates: EmailTemplate[];
+    id: string;
+}
+
+/**
+ * Interface to capture Email Template
+ */
+export interface EmailTemplate {
+    contentType?: string;
+    subject: string;
+    body: string;
+    footer: string;
+    id?: string;
+}

@@ -21,6 +21,8 @@ import { IUnControlledCodeMirror, UnControlled as CodeMirror } from "react-codem
 import "codemirror/addon/lint/lint";
 import "codemirror/addon/lint/javascript-lint";
 import "codemirror/mode/javascript/javascript";
+import "codemirror/mode/xml/xml";
+import "codemirror/mode/htmlmixed/htmlmixed";
 import "codemirror/addon/edit/closebrackets";
 import "codemirror/addon/edit/matchbrackets";
 import "codemirror/addon/hint/show-hint";
@@ -48,7 +50,7 @@ export interface CodeEditorProps extends IUnControlledCodeMirror {
     /**
      * Language the code is written in.
      */
-    language?: "javascript" | "json" | "typescript";
+    language?: "javascript" | "json" | "typescript" | "htmlmixed";
     /**
      * Whether to enable linting or not.
      */

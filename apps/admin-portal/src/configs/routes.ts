@@ -48,7 +48,10 @@ import {
     UserEditPage,
     UserStores,
     UserStoresEditPage,
-    UsersPage
+    UsersPage,
+    EmailTemplateTypes,
+    EmailTemplates,
+    AddTemplateLocale
 } from "../pages";
 
 
@@ -270,6 +273,12 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: false
     },
     {
+        exact: true,
+        icon: "serverConfigurations",
+        id: "serverConfigurations",
+        name: "Configurations",
+        protected: true,
+        showOnSidePanel: true,
         children: [
             {
                 component: ServerConfigurationsPage,
@@ -277,18 +286,49 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 icon: "childIcon",
                 id: "serverConfigurations",
                 level: 2,
-                name: "Server Configurations",
+                name: "General",
                 path: "/server-configurations",
                 protected: true,
                 showOnSidePanel: true
+            },{
+                component: EmailTemplateTypes,
+                exact: true,
+                icon: "serverConfigurations",
+                id: "emailTemplateTypes",
+                level: 2,
+                name: "Email Templates",
+                path: "/email-templates",
+                protected: true,
+                showOnSidePanel: true
+            },{
+                component: EmailTemplates,
+                exact: true,
+                icon: "serverConfigurations",
+                id: "emailTemplates",
+                name: "Email-Templates",
+                path: "/email-templates/:typeId",
+                protected: true,
+                showOnSidePanel: false
+            },{
+                component: AddTemplateLocale,
+                exact: true,
+                icon: "serverConfigurations",
+                id: "emailTemplates",
+                name: "Add-Email-Template",
+                path: "/email-templates/:typeId/add-template",
+                protected: true,
+                showOnSidePanel: false
+            },{
+                component: AddTemplateLocale,
+                exact: true,
+                icon: "serverConfigurations",
+                id: "emailTemplates",
+                name: "Edit-Email-Template",
+                path: "/email-templates/:typeId/add-template/:templateId",
+                protected: true,
+                showOnSidePanel: false
             }
         ],
-        exact: true,
-        icon: "serverConfigurations",
-        id: "serverConfigurations",
-        name: "Settings",
-        protected: true,
-        showOnSidePanel: true
     },
     {
         component: CustomizePage,

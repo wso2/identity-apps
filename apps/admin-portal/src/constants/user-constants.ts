@@ -47,6 +47,14 @@ export class UserConstants {
     public static readonly DEFAULT_ROLE_LIST_ITEM_LIMIT = 10;
 
     /**
+     * Default email template type list item limit.
+     * @constant
+     * @type {number}
+     * @default
+     */
+    public static readonly DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT = 10;
+
+    /**
      * Default user list attributes.
      * @constant
      * @type {string[]}

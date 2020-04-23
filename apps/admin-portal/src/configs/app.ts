@@ -144,6 +144,7 @@ export class Config {
             claims: `${this.getRuntimeConfig().serverHost}/api/server/v1/claim-dialects`,
             consents: `${this.getRuntimeConfig()}/api/identity/consent-mgt/v1.0/consents`,
             externalClaims:`${this.getRuntimeConfig().serverHost}/api/server/v1/claim-dialects/{}/claims`,
+            emailTemplateType: `${this.getRuntimeConfig().serverHost}/api/server/v1/email/template-types`,
             groups: `${this.getRuntimeConfig().serverHost}/scim2/Groups`,
             identityProviders: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-providers`,
             issuer: `${this.getRuntimeConfig().serverHost}/oauth2/token`,
