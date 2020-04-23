@@ -99,8 +99,6 @@ export const AuthenticationCapabilityIcon =
     require("../dist/lib/themes/default/assets/images/identity-provider-capabilities/authentication.svg");
 export const ProvisionCapabilityIcon = 
     require("../dist/lib/themes/default/assets/images/identity-provider-capabilities/provision.svg");
-export const FacebookIdPIcon = require("../dist/lib/themes/default/assets/images/identity-providers/facebook-idp-illustration.svg");
-export const GithubIdPIcon = require("../dist/lib/themes/default/assets/images/identity-providers/github-idp-illustration.svg");
 export const AssociatedAccountsMiniIllustration = 
     require("../dist/lib/themes/default/assets/images/illustrations/associated-accounts-mini.svg");
 export const AssociatedAccountsIllustration = 
@@ -140,6 +138,18 @@ export const WindowsTemplateIllustration =
 export const WSTrustTemplateIllustration =
     require("../dist/lib/themes/default/assets/images/illustrations/ws-trust-template-illustration.svg");
 
+// Identity provider template illustrations
+export const ExpertModeIdPIcon =
+    require("../dist/lib/themes/default/assets/images/identity-providers/expert-idp-illustration.svg");
+export const FacebookIdPIcon =
+    require("../dist/lib/themes/default/assets/images/identity-providers/facebook-idp-illustration.svg");
+export const GithubIdPIcon =
+    require("../dist/lib/themes/default/assets/images/identity-providers/github-idp-illustration.svg");
+export const GoogleIdPIcon =
+    require("../dist/lib/themes/default/assets/images/identity-providers/google-idp-illustration.svg");
+export const TwitterIdPIcon =
+    require("../dist/lib/themes/default/assets/images/identity-providers/twitter-idp-illustration.svg");
+
 // Logos
 export const GravatarLogo = require("../dist/lib/themes/default/assets/images/gravatar-logo.png");
 export const Logo = require("../dist/lib/themes/default/assets/images/logo.svg");
@@ -173,10 +183,6 @@ export const DummyUser = require("../dist/lib/themes/default/assets/images/user.
 export const FacebookLogo = require("../dist/lib/themes/default/assets/images/social/facebook.svg");
 export const GoogleLogo = require("../dist/lib/themes/default/assets/images/social/google.svg");
 export const TwitterLogo = require("../dist/lib/themes/default/assets/images/social/twitter.svg");
-
-// Identity providers
-export const GoogleIdPIcon = require("../dist/lib/themes/default/assets/images/identity-providers/google-idp-illustration.svg");
-export const TwitterIdPIcon = require("../dist/lib/themes/default/assets/images/identity-providers/twitter-idp-illustration.svg");
 
 /* eslint-enable import/order */
 
