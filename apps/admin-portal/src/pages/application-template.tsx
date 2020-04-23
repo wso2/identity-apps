@@ -21,7 +21,7 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useS
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import { ApplicationCreateWizard } from "../components";
+import { ApplicationCreateWizard, ApplicationProtocolAddWizard } from "../components";
 import { CustomApplicationTemplate } from "../components/applications/meta";
 import { ApplicationTemplateIllustrations, EmptyPlaceholderIllustrations } from "../configs";
 import { history } from "../helpers";
@@ -137,7 +137,7 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
                             />
                         </div>
                     )
-                    : <ContentLoader dimmer />
+                    : <ContentLoader dimmer/>
             }
             <Divider hidden />
             <div className="custom-templates">
@@ -165,14 +165,23 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
                     tagsSectionTitle={ t("common:technologies") }
                 />
             </div>
-            { showWizard && (
-                <ApplicationCreateWizard
-                    title={ selectedTemplate?.name }
-                    subTitle={ selectedTemplate?.description }
-                    closeWizard={ (): void => setShowWizard(false) }
-                    template={ selectedTemplate }
-                />
-            ) }
+            {
+                showWizard && (
+                    <ApplicationProtocolAddWizard
+                        title={ selectedTemplate?.name }
+                        subTitle={ selectedTemplate?.description }
+                        closeWizard={ (): void => setShowWizard(false) }
+                        template={ selectedTemplate }
+                        addProtocol={ false }
+                    />
+                    // <ApplicationCreateWizard
+                    //     title={ selectedTemplate?.name }
+                    //     subTitle={ selectedTemplate?.description }
+                    //     closeWizard={ (): void => setShowWizard(false) }
+                    //     template={ selectedTemplate }
+                    // />
+                )
+            }
         </PageLayout>
     );
 };
