@@ -17,11 +17,12 @@
 */
 
 import React, { FunctionComponent , ReactElement, useState } from "react";
-import { ResourceList, ResourceListItem, Avatar, ConfirmationModal } from "@wso2is/react-components";
-import { Icon } from "semantic-ui-react";
+import { ResourceList, ResourceListItem, ConfirmationModal } from "@wso2is/react-components";
+import { Image } from "semantic-ui-react";
 import { EmailTemplateType } from "../../models";
 import { history } from "../../helpers";
 import { EMAIL_TEMPLATE_VIEW_PATH } from "../../constants";
+import { ClaimsAvatarBackground } from "../claims";
 
 interface EmailTemplateListPropsInterface {
     onDelete: (templateId: string) => void;
@@ -73,13 +74,18 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                                 type: "button"
                             }] }
                             avatar={ (
-                                <Avatar
-                                    name={ template.displayName }
-                                    size="small"
-                                    image={
-                                        <Icon size="large" name='mail' />
-                                    }
-                                />
+                                <Image
+                                    floated="left"
+                                    verticalAlign="middle"
+                                    rounded
+                                    centered
+                                    size="mini"
+                                >
+                                    <ClaimsAvatarBackground />
+                                    <span className="claims-letter">
+                                        { template.displayName[0].toLocaleUpperCase() }
+                                    </span>
+                                </Image>
                             ) }
                             itemHeader={ template.displayName }
                         />
