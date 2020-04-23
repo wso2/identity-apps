@@ -64,7 +64,7 @@ interface IdentityProviderSettingsPropsInterface {
  * @param {IdentityProviderSettingsPropsInterface} props - Props injected to the component.
  * @return {ReactElement}
  */
-export const AttributeSettings: FunctionComponent<IdentityProviderSettingsPropsInterface> = (
+export const AttributeSettingsBk: FunctionComponent<IdentityProviderSettingsPropsInterface> = (
     props: IdentityProviderSettingsPropsInterface
 ): ReactElement => {
 
