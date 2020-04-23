@@ -131,9 +131,9 @@
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.your.username.here")%>
                             </label>
                             <input id="usernameUserInput" name="usernameUserInput" type="text" tabindex="0" required>
-                            <input id="username" name="username" type="hidden" required>
-                            <input id="tenantDomain" name="tenantDomain" type="hidden" required>
-                            <input id="isSaaSApp" name="isSaaSApp" type="hidden" required>
+                            <input id="username" name="username" type="hidden">
+                            <input id="tenantDomain" name="tenantDomain" type="hidden">
+                            <input id="isSaaSApp" name="isSaaSApp" type="hidden">
                         </div>
 
                         <%
@@ -241,7 +241,7 @@
                 var isSaaSAppInRequest = "<%= isSaaSApp %>";
                 var isSaaSApp = document.getElementById("isSaaSApp");
                 if (isSaaSAppInRequest) {
-                    isSaaSApp.value = isSaaSApp;
+                    isSaaSApp.value = isSaaSAppInRequest;
                 }
                 var userName = document.getElementById("username");
                 var usernameUserInput = document.getElementById("usernameUserInput");
