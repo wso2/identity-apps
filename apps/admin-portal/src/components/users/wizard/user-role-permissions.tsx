@@ -18,7 +18,7 @@
 
 import { Heading, LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Divider, Icon, Segment } from "semantic-ui-react";
+import { Icon, Segment } from "semantic-ui-react";
 import { getRoleById } from "../../../api";
 import { RolesInterface } from "../../../models";
 import { PermissionList } from "../../roles";

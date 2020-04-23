@@ -23,14 +23,7 @@ import { Button, EmptyPlaceholder, PrimaryButton } from "@wso2is/react-component
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import {
-    Dropdown,
-    DropdownProps,
-    Grid,
-    Icon,
-    PaginationProps,
-    Popup
-} from "semantic-ui-react";
+import { Dropdown, DropdownProps, Grid, Icon, PaginationProps, Popup } from "semantic-ui-react";
 import { deleteUser, getUserStoreList, getUsersList } from "../api";
 import { UserSearch, UsersList } from "../components/users";
 import { UsersListOptionsComponent } from "../components/users";
@@ -58,7 +51,7 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ usersList, setUsersList ] = useState<UserListInterface>({});
-    const [ rolesList, setRolesList ] = useState([]);
+    const [ rolesList ] = useState([]);
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
@@ -107,10 +100,24 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
      */
     const getUserStores = () => {
         const storeOptions = [
-                { text: "All userstores", key: -2, value: null },
-                { text: "Primary", key: -1, value: "primary" }
+                {
+                    key: -2,
+                    text: "All userstores",
+                    value: null
+                },
+                {
+                    key: -1, 
+                    text: "Primary",
+                    value: "primary"
+                }
             ];
-        let storeOption = { text: "", key: null, value: "" };
+
+        let storeOption = {
+            key: null,
+            text: "", 
+            value: ""
+        };
+
         getUserStoreList()
             .then((response) => {
                 if (storeOptions === []) {

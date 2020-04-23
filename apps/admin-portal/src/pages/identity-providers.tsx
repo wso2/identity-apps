@@ -258,8 +258,11 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
             >
                 {
                     (idpList?.totalResults > 0 ||
-                        idpList?.identityProviders instanceof Array && idpList.identityProviders.length > 0)
-                        ? <IdentityProviderList list={ idpList } onIdentityProviderDelete={ handleIdentityProviderDelete } />
+                        idpList?.identityProviders instanceof Array && idpList.identityProviders.length > 0) ?
+                        <IdentityProviderList
+                            list={ idpList }
+                            onIdentityProviderDelete={ handleIdentityProviderDelete }
+                        />
                         : !isIdPListRequestLoading && showPlaceholders()
                 }
             </ListLayout>

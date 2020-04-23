@@ -414,40 +414,39 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         userInfo.passwordOption && userInfo.passwordOption !== "askPw" ?
             (
                 userDetails = {
-                    emails:
-                        [{
+                    emails:[
+                        {
                             primary: true,
                             value: userInfo.email
-                        }],
-                    name:
-                        {
-                            familyName: userInfo.lastName,
-                            givenName: userInfo.firstName
-                        },
-                    profileUrl,
+                        }
+                    ],
+                    name: {
+                        familyName: userInfo.lastName,
+                        givenName: userInfo.firstName
+                    },
                     password,
+                    profileUrl, 
                     userName
                 }
             ) :
             (
                 userDetails = {
-                    emails:
-                        [{
+                    emails: [
+                        {
                             primary: true,
                             value: userInfo.email
-                        }],
-                    name:
-                        {
-                            familyName: userInfo.lastName,
-                            givenName: userInfo.firstName
-                        },
+                        }
+                    ],
+                    name: {
+                        familyName: userInfo.lastName,
+                        givenName: userInfo.firstName
+                    },
                     password: "password",
-                    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User":
-                        {
-                            askPassword: "true"
-                        },
-                    userName,
-                    profileUrl
+                    profileUrl,
+                    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+                        askPassword: "true"
+                    },
+                    userName
                 }
             );
 

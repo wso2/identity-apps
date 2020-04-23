@@ -78,8 +78,14 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (
      * @type {({text: string; value: string})[]}
      */
     const filterAttributeOptions = [
-        { value: "userName", text: "Username" },
-        { value: "emails", text: "Email" }
+        {
+            text: "Username",
+            value: "userName"
+        },
+        {
+            text: "Email",
+            value: "emails"
+        }
     ];
 
     /**
@@ -88,10 +94,22 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (
      * @type {({text: string; value: string})[]}
      */
     const filterConditionOptions = [
-        { value: "sw", text: t("common:startsWith") },
-        { value: "ew", text: t("common:endsWith") },
-        { value: "co", text: t("common:contains") },
-        { value: "eq", text: t("common:equals") }
+        {
+            text: t("common:startsWith"),
+            value: "sw"
+        },
+        {
+            text: t("common:endsWith"),
+            value: "ew"
+        },
+        {
+            text: t("common:contains"),
+            value: "co"
+        },
+        {
+            text: t("common:equals"),
+            value: "eq"
+        }
     ];
 
     /**

@@ -21,7 +21,7 @@ import { EmptyPlaceholder } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { Divider, Grid } from "semantic-ui-react";
 import { ClaimsList, ListType } from "../..";
-import { EmptyPlaceholderIllustrations } from "../../../../../../user-portal/src/configs";
+import { EmptyPlaceholderIllustrations } from "../../../../configs";
 import { AddExternalClaim } from "../../../../models";
 import { AddExternalClaims } from "../../add";
 

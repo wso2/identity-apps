@@ -24,7 +24,7 @@ import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import { RolesInterface } from "../models";
 
-export const RoleEditPage: FunctionComponent<any> = (props: any): ReactElement => {
+export const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
 
     const [ roleId, setRoleId ] = useState<string>(undefined);
     const [ roleObject, setRoleObject ] = useState<RolesInterface>();
@@ -34,7 +34,7 @@ export const RoleEditPage: FunctionComponent<any> = (props: any): ReactElement =
             if (response.status === 200) {
                 setRoleObject(response.data);
             }
-        }).catch(error => {
+        }).catch(() => {
             // TODO: handle error
         })
     }
