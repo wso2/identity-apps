@@ -16,20 +16,20 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels, RoleListInterface, SearchRoleInterface, RolesInterface } from "../models"
-import { DropdownProps, Icon, PaginationProps, DropdownItemProps, Dropdown } from "semantic-ui-react";
-import { ListLayout, PageLayout } from "../layouts";
-import React, { ReactElement, useEffect, useState, SyntheticEvent } from "react";
-import { deleteRoleById, getRolesList, searchRoleList, getUserStoreList } from "../api";
-
-import { CreateRoleWizard } from "../components/roles/create-role-wizard";
-import { UserConstants, APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../constants";
 import { PrimaryButton } from "@wso2is/react-components";
-import { RoleList, RoleSearch } from "../components/roles";
-import { addAlert } from "../store/actions";
-import { useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
 import _ from "lodash";
+import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { deleteRoleById, getRolesList, getUserStoreList, searchRoleList } from "../api";
+
+import { RoleList, RoleSearch } from "../components/roles";
+import { CreateRoleWizard } from "../components/roles/create-role-wizard";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, UserConstants } from "../constants";
+import { ListLayout, PageLayout } from "../layouts";
+import { AlertInterface, AlertLevels, RoleListInterface, RolesInterface, SearchRoleInterface } from "../models"
+import { addAlert } from "../store/actions";
 
 const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -153,7 +153,7 @@ export const RolesPage = (): ReactElement => {
                 "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
             ],
             startIndex: 1,
-            filter: searchQuery,
+            filter: searchQuery
         }
 
         searchRoleList(searchData).then(response => {

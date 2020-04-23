@@ -17,6 +17,9 @@
  */
 
 import { Field, Forms, Validation } from "@wso2is/forms";
+import { CopyInputField, Heading, Hint } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
+import { isEmpty } from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Button, Divider, Form, Grid } from "semantic-ui-react";
 import {
@@ -25,10 +28,7 @@ import {
     SAML2ServiceProviderInterface,
     SAMLMetaDataInterface
 } from "../../../models";
-import { CopyInputField, Heading, Hint } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import { URLInputComponent } from "../components";
-import { isEmpty } from "lodash";
 
 interface InboundSAMLFormPropsInterface {
     initialValues: SAML2ServiceProviderInterface;
@@ -316,7 +316,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         {
                                             label: "Enable request signature validation",
                                             value: "enableSignatureValidation"
-                                        },
+                                        }
                                     ] }
                                 />
                                 <Hint>
@@ -397,7 +397,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         {
                                             label: "Sign SAML responses",
                                             value: "enabled"
-                                        },
+                                        }
                                     ] }
                                 />
                                 <Hint>Sign the SAML2 Responses returned after the authentication process.</Hint>
@@ -423,7 +423,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     children={ [
                                         { label: "HTTP Post", value: "HTTP_POST" },
                                         { label: "HTTP Redirect", value: "HTTP_REDIRECT" },
-                                        { label: "Artifact", value: "ARTIFACT" },
+                                        { label: "Artifact", value: "ARTIFACT" }
                                     ] }
                                     value={ initialValues?.singleSignOnProfile?.bindings }
                                 />
@@ -448,7 +448,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         {
                                             label: "Enable signature validation for artifact binding",
                                             value: "enableSignatureValidationForArtifactBinding"
-                                        },
+                                        }
                                     ] }
                                 />
                                 <Hint>
@@ -473,7 +473,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         {
                                             label: "Enable idP initiated SSO",
                                             value: "enableIdPInitiatedSSO"
-                                        },
+                                        }
                                     ] }
                                 />
                             </Grid.Column>
@@ -550,7 +550,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     listen={
                                         (values) => {
                                             setAssertionEncryptionEnabled(
-                                                values.get("assertionEncryption").includes("enableAssertionEncryption"),
+                                                values.get("assertionEncryption").includes("enableAssertionEncryption")
                                             )
                                         }
                                     }
@@ -558,7 +558,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         {
                                             label: "Enable",
                                             value: "enableAssertionEncryption"
-                                        },
+                                        }
                                     ] }
                                 />
                             </Grid.Column>
@@ -655,7 +655,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         {
                                             label: "Always include attributes in response",
                                             value: "alwaysIncludeAttributesInResponse"
-                                        },
+                                        }
                                     ] }
                                 />
                                 <Hint disabled={ !isAttributeProfileEnabled }>
@@ -713,7 +713,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         {
                                             label: "Enable",
                                             value: "enabled"
-                                        },
+                                        }
                                     ] }
                                 />
                             </Grid.Column>
@@ -744,7 +744,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             text: "FRONT CHANNEL HTTP POST",
                                             value: LogoutMethods.FRONT_CHANNEL_HTTP_POST,
                                             key: 3
-                                        },
+                                        }
                                     ]
                                     }
                                 />
@@ -818,7 +818,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         {
                                             label: "Enable",
                                             value: "enabled"
-                                        },
+                                        }
                                     ] }
                                 />
                                 <Hint disabled={ !isSingleLogoutProfileEnabled }>
@@ -871,7 +871,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         {
                                             label: "Enable assertion query profile",
                                             value: "enableAssertionQueryProfile"
-                                        },
+                                        }
                                     ] }
                                 />
                             </Grid.Column>

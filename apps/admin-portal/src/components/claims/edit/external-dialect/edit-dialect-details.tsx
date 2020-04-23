@@ -16,16 +16,16 @@
 * under the License.
 */
 
-import { AlertLevels, ClaimDialect } from "../../../../models";
-import { Divider, Grid } from "semantic-ui-react";
-import { Field, Forms, FormValue } from "@wso2is/forms";
-import React, { ReactElement } from "react";
 import { addAlert } from "@wso2is/core/store";
+import { Field, FormValue, Forms } from "@wso2is/forms";
+import { PrimaryButton } from "@wso2is/react-components";
+import React, { ReactElement } from "react";
+import { useDispatch } from "react-redux";
+import { Divider, Grid } from "semantic-ui-react";
+import { updateADialect } from "../../../../api";
 import { EDIT_EXTERNAL_DIALECT } from "../../../../constants";
 import { history } from "../../../../helpers";
-import { PrimaryButton } from "@wso2is/react-components";
-import { updateADialect } from "../../../../api";
-import { useDispatch } from "react-redux";
+import { AlertLevels, ClaimDialect } from "../../../../models";
 
 /**
  * Prop types for the `EditDialectDetails` component

@@ -16,7 +16,12 @@
  * under the License.
  */
 
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, Heading } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Divider } from "semantic-ui-react";
 import {
     getOutboundProvisioningConnector,
     getOutboundProvisioningConnectorMetadata,
@@ -27,12 +32,7 @@ import {
     OutboundProvisioningConnectorMetaInterface,
     OutboundProvisioningConnectorsInterface
 } from "../../../models";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
-import { Divider } from "semantic-ui-react";
 import { OutboundProvisioningConnectorFormFactory } from "../forms";
-import { useDispatch } from "react-redux";
 
 /**
  * Proptypes for the provisioning settings component.

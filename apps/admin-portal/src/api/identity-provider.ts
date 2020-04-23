@@ -16,7 +16,10 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { AxiosHttpClient } from "@wso2is/http";
 import { AxiosError, AxiosResponse } from "axios";
+import { IdentityProviderManagementConstants } from "../constants";
 import {
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface,
@@ -31,9 +34,6 @@ import {
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../models";
-import { AxiosHttpClient } from "@wso2is/http";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { IdentityProviderManagementConstants } from "../constants";
 import { store } from "../store";
 
 /**

@@ -16,9 +16,7 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { AlertInterface, BasicProfileInterface } from "../../models";
-import { useTranslation } from "react-i18next";
+import { AlertLevels } from "@wso2is/core/models";
 import {
     EmptyPlaceholder,
     Heading,
@@ -27,6 +25,9 @@ import {
     TransferComponent,
     TransferList, TransferListItem
 } from "@wso2is/react-components";
+import _ from "lodash";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Button,
     Divider,
@@ -39,13 +40,12 @@ import {
     Segment,
     Table
 } from "semantic-ui-react";
-import { getRolesList, updateUserRoles } from "../../api";
-import _ from "lodash";
-import { AlertLevels } from "@wso2is/core/models";
-import { RolesMemberInterface } from "../../models";
-import { EmptyPlaceholderIllustrations } from "../../configs";
 import { UserRolePermissions } from "./user-role-permissions";
 import { RolePermissions } from "./wizard";
+import { getRolesList, updateUserRoles } from "../../api";
+import { EmptyPlaceholderIllustrations } from "../../configs";
+import { RolesMemberInterface } from "../../models";
+import { AlertInterface, BasicProfileInterface } from "../../models";
 
 interface UserRolesPropsInterface {
     user: BasicProfileInterface;
@@ -355,7 +355,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         const filteredRoleList = [];
 
         if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
+            const re = new RegExp(_.escapeRegExp(value), "i");
 
             roleList && roleList.map((role) => {
                 isMatch = re.test(role.displayName);
@@ -374,7 +374,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         const filteredRoleList = [];
 
         if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
+            const re = new RegExp(_.escapeRegExp(value), "i");
 
             tempRoleList && tempRoleList?.map((role) => {
                 isMatch = re.test(role.displayName);
@@ -503,7 +503,12 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     };
 
     const addNewGroupModal = () => (
-        <Modal open={ showAddNewRoleModal } size="small" className="user-roles">
+        <Modal
+            data-testid="user_mgt_update_roles_modal"
+            open={ showAddNewRoleModal }
+            size="small"
+            className="user-roles"
+        >
             <Modal.Header>
                 Update User Roles
                 <Heading subHeading ellipsis as="h6">
@@ -515,7 +520,11 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                     ? (
                         <>
                             <Modal.Content>
-                                <RolePermissions handleNavigateBack={ handleViewRolePermission } roleId={ roleId }/>
+                                <RolePermissions
+                                    data-testid="user_mgt_update_roles_modal_unselected_role_permissions"
+                                    handleNavigateBack={ handleViewRolePermission }
+                                    roleId={ roleId }
+                                />
                             </Modal.Content>
                             <Divider hidden/>
                         </>
@@ -527,6 +536,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                 removeItems={ removeRoles }
                                 handleUnelectedListSearch={ handleUnselectedListSearch }
                                 handleSelectedListSearch={ handleSelectedListSearch }
+                                data-testid="user_mgt_update_roles_modal"
                             >
                                 <TransferList
                                     isListEmpty={ !(roleList.length > 0) }
@@ -534,6 +544,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     listHeaders={ ["Domain", "Name", ""] }
                                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                     isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
+                                    data-testid="user_mgt_update_roles_modal_unselected_roles_select_all_checkbox"
                                 >
                                     {
                                         roleList?.map((role, index) => {
@@ -550,6 +561,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                         isItemChecked={ checkedUnassignedListItems.includes(role) }
                                                         showSecondaryActions={ true }
                                                         handleOpenPermissionModal={ () => handleRoleIdSet(role.id) }
+                                                        data-testid="user_mgt_update_roles_modal_unselected_roles"
                                                     />
                                                 )
                                             }
@@ -562,6 +574,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     listHeaders={ ["Domain", "Name"] }
                                     handleHeaderCheckboxChange={ selectAllAssignedList }
                                     isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
+                                    data-testid="user_mgt_update_roles_modal_selected_roles_select_all_checkbox"
                                 >
                                     {
                                         tempRoleList?.map((role, index) => {
@@ -577,6 +590,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                         listItemTypeLabel={ createItemLabel(role?.displayName) }
                                                         isItemChecked={ checkedAssignedListItems.includes(role) }
                                                         showSecondaryActions={ false }
+                                                        data-testid="user_mgt_update_roles_modal_selected_roles"
                                                     />
                                                 )
                                             }
@@ -592,6 +606,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                     <Grid.Row column={ 2 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton
+                                data-testid="user_mgt_update_roles_modal_cancel_button"
                                 floated="left"
                                 onClick={ handleCloseAddNewGroupModal }
                             >
@@ -600,6 +615,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <PrimaryButton
+                                data-testid="user_mgt_update_roles_modal_save_button"
                                 floated="right"
                                 onClick={ () => updateUserRole(user, tempRoleList) }
                             >
@@ -617,7 +633,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         const filteredRoleList = [];
 
         if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
+            const re = new RegExp(_.escapeRegExp(value), "i");
 
             assignedRoles && assignedRoles?.map((role) => {
                 const groupName = role.display.split("/");
@@ -651,6 +667,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     const viewRolesPermissionModal = () => {
         return (
             <UserRolePermissions
+                data-testid="user_mgt_roles_list_roles_permission_modal"
                 openRolePermissionModal={ showRolePermissionModal }
                 handleCloseRolePermissionModal={ handleCloseRolePermissionModal }
                 roleId={ selectedRoleId }
@@ -673,10 +690,14 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                         {
                             primaryRolesList?.size > 0 ? (
                             <Segment.Group fluid>
-                                <Segment className="user-role-edit-header-segment">
+                                <Segment
+                                    data-testid="user_mgt_roles_list"
+                                    className="user-role-edit-header-segment"
+                                >
                                     <Grid.Row>
                                         <Grid.Column>
                                             <Input
+                                                data-testid="user_mgt_roles_list_search_input"
                                                 icon={ <Icon name="search"/> }
                                                 onChange={ handleAssignedRoleListSearch }
                                                 placeholder="Search roles"
@@ -684,6 +705,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                 size="small"
                                             />
                                             <Button
+                                                data-testid="user_mgt_roles_list_update_button"
                                                 size="medium"
                                                 icon="pencil"
                                                 floated="right"
@@ -730,6 +752,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                                             content="View permissions"
                                                                             trigger={
                                                                                 <Icon
+                                                                                    data-testid={ `user_mgt_roles_
+                                                                                    list_${ userGroup[1] }_permissions_button` }
                                                                                     color="grey"
                                                                                     name="key"
                                                                                     onClick={ () => handleSetSelectedId(group.value) }
@@ -750,6 +774,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                             ) : (
                                 <Segment>
                                     <EmptyPlaceholder
+                                        data-testid="user_mgt_user_empty_roles_list"
                                         title="No Roles Assigned"
                                         subtitle={ [
                                             "There are no Roles assigned to the user at the moment.",
@@ -757,7 +782,11 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             "tasks bound to the roles created by the admin."
                                         ] }
                                         action={
-                                            <PrimaryButton onClick={ handleOpenAddNewGroupModal } icon="plus">
+                                            <PrimaryButton
+                                                data-testid="user_mgt_user_empty_roles_list_assign_group_button"
+                                                onClick={ handleOpenAddNewGroupModal }
+                                                icon="plus"
+                                            >
                                                 Assign Role
                                             </PrimaryButton>
                                         }

@@ -17,12 +17,12 @@
  */
 
 import { Field, Forms } from "@wso2is/forms";
+import { AdvancedSearch } from "@wso2is/react-components";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
-import { buildSearchQuery } from "../../utils";
-import { AdvancedSearch } from "@wso2is/react-components";
 import { AdvancedSearchIcons } from "../../configs";
+import { buildSearchQuery } from "../../utils";
 
 /**
  * Filter attribute field identifier.
@@ -78,8 +78,14 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (
      * @type {({text: string; value: string})[]}
      */
     const filterAttributeOptions = [
-        { value: "userName", text: "Username" },
-        { value: "emails", text: "Email" }
+        {
+            text: "Username",
+            value: "userName"
+        },
+        {
+            text: "Email",
+            value: "emails"
+        }
     ];
 
     /**
@@ -88,10 +94,22 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (
      * @type {({text: string; value: string})[]}
      */
     const filterConditionOptions = [
-        { value: "sw", text: t("common:startsWith") },
-        { value: "ew", text: t("common:endsWith") },
-        { value: "co", text: t("common:contains") },
-        { value: "eq", text: t("common:equals") },
+        {
+            text: t("common:startsWith"),
+            value: "sw"
+        },
+        {
+            text: t("common:endsWith"),
+            value: "ew"
+        },
+        {
+            text: t("common:contains"),
+            value: "co"
+        },
+        {
+            text: t("common:equals"),
+            value: "eq"
+        }
     ];
 
     /**
@@ -142,6 +160,7 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (
 
     return (
         <AdvancedSearch
+            data-testid="user_mgt_user_list_user_search"
             aligned="left"
             clearButtonPopupLabel={ t("devPortal:components.users.search.popups.clear") }
             clearIcon={ AdvancedSearchIcons.clear }
@@ -160,8 +179,12 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
-                        <Forms onSubmit={ (values) => handleFormSubmit(values) }>
+                        <Forms
+                            data-testid="user_mgt_user_list_user_search_form"
+                            onSubmit={ (values) => handleFormSubmit(values) }
+                        >
                             <Field
+                                data-testid="user_mgt_user_list_user_search_attributes_dropdown"
                                 children={ filterAttributeOptions.map((attribute, index) => {
                                     return {
                                         key: index,
@@ -184,6 +207,7 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column width={ 8 }>
                                         <Field
+                                            data-testid="user_mgt_user_list_user_search_conditions_dropdown"
                                             children={ filterConditionOptions.map((condition, index) => {
                                                 return {
                                                     key: index,
@@ -205,6 +229,7 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (
                                     </Grid.Column>
                                     <Grid.Column width={ 8 }>
                                         <Field
+                                            data-testid="user_mgt_user_list_user_search_value_input"
                                             label={ t("devPortal:components.users.search.forms.searchForm.inputs" +
                                                 ".filterValue.label") }
                                             name={ FILTER_VALUES_FIELD_IDENTIFIER }
@@ -222,11 +247,13 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (
                             <Divider hidden />
                             <Form.Group inline={ true }>
                                 <Field
+                                    data-testid="user_mgt_user_list_user_search_button"
                                     size="small"
                                     type="submit"
                                     value={ t("common:search").toString() }
                                 />
                                 <Field
+                                    data-testid="user_mgt_user_list_user_search_reset_button"
                                     className="link-button"
                                     size="small"
                                     type="reset"

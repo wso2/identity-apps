@@ -16,40 +16,32 @@
  * under the License.
  */
 
+import { getAppConfig } from "@wso2is/core/api";
+import { CommonHelpers } from "@wso2is/core/helpers";
+import { emptyIdentityAppsSettings } from "@wso2is/core/models";
+import { setDeploymentConfigs, setServiceResourceEndpoints } from "@wso2is/core/store";
+import { LocalStorageUtils } from "@wso2is/core/utils";
+import { I18n } from "@wso2is/i18n";
+import { ContentLoader, ThemeContext } from "@wso2is/react-components";
+import _ from "lodash";
+import React, { ReactElement, Suspense, useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
+import { I18nextProvider } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect, Route, Router, Switch } from "react-router-dom";
+import { ProtectedRoute } from "./components";
+import { Config, baseRoutes } from "./configs";
+import { ApplicationConstants } from "./constants";
+import { AppConfig, history } from "./helpers";
+import { helpPanelMetadata } from "./meta";
 import {
     AppConfigInterface,
     ConfigReducerStateInterface,
     RuntimeConfigInterface,
     ServiceResourceEndpointsInterface
 } from "./models";
-import { ProtectedRoute } from "./components";
-/**
- * @remarks
- * Always keep the `Config` & `history` import at the top of the order, to avoid
- * potential circular dependencies.
- */
-// eslint-disable-next-line sort-imports
-import { baseRoutes, Config } from "./configs";
-// eslint-disable-next-line sort-imports
-import { AppConfig, history } from "./helpers";
-import React, { ReactElement, Suspense, useContext, useEffect, useState } from "react";
-import { Redirect, Route, Router, Switch } from "react-router-dom";
-import { setDeploymentConfigs, setServiceResourceEndpoints } from "@wso2is/core/store";
-import { useDispatch, useSelector } from "react-redux";
-import _ from "lodash";
-import { ApplicationConstants } from "./constants";
 import { AppState } from "./store";
-import { ContentLoader } from "@wso2is/react-components";
-import { getAppConfig } from "@wso2is/core/api";
-import { Helmet } from "react-helmet";
-import { helpPanelMetadata } from "./meta";
-import { I18n } from "@wso2is/i18n";
-import { I18nextProvider } from "react-i18next";
 import { setHelpPanelMetadata } from "./store/actions";
-import { ThemeContext } from "@wso2is/react-components";
-import { emptyIdentityAppsSettings } from "@wso2is/core/models";
-import { LocalStorageUtils } from "@wso2is/core/utils";
-import { CommonHelpers } from "@wso2is/core/helpers";
 
 /**
  * Main App component.

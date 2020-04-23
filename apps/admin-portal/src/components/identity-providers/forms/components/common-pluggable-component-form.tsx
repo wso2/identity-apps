@@ -16,17 +16,17 @@
  * under the License.
  */
 
+import { FormValue, Forms } from "@wso2is/forms";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Button, Grid } from "semantic-ui-react";
-import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../helpers";
 import {
     CommonPluggableComponentFormPropsInterface,
     CommonPluggableComponentInterface,
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../../models";
-import { Forms, FormValue } from "@wso2is/forms";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { getPropertyMetadata } from "../../utils";
+import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../helpers";
 
 /**
  * Common pluggable connector configurations form.
@@ -97,21 +97,32 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     const getField = (property: CommonPluggableComponentPropertyInterface,
                       eachPropertyMeta: CommonPluggableComponentMetaPropertyInterface,
                       disable: boolean,
+                      isSub?: boolean,
                       listen?: (key: string, values: Map<string, FormValue>) => void): ReactElement => {
 
-        return (
-            <Grid.Row columns={ 1 } key={ eachPropertyMeta?.displayOrder }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    {
-                        getPropertyField(property, eachPropertyMeta, disable, listen)
-                    }
-                </Grid.Column>
-            </Grid.Row>
-        );
-    }
+        if (isSub) {
+            return (
+                <Grid.Row columns={ 2 } key={ eachPropertyMeta?.displayOrder }>
+                    <Grid.Column mobile={ 2 } tablet={ 2 } computer={ 1 }>
+                    </Grid.Column>
+                    <Grid.Column mobile={ 14 } tablet={ 14 } computer={ 7 }>
+                        { getPropertyField(property, eachPropertyMeta, disable, listen) }
+                    </Grid.Column>
+                </Grid.Row>
+            );
+        } else {
+            return (
+                <Grid.Row columns={ 1 } key={ eachPropertyMeta?.displayOrder }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        { getPropertyField(property, eachPropertyMeta, disable, listen) }
+                    </Grid.Column>
+                </Grid.Row>
+            );
+        }
+    };
 
     const getSortedPropertyFields = (metaProperties: CommonPluggableComponentMetaPropertyInterface[],
-                                     disable: boolean):
+                                     disable: boolean, isSub: boolean):
         ReactElement[] => {
 
         const bucket: ReactElement[] = [];
@@ -123,19 +134,19 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
             let field: ReactElement;
             if (!isCheckboxWithSubProperties(metaProperty)) {
-                field = getField(property, metaProperty, disable);
+                field = getField(property, metaProperty, disable, isSub);
             } else {
                 field =
-                    <div className={ "complex-property-" + property.key } key={ property.key }>
+                    <React.Fragment key={ metaProperty?.displayOrder }>
                         {
                             // Render parent property.
-                            getField(property, metaProperty, disable, handleParentPropertyChange)
+                            getField(property, metaProperty, disable, isSub, handleParentPropertyChange)
                         }
                         {
                             getSortedPropertyFields(metaProperty?.subProperties, !(property?.value?.toString()?.
-                            toLowerCase() === "true"))
+                            toLowerCase() === "true"), true)
                         }
-                    </div>;
+                    </React.Fragment>;
             }
 
             bucket.push(field);
@@ -181,7 +192,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             submitState={ triggerSubmit }
         >
             <Grid>
-                { dynamicValues && getSortedPropertyFields(metadata?.properties, false) }
+                { dynamicValues && getSortedPropertyFields(metadata?.properties, false, false) }
                 { enableSubmitButton && getSubmitButton("Update") }
             </Grid>
         </Forms>

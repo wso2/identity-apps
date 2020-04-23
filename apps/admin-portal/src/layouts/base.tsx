@@ -19,11 +19,11 @@
 import { AlertInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { Alert } from "@wso2is/react-components";
+import { TopLoadingBar } from "@wso2is/react-components";
 import React, { PropsWithChildren, ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UIConstants } from "../constants";
 import { AppState } from "../store";
-import { TopLoadingBar } from "@wso2is/react-components";
 
 /**
  * Base layout.

@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import _ from "lodash";
 import { Forms } from "@wso2is/forms";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
+import _ from "lodash";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { RolesInterface } from "../../models";
 
 /**
@@ -89,7 +89,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         const filteredGroupList = [];
 
         if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
+            const re = new RegExp(_.escapeRegExp(value), "i");
 
             initialValues.groupList && initialValues.groupList.map((group) => {
                 isMatch = re.test(group.displayName);
@@ -108,7 +108,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         const filteredGroupList = [];
 
         if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
+            const re = new RegExp(_.escapeRegExp(value), "i");
 
             initialValues.tempGroupList && initialValues.tempGroupList.map((group) => {
                 isMatch = re.test(group.displayName);
@@ -222,6 +222,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                 removeItems={ removeGroups }
                 handleUnelectedListSearch={ handleUnselectedListSearch }
                 handleSelectedListSearch={ handleSelectedListSearch }
+                data-testid="user_mgt_add_user_wizard_modal"
             >
                 <TransferList
                     isListEmpty={ !(initialValues?.groupList?.length > 0) }
@@ -229,6 +230,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                     listHeaders={ [ "Domain", "Name", "" ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedGroupsAllRolesChecked }
+                    data-testid="user_mgt_add_user_wizard_modal_unselected_groups_select_all_checkbox"
                 >
                     {
                         initialValues?.groupList?.map((group, index)=> {
@@ -243,6 +245,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                                     isItemChecked={ checkedUnassignedListItems.includes(group) }
                                     showSecondaryActions={ true }
                                     handleOpenPermissionModal={ () => handleSetGroupId(group.id) }
+                                    data-testid="user_mgt_add_user_wizard_modal_unselected_groups"
                                 />
                             )
                         })
@@ -254,6 +257,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                     listHeaders={ [ "Domain", "Name" ] }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
                     isHeaderCheckboxChecked={ isSelectAssignedAllGroupsChecked }
+                    data-testid="user_mgt_add_user_wizard_modal_selected_groups_select_all_checkbox"
                 >
                     {
                         initialValues?.tempGroupList?.map((group, index)=> {
@@ -267,6 +271,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                                     listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
                                     isItemChecked={ checkedAssignedListItems.includes(group) }
                                     showSecondaryActions={ false }
+                                    data-testid="user_mgt_add_user_wizard_modal_selected_groups"
                                 />
                             )
                         })

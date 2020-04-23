@@ -24,22 +24,23 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
+import { GeneralSettingsWizardForm } from "./general-settings-wizard-form";
+import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
+import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
+import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
+import { WizardSummary } from "./wizard-summary";
+import { WSTrustProtocolSettingsWizardForm } from "./ws-trust-protocol-settings-wizard-form";
 import { createApplication, getApplicationTemplateData } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
+import { ApplicationConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import {
     ApplicationTemplateInterface,
     ApplicationTemplateListItemInterface,
     MainApplicationInterface,
-    SupportedAuthProtocolTypes
+    SupportedAuthProtocolTypes,
+    emptyApplication
 } from "../../../models";
-import { GeneralSettingsWizardForm } from "./general-settings-wizard-form";
-import { ApplicationConstants } from "../../../constants";
-import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
-import { WizardSummary } from "./wizard-summary";
-import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
-import { WSTrustProtocolSettingsWizardForm } from "./ws-trust-protocol-settings-wizard-form";
-import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
 import { ApplicationManagementUtils } from "../../../utils";
 
 /**
@@ -94,6 +95,13 @@ const STEPS: WizardStepInterface[] = [
     {
         icon: ApplicationWizardStepIcons.summary,
         title: "Summary"
+    }
+];
+
+const customAppCreationSteps: WizardStepInterface[] = [
+    {
+        icon: ApplicationWizardStepIcons.general,
+        title: "General Settings"
     }
 ];
 
@@ -290,6 +298,25 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     };
 
     /**
+     * The following function creates a custom application.
+     *
+     * @param values
+     */
+    const handleCustomAppWizardFinish = (values: any): void => {
+        
+        let customApplication: MainApplicationInterface = emptyApplication();
+
+        for (const [key, value] of Object.entries(values)) {
+            customApplication = {
+                ...customApplication,
+                [ key ]: value
+            }
+        }
+
+        createNewApplication(ApplicationManagementUtils.prefixTemplateNameToDescription(customApplication, template));
+    };
+
+    /**
      * Resolves the step content.
      *
      * @return {React.ReactElement} Step content.
@@ -297,15 +324,28 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     const resolveStepContent = (): ReactElement => {
         switch (currentWizardStep) {
             case 0:
-                return (
-                    <GeneralSettingsWizardForm
-                        triggerSubmit={ submitGeneralSettings }
-                        initialValues={ wizardState && wizardState[WizardStepsFormTypes.GENERAL_SETTINGS] }
-                        onSubmit={ (values): void => handleWizardFormSubmit(values,
-                            WizardStepsFormTypes.GENERAL_SETTINGS) }
-                        templateValues={ templateSettings }
-                    />
-                );
+                if (template.id === "custom-application") {
+                    return (
+                        <GeneralSettingsWizardForm
+                            triggerSubmit={ submitGeneralSettings }
+                            initialValues={ wizardState && wizardState[WizardStepsFormTypes.GENERAL_SETTINGS] }
+                            onSubmit={ (values): void => {
+                                handleCustomAppWizardFinish(values)
+                            } }
+                            templateValues={ templateSettings }
+                        />
+                    );
+                } else {
+                    return (
+                        <GeneralSettingsWizardForm
+                            triggerSubmit={ submitGeneralSettings }
+                            initialValues={ wizardState && wizardState[WizardStepsFormTypes.GENERAL_SETTINGS] }
+                            onSubmit={ (values): void => handleWizardFormSubmit(values,
+                                WizardStepsFormTypes.GENERAL_SETTINGS) }
+                            templateValues={ templateSettings }
+                        />
+                    );
+                }
             case 1:
                 if (wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SELECTION]) {
 
@@ -374,13 +414,17 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      */
     useEffect(() => {
 
-        setWizardState(_.merge(wizardState,
-            {
-                [WizardStepsFormTypes.PROTOCOL_SELECTION]: template.authenticationProtocol
-            }));
+        if(template.id !== "custom-application") {
+            setWizardState(_.merge(wizardState,
+                {
+                    [WizardStepsFormTypes.PROTOCOL_SELECTION]: template.authenticationProtocol
+                }));
 
-        loadApplicationTemplateData(template.id);
-        setWizardSteps(STEPS);
+            loadApplicationTemplateData(template.id);
+            setWizardSteps(STEPS);
+        } else {
+            setWizardSteps(customAppCreationSteps);
+        }
     }, [template]);
 
     /**
@@ -442,7 +486,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                     { currentWizardStep < wizardSteps.length - 1 && (
                                         <PrimaryButton floated="right" onClick={ navigateToNext }>
-                                            Next Step <Icon name="arrow right"/>
+                                            Next <Icon name="arrow right"/>
                                         </PrimaryButton>
                                     ) }
                                     { currentWizardStep === wizardSteps.length - 1 && (
@@ -450,7 +494,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                     ) }
                                     { currentWizardStep > 0 && (
                                         <LinkButton floated="right" onClick={ navigateToPrevious }>
-                                            <Icon name="arrow left"/> Previous step
+                                            <Icon name="arrow left"/> Previous
                                         </LinkButton>
                                     ) }
                                 </Grid.Column>

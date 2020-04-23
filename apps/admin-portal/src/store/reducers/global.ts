@@ -18,7 +18,7 @@
  */
 
 import { GlobalInterface } from "../../models";
-import { GlobalActions, GlobalActionTypes } from "../actions/types";
+import { GlobalActionTypes, GlobalActions } from "../actions/types";
 
 /**
  * Initial state.
@@ -58,17 +58,17 @@ export const globalReducer = (state: GlobalInterface = initialState, action: Glo
         case GlobalActionTypes.INITIALIZE_ALERT_SYSTEM:
             return {
                 ...state,
-                alertSystem: action.payload,
+                alertSystem: action.payload
             };
         case GlobalActionTypes.ADD_ALERT:
             return {
                 ...state,
-                alert: action.payload,
+                alert: action.payload
             };
         case GlobalActionTypes.SET_SUPPORTED_I18N_LANGUAGES:
             return {
                 ...state,
-                supportedI18nLanguages: action.payload,
+                supportedI18nLanguages: action.payload
             };
         default:
             return state;

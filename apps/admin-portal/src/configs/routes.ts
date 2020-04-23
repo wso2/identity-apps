@@ -16,18 +16,28 @@
  * under the License.
  */
 
+import { RouteInterface } from "@wso2is/core/models";
+import { ExternalDialectEditPage } from "./../pages/external-dialect-edit";
+import { SignIn, SignOut } from "../components/authentication";
+import {
+    CLAIM_DIALECTS_PATH,
+    EDIT_EXTERNAL_DIALECT,
+    EDIT_LOCAL_CLAIMS_PATH,
+    LOCAL_CLAIMS_PATH,
+    USER_STORES_PATH
+} from "../constants";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultPageLayout, ErrorPageLayout } from "../layouts";
 import {
     ApplicationEditPage,
-    ApplicationsPage,
     ApplicationTemplateSelectPage,
+    ApplicationsPage,
     ClaimDialectsPage,
     CustomizePage,
     GroupsPage,
     HomePage,
     IdentityProviderEditPage,
-    IdentityProvidersPage,
     IdentityProviderTemplateSelectPage,
+    IdentityProvidersPage,
     LocalClaimsEditPage,
     LocalClaimsPage,
     PageNotFound,
@@ -36,21 +46,11 @@ import {
     RolesPage,
     ServerConfigurationsPage,
     UserEditPage,
-    UsersPage,
     UserStores,
-    UserStoresEditPage
+    UserStoresEditPage,
+    UsersPage
 } from "../pages";
-import {
-    CLAIM_DIALECTS_PATH,
-    EDIT_EXTERNAL_DIALECT,
-    EDIT_LOCAL_CLAIMS_PATH,
-    LOCAL_CLAIMS_PATH,
-    USER_STORES_PATH
-} from "../constants";
-import { SignIn, SignOut } from "../components/authentication";
 
-import { ExternalDialectEditPage } from "./../pages/external-dialect-edit";
-import { RouteInterface } from "@wso2is/core/models";
 
 /**
  * Dashboard Layout Routes array.

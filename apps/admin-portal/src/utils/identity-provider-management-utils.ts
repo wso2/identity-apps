@@ -17,10 +17,10 @@
  *
  */
 
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { getFederatedAuthenticatorsList } from "../api";
 import { store } from "../store";
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
 import { setAvailableAuthenticatorsMeta } from "../store/actions/identity-provider";
 
 /**

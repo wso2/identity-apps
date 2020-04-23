@@ -1,9 +1,14 @@
 module.exports = {
-    extends: ["eslint:recommended", "plugin:react/recommended"],
+    extends: [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:import/typescript"
+    ],
     parserOptions: {
         ecmaVersion: 9,
         sourceType: "module"
     },
+    plugins: ["import"],
     settings: {
         react: {
             version: "detect"
@@ -19,14 +24,22 @@ module.exports = {
         "eol-last": "error",
         "quotes": ["warn", "double"],
         "max-len": ["warn", { "code": 120 }],
-        "sort-keys": ["warn", "asc"],
         "comma-dangle": ["warn", "never"],
         "sort-imports": ["warn", {
-            "ignoreCase": true,
-            "ignoreDeclarationSort": false,
-            "ignoreMemberSort": false,
-            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+            "ignoreCase": false,
+            "ignoreDeclarationSort": true,
+            "ignoreMemberSort": false
         }],
+        "import/order": [
+            "warn",
+            {
+                "groups": [ "builtin", "external", "index", "sibling", "parent", "internal" ],
+                "alphabetize": {
+                    order: 'asc',
+                    caseInsensitive: true
+                }
+            }
+        ],
         "react/jsx-curly-spacing": [
             "warn",
             {

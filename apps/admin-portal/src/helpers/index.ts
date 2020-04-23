@@ -16,10 +16,10 @@
  * under the License.
  */
 
+export * from "./app-config-context"; 
 export * from "./help-panel";
 export * from "./history";
 export * from "./http-headers";
 export * from "./image";
 export * from "./user-agent-parser";
 export * from "./user";
-export * from "./app-config-context";

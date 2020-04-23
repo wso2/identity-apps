@@ -41,6 +41,7 @@ export interface PaginationPropsInterface extends PaginationProps {
     showItemsPerPageDropdown?: boolean;
     showListSummary?: boolean;
     totalListSize?: number;
+    itemsPerPageDropDownTestId?: string;
 }
 
 /**
@@ -64,6 +65,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
         showItemsPerPageDropdown,
         showListSummary,
         totalListSize,
+        itemsPerPageDropDownTestId,
         ...rest
     } = props;
 
@@ -94,6 +96,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
                     <label>
                         { itemsPerPageDropdownLabel }
                         <Dropdown
+                            data-testid={ itemsPerPageDropDownTestId }
                             className="labeled horizontal right"
                             compact
                             defaultValue={ itemsPerPageDropdownLowerLimit }

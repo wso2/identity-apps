@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement } from "react";
 import { Field, Forms } from "@wso2is/forms";
-import { Divider, Grid } from "semantic-ui-react";
 import { Heading, Hint } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement } from "react";
+import { Divider, Grid } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
 import { RoleConfigInterface, SubjectConfigInterface } from "../../../models";
 

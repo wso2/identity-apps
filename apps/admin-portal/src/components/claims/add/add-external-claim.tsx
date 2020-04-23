@@ -16,13 +16,13 @@
 * under the License.
 */
 
+import { addAlert } from "@wso2is/core/store";
+import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
+import React, { ReactElement, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Grid } from "semantic-ui-react";
 import { addExternalClaim, getAllLocalClaims } from "../../../api";
 import { AlertLevels, Claim, ClaimDialect } from "../../../models";
-import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
-import React, { ReactElement, useEffect, useState } from "react";
-import { addAlert } from "@wso2is/core/store";
-import { Grid } from "semantic-ui-react";
-import { useDispatch } from "react-redux";
 
 /**
  * Prop types for the `AddExternalClaims` component.

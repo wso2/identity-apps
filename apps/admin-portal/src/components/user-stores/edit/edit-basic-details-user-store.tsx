@@ -16,14 +16,14 @@
 * under the License.
 */
 
-import { AlertLevels, UserStore } from "../../../models";
-import { Field, Forms, FormValue, useTrigger } from "@wso2is/forms";
-import React, { ReactElement } from "react";
-import { addAlert } from "../../../store/actions";
-import { Grid } from "semantic-ui-react";
+import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
-import { updateUserStore } from "../../../api";
+import React, { ReactElement } from "react";
 import { useDispatch } from "react-redux";
+import { Grid } from "semantic-ui-react";
+import { updateUserStore } from "../../../api";
+import { AlertLevels, UserStore } from "../../../models";
+import { addAlert } from "../../../store/actions";
 
 /**
  * Prop types of `EditBasicDetailsUserStore` component

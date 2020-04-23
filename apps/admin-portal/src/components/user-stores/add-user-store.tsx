@@ -16,17 +16,17 @@
 * under the License.
 */
 
-import { AlertLevels, Type, UserStorePostData } from "../../models";
-import { BasicDetailsUserStore, ConnectionDetails } from "./wizards";
 import { FormValue, useTrigger } from "@wso2is/forms";
-import { Grid, Icon, Modal } from "semantic-ui-react";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
-import { addAlert } from "../../store/actions";
+import { useDispatch } from "react-redux";
+import { Grid, Icon, Modal } from "semantic-ui-react";
+import { SummaryUserStores } from "./wizards";
+import { BasicDetailsUserStore, ConnectionDetails } from "./wizards";
 import { addUserStore } from "../../api";
 import { ApplicationWizardStepIcons } from "../../configs";
-import { SummaryUserStores } from "./wizards";
-import { useDispatch } from "react-redux";
+import { AlertLevels, Type, UserStorePostData } from "../../models";
+import { addAlert } from "../../store/actions";
 
 /**
  * Prop types of the `AddUserStore` component

@@ -65,7 +65,7 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
         showActionBar,
         toggle,
         onToggle,
-        toggleValue,
+        toggleValue
     } = props;
 
     /**

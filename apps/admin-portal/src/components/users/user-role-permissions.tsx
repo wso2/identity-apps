@@ -16,17 +16,18 @@
  * under the License.
  */
 
-import { PermissionList } from "../roles";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Grid, Modal} from "semantic-ui-react";
 import { LinkButton } from "@wso2is/react-components";
-import { RolesInterface } from "../../models";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Grid, Modal } from "semantic-ui-react";
 import { getRoleById } from "../../api";
+import { RolesInterface } from "../../models";
+import { PermissionList } from "../roles";
 
 /**
  * Proptypes for the user role permission component.
  */
 interface UserRolePermissionsInterface {
+    [ "data-testid" ]?: string;
     openRolePermissionModal: boolean;
     handleCloseRolePermissionModal: () => void;
     roleId: string;
@@ -42,7 +43,12 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
     props: UserRolePermissionsInterface
 ): ReactElement => {
 
-    const { openRolePermissionModal, handleCloseRolePermissionModal, roleId } = props;
+    const {
+        openRolePermissionModal,
+        handleCloseRolePermissionModal,
+        roleId
+    } = props;
+
     const [ isRoleSet, setRoleCheck ] = useState(false);
     const [ role, setRole ] = useState<RolesInterface>();
 
@@ -78,7 +84,12 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
 
     return (
         isRoleSet && (
-            <Modal open={ openRolePermissionModal } size="small" className="user-roles">
+            <Modal
+                data-testid={ props[ `data-testid` ] }
+                open={ openRolePermissionModal }
+                size="small"
+                className="user-roles"
+            >
                 <Modal.Header>
                     Permissions for { role?.displayName }
                 </Modal.Header>
@@ -92,6 +103,7 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
                         <Grid.Row column={ 1 }>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                 <LinkButton
+                                    data-testid={ `${ props[ `data-testid` ] }_back_button` }
                                     floated="left"
                                     onClick={ handleCloseRolePermissionModal }
                                 >

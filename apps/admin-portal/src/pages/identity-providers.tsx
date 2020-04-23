@@ -18,18 +18,18 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { LinkButton, PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
+import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, MouseEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getIdentityProviderList } from "../api";
-import { IdentityProviderList, ApplicationSearch } from "../components";
+import { ApplicationSearch, IdentityProviderList } from "../components";
+import { EmptyPlaceholderIllustrations } from "../configs";
+import { IdentityProviderConstants } from "../constants";
 import { history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
 import { IdentityProviderListResponseInterface } from "../models";
-import { IdentityProviderConstants } from "../constants";
-import { EmptyPlaceholderIllustrations } from "../configs";
 
 const IDENTITY_PROVIDER_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -196,7 +196,7 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
                     title={ "No results found" }
                     subtitle={ [
                         `We couldn't find any results for ${ searchQuery }`,
-                        "Please try a different search term.",
+                        "Please try a different search term."
                     ] }
                 />
             );
@@ -258,8 +258,11 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
             >
                 {
                     (idpList?.totalResults > 0 ||
-                        idpList?.identityProviders instanceof Array && idpList.identityProviders.length > 0)
-                        ? <IdentityProviderList list={ idpList } onIdentityProviderDelete={ handleIdentityProviderDelete } />
+                        idpList?.identityProviders instanceof Array && idpList.identityProviders.length > 0) ?
+                        <IdentityProviderList
+                            list={ idpList }
+                            onIdentityProviderDelete={ handleIdentityProviderDelete }
+                        />
                         : !isIdPListRequestLoading && showPlaceholders()
                 }
             </ListLayout>

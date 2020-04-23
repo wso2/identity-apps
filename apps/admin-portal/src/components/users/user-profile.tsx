@@ -20,6 +20,7 @@ import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import { isEmpty } from "lodash";
+import * as _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -29,7 +30,6 @@ import { history } from "../../helpers";
 import { AuthStateInterface, BasicProfileInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
 import { flattenSchemas } from "../../utils";
-import * as _ from "lodash";
 
 /**
  * Prop types for the basic details component.
@@ -240,6 +240,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                     <Field
+                        data-testid={ `user_mgt_user_profile_form_${ schema.name }_input` }
                         name={ schema.name }
                         label={ schema.name === "profileUrl" ? "Profile image URL" : fieldName }
                         required={ schema.required }
@@ -259,6 +260,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
             {
                 !_.isEmpty(profileInfo) && (
                     <Forms
+                        data-testid="user_mgt_user_profile_form_update_button"
                         onSubmit={ (values) => handleSubmit(values) }
                     >
                         <Grid>
@@ -273,7 +275,13 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
                             }
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                    <Button primary type="submit" size="small" className="form-button">
+                                    <Button
+                                        data-testid="user_mgt_user_profile_form_update_button"
+                                        primary
+                                        type="submit"
+                                        size="small"
+                                        className="form-button"
+                                    >
                                         Update
                                     </Button>
                                 </Grid.Column>
@@ -285,6 +293,8 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
             <Divider hidden />
             <DangerZoneGroup sectionHeader="Danger Zone">
                 <DangerZone
+                    dangerZoneTestId="user_mgt_user_profile_danger_zone"
+                    deleteButtonTestId="user_mgt_user_profile_danger_zone_delete_button"
                     actionTitle="Delete User"
                     header="Delete user"
                     subheader="Once you delete a user, there is no going back. Please be certain."
@@ -297,6 +307,10 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
             {
                 deletingUser && (
                     <ConfirmationModal
+                        confirmationModalTestId="user_mgt_user_profile_confirmation_modal"
+                        primaryActionButtonTestId="user_mgt_user_profile_confirmation_modal_confirm_button"
+                        secondaryActionButtonTestId="user_mgt_user_profile_confirmation_modal_cancel_button"
+                        confirmationInputTestId="user_mgt_user_profile_confirmation_modal_input"
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
                         open={ showDeleteConfirmationModal }

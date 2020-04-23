@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Checkbox, Input, Label, Popup, Table } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
-import _ from "lodash";
 
 
 interface AttributeListItemPropInterface {

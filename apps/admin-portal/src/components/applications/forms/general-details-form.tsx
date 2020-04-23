@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, useState } from "react";
 import { Button, Grid } from "semantic-ui-react";
 import { ApplicationInterface } from "../../../models";
-import { FormValidation } from "@wso2is/validation";
 
 /**
  * Proptypes for the applications general details form component.
@@ -86,12 +86,12 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         return  {
             accessUrl: values.get("accessUrl").toString(),
             advancedConfigurations: {
-                discoverableByEndUsers: !!values.get("discoverableByEndUsers").includes("discoverable"),
+                discoverableByEndUsers: !!values.get("discoverableByEndUsers").includes("discoverable")
             },
             description: values.get("description").toString(),
             id: appId,
             imageUrl: values.get("imageUrl").toString(),
-            name: values.get("name").toString(),
+            name: values.get("name").toString()
         };
     };
 

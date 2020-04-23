@@ -16,22 +16,22 @@
  * under the License.
  */
 
+import { ResourceTab } from "@wso2is/react-components";
+import React, {
+    FunctionComponent,
+    ReactElement
+} from "react";
 import {
     AdvanceSettings,
     AuthenticatorSettings,
     GeneralSettings,
     OutboundProvisioningSettings
 } from "./settings";
+import { AttributeSettings } from "./settings";
 import {
     IdentityProviderAdvanceInterface,
     IdentityProviderInterface
 } from "../../models";
-import React, {
-    FunctionComponent,
-    ReactElement
-} from "react";
-import { AttributeSettings } from "./settings";
-import { ResourceTab } from "@wso2is/react-components";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 
 /**

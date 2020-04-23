@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import { AccountRecovery, UserSelfRegistration } from "../components";
-import { Divider, Grid } from "semantic-ui-react";
-import React, { FunctionComponent, ReactElement } from "react";
-import { addAlert } from "@wso2is/core/store";
 import { AlertInterface } from "@wso2is/core/models";
-import { LoginPolicies } from "../components";
-import { PageLayout } from "../layouts";
-import { PasswordPolicies } from "../components";
+import { addAlert } from "@wso2is/core/store";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
+import { Divider, Grid } from "semantic-ui-react";
+import { AccountRecovery, UserSelfRegistration } from "../components";
+import { LoginPolicies } from "../components";
+import { PasswordPolicies } from "../components";
+import { PageLayout } from "../layouts";
 
 /**
  * Governance Features page.

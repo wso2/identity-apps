@@ -17,6 +17,7 @@
  */
 
 import { Semaphore } from "await-semaphore";
+import { getAuthenticatedUser, sendRefreshTokenRequest } from "./sign-in";
 import {
     ACCESS_TOKEN,
     ACCESS_TOKEN_EXPIRE_IN,
@@ -33,7 +34,6 @@ import {
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { SessionInterface } from "../models/session";
 import { TokenResponseInterface } from "../models/token-response";
-import { getAuthenticatedUser, sendRefreshTokenRequest } from "./sign-in";
 
 /**
  * Semaphore used for synchronizing the refresh token requests.
@@ -80,6 +80,7 @@ export const endAuthenticatedSession = (): void => {
     removeSessionParameter(EMAIL);
     removeSessionParameter(ID_TOKEN);
     removeSessionParameter(REFRESH_TOKEN);
+    removeSessionParameter(REQUEST_PARAMS);
     removeSessionParameter(SCOPE);
     removeSessionParameter(TOKEN_TYPE);
     removeSessionParameter(USERNAME);

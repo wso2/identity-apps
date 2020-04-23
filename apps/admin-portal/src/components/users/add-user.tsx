@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
+import { generate } from "generate-password";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     Grid,
-    Message,
+    Message
 } from "semantic-ui-react";
-import { getUsersList, getUserStoreList } from "../../api";
-import { generate } from "generate-password";
+import { getUserStoreList, getUsersList } from "../../api";
 import { BasicUserDetailsInterface } from "../../models";
 
 /**
@@ -47,7 +47,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const {
         initialValues,
         triggerSubmit,
-        onSubmit,
+        onSubmit
     } = props;
 
     const [ userStoreOptions, setUserStoresList ] = useState([]);
@@ -94,7 +94,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
     const passwordOptions = [
         { label: "Invite user to set password", value: "askPw" },
-        { label: "Set user password", value: "createPw" },
+        { label: "Set user password", value: "createPw" }
     ];
 
     /**
@@ -172,7 +172,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             confirmPassword: values.get("confirmPassword") && values.get("confirmPassword") !== undefined  ?
                 values.get("confirmPassword").toString() : "",
             passwordOption: values.get("passwordOption").toString(),
-            userName: values.get("userName").toString(),
+            userName: values.get("userName").toString()
         };
     };
 
@@ -183,6 +183,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
+                                data-testid="user_mgt_add_user_form_newPassword_input"
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
                                     "devPortal:components.user.forms.addUserForm.inputs.newPassword.label"
@@ -215,6 +216,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
+                                data-testid="user_mgt_add_user_form_confirmPassword_input"
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
                                     "devPortal:components.user.forms.addUserForm.inputs.confirmPassword.label"
@@ -269,6 +271,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     const addUserBasicForm = () => (
         <Forms
+            data-testid="user_mgt_add_user_form"
             onSubmit={ (values) => {
                 onSubmit(getFormValues(values));
             } }
@@ -278,6 +281,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
+                            data-testid="user_mgt_add_user_form_domain_dropdown"
                             type="dropdown"
                             label={ t(
                                 "devPortal:components.user.forms.addUserForm.inputs.domain.label"
@@ -294,6 +298,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
+                            data-testid="user_mgt_add_user_form_username_input"
                             label={ t(
                                 "devPortal:components.user.forms.addUserForm.inputs.username.label"
                             ) }
@@ -322,6 +327,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
+                            data-testid="user_mgt_add_user_form_firstName_input"
                             label={ t(
                                 "devPortal:components.user.forms.addUserForm.inputs.firstName.label"
                             ) }
@@ -341,6 +347,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
+                            data-testid="user_mgt_add_user_form_lastName_input"
                             label={ t(
                                 "devPortal:components.user.forms.addUserForm.inputs.lastName.label"
                             ) }
@@ -362,6 +369,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
+                            data-testid="user_mgt_add_user_form_email_input"
                             label="Email address"
                             name="email"
                             placeholder={ t(
@@ -392,6 +400,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Field
+                            data-testid="user_mgt_add_user_form_passwordOption_radio_button"
                             type="radio"
                             label="Select the method to set the user password"
                             name="passwordOption"

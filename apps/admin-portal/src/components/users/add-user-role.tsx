@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import _ from "lodash";
 import { Forms } from "@wso2is/forms";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
+import _ from "lodash";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { RolesInterface } from "../../models";
 
 /**
@@ -94,7 +94,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         const filteredRoleList = [];
 
         if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
+            const re = new RegExp(_.escapeRegExp(value), "i");
 
             initialValues.roleList && initialValues.roleList.map((role) => {
                 isMatch = re.test(role.displayName);
@@ -113,7 +113,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         const filteredRoleList = [];
 
         if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
+            const re = new RegExp(_.escapeRegExp(value), "i");
 
             initialValues.tempRoleList && initialValues.tempRoleList.map((role) => {
                 isMatch = re.test(role.displayName);
@@ -214,6 +214,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                 removeItems={ removeRoles }
                 handleUnelectedListSearch={ handleUnselectedListSearch }
                 handleSelectedListSearch={ handleSelectedListSearch }
+                data-testid="user_mgt_add_user_wizard_modal"
             >
                 <TransferList
                     isListEmpty={ !(initialValues?.roleList?.length > 0) }
@@ -221,6 +222,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                     listHeaders={ [ "Domain", "Name", "" ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
+                    data-testid="user_mgt_add_user_wizard_modal_unselected_roles_select_all_checkbox"
                 >
                     {
                         initialValues?.roleList?.map((role, index)=> {
@@ -236,6 +238,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                                     isItemChecked={ checkedUnassignedListItems.includes(role) }
                                     showSecondaryActions={ true }
                                     handleOpenPermissionModal={ () => handleSetRoleId(role.id) }
+                                    data-testid="user_mgt_add_user_wizard_modal_unselected_roles"
                                 />
                             )
                         })
@@ -247,6 +250,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                     listHeaders={ [ "Domain", "Name" ] }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
                     isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
+                    data-testid="user_mgt_add_user_wizard_modal_selected_roles_select_all_checkbox"
                 >
                     {
                         initialValues?.tempRoleList?.map((role, index)=> {
@@ -261,6 +265,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                                     listItemTypeLabel={ createItemLabel(role.displayName) }
                                     isItemChecked={ checkedAssignedListItems.includes(role) }
                                     showSecondaryActions={ false }
+                                    data-testid="user_mgt_add_user_wizard_modal_selected_roles"
                                 />
                             )
                         })

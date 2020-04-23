@@ -16,20 +16,20 @@
  * under the License.
  */
 
-import { AddDialect, DialectSearch } from "../components";
-import { AlertLevels, AppConfigInterface, ClaimDialect } from "../models";
-import { AppConfig, history } from "../helpers";
-import { ClaimsAvatarBackground, ClaimsList, ListType } from "../components";
-import { UserConstants, LOCAL_CLAIMS_PATH } from "../constants";
-import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
-import { filterList, sortList } from "../utils";
-import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
+import { PrimaryButton } from "@wso2is/react-components";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
 import { getDialects } from "../api";
+import { AddDialect, DialectSearch } from "../components";
+import { ClaimsAvatarBackground, ClaimsList, ListType } from "../components";
+import { LOCAL_CLAIMS_PATH, UserConstants } from "../constants";
+import { AppConfig, history } from "../helpers";
 import { ListLayout } from "../layouts";
 import { PageLayout } from "../layouts";
-import { PrimaryButton } from "@wso2is/react-components";
-import { useDispatch } from "react-redux";
+import { AlertLevels, AppConfigInterface, ClaimDialect } from "../models";
+import { filterList, sortList } from "../utils";
 
 /**
  * This displays a list fo claim dialects.

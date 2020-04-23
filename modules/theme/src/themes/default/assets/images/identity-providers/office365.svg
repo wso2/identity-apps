@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="office365" class="icon"
+	 xmlns="http://www.w3.org/2000/svg"
+	 x="0px"
+	 y="0px"
+	 viewBox="0 0 511.987 511.987" style="enable-background:new 0 0 511.987 511.987;" xml:space="preserve">
+	<path style="fill:#FF5722;" d="M461.603,43.08L312.27,0.414c-2.325-0.667-4.807-0.524-7.04,0.405l-256,106.667
+		c-3.965,1.659-6.547,5.536-6.549,9.835v277.333c0,5.85,4.711,10.608,10.56,10.667c-5.891,0.036-10.637,4.842-10.6,10.732
+		c0.028,4.584,2.982,8.637,7.336,10.068l256,85.333c1.089,0.352,2.226,0.532,3.371,0.533c0.989-0.006,1.973-0.15,2.923-0.427
+		l149.333-42.667c4.576-1.304,7.736-5.481,7.744-10.24V53.32C469.339,48.562,466.18,44.384,461.603,43.08z M58.126,404.19l64-32
+		c3.609-1.808,5.888-5.499,5.888-9.536V136.328l192-48v357.888L54.968,405.448c-0.501-0.084-1.007-0.127-1.515-0.128
+		C55.076,405.299,56.673,404.913,58.126,404.19z"/>
+</svg>

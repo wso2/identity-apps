@@ -18,11 +18,11 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { Image } from "semantic-ui-react";
-import { HomeTileIconImages, LogoImage, UserImage } from "../../configs";
-import { ThemeIcon } from "./icon";
-import { ConfigReducerStateInterface } from "../../models";
 import { useSelector } from "react-redux";
+import { Image } from "semantic-ui-react";
+import { ThemeIcon } from "./icon";
+import { HomeTileIconImages, LogoImage, UserImage } from "../../configs";
+import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 
 interface ImageProps {

@@ -15,25 +15,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import React, { ReactElement, useState, FunctionComponent, useEffect } from "react";
-import { Grid, Segment, Input, Icon, Table, Checkbox, Modal } from "semantic-ui-react";
 import { Forms } from "@wso2is/forms";
-import _ from "lodash";
-import { UserBasicInterface, RolesMemberInterface } from "../../../models";
-import { getUsersList } from "../../../api";
-import { UserConstants } from "../../../constants";
 import { 
+    Button,
+    EmptyPlaceholder,
+    Heading,
+    LinkButton,
+    PrimaryButton,
     TransferComponent,
     TransferList,
     TransferListItem,
-    Button,
-    EmptyPlaceholder,
-    PrimaryButton,
-    Heading,
-    LinkButton,
     UserAvatar
 } from "@wso2is/react-components";
+import _ from "lodash";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Checkbox, Grid, Icon, Input, Modal, Segment, Table } from "semantic-ui-react";
+import { getUsersList } from "../../../api";
 import { EmptyPlaceholderIllustrations } from "../../../configs";
+import { UserConstants } from "../../../constants";
+import { RolesMemberInterface, UserBasicInterface } from "../../../models";
 
 /**
  * Proptypes for the application consents list component.
@@ -200,7 +200,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         const filteredRoleList: UserBasicInterface[] = [];
 
         if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
+            const re = new RegExp(_.escapeRegExp(value), "i");
 
             usersList && usersList.map((user) => {
                 isMatch = re.test(user.userName);
@@ -266,7 +266,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         const filteredUserList: UserBasicInterface[] = [];
 
         if (!_.isEmpty(value)) {
-            const re = new RegExp(_.escapeRegExp(value), 'i');
+            const re = new RegExp(_.escapeRegExp(value), "i");
 
             selectedUsers && selectedUsers.map((user) => {
                 isMatch = re.test(user.userName);
@@ -429,7 +429,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         <EmptyPlaceholder
                                             title="No Users Assigned"
                                             subtitle={ [
-                                                "There are no Users assigned to the role at the moment.",
+                                                "There are no Users assigned to the role at the moment."
                                             ] }
                                             action={
                                                 <PrimaryButton onClick={ handleOpenAddNewGroupModal } icon="plus">

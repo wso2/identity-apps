@@ -38,7 +38,15 @@
         &.info {
             color: @infoColor !important;
         }
+        &.loader {
+            &-left, &-right {
+                display: inline-flex;
 
+                .ui.loader {
+                    margin: 0 6px;
+                }
+            }
+        }
         &.with-hover {
             &:hover {
                 background: @backgroundColor;
@@ -259,5 +267,11 @@
 .ui.button {
     &.oidc-regenerate-button {
         margin-top: 25px;
+    }
+}
+
+.ui.button {
+    &.show-more-templates-button {
+        margin-right: @showMoreTemplatesButtonMarginRight;
     }
 }

@@ -16,19 +16,19 @@
 * under the License.
 */
 
-import { AlertLevels, ClaimDialect } from "../models";
+import { ResourceTab } from "@wso2is/react-components";
+import React, { ReactElement, useEffect, useState } from "react"
+import { useDispatch } from "react-redux";
+import { getADialect } from "../api";
 import {
     EditDialectDetails,
     EditExternalClaims
 } from "../components";
-import React, { ReactElement, useEffect, useState } from "react"
-import { addAlert } from "../store/actions";
 import { CLAIM_DIALECTS_PATH } from "../constants";
-import { getADialect } from "../api";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts"
-import { ResourceTab } from "@wso2is/react-components";
-import { useDispatch } from "react-redux";
+import { AlertLevels, ClaimDialect } from "../models";
+import { addAlert } from "../store/actions";
 
 /**
  * This renders the edit external dialect page

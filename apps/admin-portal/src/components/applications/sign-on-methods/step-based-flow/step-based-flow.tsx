@@ -18,22 +18,26 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Heading, Hint, LinkButton, GenericIcon } from "@wso2is/react-components";
+import { GenericIcon, Heading, Hint, LinkButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import Draggable from "react-draggable";
 import { useDispatch } from "react-redux";
-import { Divider, Grid, Icon, Card, Popup, Accordion } from "semantic-ui-react";
+import { Accordion, Card, Divider, Grid, Icon, Popup } from "semantic-ui-react";
+import { AuthenticationStep } from "./authentication-step";
+import { Authenticators } from "./authenticators";
 import { getIdentityProviderDetail, getIdentityProviderList } from "../../../../api";
+import { OperationIcons } from "../../../../configs";
 import {
     AuthenticationSequenceInterface,
     AuthenticationSequenceType,
     AuthenticationStepInterface,
     AuthenticatorInterface,
+    IDPNameInterface,
     IdentityProviderListItemInterface,
     IdentityProviderListResponseInterface,
-    IdentityProviderResponseInterface,
-    IDPNameInterface
+    IdentityProviderResponseInterface
 } from "../../../../models";
 import {
     AuthenticatorListItemInterface,
@@ -41,10 +45,6 @@ import {
     selectedFederatedAuthenticators,
     selectedLocalAuthenticators
 } from "../../meta";
-import { Authenticators } from "./authenticators";
-import { AuthenticationStep } from "./authentication-step";
-import Draggable from "react-draggable";
-import { OperationIcons } from "../../../../configs";
 
 /**
  * Proptypes for the applications settings component.

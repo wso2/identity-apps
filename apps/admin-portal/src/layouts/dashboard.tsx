@@ -18,7 +18,10 @@
 
 import { getProfileInfo } from "@wso2is/core/api";
 import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
+import { RouteUtils } from "@wso2is/core/utils";
+import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Footer, Header, Logo, ProductBrand, SidePanel } from "@wso2is/react-components";
+import { ThemeContext } from "@wso2is/react-components";
 import classNames from "classnames";
 import _ from "lodash";
 import React, {
@@ -34,16 +37,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Button, Image, Responsive } from "semantic-ui-react";
+import { BaseLayout } from "./base";
 import { ProtectedRoute } from "../components";
-import { LogoImage, routes, SidePanelIcons, SidePanelMiscIcons } from "../configs";
+import { LogoImage, SidePanelIcons, SidePanelMiscIcons, routes } from "../configs";
 import { UIConstants } from "../constants";
 import { AppConfig, history } from "../helpers";
 import { AppConfigInterface, AuthStateInterface, ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
-import { BaseLayout } from "./base";
-import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
-import { RouteUtils } from "@wso2is/core/utils";
-import { ThemeContext } from "@wso2is/react-components";
 
 /**
  * Dashboard layout Prop types.

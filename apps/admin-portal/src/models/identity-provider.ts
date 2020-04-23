@@ -104,6 +104,19 @@ export interface FederatedAuthenticatorInterface extends CommonPluggableComponen
     isDefault?: boolean;
 }
 
+export interface FederatedAuthenticatorInterface {
+    id?: string;
+    meta?: FederatedAuthenticatorMetaInterface;
+    data?: FederatedAuthenticatorInterface;
+}
+
+export interface FederatedAuthenticatorListItemInterface {
+    authenticatorId?: string;
+    name?: string;
+    isEnabled?: boolean;
+    isDefault?: boolean;
+}
+
 export interface AuthenticatorPropertyInterface {
     key: string;
     value: string;

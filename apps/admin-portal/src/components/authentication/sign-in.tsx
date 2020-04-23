@@ -17,12 +17,12 @@
  */
 
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"; 
 import { USER_DENIED_CONSENT } from "../../constants";
 import { history } from "../../helpers";
+import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 import { handleSignIn } from "../../store/actions";
-import { ConfigReducerStateInterface } from "../../models";
 
 /**
  * This component handles the sign-in function
@@ -55,7 +55,8 @@ export const SignIn = (props) => {
         if (!isAuth && !error) {
             dispatch(handleSignIn());
         } else if (error === USER_DENIED_CONSENT) {
-            dispatch(handleSignIn(true));
+            // dispatch(handleSignIn());
+            // TODO: Send it to an error page
         } else {
             loginSuccessRedirect();
         }

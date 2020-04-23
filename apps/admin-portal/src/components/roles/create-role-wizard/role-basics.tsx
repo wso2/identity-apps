@@ -16,11 +16,11 @@
  * under the License.
  */
 
+import { Field, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Forms, Field } from "@wso2is/forms";
-import { Grid, GridRow, GridColumn } from "semantic-ui-react";
-import { CreateRoleFormData } from "../../../models";
+import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../../constants";
+import { CreateRoleFormData } from "../../../models";
 
 /**
  * Interface to capture role basics props.
@@ -57,13 +57,13 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      *        to the dropdown.
     */
     const groupDomains = [{
-        key: -1, text: PRIMARY_DOMAIN, value: PRIMARY_DOMAIN,
+        key: -1, text: PRIMARY_DOMAIN, value: PRIMARY_DOMAIN
     }];
 
     const roleDomains = [{
         key: -1, text: APPLICATION_DOMAIN, value: APPLICATION_DOMAIN
     },{
-        key: 0, text: INTERNAL_DOMAIN, value: INTERNAL_DOMAIN,
+        key: 0, text: INTERNAL_DOMAIN, value: INTERNAL_DOMAIN
     }];
 
     /**

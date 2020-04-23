@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { GenericAppIcon } from "../../configs";
 import classNames from "classnames";
 import * as React from "react";
 import { Image, Placeholder, SemanticSIZES } from "semantic-ui-react";
 import { UserImageDummy } from "./ui";
+import { GenericAppIcon } from "../../configs";
 
 /**
  * Prop types for the Avatar component.
@@ -90,7 +90,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
         [ `spaced-${ spaced }` ]: spaced,
         transparent,
         [ `${ avatarType === "user" ? "user-avatar" : "app-avatar" }` ]: avatar,
-        [ `${ relaxLevel }` ]: relaxLevel,
+        [ `${ relaxLevel }` ]: relaxLevel
     }, className);
 
     // If loading, show the placeholder.

@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement } from "react";
-import { addAlert } from "@wso2is/core/store";
-import { AdvanceConfigurationsForm } from "../forms";
 import { AlertLevels } from "@wso2is/core/models";
-import { Divider } from "semantic-ui-react";
+import { addAlert } from "@wso2is/core/store";
 import { Heading } from "@wso2is/react-components";
-import { IdentityProviderAdvanceInterface } from "../../../models";
-import { updateIdentityProviderDetails } from "../../../api";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
+import { Divider } from "semantic-ui-react";
+import { updateIdentityProviderDetails } from "../../../api";
+import { IdentityProviderAdvanceInterface } from "../../../models";
+import { AdvanceConfigurationsForm } from "../forms";
 
 /**
  * Proptypes for the advance settings component.

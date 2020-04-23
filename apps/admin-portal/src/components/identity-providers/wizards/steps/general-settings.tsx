@@ -17,8 +17,8 @@
  */
 
 import React, { FunctionComponent, ReactElement } from "react";
-import { GeneralDetailsForm } from "../../forms";
 import { IdentityProviderInterface } from "../../../../models";
+import { GeneralDetailsForm } from "../../forms";
 
 /**
  * Proptypes for the general settings wizard form component.

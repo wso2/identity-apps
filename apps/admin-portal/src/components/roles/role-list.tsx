@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { Avatar, ConfirmationModal, ResourceList, ResourceListItem } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
-import { RolesInterface } from "../../models";
-import { ResourceList, ResourceListItem, Avatar, ConfirmationModal } from "@wso2is/react-components";
-import { CommonUtils } from "../../utils";
-import { history } from "../../helpers";
-import { ROLE_VIEW_PATH } from "../../constants";
 import { Icon } from "semantic-ui-react";
+import { ROLE_VIEW_PATH } from "../../constants";
+import { history } from "../../helpers";
+import { RolesInterface } from "../../models";
+import { CommonUtils } from "../../utils";
 
 interface RoleListProps {
     roleList: RolesInterface[];

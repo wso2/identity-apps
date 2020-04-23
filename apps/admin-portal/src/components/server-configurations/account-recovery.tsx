@@ -17,17 +17,17 @@
  */
 
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
-import { Divider, Form, Grid } from "semantic-ui-react";
-import { EditSection, Hint, Section } from "@wso2is/react-components";
-import { Field, Forms, useTrigger } from "@wso2is/forms";
-import { getAccountRecoveryConfigurations, updateAccountRecoveryConfigurations } from "../../api";
-import React, { FunctionComponent, useEffect, useState } from "react";
-import { AccountRecoveryConfigurationsInterface } from "../../models/server-configurations";
 import { addAlert } from "@wso2is/core/store";
-import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
-import { SettingsSectionIcons } from "../../configs";
-import { useDispatch } from "react-redux";
+import { Field, Forms, useTrigger } from "@wso2is/forms";
+import { EditSection, Hint, Section } from "@wso2is/react-components";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Divider, Form, Grid, List } from "semantic-ui-react";
+import { getAccountRecoveryConfigurations, updateAccountRecoveryConfigurations } from "../../api";
+import { SettingsSectionIcons } from "../../configs";
+import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
+import { AccountRecoveryConfigurationsInterface } from "../../models/server-configurations";
 
 /**
  * Constant to store the account recovery from identifier.
@@ -320,7 +320,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		<Forms>
 			<Grid padded={ true }>
 				<Grid.Row columns={ 1 }>
-					<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+					<Grid.Column className="first-column" mobile={ 16 } tablet={ 16 } computer={ 14 }>
 						<Field
 							name={ ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE }
 							required={ false }
@@ -710,8 +710,12 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 			primaryActionIcon="key"
 			showActionBar={ !editingForm[ACCOUNT_RECOVERY_FORM_IDENTIFIER] }
 		>
-			{ showAccountRecoverySummary }
-			{ showUserAccountRecoveryView }
+			<List verticalAlign="middle" className="main-content-inner">
+				<List.Item className="inner-list-item">
+					{ showAccountRecoverySummary }
+					{ showUserAccountRecoveryView }
+				</List.Item>
+			</List>
 		</Section>
 	);
 };

@@ -17,31 +17,24 @@
  */
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
-import { LocalStorageUtils } from "@wso2is/core/utils";
 import { CommonHelpers } from "@wso2is/core/helpers";
+import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Button, EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import {
-    Dropdown,
-    DropdownProps,
-    Grid,
-    Icon,
-    PaginationProps,
-    Popup
-} from "semantic-ui-react";
-import { deleteUser, getUsersList, getUserStoreList } from "../api";
+import { Dropdown, DropdownProps, Grid, Icon, PaginationProps, Popup } from "semantic-ui-react";
+import { deleteUser, getUserStoreList, getUsersList } from "../api";
 import { UserSearch, UsersList } from "../components/users";
+import { UsersListOptionsComponent } from "../components/users";
 import { AddUserWizard } from "../components/users/wizard";
+import { EmptyPlaceholderIllustrations } from "../configs";
+import { UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertInterface, AlertLevels } from "../models";
 import { UserListInterface } from "../models/user";
-import { addAlert } from "../store/actions";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { UserConstants } from "../constants";
-import { UsersListOptionsComponent } from "../components/users";
 import { store } from "../store";
+import { addAlert } from "../store/actions";
 
 
 /**
@@ -58,7 +51,7 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ usersList, setUsersList ] = useState<UserListInterface>({});
-    const [ rolesList, setRolesList ] = useState([]);
+    const [ rolesList ] = useState([]);
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
@@ -107,10 +100,24 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
      */
     const getUserStores = () => {
         const storeOptions = [
-                { text: "All userstores", key: -2, value: null },
-                { text: "Primary", key: -1, value: "primary" }
+                {
+                    key: -2,
+                    text: "All userstores",
+                    value: null
+                },
+                {
+                    key: -1, 
+                    text: "Primary",
+                    value: "primary"
+                }
             ];
-        let storeOption = { text: "", key: null, value: "" };
+
+        let storeOption = {
+            key: null,
+            text: "", 
+            value: ""
+        };
+
         getUserStoreList()
             .then((response) => {
                 if (storeOptions === []) {
@@ -319,10 +326,14 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                 currentListSize={ usersList.itemsPerPage }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                itemsPerPageDropDownTestId="user_mgt_user_list_items_per_page_dropdown"
                 onPageChange={ handlePaginationChange }
                 rightActionPanel={
                     (
-                        <PrimaryButton onClick={ () => setShowWizard(true) }>
+                        <PrimaryButton
+                            data-testid="user_mgt_user_list_add_user_button"
+                            onClick={ () => setShowWizard(true) }
+                        >
                             <Icon name="add"/>
                             New User
                         </PrimaryButton>
@@ -343,10 +354,18 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                                 on='click'
                                 pinned
                                 trigger={
-                                    <Button className="meta-columns-button" basic><Icon name="columns"/>Columns</Button>
+                                    <Button
+                                        data-testid="user_mgt_user_list_meta_columns_button"
+                                        className="meta-columns-button"
+                                        basic
+                                    >
+                                        <Icon name="columns"/>
+                                        Columns
+                                    </Button>
                                 }
                             />
                             <Dropdown
+                                data-testid="user_mgt_user_list_userstore_dropdown"
                                 selection
                                 options={ userStoreOptions && userStoreOptions }
                                 onChange={ handleDomainChange }

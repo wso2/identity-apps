@@ -17,17 +17,21 @@
  */
 
 import axios from "axios";
+import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
 import {
     AUTHORIZATION_ENDPOINT,
+    CALLBACK_URL,
     END_SESSION_ENDPOINT,
     ISSUER,
     JWKS_ENDPOINT,
     OP_CONFIG_INITIATED,
     REVOKE_TOKEN_ENDPOINT,
+    SERVICE_RESOURCES,
+    TENANT,
     TOKEN_ENDPOINT,
     USERNAME
 } from "../constants";
-import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
+import { ConfigInterface } from "../models/client";
 
 /**
  * Checks whether openid configuration initiated.
@@ -91,6 +95,20 @@ export const setOPConfigInitiated = (): void => {
 };
 
 /**
+ * Set callback URL.
+ */
+export const setCallbackURL = (url: string): void => {
+    setSessionParameter(CALLBACK_URL, url);
+};
+
+/**
+ * Set tenant name.
+ */
+export const setTenant = (tenant: string): void => {
+    setSessionParameter(TENANT, tenant);
+};
+
+/**
  * Set id_token issuer.
  *
  * @param issuer id_token issuer.
@@ -109,24 +127,23 @@ export const setIssuer = (issuer): void => {
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const initOPConfiguration = (
-        wellKnownEndpoint: string,
+        requestParams: ConfigInterface,
         forceInit: boolean
     ): Promise<any> => {
 
-    if (!forceInit && isOPConfigInitiated()) {
-        Promise.resolve("success");
+    if (!forceInit && isValidOPConfig(requestParams.tenant)) {
+        return Promise.resolve();
     }
 
-    if (!wellKnownEndpoint || wellKnownEndpoint.trim().length === 0) {
-        return Promise.reject(new Error("OpenID provider configuration endpoint is not defined."));
-    }
+    const serverHost = requestParams.serverOrigin + requestParams.tenantPath;
 
-    return axios.get(wellKnownEndpoint)
+    return axios.get(serverHost + SERVICE_RESOURCES.wellKnown)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to load OpenID provider configuration from: "
-                    + wellKnownEndpoint));
+                    + serverHost + SERVICE_RESOURCES.wellKnown));
             }
+
             setAuthorizeEndpoint(response.data.authorization_endpoint);
             setTokenEndpoint(response.data.token_endpoint);
             setEndSessionEndpoint(response.data.end_session_endpoint);
@@ -134,11 +151,22 @@ export const initOPConfiguration = (
             setRevokeTokenEndpoint(response.data.token_endpoint
                 .substring(0, response.data.token_endpoint.lastIndexOf("token")) + "revoke");
             setIssuer(response.data.issuer);
+            setTenant(requestParams.tenant);
+            setCallbackURL(requestParams.callbackURL);
             setOPConfigInitiated();
 
-            return Promise.resolve("success");
-        }).catch((error) => {
-            return Promise.reject(error);
+            return Promise.resolve();
+        }).catch(() => {
+            setTokenEndpoint(requestParams.serverOrigin + SERVICE_RESOURCES.token);
+            setRevokeTokenEndpoint(requestParams.serverOrigin + SERVICE_RESOURCES.revoke);
+            setEndSessionEndpoint(requestParams.serverOrigin + SERVICE_RESOURCES.logout);
+            setJwksUri(serverHost + SERVICE_RESOURCES.jwks);
+            setIssuer(requestParams.serverOrigin + SERVICE_RESOURCES.token);
+            setTenant(requestParams.tenant);
+            setCallbackURL(requestParams.callbackURL);
+            setOPConfigInitiated();
+
+            return Promise.resolve();
         });
 };
 
@@ -153,6 +181,8 @@ export const resetOPConfiguration = (): void => {
     removeSessionParameter(REVOKE_TOKEN_ENDPOINT);
     removeSessionParameter(OP_CONFIG_INITIATED);
     removeSessionParameter(ISSUER);
+    removeSessionParameter(TENANT);
+    removeSessionParameter(CALLBACK_URL);
 };
 
 /**
@@ -214,16 +244,8 @@ export const getUsername = (): string|null => {
  *
  * @returns {any}
  */
-export const getTenant = (): string|string[] => {
-    if (getUsername()) {
-        const usernameSplit = getUsername().split("@");
-
-        if (usernameSplit.length > 1) {
-            return usernameSplit[usernameSplit.length - 1];
-        }
-    }
-
-    return "";
+export const getTenant = (): string|null => {
+    return getSessionParameter(TENANT);
 };
 
 /**
@@ -241,5 +263,5 @@ export const getIssuer = (): string => {
  * @returns {boolean}
  */
 export const isValidOPConfig = (tenant): boolean => {
-    return isOPConfigInitiated() && ((getTenant() !== "") && (getTenant() !== tenant));
+    return isOPConfigInitiated() && (getTenant() && (getTenant() === tenant));
 };

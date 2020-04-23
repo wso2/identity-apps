@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import React, { ReactElement, useState } from "react";
 import {
     ConfirmationModal,
     ResourceList,
     ResourceListItem,
     UserAvatar
 } from "@wso2is/react-components";
+import React, { ReactElement, useState } from "react";
 import { Grid, List, SemanticWIDTHS } from "semantic-ui-react";
 import { history } from "../../helpers";
 import { UserBasicInterface, UserListInterface } from "../../models";
@@ -142,12 +142,14 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             key={ index }
                             actions={ [
                                 {
+                                    elementTestId: `user_mgt_user_list_edit_user_${ user.userName }_button`,
                                     icon: "pencil alternate",
                                     onClick: () => handleUserEdit(user.id),
                                     popupText: "Edit",
-                                    type: "button"
+                                    type: "button",
                                 },
                                 {
+                                    elementTestId: `user_mgt_user_list_delete_user_${ user.userName }_button`,
                                     hidden: user.userName === "admin",
                                     icon: "trash alternate",
                                     onClick: (): void => {
@@ -182,6 +184,10 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             {
                 deletingUser && (
                     <ConfirmationModal
+                        confirmationModalTestId="user_mgt_user_list_confirmation_modal"
+                        primaryActionButtonTestId="user_mgt_user_list_confirmation_modal_confirm_button"
+                        secondaryActionButtonTestId="user_mgt_user_list_confirmation_modal_cancel_button"
+                        confirmationInputTestId="user_mgt_user_list_confirmation_modal_input"
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
                         open={ showDeleteConfirmationModal }
