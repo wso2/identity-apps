@@ -19,9 +19,11 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { TemplateCardTagInterface } from "@wso2is/react-components";
 import _ from "lodash";
 import { getApplicationTemplateList, getAvailableInboundProtocols } from "../api";
 import { CustomApplicationTemplate } from "../components/applications/meta";
+import { TechnologyLogos } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
 import {
     ApplicationTemplateListInterface,
@@ -89,8 +91,15 @@ export class ApplicationManagementUtils {
         return getApplicationTemplateList()
             .then((response) => {
                 const applicationTemplates = (response as ApplicationTemplateListInterface).templates;
+
                 // Add on the custom application template to the application template list
                 applicationTemplates.unshift(CustomApplicationTemplate);
+
+                // Generate the technologies array.
+                applicationTemplates.forEach((template) => {
+                    template.types = ApplicationManagementUtils.buildSupportedTechnologies(template.types);
+                });
+
                 store.dispatch(setApplicationTemplates(applicationTemplates));
             })
             .catch((error) => {
@@ -160,5 +169,31 @@ export class ApplicationManagementUtils {
         const [ template, ...desc ] = tokens;
 
         return [ template, desc.join(ApplicationManagementConstants.APPLICATION_DESCRIPTION_SPLITTER) ];
+    }
+
+    /**
+     * Build supported technologies list for UI from the given technology types.
+     *
+     * @param {string[]} technologies - Set of supported technologies.
+     *
+     * @return {TemplateCardTagInterface[]} Set of Technologies compatible for `TemplateCard`.
+     */
+    public static buildSupportedTechnologies(technologies: string[]): TemplateCardTagInterface[] {
+        return technologies?.map((technology: string) => {
+            let logo = null;
+
+            for (const [ key, value ] of Object.entries(TechnologyLogos)) {
+                if (key === technology) {
+                    logo = value;
+                    break;
+                }
+            }
+
+            return {
+                displayName: _.startCase(technology),
+                logo,
+                name: technology
+            }
+        });
     }
 }
