@@ -19,7 +19,7 @@
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode } from "react";
 import { Card, CardProps, Divider, Label, Popup } from "semantic-ui-react";
-import { GenericIcon, GenericIconSizes } from "../icon";
+import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 
 /**
  * Proptypes for the template card component.
@@ -60,7 +60,7 @@ export interface TemplateCardPropsInterface {
     /**
      * Template image.
      */
-    image?: any;
+    image?: GenericIconProps["icon"];
     /**
      * Size of the image.
      */
