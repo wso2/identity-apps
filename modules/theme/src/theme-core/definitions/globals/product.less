@@ -979,6 +979,33 @@ body {
             background: @stepIconDefaultBgColor;
             text-align: center;
             display: inline-table;
+            position: relative;
+
+            .step-checked {
+                width: @stepCheckSize;
+                height: @stepCheckSize;
+                position: absolute;
+                bottom: @stepCheckPositionBottom;
+                right: @stepCheckPositionRight;
+                background-color: @stepIconCheckedBgColor;
+                border-radius: @stepCheckBorderRadius;
+                visibility: hidden;
+
+                &:after {
+                    content: "";
+                    height: 11px;
+                    width: 5px;
+                    border: solid @stepIconCheckedTick;
+                    border-width: 0 2px 2px 0;
+                    transform: @stepCheckTickRotation;
+                    -webkit-transform: @stepCheckTickRotation;
+                    -moz-transform: @stepCheckTickRotation;
+                    -o-transform: @stepCheckTickRotation;
+                    display: block;
+                    margin-top: @stepCheckTickMarginTop;
+                    margin-left: @stepCheckTickMarginLeft;
+                }
+            }
 
             .theme-icon {
                 display: table-cell;
@@ -995,7 +1022,7 @@ body {
                 content: "- - - -";
                 color: @stepDefaultFontColor;
                 display: inline-block;
-                position: absolute;
+                position: fixed;
                 margin-top: 10px;
                 margin-left: 40px;
                 font-weight: bold;
@@ -1012,13 +1039,10 @@ body {
         }
 
         &.completed {
-            color: @stepCompleteFontColor;
-
             .step-icon-wrapper {
-                background: @stepIconCompleteBgColor;
 
-                &:after {
-                    color: @stepCompleteFontColor;
+                .step-checked {
+                    visibility: visible;
                 }
             }
         }
