@@ -140,7 +140,7 @@ export const WSTrustTemplateIllustration =
     require("../dist/lib/themes/default/assets/images/illustrations/ws-trust-template-illustration.svg");
 
 // File upload illustration.
-export const FileUploadIllustration = require("../dist/lib/themes/default/assets/images/icon/upload.svg");
+export const FileUploadIllustration = require("../dist/lib/themes/default/assets/images/icons/upload.svg");
 
 // Certificate illustration.
 export const CertificateIllustration =
