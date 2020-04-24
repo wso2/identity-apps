@@ -18,7 +18,7 @@
 
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode } from "react";
-import { Card, CardProps, Popup } from "semantic-ui-react";
+import { Card, CardProps, Divider, Label, Popup } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
 
 /**
@@ -37,6 +37,10 @@ export interface TemplateCardPropsInterface {
      * Set of tags for the template.
      */
     tags?: TemplateCardTagInterface[];
+    /**
+     * Element to render the tag as.
+     */
+    tagsAs?: "icon" | "label";
     /**
      * Title for the tags section.
      */
@@ -122,6 +126,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
         onClick,
         selected,
         tags,
+        tagsAs,
         tagsSectionTitle,
         textAlign
     } = props;
@@ -129,8 +134,8 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
     const classes = classNames(
         "template-card",
         {
-            [ "with-image" ]: image,
             disabled,
+            [ "with-image" ]: image,
             inline,
             selected
         },
@@ -169,10 +174,13 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                                 <div className="logos">
                                     {
                                         tags.map((tag, index) => (
-                                            <Popup
-                                                key={ index }
-                                                trigger={ (
-                                                    <span className="icon-wrapper">
+                                            tagsAs === "icon"
+                                                ? (
+                                                    <Popup
+                                                        basic
+                                                        key={ index }
+                                                        trigger={ (
+                                                            <span className="icon-wrapper">
                                                         <GenericIcon
                                                             icon={ tag.logo }
                                                             size="micro"
@@ -181,17 +189,20 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                                                             transparent
                                                         />
                                                     </span>
-                                                ) }
-                                                position="top center"
-                                                content={ tag.displayName }
-                                                inverted
-                                            />
+                                                        ) }
+                                                        size="mini"
+                                                        position="top center"
+                                                        content={ tag.displayName }
+                                                        inverted
+                                                    />
+                                                )
+                                                : <Label size="mini">{ tag.displayName }</Label>
                                         ))
                                     }
                                 </div>
                             </div>
                         )
-                        : null
+                        : <Divider hidden/>
                 }
             </Card.Content>
         </Card>
@@ -202,7 +213,8 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
  * Default props for the application template card.
  */
 TemplateCard.defaultProps = {
-    imageSize: "auto",
+    imageSize: "tiny",
     inline: true,
+    tagsAs: "label",
     textAlign: "center"
 };

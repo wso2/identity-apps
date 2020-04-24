@@ -187,6 +187,11 @@ export const TemplateGrid: FunctionComponent<TemplateGridPropsInterface> = (
                                             ? template.types
                                             : template.services
                                     }
+                                    tagsAs={
+                                        type === "application"
+                                            ? "icon"
+                                            : "label"
+                                    }
                                     name={ template.name }
                                     id={ template.id }
                                     onClick={ onTemplateSelect }
