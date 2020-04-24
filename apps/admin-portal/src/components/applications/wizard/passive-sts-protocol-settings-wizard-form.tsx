@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { ContentLoader,  Hint } from "@wso2is/react-components";
+import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
+import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
@@ -67,7 +67,8 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
         };
     };
 
-    return (templateValues ?
+    return (templateValues
+            ?
             <Forms
                 onSubmit={ (values: Map<string, FormValue>): void => {
                     onSubmit(getFormValues(values));
@@ -110,6 +111,7 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </Forms> :  <ContentLoader/>
+            </Forms>
+            : <ContentLoader/>
     );
 };

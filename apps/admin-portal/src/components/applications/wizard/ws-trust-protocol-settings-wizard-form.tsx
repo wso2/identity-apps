@@ -119,7 +119,8 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
         getMetaData();
     }, []);
 
-    return (templateValues && showWSTrustMetaData ?
+    return (templateValues && showWSTrustMetaData
+            ?
             <Forms
                 onSubmit={ (values: Map<string, FormValue>): void => {
                     onSubmit(getFormValues(values));
@@ -167,6 +168,7 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </Forms> :  <ContentLoader/>
+            </Forms>
+            : <ContentLoader/>
     )
 };

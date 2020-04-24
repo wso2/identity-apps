@@ -109,7 +109,8 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
         return result;
     };
 
-    return (configureMode ?
+    return (configureMode
+            ?
             <Forms
                 onSubmit={ (values: Map<string, FormValue>): void => {
                     // check whether assertionConsumer url is empty or not
@@ -217,6 +218,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                         </Grid.Row>
                     }
                 </Grid>
-            </Forms> : <ContentLoader/>
+            </Forms>
+            : <ContentLoader/>
     );
 };

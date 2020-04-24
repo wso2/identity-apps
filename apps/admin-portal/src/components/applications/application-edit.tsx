@@ -107,7 +107,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const [isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading] = useState<boolean>(true);
     const [selectedInboundProtocol, setSelectedInboundProtocol] = useState<AuthProtocolMetaListItemInterface>(null);
-    const [selectedInboundProtocolList, setSelectedInboundProtocolList] = useState<AuthProtocolMetaListItemInterface[]>([]);
+    const [selectedInboundProtocolList, setSelectedInboundProtocolList] =
+        useState<AuthProtocolMetaListItemInterface[]>([]);
     const [selectedInboundProtocolConfig, setSelectedInboundProtocolConfig] = useState<any>(undefined);
     const [showProtocolSelection, setShowProtocolSelection] = useState<boolean>(true);
     const [isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading] = useState<boolean>(false);

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Field, FormValue, Forms } from "@wso2is/forms";
+import { Field, Forms, FormValue } from "@wso2is/forms";
 import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
@@ -90,7 +90,8 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
         };
     };
 
-    return (templateValues ?
+    return (templateValues
+            ?
             <Forms
                 onSubmit={ (values: Map<string, FormValue>): void => {
                     // check whether assertionConsumer url is empty or not
@@ -139,6 +140,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                         "This is the Assertion Consumer Service (ACS) URL of the Application" }
                     />
                 </Grid>
-            </Forms> : <ContentLoader/>
+            </Forms>
+            : <ContentLoader/>
     );
 };
