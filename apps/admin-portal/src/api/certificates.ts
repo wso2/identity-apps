@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AxiosHttpClient } from "@wso2is/http";
 import { Certificate, HttpMethods } from "../models";
 import { store } from "../store";
@@ -57,7 +58,13 @@ export const listCertificateAliases = (filter?: string): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            Promise.reject(error?.response?.data);
+            throw new IdentityAppsApiException(
+                error.response?.data?.message,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 
@@ -91,7 +98,14 @@ export const retrieveCertificateAlias = (alias: string, encode?: boolean): Promi
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error?.response?.data);
+            throw new IdentityAppsApiException(
+                error.response?.data?.message,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config
+            );
         });
 };
 
@@ -124,7 +138,14 @@ export const retrievePublicCertificate = (encode?: boolean): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error?.response?.data);
+            throw new IdentityAppsApiException(
+                error.response?.data?.message,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config
+            );
         });
 };
 
@@ -157,7 +178,14 @@ export const listClientCertificates = (filter?: string): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error?.response?.data);
+            throw new IdentityAppsApiException(
+                error.response?.data?.message,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config
+            );
         });
 };
 
@@ -191,7 +219,14 @@ export const retrieveClientCertificate = (alias: string, encode?: boolean): Prom
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error?.response?.data);
+            throw new IdentityAppsApiException(
+                error.response?.data?.message,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config
+            );
         });
 };
 
@@ -221,7 +256,14 @@ export const deleteKeystoreCertificate = (alias: string): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error?.response?.data);
+            throw new IdentityAppsApiException(
+                error.response?.data?.message,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config
+            );
         });
 };
 
@@ -252,6 +294,13 @@ export const createKeystoreCertificate = (data: Certificate): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error?.response?.data);
+            throw new IdentityAppsApiException(
+                error.response?.data?.message,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config
+            );
         });
 };
