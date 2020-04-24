@@ -24,10 +24,10 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../../models";
-import { Modal } from "semantic-ui-react";
 import _ from "lodash";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Modal } from "semantic-ui-react";
+import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../../models";
 
 
 interface AttributeSelectionWizardPropsInterface {
@@ -197,18 +197,24 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
      */
     useEffect(() => {
         if (showAddModal) {
-            setTempAvailableClaims(attributesList);
-            setFilterTempAvailableClaims(attributesList);
+            const attributesListWithoutSelectedElements = attributesList.filter(element => _.isEmpty(
+                _.find(selectedAttributes, value => (value.claim.uri === element.uri)))
+            );
+            setTempAvailableClaims(attributesListWithoutSelectedElements);
+            setFilterTempAvailableClaims(attributesListWithoutSelectedElements);
+
             setTempSelectedClaims(selectedAttributes.map(element => element.claim));
             setFilterTempSelectedClaims(selectedAttributes.map(element => element.claim));
         } else {
             setTempAvailableClaims([]);
             setFilterTempAvailableClaims([]);
+
             setTempSelectedClaims([]);
             setFilterTempSelectedClaims([]);
         }
         setCheckedAssignedListItems([]);
         setCheckedUnassignedListItems([]);
+
         setIsSelectAssignedAllClaimsChecked(false);
         setSelectUnassignedClaimsAllClaimsChecked(false);
     }, [showAddModal]);

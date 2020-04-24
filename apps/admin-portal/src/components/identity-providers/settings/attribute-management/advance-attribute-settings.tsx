@@ -16,19 +16,21 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement } from "react";
-import { Field, Forms, FormValue } from "@wso2is/forms";
-import { Divider, Grid } from "semantic-ui-react";
+import { Field, Forms } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
-import { IdentityProviderClaimInterface } from "../../../../models";
+import _ from "lodash";
+import React, { FunctionComponent, ReactElement } from "react";
+import { Divider, Grid } from "semantic-ui-react";
+import { DropdownOptionsInterface } from "./attribute-settings";
 
 interface AdvanceAttributeSettingsPropsInterface {
-    dropDownOptions: any;
-    initialSubject: IdentityProviderClaimInterface;
-    initialRole: IdentityProviderClaimInterface;
+    dropDownOptions: DropdownOptionsInterface[];
+    initialSubjectUri: string;
+    initialRoleUri: string;
     claimMappingOn: boolean;
     updateRole: (roleUri: string) => void;
     updateSubject: (subjectUri: string) => void;
+    triggerSubmit: boolean;
 }
 
 export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSettingsPropsInterface> = (
@@ -37,15 +39,20 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
     const {
         dropDownOptions,
-        initialSubject,
-        initialRole,
+        initialSubjectUri,
+        initialRoleUri,
         claimMappingOn,
         updateRole,
-        updateSubject
+        updateSubject,
+        triggerSubmit
     } = props;
 
+    const getValidatedInitialValue = (initialValue: string) => {
+        return _.find(dropDownOptions, option => option?.value === initialValue) !== undefined ? initialValue : "";
+    }
+
     return (
-        <Forms>
+        <Forms submitState={ triggerSubmit }>
             <Grid>
                 <Grid.Row>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
@@ -58,16 +65,17 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         <Field
                             name="subjectAttribute"
                             label="Subject attribute"
-                            required={ claimMappingOn }
+                            required={ true }
                             requiredErrorMessage="Select the subject attribute"
                             type="dropdown"
-                            value={ initialSubject?.uri || dropDownOptions[0]?.value }
+                            value={ getValidatedInitialValue(initialSubjectUri) }
                             children={ dropDownOptions }
                             listen={
                                 (values) => {
                                     updateSubject(values.get("subjectAttribute").toString())
                                 }
                             }
+                            placeholder={ "Select Attribute" }
                         />
                         <Hint>
                             Specifies the attribute that identifies the user at the identity provider
@@ -76,7 +84,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                 </Grid.Row>
                 {
                     claimMappingOn &&
-                    <Grid.Row columns={ 2 } >
+                    <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Divider/>
                             <Divider hidden/>
@@ -87,16 +95,17 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             <Field
                                 name="roleAttribute"
                                 label="Role attribute"
-                                required={ claimMappingOn }
+                                required={ true }
                                 requiredErrorMessage="Select the role attribute"
                                 type="dropdown"
-                                value={ initialRole?.uri || dropDownOptions[0]?.value }
+                                value={ getValidatedInitialValue(initialRoleUri) }
                                 children={ dropDownOptions }
                                 listen={
                                     (values) => {
                                         updateRole(values.get("roleAttribute").toString())
                                     }
                                 }
+                                placeholder={ "Select Attribute" }
                             />
                             <Hint>
                                 Specifies the attribute that identifies the Roles at the Identity Provider

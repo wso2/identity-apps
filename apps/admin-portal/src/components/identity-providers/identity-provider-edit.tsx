@@ -102,6 +102,8 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 initialClaims={ identityProvider.claims }
                 initialRoleMappings={ identityProvider.roles.mappings }
                 outboundProvisioningRoles={ identityProvider.roles.outboundProvisioningRoles }
+                isLoading={ isLoading }
+                onUpdate={ onUpdate }
             />
         </ResourceTab.Pane>
     );

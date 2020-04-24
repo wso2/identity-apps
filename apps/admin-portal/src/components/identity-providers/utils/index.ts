@@ -16,4 +16,5 @@
  * under the License.
  */
 
-export * from "./CommonPluggableComponentUtils"
+export * from "./attribute-settings-utils"
+export * from "./common-pluggable-component-utils"

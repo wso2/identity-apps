@@ -23,7 +23,7 @@ import { IdentityProviderManagementConstants } from "../constants";
 import {
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface,
-    HttpMethods,
+    HttpMethods, IdentityProviderClaimsInterface,
     IdentityProviderInterface,
     IdentityProviderListResponseInterface,
     IdentityProviderResponseInterface,
@@ -500,6 +500,46 @@ export const updateJITProvisioningConfigs = (
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 IdentityProviderManagementConstants.IDENTITY_PROVIDER_JIT_PROVISIONING_UPDATE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Update claims of a specified IDP.
+ *
+ * @param idpId ID of the Identity Provider.
+ * @param configs Claims configs.
+ * @return {Promise<IdentityProviderInterface>} A promise containing the response.
+ */
+export const updateClaimsConfigs = (
+    idpId: string,
+    configs: IdentityProviderClaimsInterface
+): Promise<IdentityProviderInterface> => {
+
+    const requestConfig = {
+        data: configs,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/claims"
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update identity provider: " + idpId));
+            }
+            return Promise.resolve(response.data as IdentityProviderInterface);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                IdentityProviderManagementConstants.IDENTITY_PROVIDER_CLAIMS_UPDATE_ERROR,
                 error.stack,
                 error.code,
                 error.request,

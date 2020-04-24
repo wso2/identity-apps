@@ -16,21 +16,25 @@
  * under the License.
  */
 
-import { Button, Divider, Grid, Segment, Table } from "semantic-ui-react";
 import { EmptyPlaceholder, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
-import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../../models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import _ from "lodash";
+import { Button, Divider, Grid, Segment, Table } from "semantic-ui-react";
 import { AttributeListItem } from "./attribute-list-item";
 import { AttributeSelectionWizard } from "./attribute-selection-wizard";
 import { EmptyPlaceholderIllustrations } from "../../../../configs";
+import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../../models";
 
 
 interface AttributeSelectionPropsInterface {
     attributeList: IdentityProviderClaimInterface[];
     selectedAttributesWithMapping: IdentityProviderCommonClaimMappingInterface[];
     setSelectedAttributesWithMapping: (selectedAttributes: IdentityProviderCommonClaimMappingInterface[]) => void;
+    uiProps: AttributeSelectionUIPropsInterface;
+}
+
+export interface AttributeSelectionUIPropsInterface {
     hint: string;
+    attributeColumnHeader: string;
     attributeMapColumnHeader: string;
     attributeMapInputPlaceholderPrefix: string;
     enablePrecedingDivider: boolean;
@@ -47,23 +51,13 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 ): ReactElement => {
 
     const {
+        attributeList,
         setSelectedAttributesWithMapping,
         selectedAttributesWithMapping,
-        componentHeading,
-        hint,
-        attributeList,
-        attributeMapColumnHeader,
-        attributeMapInputPlaceholderPrefix,
-        enablePrecedingDivider
+        uiProps
     } = props;
     
     const [showSelectionModal, setShowSelectionModal] = useState<boolean>(false);
-    const [tempSelectedAttributesWithMapping, setTempSelectedAttributesWithMapping]
-        = useState<IdentityProviderCommonClaimMappingInterface[]>([]);
-
-    useEffect(() => {
-        setTempSelectedAttributesWithMapping(selectedAttributesWithMapping)
-    }, [selectedAttributesWithMapping]);
 
     const handleOpenSelectionModal = () => {
         setShowSelectionModal(true);
@@ -72,50 +66,36 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const addSelectionModal = (() => {
             return <AttributeSelectionWizard
                 attributesList={ attributeList }
-                selectedAttributes={ tempSelectedAttributesWithMapping }
-                setSelectedAttributes={ setTempSelectedAttributesWithMapping }
+                selectedAttributes={ selectedAttributesWithMapping }
+                setSelectedAttributes={ setSelectedAttributesWithMapping }
                 showAddModal={ showSelectionModal }
                 setShowAddModal={ setShowSelectionModal }
             />
         }
     );
 
+
     const updateAttributeMapping = (mapping: IdentityProviderCommonClaimMappingInterface): void => {
-        let existingAttribute = false;
-        let updatedTempSelectedAttributesWithMapping = tempSelectedAttributesWithMapping?.map(element => {
-           if (element?.claim?.uri === mapping?.claim.uri) {
-               existingAttribute = true;
-               return {
-                   ...element,
-                   mappedValue: mapping?.mappedValue
-               }
-           }
-           return element;
-        });
-
-        updatedTempSelectedAttributesWithMapping =  existingAttribute ? updatedTempSelectedAttributesWithMapping :
-            [...updatedTempSelectedAttributesWithMapping, mapping];
-
-        // If all the mapped values are filled, then submit selected attributes.
-        if (!updatedTempSelectedAttributesWithMapping.find(element => _.isEmpty(element.mappedValue))) {
-            setSelectedAttributesWithMapping(updatedTempSelectedAttributesWithMapping);
-        }
-
-        // Update mapping elements in the component.
-        setTempSelectedAttributesWithMapping(updatedTempSelectedAttributesWithMapping);
+        setSelectedAttributesWithMapping(
+            [
+                ...selectedAttributesWithMapping.filter(element => element.claim.uri !== mapping.claim.uri),
+                mapping
+            ]
+        );
     };
 
     return (
+        selectedAttributesWithMapping &&
         <>
             <Grid.Row>
                 <Grid.Column computer={ 10 }>
-                    { enablePrecedingDivider && <Divider/> }
+                    { uiProps.enablePrecedingDivider && <Divider/> }
                     <Heading as="h5">
-                        { componentHeading }
+                        { uiProps.componentHeading }
                     </Heading>
                     <Divider hidden/>
                     {
-                        (tempSelectedAttributesWithMapping?.length > 0) ? (
+                        (selectedAttributesWithMapping?.length > 0) ? (
                             <Segment.Group fluid>
                                 <Segment className="user-role-edit-header-segment clearing">
                                     <Grid.Row>
@@ -141,30 +121,30 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                     (
                                                         <Table.Row>
                                                             <Table.HeaderCell>
-                                                                <strong>Attribute</strong>
+                                                                <strong>{ uiProps.attributeColumnHeader }</strong>
                                                             </Table.HeaderCell>
                                                             <Table.HeaderCell>
-                                                                <strong>{ attributeMapColumnHeader }</strong>
+                                                                <strong>{ uiProps.attributeMapColumnHeader }</strong>
                                                             </Table.HeaderCell>
                                                         </Table.Row>
                                                     )
                                                 }
                                             </Table.Header>
                                             <Table.Body>
-                                                {
-                                                    tempSelectedAttributesWithMapping?.map(mapping => {
+                                                { selectedAttributesWithMapping?.sort((a, b) =>
+                                                    a.claim.displayName.localeCompare(b.claim.displayName))?.map(
+                                                    mapping => {
                                                         return (
                                                             <AttributeListItem
                                                                 key={ mapping?.claim.id }
                                                                 attribute={ mapping?.claim }
-                                                                placeholder={ attributeMapInputPlaceholderPrefix
+                                                                placeholder={ uiProps.attributeMapInputPlaceholderPrefix
                                                                 + mapping?.claim.displayName }
                                                                 updateMapping={ updateAttributeMapping }
                                                                 mapping={ mapping?.mappedValue }
                                                             />
                                                         )
-                                                    })
-                                                }
+                                                    }) }
                                             </Table.Body>
                                         </Table>
                                     </Grid.Row>
@@ -189,7 +169,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                         )
                     }
                     <Hint>
-                        { hint }
+                        { uiProps.hint }
                     </Hint>
                 </Grid.Column>
             </Grid.Row>

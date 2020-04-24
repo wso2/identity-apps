@@ -31,4 +31,6 @@ export class IdentityProviderManagementConstants {
         "the required identity provider templates list.";
     public static readonly IDENTITY_PROVIDER_JIT_PROVISIONING_UPDATE_ERROR: string = "An error occurred while" +
         " updating the JIT provisioning configurations of the identity provider.";
+    public static readonly IDENTITY_PROVIDER_CLAIMS_UPDATE_ERROR: string = "An error occurred while updating claims " +
+        "configurations of the identity provider.";
 }
