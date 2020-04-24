@@ -276,7 +276,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     },
     {
         component: CertificatesKeystore,
-        icon: "userStore",
+        icon: "certificate",
         id: "certificates",
         name: "Certificates",
         path: "/certificates",
