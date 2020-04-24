@@ -30,6 +30,8 @@
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isRecoveryEPAvailable" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
+<%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
+<%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 
@@ -176,11 +178,19 @@
 
             urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
             urlParameters = prmstr;
-            
-            identityMgtEndpointContext =
-                    application.getInitParameter("IdentityManagementEndpointContextURL");
+
+            identityMgtEndpointContext = application.getInitParameter("IdentityManagementEndpointContextURL");
             if (StringUtils.isBlank(identityMgtEndpointContext)) {
-                identityMgtEndpointContext = getServerURL("/accountrecoveryendpoint", true, true);
+                try {
+                    identityMgtEndpointContext = ServiceURLBuilder.create().addPath(ACCOUNT_RECOVERY_ENDPOINT).build()
+                            .getAbsolutePublicURL();
+                } catch (URLBuilderException e) {
+                    request.setAttribute(STATUS, AuthenticationEndpointUtil.i18n(resourceBundle, CONFIGURATION_ERROR));
+                    request.setAttribute(STATUS_MSG, AuthenticationEndpointUtil
+                            .i18n(resourceBundle, ERROR_WHILE_BUILDING_THE_ACCOUNT_RECOVERY_ENDPOINT_URL));
+                    request.getRequestDispatcher("error.do").forward(request, response);
+                    return;
+                }
             }
         }
     %>

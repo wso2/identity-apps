@@ -20,6 +20,8 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.TenantDataManager" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
+<%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 
 <form class="ui large form" action="<%=commonauthURL%>" method="post" id="loginForm">
     <% if (Boolean.parseBoolean(loginFailed)) { %>
@@ -112,12 +114,20 @@
             urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
             urlParameters = prmstr;
 
-            identityMgtEndpointContext =
-                    application.getInitParameter("IdentityManagementEndpointContextURL");
+            identityMgtEndpointContext = application.getInitParameter("IdentityManagementEndpointContextURL");
             if (StringUtils.isBlank(identityMgtEndpointContext)) {
-                identityMgtEndpointContext = getServerURL("/accountrecoveryendpoint", true, true);
+                try {
+                    identityMgtEndpointContext = ServiceURLBuilder.create().addPath(ACCOUNT_RECOVERY_ENDPOINT).build()
+                            .getAbsolutePublicURL();
+                } catch (URLBuilderException e) {
+                    request.setAttribute(STATUS, AuthenticationEndpointUtil.i18n(resourceBundle, CONFIGURATION_ERROR));
+                    request.setAttribute(STATUS_MSG, AuthenticationEndpointUtil
+                            .i18n(resourceBundle, ERROR_WHILE_BUILDING_THE_ACCOUNT_RECOVERY_ENDPOINT_URL));
+                    request.getRequestDispatcher("error.do").forward(request, response);
+                    return;
+                }
             }
-        } 
+        }
     %>
 
     <div class="field">
