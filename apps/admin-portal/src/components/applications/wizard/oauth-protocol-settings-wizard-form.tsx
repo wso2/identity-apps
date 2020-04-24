@@ -17,7 +17,7 @@
  */
 
 import { Field, Forms } from "@wso2is/forms";
-import { Hint } from "@wso2is/react-components";
+import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, useEffect, useRef, useState } from "react";
@@ -151,7 +151,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     // }, [initialValues]);
 
     useEffect(() => {
-        const allowedGrantTypes = templateValues.inboundProtocolConfiguration.oidc.grantTypes;
+        const allowedGrantTypes = templateValues?.inboundProtocolConfiguration?.oidc?.grantTypes;
         if (_.intersection(allowedGrantTypes, ["refresh_token"]).length > 0) {
             setShowRefreshToken(true);
         }
@@ -183,81 +183,83 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         return configs;
     };
 
-    return (templateValues &&
-        <Forms
-            onSubmit={ (values) => {
-                // check whether callback url is empty or not
-                if (_.isEmpty(callBackUrls)) {
-                    setShowURLError(true);
-                } else {
-                    onSubmit(getFormValues(values));
-                }
-            } }
-            submitState={ triggerSubmit }
-        >
-            <Grid>
-                <URLInputComponent
-                    urlState={ callBackUrls }
-                    setURLState={ setCallBackUrls }
-                    labelName={ "Callback URL" }
-                    placeholder={ "Enter callbackUrl" }
-                    validationErrorMsg={ "Please add valid URL." }
-                    validation={ (value: string) => {
-                        if (FormValidation.url(value)) {
-                            return true;
-                        }
-                        return false;
-                    } }
-                    computerWidth={ 10 }
-                    setShowError={ setShowURLError }
-                    showError={ showURLError }
-                    hint={ " After the authentication, we will only redirect to the above callback URLs " +
-                    "and you can specify multiple URLs" }
-                />
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Field
-                            name="publicClients"
-                            label=""
-                            required={ false }
-                            requiredErrorMessage="this is needed"
-                            type="checkbox"
-                            value={ publicClient }
-                            children={ [
-                                {
-                                    label: "Public client",
-                                    value: "supportPublicClients"
-                                }
-                            ] }
-                        />
-                        <Hint>
-                            This option will allow the client to authenticate without a client secret.
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
-                { showRefreshToken &&
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Field
-                            name="RefreshToken"
-                            label=""
-                            required={ false }
-                            requiredErrorMessage="this is needed"
-                            type="checkbox"
-                            value={ refreshToken }
-                            children={ [
-                                {
-                                    label: "Renew refresh token",
-                                    value: "refreshToken"
-                                }
-                            ] }
-                        />
-                        <Hint>Issue a new refresh token per request when Refresh Token Grant is used.</Hint>
-                    </Grid.Column>
-                </Grid.Row>
-                }
-            </Grid>
-        </Forms>
+    return (templateValues
+            ?
+            <Forms
+                onSubmit={ (values) => {
+                    // check whether callback url is empty or not
+                    if (_.isEmpty(callBackUrls)) {
+                        setShowURLError(true);
+                    } else {
+                        onSubmit(getFormValues(values));
+                    }
+                } }
+                submitState={ triggerSubmit }
+            >
+                <Grid>
+                    <URLInputComponent
+                        urlState={ callBackUrls }
+                        setURLState={ setCallBackUrls }
+                        labelName={ "Callback URL" }
+                        placeholder={ "Enter callbackUrl" }
+                        validationErrorMsg={ "Please add valid URL." }
+                        validation={ (value: string) => {
+                            if (FormValidation.url(value)) {
+                                return true;
+                            }
+                            return false;
+                        } }
+                        computerWidth={ 10 }
+                        setShowError={ setShowURLError }
+                        showError={ showURLError }
+                        hint={ " After the authentication, we will only redirect to the above callback URLs " +
+                        "and you can specify multiple URLs" }
+                    />
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Field
+                                name="publicClients"
+                                label=""
+                                required={ false }
+                                requiredErrorMessage="this is needed"
+                                type="checkbox"
+                                value={ publicClient }
+                                children={ [
+                                    {
+                                        label: "Public client",
+                                        value: "supportPublicClients"
+                                    }
+                                ] }
+                            />
+                            <Hint>
+                                This option will allow the client to authenticate without a client secret.
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                    { showRefreshToken &&
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Field
+                                name="RefreshToken"
+                                label=""
+                                required={ false }
+                                requiredErrorMessage="this is needed"
+                                type="checkbox"
+                                value={ refreshToken }
+                                children={ [
+                                    {
+                                        label: "Renew refresh token",
+                                        value: "refreshToken"
+                                    }
+                                ] }
+                            />
+                            <Hint>Issue a new refresh token per request when Refresh Token Grant is used.</Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                    }
+                </Grid>
+            </Forms>
+            : <ContentLoader/>
     );
 };
 

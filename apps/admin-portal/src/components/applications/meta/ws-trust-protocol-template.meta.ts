@@ -16,8 +16,29 @@
  * under the License.
  */
 
-export * from "./application-create-wizard";
-export * from "./general-settings-wizard-form";
-export * from "./oauth-protocol-settings-wizard-form";
-export * from "./protocol-selection-wizard-form";
-export * from "./wizard-summary";
+import {
+    ApplicationTemplateInterface,
+    ApplicationTemplateListItemInterface,
+    DefaultProtocolTemplate
+} from "../../../models";
+
+
+export const WSTrustProtocolTemplateItem: ApplicationTemplateListItemInterface = {
+    id: DefaultProtocolTemplate.WS_TRUST,
+    name: "WS Trust",
+    image: "wsTrust",
+    authenticationProtocol: "ws-trust",
+};
+
+export const WSTrustProtocolTemplate: ApplicationTemplateInterface = {
+    ...WSTrustProtocolTemplateItem,
+    application: {
+        inboundProtocolConfiguration: {
+            wsTrust: {
+                audience: "",
+                certificateAlias: ""
+            }
+        },
+        name: ""
+    }
+};

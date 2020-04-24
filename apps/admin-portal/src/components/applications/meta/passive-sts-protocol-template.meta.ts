@@ -16,8 +16,29 @@
  * under the License.
  */
 
-export * from "./application-create-wizard";
-export * from "./general-settings-wizard-form";
-export * from "./oauth-protocol-settings-wizard-form";
-export * from "./protocol-selection-wizard-form";
-export * from "./wizard-summary";
+import {
+    ApplicationTemplateInterface,
+    ApplicationTemplateListItemInterface,
+    DefaultProtocolTemplate
+} from "../../../models";
+
+
+export const PassiveStsProtocolTemplateItem: ApplicationTemplateListItemInterface = {
+    id: DefaultProtocolTemplate.WS_FEDERATION,
+    name: "Passive STS",
+    image: "wsFed",
+    authenticationProtocol: "passive-sts",
+};
+
+export const PassiveStsProtocolTemplate: ApplicationTemplateInterface = {
+    ...PassiveStsProtocolTemplateItem,
+    application: {
+        inboundProtocolConfiguration: {
+            passiveSts: {
+                realm: "",
+                replyTo: ""
+            }
+        },
+        name: ""
+    }
+};

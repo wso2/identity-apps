@@ -22,3 +22,7 @@ export * from "./inbound-protocols.meta";
 export * from "./authenticators";
 export * from "./saml-web-application-template.meta";
 export * from "./custom-application-template.meta";
+export * from "./oauth-protocol-template.meta";
+export * from  "./saml-protocol-template.meta";
+export * from "./passive-sts-protocol-template.meta";
+export * from "./ws-trust-protocol-template.meta";

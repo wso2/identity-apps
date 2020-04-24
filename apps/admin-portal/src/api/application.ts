@@ -342,7 +342,7 @@ export const updateOIDCData = (id: string, OIDC: object): Promise<any> => {
  * @throws {IdentityAppsApiException}
  */
 export const updateAuthProtocolConfig = <T>(id: string, config: any,
-                                            protocol: SupportedAuthProtocolTypes): Promise<T> => {
+                                            protocol: string): Promise<T> => {
     const requestConfig = {
         data: config,
         headers: {

@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { Field, FormValue, Forms } from "@wso2is/forms";
-import { Hint } from "@wso2is/react-components";
+import { Field, Forms, FormValue } from "@wso2is/forms";
+import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -90,55 +90,57 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
         };
     };
 
-    return (templateValues &&
-        <Forms
-            onSubmit={ (values: Map<string, FormValue>): void => {
-                // check whether assertionConsumer url is empty or not
-                if (_.isEmpty(assertionConsumerUrls)) {
-                    setAssertionConsumerUrlError(true);
-                } else {
-                    onSubmit(getFormValues(values));
-                }
-            } }
-            submitState={ triggerSubmit }
-        >
-            <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            name="issuer"
-                            label="Issuer"
-                            required={ true }
-                            requiredErrorMessage="Please provide the issuer"
-                            type="text"
-                            placeholder={ "Enter the issuer name" }
-                            value={ initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration?.issuer }
-                            readOnly={ initialValues?.saml?.issuer }
-                        />
-                        <Hint>
-                            { `This specifies the issuer. This is the "saml:Issuer" element that contains
+    return (templateValues
+            ?
+            <Forms
+                onSubmit={ (values: Map<string, FormValue>): void => {
+                    // check whether assertionConsumer url is empty or not
+                    if (_.isEmpty(assertionConsumerUrls)) {
+                        setAssertionConsumerUrlError(true);
+                    } else {
+                        onSubmit(getFormValues(values));
+                    }
+                } }
+                submitState={ triggerSubmit }
+            >
+                <Grid>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                name="issuer"
+                                label="Issuer"
+                                required={ true }
+                                requiredErrorMessage="Please provide the issuer"
+                                type="text"
+                                placeholder={ "Enter the issuer name" }
+                                value={ initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration?.issuer }
+                                readOnly={ initialValues?.saml?.issuer }
+                            />
+                            <Hint>
+                                { `This specifies the issuer. This is the "saml:Issuer" element that contains
                             the unique identifier of the Application. This is also the issuer value
                             specified in the SAML Authentication Request issued by the Application. ` }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
-                <URLInputComponent
-                    urlState={ assertionConsumerUrls }
-                    setURLState={ setAssertionConsumerUrls }
-                    labelName={ "Assertion consumer URLs" }
-                    placeholder={ "Enter url " }
-                    validationErrorMsg={ "Please add valid URL" }
-                    validation={ (value: string): boolean => {
-                        return FormValidation.url(value);
-                    } }
-                    required={ true }
-                    showError={ showAssertionConsumerUrlError }
-                    setShowError={ setAssertionConsumerUrlError }
-                    hint={ "This specifies the assertion Consumer URLs that the browser " +
-                    "should be redirected to after the authentication is successful. " +
-                    "This is the Assertion Consumer Service (ACS) URL of the Application" }
-                />
-            </Grid>
-        </Forms>
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <URLInputComponent
+                        urlState={ assertionConsumerUrls }
+                        setURLState={ setAssertionConsumerUrls }
+                        labelName={ "Assertion consumer URLs" }
+                        placeholder={ "Enter url " }
+                        validationErrorMsg={ "Please add valid URL" }
+                        validation={ (value: string): boolean => {
+                            return FormValidation.url(value);
+                        } }
+                        required={ true }
+                        showError={ showAssertionConsumerUrlError }
+                        setShowError={ setAssertionConsumerUrlError }
+                        hint={ "This specifies the assertion Consumer URLs that the browser " +
+                        "should be redirected to after the authentication is successful. " +
+                        "This is the Assertion Consumer Service (ACS) URL of the Application" }
+                    />
+                </Grid>
+            </Forms>
+            : <ContentLoader/>
     );
 };

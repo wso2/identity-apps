@@ -19,7 +19,7 @@
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { Hint } from "@wso2is/react-components";
+import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -119,7 +119,8 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
         getMetaData();
     }, []);
 
-    return (templateValues && showWSTrustMetaData ?
+    return (templateValues && showWSTrustMetaData
+            ?
             <Forms
                 onSubmit={ (values: Map<string, FormValue>): void => {
                     onSubmit(getFormValues(values));
@@ -142,7 +143,7 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
                                         validation.errorMessages.push("This is not a valid URL");
                                     }
                                 } }
-                                value={ initialValues?.audience || templateValues?.audience }
+                                value={ initialValues ? initialValues?.audience : templateValues?.audience }
                             />
                             {/* eslint-disable-next-line react/no-unescaped-entities */ }
                             <Hint>The trusted relying party's endpoint address.</Hint>
@@ -158,7 +159,8 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
                                 requiredErrorMessage="Select the certificate alias"
                                 default={ showWSTrustMetaData.certificateAlias.defaultValue }
                                 value={
-                                    initialValues?.certificateAlias || templateValues?.certificateAlias
+                                    initialValues ?
+                                        initialValues?.certificateAlias : templateValues?.certificateAlias
                                 }
                                 children={ getCertificateOptions(showWSTrustMetaData?.certificateAlias) }
                             />
@@ -166,6 +168,7 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </Forms> : <div/>
+            </Forms>
+            : <ContentLoader/>
     )
 };

@@ -83,7 +83,7 @@ interface AttributeSelectionPropsInterface {
     /**
      * Selected inbound protocol.
      */
-    selectedInboundProtocol: AuthProtocolMetaListItemInterface;
+    selectedInboundProtocol: AuthProtocolMetaListItemInterface[];
     /**
      * CRUD permissions,
      */
@@ -522,7 +522,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
         //TODO  move this logic to backend
         setIsClaimRequestLoading(true);
-        if (selectedInboundProtocol?.id === SupportedAuthProtocolTypes.OIDC) {
+        if (selectedInboundProtocol.length === 1
+            && selectedInboundProtocol[0]?.id === SupportedAuthProtocolTypes.OIDC) {
             setIsClaimRequestLoading(false);
             changeSelectedDialect("http://wso2.org/oidc/claim")
         } else {

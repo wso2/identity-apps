@@ -137,6 +137,32 @@ export enum SupportedAuthProtocolTypes {
 }
 
 /**
+ * Enum for the supported auth protocol names.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum SupportedAuthProtocolName {
+    SAML = "saml",
+    OIDC = "oidc",
+    WS_FEDERATION = "ws-federation",
+    WS_TRUST = "ws-trust"
+}
+
+/**
+ * Enum for the default protocol template ids.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum DefaultProtocolTemplate {
+    SAML = "default-saml",
+    OIDC = "default-oidc",
+    WS_FEDERATION = "default-ws-federation",
+    WS_TRUST = "default-ws-trust"
+}
+
+/**
  * Enum for the supported quick start template types.
  *
  * @readonly

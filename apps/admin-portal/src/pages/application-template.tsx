@@ -42,8 +42,8 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
 
-    const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ selectedTemplate, setSelectedTemplate]  = useState<ApplicationTemplateListItemInterface>(null);
+    const [showWizard, setShowWizard] = useState<boolean>(false);
+    const [selectedTemplate, setSelectedTemplate] = useState<ApplicationTemplateListItemInterface>(null);
     const [
         isApplicationTemplateRequestLoading,
         setApplicationTemplateRequestLoadingStatus
@@ -63,7 +63,7 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
             .finally(() => {
                 setApplicationTemplateRequestLoadingStatus(false);
             });
-    }, [ applicationTemplates ]);
+    }, [applicationTemplates]);
 
     /**
      * Handles back button click.
@@ -130,20 +130,20 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
                                         image={ EmptyPlaceholderIllustrations.newList }
                                         imageSize="tiny"
                                         title={ t("devPortal:components.templates.emptyPlaceholder.title") }
-                                        subtitle={ [ t("devPortal:components.templates.emptyPlaceholder.subtitles") ] }
+                                        subtitle={ [t("devPortal:components.templates.emptyPlaceholder.subtitles")] }
                                     />
                                 ) }
                                 tagsSectionTitle={ t("common:technologies") }
                             />
                         </div>
                     )
-                    : <ContentLoader dimmer />
+                    : <ContentLoader dimmer/>
             }
-            <Divider hidden />
+            <Divider hidden/>
             <div className="custom-templates">
                 <TemplateGrid<ApplicationTemplateListItemInterface>
                     type="application"
-                    templates={ [ CustomApplicationTemplate ] }
+                    templates={ [CustomApplicationTemplate] }
                     templateIcons={ ApplicationTemplateIllustrations }
                     heading={ t("devPortal:components.applications.templates.manualSetup.heading") }
                     subHeading={ t("devPortal:components.applications.templates.manualSetup.subHeading") }
@@ -159,20 +159,23 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
                             image={ EmptyPlaceholderIllustrations.newList }
                             imageSize="tiny"
                             title={ t("devPortal:components.templates.emptyPlaceholder.title") }
-                            subtitle={ [ t("devPortal:components.templates.emptyPlaceholder.subtitles") ] }
+                            subtitle={ [t("devPortal:components.templates.emptyPlaceholder.subtitles")] }
                         />
                     ) }
                     tagsSectionTitle={ t("common:technologies") }
                 />
             </div>
-            { showWizard && (
-                <ApplicationCreateWizard
-                    title={ selectedTemplate?.name }
-                    subTitle={ selectedTemplate?.description }
-                    closeWizard={ (): void => setShowWizard(false) }
-                    template={ selectedTemplate }
-                />
-            ) }
+            {
+                showWizard && (
+                    <ApplicationCreateWizard
+                        title={ selectedTemplate?.name }
+                        subTitle={ selectedTemplate?.description }
+                        closeWizard={ (): void => setShowWizard(false) }
+                        template={ selectedTemplate }
+                        addProtocol={ false }
+                    />
+                )
+            }
         </PageLayout>
     );
 };

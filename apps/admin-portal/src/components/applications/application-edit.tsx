@@ -18,7 +18,7 @@
 
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ResourceTab } from "@wso2is/react-components";
+import { ContentLoader, ResourceTab } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -105,11 +105,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const availableInboundProtocols = useSelector((state: AppState) => state.application.meta.inboundProtocols);
 
-    const [ isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading ] = useState<boolean>(true);
-    const [ selectedInboundProtocol, setSelectedInboundProtocol ] = useState<AuthProtocolMetaListItemInterface>(null);
-    const [ selectedInboundProtocolConfig, setSelectedInboundProtocolConfig ] = useState<any>(undefined);
-    const [ showProtocolSelection, setShowProtocolSelection ] = useState<boolean>(true);
-    const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
+    const [isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading] = useState<boolean>(true);
+    const [selectedInboundProtocol, setSelectedInboundProtocol] = useState<AuthProtocolMetaListItemInterface>(null);
+    const [selectedInboundProtocolList, setSelectedInboundProtocolList] =
+        useState<AuthProtocolMetaListItemInterface[]>([]);
+    const [selectedInboundProtocolConfig, setSelectedInboundProtocolConfig] = useState<any>(undefined);
+    const [showProtocolSelection, setShowProtocolSelection] = useState<boolean>(true);
+    const [isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading] = useState<boolean>(false);
 
     /**
      * Called on `availableInboundProtocols` prop update.
@@ -126,18 +128,18 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             .finally(() => {
                 setInboundProtocolsRequestLoading(false);
             });
-    }, [ availableInboundProtocols ]);
+    }, [availableInboundProtocols]);
 
     /**
      * Triggered when the inbound protocol is selected.
      */
     useEffect(() => {
-        if(!selectedInboundProtocol) {
+        if (!selectedInboundProtocol) {
             return;
         }
 
         onInboundProtocolSelect(selectedInboundProtocol);
-    }, [ selectedInboundProtocol ]);
+    }, [selectedInboundProtocol]);
 
     /**
      * Finds the configured inbound protocol.
@@ -145,6 +147,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const findConfiguredInboundProtocol = (appId): void => {
 
         let found = false;
+        let allSelectedProtocolConfigs = {};
+        const allSelectedInboundProtocols = [];
 
         for (const protocol of availableInboundProtocols) {
             if (Object.values(SupportedAuthProtocolTypes).includes(protocol.id as SupportedAuthProtocolTypes)) {
@@ -156,20 +160,21 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         found = true;
 
                         setSelectedInboundProtocol(protocol);
-                        setSelectedInboundProtocolConfig({
-                            ...selectedInboundProtocolConfig,
-                            [ protocol.id ]: response
-                        });
+                        allSelectedProtocolConfigs = {
+                            ...allSelectedProtocolConfigs,
+                            [protocol.id]: response
+                        };
+                        allSelectedInboundProtocols.push(protocol);
                         setShowProtocolSelection(false);
                     })
                     .catch((error) => {
-                        if (error.response.status === 404) {
+                        if (error?.response?.status === 404) {
                             return;
                         }
 
-                        if (error.response && error.response.data && error.response.data.description) {
+                        if (error?.response && error?.response?.data && error?.response?.data?.description) {
                             dispatch(addAlert({
-                                description: error.response.data.description,
+                                description: error.response?.data?.description,
                                 level: AlertLevels.ERROR,
                                 message: "Retrieval error"
                             }));
@@ -184,12 +189,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         }));
                     })
                     .finally(() => {
+                        setSelectedInboundProtocolList(allSelectedInboundProtocols);
+                        setSelectedInboundProtocolConfig(allSelectedProtocolConfigs);
                         setIsInboundProtocolConfigRequestLoading(false);
                     });
-            }
-
-            if (found) {
-                break;
             }
         }
     };
@@ -218,12 +221,14 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         <ResourceTab.Pane attached={ false }>
             <ApplicationSettings
                 appId={ application.id }
+                appName={ application.name }
                 inboundProtocols={ application.inboundProtocols }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 isInboundProtocolConfigRequestLoading={ isInboundProtocolConfigRequestLoading }
                 selectedInboundProtocol={ selectedInboundProtocol }
                 selectedInboundProtocolConfig={ selectedInboundProtocolConfig }
+                allSelectedInboundProtocol={ selectedInboundProtocolList }
                 setSelectedInboundProtocol={ setSelectedInboundProtocol }
                 showProtocolSelection={ showProtocolSelection }
                 permissions={ permissions }
@@ -236,7 +241,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             <AttributeSettings
                 appId={ application.id }
                 claimConfigurations={ application.claimConfiguration }
-                selectedInboundProtocol={ selectedInboundProtocol }
+                selectedInboundProtocol={ selectedInboundProtocolList }
                 permissions={ permissions }
             />
         </ResourceTab.Pane>
@@ -361,6 +366,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     };
 
     return (
-        application && <ResourceTab panes={ resolveTabPanes() } />
+        application && !isInboundProtocolsRequestLoading ?
+            <ResourceTab panes={ resolveTabPanes() }/> : <ContentLoader/>
     );
 };
