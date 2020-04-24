@@ -21,9 +21,24 @@ import { Divider, Header, Segment } from "semantic-ui-react";
 import { CertificateIllustrations } from "../../configs";
 import { DisplayCertificate, DistinguishedName } from "../../models";
 
+/**
+ * Prop types of the `Certificate` component.
+ */
 interface CertificatePropsInterface {
+    /**
+     * The decoded certificate details
+     */
     certificate: DisplayCertificate;
 }
+
+/**
+ * This renders the certificate component that 
+ * displays the details of a certificate.
+ * 
+ * @param {CertificatePropsInterface} props
+ * 
+ * @returns {ReactElement}
+ */
 export const Certificate: FunctionComponent<CertificatePropsInterface> = (
     props: CertificatePropsInterface
 ): ReactElement => {

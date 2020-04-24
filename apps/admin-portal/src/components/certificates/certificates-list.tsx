@@ -57,6 +57,9 @@ interface CertificatesListPropsInterface extends SBACInterface<FeatureConfigInte
      * Initiate an update
      */
     update: () => void;
+    /**
+     * Determines the type of certificate store.
+     */
     type: typeof TRUSTSTORE | typeof KEYSTORE;
 }
 
@@ -103,6 +106,10 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
         setDeleteID(null);
     };
 
+    /**
+     * Checks if the tenant is the super tenant. 
+     * Needed to disable delete and import certificate.
+     */
     useEffect(() => {
         if (tenantDomain === "carbon.super") {
             setIsSuper(true);
@@ -112,6 +119,10 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     }, [ tenantDomain ]);
 
 
+    /**
+     * Opens the modal that displays the certificate details
+     * when the `certificateDisplay` state has been set.
+     */
     useEffect(() => {
         if (certificateDisplay) {
             setCertificateModal(true);
@@ -119,8 +130,10 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     }, [ certificateDisplay ]);
 
     /**
-     * Shows the delete confirmation modal
-     * @return {ReactElement}
+     * Shows the delete confirmation modal.
+     * 
+     * @return {ReactElement} The delete confirmation modal.
+     * 
      */
     const showDeleteConfirm = (): ReactElement => {
         return (
@@ -166,6 +179,23 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
         )
     };
 
+    /**
+     * This converts a PEM-encoded certificate to a
+     * DER encoded ASN.1 certificate and saves it to the disk.
+     * 
+     * ```
+     * const intArray = der.data.split("").map(char => {
+            return char.charCodeAt(0);
+        });
+     * ```
+     * The `ByteStringBuffer` that holds the DER encoded
+     * string actually has `UTF-16` encoded string values. 
+     * 
+     * The above code snippet is used to decode the `UTF-16` string. 
+     * 
+     * @param {string} name The alias of the certificate.
+     * @param {string} pem The PEM encoded certificate content.
+     */
     const exportCertificate = (name: string, pem: string): void => {
 
         const certificate = decodeCertificate(pem);
@@ -193,7 +223,13 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
         }));
     };
 
-
+    /**
+     * Converts a PEM encoded string to a Forge certificate object.
+     * 
+     * @param {string} pem The PEM encoded certificate content.
+     * 
+     * @returns {forge.pki.Certificate} The Forge Certificate object.
+     */
     const decodeCertificate = (pem: string): forge.pki.Certificate => {
         const pemValue = pem.split("\n");
 
@@ -214,6 +250,12 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
         return certificateForge;
     }
 
+    /**
+     * This serializes the certificate content to a displayable format.
+     * 
+     * @param {Certificate} certificate The Certificate object returned by teh API endpoints.
+     * @param {string} pem The PEM encoded certificate content. 
+     */
     const displayCertificate = (certificate: Certificate, pem: string): void => {
 
         const certificateForge = decodeCertificate(pem);
@@ -241,6 +283,11 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
         setCertificateDisplay(displayCertificate);
     }
 
+    /**
+     * This renders the modal that displays the certificate.
+     * 
+     * @returns {ReactElement} The certificate modal.
+     */
     const renderCertificateModal = (): ReactElement => {
         return (
             <Modal

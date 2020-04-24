@@ -29,6 +29,9 @@ import { createKeystoreCertificate } from "../../api";
 import { ApplicationWizardStepIcons } from "../../configs";
 import { AlertLevels, Certificate, DisplayCertificate } from "../../models";
 
+/**
+ * Prop types of the `ImportCertificate` component.
+ */
 interface ImportCertificatePropsInterface {
     /**
      * Specifies if the modal should be opened or not.
@@ -44,6 +47,13 @@ interface ImportCertificatePropsInterface {
     update: () => void;
 }
 
+/**
+ * This renders the import certificate wizard.
+ * 
+ * @param {ImportCertificatePropsInterface} props
+ * 
+ * @returns {ReactElement}
+ */
 export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterface> = (
     props: ImportCertificatePropsInterface
 ): ReactElement => {
@@ -62,6 +72,9 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
     const [ certificate, setCertificate ] = useState<forge.pki.Certificate>(null);
     const [ firstStep, setFirstStep ] = useTrigger();
 
+    /**
+     * Moves to the next step once the certificate display state is set.
+     */
     useEffect(() => {
         if (certificateDisplay) {
             setCurrentWizardStep(1);
@@ -69,9 +82,9 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
     }, [ certificateDisplay ]);
 
     /**
-     * Adds the userstore
+     * Imports the certificate.
      */
-    const handleSubmit = () => {
+    const handleSubmit = (): void => {
         createKeystoreCertificate(data).then(() => {
             dispatch(addAlert({
                 description: "The certificate has been imported successfully.",
@@ -90,8 +103,18 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
     };
 
     /**
-     * This saves the Basic Details values
-     * @param {Map<string, FormValue>} values Basic Details Values to be submitted
+     * This is called when the first step is submitted.
+     * It stores
+     *      1. the data returned by the first step to be posted.
+     *      2. the state of the first step component 
+     *       so that they can be sent back if previous is clicked.
+     * 
+     * @param {Certificate} data The alias and the PEM-encoded certificate string.
+     * @param {string} name The alias of the certificate.
+     * @param {string} pem The PEM-encoded string.
+     * @param {string} fileDecoded The decoded `.cer` file content.
+     * @param {File} file The File object.
+     * @param {forge.pki.Certificate} forgeCertificate The forge certificate object.
      */
     const onSubmitFirstStep = (
         data: Certificate,
@@ -100,7 +123,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
         fileDecoded: string,
         file: File,
         forgeCertificate: forge.pki.Certificate
-    ) => {
+    ): void => {
         setData(data);
         setName(name);
         setPem(pem);
@@ -110,6 +133,12 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
         decodeCertificate(data, forgeCertificate);
     }
 
+    /**
+     * This serializes the certificate object.
+     * 
+     * @param {Certificate} data The data object containing the alias and the PEM string.
+     * @param {forge.pki.Certificate} certificateForge The Forge Certificate object.
+     */
     const decodeCertificate = (data: Certificate, certificateForge: forge.pki.Certificate): void => {
         const displayCertificate: DisplayCertificate = {
             alias: data.alias,
@@ -166,7 +195,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
     /**
      * Moves to the next step in the wizard
      */
-    const next = () => {
+    const next = (): void => {
         switch (currentWizardStep) {
             case 0:
                 setFirstStep();
@@ -180,7 +209,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
     /**
      * Moves to the previous step in the wizard
      */
-    const previous = () => {
+    const previous = (): void => {
         setCurrentWizardStep(currentWizardStep - 1);
     }
 
