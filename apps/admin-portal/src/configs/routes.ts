@@ -17,7 +17,6 @@
  */
 
 import { RouteInterface } from "@wso2is/core/models";
-import { ExternalDialectEditPage } from "./../pages/external-dialect-edit";
 import { SignIn, SignOut } from "../components/authentication";
 import {
     CLAIM_DIALECTS_PATH,
@@ -55,7 +54,6 @@ import {
     EmailTemplates,
     AddTemplateLocale
 } from "../pages";
-
 
 /**
  * Dashboard Layout Routes array.
