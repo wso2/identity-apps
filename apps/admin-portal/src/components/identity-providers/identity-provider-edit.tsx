@@ -110,6 +110,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         <ResourceTab.Pane attached={ false }>
             <AuthenticatorSettings
                 idpId={ identityProvider.id }
+                idpName={ identityProvider.name }
                 federatedAuthenticators={ identityProvider.federatedAuthenticators }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
@@ -162,14 +163,10 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             render: AttributeSettingsTabPane
         });
 
-        // todo Once multiple authenticator support added, this check needs to be removed and edit view should allow
-        //  adding authenticators.
-        if (identityProvider?.federatedAuthenticators?.defaultAuthenticatorId) {
-            panes.push({
-                menuItem: "Authentication",
-                render: AuthenticatorSettingsTabPane
-            });
-        }
+        panes.push({
+            menuItem: "Authentication",
+            render: AuthenticatorSettingsTabPane
+        });
 
         // todo Once multiple connector support added, this check needs to be removed and edit view should allow
         //  adding connectors.

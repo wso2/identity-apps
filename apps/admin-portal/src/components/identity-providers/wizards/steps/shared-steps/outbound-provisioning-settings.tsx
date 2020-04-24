@@ -21,8 +21,8 @@ import {
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
-} from "../../../../models";
-import { OutboundProvisioningConnectorFormFactory } from "../../forms";
+} from "../../../../../models";
+import { OutboundProvisioningConnectorFormFactory } from "../../../forms";
 
 /**
  * Proptypes for the outbound provisioning settings wizard form component.

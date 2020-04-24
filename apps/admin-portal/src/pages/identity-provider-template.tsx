@@ -161,7 +161,6 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
 
     /**
      * Retrieve Identity Provider template.
-     *
      */
     const getTemplate = (templateId: string): void => {
 

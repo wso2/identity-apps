@@ -25,16 +25,24 @@ import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,
+    getIdentityProviderTemplateList,
     updateFederatedAuthenticator
 } from "../../../api";
+import { IdPCapabilityIcons } from "../../../configs";
 import {
-    FederatedAuthenticatorInterface,
     FederatedAuthenticatorListItemInterface,
-    FederatedAuthenticatorListResponseInterface
+    FederatedAuthenticatorListResponseInterface,
+    FederatedAuthenticatorWithMetaInterface,
+    IdentityProviderTemplateListItemInterface,
+    IdentityProviderTemplateListItemResponseInterface,
+    IdentityProviderTemplateListResponseInterface,
+    SupportedServices,
+    SupportedServicesInterface
 } from "../../../models";
 import { AuthenticatorAccordion } from "../../shared";
 import { AuthenticatorFormFactory } from "../forms";
 import { FederatedAuthenticators } from "../meta/authenticators";
+import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizard";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -44,6 +52,11 @@ interface IdentityProviderSettingsPropsInterface {
      * Currently editing idp id.
      */
     idpId: string;
+
+    /**
+     * Currently editing idp name.
+     */
+    idpName: string;
 
     /**
      * federatedAuthenticators of the IDP
@@ -71,6 +84,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
     const {
         idpId,
+        idpName,
         federatedAuthenticators,
         isLoading,
         onUpdate
@@ -83,7 +97,12 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         deletingAuthenticator,
         setDeletingAuthenticator
     ] = useState<FederatedAuthenticatorListItemInterface>(undefined);
-    const [availableAuthenticators, setAvailableAuthenticators] = useState<FederatedAuthenticatorInterface[]>([]);
+    const [availableAuthenticators, setAvailableAuthenticators] =
+        useState<FederatedAuthenticatorWithMetaInterface[]>([]);
+    const [ availableTemplates, setAvailableTemplates ] =
+        useState<IdentityProviderTemplateListItemInterface[]>(undefined);
+    const [ showAddAuthenticatorWizard, setShowAddAuthenticatorWizard ] = useState<boolean>(false);
+    const [ isTemplatesLoading, setIsTemplatesLoading ] = useState<boolean>(false);
 
     /**
      * Handles the inbound config form submit action.
@@ -187,7 +206,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * return an array of available authenticators.
      */
     async function fetchAuthenticators() {
-        const authenticators: FederatedAuthenticatorInterface[] = [];
+        const authenticators: FederatedAuthenticatorWithMetaInterface[] = [];
         for (const authenticator of federatedAuthenticators.authenticators) {
             authenticators.push(await fetchAuthenticator(authenticator.authenticatorId));
         }
@@ -270,8 +289,94 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         setShowDeleteConfirmationModal(true);
     };
 
+     /**
+     * Handles add new authenticator action.
+     */
     const handleAddAuthenticator = () => {
-        // TODO: Implement method
+        setIsTemplatesLoading(true);
+        setShowAddAuthenticatorWizard(false);
+
+        // Load available templates from the server
+        getIdentityProviderTemplateList()
+            .then((response: IdentityProviderTemplateListResponseInterface) => {
+                if (!response?.totalResults) {
+                    return;
+                }
+                // sort templateList based on display Order
+                response?.templates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
+
+                const availableTemplates: IdentityProviderTemplateListItemInterface[] = interpretAvailableTemplates(
+                    response?.templates);
+
+                setAvailableTemplates(availableTemplates);
+                setShowAddAuthenticatorWizard(true);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Identity provider Template List Fetch Error"
+                    }));
+
+                    return;
+                }
+                dispatch(addAlert({
+                    description: "An error occurred while retrieving identity provider template list",
+                    level: AlertLevels.ERROR,
+                    message: "Retrieval Error"
+                }));
+            })
+            .finally(() => {
+                setIsTemplatesLoading(false);
+            });
+    };
+
+    /**
+     * Interpret available templates from the response templates.
+     *
+     * @param templates List of response templates.
+     * @return List of templates.
+     */
+    const interpretAvailableTemplates = (templates: IdentityProviderTemplateListItemResponseInterface[]):
+        IdentityProviderTemplateListItemInterface[] => {
+        return templates?.map(eachTemplate => {
+            if (eachTemplate.services[0] === "") {
+                return {
+                    ...eachTemplate,
+                    services: []
+                };
+            } else {
+                return {
+                    ...eachTemplate,
+                    services: buildSupportedServices(eachTemplate?.services)
+                };
+            }
+        });
+    };
+
+    /**
+     * Build supported services from the given service identifiers.
+     *
+     * @param serviceIdentifiers Set of service identifiers.
+     */
+    const buildSupportedServices = (serviceIdentifiers: string[]): SupportedServicesInterface[] => {
+        return serviceIdentifiers?.map((serviceIdentifier: string): SupportedServicesInterface => {
+            switch (serviceIdentifier) {
+                case SupportedServices.AUTHENTICATION:
+                    return {
+                        displayName: "Authentication Service",
+                        logo: IdPCapabilityIcons[SupportedServices.AUTHENTICATION],
+                        name: SupportedServices.AUTHENTICATION
+                    };
+                case SupportedServices.PROVISIONING:
+                    return {
+                        displayName: "Provisioning Service",
+                        logo: IdPCapabilityIcons[SupportedServices.PROVISIONING],
+                        name: SupportedServices.PROVISIONING
+                    }
+            }
+        });
     };
 
     return (
@@ -281,8 +386,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     <Grid>
                         <Grid.Row>
                             <Grid.Column width={ 16 } textAlign="right">
-                                <PrimaryButton onClick={ handleAddAuthenticator }>
-                                    <Icon name="add"/>Add Authenticator
+                                <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }>
+                                    <Icon name="add"/>New Authenticator
                                 </PrimaryButton>
                             </Grid.Column>
                         </Grid.Row>
@@ -367,6 +472,20 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
                         )
+                    }
+                    {
+                         showAddAuthenticatorWizard && (
+                             <AuthenticatorCreateWizard
+                                 title={ "Add New Authenticator" }
+                                 subTitle={ "Add new authenticator to the identity provider: " + idpName }
+                                 closeWizard={ () => {
+                                     setShowAddAuthenticatorWizard(false);
+                                     onUpdate(idpId)
+                                 } }
+                                 availableTemplates={ availableTemplates }
+                                 idpId={ idpId }
+                             />
+                         )
                     }
                 </div>
             )

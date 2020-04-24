@@ -21,8 +21,8 @@ import {
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface,
     IdentityProviderInterface
-} from "../../../../models";
-import { AuthenticatorFormFactory } from "../../forms";
+} from "../../../../../models";
+import { AuthenticatorFormFactory } from "../../../forms";
 
 /**
  * Proptypes for the authenticator settings wizard form component.
@@ -68,14 +68,19 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
     const authenticator = initialValues?.federatedAuthenticators?.authenticators.find(authenticator =>
         authenticator.authenticatorId === initialValues?.federatedAuthenticators?.defaultAuthenticatorId);
 
+    if (metadata) {
+        return (
+            <AuthenticatorFormFactory
+                metadata={ metadata }
+                initialValues={ authenticator }
+                onSubmit={ handleSubmit }
+                type={ authenticator.name }
+                triggerSubmit={ triggerSubmit }
+                enableSubmitButton={ false }
+            />
+        )
+    }
     return (
-        <AuthenticatorFormFactory
-            metadata={ metadata }
-            initialValues={ authenticator }
-            onSubmit={ handleSubmit }
-            type={ authenticator.name }
-            triggerSubmit={ triggerSubmit }
-            enableSubmitButton={ false }
-        />
-    );
+        <></>
+    )
 };
