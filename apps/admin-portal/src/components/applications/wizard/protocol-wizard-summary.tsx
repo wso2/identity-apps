@@ -143,6 +143,18 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 )
             }
             {
+                summary?.metadataURL && (
+                    <Grid.Row className="summary-field" columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                            <div className="label">Metadata URL</div>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                            <div className="value url">{  summary?.metadataURL }</div>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
+            {
                 summary?.callbackURLs && (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
