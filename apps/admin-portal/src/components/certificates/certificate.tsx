@@ -19,7 +19,7 @@
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider, Header, Segment } from "semantic-ui-react";
 import { CertificateIllustrations } from "../../configs";
-import { DN, DisplayCertificate } from "../../models";
+import { DisplayCertificate, DistinguishedName } from "../../models";
 
 interface CertificatePropsInterface {
     certificate: DisplayCertificate;
@@ -82,7 +82,7 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
             <Divider hidden />
 
             <p className="certificate-field">
-                <span>Issuer DN:</span> { issuerDN.map((attribute: DN) => {
+                <span>Issuer DN:</span> { issuerDN.map((attribute: DistinguishedName) => {
                 return `${Object.entries(attribute)[ 0 ][ 0 ]}=${Object.entries(attribute)[ 0 ][ 1 ]}`;
             }).join((", ")) }
             </p>
@@ -90,7 +90,7 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
             <Divider hidden />
 
             <p className="certificate-field">
-                <span>Subject DN:</span> { subjectDN.map((attribute: DN) => {
+                <span>Subject DN:</span> { subjectDN.map((attribute: DistinguishedName) => {
                 return `${Object.entries(attribute)[ 0 ][ 0 ]}=${Object.entries(attribute)[ 0 ][ 1 ]}`;
             }).join(", ") }
             </p>

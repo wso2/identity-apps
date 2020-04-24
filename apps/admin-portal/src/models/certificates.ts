@@ -31,8 +31,8 @@ export interface DisplayCertificate {
     alias: string;
     validFrom: Date;
     validTill: Date;
-    issuerDN: DN[];
-    subjectDN: DN[];
+    issuerDN: DistinguishedName[];
+    subjectDN: DistinguishedName[];
     version: number;
     serialNumber: string;
 }
@@ -40,6 +40,6 @@ export interface DisplayCertificate {
 /**
  * Model of the Issuer and Subject DN. 
  */
-export interface DN {
+export interface DistinguishedName {
     [ key: string ]: string;
 }

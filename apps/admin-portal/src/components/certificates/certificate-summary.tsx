@@ -18,7 +18,7 @@
 
 import React, { FunctionComponent, ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
-import { DN, DisplayCertificate } from "../../models";
+import { DisplayCertificate, DistinguishedName } from "../../models";
 
 interface CertificateSummaryPropsInterface {
     name: string;
@@ -83,7 +83,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
                     <div className="label">Issuer DN</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                    <div className="value">{ certificate.issuerDN.map((attribute: DN) => {
+                    <div className="value">{ certificate.issuerDN.map((attribute: DistinguishedName) => {
                         return `${Object.entries(attribute)[ 0 ][ 0 ]}=${Object.entries(attribute)[ 0 ][ 1 ]}`;
                     }).join((", ")) }
                     </div>
@@ -94,7 +94,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
                     <div className="label">Subject DN</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                    <div className="value">{ certificate.subjectDN.map((attribute: DN) => {
+                    <div className="value">{ certificate.subjectDN.map((attribute: DistinguishedName) => {
                         return `${Object.entries(attribute)[ 0 ][ 0 ]}=${Object.entries(attribute)[ 0 ][ 1 ]}`;
                     }).join((", ")) }
                     </div>
