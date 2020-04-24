@@ -42,7 +42,7 @@ export const CertificatesTruststore = (): ReactElement => {
     const SORT_BY = [
         {
             key: 0,
-            text: "Name",
+            text: "Alias",
             value: "alias"
         }
     ];
