@@ -220,6 +220,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         <ResourceTab.Pane attached={ false }>
             <ApplicationSettings
                 appId={ application.id }
+                appName={ application.name }
                 inboundProtocols={ application.inboundProtocols }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }

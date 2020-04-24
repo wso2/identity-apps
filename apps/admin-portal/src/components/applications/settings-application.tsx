@@ -18,13 +18,13 @@
 
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader, GenericIconProps } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import { ContentLoader, EmptyPlaceholder, GenericIconProps, PrimaryButton } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider } from "semantic-ui-react";
+import { Button, Grid, Icon } from "semantic-ui-react";
 import { InboundFormFactory } from "./forms";
 import { getAuthProtocolMetadata, regenerateClientSecret, updateAuthProtocolConfig } from "../../api";
-import { InboundProtocolLogos } from "../../configs";
+import { EmptyPlaceholderIllustrations, InboundProtocolLogos } from "../../configs";
 import {
     AuthProtocolMetaListItemInterface,
     InboundProtocolListItemInterface,
@@ -33,9 +33,6 @@ import {
 } from "../../models";
 import { AppState } from "../../store";
 import { setAuthProtocolMeta } from "../../store/actions";
-import { InboundFormFactory } from "./forms";
-import { Button, Grid } from "semantic-ui-react";
-import { InboundProtocolLogos } from "../../configs";
 import { AuthenticatorAccordion } from "../shared";
 import { ApplicationProtocolAddWizard } from "./wizard/application-add-protocol-wizard";
 
@@ -47,6 +44,10 @@ interface ApplicationSettingsPropsInterface {
      * Currently editing application id.
      */
     appId: string;
+    /**
+     * Currently editing application name.
+     */
+    appName: string;
     /**
      * Currently configured inbound protocols.
      */
@@ -101,6 +102,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
 
     const {
         appId,
+        appName,
         inboundProtocols,
         isLoading,
         onUpdate,
@@ -113,24 +115,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
 
     const availableInboundProtocols = useSelector((state: AppState) => state.application.meta.inboundProtocols);
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
-    const helpPanelMetadata = useSelector((state: AppState) => state.helpPanel.metadata);
-
-    const [isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading] = useState<boolean>(false);
     const [showWizard, setShowWizard] = useState<boolean>(false);
-
-    /**
-     * Set the default doc content URL for the tab.
-     */
-    useEffect(() => {
-        if (!selectedInboundProtocol?.id) {
-            return;
-        }
-        if (!helpPanelMetadata?.applications?.docs?.inbound[selectedInboundProtocol.id]) {
-            return;
-        }
-
-        dispatch(setHelpPanelDocsContentURL(helpPanelMetadata.applications.docs.inbound[selectedInboundProtocol.id]));
-    }, [selectedInboundProtocol?.id, helpPanelMetadata]);
 
     /**
      * Handles the inbound config form submit action.
@@ -236,8 +221,9 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                 authenticators={ [
                     {
                         actions: [],
+                        hidden: !checkSelectedProtocol(SupportedAuthProtocolTypes.OIDC),
                         icon: { icon: InboundProtocolLogos.oidc, size: "micro" } as GenericIconProps,
-                        content: (checkSelectedProtocol(SupportedAuthProtocolTypes.OIDC)) && (
+                        content: (
                             <InboundFormFactory
                                 metadata={ authProtocolMeta[SupportedAuthProtocolTypes.OIDC] }
                                 initialValues={
@@ -258,7 +244,8 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                     {
                         actions: [],
                         icon: { icon: InboundProtocolLogos.saml, size: "micro" } as GenericIconProps,
-                        content: (checkSelectedProtocol(SupportedAuthProtocolTypes.SAML)) && (
+                        hidden: !(checkSelectedProtocol(SupportedAuthProtocolTypes.SAML)),
+                        content: (
                             <InboundFormFactory
                                 metadata={ authProtocolMeta[SupportedAuthProtocolTypes.SAML] }
                                 initialValues={
@@ -278,7 +265,8 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                     {
                         actions: [],
                         icon: { icon: InboundProtocolLogos.wsFed, size: "micro" } as GenericIconProps,
-                        content: (checkSelectedProtocol(SupportedAuthProtocolTypes.WS_FEDERATION)) && (
+                        hidden: !(checkSelectedProtocol(SupportedAuthProtocolTypes.WS_FEDERATION)),
+                        content: (
                             <InboundFormFactory
                                 initialValues={
                                     selectedInboundProtocolConfig
@@ -297,7 +285,8 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                     {
                         actions: [],
                         icon: { icon: InboundProtocolLogos.wsTrust, size: "micro" } as GenericIconProps,
-                        content: (checkSelectedProtocol(SupportedAuthProtocolTypes.WS_TRUST)) && (
+                        hidden: !(checkSelectedProtocol(SupportedAuthProtocolTypes.WS_TRUST)),
+                        content: (
                             <InboundFormFactory
                                 metadata={ authProtocolMeta[SupportedAuthProtocolTypes.WS_TRUST] }
                                 initialValues={
@@ -372,34 +361,56 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
 
     }, [selectedInboundProtocol, allSelectedInboundProtocol]);
 
+    const alreadySelectedProtocols: string[] = getSelectedProtocols();
+
     return (
         !isLoading
             ? (
                 <Grid>
                     <Grid.Row>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                            { selectedInboundProtocol && resolveInboundProtocolSettingsForm() }
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            { alreadySelectedProtocols.length > 0 ?
+                                <Button
+                                    floated="right"
+                                    primary
+                                    onClick={ () => setShowWizard(true) }
+                                >
+                                    <Icon name="add"/>New Protocol
+                                </Button> :
+                                <EmptyPlaceholder
+                                    action={ (
+                                        <PrimaryButton
+                                            onClick={ () => setShowWizard(true) }
+                                        >
+                                            <Icon name="add"/>New Protocol
+                                        </PrimaryButton>
+                                    ) }
+                                    image={ EmptyPlaceholderIllustrations.newList }
+                                    imageSize="tiny"
+                                    title={ "Add a protocol" }
+                                    subtitle={ [
+                                        "There are currently no protocols available.",
+                                        "You can add protocol easily by using the",
+                                        "predefined templates."
+                                    ] }
+                                />
+
+                            }
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                            <Button
-                                floated="left"
-                                primary
-                                onClick={ () => setShowWizard(true) }
-                            >
-                                { "+ Protocol" }
-                            </Button>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            { selectedInboundProtocol && resolveInboundProtocolSettingsForm() }
                         </Grid.Column>
                     </Grid.Row>
                     {
                         showWizard && (
                             <ApplicationProtocolAddWizard
-                                title={ "Add new protocol" }
-                                subTitle={ "Add new protocol to this application " }
+                                title={ "Add New Protocol" }
+                                subTitle={ "Add new protocol to " + appName + " application " }
                                 closeWizard={ (): void => setShowWizard(false) }
                                 addProtocol={ true }
-                                selectedProtocols={ getSelectedProtocols() }
+                                selectedProtocols={ alreadySelectedProtocols }
                                 onUpdate={ onUpdate }
                                 appId={ appId }
                             />
