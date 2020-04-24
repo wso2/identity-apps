@@ -110,7 +110,7 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
                 (applicationTemplates && !isApplicationTemplateRequestLoading)
                     ? (
                         <div className="quick-start-templates">
-                            <TemplateGrid
+                            <TemplateGrid<ApplicationTemplateListItemInterface>
                                 type="application"
                                 templates={
                                     applicationTemplates.filter((template) => template.id !== "custom-application")
@@ -141,7 +141,7 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
             }
             <Divider hidden />
             <div className="custom-templates">
-                <TemplateGrid
+                <TemplateGrid<ApplicationTemplateListItemInterface>
                     type="application"
                     templates={ [ CustomApplicationTemplate ] }
                     templateIcons={ ApplicationTemplateIllustrations }

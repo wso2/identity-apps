@@ -18,7 +18,7 @@
 
 import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
+import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { LinkButton } from "../button";
 import { TemplateCard, TemplateCardPropsInterface } from "../card";
@@ -27,7 +27,7 @@ import { Heading } from "../typography";
 /**
  * Proptypes for the template grid component.
  */
-interface TemplateGridPropsInterface {
+interface TemplateGridPropsInterface<T> {
     /**
      * Empty placeholder
      */
@@ -63,7 +63,7 @@ interface TemplateGridPropsInterface {
     /**
      * List of templates.
      */
-    templates: any;
+    templates: T[];
     /**
      * Template icons.
      */
@@ -88,6 +88,36 @@ export interface TemplateGridPaginationOptionsInterface {
     showLessButtonLabel: string;
 }
 
+/**
+ * Interface to extend the generic `T` interface in-order to access properties.
+ */
+interface WithPropertiesInterface {
+    /**
+     * Template description
+     */
+    description: TemplateCardPropsInterface["description"];
+    /**
+     * Template ID.
+     */
+    id?: TemplateCardPropsInterface["id"];
+    /**
+     * Template image.
+     */
+    image?: TemplateCardPropsInterface["image"];
+    /**
+     * Template Name.
+     */
+    name: TemplateCardPropsInterface["name"];
+    /**
+     * Services for IDP templates.
+     */
+    services?: TemplateCardPropsInterface["tags"];
+    /**
+     * Services for IDP templates.
+     */
+    types?: TemplateCardPropsInterface["tags"];
+}
+
 
 /**
  * Initial display limit.
@@ -103,8 +133,8 @@ const DEFAULT_PAGINATION_LIMIT = 5;
  *
  * @return {React.ReactElement}
  */
-export const TemplateGrid: FunctionComponent<TemplateGridPropsInterface> = (
-    props: TemplateGridPropsInterface
+export const TemplateGrid = <T extends WithPropertiesInterface>(
+    props: TemplateGridPropsInterface<T>
 ): ReactElement => {
 
     const {
@@ -121,7 +151,7 @@ export const TemplateGrid: FunctionComponent<TemplateGridPropsInterface> = (
         type
     } = props;
 
-    const [ templateList, setTemplateList ] = useState<any>([]);
+    const [ templateList, setTemplateList ] = useState<T[]>([]);
     const [ isShowMoreClicked, setIsShowMoreClicked ] = useState<boolean>(false);
 
     useEffect(() => {

@@ -290,7 +290,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
                 (availableTemplates && !isIDPTemplateRequestLoading)
                     ? (
                         <div className="quick-start-templates">
-                            <TemplateGrid
+                            <TemplateGrid<IdentityProviderTemplateListItemInterface>
                                 type="idp"
                                 templates={ availableTemplates.filter((template) => template.id !== "expert-mode") }
                                 templateIcons={ IdPIcons }
@@ -319,7 +319,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
             }
             <Divider hidden />
             <div className="custom-templates">
-                <TemplateGrid
+                <TemplateGrid<IdentityProviderTemplateListItemInterface>
                     type="idp"
                     templates={ [ ExpertModeTemplate ] }
                     templateIcons={ IdPIcons }
