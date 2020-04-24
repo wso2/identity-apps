@@ -78,7 +78,7 @@ export const retrieveCertificateAlias = (alias: string, encode?: boolean): Promi
         },
         method: HttpMethods.GET,
         params: {
-            encode
+            "encode-cert":encode
         },
         url: `${store.getState().config.endpoints.certificates}/${alias}`
     };
@@ -111,7 +111,7 @@ export const retrievePublicCertificate = (encode?: boolean): Promise<any> => {
         },
         method: HttpMethods.GET,
         params: {
-            encode
+            "encode-cert":encode
         },
         url: store.getState().config.endpoints.publicCertificates
     };
@@ -178,7 +178,7 @@ export const retrieveClientCertificate = (alias: string, encode?: boolean): Prom
         },
         method: HttpMethods.GET,
         params: {
-            encode
+            "encode-cert":encode
         },
         url: `${store.getState().config.endpoints.clientCertificates}/${alias}`
     };
