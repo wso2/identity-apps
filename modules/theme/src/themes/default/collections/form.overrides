@@ -22,3 +22,35 @@
     }
 }
 
+/*-------------------------------
+      Certificate Editor
+--------------------------------*/
+
+.ui.form {
+    textarea{
+        &.certificate-editor, :focus {
+            font-family: monospace;
+            line-height: 1.5em;
+            font-size: 0.9em;
+
+            &.dark {
+                color: teal;
+                background-color: #232323;
+
+                &::-webkit-resizer {
+                    background-color: #232323;
+                }
+            }
+
+            &.light {
+                color: @nobel;
+                background-color: white;
+
+                &::-webkit-resizer {
+                    background-color: white;
+                }
+            }
+
+        }
+    }
+}
