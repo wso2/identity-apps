@@ -19,7 +19,7 @@
 import { SearchUtils } from "@wso2is/core/utils";
 import { Field, Forms } from "@wso2is/forms";
 import { AdvancedSearch } from "@wso2is/react-components";
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { AdvancedSearchIcons } from "../../configs";
@@ -47,23 +47,23 @@ const FILTER_VALUES_FIELD_IDENTIFIER = "filerValues";
  * field value to this.
  * @type {string}
  */
-const DEFAULT_SEARCH_STRATEGY = "name co";
+const DEFAULT_SEARCH_STRATEGY = "alias co";
 
 /**
  * Prop types for the application search component.
  */
-interface UserStoresSearchPropsInterface {
+interface CertificatesTruststoreSearchPropsInterface {
     onFilter: (query: string) => void;
 }
 
 /**
  * Application search component.
  *
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
-export const UserStoresSearch: FunctionComponent<UserStoresSearchPropsInterface> = (
-    props: UserStoresSearchPropsInterface
-): JSX.Element => {
+export const CertificatesTruststoreSearch: FunctionComponent<CertificatesTruststoreSearchPropsInterface> = (
+    props: CertificatesTruststoreSearchPropsInterface
+): ReactElement => {
 
     const { onFilter } = props;
 
@@ -79,12 +79,8 @@ export const UserStoresSearch: FunctionComponent<UserStoresSearchPropsInterface>
      */
     const filterAttributeOptions = [
         {
-            text: t("common:name"),
-            value: "name"
-        },
-        {
-            text: "Description",
-            value: "description"
+            text: "Alias",
+            value: "alias"
         }
     ];
 
@@ -169,7 +165,7 @@ export const UserStoresSearch: FunctionComponent<UserStoresSearchPropsInterface>
             hintLabel={ t("devPortal:components.applications.search.hints.querySearch.label") }
             onExternalSearchQueryClear={ handleExternalSearchQueryClear }
             onSearchQuerySubmit={ handleSearchQuerySubmit }
-            placeholder={ t("devPortal:components.applications.search.placeholder") }
+            placeholder={ "Search by alias" }
             resetSubmittedState={ handleResetSubmittedState }
             searchOptionsHeader={ t("devPortal:components.applications.search.options.header") }
             externalSearchQuery={ externalSearchQuery }
@@ -197,6 +193,7 @@ export const UserStoresSearch: FunctionComponent<UserStoresSearchPropsInterface>
                                     ".inputs.filerAttribute.validations.empty") }
                                 type="dropdown"
                                 width={ 16 }
+                                disabled={ filterAttributeOptions?.length === 1 }
                             />
                             <Grid>
                                 <Grid.Row columns={ 2 }>
@@ -212,8 +209,7 @@ export const UserStoresSearch: FunctionComponent<UserStoresSearchPropsInterface>
                                             label={ t("devPortal:components.applications.search.forms.searchForm" +
                                                 ".inputs.filterCondition.label") }
                                             name={ FILTER_CONDITION_FIELD_IDENTIFIER }
-                                            placeholder={ t("devPortal:components.applications.search.forms." +
-                                                "searchForm.inputs.filterCondition.placeholder") }
+                                            placeholder={ "E.g. alias, certificate etc." }
                                             required={ true }
                                             requiredErrorMessage={ t("devPortal:components.applications.search.forms" +
                                                 ".searchForm.inputs.filterCondition.validations.empty") }
@@ -226,7 +222,7 @@ export const UserStoresSearch: FunctionComponent<UserStoresSearchPropsInterface>
                                             label={ t("devPortal:components.applications.search.forms.searchForm" +
                                                 ".inputs.filterValue.label") }
                                             name={ FILTER_VALUES_FIELD_IDENTIFIER }
-                                            placeholder={ "E.g. secondary, tertiary" }
+                                            placeholder={ "E.g. wso2carbon etc." }
                                             required={ true }
                                             requiredErrorMessage={ t("devPortal:components.applications.search." +
                                                 "forms.searchForm.inputs.filterValue.validations.empty") }

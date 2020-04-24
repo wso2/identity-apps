@@ -17,7 +17,6 @@
  */
 
 import { RouteInterface } from "@wso2is/core/models";
-import { ExternalDialectEditPage } from "./../pages/external-dialect-edit";
 import { SignIn, SignOut } from "../components/authentication";
 import {
     CLAIM_DIALECTS_PATH,
@@ -31,8 +30,10 @@ import {
     ApplicationEditPage,
     ApplicationTemplateSelectPage,
     ApplicationsPage,
+    CertificatesKeystore,
     ClaimDialectsPage,
     CustomizePage,
+    ExternalDialectEditPage,
     GroupsPage,
     HomePage,
     IdentityProviderEditPage,
@@ -53,7 +54,6 @@ import {
     EmailTemplates,
     AddTemplateLocale
 } from "../pages";
-
 
 /**
  * Dashboard Layout Routes array.
@@ -271,6 +271,15 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         path: "/edit-user-store/:id",
         protected: true,
         showOnSidePanel: false
+    },
+    {
+        component: CertificatesKeystore,
+        icon: "certificate",
+        id: "certificates",
+        name: "Certificates",
+        path: "/certificates",
+        protected: true,
+        showOnSidePanel: true
     },
     {
         exact: true,

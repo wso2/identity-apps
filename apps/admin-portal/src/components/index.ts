@@ -29,3 +29,4 @@ export * from "./users/users-list";
 export * from "./claims";
 export * from "./user-stores";
 export * from "./server-configurations";
+export * from "./certificates";

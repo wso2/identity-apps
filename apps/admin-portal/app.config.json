@@ -112,5 +112,28 @@
             "update": true,
             "delete": true
         }
+    },
+    "certificates": {
+        "enabled": true,
+        "features": {
+            "keystore": {
+                "enabled": true,
+                "permissions": {
+                    "create": true,
+                    "read": true,
+                    "update": true,
+                    "delete": true
+                }
+            },
+            "truststore": {
+                "enabled": true,
+                "permissions": {
+                    "create": true,
+                    "read": true,
+                    "update": true,
+                    "delete": true
+                }
+            }
+        }
     }
 }

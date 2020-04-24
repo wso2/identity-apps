@@ -1120,6 +1120,36 @@ body {
     font-size: 1.5em;
 }
 
+/*****************************************
+            Illustrations
+*****************************************/
+svg.illustration {
+    .fill {
+        &.primary {
+            fill: @primaryColor;
+        }
+
+        &.secondary {
+            fill: @paleGray;
+        }
+    } 
+
+    .stroke {
+        &.primary {
+            stroke: @primaryColor;
+        }
+
+        &.secondary {
+            stroke: @paleGray;
+        }
+    }
+
+    &.avatar {
+        fill: @dustyGray;
+        border: none !important;
+    }
+}
+
 /**
  * The following style was added to overcome the issue
  * with rendering the popup on a modal when the modal

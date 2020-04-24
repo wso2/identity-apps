@@ -315,3 +315,82 @@
         }
     }
 }
+
+/***********************************
+        Certificates Segment
+************************************/
+
+.ui.segment {
+    &.certificate {
+        border: none;
+        position: relative;
+        padding: 1.5em 5em;
+        border-radius: 0;
+        width: 100%;
+
+        .ui.header{
+            margin-top: 0;
+        }
+
+        .certificate-field, .certificate-version {
+            margin-bottom: 0;
+            font-size: 0.8em;
+            color: @doveGray;
+
+            span {
+                color: @black;
+            }
+        }
+
+        .certificate-version {
+            position: absolute;
+            bottom: 1.5em;
+        }
+
+        .certificate-badge {
+            text-align: right;
+            margin-top: 10px;
+            position: relative;
+            right: -3.5em;
+        }
+    }
+
+    .ui.divider {
+        margin: 0.1em 0;
+    }
+
+    .certificate-ribbon {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+
+/***********************************
+        Drag and drop zone
+************************************/
+
+.ui.placeholder.segment{
+    &.drop-zone {
+        .description{
+            color: @nobel;
+        }
+
+        &.drag-over {
+            background: @lightGray;
+        }
+    }
+
+    .certificate-upload-placeholder {
+        text-align: center;
+        margin-bottom: 1em;
+
+        svg {
+            filter: opacity(0.3);
+        }
+    }
+
+    .file-name {
+        font-size: 1em;
+    }
+}

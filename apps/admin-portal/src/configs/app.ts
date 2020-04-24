@@ -124,24 +124,26 @@ export class Config {
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
             accountDisabling: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID}/connectors/${
-                ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID}`,
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
+            }/connectors/${ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID}`,
             accountLocking: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID}/connectors/${
-                ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID}`,
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
+            }/connectors/${ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID}`,
             accountRecovery: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID}/connectors/${
-                ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID}`,
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
+            }/connectors/${ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID}`,
             applications: `${this.getRuntimeConfig().serverHost}/api/server/v1/applications`,
             associations: `${this.getRuntimeConfig().serverHost}/api/users/v1/me/associations`,
             authorize: `${this.getRuntimeConfig().serverHost}/oauth2/authorize`,
             bulk: `${this.getRuntimeConfig().serverHost}/scim2/Bulk`,
             captchaForSSOLogin: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID}/connectors/${
-                ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID}`,
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
+            }/connectors/${ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID}`,
+            certificates: `${this.getRuntimeConfig().serverHost}/api/server/v1/keystores/certs`,
             challengeAnswers: `${this.getRuntimeConfig().serverHost}/api/users/v1/me/challenge-answers`,
             challenges: `${this.getRuntimeConfig().serverHost}/api/users/v1/me/challenges`,
             claims: `${this.getRuntimeConfig().serverHost}/api/server/v1/claim-dialects`,
+            clientCertificates: `${this.getRuntimeConfig().serverHost}/api/server/v1/keystores/client-certs`,
             consents: `${this.getRuntimeConfig()}/api/identity/consent-mgt/v1.0/consents`,
             externalClaims:`${this.getRuntimeConfig().serverHost}/api/server/v1/claim-dialects/{}/claims`,
             emailTemplateType: `${this.getRuntimeConfig().serverHost}/api/server/v1/email/template-types`,
@@ -151,32 +153,35 @@ export class Config {
             jwks: `${this.getRuntimeConfig().serverHost}/oauth2/jwks`,
             localClaims: `${this.getRuntimeConfig().serverHost}/api/server/v1/claim-dialects/local/claims`,
             loginPolicies: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID}`,
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
+            }`,
             logout: `${this.getRuntimeConfig().serverHost}/oidc/logout`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${this.getRuntimeConfig().serverHost}/scim2/Me`,
             passwordHistory: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID}/connectors/${
-                ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID}`,
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
+            }/connectors/${ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID}`,
             passwordPolicies: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID}`,
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
+            }`,
             passwordPolicy: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID}/connectors/${
-                ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID}`,
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
+            }/connectors/${ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID}`,
             permission: `${this.getRuntimeConfig().serverHost}/api/server/v1/permission-management/permissions`,
             portalDocumentationRawContent: `${ HelpPanelConstants.GITHUB_CONTENTS_API_ENDPOINT }/docs`,
             portalDocumentationStructure: `${ HelpPanelConstants.GITHUB_CONTENTS_API_ENDPOINT }/mkdocs.yml`,
             profileSchemas: `${this.getRuntimeConfig().serverHost}/scim2/Schemas`,
+            publicCertificates: `${this.getRuntimeConfig().serverHost}/api/server/v1/keystores/certs/public`,
             revoke: `${this.getRuntimeConfig().serverHost}/oauth2/revoke`,
             selfSignUp: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID}/connectors/${
-                ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID}`,
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
+            }/connectors/${ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID}`,
             sessions: `${this.getRuntimeConfig().serverHost}/api/users/v1/me/sessions`,
             token: `${this.getRuntimeConfig().serverHost}/oauth2/token`,
             user: `${this.getRuntimeConfig().serverHost}/api/identity/user/v1.0/me`,
             userStores: `${this.getRuntimeConfig().serverHost}/api/server/v1/userstores`,
             users: `${this.getRuntimeConfig().serverHost}/scim2/Users`,
             wellKnown: `${this.getRuntimeConfig().serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
-        }
+        };
     }
 }

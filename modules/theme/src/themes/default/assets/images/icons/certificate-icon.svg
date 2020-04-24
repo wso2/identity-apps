@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg class="icon" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 512.004 512.004"  xml:space="preserve">
+	<g>
+		<g>
+			<path class="path fill secondary" d="M480.002,0h-448c-17.673,0-32,14.327-32,32v362.667c0,17.673,14.327,32,32,32h256v-21.333h-256
+				c-5.891,0-10.667-4.776-10.667-10.667V32c0-5.891,4.776-10.667,10.667-10.667h448c5.891,0,10.667,4.776,10.667,10.667v362.667
+				c0,5.891-4.776,10.667-10.667,10.667h-21.333v21.333h21.333c17.673,0,32-14.327,32-32V32C512.002,14.327,497.675,0,480.002,0z"/>
+		</g>
+	</g>
+	<g>
+		<g>
+			<path class="path fill secondary" d="M448.002,106.667c-23.564,0-42.667-19.103-42.667-42.667c0-5.891-4.776-10.667-10.667-10.667H117.336
+				c-5.891,0-10.667,4.776-10.667,10.667c0,23.564-19.103,42.667-42.667,42.667c-5.891,0-10.667,4.776-10.667,10.667v192
+				c0,5.891,4.776,10.667,10.667,10.667c23.564,0,42.667,19.103,42.667,42.667c0,5.891,4.776,10.667,10.667,10.667h138.667V352
+				H127.117c-4.588-26.838-25.61-47.86-52.448-52.448V127.115c26.838-4.588,47.86-25.61,52.448-52.448h257.771
+				c4.588,26.838,25.61,47.86,52.448,52.448v86.219h21.333v-96C458.669,111.442,453.893,106.667,448.002,106.667z"/>
+		</g>
+	</g>
+	<g>
+		<g>
+			<path class="path fill secondary" d="M373.336,224c-53.019,0-96,42.981-96,96s42.981,96,96,96c52.993-0.065,95.935-43.007,96-96
+				C469.336,266.981,426.355,224,373.336,224z M373.336,394.667c-41.237,0-74.667-33.429-74.667-74.667
+				c0-41.237,33.429-74.667,74.667-74.667c41.218,0.047,74.62,33.449,74.667,74.667C448.002,361.237,414.573,394.667,373.336,394.667
+				z"/>
+		</g>
+	</g>
+	<g>
+		<g>
+			<path class="path fill secondary" d="M416.002,384v95.136l-36-28.8c-3.897-3.12-9.436-3.12-13.333,0l-36,28.8V384h-21.333v117.333
+				c-0.001,2.425,0.824,4.778,2.34,6.671c3.682,4.599,10.395,5.342,14.993,1.66l46.667-37.333l46.667,37.333
+				c1.892,1.513,4.244,2.337,6.667,2.336c5.891,0,10.667-4.776,10.667-10.667V384H416.002z"/>
+		</g>
+	</g>
+	<g>
+		<g>
+			<path class="path fill secondary" d="M362.669,106.667H149.336c-5.891,0-10.667,4.776-10.667,10.667V160c0,5.891,4.776,10.667,10.667,10.667h213.333
+				c5.891,0,10.667-4.776,10.667-10.667v-42.667C373.336,111.442,368.56,106.667,362.669,106.667z M352.002,149.333h-192V128h192
+				V149.333z"/>
+		</g>
+	</g>
+	<g>
+		<g>
+			<rect class="path fill secondary" x="128.002" y="202.667" width="21.333" height="21.333"/>
+		</g>
+	</g>
+	<g>
+		<g>
+			<rect class="path fill secondary" x="170.669" y="202.667" width="21.333" height="21.333"/>
+		</g>
+	</g>
+	<g>
+		<g>
+			<rect class="path fill secondary" x="128.002" y="245.333" width="128" height="21.333"/>
+		</g>
+	</g>
+	<g>
+		<g>
+			<path class="path fill secondary" d="M373.336,266.667c-29.455,0-53.333,23.878-53.333,53.333s23.878,53.333,53.333,53.333
+				c29.441-0.035,53.298-23.893,53.333-53.333C426.669,290.545,402.791,266.667,373.336,266.667z M373.336,352
+				c-17.673,0-32-14.327-32-32s14.327-32,32-32s32,14.327,32,32S391.009,352,373.336,352z"/>
+		</g>
+	</g>
+	<g>
+		<g>
+			<rect class="path fill secondary" x="53.336" y="352" width="21.333" height="21.333"/>
+		</g>
+	</g>
+	<g>
+		<g>
+			<rect class="path fill secondary" x="437.336" y="53.333" width="21.333" height="21.333"/>
+		</g>
+	</g>
+	<g>
+		<g>
+			<rect class="path fill secondary" x="53.336" y="53.333" width="21.333" height="21.333"/>
+		</g>
+	</g>
+</svg>

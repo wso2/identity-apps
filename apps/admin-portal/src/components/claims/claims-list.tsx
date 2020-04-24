@@ -513,7 +513,8 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                         <ResourceList.Item
                                             key={ index }
                                             actions={ [
-                                                editClaim && {
+                                                {
+                                                    hidden: editClaim !== claim?.id,
                                                     icon: "check",
                                                     onClick: () => {
                                                         setSubmitExternalClaim();
@@ -525,7 +526,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                     hidden: !appConfig
                                                         ?.claimDialects
                                                         ?.features?.externalClaims?.permissions?.update,
-                                                    icon: editClaim ? "times" : "pencil alternate",
+                                                    icon: editClaim == claim?.id ? "times" : "pencil alternate",
                                                     onClick: () => {
                                                         setEditClaim(editClaim ? "" : claim?.id);
                                                     },
@@ -534,8 +535,8 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                 },
                                                 {
                                                     hidden: !appConfig
-                                                    ?.claimDialects
-                                                    ?.features?.externalClaims?.permissions?.delete,
+                                                        ?.claimDialects
+                                                        ?.features?.externalClaims?.permissions?.delete,
                                                     icon: "trash alternate",
                                                     onClick: () => { initDelete(ListType.EXTERNAL, claim?.id) },
                                                     popupText: "Delete",
@@ -560,7 +561,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                             itemHeader={ claim.claimURI }
                                             itemDescription={ claim.mappedLocalClaimURI }
                                             metaContent={ [
-                                                editClaim
+                                                editClaim === claim?.id
                                                 && <EditExternalClaim
                                                     claimID={ claim.id }
                                                     dialectID={ dialectID }
@@ -581,7 +582,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                             key={ index }
                                             actions={ [
                                                 {
-                                                    hidden: editExternalClaim === -1,
+                                                    hidden: editExternalClaim !== index,
                                                     icon: "check",
                                                     onClick: () => {
                                                         setSubmitExternalClaim();
@@ -590,7 +591,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                     type: "button"
                                                 },
                                                 {
-                                                    icon: editExternalClaim !== -1 ? "times" : "pencil alternate",
+                                                    icon: editExternalClaim === index ? "times" : "pencil alternate",
                                                     onClick: () => {
                                                         setEditExternalClaim(editExternalClaim !== -1 ? -1 : index);
                                                     },
@@ -605,7 +606,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                 }
                                             ] }
                                             avatar={
-                                                editExternalClaim === -1 ?
+                                                editExternalClaim !== index ?
                                                     (
                                                         <Image
                                                             floated="left"
@@ -623,16 +624,16 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                     : null
                                             }
                                             actionsFloated="right"
-                                            itemHeader={ editExternalClaim === -1 ? claim.claimURI : null }
-                                            itemDescription={ editExternalClaim === -1
+                                            itemHeader={ editExternalClaim !== index ? claim.claimURI : null }
+                                            itemDescription={ editExternalClaim !== index
                                                 ? claim.mappedLocalClaimURI
                                                 : null
                                             }
                                             descriptionColumnWidth={ 11 }
-                                            metaColumnWidth={ editExternalClaim !== -1 ? 12 : 1 }
-                                            actionsColumnWidth={ editExternalClaim !== -1 ? 4 : 4 }
+                                            metaColumnWidth={ editExternalClaim === index ? 12 : 1 }
+                                            actionsColumnWidth={ editExternalClaim !== index ? 4 : 4 }
                                             metaContent={ [
-                                                editExternalClaim !== -1
+                                                editExternalClaim === index
                                                 && (
                                                     <EditExternalClaim
                                                         dialectID={ dialectID }

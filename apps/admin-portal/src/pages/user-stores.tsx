@@ -234,7 +234,7 @@ export const UserStores = (): ReactElement => {
                                 </PrimaryButton>
                             }
                             title="Add Userstore"
-                            subtitle={ ["Currently, there are no Userstores available."] }
+                            subtitle={ ["Currently, there are no userstores available."] }
                             image={ EmptyPlaceholderIllustrations.emptyList }
                             imageSize="tiny"
                         />

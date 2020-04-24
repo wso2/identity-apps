@@ -158,7 +158,7 @@ export const EditBasicDetailsLocalClaims = (
                                 label="Regular expression"
                                 required={ false }
                                 requiredErrorMessage=""
-                                placeholder="Regular expression to validate the claim"
+                                placeholder="Enter a regular expression"
                                 value={ claim?.regEx }
                                 onMouseOver={ () => {
                                     setIsShowRegExHint(true);

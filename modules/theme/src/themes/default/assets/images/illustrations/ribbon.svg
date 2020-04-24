@@ -1,4 +1,6 @@
-/**
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -14,18 +16,9 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- */
+-->
 
-export * from "./application-constants";
-export * from "./application-management";
-export * from "./email-constants";
-export * from "./help-panel-constants";
-export * from "./i18n-constants";
-export * from "./identity-provider-constants";
-export * from "./token-constants";
-export * from "./ui-constants";
-export * from "./user-constants";
-export * from "./role-constants";
-export * from "./identity-provider-management-constants";
-export * from "./user-store-constants";
-export * from "./certificates";
+<svg class="illustration" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="60" height="60" viewBox="0 0 298.824 298.824" xml:space="preserve">
+<polygon class="fill primary" points="60.044,0 60.044,298.823 149.413,215.094 238.78,298.824 238.78,0 "/>
+</svg>

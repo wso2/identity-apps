@@ -42,3 +42,5 @@ export * from "./role-edit";
 export * from "./server-configurations";
 export * from "./application-template";
 export * from "./external-dialect-edit";
+export * from "./certificates-keystore";
+export * from "./certificates-truststore";

@@ -29,6 +29,11 @@ import {
     BoxIcon,
     CSharpLogo,
     CaretRightIcon,
+    CertificateAvatar,
+    CertificateBadge,
+    CertificateIcon,
+    CertificateIllustration,
+    CertificateRibbon,
     ClaimsIcon,
     CloseIcon,
     CodeIcon,
@@ -47,6 +52,7 @@ import {
     ErrorIcon,
     ExpertModeIdPIcon,
     FIDOLogo,
+    FileUploadIllustration,
     FacebookIdPIcon,
     FacebookLogo,
     ForbiddenIcon,
@@ -93,6 +99,7 @@ import {
     WarningIcon,
     WindowsTemplateIllustration
 } from "@wso2is/theme";
+
 import { SupportedServices } from "../models";
 
 type ImageType = string;
@@ -114,6 +121,7 @@ export const HomeTileIconImages = HomeTileIcons;
 // Icon set for the side panel.
 export const SidePanelIcons = {
     applications: AppIcon,
+    certificate: CertificateIcon,
     childIcon: ArrowRight,
     claims: ClaimsIcon,
     connections: PlugIcon,
@@ -121,7 +129,7 @@ export const SidePanelIcons = {
     serverConfigurations: GearsIcon,
     userStore: DatabaseIcon,
     usersAndRoles: UserIcon
-};
+}
 
 export const SidePanelMiscIcons = {
     caretRight: CaretRightIcon
@@ -265,8 +273,8 @@ export const IdPIcons = {
 };
 
 export const IdPCapabilityIcons = {
-    [ SupportedServices.AUTHENTICATION ]: AuthenticationCapabilityIcon,
-    [ SupportedServices.PROVISIONING ]: ProvisionCapabilityIcon
+    [SupportedServices.AUTHENTICATION]: AuthenticationCapabilityIcon,
+    [SupportedServices.PROVISIONING]: ProvisionCapabilityIcon
 };
 
 export const OperationIcons = {
@@ -284,4 +292,31 @@ export const HelpSidebarIcons = {
         SDKs: BoxIcon,
         docs: DocumentIcon
     }
+};
+
+export const CertificateIllustrations = {
+    /**
+     * Certificate avatar.
+     */
+    avatar: CertificateAvatar,
+
+    /**
+     * Certificate Badge Illustration.
+     */
+    badge: CertificateBadge,
+
+    /**
+     * Certificate illustration.
+     */
+    file: CertificateIllustration,
+
+    /**
+     * Certificate Ribbon.
+     */
+    ribbon: CertificateRibbon,
+
+    /**
+     * File upload placeholder.
+     */
+    uploadPlaceholder: FileUploadIllustration
 };

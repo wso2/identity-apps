@@ -37,3 +37,4 @@ export * from "./identity-provider";
 export * from "./roles";
 export * from "./user-stores";
 export * from "./reducer-state";
+export * from "./certificates";
