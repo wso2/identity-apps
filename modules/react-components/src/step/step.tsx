@@ -90,6 +90,7 @@ export const Step: React.FunctionComponent<StepPropsInterface> = (
                     inline
                     transparent
                 />
+                <div className="step-checked"></div>
             </div>
             { title && <div className="step-title">{ title }</div> }
         </div>

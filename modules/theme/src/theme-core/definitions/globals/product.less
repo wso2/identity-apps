@@ -979,6 +979,33 @@ body {
             background: @stepIconDefaultBgColor;
             text-align: center;
             display: inline-table;
+            position: relative;
+
+            .step-checked {
+                width: @stepCheckSize;
+                height: @stepCheckSize;
+                position: absolute;
+                bottom: -5px;
+                right: -6px;
+                background-color: @stepIconCheckedBgColor;
+                border-radius: 20px;
+                visibility: hidden;
+
+                &:after {
+                    content: "";
+                    height: 11px;
+                    width: 5px;
+                    border: solid @stepIconCheckedTick;
+                    border-width: 0 2px 2px 0;
+                    transform: rotate(45deg);
+                    -webkit-transform: rotate(45deg);
+                    -moz-transform: rotate(45deg);
+                    -o-transform: rotate(45deg);
+                    display: block;
+                    margin-top: 3px;
+                    margin-left: 7px;
+                }
+            }
 
             .theme-icon {
                 display: table-cell;
@@ -995,7 +1022,7 @@ body {
                 content: "- - - -";
                 color: @stepDefaultFontColor;
                 display: inline-block;
-                position: absolute;
+                position: fixed;
                 margin-top: 10px;
                 margin-left: 40px;
                 font-weight: bold;
@@ -1012,13 +1039,10 @@ body {
         }
 
         &.completed {
-            color: @stepCompleteFontColor;
-
             .step-icon-wrapper {
-                background: @stepIconCompleteBgColor;
 
-                &:after {
-                    color: @stepCompleteFontColor;
+                .step-checked {
+                    visibility: visible;
                 }
             }
         }

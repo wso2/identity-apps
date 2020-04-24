@@ -75,7 +75,10 @@
 --------------------*/
 
 @stepIconSize: 40px;
+@stepCheckSize: 20px;
 @stepIconDefaultBgColor: @dustyGray;
+@stepIconCheckedBgColor: @green;
+@stepIconCheckedTick: @white;
 @stepDefaultFontColor: @nobel;
 @stepFontSize: 0.9em;
 @stepCompleteFontColor: @green;
