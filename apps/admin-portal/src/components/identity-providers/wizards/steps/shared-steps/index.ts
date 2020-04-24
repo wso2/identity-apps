@@ -16,5 +16,6 @@
  * under the License.
  */
 
-export * from "./identity-create-steps/general-settings";
-export * from "./shared-steps";
+export * from "./authenticator-settings";
+export * from "./outbound-provisioning-settings";
+export * from "./wizard-summary";

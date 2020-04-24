@@ -24,15 +24,20 @@ import { useDispatch } from "react-redux";
 import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
 import {
     getFederatedAuthenticatorDetails,
-    getFederatedAuthenticatorMeta, getIdentityProviderTemplateList,
+    getFederatedAuthenticatorMeta,
+    getIdentityProviderTemplateList,
     updateFederatedAuthenticator
 } from "../../../api";
 import { IdPCapabilityIcons } from "../../../configs";
 import {
     FederatedAuthenticatorListItemInterface,
-    FederatedAuthenticatorListResponseInterface, FederatedAuthenticatorWithMetaInterface,
-    IdentityProviderTemplateListItemInterface, IdentityProviderTemplateListItemResponseInterface,
-    IdentityProviderTemplateListResponseInterface, SupportedServices, SupportedServicesInterface
+    FederatedAuthenticatorListResponseInterface,
+    FederatedAuthenticatorWithMetaInterface,
+    IdentityProviderTemplateListItemInterface,
+    IdentityProviderTemplateListItemResponseInterface,
+    IdentityProviderTemplateListResponseInterface,
+    SupportedServices,
+    SupportedServicesInterface
 } from "../../../models";
 import { AuthenticatorAccordion } from "../../shared";
 import { AuthenticatorFormFactory } from "../forms";
