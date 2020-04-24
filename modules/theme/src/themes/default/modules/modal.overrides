@@ -31,6 +31,17 @@
             margin: @customModalHeadingMarginTop;
         }
     }
+
+    .content {
+        &.certificate-content {
+            display: flex;
+            justify-content: center;
+            
+            &:not(.summary) {
+                padding: 0;
+            }
+        }
+    }
 }
 
 .svg-box {
