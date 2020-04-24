@@ -49,6 +49,7 @@ export const BlockedMagnifierIcon =
     require("../dist/lib/themes/default/assets/images/icons/blocked-magnifier-icon.svg");
 export const BoxIcon = require("../dist/lib/themes/default/assets/images/icons/box-icon.svg");
 export const CaretRightIcon = require("../dist/lib/themes/default/assets/images/icons/caret-right-icon.svg");
+export const CertificateIcon = require("../dist/lib/themes/default/assets/images/icons/certificate-icon.svg");
 export const ClaimsIcon = require("../dist/lib/themes/default/assets/images/icons/claims-icon.svg");
 export const CloseIcon = require("../dist/lib/themes/default/assets/images/icons/close-icon.svg");
 export const CodeIcon = require("../dist/lib/themes/default/assets/images/icons/code-icon.svg");
@@ -138,13 +139,21 @@ export const WindowsTemplateIllustration =
 export const WSTrustTemplateIllustration =
     require("../dist/lib/themes/default/assets/images/illustrations/ws-trust-template-illustration.svg");
 
-
 // File upload illustration.
 export const FileUploadIllustration = require("../dist/lib/themes/default/assets/images/illustrations/upload.svg");
 
 // Certificate illustration.
 export const CertificateIllustration =
     require("../dist/lib/themes/default/assets/images/illustrations/certificate.svg");
+
+// Certificate badge illustration
+export const CertificateBadge = require("../dist/lib/themes/default/assets/images/illustrations/badge.svg");
+
+// Certificate Ribbon 
+export const CertificateRibbon = require("../dist/lib/themes/default/assets/images/illustrations/ribbon.svg");
+
+// Certificate Avatar
+export const CertificateAvatar = require("../dist/lib/themes/default/assets/images/icons/certificate-avatar.svg");
 
 // Identity provider template illustrations
 export const ExpertModeIdPIcon =
