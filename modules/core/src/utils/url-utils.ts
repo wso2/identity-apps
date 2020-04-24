@@ -17,6 +17,8 @@
  *
  */
 
+import { PatternConstants } from "../constants";
+
 /**
  * Utility class for URL operations and validations.
  */
@@ -39,11 +41,7 @@ export class URLUtils {
      * @return {boolean} True if the url is a http url.
      */
     public static isHttpUrl(url: string): boolean {
-        const pattern = new RegExp("^(http:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" +
-            "((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$"
-            , "i");
-
-        return !!url.match(pattern);
+        return !!url.match(PatternConstants.HTTP_URL_REGEX_PATTERN);
     }
 
     /**
@@ -54,11 +52,7 @@ export class URLUtils {
      * @return {boolean} True if the url is a https url.
      */
     public static isHttpsUrl(url: string): boolean {
-        const pattern = new RegExp("^(https:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" +
-            "((\\d{1,3}\\.){3}\\d{1,3}))(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)?(\\#[-a-z\\d_]*)?$"
-            , "i");
-
-        return !!url.match(pattern);
+        return !!url.match(PatternConstants.HTTPS_URL_REGEX_PATTERN);
     }
 
     /**
@@ -69,8 +63,6 @@ export class URLUtils {
      * @return {boolean} True if the url is a data url.
      */
     public static isDataUrl(url: string): boolean {
-        const pattern = /^data:.+\/(.+);base64,(.*)$/;
-
-        return !!url.match(pattern);
+        return !!url.match(PatternConstants.DATA_URL_REGEX_PATTERN);
     }
 }
