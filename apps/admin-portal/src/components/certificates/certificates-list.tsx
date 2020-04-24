@@ -17,12 +17,18 @@
 */
 
 import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components";
+import { Avatar } from "@wso2is/react-components";
+import { saveAs } from "file-saver";
+import * as forge from "node-forge";
 import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "semantic-ui-react";
-import { deleteKeystoreCertificate, retrieveCertificateAlias } from "../../api";
+import { Certificate as CertificateDisplay } from ".";
+import { deleteKeystoreCertificate, retrieveCertificateAlias, retrieveClientCertificate } from "../../api";
+import { CertificateIllustrations } from "../../configs";
+import { CERTIFICATE_BEGIN, CERTIFICATE_END, END_LINE } from "../../constants";
 import { AppConfig } from "../../helpers";
-import { AlertLevels, AppConfigInterface, Certificate } from "../../models";
+import { AlertLevels, AppConfigInterface, Certificate, DisplayCertificate } from "../../models";
 import { AppState } from "../../store";
 import { addAlert } from "../../store/actions";
 
@@ -64,10 +70,11 @@ export const CertificatesList = (props: CertificatesListPropsInterface): ReactEl
 
     const [ deleteConfirm, setDeleteConfirm ] = useState(false);
     const [ deleteID, setDeleteID ] = useState<string>(null);
-    const [ startDownload, setStartDownload ] = useState<string>("");
+    const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
     const [ isSuper, setIsSuper ] = useState(true);
-    
-    const tenantDomain: string = useSelector<AppState,string>((state: AppState) => state.config.deployment.tenant);
+    const [ certificateModal, setCertificateModal ] = useState(false);
+
+    const tenantDomain: string = useSelector<AppState, string>((state: AppState) => state.config.deployment.tenant);
 
     const dispatch = useDispatch();
 
@@ -97,6 +104,13 @@ export const CertificatesList = (props: CertificatesListPropsInterface): ReactEl
             setIsSuper(false);
         }
     }, [ tenantDomain ]);
+
+
+    useEffect(() => {
+        if (certificateDisplay) {
+            setCertificateModal(true);
+        }
+    }, [ certificateDisplay ]);
 
     /**
      * Shows the delete confirmation modal
@@ -146,59 +160,213 @@ export const CertificatesList = (props: CertificatesListPropsInterface): ReactEl
         )
     };
 
+    const exportCertificate = (name: string, pem: string): void => {
+
+        const certificate = decodeCertificate(pem);
+
+        const der = forge.asn1.toDer(
+            forge.pki.certificateToAsn1(certificate)
+        );
+
+        const intArray = der.data.split("").map(char => {
+            return char.charCodeAt(0);
+        });
+
+        const buffer = new Uint8Array(intArray).buffer;
+
+        const blob = new Blob([ buffer ], {
+            type: "application/x-x509-ca-cert"
+        });
+
+        saveAs(blob, name + ".cer");
+
+        dispatch(addAlert({
+            description: "The certificate has started downloading.",
+            level: AlertLevels.SUCCESS,
+            message: "Certificate download started"
+        }));
+    };
+
+
+    const decodeCertificate = (pem: string): forge.pki.Certificate => {
+        const pemValue = pem.split("\n");
+
+        // appends -----END CERTIFICATE-----.
+        pemValue.push(CERTIFICATE_END);
+
+        // appends a new line.
+        pemValue.push(END_LINE);
+
+        // pushes -----BEGIN CERTIFICATE----- to the top.
+        pemValue.unshift(CERTIFICATE_BEGIN);
+
+        const pemCert = pemValue.join("\n");
+
+        const certificateForge = forge.pki
+            .certificateFromPem(pemCert);
+
+        return certificateForge;
+    }
+
+    const displayCertificate = (certificate: Certificate, pem: string): void => {
+
+        const certificateForge = decodeCertificate(pem);
+
+        const displayCertificate: DisplayCertificate = {
+            alias: certificate.alias,
+            issuerDN: certificateForge.issuer.attributes
+                .map(attribute => {
+                    return {
+                        [ attribute.shortName ]: attribute.value
+                    }
+                }),
+            serialNumber: certificateForge.serialNumber,
+            subjectDN: certificateForge.subject.attributes
+                .map(attribute => {
+                    return {
+                        [ attribute.shortName ]: attribute.value
+                    }
+                }),
+            validFrom: certificateForge.validity.notBefore,
+            validTill: certificateForge.validity.notAfter,
+            version: certificateForge.version
+        };
+
+        setCertificateDisplay(displayCertificate);
+    }
+
+    const renderCertificateModal = (): ReactElement => {
+        return (
+            <Modal
+                dimmer="blurring"
+                size="tiny"
+                open={ certificateModal }
+                onClose={ () => { setCertificateModal(false) } }
+            >
+                <Modal.Header>
+                    View certificate
+                </Modal.Header>
+                <Modal.Content className="certificate-content">
+                    <CertificateDisplay certificate={ certificateDisplay } />
+                </Modal.Content>
+            </Modal>
+        )
+    }
+
     return (
         <>
             { showDeleteConfirm() }
+            { certificateModal && renderCertificateModal() }
             <ResourceList>
                 {
                     (
-                        type === KEYSTORE 
+                        type === KEYSTORE
                         && appConfig?.certificates?.features?.keystore?.permissions?.read
                     )
-                    || (
-                        type === TRUSTSTORE
-                        && appConfig?.certificates?.features?.truststore?.permissions?.read
-                    )
-                    ? list?.map((certificate: Certificate, index: number) => {
-                        return (
-                            <ResourceList.Item
-                                key={ index }
-                                actions={ [
-                                    {
-                                        icon: "upload",
-                                        onClick: () => {
-                                            retrieveCertificateAlias(certificate.alias).then((response) => {
-                                                setStartDownload(response);
-                                            }).catch(error => {
-                                                dispatch(addAlert({
-                                                    description: error?.description
-                                                        ?? "There was an error while downloading the certificate",
-                                                    level: AlertLevels.ERROR,
-                                                    message: error?.message ?? "Something went wrong!"
-                                                }));
-                                            })
-                                        },
-                                        popupText: "Export",
-                                        type: "button"
-                                    },
-                                    {
-                                        hidden: !(
-                                            type === KEYSTORE
-                                            && appConfig?.certificates?.features?.keystore?.permissions?.delete
-                                        )
-                                        || isSuper,
-                                        icon: "trash alternate",
-                                        onClick: () => { initDelete(certificate?.alias) },
-                                        popupText: "Delete",
-                                        type: "dropdown"
-                                    }
-                                ] }
-                                actionsFloated="right"
-                                itemHeader={ certificate.alias }                                
-                            />
+                        || (
+                            type === TRUSTSTORE
+                            && appConfig?.certificates?.features?.truststore?.permissions?.read
                         )
-                    })
-                    :null
+                        ? list?.map((certificate: Certificate, index: number) => {
+                            return (
+                                <ResourceList.Item
+                                    avatar={
+                                        <Avatar
+                                            image={ <CertificateIllustrations.avatar.ReactComponent /> }
+                                            transparent={ true }
+                                            avatarType="app"
+                                            spaced="right"
+                                            floated="left"
+                                        />
+                                    }
+                                    key={ index }
+                                    actions={ [
+                                        {
+                                            icon: "eye",
+                                            onClick: () => {
+                                                if (type === KEYSTORE) {
+                                                    retrieveCertificateAlias(certificate.alias, true)
+                                                        .then((response: string) => {
+                                                            displayCertificate(certificate, response);
+                                                        }).catch(error => {
+                                                            dispatch(addAlert({
+                                                                description: error?.description
+                                                                    ?? "There was an error while " +
+                                                                    "fetching the certificate",
+                                                                level: AlertLevels.ERROR,
+                                                                message: error?.message ?? "Something went wrong!"
+                                                            }));
+                                                        })
+                                                } else {
+                                                    retrieveClientCertificate(certificate.alias, true)
+                                                        .then((response) => {
+                                                            displayCertificate(certificate, response);
+                                                        }).catch(error => {
+                                                            dispatch(addAlert({
+                                                                description: error?.description
+                                                                    ?? "There was an error while fetching " +
+                                                                    "the certificate",
+                                                                level: AlertLevels.ERROR,
+                                                                message: error?.message ?? "Something went wrong!"
+                                                            }));
+                                                        })
+                                                }
+                                            },
+                                            popupText: "View",
+                                            type: "button"
+                                        },
+                                        {
+                                            icon: "download",
+                                            onClick: () => {
+                                                if (type === KEYSTORE) {
+                                                    retrieveCertificateAlias(certificate.alias, true)
+                                                        .then((response: string) => {
+                                                            exportCertificate(certificate.alias, response);
+                                                        }).catch(error => {
+                                                            dispatch(addAlert({
+                                                                description: error?.description
+                                                                    ?? "There was an error while " +
+                                                                    "fetching the certificate",
+                                                                level: AlertLevels.ERROR,
+                                                                message: error?.message ?? "Something went wrong!"
+                                                            }));
+                                                        })
+                                                } else {
+                                                    retrieveClientCertificate(certificate.alias, true)
+                                                        .then((response) => {
+                                                            exportCertificate(certificate.alias, response);
+                                                        }).catch(error => {
+                                                            dispatch(addAlert({
+                                                                description: error?.description
+                                                                    ?? "There was an error while fetching " +
+                                                                    "the certificate",
+                                                                level: AlertLevels.ERROR,
+                                                                message: error?.message ?? "Something went wrong!"
+                                                            }));
+                                                        })
+                                                }
+                                            },
+                                            popupText: "Export",
+                                            type: "dropdown"
+                                        },
+                                        {
+                                            hidden: !(
+                                                type === KEYSTORE
+                                                && appConfig?.certificates?.features?.keystore?.permissions?.delete
+                                            )
+                                                || isSuper,
+                                            icon: "trash alternate",
+                                            onClick: () => { initDelete(certificate?.alias) },
+                                            popupText: "Delete",
+                                            type: "dropdown"
+                                        }
+                                    ] }
+                                    actionsFloated="right"
+                                    itemHeader={ certificate.alias }
+                                />
+                            )
+                        })
+                        : null
                 }
             </ResourceList>
         </>
