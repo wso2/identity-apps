@@ -20,29 +20,22 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { createApplication, getApplicationTemplateData, updateApplicationConfigurations } from "../../../api";
-import { ApplicationWizardStepIcons } from "../../../configs";
-import { history } from "../../../helpers";
-import { ApplicationManagementUtils } from "../../../utils";
 import { GeneralSettingsWizardForm } from "./general-settings-wizard-form";
-import { ApplicationConstants } from "../../../constants";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
-import { WizardSummary } from "./wizard-summary";
-import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
-import { WSTrustProtocolSettingsWizardForm } from "./ws-trust-protocol-settings-wizard-form";
 import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
 import { ProtocolSelectionWizardForm } from "./protocol-selection-wizard-form";
-import _ from "lodash";
-import {
-    ApplicationTemplateInterface,
-    ApplicationTemplateListItemInterface,
-    MainApplicationInterface,
-    SupportedAuthProtocolTypes,
-    DefaultProtocolTemplate
-} from "../../../models";
+import { ProtocolWizardSummary } from "./protocol-wizard-summary";
+import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
+import { WizardSummary } from "./wizard-summary";
+import { WSTrustProtocolSettingsWizardForm } from "./ws-trust-protocol-settings-wizard-form";
+import { createApplication, getApplicationTemplateData, updateAuthProtocolConfig } from "../../../api";
+import { ApplicationWizardStepIcons } from "../../../configs";
+import { history } from "../../../helpers";
+import { ApplicationConstants } from "../../../constants";
 import {
     PassiveStsProtocolTemplate,
     PassiveStsProtocolTemplateItem,
@@ -53,8 +46,15 @@ import {
     WSTrustProtocolTemplate,
     WSTrustProtocolTemplateItem
 } from "../meta";
-import { updateAuthProtocolConfig } from "../../../api/application";
-import { ProtocolWizardSummary } from "./protocol-wizard-summary";
+import {
+    ApplicationTemplateInterface,
+    ApplicationTemplateListItemInterface,
+    MainApplicationInterface,
+    SupportedAuthProtocolTypes,
+    DefaultProtocolTemplate, emptyApplication
+} from "../../../models";
+import { ApplicationManagementUtils } from "../../../utils";
+import { SAMLProtocolAllSettingsWizardForm } from "./saml-protcol-settings-all-option-wizard-form";
 
 
 /**
@@ -287,6 +287,25 @@ export const ApplicationProtocolAddWizard: FunctionComponent<ApplicationProtocol
     };
 
     /**
+     * The following function creates a custom application.
+     *
+     * @param values
+     */
+    const handleCustomAppWizardFinish = (values: any): void => {
+
+        let customApplication: MainApplicationInterface = emptyApplication();
+
+        for (const [key, value] of Object.entries(values)) {
+            customApplication = {
+                ...customApplication,
+                [ key ]: value
+            }
+        }
+
+        createNewApplication(ApplicationManagementUtils.prefixTemplateNameToDescription(customApplication, template));
+    };
+
+    /**
      * Navigates to the next wizard step.
      */
     const navigateToNext = (): void => {
@@ -363,15 +382,12 @@ export const ApplicationProtocolAddWizard: FunctionComponent<ApplicationProtocol
 
             summary = _.get(wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS],
                 ("inboundProtocolConfiguration." + configName));
-
-            summary = _.merge(
-                _.cloneDeep(templateSettings.inboundProtocolConfiguration[configName]),
-                summary
-            );
-            // // Remove name from the summary.
-            // if (_.has(summary, "name")) {
-            //     delete summary.name
-            // }
+            if (selectedTemplate.id !== DefaultProtocolTemplate.SAML){
+                summary = _.merge(
+                    _.cloneDeep(templateSettings.inboundProtocolConfiguration[configName]),
+                    summary
+                );
+            }
 
             return summary;
         } else {
@@ -436,16 +452,29 @@ export const ApplicationProtocolAddWizard: FunctionComponent<ApplicationProtocol
                     />
                 );
             case WizardStepsFormTypes.GENERAL_SETTINGS:
-                return (
-                    <GeneralSettingsWizardForm
-                        triggerSubmit={ submitGeneralSettings }
+                if (template.id === "custom-application") {
+                    return (
+                        <GeneralSettingsWizardForm
+                            triggerSubmit={ submitGeneralSettings }
+                            initialValues={ wizardState && wizardState[WizardStepsFormTypes.GENERAL_SETTINGS] }
+                            onSubmit={ (values): void => {
+                                handleCustomAppWizardFinish(values)
+                            } }
+                            templateValues={ templateSettings }
+                        />
+                    );
+                } else {
+                    return (
+                        <GeneralSettingsWizardForm
+                            triggerSubmit={ submitGeneralSettings }
 
-                        initialValues={ wizardState && wizardState[WizardStepsFormTypes.GENERAL_SETTINGS] }
-                        onSubmit={ (values): void => handleWizardFormSubmit(values,
-                            WizardStepsFormTypes.GENERAL_SETTINGS) }
-                        templateValues={ templateSettings }
-                    />
-                );
+                            initialValues={ wizardState && wizardState[WizardStepsFormTypes.GENERAL_SETTINGS] }
+                            onSubmit={ (values): void => handleWizardFormSubmit(values,
+                                WizardStepsFormTypes.GENERAL_SETTINGS) }
+                            templateValues={ templateSettings }
+                        />
+                    );
+                }
             case WizardStepsFormTypes.PROTOCOL_SETTINGS:
                 if (wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SELECTION]) {
 
@@ -464,13 +493,21 @@ export const ApplicationProtocolAddWizard: FunctionComponent<ApplicationProtocol
                     } else if (wizardState[WizardStepsFormTypes.PROTOCOL_SELECTION] ===
                         SupportedAuthProtocolTypes.SAML) {
                         return (
-                            <SAMLProtocolSettingsWizardForm
-                                triggerSubmit={ submitOAuth }
-                                initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
-                                templateValues={ templateSettings }
-                                onSubmit={ (values): void => handleWizardFormSubmit(values,
-                                    WizardStepsFormTypes.PROTOCOL_SETTINGS) }
-                            />
+                            (selectedTemplate.id === DefaultProtocolTemplate.SAML) ?
+                                <SAMLProtocolAllSettingsWizardForm
+                                    triggerSubmit={ submitOAuth }
+                                    initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
+                                    templateValues={ templateSettings }
+                                    onSubmit={ (values): void => handleWizardFormSubmit(values,
+                                        WizardStepsFormTypes.PROTOCOL_SETTINGS) }
+                                /> :
+                                <SAMLProtocolSettingsWizardForm
+                                    triggerSubmit={ submitOAuth }
+                                    initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
+                                    templateValues={ templateSettings }
+                                    onSubmit={ (values): void => handleWizardFormSubmit(values,
+                                        WizardStepsFormTypes.PROTOCOL_SETTINGS) }
+                                />
                         )
                     } else if (wizardState[WizardStepsFormTypes.PROTOCOL_SELECTION] ===
                         SupportedAuthProtocolTypes.WS_TRUST) {
@@ -525,25 +562,26 @@ export const ApplicationProtocolAddWizard: FunctionComponent<ApplicationProtocol
      */
     useEffect(() => {
         if (selectedTemplate) {
-            setWizardState(_.merge(wizardState,
-                {
-                    [WizardStepsFormTypes.PROTOCOL_SELECTION]: selectedTemplate.authenticationProtocol
-                }));
-
-            loadApplicationTemplateData(selectedTemplate.id);
-            if (addProtocol) {
-                setCurrentWizardStep(currentWizardStep + 1);
-                // if (currentWizardStep === 0) {
-                //     // ;
-                // }
+            if (selectedTemplate.id === "custom-application") {
+                setWizardSteps(STEPS.splice(1,1));
             } else {
-                setWizardSteps(STEPS.slice(1));
+                setWizardState(_.merge(wizardState,
+                    {
+                        [WizardStepsFormTypes.PROTOCOL_SELECTION]: selectedTemplate.authenticationProtocol
+                    }));
+
+                loadApplicationTemplateData(selectedTemplate.id);
+                if (addProtocol) {
+                    setCurrentWizardStep(currentWizardStep + 1);
+                } else {
+                    setWizardSteps(STEPS.slice(1));
+                }
             }
         }
     }, [selectedTemplate]);
 
     /**
-     * Set initial steps
+     * Set initial steps.
      */
     useEffect(() => {
         if (addProtocol) {
@@ -572,13 +610,6 @@ export const ApplicationProtocolAddWizard: FunctionComponent<ApplicationProtocol
         if (partiallyCompletedStep === undefined) {
             return;
         }
-
-        // if (addProtocol && wizardSteps[currentWizardStep]?.name === WizardStepsFormTypes.PROTOCOL_SETTINGS) {
-        //     setTriggerProtocolSelectionSubmit(false);
-        //     setCurrentWizardStep(currentWizardStep - 1);
-        // } else {
-        //     setCurrentWizardStep(currentWizardStep - 1);
-        // }
 
         setCurrentWizardStep(currentWizardStep - 1);
 
@@ -630,7 +661,7 @@ export const ApplicationProtocolAddWizard: FunctionComponent<ApplicationProtocol
                                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                     { currentWizardStep < wizardSteps.length - 1 && (
                                         <PrimaryButton floated="right" onClick={ navigateToNext }>
-                                            Next Step <Icon name="arrow right"/>
+                                            Next <Icon name="arrow right"/>
                                         </PrimaryButton>
                                     ) }
                                     { currentWizardStep === wizardSteps.length - 1 && (
@@ -638,7 +669,7 @@ export const ApplicationProtocolAddWizard: FunctionComponent<ApplicationProtocol
                                     ) }
                                     { currentWizardStep > 0 && (
                                         <LinkButton floated="right" onClick={ navigateToPrevious }>
-                                            <Icon name="arrow left"/> Previous step
+                                            <Icon name="arrow left"/> Previous
                                         </LinkButton>
                                     ) }
                                 </Grid.Column>
