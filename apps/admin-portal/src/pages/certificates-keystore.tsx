@@ -21,7 +21,7 @@ import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { listCertificateAliases } from "../api";
-import { AddCertificate, CertificatesKeystoreSearch, CertificatesList } from "../components";
+import { CertificatesKeystoreSearch, CertificatesList, ImportCertificate } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { UserConstants } from "../constants";
 import { AppConfig } from "../helpers";
@@ -44,7 +44,7 @@ export const CertificatesKeystore = (): ReactElement => {
     const SORT_BY = [
         {
             key: 0,
-            text: "Name",
+            text: "Alias",
             value: "alias"
         }
     ];
@@ -165,7 +165,7 @@ export const CertificatesKeystore = (): ReactElement => {
             {
                 openModal
                 && (
-                    <AddCertificate
+                    <ImportCertificate
                         open={ openModal }
                         onClose={ () => setOpenModal(false) }
                         update={ fetchCertificatesKeystore }
@@ -173,7 +173,7 @@ export const CertificatesKeystore = (): ReactElement => {
                 )
             }
             <PageLayout
-                title="Certificates in the Keystore"
+                title="Certificates"
                 description="Create and manage certificates in the keystore"
                 showBottomDivider={ true }
             >
