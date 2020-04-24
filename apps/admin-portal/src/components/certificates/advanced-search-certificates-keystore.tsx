@@ -19,7 +19,7 @@
 import { SearchUtils } from "@wso2is/core/utils";
 import { Field, Forms } from "@wso2is/forms";
 import { AdvancedSearch } from "@wso2is/react-components";
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { AdvancedSearchIcons } from "../../configs";
@@ -59,11 +59,11 @@ interface CertificatesKeystoreSearchPropsInterface {
 /**
  * Application search component.
  *
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
 export const CertificatesKeystoreSearch: FunctionComponent<CertificatesKeystoreSearchPropsInterface> = (
     props: CertificatesKeystoreSearchPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const { onFilter } = props;
 
