@@ -20,7 +20,7 @@ import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import * as forge from "node-forge";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { CertificateSummary } from "./certificate-summary";
@@ -44,7 +44,9 @@ interface ImportCertificatePropsInterface {
     update: () => void;
 }
 
-export const ImportCertificate = (props: ImportCertificatePropsInterface): ReactElement => {
+export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterface> = (
+    props: ImportCertificatePropsInterface
+): ReactElement => {
 
     const { open, onClose, update } = props;
 

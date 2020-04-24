@@ -17,7 +17,7 @@
  */
 
 import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useContext, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { listCertificateAliases } from "../api";
@@ -36,7 +36,7 @@ import { filterList, sortList } from "../utils";
  *
  * @return {ReactElement}
  */
-export const CertificatesKeystore = (): ReactElement => {
+export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
 
     /**
      * Sets the attributes by which the list can be sorted.

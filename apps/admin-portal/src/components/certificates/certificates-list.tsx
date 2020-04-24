@@ -20,7 +20,7 @@ import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-component
 import { Avatar } from "@wso2is/react-components";
 import { saveAs } from "file-saver";
 import * as forge from "node-forge";
-import React, { ReactElement, useContext, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "semantic-ui-react";
 import { Certificate as CertificateDisplay } from ".";
@@ -64,7 +64,9 @@ interface CertificatesListPropsInterface {
  * @param {CertificatesListPropsInterface} props
  * @return {ReactElement}
  */
-export const CertificatesList = (props: CertificatesListPropsInterface): ReactElement => {
+export const CertificatesList: FunctionComponent<CertificatesListPropsInterface> = (
+    props: CertificatesListPropsInterface
+): ReactElement => {
 
     const { list, update, type } = props;
 

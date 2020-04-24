@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import React, { ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
 import { DN, DisplayCertificate } from "../../models";
 
@@ -24,7 +24,9 @@ interface CertificateSummaryPropsInterface {
     name: string;
     certificate: DisplayCertificate;
 }
-export const CertificateSummary = (props: CertificateSummaryPropsInterface): ReactElement => {
+export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterface> = (
+    props: CertificateSummaryPropsInterface
+): ReactElement => {
 
     const { name, certificate } = props;
 

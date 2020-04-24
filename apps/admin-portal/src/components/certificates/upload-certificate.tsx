@@ -17,7 +17,7 @@
 */
 
 import * as forge from "node-forge";
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Divider, Form, Icon, Message, Segment, Tab, TextArea } from "semantic-ui-react";
 import { CertificateIllustrations } from "../../configs";
 import { CERTIFICATE_BEGIN, CERTIFICATE_END, END_LINE } from "../../constants";
@@ -27,6 +27,7 @@ interface PemCertificate{
     value: string;
     certificate: forge.pki.Certificate;
 }
+
 interface UploadCertificatePropsInterface {
     submit: (
         data: Certificate,
@@ -43,7 +44,10 @@ interface UploadCertificatePropsInterface {
     fileData: File;
     forgeCertificateData: forge.pki.Certificate;
 }
-export const UploadCertificate = (props: UploadCertificatePropsInterface): ReactElement => {
+
+export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterface> = (
+    props: UploadCertificatePropsInterface
+): ReactElement => {
 
     const { submit, triggerSubmit, nameData, pemData, fileDecodedData, fileData, forgeCertificateData } = props;
 

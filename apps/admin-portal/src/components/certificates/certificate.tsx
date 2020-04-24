@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import React, { ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Divider, Header, Segment } from "semantic-ui-react";
 import { CertificateIllustrations } from "../../configs";
 import { DN, DisplayCertificate } from "../../models";
@@ -24,7 +24,9 @@ import { DN, DisplayCertificate } from "../../models";
 interface CertificatePropsInterface {
     certificate: DisplayCertificate;
 }
-export const Certificate = (props: CertificatePropsInterface): ReactElement => {
+export const Certificate: FunctionComponent<CertificatePropsInterface> = (
+    props: CertificatePropsInterface
+): ReactElement => {
 
     const {
         alias,
