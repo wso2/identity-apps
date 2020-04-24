@@ -37,11 +37,13 @@
     },
     "peerDependencies": {
         "@svgr/webpack": "*",
+        "@types/file-saver": "*",
         "@types/js-yaml": "*",
         "@types/react-beautiful-dnd": "*",
         "@types/node-forge":"*",
         "axios": "*",
         "css-loader": "*",
+        "file-saver": "*",
         "fork-ts-checker-webpack-plugin": "*",
         "node-forge":"*",
         "history": "*",
