@@ -24,8 +24,8 @@ import {
     FederatedAuthenticatorMetaInterface,
     IdentityProviderInterface,
     OutboundProvisioningConnectorMetaInterface
-} from "../../../../models";
-import { getPropertyMetadata } from "../../utils";
+} from "../../../../../models";
+import { getPropertyMetadata } from "../../../utils";
 
 /**
  * Proptypes for the wizard summary component.
@@ -36,6 +36,7 @@ interface WizardSummaryProps {
     identityProvider: IdentityProviderInterface;
     triggerSubmit: boolean;
     onSubmit: (identityProvider: IdentityProviderInterface) => void;
+    isAddAuthenticatorWizard?: boolean;
 }
 
 /**
@@ -53,7 +54,8 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         authenticatorMetadata,
         identityProvider,
         triggerSubmit,
-        onSubmit
+        onSubmit,
+        isAddAuthenticatorWizard
     } = props;
 
     /**
@@ -63,7 +65,6 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         if (!triggerSubmit) {
             return;
         }
-
         onSubmit(identityProvider);
     }, [triggerSubmit]);
 
@@ -139,12 +140,10 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         return <>
             <Divider horizontal>Authenticator Settings</Divider>
 
-            {
-                authenticatorSummary && getNameComponent("Authenticator", authenticatorMetadata?.name)
-            }
+            { authenticatorSummary && getNameComponent("Authenticator", authenticatorMetadata?.name) }
 
             {
-                authenticatorSummary?.properties && getPropertySummary(authenticatorSummary?.properties, 
+                authenticatorSummary?.properties && getPropertySummary(authenticatorSummary?.properties,
                     authenticatorMetadata?.properties)
             }
         </>;
@@ -154,9 +153,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         return <>
             <Divider horizontal>Provisioning Settings</Divider>
 
-            {
-                provisioningSummary && getNameComponent("Connector", provisioningConnectorMetadata?.displayName)
-            }
+            { provisioningSummary && getNameComponent("Connector", provisioningConnectorMetadata?.displayName) }
 
             {
                 provisioningSummary?.properties && getPropertySummary(provisioningSummary?.properties,
@@ -166,13 +163,12 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
     };
 
     const isAuthenticatorSettingsStepAvailable = () => {
-
         return identityProvider?.federatedAuthenticators?.defaultAuthenticatorId;
     };
 
     const isProvisioningSettingsStepAvailable = () => {
-
-        return identityProvider?.provisioning?.outboundConnectors?.defaultConnectorId;
+        return isAddAuthenticatorWizard ? false :
+            identityProvider?.provisioning?.outboundConnectors?.defaultConnectorId;
     };
 
     return (

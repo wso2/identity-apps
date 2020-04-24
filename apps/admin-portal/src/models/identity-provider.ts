@@ -93,7 +93,7 @@ export interface CertificateConfigInterface {
     jwksUri?: string; // TODO  Check for upload option.
 }
 
-export interface FederatedAuthenticatorListItemInterface extends FederatedAuthenticatorInterface{
+export interface FederatedAuthenticatorListItemInterface extends FederatedAuthenticatorInterface {
     self?: string;
 }
 
@@ -104,17 +104,10 @@ export interface FederatedAuthenticatorInterface extends CommonPluggableComponen
     isDefault?: boolean;
 }
 
-export interface FederatedAuthenticatorInterface {
+export interface FederatedAuthenticatorWithMetaInterface {
     id?: string;
     meta?: FederatedAuthenticatorMetaInterface;
     data?: FederatedAuthenticatorInterface;
-}
-
-export interface FederatedAuthenticatorListItemInterface {
-    authenticatorId?: string;
-    name?: string;
-    isEnabled?: boolean;
-    isDefault?: boolean;
 }
 
 export interface AuthenticatorPropertyInterface {
