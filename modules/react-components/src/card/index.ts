@@ -16,8 +16,7 @@
  * under the License.
  */
 
-export * from "./application-template-card";
-export * from "./identity-provider-template-card"
+export * from "./template-card";
 export * from "./info-card";
 export * from "./labeled-card";
 export * from "./selection-card";

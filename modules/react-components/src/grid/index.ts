@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from "./quick-start-identity-provider-templates";
+export * from "./template-grid";

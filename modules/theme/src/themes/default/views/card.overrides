@@ -16,7 +16,7 @@
  * under the License.
  *
  */
- 
+
 .ui.card {
     &.application-card {
         &.recent {
@@ -269,29 +269,29 @@
 }
 
 /*********************************************
-    Application Template Card Variation
+             Template Card Variation
 *********************************************/
 
 .ui.card {
-    &.app-template-card {
-        width: @appTemplateCardDefaultWidth;
-        transition: @appTemplateCardTransition;
-        border: @appTemplateCardBorder;
+    &.template-card {
+        width: @templateCardDefaultWidth;
+        transition: @templateCardTransition;
+        border: @templateCardBorder;
         box-shadow: none;
 
         &:hover {
             transform: none;
             text-decoration: none;
             cursor: pointer;
-            box-shadow: @appTemplateCardHoverBoxShadow;
+            box-shadow: @templateCardHoverBoxShadow;
         }
         &.inline {
             display: inline-block;
-            margin-right: @appTemplateCardRightSpacing;
+            margin-right: @templateCardRightSpacing;
         }
         &.selected {
-            border-bottom-width: @appTemplateCardBorderBottomWidth;
-            border-bottom-color: @appTemplateCardSelectedStateBorderBottomColor;
+            border-bottom-width: @templateCardBorderBottomWidth;
+            border-bottom-color: @templateCardSelectedStateBorderBottomColor;
         }
         &.disabled {
             cursor: not-allowed;
@@ -300,35 +300,35 @@
         .card-image-container {
         }
         .card-text-container {
-            padding: @appTemplateCardTextContainerPadding;
+            padding: @templateCardTextContainerPadding;
             border-top: none;
 
             .header {
-                font-size: @appTemplateCardHeaderFontSize;
-                font-weight: @appTemplateCardHeaderFontWeight;
-                line-height: @appTemplateCardHeaderLineHeight;
-                max-width: @appTemplateCardHeaderMaxWidth;
+                font-size: @templateCardHeaderFontSize;
+                font-weight: @templateCardHeaderFontWeight;
+                line-height: @templateCardHeaderLineHeight;
+                max-width: @templateCardHeaderMaxWidth;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 overflow: hidden;
             }
             .description {
-                font-size: @appTemplateCardDescriptionFontSize;
-                max-width: @appTemplateCardDescriptionMaxWidth;
-                min-height: @appTemplateCardDescriptionMinHeight;
+                font-size: @templateCardDescriptionFontSize;
+                max-width: @templateCardDescriptionMaxWidth;
+                min-height: @templateCardDescriptionMinHeight;
                 display: -webkit-box;
                 -webkit-line-clamp: 2;
                 -webkit-box-orient: vertical;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                height: @appTemplateCardDescriptionHeight;
+                height: @templateCardDescriptionHeight;
             }
-            .technologies {
-                margin-top: 8px;
+            .tags {
+                margin: 8px 0;
 
                 .title {
-                    font-size: @appTemplateCardTechnologiesTitleFontSize;
-                    text-decoration: underline;
+                    font-size: @templateCardTagTitleFontSize;
+                    color: @lightFontColor;
                     margin-bottom: 5px;
                 }
             }

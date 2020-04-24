@@ -45,6 +45,7 @@ import {
     EmailOTPIcon,
     EmptySearchResultsIllustration,
     ErrorIcon,
+    ExpertModeIdPIcon,
     FIDOLogo,
     FacebookIdPIcon,
     FacebookLogo,
@@ -248,6 +249,7 @@ export const PlaceHolderIcons = {
 
 export const IdPIcons = {
     emailOTP: EmailOTPIcon,
+    expert: ExpertModeIdPIcon,
     facebook: FacebookIdPIcon,
     github: GithubIdPIcon,
     google: GoogleIdPIcon,

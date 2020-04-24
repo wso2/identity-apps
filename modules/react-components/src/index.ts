@@ -27,6 +27,7 @@ export * from "./code-editor";
 export * from "./danger-zone";
 export * from "./error";
 export * from "./footer";
+export * from "./grid";
 export * from "./header";
 export * from "./help-panel";
 export * from "./icon";
