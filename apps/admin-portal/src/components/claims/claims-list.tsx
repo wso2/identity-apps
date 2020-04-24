@@ -141,13 +141,13 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
     const checkUserStoreMapping = (claim: Claim): string[] => {
         const userStoresNotSet = [];
 
-        userStores.forEach(userStore => {
-            claim.attributeMapping.find(attribute => {
+        userStores?.forEach(userStore => {
+            claim?.attributeMapping?.find(attribute => {
                 return attribute.userstore.toLowerCase() === userStore.name.toLowerCase();
             }) ?? userStoresNotSet.push(userStore.name);
         });
 
-        claim.attributeMapping.find(attribute => {
+        claim?.attributeMapping?.find(attribute => {
             return attribute.userstore === "PRIMARY";
         }) ?? userStoresNotSet.push("Primary");
 
