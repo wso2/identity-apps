@@ -81,7 +81,8 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
         <Forms
             onSubmit={ (values: Map<string, FormValue>) => {
                 if (wizard) {
-                    onSubmit(values)
+                    onSubmit(values);
+                    setReset();
                 } else {
                     addExternalClaim(dialect.id, {
                         claimURI: values.get("claimURI").toString(),
