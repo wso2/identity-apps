@@ -985,10 +985,10 @@ body {
                 width: @stepCheckSize;
                 height: @stepCheckSize;
                 position: absolute;
-                bottom: -5px;
-                right: -6px;
+                bottom: @stepCheckPositionBottom;
+                right: @stepCheckPositionRight;
                 background-color: @stepIconCheckedBgColor;
-                border-radius: 20px;
+                border-radius: @stepCheckBorderRadius;
                 visibility: hidden;
 
                 &:after {
@@ -997,13 +997,13 @@ body {
                     width: 5px;
                     border: solid @stepIconCheckedTick;
                     border-width: 0 2px 2px 0;
-                    transform: rotate(45deg);
-                    -webkit-transform: rotate(45deg);
-                    -moz-transform: rotate(45deg);
-                    -o-transform: rotate(45deg);
+                    transform: @stepCheckTickRotation;
+                    -webkit-transform: @stepCheckTickRotation;
+                    -moz-transform: @stepCheckTickRotation;
+                    -o-transform: @stepCheckTickRotation;
                     display: block;
-                    margin-top: 3px;
-                    margin-left: 7px;
+                    margin-top: @stepCheckTickMarginTop;
+                    margin-left: @stepCheckTickMarginLeft;
                 }
             }
 
