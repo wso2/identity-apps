@@ -23,3 +23,23 @@ export interface Certificate{
     alias: string;
     certificate: string;
 }
+
+/**
+ * Model for the Certificate object to be stored in the state.
+ */
+export interface DisplayCertificate {
+    alias: string;
+    validFrom: Date;
+    validTill: Date;
+    issuerDN: DN[];
+    subjectDN: DN[];
+    version: number;
+    serialNumber: string;
+}
+
+/**
+ * Model of the Issuer and Subject DN. 
+ */
+export interface DN {
+    [ key: string ]: string;
+}
