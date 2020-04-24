@@ -35,7 +35,11 @@
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
     String username = request.getParameter("username");
     String tenantDomain = request.getParameter("tenantDomain");
-    String isSaaSApp = request.getParameter("isSaaSApp");
+    boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
+
+    if (StringUtils.isBlank(tenantDomain)) {
+        tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
+    }
 
     ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
     try {
@@ -132,8 +136,8 @@
                             </label>
                             <input id="usernameUserInput" name="usernameUserInput" type="text" tabindex="0" required>
                             <input id="username" name="username" type="hidden">
-                            <input id="tenantDomain" name="tenantDomain" type="hidden">
-                            <input id="isSaaSApp" name="isSaaSApp" type="hidden">
+                            <input id="tenantDomain" name="tenantDomain" value="<%= tenantDomain %>" type="hidden">
+                            <input id="isSaaSApp" name="isSaaSApp" value="<%= isSaaSApp %>" type="hidden">
                         </div>
 
                         <%
@@ -233,16 +237,6 @@
                 var errorMessage = $("#error-msg");
                 errorMessage.hide();
 
-                var tenantDomainInRequest = "<%= tenantDomain %>";
-                var tenantDomain = document.getElementById("tenantDomain");
-                if (tenantDomainInRequest) {
-                    tenantDomain.value = tenantDomainInRequest;
-                }
-                var isSaaSAppInRequest = "<%= isSaaSApp %>";
-                var isSaaSApp = document.getElementById("isSaaSApp");
-                if (isSaaSAppInRequest) {
-                    isSaaSApp.value = isSaaSAppInRequest;
-                }
                 var userName = document.getElementById("username");
                 var usernameUserInput = document.getElementById("usernameUserInput");
                 if (usernameUserInput) {

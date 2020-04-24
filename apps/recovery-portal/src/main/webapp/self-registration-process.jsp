@@ -126,7 +126,7 @@
             session.setAttribute("username", username);
 
 
-            User user = IdentityManagementServiceUtil.getInstance().getUser(username);
+            User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, false);
 
 
             Claim[] claims = new Claim[0];

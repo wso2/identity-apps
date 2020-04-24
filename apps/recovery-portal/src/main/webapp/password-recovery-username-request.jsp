@@ -18,28 +18,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="java.io.File" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
-<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
-<%@ page import="java.io.File" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
-
     String tenantDomain = request.getParameter("tenantDomain");
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
 
-    String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
-    Boolean isEmailUsernameEnabled = false;
-
-    if (StringUtils.isNotBlank(emailUsernameEnable)) {
-        isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
-    } else {
-        isEmailUsernameEnabled = isEmailUsernameEnabled();
+    if (StringUtils.isBlank(tenantDomain)) {
+        tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
     }
 %>
 
@@ -97,7 +89,8 @@
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")%>
                                 </label>
                                 <input id="usernameUserInput" name="usernameUserInput" type="text" tabindex="0" required>
-                                <input id="username" name="username" type="hidden" required/>
+                                <input id="tenantDomain" name="tenantDomain" value="<%= tenantDomain %>" type="hidden">
+                                <input id="isSaaSApp" name="isSaaSApp" value="<%= isSaaSApp %>" type="hidden">
                             </div> 
                             <div class="ui message info">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
@@ -168,39 +161,11 @@
                         } else {
                             e.preventDefault();
 
-                            var isSaaSApp = JSON.parse("<%= isSaaSApp %>");
-                            var tenantDomain = "<%= tenantDomain %>";
-                            var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
-
                             var userName = document.getElementById("username");
                             var usernameUserInput = document.getElementById("usernameUserInput");
-                            var usernameUserInputValue = usernameUserInput.value.trim();
-
-                            if ((tenantDomain !== "null") && !isSaaSApp) {
-                                if (!isEmailUsernameEnabled && (usernameUserInputValue.split("@").length >= 2)) {
-                                    var errorMessage = document.getElementById("error-msg");
-
-                                    errorMessage.innerHTML = 
-                                        "Invalid Username. Username shouldn't have '@' or any other special characters.";
-                                    errorMessage.hidden = false;
-
-                                    return;
-                                }
-
-                                if (isEmailUsernameEnabled && (usernameUserInputValue.split("@").length <= 1)) {
-                                    var errorMessage = document.getElementById("error-msg");
-
-                                    errorMessage.innerHTML = "Invalid Username. Username has to be an email address.";
-                                    errorMessage.hidden = false;
-
-                                    return;
-                                }
-                                
-                                userName.value = usernameUserInputValue + "@" + tenantDomain;      
-                            } else {
-                                userName.value = usernameUserInputValue;
+                            if (usernameUserInput) {
+                                userName.value = usernameUserInput.value.trim();
                             }
-
                             // Mark it so that the next submit can be ignored.
                             $form.data("submitted", true);
                             document.getElementById("tenantBasedRecovery").submit();
