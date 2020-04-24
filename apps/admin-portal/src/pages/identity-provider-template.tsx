@@ -79,13 +79,13 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
             switch (serviceIdentifier) {
                 case SupportedServices.AUTHENTICATION:
                     return {
-                        displayName: "Authentication Service",
+                        displayName: "Authentication",
                         logo: IdPCapabilityIcons[SupportedServices.AUTHENTICATION],
                         name: SupportedServices.AUTHENTICATION
                     };
                 case SupportedServices.PROVISIONING:
                     return {
-                        displayName: "Provisioning Service",
+                        displayName: "Provisioning",
                         logo: IdPCapabilityIcons[SupportedServices.PROVISIONING],
                         name: SupportedServices.PROVISIONING
                     }

@@ -324,11 +324,11 @@
                 height: @templateCardDescriptionHeight;
             }
             .tags {
-                margin-top: 8px;
+                margin: 8px 0;
 
                 .title {
                     font-size: @templateCardTagTitleFontSize;
-                    text-decoration: underline;
+                    color: @lightFontColor;
                     margin-bottom: 5px;
                 }
             }
