@@ -79,7 +79,7 @@ export const CertificatesKeystoreSearch: FunctionComponent<CertificatesKeystoreS
      */
     const filterAttributeOptions = [
         {
-            text: "Name",
+            text: "Alias",
             value: "alias"
         }
     ];
@@ -165,7 +165,7 @@ export const CertificatesKeystoreSearch: FunctionComponent<CertificatesKeystoreS
             hintLabel={ t("devPortal:components.applications.search.hints.querySearch.label") }
             onExternalSearchQueryClear={ handleExternalSearchQueryClear }
             onSearchQuerySubmit={ handleSearchQuerySubmit }
-            placeholder={ "Search by name" }
+            placeholder={ "Search by alias" }
             resetSubmittedState={ handleResetSubmittedState }
             searchOptionsHeader={ t("devPortal:components.applications.search.options.header") }
             externalSearchQuery={ externalSearchQuery }
