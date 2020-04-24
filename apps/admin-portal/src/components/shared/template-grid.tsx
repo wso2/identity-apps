@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { URLUtils } from "@wso2is/core/utils";
+import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import { EmptyPlaceholder, Heading, LinkButton, TemplateCard } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
@@ -102,7 +102,11 @@ export const TemplateGrid: FunctionComponent<TemplateGridPropsInterface> = (
             return image;
         }
 
-        if (URLUtils.isHttpsUrl(image) || URLUtils.isHttpUrl(image) || URLUtils.isDataUrl(image)) {
+        if ((URLUtils.isHttpsUrl(image) || URLUtils.isHttpUrl(image)) && ImageUtils.isValidImageExtension(image)) {
+            return image;
+        }
+
+        if (URLUtils.isDataUrl(image)) {
             return image;
         }
 
