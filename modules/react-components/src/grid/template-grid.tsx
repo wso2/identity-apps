@@ -17,17 +17,21 @@
  */
 
 import { ImageUtils, URLUtils } from "@wso2is/core/utils";
-import { EmptyPlaceholder, Heading, LinkButton, TemplateCard } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations } from "../../configs";
+import { LinkButton } from "../button";
+import { TemplateCard, TemplateCardPropsInterface } from "../card";
+import { Heading } from "../typography";
 
 /**
  * Proptypes for the template grid component.
  */
 interface TemplateGridPropsInterface {
+    /**
+     * Empty placeholder
+     */
+    emptyPlaceholder?: ReactElement;
     /**
      * Heading for the grid.
      */
@@ -37,9 +41,25 @@ interface TemplateGridPropsInterface {
      */
     onTemplateSelect: (e: SyntheticEvent, { id }: { id: string }) => void;
     /**
+     * Enable/ Disable pagination.
+     */
+    paginate?: boolean;
+    /**
+     * Pagination limit.
+     */
+    paginationLimit?: number;
+    /**
+     * Grid pagination options.
+     */
+    paginationOptions?: TemplateGridPaginationOptionsInterface;
+    /**
      * Sub heading for the grid.
      */
     subHeading?: ReactNode;
+    /**
+     * Title for the tags section.
+     */
+    tagsSectionTitle?: TemplateCardPropsInterface["tagsSectionTitle"];
     /**
      * List of templates.
      */
@@ -55,38 +75,63 @@ interface TemplateGridPropsInterface {
 }
 
 /**
+ * Interface for grid pagination options.
+ */
+export interface TemplateGridPaginationOptionsInterface {
+    /**
+     * Show more button label.
+     */
+    showMoreButtonLabel: string;
+    /**
+     * Show less button label.
+     */
+    showLessButtonLabel: string;
+}
+
+
+/**
  * Initial display limit.
+ * TODO: Generate limit dynamically with screen dimensions.
  * @type {number}
  */
-const GRID_INITIAL_LIMIT = 5;
+const DEFAULT_PAGINATION_LIMIT = 5;
 
 /**
  * Template grid component.
  *
  * @param {TemplateGridPropsInterface} props - Props injected to the component.
  *
- * @return {ReactElement}
+ * @return {React.ReactElement}
  */
 export const TemplateGrid: FunctionComponent<TemplateGridPropsInterface> = (
     props: TemplateGridPropsInterface
 ): ReactElement => {
 
     const {
+        emptyPlaceholder,
         heading,
         onTemplateSelect,
+        paginate,
+        paginationLimit,
+        paginationOptions,
         subHeading,
+        tagsSectionTitle,
         templates,
         templateIcons,
         type
     } = props;
 
-    const { t } = useTranslation();
-
     const [ templateList, setTemplateList ] = useState<any>([]);
     const [ isShowMoreClicked, setIsShowMoreClicked ] = useState<boolean>(false);
 
     useEffect(() => {
-        setTemplateList(_.take(templates, GRID_INITIAL_LIMIT));
+        if (paginate) {
+            setTemplateList(_.take(templates, paginationLimit));
+
+            return;
+        }
+
+        setTemplateList(templates);
     }, [ templates ]);
 
     /**
@@ -132,7 +177,7 @@ export const TemplateGrid: FunctionComponent<TemplateGridPropsInterface> = (
      */
     const viewLessTemplates = (): void => {
         setIsShowMoreClicked(false);
-        setTemplateList(_.take(templates, GRID_INITIAL_LIMIT));
+        setTemplateList(_.take(templates, paginationLimit));
     };
 
     return (
@@ -142,32 +187,40 @@ export const TemplateGrid: FunctionComponent<TemplateGridPropsInterface> = (
                     ? (
                         <Grid.Row columns={ 2 }>
                             <Grid.Column>
-                                <Heading as="h4">
-                                    { heading }
-                                    {
-                                        subHeading && (
-                                            <Heading subHeading ellipsis as="h6">{ subHeading }</Heading>
-                                        )
-                                    }
-                                </Heading>
-                            </Grid.Column>
-                            <Grid.Column textAlign="right">
                                 {
-                                    (templates && templates instanceof Array && templates.length >= GRID_INITIAL_LIMIT)
-                                        ? (
-                                            isShowMoreClicked ? (
-                                                <LinkButton onClick={ viewLessTemplates }>
-                                                    { t("common:showLess" ) }
-                                                </LinkButton>
-                                            ) : (
-                                                <LinkButton onClick={ viewMoreTemplates }>
-                                                    { t("common:showMore" ) }
-                                                </LinkButton>
-                                            )
-                                        )
-                                        : null
+                                    heading && (
+                                        <Heading as="h4" compact>{ heading }</Heading>
+                                    )
+                                }
+                                {
+                                    subHeading && (
+                                        <Heading subHeading ellipsis as="h6">{ subHeading }</Heading>
+                                    )
                                 }
                             </Grid.Column>
+                            {
+                                paginate && (
+                                    <Grid.Column textAlign="right">
+                                        {
+                                            (templates
+                                                && templates instanceof Array
+                                                && templates.length >= paginationLimit)
+                                                ? (
+                                                    isShowMoreClicked ? (
+                                                        <LinkButton onClick={ viewLessTemplates }>
+                                                            { paginationOptions.showLessButtonLabel }
+                                                        </LinkButton>
+                                                    ) : (
+                                                        <LinkButton onClick={ viewMoreTemplates }>
+                                                            { paginationOptions.showMoreButtonLabel }
+                                                        </LinkButton>
+                                                    )
+                                                )
+                                                : null
+                                        }
+                                    </Grid.Column>
+                                )
+                            }
                         </Grid.Row>
                     )
                     : null
@@ -181,11 +234,7 @@ export const TemplateGrid: FunctionComponent<TemplateGridPropsInterface> = (
                                     key={ index }
                                     description={ template.description }
                                     image={ resolveTemplateImage(template.image) }
-                                    tagsSectionTitle={
-                                        type === "application"
-                                            ? t("common:technologies")
-                                            : t("common:services")
-                                    }
+                                    tagsSectionTitle={ tagsSectionTitle }
                                     tags={
                                         type === "application"
                                             ? template.types
@@ -202,16 +251,23 @@ export const TemplateGrid: FunctionComponent<TemplateGridPropsInterface> = (
                                     imageSize="tiny"
                                 />
                             ))
-                            :
-                            <EmptyPlaceholder
-                                image={ EmptyPlaceholderIllustrations.newList }
-                                imageSize="tiny"
-                                title={ t("devPortal:components.templates.emptyPlaceholder.title") }
-                                subtitle={ [ t("devPortal:components.templates.emptyPlaceholder.subtitles") ] }
-                            />
+                            : emptyPlaceholder && emptyPlaceholder
                     }
                 </Grid.Column>
             </Grid.Row>
         </Grid>
     );
+};
+
+/**
+ * Default props for template grid component.
+ */
+TemplateGrid.defaultProps = {
+    paginate: true,
+    paginationLimit: DEFAULT_PAGINATION_LIMIT,
+    paginationOptions: {
+        showLessButtonLabel: "Show less",
+        showMoreButtonLabel: "Show more"
+    },
+    tagsSectionTitle: "Tags"
 };

@@ -16,9 +16,4 @@
  * under the License.
  */
 
-export * from "./advanced-search";
-export * from "./authenticator-accordion";
-export * from "./icon";
-export * from "./empty-placeholder";
-export * from "./modal";
-export * from "./avatar-svg-background";
+export * from "./template-grid";

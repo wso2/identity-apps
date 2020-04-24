@@ -18,7 +18,7 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader } from "@wso2is/react-components";
+import { ContentLoader, EmptyPlaceholder, TemplateGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,8 +30,7 @@ import {
 } from "../api";
 import { ExpertModeTemplate } from "../components/identity-providers/meta";
 import { IdentityProviderCreateWizard } from "../components/identity-providers/wizards";
-import { TemplateGrid } from "../components/shared";
-import { IdPCapabilityIcons, IdPIcons } from "../configs";
+import { EmptyPlaceholderIllustrations, IdPCapabilityIcons, IdPIcons } from "../configs";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import {
@@ -298,6 +297,21 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
                                 heading={ t("devPortal:components.idp.templates.quickSetup.heading") }
                                 subHeading={ t("devPortal:components.idp.templates.quickSetup.subHeading") }
                                 onTemplateSelect={ handleTemplateSelection }
+                                paginate={ true }
+                                paginationLimit={ 5 }
+                                paginationOptions={ {
+                                    showLessButtonLabel: t("common:showLess"),
+                                    showMoreButtonLabel: t("common:showMore")
+                                } }
+                                emptyPlaceholder={ (
+                                    <EmptyPlaceholder
+                                        image={ EmptyPlaceholderIllustrations.newList }
+                                        imageSize="tiny"
+                                        title={ t("devPortal:components.templates.emptyPlaceholder.title") }
+                                        subtitle={ [ t("devPortal:components.templates.emptyPlaceholder.subtitles") ] }
+                                    />
+                                ) }
+                                tagsSectionTitle={ t("common:services") }
                             />
                         </div>
                     )
@@ -312,6 +326,21 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
                     heading={ t("devPortal:components.idp.templates.manualSetup.heading") }
                     subHeading={ t("devPortal:components.idp.templates.manualSetup.subHeading") }
                     onTemplateSelect={ handleTemplateSelection }
+                    paginate={ true }
+                    paginationLimit={ 5 }
+                    paginationOptions={ {
+                        showLessButtonLabel: t("common:showLess"),
+                        showMoreButtonLabel: t("common:showMore")
+                    } }
+                    emptyPlaceholder={ (
+                        <EmptyPlaceholder
+                            image={ EmptyPlaceholderIllustrations.newList }
+                            imageSize="tiny"
+                            title={ t("devPortal:components.templates.emptyPlaceholder.title") }
+                            subtitle={ [ t("devPortal:components.templates.emptyPlaceholder.subtitles") ] }
+                        />
+                    ) }
+                    tagsSectionTitle={ t("common:services") }
                 />
             </div>
             { showWizard && (

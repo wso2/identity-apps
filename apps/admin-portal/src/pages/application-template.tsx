@@ -16,15 +16,14 @@
  * under the License.
  */
 
-import { ContentLoader } from "@wso2is/react-components";
+import { ContentLoader, EmptyPlaceholder, TemplateGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { ApplicationCreateWizard } from "../components";
 import { CustomApplicationTemplate } from "../components/applications/meta";
-import { TemplateGrid } from "../components/shared";
-import { ApplicationTemplateIllustrations } from "../configs";
+import { ApplicationTemplateIllustrations, EmptyPlaceholderIllustrations } from "../configs";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import { ApplicationTemplateListItemInterface } from "../models";
@@ -120,6 +119,21 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
                                 heading={ t("devPortal:components.applications.templates.quickSetup.heading") }
                                 subHeading={ t("devPortal:components.applications.templates.quickSetup.subHeading") }
                                 onTemplateSelect={ handleTemplateSelection }
+                                paginate={ true }
+                                paginationLimit={ 5 }
+                                paginationOptions={ {
+                                    showLessButtonLabel: t("common:showLess"),
+                                    showMoreButtonLabel: t("common:showMore")
+                                } }
+                                emptyPlaceholder={ (
+                                    <EmptyPlaceholder
+                                        image={ EmptyPlaceholderIllustrations.newList }
+                                        imageSize="tiny"
+                                        title={ t("devPortal:components.templates.emptyPlaceholder.title") }
+                                        subtitle={ [ t("devPortal:components.templates.emptyPlaceholder.subtitles") ] }
+                                    />
+                                ) }
+                                tagsSectionTitle={ t("common:technologies") }
                             />
                         </div>
                     )
@@ -134,6 +148,21 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
                     heading={ t("devPortal:components.applications.templates.manualSetup.heading") }
                     subHeading={ t("devPortal:components.applications.templates.manualSetup.subHeading") }
                     onTemplateSelect={ handleTemplateSelection }
+                    paginate={ true }
+                    paginationLimit={ 5 }
+                    paginationOptions={ {
+                        showLessButtonLabel: t("common:showLess"),
+                        showMoreButtonLabel: t("common:showMore")
+                    } }
+                    emptyPlaceholder={ (
+                        <EmptyPlaceholder
+                            image={ EmptyPlaceholderIllustrations.newList }
+                            imageSize="tiny"
+                            title={ t("devPortal:components.templates.emptyPlaceholder.title") }
+                            subtitle={ [ t("devPortal:components.templates.emptyPlaceholder.subtitles") ] }
+                        />
+                    ) }
+                    tagsSectionTitle={ t("common:technologies") }
                 />
             </div>
             { showWizard && (
