@@ -95,7 +95,7 @@ interface WithPropertiesInterface {
     /**
      * Template description
      */
-    description: TemplateCardPropsInterface["description"];
+    description?: TemplateCardPropsInterface["description"];
     /**
      * Template ID.
      */

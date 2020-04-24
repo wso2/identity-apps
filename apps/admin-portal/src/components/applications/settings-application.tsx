@@ -34,7 +34,7 @@ import {
 import { AppState } from "../../store";
 import { setAuthProtocolMeta } from "../../store/actions";
 import { AuthenticatorAccordion } from "../shared";
-import { ApplicationProtocolAddWizard } from "./wizard/application-add-protocol-wizard";
+import { ApplicationCreateWizard } from "./wizard/application-create-wizard";
 
 /**
  * Proptypes for the applications settings component.
@@ -405,7 +405,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                     </Grid.Row>
                     {
                         showWizard && (
-                            <ApplicationProtocolAddWizard
+                            <ApplicationCreateWizard
                                 title={ "Add New Protocol" }
                                 subTitle={ "Add new protocol to " + appName + " application " }
                                 closeWizard={ (): void => setShowWizard(false) }
