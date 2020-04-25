@@ -17,8 +17,9 @@
  */
 
 import { EmptyPlaceholder, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Divider, Grid, Segment, Table } from "semantic-ui-react";
+import _ from "lodash";
+import React, { FunctionComponent, ReactElement, useState } from "react";
+import { Button, Divider, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
 import { AttributeListItem } from "./attribute-list-item";
 import { AttributeSelectionWizard } from "./attribute-selection-wizard";
 import { EmptyPlaceholderIllustrations } from "../../../../configs";
@@ -59,6 +60,13 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     
     const [showSelectionModal, setShowSelectionModal] = useState<boolean>(false);
 
+    const [searchFilter, setSearchFilter] = useState<string>("");
+
+    const handleSearch = (event) => {
+        const changedValue = event.target.value;
+        setSearchFilter(changedValue);
+    }
+
     const handleOpenSelectionModal = () => {
         setShowSelectionModal(true);
     };
@@ -85,7 +93,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     };
 
     return (
-        selectedAttributesWithMapping &&
+        (selectedAttributesWithMapping || searchFilter) &&
         <>
             <Grid.Row>
                 <Grid.Column computer={ 10 }>
@@ -102,6 +110,15 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                         <Table basic="very" compact>
                                             <Table.Body>
                                                 <Table.Row>
+                                                    <Table.Cell>
+                                                        <Input
+                                                            icon={ <Icon name="search"/> }
+                                                            onChange={ handleSearch }
+                                                            placeholder="Search attributes"
+                                                            floated="left"
+                                                            size="small"
+                                                        />
+                                                    </Table.Cell>
                                                     <Table.Cell textAlign="right">
                                                         <Button
                                                             size="medium"
@@ -131,8 +148,13 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                 }
                                             </Table.Header>
                                             <Table.Body>
-                                                { selectedAttributesWithMapping?.sort((a, b) =>
-                                                    a.claim.displayName.localeCompare(b.claim.displayName))?.map(
+                                                { selectedAttributesWithMapping?.filter(
+                                                    mapping => _.isEmpty(searchFilter) ? true :
+                                                        mapping?.claim?.displayName?.startsWith(searchFilter)
+                                                )?.sort(
+                                                    (a, b) =>
+                                                        a.claim.displayName.localeCompare(b.claim.displayName)
+                                                )?.map(
                                                     mapping => {
                                                         return (
                                                             <AttributeListItem
@@ -144,7 +166,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                 mapping={ mapping?.mappedValue }
                                                             />
                                                         )
-                                                    }) }
+                                                    }
+                                                ) }
                                             </Table.Body>
                                         </Table>
                                     </Grid.Row>
