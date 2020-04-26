@@ -16,113 +16,64 @@
  * under the License.
  */
 
-import { CommonDeploymentConfigInterface, FeatureConfigInterface } from "@wso2is/core/models";
+import {
+    CommonConfigInterface,
+    CommonDeploymentConfigInterface,
+    FeatureAccessConfigInterface
+} from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+
+export type ConfigInterface = CommonConfigInterface<
+    DeploymentConfigInterface,
+    ServiceResourceEndpointsInterface,
+    FeatureConfigInterface,
+    I18nModuleOptionsInterface,
+    UIConfigInterface>;
 
 /**
  * Application configuration interface.
  */
-export interface AppConfigInterface {
+export interface FeatureConfigInterface {
     /**
      * Application management feature.
      */
-    applications: FeatureConfigInterface<ApplicationManagementFeaturesConfigInterface>;
+    applications?: FeatureAccessConfigInterface;
     /**
-     * Claims management feature.
+     * Attribute dialects(Claim dialects) feature.
      */
-    claimDialects: FeatureConfigInterface<ClaimDialectsConfigInterface>;
-    /**
-     * Identity provider management feature.
-     */
-    identityProviders: FeatureConfigInterface;
-    /**
-     * Server configurations feature.
-     */
-    serverConfigurations: FeatureConfigInterface;
-    /**
-     * User store configurations feature.
-     */
-    userStores: FeatureConfigInterface;
-    /**
-     * User management feature.
-     */
-    users: FeatureConfigInterface;
-    /**
-     * Role management feature.
-     */
-    roles: FeatureConfigInterface;
+    attributeDialects?: FeatureAccessConfigInterface;
     /**
      * Certificates configurations feature.
      */
-    certificates: FeatureConfigInterface<CertificatesConfigInterface>;
-}
-
-/**
- * Application management features interface.
- */
-export interface ApplicationManagementFeaturesConfigInterface {
+    certificates?: FeatureAccessConfigInterface;
     /**
-     * Application edit feature config.
+     * Email templates feature.
      */
-    edit: ApplicationEditFeaturesConfigInterface;
-}
-
-/**
- * Application edit config features.
- */
-export interface ApplicationEditFeaturesConfigInterface {
+    emailTemplates?: FeatureAccessConfigInterface;
     /**
-     * Application general settings configuration feature.
+     * General Configuration settings feature.
      */
-    generalSettings: FeatureConfigInterface;
+    generalConfigurations?: FeatureAccessConfigInterface;
     /**
-     * Application access configuration feature.
+     * Groups feature.
      */
-    accessConfiguration: FeatureConfigInterface;
+    groups?: FeatureAccessConfigInterface;
     /**
-     * Application attribute mapping feature.
+     * Identity provider management feature.
      */
-    attributeMapping: FeatureConfigInterface;
+    identityProviders?: FeatureAccessConfigInterface;
     /**
-     * Application sign on methods feature.
+     * Role management feature.
      */
-    signOnMethodConfiguration: FeatureConfigInterface;
+    roles?: FeatureAccessConfigInterface;
     /**
-     * Advance settings feature.
+     * User store configurations feature.
      */
-    advanceSettings: FeatureConfigInterface;
+    userStores?: FeatureAccessConfigInterface;
     /**
-     * Provisioning settings feature.
+     * User management feature.
      */
-    provisioningSettings: FeatureConfigInterface;
-}
-
-/**
- * Claim Dialects configs.
- */
-export interface ClaimDialectsConfigInterface {
-    /**
-     * Local claims configuration feature.
-     */
-    localClaims: FeatureConfigInterface;
-    /**
-     * External claims configuration feature.
-     */
-    externalClaims: FeatureConfigInterface;
-}
-
-/**
- * Certificates configs.
- */
-export interface CertificatesConfigInterface {
-    /**
-     * Keystore certificates configuration feature.
-     */
-    keystore: FeatureConfigInterface;
-    /**
-     * Truststore certificates configuration feature.
-     */
-    truststore: FeatureConfigInterface;
+    users?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -142,20 +93,9 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
 }
 
 /**
- * Runtime config interface.
- *
- * @remarks
- * Different config type i.e deployment, features, ui, etc. can be grouped under
- * runtime config. So, that the all the configs can be handled through one file.
- * TODO: Group the different configs rather than having them in a flat structure.
- * Proposed structure:
- * {
- *     "deployment": DeploymentConfigInterface,
- *     "i18n": I18nModuleOptionsInterface,
- *     "ui": <UI_CONFIGS>
- * }
+ * Dev portal UI config interface.
  */
-export interface RuntimeConfigInterface extends DeploymentConfigInterface {
+export interface UIConfigInterface {
     /**
      * Copyright text for the footer.
      */
@@ -168,14 +108,6 @@ export interface RuntimeConfigInterface extends DeploymentConfigInterface {
      * Application(SPs) that shouldn't be allowed to delete.
      */
     doNotDeleteIdentityProviders?: string[];
-    /**
-     * i18n module options.
-     */
-    i18nModuleOptions?: I18nModuleOptionsInterface;
-    /**
-     * Portal document structure URL.
-     */
-    portalDocumentationStructureURL?: string;
     /**
      * Title text.
      * ex: `WSO2 Identity Server`

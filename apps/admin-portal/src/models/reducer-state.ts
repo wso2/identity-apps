@@ -17,16 +17,26 @@
  */
 
 import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
+import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ApplicationTemplateListItemInterface } from "./application";
 import { AuthProtocolMetaListItemInterface, OIDCMetadataInterface } from "./application-inbound";
-import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "./config";
+import {
+    DeploymentConfigInterface,
+    FeatureConfigInterface,
+    ServiceResourceEndpointsInterface,
+    UIConfigInterface
+} from "./config";
 import { PortalDocumentationStructureInterface } from "./help-panel";
 
 /**
  * Dev portal config reducer state interface.
  */
-export type ConfigReducerStateInterface = CommonConfigReducerStateInterface<RuntimeConfigInterface,
-    ServiceResourceEndpointsInterface>;
+export type ConfigReducerStateInterface = CommonConfigReducerStateInterface<
+    DeploymentConfigInterface,
+    ServiceResourceEndpointsInterface,
+    FeatureConfigInterface,
+    I18nModuleOptionsInterface,
+    UIConfigInterface>;
 
 /**
  * Help panel reducer state interface.
