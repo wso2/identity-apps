@@ -88,6 +88,10 @@ interface DynamicFieldPropsInterface {
      * Called to initiate an update
      */
     update: (data: KeyValue[]) => void;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -109,7 +113,8 @@ export const DynamicField = (props: DynamicFieldPropsInterface): ReactElement =>
         valueRequiredErrorMessage,
         listen,
         requiredField,
-        duplicateKeyErrorMsg
+        duplicateKeyErrorMsg,
+        readOnly
     } = props;
 
     const [fields, setFields] = useState<Map<number, KeyValue>>();
@@ -235,6 +240,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): ReactElement =>
                                                             }
                                                         }
                                                     }
+                                                    readOnly={ readOnly }
                                                 />
                                             )
                                             : (
@@ -244,6 +250,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): ReactElement =>
                                                     required={ requiredField }
                                                     requiredErrorMessage={ keyRequiredMessage }
                                                     name="key"
+                                                    readOnly={ readOnly }
                                                 />
                                             )
                                         }
@@ -255,10 +262,12 @@ export const DynamicField = (props: DynamicFieldPropsInterface): ReactElement =>
                                             required={ requiredField }
                                             requiredErrorMessage={ valueRequiredErrorMessage }
                                             name="value"
+                                            readOnly={ readOnly }
                                         />
                                     </List.Item>
                                     <List.Item>
                                         <Popup
+                                            disabled={ readOnly }
                                             trigger={ (
                                                 <Button
                                                     type="button"
@@ -268,6 +277,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): ReactElement =>
                                                     onClick={ () => {
                                                         setAdd();
                                                     } }
+                                                    disabled={ readOnly }
                                                 />
                                             ) }
                                             position="top center"
