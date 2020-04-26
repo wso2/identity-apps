@@ -23,7 +23,8 @@
         "compile": "run-script-os",
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
         "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
-        "lint": "tslint -t stylish --project ."
+        "lint": "eslint --ext .js,.ts .",
+        "test": "jest --passWithNoTests"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -37,17 +38,21 @@
     },
     "peerDependencies": {
         "@types/history": "*",
+        "@types/jest": "*",
         "@types/lodash": "*",
+        "@types/node": "*",
         "@types/react": "*",
         "@types/react-notification-system": "*",
         "@types/ua-parser-js": "*",
         "axios": "*",
         "history": "*",
+        "jest": "*",
         "lodash": "*",
         "react": "*",
         "react-notification-system": "*",
         "tslint": "*",
         "typescript": "*",
+        "ts-jest": "*",
         "ua-parser-js": "*"
     }
 }
