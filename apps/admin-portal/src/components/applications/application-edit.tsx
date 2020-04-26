@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, ResourceTab } from "@wso2is/react-components";
 import _ from "lodash";
@@ -30,11 +31,12 @@ import { ProvisioningSettings } from "./provisioning";
 import { ApplicationSettings } from "./settings-application";
 import { SignOnMethods } from "./sign-on-methods";
 import { getInboundProtocolConfig } from "../../api";
+import { ApplicationManagementConstants } from "../../constants";
 import {
-    ApplicationEditFeaturesConfigInterface,
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
+    FeatureConfigInterface,
     SupportedAuthProtocolTypes
 } from "../../models";
 import { AppState } from "../../store";
@@ -43,15 +45,11 @@ import { ApplicationManagementUtils } from "../../utils";
 /**
  * Proptypes for the applications edit component.
  */
-interface EditApplicationPropsInterface {
+interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
      * Editing application.
      */
     application: ApplicationInterface;
-    /**
-     * Set of edit features.
-     */
-    features?: ApplicationEditFeaturesConfigInterface;
     /**
      * Is the data still loading.
      */
@@ -64,10 +62,6 @@ interface EditApplicationPropsInterface {
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
-    /**
-     * CRUD permissions,
-     */
-    permissions?: CRUDPermissionsInterface;
     /**
      * Application template.
      */
@@ -86,11 +80,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const {
         application,
-        features,
+        featureConfig,
         isLoading,
         onDelete,
         onUpdate,
-        permissions,
         template
     } = props;
 
@@ -196,7 +189,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 isLoading={ isLoading }
                 onDelete={ onDelete }
                 onUpdate={ onUpdate }
-                permissions={ permissions }
+                featureConfig={ featureConfig }
                 // TODO we need check whether application is active or not as well.
                 showRevoke={
                     inboundProtocolList.some((protocol) => protocol.id === SupportedAuthProtocolTypes.OIDC)
@@ -216,7 +209,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 isInboundProtocolConfigRequestLoading={ isInboundProtocolConfigRequestLoading }
                 inboundProtocolConfig={ inboundProtocolConfig }
                 inboundProtocols={ inboundProtocolList }
-                permissions={ permissions }
+                featureConfig={ featureConfig }
             />
         </ResourceTab.Pane>
     );
@@ -226,7 +219,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             <AttributeSettings
                 appId={ application.id }
                 claimConfigurations={ application.claimConfiguration }
-                permissions={ permissions }
+                featureConfig={ featureConfig }
                 isOIDCConfigured={
                     inboundProtocolList.some((protocol) => protocol.id === SupportedAuthProtocolTypes.OIDC)
                 }
@@ -242,7 +235,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 authenticationSequence={ application.authenticationSequence }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
-                permissions={ permissions }
+                featureConfig={ featureConfig }
             />
         </ResourceTab.Pane>
     );
@@ -253,7 +246,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 advancedConfigurations={ application.advancedConfigurations }
                 onUpdate={ onUpdate }
-                permissions={ permissions }
+                featureConfig={ featureConfig }
             />
         </ResourceTab.Pane>
     );
@@ -264,7 +257,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 provisioningConfigurations={ application.provisioningConfigurations }
                 onUpdate={ onUpdate }
-                permissions={ permissions }
+                featureConfig={ featureConfig }
             />
         </ResourceTab.Pane>
     );
@@ -277,44 +270,49 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const resolveTabPanes = (): any[] => {
         const panes: any[] = [];
 
-        if (features) {
-            if (features.generalSettings === undefined || features.generalSettings.enabled !== false) {
+        if (featureConfig) {
+            if (isFeatureEnabled(featureConfig?.applications,
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))) {
 
                 panes.push({
                     menuItem: "General",
                     render: GeneralApplicationSettingsTabPane
                 });
             }
-            if (features.accessConfiguration === undefined || features.accessConfiguration.enabled !== false) {
+            if (isFeatureEnabled(featureConfig?.applications,
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))) {
 
                 panes.push({
                     menuItem: "Access",
                     render: ApplicationSettingsTabPane
                 });
             }
-            if (features.attributeMapping === undefined || features.attributeMapping.enabled !== false) {
+            if (isFeatureEnabled(featureConfig?.applications,
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))) {
 
                 panes.push({
                     menuItem: "Attributes",
                     render: AttributeSettingTabPane
                 });
             }
-            if (features.signOnMethodConfiguration === undefined
-                || features.signOnMethodConfiguration.enabled !== false) {
+            if (isFeatureEnabled(featureConfig?.applications,
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))) {
 
                 panes.push({
                     menuItem: "Sign-on Method",
                     render: SignOnMethodsTabPane
                 });
             }
-            if (features === undefined || features.provisioningSettings.enabled !== false) {
+            if (isFeatureEnabled(featureConfig?.applications,
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))) {
 
                 panes.push({
                     menuItem: "Provisioning",
                     render: ProvisioningSettingsTabPane
                 });
             }
-            if (features.advanceSettings === undefined || features.advanceSettings.enabled !== false) {
+            if (isFeatureEnabled(featureConfig?.applications,
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))) {
 
                 panes.push({
                     menuItem: "Advanced",

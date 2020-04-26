@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -28,13 +28,14 @@ import { updateAuthenticationSequence } from "../../../api";
 import {
     AdaptiveAuthTemplateInterface,
     AuthenticationSequenceInterface,
-    AuthenticationStepInterface
+    AuthenticationStepInterface,
+    FeatureConfigInterface
 } from "../../../models";
 
 /**
  * Proptypes for the sign on methods component.
  */
-interface SignOnMethodsPropsInterface {
+interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
      * ID of the application.
      */
@@ -51,10 +52,6 @@ interface SignOnMethodsPropsInterface {
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
-    /**
-     * CRUD permissions,
-     */
-    permissions?: CRUDPermissionsInterface;
 }
 
 /**

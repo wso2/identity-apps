@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { hasRequiredScopes } from "@wso2is/core/dist/src/helpers";
+import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AppAvatar, ConfirmationModal, ResourceList, ResourceListActionInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -28,7 +29,7 @@ import {
     ApplicationListInterface,
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface,
-    ConfigReducerStateInterface
+    ConfigReducerStateInterface, FeatureConfigInterface
 } from "../../models";
 import { AppState } from "../../store";
 import { ApplicationManagementUtils } from "../../utils";
@@ -37,7 +38,7 @@ import { ApplicationManagementUtils } from "../../utils";
  *
  * Proptypes for the applications list component.
  */
-interface ApplicationListPropsInterface {
+interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
      * Application list.
      */
@@ -46,10 +47,6 @@ interface ApplicationListPropsInterface {
      * On application delete callback.
      */
     onApplicationDelete: () => void;
-    /**
-     * CRUD permissions,
-     */
-    permissions?: CRUDPermissionsInterface;
 }
 
 /**
@@ -63,9 +60,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 ): ReactElement => {
 
     const {
+        featureConfig,
         list,
-        onApplicationDelete,
-        permissions
+        onApplicationDelete
     } = props;
 
     const dispatch = useDispatch();
@@ -158,20 +155,18 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             }
         ];
 
-        if (permissions && permissions.delete === false) {
-            return actions;
+        if (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.delete)) {
+            actions.push({
+                hidden: config.ui.doNotDeleteApplications.includes(app.name),
+                icon: "trash alternate",
+                onClick: (): void => {
+                    setShowDeleteConfirmationModal(true);
+                    setDeletingApplication(app);
+                },
+                popupText: "Delete",
+                type: "button"
+            });
         }
-
-        actions.push({
-            hidden: config.ui.doNotDeleteApplications.includes(app.name),
-            icon: "trash alternate",
-            onClick: (): void => {
-                setShowDeleteConfirmationModal(true);
-                setDeletingApplication(app);
-            },
-            popupText: "Delete",
-            type: "button"
-        });
 
         return actions;
     };

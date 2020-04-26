@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, EmptyPlaceholder, GenericIconProps, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
@@ -29,6 +29,7 @@ import { getAuthProtocolMetadata, regenerateClientSecret, updateAuthProtocolConf
 import { EmptyPlaceholderIllustrations, InboundProtocolLogos } from "../../configs";
 import {
     AuthProtocolMetaListItemInterface,
+    FeatureConfigInterface,
     SupportedAuthProtocolMetaTypes,
     SupportedAuthProtocolTypes
 } from "../../models";
@@ -39,7 +40,7 @@ import { AuthenticatorAccordion } from "../shared";
 /**
  * Proptypes for the applications settings component.
  */
-interface ApplicationSettingsPropsInterface {
+interface ApplicationSettingsPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
      * Currently editing application id.
      */
@@ -68,10 +69,6 @@ interface ApplicationSettingsPropsInterface {
      *  Is inbound protocol config request is still loading.
      */
     isInboundProtocolConfigRequestLoading: boolean;
-    /**
-     * CRUD permissions,
-     */
-    permissions?: CRUDPermissionsInterface;
 }
 
 /**

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import _ from "lodash";
@@ -33,6 +33,7 @@ import {
     ClaimDialect,
     ClaimMappingInterface,
     ExternalClaim,
+    FeatureConfigInterface,
     RoleConfigInterface,
     RoleMappingInterface,
     SubjectConfigInterface
@@ -69,7 +70,7 @@ export interface AdvanceSettingsSubmissionInterface {
     role: RoleConfigInterface;
 }
 
-interface AttributeSelectionPropsInterface {
+interface AttributeSelectionPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
      * Id of the application.
      */
@@ -82,10 +83,6 @@ interface AttributeSelectionPropsInterface {
      * Is OIDC configured for the application.
      */
     isOIDCConfigured: boolean;
-    /**
-     * CRUD permissions,
-     */
-    permissions?: CRUDPermissionsInterface;
 }
 
 export const getLocalDialectURI = (): string => {

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -24,12 +24,12 @@ import { useDispatch } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { AdvancedConfigurationsForm } from "./forms";
 import { updateApplicationConfigurations } from "../../api";
-import { AdvancedConfigurationsInterface } from "../../models";
+import { AdvancedConfigurationsInterface, FeatureConfigInterface } from "../../models";
 
 /**
  * Proptypes for the advance settings component.
  */
-interface AdvanceSettingsPropsInterface {
+interface AdvanceSettingsPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
      * Currently editing application id.
      */
@@ -42,10 +42,6 @@ interface AdvanceSettingsPropsInterface {
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
-    /**
-     * CRUD permissions,
-     */
-    permissions?: CRUDPermissionsInterface;
 }
 
 /**

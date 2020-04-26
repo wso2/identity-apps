@@ -16,21 +16,27 @@
  * under the License.
  */
 
-import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { hasRequiredScopes } from "@wso2is/core/dist/src/helpers";
+import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GeneralDetailsForm } from "./forms";
 import { deleteApplication, revokeClientSecret, updateApplicationDetails } from "../../api";
-import { ApplicationInterface, ApplicationTemplateListItemInterface, ConfigReducerStateInterface } from "../../models";
+import {
+    ApplicationInterface,
+    ApplicationTemplateListItemInterface,
+    ConfigReducerStateInterface,
+    FeatureConfigInterface
+} from "../../models";
 import { AppState } from "../../store";
 import { ApplicationManagementUtils } from "../../utils";
 
 /**
  * Proptypes for the applications general details component.
  */
-interface GeneralApplicationSettingsInterface {
+interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
      * Application access URL.
      */
@@ -68,10 +74,6 @@ interface GeneralApplicationSettingsInterface {
      */
     onUpdate: (id: string) => void;
     /**
-     * CRUD permissions,
-     */
-    permissions?: CRUDPermissionsInterface;
-    /**
      * whether to show regenerate in danger zones or not
      */
     showRegenerate?: boolean;
@@ -100,12 +102,12 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         name,
         description,
         discoverability,
+        featureConfig,
         imageUrl,
         accessUrl,
         isLoading,
         onDelete,
         onUpdate,
-        permissions,
         showRevoke,
         template
     } = props;
@@ -235,28 +237,29 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         accessUrl={ accessUrl }
                     />
                     {
-                        (permissions && permissions.delete === false)
-                            ? null
-                            : !config.ui.doNotDeleteApplications.includes(name) && (
-                            <DangerZoneGroup sectionHeader="Danger Zone">
-                                { showRevoke && (
+                        (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.delete))
+                            ? !config.ui.doNotDeleteApplications.includes(name) && (
+                                <DangerZoneGroup sectionHeader="Danger Zone">
+                                    { showRevoke && (
+                                        <DangerZone
+                                            actionTitle="Revoke"
+                                            header="Revoke the application"
+                                            subheader="This action is reversible but cannot use the same
+                                                    client secret. Please proceed with caution."
+                                            onActionClick={ (): void => setShowRevokeConfirmationModal(true) }
+                                        />
+                                    )
+                                    }
                                     <DangerZone
-                                        actionTitle="Revoke"
-                                        header="Revoke the application"
-                                        subheader="This action is reversible but cannot use the same
-                                                client secret. Please proceed with caution."
-                                        onActionClick={ (): void => setShowRevokeConfirmationModal(true) }
+                                        actionTitle="Delete"
+                                        header="Delete application"
+                                        subheader={ "Once you delete an application, there is no going back. " +
+                                        "Please be certain." }
+                                        onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
                                     />
-                                )
-                                }
-                                <DangerZone
-                                    actionTitle="Delete"
-                                    header="Delete application"
-                                    subheader="Once you delete an application, there is no going back. Please be certain."
-                                    onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
-                                />
-                            </DangerZoneGroup>
-                        )
+                                </DangerZoneGroup>
+                            )
+                            : null
                     }
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }

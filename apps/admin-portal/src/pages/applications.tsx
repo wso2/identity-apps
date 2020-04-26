@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
@@ -25,19 +26,19 @@ import React, {
     MouseEvent,
     ReactElement,
     SyntheticEvent,
-    useContext,
     useEffect,
     useState
 } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getApplicationList } from "../api";
 import { ApplicationList, ApplicationSearch } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
-import { ApplicationConstants, ApplicationManagementConstants } from "../constants";
-import { AppConfig, history } from "../helpers";
+import { ApplicationConstants } from "../constants";
+import { history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
-import { AppConfigInterface, ApplicationListInterface } from "../models";
+import { ApplicationListInterface, FeatureConfigInterface } from "../models";
+import { AppState } from "../store";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -74,7 +75,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
 
     const dispatch = useDispatch();
 
-    const appConfig: AppConfigInterface = useContext(AppConfig);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
 
     const [ searchQuery, setSearchQuery ] = useState("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
@@ -84,18 +85,6 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(DEFAULT_APP_LIST_ITEM_LIMIT);
     const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
-    const [ permissions, setPermissions ] = useState<CRUDPermissionsInterface>(undefined);
-
-    /**
-     * Called when the app config value changes.
-     */
-    useEffect(() => {
-        if (!appConfig) {
-            return;
-        }
-
-        setPermissions(_.get(appConfig, ApplicationManagementConstants.CRUD_PERMISSIONS_APP_CONFIG_KEY));
-    }, [ appConfig ]);
 
     /**
      * Called on every `listOffset` & `listItemLimit` change.
@@ -261,9 +250,8 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                 onPageChange={ handlePaginationChange }
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
                 rightActionPanel={
-                    permissions && permissions.create === false
-                        ? null
-                        : (
+                    (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.create))
+                        ? (
                             <PrimaryButton
                                 onClick={ (): void => {
                                     history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
@@ -272,6 +260,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                                 <Icon name="add"/>New Application
                             </PrimaryButton>
                         )
+                        : null
                 }
                 showPagination={ true }
                 showTopActionPanel={ !(!searchQuery && appList?.totalResults <= 0) }
@@ -285,7 +274,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                         appList?.applications instanceof Array && appList.applications.length > 0)
                         ? (
                             <ApplicationList
-                                permissions={ permissions }
+                                featureConfig={ featureConfig }
                                 list={ appList }
                                 onApplicationDelete={ handleApplicationDelete }
                             />
