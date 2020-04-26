@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, EmptyPlaceholder, GenericIconProps, PrimaryButton } from "@wso2is/react-components";
@@ -84,6 +85,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
     const {
         appId,
         appName,
+        featureConfig,
         inboundProtocolConfig,
         inboundProtocols,
         isLoading,
@@ -218,6 +220,12 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                 }
                                 type={ SupportedAuthProtocolTypes.OIDC }
                                 handleApplicationRegenerate={ handleApplicationRegenerate }
+                                readOnly={
+                                    !hasRequiredScopes(
+                                        featureConfig?.applications,
+                                        featureConfig?.applications?.scopes?.update
+                                    )
+                                }
                             />
                         ),
                         id: SupportedAuthProtocolTypes.OIDC,
@@ -242,6 +250,12 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                         SupportedAuthProtocolTypes.SAML)
                                 }
                                 type={ SupportedAuthProtocolTypes.SAML }
+                                readOnly={
+                                    !hasRequiredScopes(
+                                        featureConfig?.applications,
+                                        featureConfig?.applications?.scopes?.update
+                                    )
+                                }
                             />
                         ),
                         id: SupportedAuthProtocolTypes.SAML,
@@ -265,6 +279,12 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                         SupportedAuthProtocolTypes.WS_FEDERATION)
                                 }
                                 type={ SupportedAuthProtocolTypes.WS_FEDERATION }
+                                readOnly={
+                                    !hasRequiredScopes(
+                                        featureConfig?.applications,
+                                        featureConfig?.applications?.scopes?.update
+                                    )
+                                }
                             />
                         ),
                         id: SupportedAuthProtocolTypes.WS_FEDERATION,
@@ -289,6 +309,12 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                         SupportedAuthProtocolTypes.WS_TRUST)
                                 }
                                 type={ SupportedAuthProtocolTypes.WS_TRUST }
+                                readOnly={
+                                    !hasRequiredScopes(
+                                        featureConfig?.applications,
+                                        featureConfig?.applications?.scopes?.update
+                                    )
+                                }
                             />
                         ),
                         id: SupportedAuthProtocolTypes.WS_TRUST,
@@ -352,32 +378,41 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                 <Grid>
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            { alreadySelectedProtocols.length > 0 ?
-                                <Button
-                                    floated="right"
-                                    primary
-                                    onClick={ () => setShowWizard(true) }
-                                >
-                                    <Icon name="add"/>New Protocol
-                                </Button> :
-                                <EmptyPlaceholder
-                                    action={ (
-                                        <PrimaryButton
-                                            onClick={ () => setShowWizard(true) }
-                                        >
-                                            <Icon name="add"/>New Protocol
-                                        </PrimaryButton>
-                                    ) }
-                                    image={ EmptyPlaceholderIllustrations.newList }
-                                    imageSize="tiny"
-                                    title={ "Add a protocol" }
-                                    subtitle={ [
-                                        "There are currently no protocols available.",
-                                        "You can add protocol easily by using the",
-                                        "predefined templates."
-                                    ] }
-                                />
-
+                            {
+                                alreadySelectedProtocols.length > 0
+                                    ? hasRequiredScopes(
+                                        featureConfig?.applications,
+                                        featureConfig?.applications?.scopes?.update) && (
+                                            <Button
+                                                floated="right"
+                                                primary
+                                                onClick={ () => setShowWizard(true) }
+                                            >
+                                                <Icon name="add"/>New Protocol
+                                            </Button>
+                                    )
+                                    : (
+                                        <EmptyPlaceholder
+                                            action={
+                                                hasRequiredScopes(
+                                                    featureConfig?.applications,
+                                                    featureConfig?.applications?.scopes?.update) && (
+                                                        <PrimaryButton onClick={ () => setShowWizard(true) }>
+                                                            <Icon name="add" />
+                                                            New Protocol
+                                                        </PrimaryButton>
+                                                )
+                                            }
+                                            image={ EmptyPlaceholderIllustrations.newList }
+                                            imageSize="tiny"
+                                            title={ "Add a protocol" }
+                                            subtitle={ [
+                                                "There are currently no protocols available.",
+                                                "You can add protocol easily by using the",
+                                                "predefined templates."
+                                            ] }
+                                        />
+                                    )
                             }
                         </Grid.Column>
                     </Grid.Row>

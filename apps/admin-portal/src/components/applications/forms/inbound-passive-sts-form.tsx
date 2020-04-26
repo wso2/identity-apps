@@ -30,6 +30,10 @@ import { PassiveStsConfigurationInterface } from "../../../models";
 interface InboundPassiveStsFormPropsInterface {
     initialValues: PassiveStsConfigurationInterface;
     onSubmit: (values: any) => void;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -44,7 +48,8 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
 
     const {
         initialValues,
-        onSubmit
+        onSubmit,
+        readOnly
     } = props;
 
     /**
@@ -78,7 +83,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                             placeholder="Enter realm."
                             type="text"
                             value={ initialValues?.realm }
-                            readOnly={ !(_.isEmpty(initialValues?.realm)) }
+                            readOnly={ readOnly || !(_.isEmpty(initialValues?.realm)) }
                         />
                         <Hint disabled={ !(_.isEmpty(initialValues?.realm)) }>
                             Enter realm identifier for passive sts
@@ -101,17 +106,22 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                             } }
                             type="text"
                             value={ initialValues?.replyTo }
+                            readOnly={ readOnly }
                         />
                         <Hint>Enter RP endpoint URL that handles the response.</Hint>
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Button primary type="submit" size="small" className="form-button">
-                            Update
-                        </Button>
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    !readOnly && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Button primary type="submit" size="small" className="form-button">
+                                    Update
+                                </Button>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
             </Grid>
         </Forms>
     );

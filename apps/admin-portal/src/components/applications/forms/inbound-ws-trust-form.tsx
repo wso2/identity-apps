@@ -30,6 +30,10 @@ interface InboundWSTrustFormPropsInterface {
     metadata: WSTrustMetaDataInterface;
     initialValues: WSTrustConfigurationInterface;
     onSubmit: (values: any) => void;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -45,7 +49,8 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
     const {
         metadata,
         initialValues,
-        onSubmit
+        onSubmit,
+        readOnly
     } = props;
 
     /**
@@ -96,7 +101,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                     placeholder="Enter audience"
                                     type="text"
                                     value={ initialValues?.audience }
-                                    readOnly={ !(_.isEmpty(initialValues?.audience)) }
+                                    readOnly={ readOnly || !(_.isEmpty(initialValues?.audience)) }
                                 />
 
                                 <Hint disabled={ !(_.isEmpty(initialValues?.audience)) }>
@@ -118,17 +123,22 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                         initialValues?.certificateAlias
                                     }
                                     children={ getCertificateOptions(metadata?.certificateAlias) }
+                                    readOnly={ readOnly }
                                 />
                                 <Hint>Public certificate of the trusted relying party.</Hint>
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Button primary type="submit" size="small" className="form-button">
-                                    Update
-                                </Button>
-                            </Grid.Column>
-                        </Grid.Row>
+                        {
+                            !readOnly && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                        <Button primary type="submit" size="small" className="form-button">
+                                            Update
+                                        </Button>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                        }
                     </Grid>
                 </Forms>
             )
