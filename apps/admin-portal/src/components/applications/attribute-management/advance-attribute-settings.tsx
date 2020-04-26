@@ -30,6 +30,10 @@ interface AdvanceAttributeSettingsPropsInterface {
     initialSubject: SubjectConfigInterface;
     initialRole: RoleConfigInterface;
     claimMappingOn: boolean;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSettingsPropsInterface> = (
@@ -42,7 +46,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         triggerSubmission,
         initialSubject,
         initialRole,
-        claimMappingOn
+        claimMappingOn,
+        readOnly
     } = props;
 
     /**
@@ -101,6 +106,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             type="dropdown"
                             value={ initialSubject?.claim?.uri || dropDownOptions[0]?.value }
                             children={ dropDownOptions }
+                            readOnly={ readOnly }
                         />
                         <Hint>
                             Choose the attribute
@@ -124,6 +130,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     }
                                 ]
                             }
+                            readOnly={ readOnly }
                         />
                         <Hint>This option will append the user store domain that the user resides in
                             the local subject identifier</Hint>
@@ -146,6 +153,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     }
                                 ]
                             }
+                            readOnly={ readOnly }
                         />
                         <Hint>
                             This option will append the tenant domain to the local subject identifier
@@ -169,6 +177,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     }
                                 ]
                             }
+                            readOnly={ readOnly }
                         />
                         <Hint>
                             This option will use the local subject identifier when asserting the identity
@@ -191,6 +200,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             type="dropdown"
                             value={ initialRole?.claim?.uri }
                             children={ dropDownOptions }
+                            readOnly={ readOnly }
                         />
                         <Hint>
                             Choose the attribute
@@ -214,6 +224,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     }
                                 ]
                             }
+                            readOnly={ readOnly }
                         />
                         <Hint>This option will append the user store domain that the user resides to role</Hint>
                     </Grid.Column>
