@@ -169,12 +169,13 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                         onSubmit={ handleFormSubmit }
                         imageUrl={ imageUrl }
                     />
-                    { !(config.deployment.doNotDeleteIdentityProviders.includes(name)) && (
+                    { !(config.ui.doNotDeleteIdentityProviders.includes(name)) && (
                         <DangerZoneGroup sectionHeader="Danger Zone">
                             <DangerZone
                                 actionTitle="Delete Identity Provider"
                                 header="Delete identity provider"
-                                subheader="Once you delete an identity provider, there is no going back. Please be certain."
+                                subheader={ "Once you delete an identity provider, there is no going back." +
+                                " Please be certain." }
                                 onActionClick={ handleIdentityProviderDelete }
                             />
                         </DangerZoneGroup>

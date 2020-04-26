@@ -237,7 +237,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     {
                         (permissions && permissions.delete === false)
                             ? null
-                            : !config.deployment.doNotDeleteApplications.includes(name) && (
+                            : !config.ui.doNotDeleteApplications.includes(name) && (
                             <DangerZoneGroup sectionHeader="Danger Zone">
                                 { showRevoke && (
                                     <DangerZone
