@@ -19,7 +19,10 @@
 import {
     CommonConfigActionTypes,
     SetDeploymentConfigsActionInterface,
-    SetServiceResourceEndpointsActionInterface
+    SetFeatureConfigsActionInterface,
+    SetI18nConfigsActionInterface,
+    SetServiceResourceEndpointsActionInterface,
+    SetUIConfigsActionInterface
 } from "./types";
 
 /**
@@ -44,4 +47,40 @@ export const setDeploymentConfigs = <T>(configs: T): SetDeploymentConfigsActionI
 export const setServiceResourceEndpoints = <T>(endpoints: T): SetServiceResourceEndpointsActionInterface<T> => ({
     payload: endpoints,
     type: CommonConfigActionTypes.SET_SERVICE_RESOURCE_ENDPOINTS
+});
+
+/**
+ * Redux action to set the app feature configs.
+ *
+ * @param {T} configs - Feature configs.
+ *
+ * @return {SetFeatureConfigsActionInterface<T>} An action of type `CommonConfigActionTypes.SET_FEATURE_CONFIGS`
+ */
+export const setFeatureConfigs = <T>(configs: T): SetFeatureConfigsActionInterface<T> => ({
+    payload: configs,
+    type: CommonConfigActionTypes.SET_FEATURE_CONFIGS
+});
+
+/**
+ * Redux action to set the i18n configs.
+ *
+ * @param {T} configs - I18n configs.
+ *
+ * @return {SetI18nConfigsActionInterface<T>} An action of type `CommonConfigActionTypes.SET_I18N_CONFIGS`
+ */
+export const setI18nConfigs = <T>(configs: T): SetI18nConfigsActionInterface<T> => ({
+    payload: configs,
+    type: CommonConfigActionTypes.SET_I18N_CONFIGS
+});
+
+/**
+ * Redux action to set the UI configs.
+ *
+ * @param {T} configs - UI configs.
+ *
+ * @return {SetUIConfigsActionInterface<T>} An action of type `CommonConfigActionTypes.SET_UI_CONFIGS`
+ */
+export const setUIConfigs = <T>(configs: T): SetUIConfigsActionInterface<T> => ({
+    payload: configs,
+    type: CommonConfigActionTypes.SET_UI_CONFIGS
 });
