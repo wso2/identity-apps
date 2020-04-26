@@ -19,7 +19,7 @@
 import { isFeatureEnabled } from "../../helpers";
 import { configMock } from "../__mocks__";
 
-describe("If feature enable checker helper function", () => {
+describe("Feature enable checker helper function", () => {
 
     test("Should return true for a feature when disabled features attribute is not defined", () => {
         expect(isFeatureEnabled(configMock.features.applications, "application.edit")).toBe(true);

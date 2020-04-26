@@ -21,7 +21,7 @@ export const configMock = {
     features: {
         applications: {
             scopes: {
-                create: [ "internal_application_mgt_create" ],
+                create: [],
                 read: [ "internal_application_mgt_view" ],
                 update: [ "internal_application_mgt_update" ],
                 delete: [ "internal_application_mgt_delete" ]
