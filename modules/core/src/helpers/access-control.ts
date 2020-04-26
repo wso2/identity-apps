@@ -18,6 +18,7 @@
 
 import _ from "lodash";
 import { FeatureAccessConfigInterface } from "../models";
+import { AuthenticateUtils } from "../utils";
 
 /**
  * Checks if the feature is enabled.
@@ -39,6 +40,27 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
 
     if (key instanceof Array) {
         return !key.some((item) => feature.disabledFeatures.includes(item));
+    }
+
+    return true;
+};
+
+/**
+ * Checks if the required scopes are available to perform the desired CRUD operation.
+ *
+ * @param {FeatureAccessConfigInterface} feature - Evaluating feature.
+ * @param {string[]} scopes - Set of scopes to check.
+ * @return {boolean} True is scopes are enough and false if not.
+ */
+export const hasRequiredScopes = (feature: FeatureAccessConfigInterface, scopes: string[]): boolean => {
+    const isDefined = feature?.scopes && !_.isEmpty(feature.scopes) && scopes && !_.isEmpty(scopes);
+
+    if (!isDefined) {
+        return true;
+    }
+
+    if (scopes instanceof Array) {
+        return scopes.every((scope) => AuthenticateUtils.hasScope(scope));
     }
 
     return true;
