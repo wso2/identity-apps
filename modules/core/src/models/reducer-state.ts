@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { CommonConfigInterface } from "./config";
 import { AlertInterface } from "./global";
 import { LinkedAccountInterface, ProfileInfoInterface, ProfileSchemaInterface } from "./profile";
 
@@ -91,7 +92,4 @@ export interface CommonProfileReducerStateInterface {
 /**
  * Interface for common config reducer state.
  */
-export interface CommonConfigReducerStateInterface<T, S> {
-    deployment?: T;
-    endpoints?: S;
-}
+export type CommonConfigReducerStateInterface<T, S, U, V, W> = CommonConfigInterface<T, S, U, V, W>;
