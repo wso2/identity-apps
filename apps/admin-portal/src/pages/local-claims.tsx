@@ -16,19 +16,21 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useContext, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { ReactElement, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getADialect, getAllLocalClaims } from "../api";
 import { ClaimsList, ListType, LocalClaimsSearch } from "../components";
 import { AddLocalClaims } from "../components";
 import { CLAIM_DIALECTS_PATH, UserConstants } from "../constants";
-import { AppConfig, history } from "../helpers";
+import { history } from "../helpers";
 import { ListLayout } from "../layouts";
 import { PageLayout } from "../layouts";
-import { AlertLevels, AppConfigInterface, Claim, ClaimsGetParams } from "../models";
-import { addAlert } from "../store/actions";
+import { AlertLevels, Claim, ClaimsGetParams, FeatureConfigInterface } from "../models";
+import { AppState } from "../store";
 import { filterList, sortList } from "../utils";
 
 /**
@@ -54,6 +56,8 @@ export const LocalClaimsPage = (): ReactElement => {
         }
     ];
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
+
     const [claims, setClaims] = useState<Claim[]>(null);
     const [offset, setOffset] = useState(0);
     const [listItemLimit, setListItemLimit] = useState<number>(0);
@@ -64,8 +68,6 @@ export const LocalClaimsPage = (): ReactElement => {
     const [sortOrder, setSortOrder] = useState(true);
 
     const dispatch = useDispatch();
-
-    const appConfig: AppConfigInterface = useContext(AppConfig);
 
     /**
     * Fetches all the local claims.
@@ -217,7 +219,9 @@ export const LocalClaimsPage = (): ReactElement => {
                     onPageChange={ handlePaginationChange }
                     onSortStrategyChange={ handleSortStrategyChange }
                     rightActionPanel={
-                        appConfig?.claimDialects?.features?.localClaims?.permissions?.create && (
+                        hasRequiredScopes(
+                            featureConfig?.attributeDialects,
+                            featureConfig?.attributeDialects?.scopes?.create) && (
                             <PrimaryButton
                                 onClick={ () => {
                                     setOpenModal(true);

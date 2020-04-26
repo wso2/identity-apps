@@ -16,19 +16,21 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useContext, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { ReactElement, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
 import { getDialects } from "../api";
-import { AddDialect, DialectSearch, AvatarBackground } from "../components";
+import { AddDialect, AvatarBackground, DialectSearch } from "../components";
 import { ClaimsList, ListType } from "../components";
 import { LOCAL_CLAIMS_PATH, UserConstants } from "../constants";
-import { AppConfig, history } from "../helpers";
+import { history } from "../helpers";
 import { ListLayout } from "../layouts";
 import { PageLayout } from "../layouts";
-import { AlertLevels, AppConfigInterface, ClaimDialect } from "../models";
+import { AlertLevels, ClaimDialect, FeatureConfigInterface } from "../models";
+import { AppState } from "../store";
 import { filterList, sortList } from "../utils";
 
 /**
@@ -49,6 +51,8 @@ export const ClaimDialectsPage = (): ReactElement => {
         }
     ];
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
+
     const [ dialects, setDialects ] = useState<ClaimDialect[]>(null);
     const [ offset, setOffset ] = useState(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
@@ -57,8 +61,6 @@ export const ClaimDialectsPage = (): ReactElement => {
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
     const [ localURI, setLocalURI ] = useState("");
-
-    const appConfig: AppConfigInterface = useContext(AppConfig);
 
     const dispatch = useDispatch();
 
@@ -175,8 +177,9 @@ export const ClaimDialectsPage = (): ReactElement => {
                 showBottomDivider={ true }
             >
                 {
-                    appConfig?.claimDialects?.features?.localClaims?.permissions?.read &&
-                    (
+                    hasRequiredScopes(
+                        featureConfig?.attributeDialects,
+                        featureConfig?.attributeDialects?.scopes?.read) && (
                         <Segment>
                             <List>
                                 <List.Item>
@@ -249,7 +252,9 @@ export const ClaimDialectsPage = (): ReactElement => {
                     onSortStrategyChange={ handleSortStrategyChange }
                     onSortOrderChange={ handleSortOrderChange }
                     rightActionPanel={
-                        appConfig?.claimDialects?.permissions?.create && (
+                        hasRequiredScopes(
+                            featureConfig?.attributeDialects,
+                            featureConfig?.attributeDialects?.scopes?.create) && (
                             <PrimaryButton
                                 onClick={ () => {
                                     setAddEditClaim(true);
@@ -269,6 +274,7 @@ export const ClaimDialectsPage = (): ReactElement => {
                         list={ paginate(filteredDialects, listItemLimit, offset) }
                         localClaim={ ListType.DIALECT }
                         update={ getDialect }
+                        featureConfig={ featureConfig }
                     />
                 </ListLayout>
             </PageLayout>
