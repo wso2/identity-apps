@@ -29,6 +29,10 @@ import { AdvancedConfigurationsInterface } from "../../../models";
 interface AdvancedConfigurationsFormPropsInterface {
     config: AdvancedConfigurationsInterface;
     onSubmit: (values: any) => void;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -43,7 +47,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
 
     const {
         config,
-        onSubmit
+        onSubmit,
+        readOnly
     } = props;
 
     const [isPEMSelected, setPEMSelected] = useState<boolean>(false);
@@ -88,6 +93,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                     value: "saas"
                                 }
                             ] }
+                            readOnly={ readOnly }
                         />
                         <Hint>
                             Applications are by default restricted for usage by users of the service provider&apos;s 
@@ -111,6 +117,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                     value: "skipLoginConsent"
                                 }
                             ] }
+                            readOnly={ readOnly }
                         />
                         <Hint>
                             User consent will be skipped during login flows.
@@ -132,6 +139,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                     value: "skipLogoutConsent"
                                 }
                             ] }
+                            readOnly={ readOnly }
                         />
                         <Hint>
                             User consent will be skipped during logout flows.
@@ -153,6 +161,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                     value: "returnAuthenticatedIdpList"
                                 }
                             ] }
+                            readOnly={ readOnly }
                         />
                         <Hint>
                             The list of authenticated Identity Providers will be returned in the authentication
@@ -175,6 +184,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                     value: "enableAuthorization"
                                 }
                             ] }
+                            readOnly={ readOnly }
                         />
                         <Hint>
                             Decides whether authorization policies needs to be engaged during authentication
@@ -205,8 +215,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                     label: "PEM",
                                     value: "PEM"
                                 }
-                            ]
-                            }
+                            ] }
+                            readOnly={ readOnly }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -224,6 +234,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                         type="textarea"
                                         value={ config?.certificate && config?.certificate?.value &&
                                         config.certificate.value }
+                                        readOnly={ readOnly }
                                     />
                                 ) : (
                                     <Field
@@ -241,6 +252,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                         } }
                                         value={ config?.certificate && config?.certificate?.value &&
                                         config.certificate.value }
+                                        readOnly={ readOnly }
                                     />
                                 )
                         }
@@ -250,13 +262,17 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Button primary type="submit" size="small" className="form-button">
-                            Update
-                        </Button>
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    !readOnly && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Button primary type="submit" size="small" className="form-button">
+                                    Update
+                                </Button>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
             </Grid>
         </Forms>
     );
