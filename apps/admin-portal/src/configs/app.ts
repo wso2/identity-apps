@@ -16,9 +16,10 @@
  * under the License.
  */
 
+import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { HelpPanelConstants, I18nConstants } from "../constants";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
-import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "../models";
+import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 
 /**
  * Class to handle application config operations.
@@ -37,11 +38,11 @@ export class Config {
     private static RUNTIME_CONFIG = window["runConfig"];
 
     /**
-     * Get the application runtime config.
+     * Get the deployment config.
      *
-     * @return {RuntimeConfigInterface} Runtime configurations object./
+     * @return {DeploymentConfigInterface} Deployment config object.
      */
-    public static getRuntimeConfig(): RuntimeConfigInterface {
+    public static getDeploymentConfig(): DeploymentConfigInterface {
         return {
             appBaseName: (this.RUNTIME_CONFIG) ? (this.RUNTIME_CONFIG.appBaseName || APP_BASENAME) : APP_BASENAME,
             appBaseNameWithoutTenant: (this.RUNTIME_CONFIG)
@@ -59,34 +60,7 @@ export class Config {
             clientOrigin: (this.RUNTIME_CONFIG)
                 ? (this.RUNTIME_CONFIG.clientOrigin || CLIENT_ORIGIN_DEFAULT)
                 : CLIENT_ORIGIN_DEFAULT,
-            copyrightText: (this.RUNTIME_CONFIG)
-                ? (this.RUNTIME_CONFIG.copyrightText || COPYRIGHT_TEXT_DEFAULT)
-                : COPYRIGHT_TEXT_DEFAULT,
             debug: (this.RUNTIME_CONFIG) ? (this.RUNTIME_CONFIG.debug || DEBUG_MODE) : DEBUG_MODE,
-            doNotDeleteApplications: (this.RUNTIME_CONFIG) ? (this.RUNTIME_CONFIG.doNotDeleteApplications || []) : [],
-            doNotDeleteIdentityProviders: (this.RUNTIME_CONFIG)
-                ? (this.RUNTIME_CONFIG.doNotDeleteIdentityProviders || [])
-                : [],
-            i18nModuleOptions: {
-                initOptions: this.RUNTIME_CONFIG?.i18nModuleOptions?.initOptions
-                    ? this.RUNTIME_CONFIG.i18nModuleOptions.initOptions
-                    : I18nConstants.MODULE_INIT_OPTIONS,
-                langAutoDetectEnabled: this.RUNTIME_CONFIG?.i18nModuleOptions?.langAutoDetectEnabled
-                    ? this.RUNTIME_CONFIG.i18nModuleOptions.langAutoDetectEnabled
-                    : I18nConstants.LANG_AUTO_DETECT_ENABLED,
-                namespaceDirectories: this.RUNTIME_CONFIG?.i18nModuleOptions?.namespaceDirectories
-                    ? this.RUNTIME_CONFIG?.i18nModuleOptions?.namespaceDirectories
-                    : I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
-                overrideOptions: this.RUNTIME_CONFIG?.i18nModuleOptions?.overrideOptions
-                    ? this.RUNTIME_CONFIG.i18nModuleOptions.overrideOptions
-                    : I18nConstants.INIT_OPTIONS_OVERRIDE,
-                resourcePath: this.RUNTIME_CONFIG?.i18nModuleOptions?.resourcePath
-                    ? this.RUNTIME_CONFIG.i18nModuleOptions.resourcePath
-                    : I18N_RESOURCE_PATH,
-                xhrBackendPluginEnabled: this.RUNTIME_CONFIG?.i18nModuleOptions?.xhrBackendPluginEnabled
-                    ? this.RUNTIME_CONFIG.i18nModuleOptions.xhrBackendPluginEnabled
-                    : I18nConstants.XHR_BACKEND_PLUGIN_ENABLED
-            },
             loginCallbackUrl: (this.RUNTIME_CONFIG)
                 ? (
                     (this.RUNTIME_CONFIG.clientHost || CLIENT_HOST_DEFAULT) +
@@ -105,14 +79,39 @@ export class Config {
             tenantPath: (this.RUNTIME_CONFIG)
                 ? (this.RUNTIME_CONFIG.tenantPath || TENANT_PATH_DEFAULT)
                 : TENANT_PATH_DEFAULT,
-            titleText: (this.RUNTIME_CONFIG)
-                ? (this.RUNTIME_CONFIG.copyrightText || TITLE_TEXT_DEFAULT)
-                : TITLE_TEXT_DEFAULT,
             userPortalBaseName: (this.RUNTIME_CONFIG) ?
                 (this.RUNTIME_CONFIG.userPortalBaseName || USER_PORTAL_BASENAME) : USER_PORTAL_BASENAME,
             userPortalClientHost: (this.RUNTIME_CONFIG) ?
                 (this.RUNTIME_CONFIG.userPortalClientHost || USER_PORTAL_CLIENT_HOST_DEFAULT)
                 : USER_PORTAL_CLIENT_HOST_DEFAULT
+        };
+    }
+
+    /**
+     * Get i18n module config.
+     *
+     * @return {I18nModuleOptionsInterface} i18n config object.
+     */
+    public static getI18nConfig(): I18nModuleOptionsInterface {
+        return {
+            initOptions: this.RUNTIME_CONFIG?.i18nModuleOptions?.initOptions
+                ? this.RUNTIME_CONFIG.i18nModuleOptions.initOptions
+                : I18nConstants.MODULE_INIT_OPTIONS,
+            langAutoDetectEnabled: this.RUNTIME_CONFIG?.i18nModuleOptions?.langAutoDetectEnabled
+                ? this.RUNTIME_CONFIG.i18nModuleOptions.langAutoDetectEnabled
+                : I18nConstants.LANG_AUTO_DETECT_ENABLED,
+            namespaceDirectories: this.RUNTIME_CONFIG?.i18nModuleOptions?.namespaceDirectories
+                ? this.RUNTIME_CONFIG?.i18nModuleOptions?.namespaceDirectories
+                : I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
+            overrideOptions: this.RUNTIME_CONFIG?.i18nModuleOptions?.overrideOptions
+                ? this.RUNTIME_CONFIG.i18nModuleOptions.overrideOptions
+                : I18nConstants.INIT_OPTIONS_OVERRIDE,
+            resourcePath: this.RUNTIME_CONFIG?.i18nModuleOptions?.resourcePath
+                ? this.RUNTIME_CONFIG.i18nModuleOptions.resourcePath
+                : I18N_RESOURCE_PATH,
+            xhrBackendPluginEnabled: this.RUNTIME_CONFIG?.i18nModuleOptions?.xhrBackendPluginEnabled
+                ? this.RUNTIME_CONFIG.i18nModuleOptions.xhrBackendPluginEnabled
+                : I18nConstants.XHR_BACKEND_PLUGIN_ENABLED
         };
     }
 
@@ -123,65 +122,85 @@ export class Config {
      */
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
-            accountDisabling: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+            accountDisabling: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
             }/connectors/${ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID}`,
-            accountLocking: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+            accountLocking: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
             }/connectors/${ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID}`,
-            accountRecovery: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+            accountRecovery: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
             }/connectors/${ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID}`,
-            applications: `${this.getRuntimeConfig().serverHost}/api/server/v1/applications`,
-            associations: `${this.getRuntimeConfig().serverHost}/api/users/v1/me/associations`,
-            authorize: `${this.getRuntimeConfig().serverHost}/oauth2/authorize`,
-            bulk: `${this.getRuntimeConfig().serverHost}/scim2/Bulk`,
-            captchaForSSOLogin: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+            applications: `${this.getDeploymentConfig().serverHost}/api/server/v1/applications`,
+            associations: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/associations`,
+            authorize: `${this.getDeploymentConfig().serverHost}/oauth2/authorize`,
+            bulk: `${this.getDeploymentConfig().serverHost}/scim2/Bulk`,
+            captchaForSSOLogin: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
             }/connectors/${ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID}`,
-            certificates: `${this.getRuntimeConfig().serverHost}/api/server/v1/keystores/certs`,
-            challengeAnswers: `${this.getRuntimeConfig().serverHost}/api/users/v1/me/challenge-answers`,
-            challenges: `${this.getRuntimeConfig().serverHost}/api/users/v1/me/challenges`,
-            claims: `${this.getRuntimeConfig().serverHost}/api/server/v1/claim-dialects`,
-            clientCertificates: `${this.getRuntimeConfig().serverHost}/api/server/v1/keystores/client-certs`,
-            consents: `${this.getRuntimeConfig()}/api/identity/consent-mgt/v1.0/consents`,
-            externalClaims:`${this.getRuntimeConfig().serverHost}/api/server/v1/claim-dialects/{}/claims`,
-            emailTemplateType: `${this.getRuntimeConfig().serverHost}/api/server/v1/email/template-types`,
-            groups: `${this.getRuntimeConfig().serverHost}/scim2/Groups`,
-            identityProviders: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-providers`,
-            issuer: `${this.getRuntimeConfig().serverHost}/oauth2/token`,
-            jwks: `${this.getRuntimeConfig().serverHost}/oauth2/jwks`,
-            localClaims: `${this.getRuntimeConfig().serverHost}/api/server/v1/claim-dialects/local/claims`,
-            loginPolicies: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+            certificates: `${this.getDeploymentConfig().serverHost}/api/server/v1/keystores/certs`,
+            challengeAnswers: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/challenge-answers`,
+            challenges: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/challenges`,
+            claims: `${this.getDeploymentConfig().serverHost}/api/server/v1/claim-dialects`,
+            clientCertificates: `${this.getDeploymentConfig().serverHost}/api/server/v1/keystores/client-certs`,
+            consents: `${this.getDeploymentConfig()}/api/identity/consent-mgt/v1.0/consents`,
+            emailTemplateType: `${this.getDeploymentConfig().serverHost}/api/server/v1/email/template-types`,
+            externalClaims:`${this.getDeploymentConfig().serverHost}/api/server/v1/claim-dialects/{}/claims`,
+            groups: `${this.getDeploymentConfig().serverHost}/scim2/Groups`,
+            identityProviders: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-providers`,
+            issuer: `${this.getDeploymentConfig().serverHost}/oauth2/token`,
+            jwks: `${this.getDeploymentConfig().serverHost}/oauth2/jwks`,
+            localClaims: `${this.getDeploymentConfig().serverHost}/api/server/v1/claim-dialects/local/claims`,
+            loginPolicies: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
             }`,
-            logout: `${this.getRuntimeConfig().serverHost}/oidc/logout`,
+            logout: `${this.getDeploymentConfig().serverHost}/oidc/logout`,
             // TODO: Remove this endpoint and use ID token to get the details
-            me: `${this.getRuntimeConfig().serverHost}/scim2/Me`,
-            passwordHistory: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+            me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,
+            passwordHistory: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
             }/connectors/${ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID}`,
-            passwordPolicies: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+            passwordPolicies: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
             }`,
-            passwordPolicy: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+            passwordPolicy: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
             }/connectors/${ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID}`,
-            permission: `${this.getRuntimeConfig().serverHost}/api/server/v1/permission-management/permissions`,
+            permission: `${this.getDeploymentConfig().serverHost}/api/server/v1/permission-management/permissions`,
             portalDocumentationRawContent: `${ HelpPanelConstants.GITHUB_CONTENTS_API_ENDPOINT }/docs`,
             portalDocumentationStructure: `${ HelpPanelConstants.GITHUB_CONTENTS_API_ENDPOINT }/mkdocs.yml`,
-            profileSchemas: `${this.getRuntimeConfig().serverHost}/scim2/Schemas`,
-            publicCertificates: `${this.getRuntimeConfig().serverHost}/api/server/v1/keystores/certs/public`,
-            revoke: `${this.getRuntimeConfig().serverHost}/oauth2/revoke`,
-            selfSignUp: `${this.getRuntimeConfig().serverHost}/api/server/v1/identity-governance/${
+            profileSchemas: `${this.getDeploymentConfig().serverHost}/scim2/Schemas`,
+            publicCertificates: `${this.getDeploymentConfig().serverHost}/api/server/v1/keystores/certs/public`,
+            revoke: `${this.getDeploymentConfig().serverHost}/oauth2/revoke`,
+            selfSignUp: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
             }/connectors/${ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID}`,
-            sessions: `${this.getRuntimeConfig().serverHost}/api/users/v1/me/sessions`,
-            token: `${this.getRuntimeConfig().serverHost}/oauth2/token`,
-            user: `${this.getRuntimeConfig().serverHost}/api/identity/user/v1.0/me`,
-            userStores: `${this.getRuntimeConfig().serverHost}/api/server/v1/userstores`,
-            users: `${this.getRuntimeConfig().serverHost}/scim2/Users`,
-            wellKnown: `${this.getRuntimeConfig().serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
+            sessions: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/sessions`,
+            token: `${this.getDeploymentConfig().serverHost}/oauth2/token`,
+            user: `${this.getDeploymentConfig().serverHost}/api/identity/user/v1.0/me`,
+            userStores: `${this.getDeploymentConfig().serverHost}/api/server/v1/userstores`,
+            users: `${this.getDeploymentConfig().serverHost}/scim2/Users`,
+            wellKnown: `${this.getDeploymentConfig().serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
+        };
+    }
+
+    /**
+     * Get UI config.
+     *
+     * @return {UIConfigInterface} UI config object.
+     */
+    public static getUIConfig(): UIConfigInterface {
+        return {
+            copyrightText: (this.RUNTIME_CONFIG)
+                ? (this.RUNTIME_CONFIG.copyrightText || COPYRIGHT_TEXT_DEFAULT)
+                : COPYRIGHT_TEXT_DEFAULT,
+            doNotDeleteApplications: (this.RUNTIME_CONFIG) ? (this.RUNTIME_CONFIG.doNotDeleteApplications || []) : [],
+            doNotDeleteIdentityProviders: (this.RUNTIME_CONFIG)
+                ? (this.RUNTIME_CONFIG.doNotDeleteIdentityProviders || [])
+                : [],
+            titleText: (this.RUNTIME_CONFIG)
+                ? (this.RUNTIME_CONFIG.copyrightText || TITLE_TEXT_DEFAULT)
+                : TITLE_TEXT_DEFAULT
         };
     }
 }
