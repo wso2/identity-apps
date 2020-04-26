@@ -16,19 +16,19 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/dist/src/helpers";
+import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useContext, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { listCertificateAliases } from "../api";
 import { CertificatesKeystoreSearch, CertificatesList, ImportCertificate } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { UserConstants } from "../constants";
-import { AppConfig } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
-import { AlertLevels, AppConfigInterface, Certificate } from "../models";
+import { AlertLevels, Certificate, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
-import { addAlert } from "../store/actions";
 import { filterList, sortList } from "../utils";
 
 /**
@@ -60,10 +60,9 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
     const [ isSuper, setIsSuper ] = useState(true);
 
     const tenantDomain: string = useSelector<AppState, string>((state: AppState) => state.config.deployment.tenant);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
 
     const dispatch = useDispatch();
-
-    const appConfig: AppConfigInterface = useContext(AppConfig);
 
     useEffect(() => {
         if (tenantDomain === "carbon.super") {
@@ -199,7 +198,9 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                             onSortStrategyChange={ handleSortStrategyChange }
                             onSortOrderChange={ handleSortOrderChange }
                             rightActionPanel={
-                                (appConfig?.certificates?.features?.keystore?.permissions?.create && !isSuper) && (
+                                (hasRequiredScopes(featureConfig?.certificates,
+                                    featureConfig?.certificates?.scopes?.create)
+                                    && !isSuper) && (
                                     <PrimaryButton
                                         onClick={ () => {
                                             setOpenModal(true);
@@ -220,13 +221,16 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                                 list={ paginate(filteredCertificatesKeystore, listItemLimit, offset) }
                                 update={ fetchCertificatesKeystore }
                                 type="keystore"
+                                featureConfig={ featureConfig }
                             />
                         </ListLayout>
                         )
                         : !isLoading && (
                             <EmptyPlaceholder
                                 action={
-                                    (appConfig?.certificates?.features?.keystore?.permissions?.create && !isSuper) && (
+                                    (hasRequiredScopes(featureConfig?.certificates,
+                                        featureConfig?.certificates?.scopes?.create)
+                                        && !isSuper) && (
                                         <PrimaryButton
                                             onClick={ () => {
                                                 setOpenModal(true);
