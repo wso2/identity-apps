@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/dist/src/helpers";
 import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -58,6 +59,7 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
 
     const {
         appId,
+        featureConfig,
         provisioningConfigurations,
         onUpdate
     } = props;
@@ -114,6 +116,9 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
                     config={ provisioningConfigurations }
                     onSubmit={ handleProvisioningConfigFormSubmit }
                     useStoreList={ userStore }
+                    readOnly={
+                        !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                    }
                 />
             }
         </>
