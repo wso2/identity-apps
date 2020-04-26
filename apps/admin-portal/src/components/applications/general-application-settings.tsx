@@ -235,9 +235,12 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         onSubmit={ handleFormSubmit }
                         imageUrl={ imageUrl }
                         accessUrl={ accessUrl }
+                        readOnly={
+                            !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                        }
                     />
                     {
-                        (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.delete))
+                        hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
                             ? !config.ui.doNotDeleteApplications.includes(name) && (
                                 <DangerZoneGroup sectionHeader="Danger Zone">
                                     { showRevoke && (
@@ -248,15 +251,19 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                                     client secret. Please proceed with caution."
                                             onActionClick={ (): void => setShowRevokeConfirmationModal(true) }
                                         />
-                                    )
+                                    ) }
+                                    {
+                                        hasRequiredScopes(featureConfig?.applications,
+                                            featureConfig?.applications?.scopes?.delete) && (
+                                            <DangerZone
+                                                actionTitle="Delete"
+                                                header="Delete application"
+                                                subheader={ "Once you delete an application, there is no going back. " +
+                                                "Please be certain." }
+                                                onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
+                                            />
+                                        )
                                     }
-                                    <DangerZone
-                                        actionTitle="Delete"
-                                        header="Delete application"
-                                        subheader={ "Once you delete an application, there is no going back. " +
-                                        "Please be certain." }
-                                        onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
-                                    />
                                 </DangerZoneGroup>
                             )
                             : null
