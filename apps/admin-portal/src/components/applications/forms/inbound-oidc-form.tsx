@@ -628,7 +628,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     placeholder="Select Algorithm"
                                     children={ getAllowedList(metadata.idTokenEncryptionAlgorithm) }
                                     disabled={ !isEncryptionEnabled }
-                                    disabled={ readOnly }
                                 />
                                 <Hint disabled={ !isEncryptionEnabled }>
                                     Choose encryption algorithm of ID token for the client.
