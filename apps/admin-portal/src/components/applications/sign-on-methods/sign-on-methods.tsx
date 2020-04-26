@@ -31,6 +31,7 @@ import {
     AuthenticationStepInterface,
     FeatureConfigInterface
 } from "../../../models";
+import { hasRequiredScopes } from "@wso2is/core/dist/src/helpers";
 
 /**
  * Proptypes for the sign on methods component.
@@ -67,6 +68,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const {
         appId,
         authenticationSequence,
+        featureConfig,
         isLoading,
         onUpdate
     } = props;
@@ -197,6 +199,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 isLoading={ isLoading }
                 onUpdate={ handleSequenceUpdate }
                 triggerUpdate={ updateTrigger }
+                readOnly={
+                    !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                }
             />
             <Divider hidden />
             <ScriptBasedFlow
@@ -204,9 +209,16 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 isLoading={ isLoading }
                 onTemplateSelect={ handleLoadingDataFromTemplate }
                 onScriptChange={ handleAdaptiveScriptChange }
+                readOnly={
+                    !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                }
             />
             <Divider hidden/>
-            <PrimaryButton onClick={ handleUpdateClick }>Update</PrimaryButton>
+            {
+                hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update) && (
+                    <PrimaryButton onClick={ handleUpdateClick }>Update</PrimaryButton>
+                )
+            }
         </div>
     );
 };
