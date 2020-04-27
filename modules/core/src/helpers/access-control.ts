@@ -65,3 +65,35 @@ export const hasRequiredScopes = (feature: FeatureAccessConfigInterface, scopes:
 
     return true;
 };
+
+/**
+ * Checks if the portal access is allowed.
+ *
+ * @remarks
+ * Currently the check passes if at least one feature has the required read permissions.
+ *
+ * @param {FeatureAccessConfigInterface} featureConfig - Feature configuration.
+ *
+ * @return {boolean} True is access is granted, false if not.
+ */
+export const isPortalAccessGranted = <T = {}>(featureConfig: T): boolean => {
+    const isDefined = featureConfig && !_.isEmpty(featureConfig);
+
+    if (!isDefined) {
+        return true;
+    }
+
+    let isAllowed = false;
+
+    for (const value of Object.values(featureConfig)) {
+        const feature: FeatureAccessConfigInterface = value;
+
+        if (hasRequiredScopes(feature, feature?.scopes?.read)) {
+            isAllowed = true;
+
+            break;
+        }
+    }
+
+    return isAllowed;
+};
