@@ -25,6 +25,8 @@ import { ApplicationActionTypes, ApplicationActions } from "../actions/types";
 const initialState: ApplicationReducerStateInterface = {
     meta: {
         inboundProtocols: [],
+        customInboundProtocols: [],
+        customInboundProtocolChecked: false,
         protocolMeta: {}
     },
     templates: undefined
@@ -47,6 +49,22 @@ export const applicationReducer = (state: ApplicationReducerStateInterface = ini
                 meta: {
                     ...state.meta,
                     inboundProtocols: action.payload
+                }
+            };
+        case ApplicationActionTypes.SET_AVAILABLE_CUSTOM_INBOUND_AUTH_PROTOCOL_META:
+            return {
+                ...state,
+                meta: {
+                    ...state.meta,
+                    customInboundProtocols: action.payload
+                }
+            };
+        case ApplicationActionTypes.CHECK_CUSTOM_INBOUND_AUTH_PROTOCOL_META:
+            return {
+                ...state,
+                meta: {
+                    ...state.meta,
+                    customInboundProtocolChecked: action.payload
                 }
             };
         case ApplicationActionTypes.SET_AUTH_PROTOCOL_META:
