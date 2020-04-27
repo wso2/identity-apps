@@ -239,7 +239,7 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                                             setOpenModal(true);
                                         } }
                                     >
-                                        <Icon name="download" />Import Certificate
+                                        <Icon name="cloud upload" />Import Certificate
                                     </PrimaryButton>
                                 )
                             }
@@ -269,7 +269,7 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                                                 setOpenModal(true);
                                             } }
                                         >
-                                            <Icon name="download" /> Import Certificate
+                                            <Icon name="upload" /> Import Certificate
                                         </PrimaryButton>
                                     )
                                 }
