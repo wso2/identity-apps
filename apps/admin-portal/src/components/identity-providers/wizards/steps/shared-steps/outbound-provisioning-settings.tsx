@@ -20,6 +20,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import {
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface,
+    OutboundProvisioningConnectorListItemInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../../../../../models";
 import { OutboundProvisioningConnectorFormFactory } from "../../../forms";
@@ -32,6 +33,7 @@ interface OutboundProvisioningSettingsWizardFormPropsInterface {
     initialValues: IdentityProviderInterface;
     onSubmit: (values: IdentityProviderInterface) => void;
     triggerSubmit: boolean;
+    defaultConnector?: OutboundProvisioningConnectorListItemInterface;
 }
 
 /**
@@ -48,7 +50,8 @@ export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisionin
         metadata,
         initialValues,
         onSubmit,
-        triggerSubmit
+        triggerSubmit,
+        defaultConnector
     } = props;
 
     const handleSubmit = (outboundProvisioningConnector: OutboundProvisioningConnectorInterface) => {
@@ -67,8 +70,11 @@ export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisionin
         });
     };
 
-    const defaultOutboundProvisioningConnector = initialValues?.provisioning?.outboundConnectors?.connectors.find(
-        connector => connector.connectorId === initialValues?.provisioning?.outboundConnectors.defaultConnectorId);
+    // Sets the selected connector as the default outbound provisioning connector when there's no default connector
+    // in the identity provider.
+    const defaultOutboundProvisioningConnector = initialValues?.provisioning?.outboundConnectors?.connectors.length > 0 ?
+        initialValues?.provisioning?.outboundConnectors?.connectors.find(connector => connector.connectorId
+            === initialValues?.provisioning?.outboundConnectors.defaultConnectorId) : defaultConnector;
     return (
         <OutboundProvisioningConnectorFormFactory
             metadata={ metadata }
