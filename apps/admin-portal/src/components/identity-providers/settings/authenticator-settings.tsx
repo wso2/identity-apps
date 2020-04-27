@@ -18,7 +18,7 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, ContentLoader, PrimaryButton } from "@wso2is/react-components";
+import { ConfirmationModal, ContentLoader, EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -29,6 +29,7 @@ import {
     getIdentityProviderTemplateList,
     updateFederatedAuthenticator
 } from "../../../api";
+import { EmptyPlaceholderIllustrations } from "../../../configs";
 import {
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface, FederatedAuthenticatorMetaDataInterface,
@@ -103,6 +104,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         useState<FederatedAuthenticatorMetaDataInterface[]>(undefined);
     const [ showAddAuthenticatorWizard, setShowAddAuthenticatorWizard ] = useState<boolean>(false);
     const [ isTemplatesLoading, setIsTemplatesLoading ] = useState<boolean>(false);
+    const [ isPageLoading, setIsPageLoading ] = useState<boolean>(true);
 
     /**
      * Handles the authenticator config form submit action.
@@ -110,6 +112,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * @param values - Form values.
      */
     const handleAuthenticatorConfigFormSubmit = (values: any): void => {
+        setIsPageLoading(true);
         updateFederatedAuthenticator(idpId, values)
             .then(() => {
                 dispatch(addAlert({
@@ -235,10 +238,19 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         if (_.isEmpty(federatedAuthenticators)) {
             return;
         }
+        setIsPageLoading(true);
         setAvailableAuthenticators([]);
         fetchAuthenticators()
             .then((res) => {
+                // Make default authenticator if not added.
+                if (!federatedAuthenticators.defaultAuthenticatorId &&
+                    federatedAuthenticators.authenticators.length > 0) {
+                    const authenticator = res[0].data;
+                    authenticator.isDefault = true;
+                    handleAuthenticatorConfigFormSubmit(authenticator)
+                }
                 setAvailableAuthenticators(res);
+                setIsPageLoading(false);
             })
     }, [federatedAuthenticators]);
 
@@ -339,7 +351,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
                         // Set filtered expert mode options.
                         setAvailableExpertModeOptions(FederatedAuthenticators.filter(a =>
-                            !availableAuthenticatorIDs.includes(a.authenticatorId)))
+                            !availableAuthenticatorIDs.includes(a.authenticatorId)));
 
                         // sort templateList based on display Order
                         filteredTemplates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
@@ -399,71 +411,97 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         });
     };
 
+    const showEmptyPlaceholder = (): ReactElement => {
+        return (
+            <EmptyPlaceholder
+                action={ (
+                    <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }>
+                        <Icon name="add"/>New Authenticator
+                    </PrimaryButton>
+                ) }
+                image={ EmptyPlaceholderIllustrations.newList }
+                imageSize="tiny"
+                title={ "Add an authenticator" }
+                subtitle={ [
+                    "There are currently no authenticators available.",
+                    "You can add a new authenticator easily by using the",
+                    "predefined templates."
+                ] }
+            />
+        )
+    };
+
+    const showAuthenticatorList = (): ReactElement => {
+        return (
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column width={ 16 } textAlign="right">
+                        <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }>
+                            <Icon name="add"/>New Authenticator
+                        </PrimaryButton>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column width={ 16 }>
+                        <AuthenticatorAccordion
+                            globalActions={ [
+                                {
+                                    icon: "trash alternate",
+                                    onClick: handleAuthenticatorDeleteOnClick,
+                                    type: "icon"
+                                }
+                            ] }
+                            authenticators={
+                                availableAuthenticators.map((authenticator) => {
+                                    return {
+                                        actions: [
+                                            {
+                                                defaultChecked: authenticator.data?.isDefault,
+                                                disabled: (authenticator.data?.isDefault ||
+                                                    !authenticator.data?.isEnabled),
+                                                label: (authenticator.data?.isDefault ? "Default" : "Make default"),
+                                                onChange: handleDefaultAuthenticatorChange,
+                                                type: "checkbox"
+                                            },
+                                            {
+                                                defaultChecked: authenticator.data?.isEnabled,
+                                                label: (authenticator.data?.isEnabled ? "Enabled" : "Disabled"),
+                                                onChange: handleAuthenticatorEnableToggle,
+                                                type: "toggle"
+                                            }
+                                        ],
+                                        content: authenticator && (
+                                            <AuthenticatorFormFactory
+                                                metadata={ authenticator.meta }
+                                                initialValues={ authenticator.data }
+                                                onSubmit={ handleAuthenticatorConfigFormSubmit }
+                                                type={ authenticator.meta?.name }
+                                            />
+                                        ),
+                                        icon: {
+                                            icon: authenticator.id && (FederatedAuthenticators.find((fedAuth) =>
+                                                    (fedAuth.authenticatorId === authenticator.id))).icon
+                                        },
+                                        id: authenticator?.id,
+                                        title: authenticator.meta?.displayName
+                                    }
+                                })
+                            }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        )
+    };
+
     return (
-        (!isLoading)
+        (!isLoading && !isPageLoading)
             ? (
                 <div className="authentication-section">
-                    <Grid>
-                        <Grid.Row>
-                            <Grid.Column width={ 16 } textAlign="right">
-                                <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }>
-                                    <Icon name="add"/>New Authenticator
-                                </PrimaryButton>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column width={ 16 }>
-                                <AuthenticatorAccordion
-                                    globalActions={ [
-                                        {
-                                            icon: "trash alternate",
-                                            onClick: handleAuthenticatorDeleteOnClick,
-                                            type: "icon"
-                                        }
-                                    ] }
-                                    authenticators={
-                                        availableAuthenticators.map((authenticator) => {
-                                            return {
-                                                actions: [
-                                                    {
-                                                        defaultChecked: authenticator.data?.isDefault,
-                                                        disabled: (authenticator.data?.isDefault ||
-                                                            !authenticator.data?.isEnabled),
-                                                        label: (authenticator.data?.isDefault ?
-                                                            "Default" : "Make default"),
-                                                        onChange: handleDefaultAuthenticatorChange,
-                                                        type: "checkbox"
-                                                    },
-                                                    {
-                                                        defaultChecked: authenticator.data?.isEnabled,
-                                                        label: (authenticator.data?.isEnabled ?
-                                                            "Enabled" : "Disabled"),
-                                                        onChange: handleAuthenticatorEnableToggle,
-                                                        type: "toggle"
-                                                    }
-                                                ],
-                                                content: authenticator && (
-                                                    <AuthenticatorFormFactory
-                                                        metadata={ authenticator.meta }
-                                                        initialValues={ authenticator.data }
-                                                        onSubmit={ handleAuthenticatorConfigFormSubmit }
-                                                        type={ authenticator.meta?.name }
-                                                    />
-                                                ),
-                                                icon: {
-                                                    icon: authenticator.id &&
-                                                        (FederatedAuthenticators.find((fedAuth) =>
-                                                            (fedAuth.authenticatorId === authenticator.id))).icon
-                                                },
-                                                id: authenticator?.id,
-                                                title: authenticator.meta?.displayName
-                                            }
-                                        })
-                                    }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
+                    {
+                        availableAuthenticators.length > 0 ? showAuthenticatorList() : showEmptyPlaceholder()
+                    }
+                    
                     {
                         deletingAuthenticator && (
                             <ConfirmationModal
