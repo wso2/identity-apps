@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { PrimaryButton } from "@wso2is/react-components";
+import { PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps, Grid, Button } from "semantic-ui-react";
 import { deleteRoleById, getRolesList, getUserStoreList, searchRoleList } from "../api";
 import { RoleList, RoleSearch } from "../components/roles";
 import { CreateRoleWizard } from "../components/roles/create-role-wizard";
@@ -29,6 +29,7 @@ import { UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertInterface, AlertLevels, RoleListInterface, RolesInterface, SearchRoleInterface } from "../models"
 import { addAlert } from "../store/actions";
+import { EmptyPlaceholderIllustrations } from "../configs";
 
 const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -64,6 +65,11 @@ export const GroupsPage = (): ReactElement => {
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ userStore, setUserStore ] = useState(undefined);
+    const [ searchQuery, setSearchQuery ] = useState<string>('');
+    const [ isEmptyResults, setIsEmptyResults ] = useState<boolean>(false);
+
+    const [ groupList, setGroupsList ] = useState<RolesInterface[]>([]);
+    const [ paginatedGroups, setPaginatedGroups ] = useState<RolesInterface[]>([]);
 
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(ROLES_SORTING_OPTIONS[ 0 ]);
 
@@ -72,8 +78,10 @@ export const GroupsPage = (): ReactElement => {
     }, []);
 
     useEffect(() => {
-        getGroups();
-    },[ listOffset, listItemLimit ]);
+        if(searchQuery == '') {
+            getGroups();
+        }
+    },[ groupList.length != 0 ]);
 
     useEffect(() => {
         getGroups();
@@ -92,11 +100,15 @@ export const GroupsPage = (): ReactElement => {
         getRolesList(userStore).then((response)=> {
             if (response.status === 200) {
                 const roleResources = response.data.Resources
-                if (roleResources && roleResources instanceof Array) {
+                if (roleResources && roleResources instanceof Array && roleResources.length !== 0) {
                     const updatedResources = roleResources.filter((role: RolesInterface) => {
                         return !role.displayName.includes("Application/") && !role.displayName.includes("Internal/");
                     })
                     response.data.Resources = updatedResources;
+                    setGroupsList(updatedResources);
+                    setGroupsPage(0, listItemLimit, updatedResources);
+                } else {
+                    setIsEmptyResults(true);
                 }
                 setRoleList(response.data);
             }
@@ -168,11 +180,31 @@ export const GroupsPage = (): ReactElement => {
             startIndex: 1
         }
 
+        setSearchQuery(searchQuery);
+
         searchRoleList(searchData).then(response => {
             if (response.status === 200) {
-                setRoleList(response.data);
+                const results = response.data.Resources;
+                let updatedResults = [];
+                if (results) {
+                    updatedResults = results.filter((role: RolesInterface) => {
+                        return !role.displayName.includes("Application/") && !role.displayName.includes("Internal/");
+                    })
+                }
+                setGroupsList(updatedResults);
+                setPaginatedGroups(updatedResults);
             }
         })
+    }
+
+    /**
+     * Util method to paginate retrieved email template type list.
+     * 
+     * @param offsetValue pagination offset value
+     * @param itemLimit pagination item limit
+     */
+    const setGroupsPage = (offsetValue: number, itemLimit: number, list: RolesInterface[]) => {
+        setPaginatedGroups(list?.slice(offsetValue, itemLimit + offsetValue));
     }
 
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
@@ -180,11 +212,14 @@ export const GroupsPage = (): ReactElement => {
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
-        setListOffset((data.activePage as number - 1) * listItemLimit);
+        const offsetValue = (data.activePage as number - 1) * listItemLimit;
+        setListOffset(offsetValue);
+        setGroupsPage(offsetValue, listItemLimit, groupList);
     };
 
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
+        setGroupsPage(listOffset, data.value as number, groupList);
     };
 
     /**
@@ -237,50 +272,97 @@ export const GroupsPage = (): ReactElement => {
             description="Create and manage user groups, assign permissions for groups."
             showBottomDivider={ true } 
         >
-            <ListLayout
-                advancedSearch={ <RoleSearch isGroup onFilter={ handleUserFilter }/> }
-                currentListSize={ roleList?.itemsPerPage }
-                listItemLimit={ listItemLimit }
-                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                onPageChange={ handlePaginationChange }
-                onSortStrategyChange={ handleListSortingStrategyOnChange }
-                sortStrategy={ listSortingStrategy }
-                rightActionPanel={
-                    (
-                        <PrimaryButton onClick={ () => setShowWizard(true) }>
-                            <Icon name="add"/>
-                            New Group
-                        </PrimaryButton>
-                    )
-                }
-                leftActionPanel={
-                    <Dropdown
-                        selection
-                        options={ userStoreOptions && userStoreOptions }
-                        placeholder="Select User Store"
-                        value={ userStore && userStore }
-                        onChange={ handleDomainChange }
-                    />
-                }
-                showPagination={ true }
-                totalPages={ Math.ceil(roleList?.totalResults / listItemLimit) }
-                totalListSize={ roleList?.totalResults }
-            >
-                <RoleList 
-                    isGroup
-                    roleList={ roleList?.Resources }
-                    handleRoleDelete={ handleOnDelete }
-                />
-                {
-                    showWizard && (
-                        <CreateRoleWizard
-                            isAddGroup
-                            closeWizard={ () => setShowWizard(false) }
-                            updateList={ () => setListUpdated(true) }
+            {
+                !isEmptyResults &&
+                <ListLayout
+                    advancedSearch={ <RoleSearch isGroup onFilter={ handleUserFilter }/> }
+                    currentListSize={ listItemLimit }
+                    listItemLimit={ listItemLimit }
+                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                    onPageChange={ handlePaginationChange }
+                    onSortStrategyChange={ handleListSortingStrategyOnChange }
+                    sortStrategy={ listSortingStrategy }
+                    rightActionPanel={
+                        (
+                            <PrimaryButton onClick={ () => setShowWizard(true) }>
+                                <Icon name="add"/>
+                                New Group
+                            </PrimaryButton>
+                        )
+                    }
+                    leftActionPanel={
+                        <Dropdown
+                            selection
+                            options={ userStoreOptions && userStoreOptions }
+                            placeholder="Select User Store"
+                            value={ userStore && userStore }
+                            onChange={ handleDomainChange }
                         />
-                    ) 
-                }
-            </ListLayout>
+                    }
+                    showPagination={ true }
+                    totalPages={ Math.ceil(groupList?.length / listItemLimit) }
+                    totalListSize={ groupList?.length }
+                >
+                    {
+                        paginatedGroups.length > 0 ?
+                            <RoleList 
+                                isGroup
+                                roleList={ paginatedGroups }
+                                handleRoleDelete={ handleOnDelete }
+                            />
+                        :
+                        <Grid.Column width={ 16 }>
+                            {
+                                searchQuery !== '' &&
+                                    <EmptyPlaceholder
+                                        action={ (
+                                            <Button
+                                                className="link-button"
+                                                onClick={ () => getGroups() }
+                                            >
+                                                { t("devPortal:placeholders.emptySearchResult.action") }
+                                            </Button>
+                                        ) }
+                                        image={ EmptyPlaceholderIllustrations.search }
+                                        title={ t("devPortal:placeholders.emptySearchResult.title") }
+                                        subtitle={ [
+                                            t("devPortal:placeholders.emptySearchResult.subtitles.0",
+                                                { query: searchQuery }),
+                                            t("devPortal:placeholders.emptySearchResult.subtitles.1")
+                                        ] }
+                                    />
+                            }
+                        </Grid.Column>
+                    }
+                </ListLayout>
+            }
+            {
+                isEmptyResults &&
+                <EmptyPlaceholder
+                    action={
+                        <PrimaryButton
+                            onClick={ () => {
+                                setShowWizard(true);
+                            } }
+                        >
+                            <Icon name="add"/> New Group
+                        </PrimaryButton>
+                    }
+                    title="Add Group"
+                    subtitle={ ["Currently, there are no groups available."] }
+                    image={ EmptyPlaceholderIllustrations.emptyList }
+                    imageSize="tiny"
+                />
+            }
+            {
+                showWizard && (
+                    <CreateRoleWizard
+                        isAddGroup
+                        closeWizard={ () => setShowWizard(false) }
+                        updateList={ () => setListUpdated(true) }
+                    />
+                ) 
+            }
         </PageLayout>
     );
 }
