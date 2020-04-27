@@ -26,6 +26,8 @@
         <%= htmlWebpackPlugin.options.contentType %>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="referrer" content="no-referrer" />
+
         <link href="<%= htmlWebpackPlugin.options.publicPath %>/libs/themes/default/theme.min.css" rel="stylesheet" type="text/css"/>
 
         <title><%= htmlWebpackPlugin.options.title %></title>
