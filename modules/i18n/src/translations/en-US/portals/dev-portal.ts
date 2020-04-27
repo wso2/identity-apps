@@ -888,6 +888,117 @@ export const devPortal: DevPortalNS = {
                 resultsIndicator: "Showing results for the query \"{{query}}\""
             }
         },
+        groups: {
+            edit: {
+                basics: {
+                    fields: {
+                        roleName: "Group Name"
+                    }
+                }
+            },
+            notifications: {
+                deleteGroup: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error deleting the selected group."
+                    },
+                    genericError: {
+                        description: "Couldn't remove the selected group.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The selected group was deleted successfully.",
+                        message: "Group deleted successfully"
+                    }
+                },
+                updateGroup: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error updating the selected group."
+                    },
+                    genericError: {
+                        description: "Couldn't update the selected group.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The selected group was updated successfully.",
+                        message: "Group updated successfully"
+                    }
+                },
+                createGroup: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occurred while creating the group."
+                    },
+                    genericError: {
+                        description: "Couldn't create the group.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The group was created successfully.",
+                        message: "Group created successfully."
+                    }
+                },
+                createPermission: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occurred while adding permission to group."
+                    },
+                    genericError: {
+                        description: "Couldn't add permissions to group.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Permissions were successfully added to the group.",
+                        message: "Group created successfully."
+                    }
+                }
+            },
+            search: {
+                forms: {
+                    searchForm: {
+                        inputs: {
+                            filerAttribute: {
+                                label: "Filter Attribute",
+                                placeholder: "E.g. group name.",
+                                validations: {
+                                    empty: "Filter attribute is a required field"
+                                }
+                            },
+                            filterCondition: {
+                                label: "Filter Condition",
+                                placeholder: "E.g. Starts with etc.",
+                                validations: {
+                                    empty: "Filter condition is a required field"
+                                }
+                            },
+                            filterValue: {
+                                label: "Filter Value",
+                                placeholder: "Enter value to search",
+                                validations: {
+                                    empty: "Filter value is a required field"
+                                }
+                            }
+                        }
+                    }
+                },
+                hints: {
+                    querySearch: {
+                        actionKeys: "Shift + Enter",
+                        label: "To search as a query"
+                    }
+                },
+                options: {
+                    header: "Advanced Search"
+                },
+                placeholder: "Search by group name",
+                popups: {
+                    clear: "Clear search",
+                    dropdown: "Show options"
+                },
+                resultsIndicator: "Showing results for the query \"{{query}}\""
+            }
+        },
         serverConfigs: {
             accountRecovery: {
                 actionTitles: {

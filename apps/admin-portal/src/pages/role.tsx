@@ -226,7 +226,7 @@ export const RolesPage = (): ReactElement => {
             showBottomDivider={ true } 
         >
             <ListLayout
-                advancedSearch={ <RoleSearch onFilter={ handleUserFilter }/> }
+                advancedSearch={ <RoleSearch isGroup={ false } onFilter={ handleUserFilter }/> }
                 currentListSize={ roleList?.itemsPerPage }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }

@@ -238,7 +238,7 @@ export const GroupsPage = (): ReactElement => {
             showBottomDivider={ true } 
         >
             <ListLayout
-                advancedSearch={ <RoleSearch onFilter={ handleUserFilter }/> }
+                advancedSearch={ <RoleSearch isGroup onFilter={ handleUserFilter }/> }
                 currentListSize={ roleList?.itemsPerPage }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }

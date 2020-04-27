@@ -428,6 +428,65 @@ export interface DevPortalNS {
                 resultsIndicator: string;
             };
         };
+        groups: {
+            edit: {
+                basics: {
+                    fields: {
+                        roleName: string;
+                    };
+                };
+            };
+            notifications: {
+                deleteGroup: Notification;
+                updateGroup: Notification;
+                createGroup: Notification;
+                createPermission: Notification;
+            };
+            search: {
+                forms: {
+                    searchForm: {
+                        inputs: {
+                            filerAttribute: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            filterCondition: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            filterValue: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                        };
+                    };
+                };
+                hints: {
+                    querySearch: {
+                        actionKeys: string;
+                        label: string;
+                    };
+                };
+                options: {
+                    header: string;
+                };
+                placeholder: string;
+                popups: {
+                    clear: string;
+                    dropdown: string;
+                };
+                resultsIndicator: string;
+            };
+        };
         serverConfigs: {
             selfRegistration: {
                 actionTitles: {

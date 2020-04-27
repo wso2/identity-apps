@@ -47,6 +47,7 @@ const DEFAULT_SEARCH_STRATEGY = "displayName sw";
  * Prop types for the role search component.
  */
 interface RoleSearchProps {
+    isGroup: boolean;
     onFilter: (query: string) => void;
 }
 
@@ -57,7 +58,7 @@ interface RoleSearchProps {
  */
 export const RoleSearch: FunctionComponent<RoleSearchProps> = (props: RoleSearchProps): ReactElement => {
 
-    const { onFilter } = props;
+    const { onFilter, isGroup } = props;
     const [ isFormSubmitted, setIsFormSubmitted ] = useState(false);
     const [ externalSearchQuery, setExternalSearchQuery ] = useState("");
     const { t } = useTranslation();
@@ -122,17 +123,35 @@ export const RoleSearch: FunctionComponent<RoleSearchProps> = (props: RoleSearch
     return (
         <AdvancedSearch
             aligned="left"
-            clearButtonPopupLabel={ t("devPortal:components.roles.search.popups.clear") }
+            clearButtonPopupLabel={ isGroup ? 
+                t("devPortal:components.groups.search.popups.clear") : 
+                t("devPortal:components.roles.search.popups.clear") 
+            }
             clearIcon={ AdvancedSearchIcons.clear }
             defaultSearchStrategy={ DEFAULT_SEARCH_STRATEGY }
-            dropdownTriggerPopupLabel={ t("devPortal:components.roles.search.popups.dropdown") }
-            hintActionKeys={ t("devPortal:components.roles.search.hints.querySearch.actionKeys") }
-            hintLabel={ t("devPortal:components.roles.search.hints.querySearch.label") }
+            dropdownTriggerPopupLabel={ isGroup ? 
+                t("devPortal:components.groups.search.popups.dropdown") : 
+                t("devPortal:components.roles.search.popups.dropdown") 
+            }
+            hintActionKeys={ isGroup ? 
+                t("devPortal:components.groups.search.hints.querySearch.actionKeys") : 
+                t("devPortal:components.roles.search.hints.querySearch.actionKeys") 
+            }
+            hintLabel={ isGroup ? 
+                t("devPortal:components.groups.search.hints.querySearch.label") : 
+                t("devPortal:components.roles.search.hints.querySearch.label") 
+            }
             onExternalSearchQueryClear={ handleExternalSearchQueryClear }
             onSearchQuerySubmit={ handleSearchQuerySubmit }
-            placeholder={ t("devPortal:components.roles.search.placeholder") }
+            placeholder={ isGroup ? 
+                t("devPortal:components.groups.search.placeholder") : 
+                t("devPortal:components.roles.search.placeholder") 
+            }
             resetSubmittedState={ handleResetSubmittedState }
-            searchOptionsHeader={ t("devPortal:components.roles.search.options.header") }
+            searchOptionsHeader={ isGroup ? 
+                t("devPortal:components.groups.search.options.header") : 
+                t("devPortal:components.roles.search.options.header") 
+            }
             externalSearchQuery={ externalSearchQuery }
             submitted={ isFormSubmitted }
         >
@@ -151,28 +170,52 @@ export const RoleSearch: FunctionComponent<RoleSearchProps> = (props: RoleSearch
                                                     value: condition.value
                                                 };
                                             }) }
-                                            label={ t("devPortal:components.roles.search.forms.searchForm.inputs" +
-                                                ".filterCondition.label") }
+                                            label={ isGroup ? 
+                                                t("devPortal:components.groups.search.forms.searchForm.inputs."+
+                                                "filterCondition.label") :
+                                                t("devPortal:components.roles.search.forms.searchForm.inputs."+
+                                                "filterCondition.label") 
+                                            }
                                             name={ FILTER_CONDITION_FIELD_IDENTIFIER }
-                                            placeholder={ t("devPortal:components.roles.search.forms." +
-                                                "searchForm.inputs.filterCondition.placeholder") }
+                                            placeholder={ isGroup ? 
+                                                t("devPortal:components.groups.search.forms.searchForm.inputs."+
+                                                "filterCondition.placeholder")  : 
+                                                t("devPortal:components.roles.search.forms.searchForm.inputs."+
+                                                "filterCondition.placeholder") 
+                                            }
                                             required={ true }
-                                            requiredErrorMessage={ t("devPortal:components.roles.search.forms" +
-                                                ".searchForm.inputs.filterCondition.validations.empty") }
+                                            requiredErrorMessage={ isGroup ? 
+                                                t("devPortal:components.groups.search.forms.searchForm.inputs."+
+                                                "filterCondition.validations.empty") : 
+                                                t("devPortal:components.roles.search.forms.searchForm.inputs."+
+                                                "filterCondition.validations.empty") 
+                                            }
                                             type="dropdown"
                                             width={ 16 }
                                         />
                                     </Grid.Column>
                                     <Grid.Column width={ 8 }>
                                         <Field
-                                            label={ t("devPortal:components.roles.search.forms.searchForm.inputs" +
-                                                ".filterValue.label") }
+                                            label={ isGroup ? 
+                                                t("devPortal:components.groups.search.forms.searchForm.inputs."+
+                                                "filterValue.label") : 
+                                                t("devPortal:components.roles.search.forms.searchForm.inputs."+
+                                                "filterValue.label") 
+                                            }
                                             name={ FILTER_VALUES_FIELD_IDENTIFIER }
-                                            placeholder={ t("devPortal:components.roles.search.forms." +
-                                                "searchForm.inputs.filterValue.placeholder") }
+                                            placeholder={  isGroup ? 
+                                                t("devPortal:components.roles.search.forms.searchForm.inputs."+
+                                                "filterValue.placeholder") : 
+                                                t("devPortal:components.roles.search.forms.searchForm.inputs."+
+                                                "filterValue.placeholder") 
+                                            }
                                             required={ true }
-                                            requiredErrorMessage={ t("devPortal:components.roles.search." +
-                                                "forms.searchForm.inputs.filterValue.validations.empty") }
+                                            requiredErrorMessage={ isGroup ? 
+                                                t("devPortal:components.roles.search.forms.searchForm.inputs."+
+                                                "filterValue.validations.empty") : 
+                                                t("devPortal:components.roles.search.forms.searchForm.inputs."+
+                                                "filterValue.validations.empty") 
+                                            }
                                             type="text"
                                             width={ 16 }
                                         />
