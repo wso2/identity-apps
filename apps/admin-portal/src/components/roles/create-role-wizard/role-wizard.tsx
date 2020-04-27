@@ -293,7 +293,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             />
         ),
         icon: ApplicationWizardStepIcons.protocolSelection,
-        title: "Assign user roles"
+        title: "Assign Users"
     },{
         content: (
             <CreateRoleSummary
