@@ -19,7 +19,7 @@
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { getRoleById } from "../api";
 import { EditRole } from "../components/roles/edit-role/edit-role";
-import { ROLE_VIEW_PATH } from "../constants";
+import { ROLE_VIEW_PATH, GROUP_VIEW_PATH } from "../constants";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import { RolesInterface } from "../models";
@@ -28,11 +28,16 @@ export const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
 
     const [ roleId, setRoleId ] = useState<string>(undefined);
     const [ roleObject, setRoleObject ] = useState<RolesInterface>();
+    const [ isGroup, setIsGroup ] = useState<boolean>(false);
 
     const getRoleDetails = (roleId: string ): void => {
         getRoleById(roleId).then(response => {
             if (response.status === 200) {
-                setRoleObject(response.data);
+                const role = response.data;
+                if (!role.displayName.includes("Application/") && !role.displayName.includes("Internal/")) {
+                    setIsGroup(true);
+                }
+                setRoleObject(role);
             }
         }).catch(() => {
             // TODO: handle error
@@ -55,7 +60,11 @@ export const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
     }, []);
 
     const handleBackButtonClick = () => {
-        history.push(ROLE_VIEW_PATH);
+        if (isGroup) {
+            history.push(GROUP_VIEW_PATH);
+        } else {
+            history.push(ROLE_VIEW_PATH);
+        }
     };
     
     return (
@@ -63,7 +72,7 @@ export const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
             title={ roleObject && roleObject.displayName ? roleObject.displayName : "Edit Role" }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: "Go back to roles"
+                text: isGroup ? "Go back to groups" : "Go back to roles"
             } }
             titleTextAlign="left"
             bottomMargin={ false }
