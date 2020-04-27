@@ -19,6 +19,7 @@
 import { RouteInterface } from "@wso2is/core/models";
 import { SignIn, SignOut } from "../components/authentication";
 import {
+    ApplicationConstants,
     CLAIM_DIALECTS_PATH,
     EDIT_EXTERNAL_DIALECT,
     EDIT_LOCAL_CLAIMS_PATH,
@@ -49,6 +50,7 @@ import {
     RoleEditPage,
     RolesPage,
     ServerConfigurationsPage,
+    UnauthorizedErrorPage,
     UserEditPage,
     UserStores,
     UserStoresEditPage,
@@ -393,6 +395,15 @@ const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
  */
 const ERROR_LAYOUT_ROUTES: RouteInterface[] = [
     {
+        component: UnauthorizedErrorPage,
+        icon: null,
+        id: "unauthorized",
+        name: "Unauthorized",
+        path: ApplicationConstants.PATHS.get("UNAUTHORIZED"),
+        protected: true,
+        showOnSidePanel: false
+    },
+    {
         component: PageNotFound,
         icon: null,
         id: "error404",
@@ -455,6 +466,16 @@ const APP_ROUTES: RouteInterface[] = [
         id: "appRoutePrivacy",
         name: "Privacy",
         path: "/privacy",
+        protected: true,
+        showOnSidePanel: false
+    },
+    {
+        component: ErrorPageLayout,
+        exact: true,
+        icon: null,
+        id: "unauthorized",
+        name: "Unauthorized",
+        path: ApplicationConstants.PATHS.get("UNAUTHORIZED"),
         protected: true,
         showOnSidePanel: false
     },
