@@ -17,7 +17,7 @@
 */
 
 import React, { FunctionComponent, ReactElement } from "react";
-import { Divider, Header, Segment } from "semantic-ui-react";
+import { Divider, Header, Icon, Label, Segment } from "semantic-ui-react";
 import { CertificateIllustrations } from "../../configs";
 import { DisplayCertificate, DistinguishedName } from "../../models";
 
@@ -53,6 +53,8 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
         validTill
     } = props.certificate;
 
+    const isValid = new Date() >= validFrom && new Date() <= validTill;
+
     return (
         <Segment className="certificate" compact padded="very">
             <div className="certificate-ribbon">
@@ -81,36 +83,42 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
 
             <p className="certificate-field">
                 <span>Not valid after:</span> {
-                validTill.toLocaleString("en-us", {
-                    day: "numeric",
-                    hour: "numeric",
-                    hour12: true,
-                    minute: "numeric",
-                    month: "long",
-                    timeZoneName: "short",
-                    weekday: "short",
-                    year: "numeric"
-                })
-            }
+                    validTill.toLocaleString("en-us", {
+                        day: "numeric",
+                        hour: "numeric",
+                        hour12: true,
+                        minute: "numeric",
+                        month: "long",
+                        timeZoneName: "short",
+                        weekday: "short",
+                        year: "numeric"
+                    })
+                }
             </p>
 
             <Divider hidden />
 
             <p className="certificate-field">
                 <span>Issuer DN:</span> { issuerDN.map((attribute: DistinguishedName) => {
-                return `${Object.entries(attribute)[ 0 ][ 0 ]}=${Object.entries(attribute)[ 0 ][ 1 ]}`;
-            }).join((", ")) }
+                    return `${Object.entries(attribute)[ 0 ][ 0 ]}=${Object.entries(attribute)[ 0 ][ 1 ]}`;
+                }).join((", ")) }
             </p>
 
             <Divider hidden />
 
             <p className="certificate-field">
                 <span>Subject DN:</span> { subjectDN.map((attribute: DistinguishedName) => {
-                return `${Object.entries(attribute)[ 0 ][ 0 ]}=${Object.entries(attribute)[ 0 ][ 1 ]}`;
-            }).join(", ") }
+                    return `${Object.entries(attribute)[ 0 ][ 0 ]}=${Object.entries(attribute)[ 0 ][ 1 ]}`;
+                }).join(", ") }
             </p>
 
-            <p className="certificate-version"><span>Version:</span> { version }</p>
+            <p className="certificate-version">
+                <span>Version:</span> { version + " " }
+                <Label color={ isValid ? "green" : "red" } size="mini">
+                    <Icon name={ isValid ? "calendar check outline" : "calendar times outline" } />
+                    { isValid ? "Valid" : "Expired" }
+                </Label>
+            </p>
             <div className="certificate-badge"><CertificateIllustrations.badge.ReactComponent /></div>
         </Segment>
     )
