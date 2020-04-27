@@ -22,6 +22,7 @@ import { InboundPassiveStsForm } from "./inbound-passive-sts-form";
 import { InboundSAMLForm } from "./inbound-saml-form";
 import { InboundWSTrustForm } from "./inbound-ws-trust-form";
 import { SupportedAuthProtocolTypes } from "../../../models";
+import { InboundCustomProtocolForm } from "./inbound-custom-form";
 
 /**
  * Proptypes for the inbound form factory component.
@@ -94,6 +95,12 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     readOnly={ readOnly }
                 />
             );
+        case SupportedAuthProtocolTypes.CUSTOM:
+            return <InboundCustomProtocolForm
+                metadata={ metadata }
+                initialValues={ initialValues }
+                onSubmit={ onSubmit }
+            />;
         default:
             return null;
     }
