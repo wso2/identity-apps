@@ -223,6 +223,50 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
             });
     };
 
+    /**
+     * Resolves the danger actions.
+     *
+     * @return {React.ReactElement} DangerZoneGroup element.
+     */
+    const resolveDangerActions = (): ReactElement => {
+        if (!hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)) {
+            return null;
+        }
+
+        if (config.ui.doNotDeleteApplications.includes(name)) {
+            return null;
+        }
+
+        if (showRevoke
+            || hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.delete)) {
+
+            return (
+                <DangerZoneGroup sectionHeader="Danger Zone">
+                    { showRevoke && (
+                        <DangerZone
+                            actionTitle="Revoke"
+                            header="Revoke the application"
+                            subheader="This action is reversible but cannot use the same
+                                                    client secret. Please proceed with caution."
+                            onActionClick={ (): void => setShowRevokeConfirmationModal(true) }
+                        />
+                    ) }
+                    { hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.delete) && (
+                        <DangerZone
+                            actionTitle="Delete"
+                            header="Delete application"
+                            subheader={ "Once you delete an application, there is no going back. " +
+                            "Please be certain." }
+                            onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
+                        />
+                    ) }
+                </DangerZoneGroup>
+            );
+        }
+
+        return null;
+    };
+
     return (
         !isLoading
             ? (
@@ -241,35 +285,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             )
                         }
                     />
-                    {
-                        hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
-                            ? !config.ui.doNotDeleteApplications.includes(name) && (
-                                <DangerZoneGroup sectionHeader="Danger Zone">
-                                    { showRevoke && (
-                                        <DangerZone
-                                            actionTitle="Revoke"
-                                            header="Revoke the application"
-                                            subheader="This action is reversible but cannot use the same
-                                                    client secret. Please proceed with caution."
-                                            onActionClick={ (): void => setShowRevokeConfirmationModal(true) }
-                                        />
-                                    ) }
-                                    {
-                                        hasRequiredScopes(featureConfig?.applications,
-                                            featureConfig?.applications?.scopes?.delete) && (
-                                            <DangerZone
-                                                actionTitle="Delete"
-                                                header="Delete application"
-                                                subheader={ "Once you delete an application, there is no going back. " +
-                                                "Please be certain." }
-                                                onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
-                                            />
-                                        )
-                                    }
-                                </DangerZoneGroup>
-                            )
-                            : null
-                    }
+                    { resolveDangerActions() }
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
