@@ -128,7 +128,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
      * @param {IdentityProviderInterface} updatedDetails - Form values.
      */
     const handleFormSubmit = (updatedDetails: IdentityProviderInterface): void => {
-        updateIdentityProviderDetails(updatedDetails)
+        updateIdentityProviderDetails({ id: idpId, ...updatedDetails })
             .then(() => {
                 dispatch(addAlert({
                     description: "Successfully updated the identity provider",
