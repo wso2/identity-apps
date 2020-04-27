@@ -21,7 +21,11 @@ import { Heading, Hint, SelectionCard } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { IdPIcons } from "../../../../../configs";
-import { IdentityProviderInterface } from "../../../../../models";
+import {
+    FederatedAuthenticatorMetaDataInterface,
+    IdentityProviderInterface,
+    IdentityProviderTemplateListItemInterface
+} from "../../../../../models";
 
 /**
  * Proptypes for the general settings wizard form component.
@@ -29,8 +33,8 @@ import { IdentityProviderInterface } from "../../../../../models";
 interface AuthenticatorTemplateSelectionWizardFormPropsInterface {
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
-    defaultTemplates: any;
-    authenticatorTemplates: any;
+    expertModeOptions: FederatedAuthenticatorMetaDataInterface[];
+    authenticatorTemplates: IdentityProviderTemplateListItemInterface[];
 }
 
 /**
@@ -47,62 +51,56 @@ export const AuthenticatorTemplateSelection:
     const {
         triggerSubmit,
         onSubmit,
-        defaultTemplates,
+        expertModeOptions,
         authenticatorTemplates
     } = props;
 
-    const [
-        selectedTemplate,
-        setSelectedTemplate
-    ] = useState<IdentityProviderInterface>(undefined);
+    const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderInterface>(undefined);
+    const [ selectedExpertModeOption, setSelectedExpertModeOption ] = useState<any>(undefined);
 
     /**
-     * Handles inbound protocol selection.
+     * Handles template selection.
      *
      * @param {IdentityProviderInterface} template - Selected protocol.
      */
-    const handleInboundProtocolSelection = (template: IdentityProviderInterface): void => {
+    const handleTemplateSelection = (template: IdentityProviderInterface): void => {
         setSelectedTemplate(template);
+        setSelectedExpertModeOption(undefined);
+    };
+
+    /**
+     * Handles expert mode option selection.
+     *
+     * @param option - Selected expert mode option.
+     */
+    const handleExpertModeOptionSelection = (option): void => {
+        setSelectedExpertModeOption(option);
+        setSelectedTemplate(undefined);
     };
 
     return (
         <Forms
             onSubmit={ (): void => {
-                onSubmit({
-                    templateId: selectedTemplate.id
-                })
+                if (selectedTemplate) {
+                    onSubmit({
+                        templateId: selectedTemplate.id
+                    })
+                } else if (selectedExpertModeOption) {
+                    onSubmit({
+                        expertModeOptionId: selectedExpertModeOption.authenticatorId
+                    })
+                }
             } }
             submitState={ triggerSubmit }
         >
             <Grid>
-                {
-                    (defaultTemplates && defaultTemplates instanceof Array && defaultTemplates.length > 0)
-                    &&
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                            <Heading as="h4">Inbound protocol</Heading>
-                            <Hint icon={ null }>Select one of the following inbound protocol</Hint>
-                            { defaultTemplates.map((temp, index) => (
-                                <SelectionCard
-                                    inline
-                                    id={ temp.id }
-                                    key={ index }
-                                    header={ temp.name }
-                                    image={ IdPIcons[temp.image] }
-                                    onClick={ (): void => handleInboundProtocolSelection(temp) }
-                                    // selected={ selectedInboundProtocol?.id === protocol.id }
-                                />))
-                            }
-                        </Grid.Column>
-                    </Grid.Row>
-                }
                 {
                     (authenticatorTemplates && authenticatorTemplates instanceof Array &&
                         authenticatorTemplates.length > 0) &&
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Heading as="h4">Templates</Heading>
-                            <Hint icon={ null }>Get the authenticator settings from already available template</Hint>
+                            <Hint icon={ null }>Get the authenticator settings from an already available template</Hint>
                             { authenticatorTemplates.map((template, index) => (
                                 <SelectionCard
                                     inline
@@ -110,8 +108,29 @@ export const AuthenticatorTemplateSelection:
                                     key={ index }
                                     header={ template.name }
                                     image={ IdPIcons[template.image] }
-                                    onClick={ (): void => handleInboundProtocolSelection(template) }
+                                    onClick={ (): void => handleTemplateSelection(template) }
                                     selected={ selectedTemplate?.id === template.id }
+                                />))
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                }
+                {
+                    (expertModeOptions && expertModeOptions instanceof Array && expertModeOptions.length > 0)
+                    &&
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Heading as="h4">Expert Mode</Heading>
+                            <Hint icon={ null }>Add a new authenticator by manually configuring the settings.</Hint>
+                            { expertModeOptions.map((option, index) => (
+                                <SelectionCard
+                                    inline
+                                    id={ option.authenticatorId }
+                                    key={ index }
+                                    header={ option.name }
+                                    image={ option.icon }
+                                    onClick={ (): void => handleExpertModeOptionSelection(option) }
+                                    selected={ selectedExpertModeOption?.authenticatorId === option.authenticatorId }
                                 />))
                             }
                         </Grid.Column>

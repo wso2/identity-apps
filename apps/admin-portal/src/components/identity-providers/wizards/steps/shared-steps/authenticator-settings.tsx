@@ -52,35 +52,46 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
     } = props;
 
     const handleSubmit = (authenticator: FederatedAuthenticatorListItemInterface) => {
-        onSubmit({
-            ...initialValues,
-            federatedAuthenticators: {
-                authenticators: [{
-                    ...authenticator,
-                    isDefault: true,
-                    isEnabled: true
-                }],
-                defaultAuthenticatorId: initialValues?.federatedAuthenticators?.defaultAuthenticatorId
-            }
-        });
+        if (initialValues?.id) {
+            onSubmit({
+                ...initialValues,
+                federatedAuthenticators: {
+                    authenticators: [{
+                        ...authenticator,
+                        isDefault: true,
+                        isEnabled: true
+                    }],
+                    defaultAuthenticatorId: initialValues?.federatedAuthenticators?.defaultAuthenticatorId
+                }
+            });
+        } else {
+            onSubmit({
+                federatedAuthenticators: {
+                    authenticators: [{
+                        authenticatorId: authenticator.authenticatorId,
+                        isDefault: false,
+                        isEnabled: true,
+                        properties: authenticator.properties
+                    }],
+                    defaultAuthenticatorId: authenticator.authenticatorId
+                }
+            });
+        }
     };
 
     const authenticator = initialValues?.federatedAuthenticators?.authenticators.find(authenticator =>
         authenticator.authenticatorId === initialValues?.federatedAuthenticators?.defaultAuthenticatorId);
 
-    if (metadata) {
-        return (
+    return (
+        ( metadata ?
             <AuthenticatorFormFactory
                 metadata={ metadata }
-                initialValues={ authenticator }
+                initialValues={ (authenticator ? authenticator : {}) }
                 onSubmit={ handleSubmit }
-                type={ authenticator.name }
+                type={ authenticator?.name }
                 triggerSubmit={ triggerSubmit }
                 enableSubmitButton={ false }
-            />
+            /> : null
         )
-    }
-    return (
-        <></>
     )
 };
