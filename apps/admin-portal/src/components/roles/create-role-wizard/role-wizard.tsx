@@ -342,8 +342,13 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             closeOnEscape= { false }
         >
             <Modal.Header className="wizard-header">
-                Create Role
-                <Heading as="h6">Create a New Role in the System with Specific Permissions.</Heading>
+                { isAddGroup ? "Create Group" : "Create Role"}
+                <Heading as="h6">
+                    { isAddGroup ? 
+                        "Create a New Group in the system with specific permissions" :
+                        "Create a New Role in the system with specific permissions."
+                    }
+                </Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group header="Fill the following mandatory details of the new role." current={ currentStep }>
