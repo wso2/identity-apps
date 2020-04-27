@@ -17,8 +17,9 @@
  */
 
 import { IdPIcons } from "../../../configs";
+import { FederatedAuthenticatorMetaDataInterface } from "../../../models";
 
-export const FederatedAuthenticators = [
+export const FederatedAuthenticators: FederatedAuthenticatorMetaDataInterface[] = [
     {
         authenticatorId: "T2ZmaWNlMzY1QXV0aGVudGljYXRvcg",
         icon: IdPIcons.office365,

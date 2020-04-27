@@ -21,7 +21,7 @@ import { FederatedAuthenticatorListItemInterface, FederatedAuthenticatorMetaInte
 import { CommonAuthenticatorForm } from "../authenticators";
 
 /**
- * Proptypes for the inbound form factory component.
+ * Proptypes for the authenticator form factory component.
  */
 interface AuthenticatorFormFactoryInterface {
     metadata?: FederatedAuthenticatorMetaInterface;

@@ -19,6 +19,7 @@
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, PrimaryButton } from "@wso2is/react-components";
+import _ from "lodash";
 import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
@@ -30,7 +31,7 @@ import {
 } from "../../../api";
 import {
     FederatedAuthenticatorListItemInterface,
-    FederatedAuthenticatorListResponseInterface,
+    FederatedAuthenticatorListResponseInterface, FederatedAuthenticatorMetaDataInterface,
     FederatedAuthenticatorWithMetaInterface,
     IdentityProviderTemplateListItemInterface,
     IdentityProviderTemplateListItemResponseInterface,
@@ -94,19 +95,21 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         deletingAuthenticator,
         setDeletingAuthenticator
     ] = useState<FederatedAuthenticatorListItemInterface>(undefined);
-    const [availableAuthenticators, setAvailableAuthenticators] =
+    const [ availableAuthenticators, setAvailableAuthenticators ] =
         useState<FederatedAuthenticatorWithMetaInterface[]>([]);
     const [ availableTemplates, setAvailableTemplates ] =
         useState<IdentityProviderTemplateListItemInterface[]>(undefined);
+    const [ availableExpertModeOptions, setAvailableExpertModeOptions ] =
+        useState<FederatedAuthenticatorMetaDataInterface[]>(undefined);
     const [ showAddAuthenticatorWizard, setShowAddAuthenticatorWizard ] = useState<boolean>(false);
     const [ isTemplatesLoading, setIsTemplatesLoading ] = useState<boolean>(false);
 
     /**
-     * Handles the inbound config form submit action.
+     * Handles the authenticator config form submit action.
      *
      * @param values - Form values.
      */
-    const handleInboundConfigFormSubmit = (values: any): void => {
+    const handleAuthenticatorConfigFormSubmit = (values: any): void => {
         updateFederatedAuthenticator(idpId, values)
             .then(() => {
                 dispatch(addAlert({
@@ -229,12 +232,15 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     }
 
     useEffect(() => {
+        if (_.isEmpty(federatedAuthenticators)) {
+            return;
+        }
         setAvailableAuthenticators([]);
         fetchAuthenticators()
             .then((res) => {
                 setAvailableAuthenticators(res);
             })
-    }, [props]);
+    }, [federatedAuthenticators]);
 
     /**
      * Handles default authenticator change event.
@@ -247,7 +253,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         void => {
         const authenticator = availableAuthenticators.find(authenticator => (authenticator.id === id)).data;
         authenticator.isDefault = data.checked;
-        handleInboundConfigFormSubmit(authenticator);
+        handleAuthenticatorConfigFormSubmit(authenticator);
     };
 
     /**
@@ -269,7 +275,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             onUpdate(idpId);
         } else {
             authenticator.isEnabled = data.checked;
-            handleInboundConfigFormSubmit(authenticator);
+            handleAuthenticatorConfigFormSubmit(authenticator);
         }
     };
 
@@ -317,7 +323,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 if (!response?.totalResults) {
                     return;
                 }
-                // Load each template
+                // Load all templates
                 fetchIDPTemplates(response?.templates)
                     .then((templates) => {
 
@@ -330,6 +336,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                             !availableAuthenticatorIDs.includes(
                                 template.idp.federatedAuthenticators.defaultAuthenticatorId))
                         );
+
+                        // Set filtered expert mode options.
+                        setAvailableExpertModeOptions(FederatedAuthenticators.filter(a =>
+                            !availableAuthenticatorIDs.includes(a.authenticatorId)))
 
                         // sort templateList based on display Order
                         filteredTemplates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
@@ -436,7 +446,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                     <AuthenticatorFormFactory
                                                         metadata={ authenticator.meta }
                                                         initialValues={ authenticator.data }
-                                                        onSubmit={ handleInboundConfigFormSubmit }
+                                                        onSubmit={ handleAuthenticatorConfigFormSubmit }
                                                         type={ authenticator.meta?.name }
                                                     />
                                                 ),
@@ -490,8 +500,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                  subTitle={ "Add new authenticator to the identity provider: " + idpName }
                                  closeWizard={ () => {
                                      setShowAddAuthenticatorWizard(false);
+                                     setAvailableAuthenticators([]);
                                      onUpdate(idpId)
                                  } }
+                                 expertModeOptions={ availableExpertModeOptions }
                                  availableTemplates={ availableTemplates }
                                  idpId={ idpId }
                              />

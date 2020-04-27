@@ -27,6 +27,7 @@ import {
 } from "../../../../models";
 import { getPropertyMetadata } from "../../utils";
 import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../helpers";
+import { collectAllDependants } from "ts-loader/dist/utils";
 
 /**
  * Common pluggable connector configurations form.
@@ -78,10 +79,17 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             });
         });
 
-        return {
-            ...initialValues,
-            properties: [...properties]
-        };
+        if (initialValues?.properties) {
+            return {
+                ...initialValues,
+                properties: [...properties]
+            };
+        } else {
+            return {
+                ...metadata,
+                properties: [...properties]
+            };
+        }
     };
 
     /**

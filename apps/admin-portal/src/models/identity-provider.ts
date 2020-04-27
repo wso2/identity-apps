@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { IdPIcons } from "../configs";
+
 /**
  * Available Identity Provider list.
  */
@@ -91,6 +93,12 @@ export interface IdentityProviderAdvanceInterface {
 export interface CertificateConfigInterface {
     certificates?: string[];
     jwksUri?: string; // TODO  Check for upload option.
+}
+
+export interface FederatedAuthenticatorMetaDataInterface {
+    authenticatorId: string;
+    icon: any;
+    name: string;
 }
 
 export interface FederatedAuthenticatorListItemInterface extends FederatedAuthenticatorInterface {
