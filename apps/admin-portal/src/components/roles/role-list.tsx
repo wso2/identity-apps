@@ -19,13 +19,14 @@
 import { ConfirmationModal, ResourceList, ResourceListItem } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
 import { Image } from "semantic-ui-react";
-import { ROLE_VIEW_PATH } from "../../constants";
+import { ROLE_VIEW_PATH, GROUP_VIEW_PATH } from "../../constants";
 import { history } from "../../helpers";
 import { RolesInterface } from "../../models";
 import { CommonUtils } from "../../utils";
 import { AvatarBackground } from "../shared";
 
 interface RoleListProps {
+    isGroup: boolean;
     roleList: RolesInterface[];
     handleRoleDelete: (role: RolesInterface) => void;
 }
@@ -39,14 +40,19 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     
     const {
         roleList,
-        handleRoleDelete
+        handleRoleDelete,
+        isGroup
     } = props;
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false)
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
 
     const handleRoleEdit = (roleId: string) => {
-        history.push(ROLE_VIEW_PATH + roleId);
+        if (isGroup) {
+            history.push(GROUP_VIEW_PATH + roleId);
+        } else {
+            history.push(ROLE_VIEW_PATH + roleId);
+        }
     };
 
     return (

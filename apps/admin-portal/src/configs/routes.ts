@@ -193,6 +193,16 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             },
             {
+                component: RoleEditPage,
+                exact: true,
+                icon: "usersAndRoles",
+                id: "groupsEdit",
+                name: "Group-Edit",
+                path: "/groups/:id",
+                protected: true,
+                showOnSidePanel: false
+            },
+            {
                 component: UserEditPage,
                 exact: true,
                 icon: "usersAndRoles",

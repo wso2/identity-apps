@@ -16,20 +16,21 @@
  * under the License.
  */
 
-import { PrimaryButton } from "@wso2is/react-components";
+import { PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { DropdownItemProps, DropdownProps, Icon, PaginationProps, Popup, Button, Dropdown, Grid } from "semantic-ui-react";
 import { deleteRoleById, getRolesList, getUserStoreList, searchRoleList } from "../api";
 
 import { RoleList, RoleSearch } from "../components/roles";
 import { CreateRoleWizard } from "../components/roles/create-role-wizard";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
-import { AlertInterface, AlertLevels, RoleListInterface, RolesInterface, SearchRoleInterface } from "../models"
+import { AlertInterface, AlertLevels, RolesInterface, SearchRoleInterface } from "../models"
 import { addAlert } from "../store/actions";
+import { EmptyPlaceholderIllustrations } from "../configs";
 
 const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -49,6 +50,24 @@ const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
     }
 ];
 
+const filterOptions: DropdownItemProps[] = [
+    {
+        key: 'all',
+        text: 'Show All',
+        value: 'all'
+    },
+    {
+        key: APPLICATION_DOMAIN,
+        text: 'Application Domain',
+        value: APPLICATION_DOMAIN
+    },
+    {
+        key: INTERNAL_DOMAIN,
+        text: 'Internal Domain',
+        value: INTERNAL_DOMAIN
+    }
+];
+
 /**
  * React component to list User Roles.
  * 
@@ -58,13 +77,18 @@ export const RolesPage = (): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const [ roleList, setRoleList ] = useState<RoleListInterface>();
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ userStore, setUserStore ] = useState(undefined);
+    const [ filterBy, setFilterBy ] = useState<string>('all');
+    const [ searchQuery, setSearchQuery ] = useState<string>('');
+    const [ isEmptyResults, setIsEmptyResults ] = useState<boolean>(false);
+
+    const [ initialRolList, setInitialRoleList ] = useState<RolesInterface[]>([]);
+    const [ paginatedRoles, setPaginatedRoles ] = useState<RolesInterface[]>([]);
 
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(ROLES_SORTING_OPTIONS[ 0 ]);
 
@@ -73,8 +97,10 @@ export const RolesPage = (): ReactElement => {
     }, []);
 
     useEffect(() => {
-        getRoles();
-    },[ listOffset, listItemLimit ]);
+        if (searchQuery == '') {
+            getRoles();
+        }
+    },[ initialRolList.length != 0 ]);
 
     useEffect(() => {
         getRoles();
@@ -87,6 +113,10 @@ export const RolesPage = (): ReactElement => {
 
     useEffect(() => {
         getRoles();
+    }, [ filterBy ]);
+
+    useEffect(() => {
+        getRoles();
     }, [ userStore ]);
 
     const getRoles = () => {
@@ -96,12 +126,19 @@ export const RolesPage = (): ReactElement => {
 
                 if (roleResources && roleResources instanceof Array) {
                     const updatedResources = roleResources.filter((role: RolesInterface) => {
-                        return role.displayName.includes(APPLICATION_DOMAIN) || 
+                        if (filterBy === 'all') {
+                            return role.displayName.includes(APPLICATION_DOMAIN) || 
                                 role.displayName.includes(INTERNAL_DOMAIN);
+                        } else if (APPLICATION_DOMAIN === filterBy) {
+                            return role.displayName.includes(APPLICATION_DOMAIN);
+                        } else if (INTERNAL_DOMAIN === filterBy) {
+                            return role.displayName.includes(INTERNAL_DOMAIN);
+                        }
                     })
                     response.data.Resources = updatedResources;
+                    setInitialRoleList(updatedResources);
+                    setRolesPage(0, listItemLimit, updatedResources);
                 }
-                setRoleList(response.data);
             }
         });
     };
@@ -156,11 +193,32 @@ export const RolesPage = (): ReactElement => {
             filter: searchQuery
         }
 
+        setSearchQuery(searchQuery);
+
         searchRoleList(searchData).then(response => {
             if (response.status === 200) {
-                setRoleList(response.data);
+                const results = response.data.Resources;
+                let updatedResults = [];
+                if (results) {
+                    updatedResults = results.filter((role: RolesInterface) => {
+                        return role.displayName.includes(APPLICATION_DOMAIN) || 
+                            role.displayName.includes(INTERNAL_DOMAIN);
+                    })
+                }
+                setInitialRoleList(updatedResults);
+                setPaginatedRoles(updatedResults);
             }
         })
+    }
+
+    /**
+     * Util method to paginate retrieved email template type list.
+     * 
+     * @param offsetValue pagination offset value
+     * @param itemLimit pagination item limit
+     */
+    const setRolesPage = (offsetValue: number, itemLimit: number, roleList: RolesInterface[]) => {
+        setPaginatedRoles(roleList?.slice(offsetValue, itemLimit + offsetValue));
     }
 
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
@@ -168,12 +226,19 @@ export const RolesPage = (): ReactElement => {
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
-        setListOffset((data.activePage as number - 1) * listItemLimit);
+        const offsetValue = (data.activePage as number - 1) * listItemLimit;
+        setListOffset(offsetValue);
+        setRolesPage(offsetValue, listItemLimit, initialRolList);
     };
 
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
+        setRolesPage(listOffset, data.value as number, initialRolList);
     };
+
+    const handleFilterChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+        setFilterBy(data.value as string);
+    }
 
     /**
      * Dispatches the alert object to the redux store.
@@ -219,46 +284,106 @@ export const RolesPage = (): ReactElement => {
         searchRoleListHandler(query);
     };
 
+
+
     return (
         <PageLayout
             title="Roles"
             description="Create and manage roles, assign permissions for roles."
             showBottomDivider={ true } 
         >
-            <ListLayout
-                advancedSearch={ <RoleSearch onFilter={ handleUserFilter }/> }
-                currentListSize={ roleList?.itemsPerPage }
-                listItemLimit={ listItemLimit }
-                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                onPageChange={ handlePaginationChange }
-                onSortStrategyChange={ handleListSortingStrategyOnChange }
-                sortStrategy={ listSortingStrategy }
-                rightActionPanel={
-                    (
-                        <PrimaryButton onClick={ () => setShowWizard(true) }>
-                            <Icon name="add"/>
-                            New Role
+            {
+                !isEmptyResults &&
+                <ListLayout
+                    advancedSearch={ <RoleSearch isGroup={ false } onFilter={ handleUserFilter }/> }
+                    currentListSize={ listItemLimit }
+                    listItemLimit={ listItemLimit }
+                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                    onPageChange={ handlePaginationChange }
+                    onSortStrategyChange={ handleListSortingStrategyOnChange }
+                    sortStrategy={ listSortingStrategy }
+                    rightActionPanel={
+                        (
+                            <PrimaryButton onClick={ () => setShowWizard(true) }>
+                                <Icon name="add"/>
+                                New Role
+                            </PrimaryButton>
+                        )
+                    }
+                    leftActionPanel={
+                        (
+                            <Dropdown
+                                selection
+                                options={ filterOptions }
+                                placeholder="Filter by"
+                                onChange={ handleFilterChange }
+                            />
+                        )
+                    }
+                    showPagination={ true }
+                    totalPages={ Math.ceil(initialRolList?.length / listItemLimit) }
+                    totalListSize={ initialRolList?.length }
+                >
+                    {
+                        paginatedRoles.length > 0 ?
+                            <RoleList 
+                                isGroup={ false }
+                                roleList={ paginatedRoles }
+                                handleRoleDelete={ handleOnDelete }
+                            />
+                        :
+                        <Grid.Column width={ 16 }>
+                            {
+                                searchQuery !== '' &&
+                                <EmptyPlaceholder
+                                    action={ (
+                                        <Button
+                                            className="link-button"
+                                            onClick={ () => getRoles() }
+                                        >
+                                            { t("devPortal:placeholders.emptySearchResult.action") }
+                                        </Button>
+                                    ) }
+                                    image={ EmptyPlaceholderIllustrations.search }
+                                    title={ t("devPortal:placeholders.emptySearchResult.title") }
+                                    subtitle={ [
+                                        t("devPortal:placeholders.emptySearchResult.subtitles.0",
+                                            { query: searchQuery }),
+                                        t("devPortal:placeholders.emptySearchResult.subtitles.1")
+                                    ] }
+                                />
+                            }
+                        </Grid.Column>
+                    }
+                </ListLayout>
+            }
+            {
+                isEmptyResults &&
+                <EmptyPlaceholder
+                    action={
+                        <PrimaryButton
+                            onClick={ () => {
+                                setShowWizard(true);
+                            } }
+                        >
+                            <Icon name="add"/> New Role
                         </PrimaryButton>
-                    )
-                }
-                showPagination={ true }
-                totalPages={ Math.ceil(roleList?.totalResults / listItemLimit) }
-                totalListSize={ roleList?.totalResults }
-            >
-                <RoleList 
-                    roleList={ roleList?.Resources }
-                    handleRoleDelete={ handleOnDelete }
+                    }
+                    title="Add Role"
+                    subtitle={ ["Currently, there are no roles available."] }
+                    image={ EmptyPlaceholderIllustrations.emptyList }
+                    imageSize="tiny"
                 />
-                {
-                    showWizard && (
-                        <CreateRoleWizard
-                            isAddGroup={ false }
-                            closeWizard={ () => setShowWizard(false) }
-                            updateList={ () => setListUpdated(true) }
-                        />
-                    ) 
-                }
-            </ListLayout>
+            }
+            {
+                showWizard && (
+                    <CreateRoleWizard
+                        isAddGroup={ false }
+                        closeWizard={ () => setShowWizard(false) }
+                        updateList={ () => setListUpdated(true) }
+                    />
+                ) 
+            }
         </PageLayout>
     );
 }

@@ -287,13 +287,14 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         content: (
             <AddRoleUsers
                 isEdit={ false }
+                isGroup={ isAddGroup }
                 triggerSubmit={ submitRoleUserList }
                 initialValues={ wizardState && wizardState[ WizardStepsFormTypes.USER_LIST ] }
                 onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.USER_LIST) }
             />
         ),
         icon: ApplicationWizardStepIcons.protocolSelection,
-        title: "Assign user roles"
+        title: "Assign Users"
     },{
         content: (
             <CreateRoleSummary
@@ -342,11 +343,21 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             closeOnEscape= { false }
         >
             <Modal.Header className="wizard-header">
-                Create Role
-                <Heading as="h6">Create a New Role in the System with Specific Permissions.</Heading>
+                { isAddGroup ? "Create Group" : "Create Role"}
+                <Heading as="h6">
+                    { isAddGroup ? 
+                        "Create a New Group in the system with specific permissions" :
+                        "Create a New Role in the system with specific permissions."
+                    }
+                </Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
-                <Steps.Group header="Fill the following mandatory details of the new role." current={ currentStep }>
+                <Steps.Group 
+                    header={ isAddGroup ? "Fill the following mandatory details of the new group." : 
+                        "Fill the following mandatory details of the new role." 
+                    }
+                    current={ currentStep }
+                >
                     { WIZARD_STEPS.map((step, index) => (
                         <Steps.Step
                             key={ index }

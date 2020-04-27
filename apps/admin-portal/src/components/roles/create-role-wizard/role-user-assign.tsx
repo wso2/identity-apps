@@ -29,7 +29,7 @@ import {
 } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Checkbox, Grid, Icon, Input, Modal, Segment, Table } from "semantic-ui-react";
+import { Grid, Icon, Input, Modal, Segment, Table } from "semantic-ui-react";
 import { getUsersList } from "../../../api";
 import { EmptyPlaceholderIllustrations } from "../../../configs";
 import { UserConstants } from "../../../constants";
@@ -43,6 +43,7 @@ interface AddRoleUserProps {
     onSubmit?: (values: any) => void;
     assignedUsers?: RolesMemberInterface[];
     isEdit: boolean;
+    isGroup: boolean;
     initialValues?: UserBasicInterface[];
 }
 
@@ -52,7 +53,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         onSubmit,
         assignedUsers,
         isEdit,
-        initialValues
+        initialValues,
+        isGroup
     } = props;
 
     const [ tempUserList, setTempUserList ] = useState<UserBasicInterface[]>([]);
@@ -106,19 +108,27 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     const getList = (limit: number, offset: number, filter: string, attribute: string) => {
         getUsersList(limit, offset, filter, attribute, null)
             .then((response) => {
-                setUsersList(response.Resources);
-                setInitialUserList(response.Resources);
+                const responseUsers = response.Resources;
+                responseUsers.sort((userObject, comparedUserObject) => 
+                    userObject.name.givenName.localeCompare(comparedUserObject.name.givenName)
+                );
+                setUsersList(responseUsers);
+                setInitialUserList(responseUsers);
 
                 if (assignedUsers && assignedUsers.length !== 0) {
                     const selectedUserList: UserBasicInterface[] = [];
-                    if (response.Resources && response.Resources instanceof Array ) {
-                        response.Resources.forEach(user => {
+                    if (responseUsers && responseUsers instanceof Array ) {
+                        responseUsers.slice().reverse().forEach(user => {
                             assignedUsers.forEach(assignedUser => {
                                 if (user.id === assignedUser.value) {
                                     selectedUserList.push(user);
+                                    responseUsers.splice(responseUsers.indexOf(user), 1);
                                 }
                             });
                         });
+                        selectedUserList.sort((userObject, comparedUserObject) => 
+                            userObject.name.givenName.localeCompare(comparedUserObject.name.givenName)
+                        );
                         setSelectedUsers(selectedUserList);
                         setInitialSelectedUsers(selectedUserList);
                         setTempUserList(selectedUserList);
@@ -135,6 +145,9 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                 }
                             });
                         });
+                        selectedUserList.sort((userObject, comparedUserObject) => 
+                            userObject.name.givenName.localeCompare(comparedUserObject.name.givenName)
+                        );
                         setSelectedUsers(selectedUserList);
                         setInitialSelectedUsers(selectedUserList);
                         setTempUserList(selectedUserList);
@@ -233,6 +246,9 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
             checkedUnassignedListItems.map((user) => {
                 if (!(tempUserList.includes(user))) {
                     addedRoles.push(user);
+                    setUsersList(usersList.filter((item) => {
+                        return item.id !== user.id;
+                    }));
                 }
             });
         }
@@ -244,11 +260,14 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         const removedUsers = [ ...tempUserList ];
         
         if (checkedAssignedListItems?.length > 0) {
-            checkedAssignedListItems.map((role) => {
-                removedUsers.splice(tempUserList.indexOf(role), 1);
-                setCheckedAssignedListItems(checkedAssignedListItems.splice(tempUserList.indexOf(role), 1));
+            checkedAssignedListItems.map((user) => {
+                removedUsers.splice(tempUserList.indexOf(user), 1);
+                setCheckedAssignedListItems(checkedAssignedListItems.splice(tempUserList.indexOf(user), 1));
                 setTempUserList(removedUsers);
+                usersList.push(user)
+                setUsersList(usersList);
             });
+            setCheckedAssignedListItems([]);
         }
     };
 
@@ -289,9 +308,13 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     const addNewUserModal = () => (
         <Modal open={ showAddNewUserModal } size="small" className="user-roles">
             <Modal.Header>
-                Update Role Users
+                { isGroup ? "Update Group Users" : "Update Role Users" }
                 <Heading subHeading ellipsis as="h6">
-                    Add new users or remove existing users assigned to the role.
+                    { 
+                        isGroup ? 
+                        "Add new users or remove existing users assigned to the group." : 
+                        "Add new users or remove existing users assigned to the role." 
+                    }
                 </Heading>
             </Modal.Header>
             <Modal.Content image>
@@ -356,6 +379,11 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                 </TransferComponent>
             </Modal.Content>
             <Modal.Actions>
+                <LinkButton
+                    onClick={ handleCloseAddNewGroupModal }
+                >
+                    Cancel
+                </LinkButton>
                 <PrimaryButton
                     onClick={ () => { 
                         handleAddUserSubmit()
@@ -363,11 +391,6 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                 >
                     Save
                 </PrimaryButton>
-                <LinkButton
-                    onClick={ handleCloseAddNewGroupModal }
-                >
-                    Cancel
-                </LinkButton>
             </Modal.Actions>
         </Modal>
     );
@@ -401,18 +424,26 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                             </Grid.Row>
                                             <Grid.Row>
                                                 <Table singleLine compact>
+                                                <Table.Header>
+                                                    <Table.Row>
+                                                        <Table.HeaderCell />
+                                                        <Table.HeaderCell>Users</Table.HeaderCell>
+                                                    </Table.Row>
+                                                </Table.Header>
                                                     <Table.Body>
                                                         {
                                                             selectedUsers?.map((user) => {
                                                                 return (
                                                                     <Table.Row>
-                                                                        <Table.Cell>
+                                                                        <Table.Cell collapsing>
                                                                             <UserAvatar
                                                                                 name={ user.userName }
                                                                                 size="mini"
                                                                                 floated="left"
                                                                                 image={ user.profileUrl }
                                                                             />
+                                                                        </Table.Cell>
+                                                                        <Table.Cell>
                                                                             { user.userName }
                                                                         </Table.Cell>
                                                                     </Table.Row>
@@ -429,6 +460,9 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         <EmptyPlaceholder
                                             title="No Users Assigned"
                                             subtitle={ [
+                                                isGroup ?
+                                                "There are no Users assigned to the group at the moment."
+                                                 : 
                                                 "There are no Users assigned to the role at the moment."
                                             ] }
                                             action={
