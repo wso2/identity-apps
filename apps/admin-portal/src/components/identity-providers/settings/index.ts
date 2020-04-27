@@ -20,4 +20,5 @@ export * from "./general-settings";
 export * from "./authenticator-settings";
 export * from "./outbound-provisioning-settings";
 export * from "./advance-settings";
+export * from "./attribute-settings";
 export * from "./attribute-management";

@@ -101,6 +101,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     <Heading as="h5">
                         { uiProps.componentHeading }
                     </Heading>
+                    <Hint>
+                        { uiProps.hint }
+                    </Hint>
                     <Divider hidden/>
                     {
                         (selectedAttributesWithMapping?.length > 0) ? (
@@ -191,9 +194,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                             </Segment>
                         )
                     }
-                    <Hint>
-                        { uiProps.hint }
-                    </Hint>
                 </Grid.Column>
             </Grid.Row>
             { addSelectionModal() }

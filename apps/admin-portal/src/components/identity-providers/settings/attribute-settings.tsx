@@ -16,14 +16,15 @@
  * under the License.
  */
 
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { ContentLoader } from "@wso2is/react-components";
 import _, { isEmpty } from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
-import { AdvanceAttributeSettings } from "./advance-attribute-settings";
-import { AttributeSelection } from "./attribute-selection";
+import { AttributeSelection, RoleMappingSettings, UriAttributesSettings } from "./attribute-management";
 import {
     IdentityProviderClaimInterface,
     IdentityProviderClaimMappingInterface,
@@ -31,7 +32,7 @@ import {
     IdentityProviderCommonClaimMappingInterface,
     IdentityProviderProvisioningClaimInterface,
     IdentityProviderRoleMappingInterface
-} from "../../../../models";
+} from "../../../models";
 import {
     buildProvisioningClaimList,
     createDropdownOption,
@@ -41,7 +42,7 @@ import {
     initSubjectAndRoleURIs,
     isClaimExistsInIdPClaims,
     updateAvailableLocalClaims
-} from "../../utils";
+} from "../utils";
 
 
 export interface DropdownOptionsInterface {
@@ -68,11 +69,6 @@ interface AttributeSelectionPropsInterface {
     initialRoleMappings?: IdentityProviderRoleMappingInterface[];
 
     /**
-     * Outbound provisioning roles of the IDP
-     */
-    outboundProvisioningRoles?: string[];
-
-    /**
      * Is the idp info request loading.
      */
     isLoading?: boolean;
@@ -92,7 +88,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const {
         idpId,
         initialClaims,
-        outboundProvisioningRoles,
         initialRoleMappings,
         isLoading,
         onUpdate
@@ -117,8 +112,14 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     // Selected role.
     const [roleClaimUri, setRoleClaimUri] = useState<string>();
 
-    // Trigger advanced settings field to enforce validations.
-    const [triggerAdvanceOptionsValidations, setTriggerAdvanceOptionsValidations] = useTrigger();
+    // Selected role mapping.
+    const [roleMapping, setRoleMapping] = useState<IdentityProviderRoleMappingInterface[]>(undefined);
+
+    // Trigger uri settings fields to enforce validations.
+    const [triggerUriOptionsValidations, setTriggerUriOptionsValidations] = useTrigger();
+
+    // Trigger role mapping field to submission.
+    const [triggerSubmission, setTriggerSubmission] = useTrigger();
 
     useEffect(() => {
         updateAvailableLocalClaims(setAvailableLocalClaims, dispatch);
@@ -146,9 +147,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     }, [availableLocalClaims]);
 
     useEffect(() => {
-        // Provisioning claims, subject URI and role UR depend on the IdP claim mapping since they exists in the
-        // namespace of mapped values. The only exception occur when there are no claim mappings. In this case, they
-        // need to fall back to local claims.
+        // Provisioning claims, subject URI and role UR depend on the IdP claim mapping unless there are no claim
+        // mappings configured. In this case, they need to fall back to local claims.
         if (_.isEmpty(selectedClaimsWithMapping)) {
             // Set provisioning claims.
             setSelectedProvisioningClaimsWithDefaultValue(selectedProvisioningClaimsWithDefaultValue.filter(element =>
@@ -174,7 +174,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
     }, [selectedClaimsWithMapping]);
 
-    const handleUpdateButton = () => {
+    const handleAttributesUpdate = () => {
 
         let canSubmit = true;
         const claimConfigurations: IdentityProviderClaimsInterface = { ...initialClaims };
@@ -204,7 +204,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         // Prepare subject for submission.
         if (_.isEmpty(subjectClaimUri)) {
             // Trigger form field validation on the empty subject uri.
-            setTriggerAdvanceOptionsValidations();
+            setTriggerUriOptionsValidations();
             canSubmit = false;
         }
         const matchingLocalClaim = availableLocalClaims.find(element => element.uri === subjectClaimUri);
@@ -215,7 +215,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         if (!_.isEmpty(selectedClaimsWithMapping)) {
             if (_.isEmpty(roleClaimUri)) {
                 // Trigger form field validation on the empty subject uri.
-                setTriggerAdvanceOptionsValidations();
+                setTriggerUriOptionsValidations();
                 canSubmit = false;
             }
             const matchingLocalClaim = availableLocalClaims.find(element => element.uri === roleClaimUri);
@@ -224,9 +224,24 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
 
         if (canSubmit) {
-            handleAttributeSettingsFormSubmit(idpId, claimConfigurations, onUpdate, dispatch);
+            handleAttributeSettingsFormSubmit(idpId, claimConfigurations, roleMapping, onUpdate, dispatch);
+        } else {
+            dispatch(addAlert(
+                {
+                    description: "Need to configure all the mandatory properties.",
+                    level: AlertLevels.WARNING,
+                    message: "Cannot perform update"
+                }
+            ));
         }
     };
+
+    useEffect(() => {
+        if (roleMapping == undefined) {
+            return;
+        }
+        handleAttributesUpdate();
+    }, [roleMapping]);
 
     return (
         !isLoading ?
@@ -248,7 +263,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 /> }
 
                 { selectedClaimsWithMapping &&
-                <AdvanceAttributeSettings
+                <UriAttributesSettings
                     dropDownOptions={ createDropdownOption(selectedClaimsWithMapping, availableLocalClaims).filter(
                         element => !_.isEmpty(element)) }
                     initialRoleUri={ roleClaimUri }
@@ -256,7 +271,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     claimMappingOn={ !isEmpty(selectedClaimsWithMapping) }
                     updateRole={ setRoleClaimUri }
                     updateSubject={ setSubjectClaimUri }
-                    triggerSubmit={ triggerAdvanceOptionsValidations }
+                    triggerSubmit={ triggerUriOptionsValidations }
                 /> }
 
                 {/* Select attributes for provisioning. */}
@@ -277,17 +292,19 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     } }
                 /> }
 
-                {/*<RoleMapping*/}
-                {/*    submitState={ triggerAdvanceSettingFormSubmission }*/}
-                {/*    onSubmit={ setRoleMapping }*/}
-                {/*    initialMappings={ initialRoleMappings }*/}
-                {/*/>*/}
+                {/* Set role mappings. */}
+                <RoleMappingSettings
+                    triggerSubmit={ triggerSubmission }
+                    initialRoleMappings={ initialRoleMappings }
+                    onSubmit={ setRoleMapping }
+                />
+
                 <Grid.Row>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
                         <Button
                             primary
                             size="small"
-                            onClick={ handleUpdateButton }
+                            onClick={ setTriggerSubmission }
                         >
                             Update
                         </Button>

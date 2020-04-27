@@ -19,13 +19,16 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import _ from "lodash";
 import { Dispatch } from "redux";
-import { getAllLocalClaims, updateClaimsConfigs } from "../../../api";
+import { getAllLocalClaims, updateClaimsConfigs, updateIDPRoleMappings } from "../../../api";
 import {
     Claim,
     IdentityProviderClaimInterface,
-    IdentityProviderClaimMappingInterface, IdentityProviderClaimsInterface,
+    IdentityProviderClaimMappingInterface,
+    IdentityProviderClaimsInterface,
     IdentityProviderCommonClaimMappingInterface,
-    IdentityProviderProvisioningClaimInterface
+    IdentityProviderProvisioningClaimInterface,
+    IdentityProviderRoleMappingInterface,
+    IdentityProviderRolesInterface
 } from "../../../models";
 
 export interface DropdownOptionsInterface {
@@ -106,7 +109,7 @@ export const updateAvailableLocalClaims = (setAvailableLocalClaims, dispatch) =>
                 } as IdentityProviderClaimInterface;
             }));
         })
-        .catch((error) => {
+        .catch(() => {
             dispatch(addAlert({
                 description: "An error occurred while retrieving local claims.",
                 level: AlertLevels.ERROR,
@@ -147,12 +150,13 @@ export const initSubjectAndRoleURIs = (initialClaims, setSubjectClaimUri, setRol
     setRoleClaimUri(initialClaims?.roleClaim?.uri);
 }
 
-export const handleAttributeSettingsFormSubmit = (idpId: string, values: IdentityProviderClaimsInterface, 
+export const handleAttributeSettingsFormSubmit = (idpId: string, values: IdentityProviderClaimsInterface,
+                                                  roleMapping: IdentityProviderRoleMappingInterface[],
                                                   onUpdate: (idpId: string) => void, dispatch: Dispatch<any>): void => {
     updateClaimsConfigs(idpId, values)
         .then(() => {
             dispatch(addAlert({
-                description: "Successfully updated claims configurations.",
+                description: "Successfully updated attribute configurations.",
                 level: AlertLevels.SUCCESS,
                 message: "Update successful"
             }));
@@ -165,4 +169,26 @@ export const handleAttributeSettingsFormSubmit = (idpId: string, values: Identit
                 message: "Update error"
             }));
         });
+
+    updateIDPRoleMappings(idpId, {
+            mappings: roleMapping,
+            outboundProvisioningRoles: [""]
+        } as IdentityProviderRolesInterface
+    ).then(() => {
+        dispatch(addAlert(
+            {
+                description: "Successfully updated role mapping configurations.",
+                level: AlertLevels.SUCCESS,
+                message: "Update successful"
+            }
+        ));
+    }).catch(error => {
+        dispatch(addAlert(
+            {
+                description: error?.description || "There was an error while updating role configurations",
+                level: AlertLevels.ERROR,
+                message: "Update error"
+            }
+        ));
+    })
 };

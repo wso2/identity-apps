@@ -18,44 +18,33 @@
 
 import { AlertLevels } from "@wso2is/core/dist/src/models";
 import { addAlert } from "@wso2is/core/dist/src/store";
-import { useTrigger } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Button, Divider, Grid } from "semantic-ui-react";
-import { getRolesList, updateIDPRoleMappings } from "../../../api";
-import {
-    IdentityProviderClaimsInterface,
-    IdentityProviderRoleMappingInterface, IdentityProviderRolesInterface,
-    RoleListInterface,
-    RolesInterface
-} from "../../../models";
-import { DynamicField } from "../../claims";
+import { Divider, Grid } from "semantic-ui-react";
+import { getRolesList } from "../../../../api";
+import { IdentityProviderRoleMappingInterface, RoleListInterface, RolesInterface } from "../../../../models";
+import { DynamicField } from "../../../claims";
 
 /**
  * Proptypes for the identity providers settings component.
  */
-interface IdentityProviderSettingsPropsInterface {
+interface RoleMappingSettingsPropsInterface {
 
     /**
-     * Currently editing idp id.
+     * Trigger submission.
      */
-    idpId: string;
+    triggerSubmit: boolean;
 
     /**
-     * Claims of the IDP
+     *  Handle submission.
      */
-    claims?: IdentityProviderClaimsInterface;
+    onSubmit?: (roleMappings: IdentityProviderRoleMappingInterface[]) => void;
 
     /**
      * Roles of the IDP
      */
     initialRoleMappings?: IdentityProviderRoleMappingInterface[];
-
-    /**
-     * Outbound provisioning roles of the IDP
-     */
-    outboundProvisioningRoles?: string[];
 }
 
 /**
@@ -64,18 +53,16 @@ interface IdentityProviderSettingsPropsInterface {
  * @param {IdentityProviderSettingsPropsInterface} props - Props injected to the component.
  * @return {ReactElement}
  */
-export const AttributeSettingsBk: FunctionComponent<IdentityProviderSettingsPropsInterface> = (
-    props: IdentityProviderSettingsPropsInterface
+export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInterface> = (
+    props: RoleMappingSettingsPropsInterface
 ): ReactElement => {
 
     const [roleList, setRoleList] = useState<RolesInterface[]>();
-    const [submit, setSubmit] = useTrigger();
 
     const {
-        idpId,
-        claims,
-        initialRoleMappings,
-        outboundProvisioningRoles
+        onSubmit,
+        triggerSubmit,
+        initialRoleMappings
     } = props;
 
     const dispatch = useDispatch();
@@ -114,42 +101,12 @@ export const AttributeSettingsBk: FunctionComponent<IdentityProviderSettingsProp
             });
     }, [initialRoleMappings]);
 
-    const onSubmit = (mappings) => {
-        const data: IdentityProviderRolesInterface = {
-            mappings: mappings,
-            outboundProvisioningRoles: outboundProvisioningRoles
-        };
-        updateIDPRoleMappings(idpId, data).then(() => {
-            dispatch(addAlert(
-                {
-                    description: "Attributes of the identity provider updated successfully!",
-                    level: AlertLevels.SUCCESS,
-                    message: "Identity Provider updated successfully"
-                }
-            ));
-        }).catch(error => {
-            dispatch(addAlert(
-                {
-                    description: error?.description || "There was an error while updating the identity provider",
-                    level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
-                }
-            ));
-        })
-    };
-
     return (
-        <Grid className="claim-mapping">
-            <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    <Heading as="h5">Claim Configuration</Heading>
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    <Divider />
+        <>
+            <Grid.Row>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                    <Divider/>
                     <Heading as="h5">Role Mapping</Heading>
-                    <Hint>Map local roles with the Identity Provider roles</Hint>
                     <DynamicField
                         data={
                             initialRoleMappings ?
@@ -167,7 +124,7 @@ export const AttributeSettingsBk: FunctionComponent<IdentityProviderSettingsProp
                         keyRequiredMessage="Please enter the local role"
                         valueRequiredErrorMessage="Please enter an IDP role to map to"
                         duplicateKeyErrorMsg="This role is already mapped. Please select another role"
-                        submit={ submit }
+                        submit={ triggerSubmit }
                         update={ (data) => {
                             if (data.length > 0) {
                                 const finalData: IdentityProviderRoleMappingInterface[] = data.map(mapping => {
@@ -182,21 +139,9 @@ export const AttributeSettingsBk: FunctionComponent<IdentityProviderSettingsProp
                             }
                         } }
                     />
+                    <Hint>Map local roles with the Identity Provider roles</Hint>
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
-                    <Button
-                        primary
-                        size="small"
-                        onClick={ () => {
-                            setSubmit();
-                        } }
-                    >
-                        Update
-                    </Button>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
+        </>
     );
 };

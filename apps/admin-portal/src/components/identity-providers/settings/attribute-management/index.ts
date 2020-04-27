@@ -17,4 +17,5 @@
  */
 
 export * from "./attribute-selection";
-export * from "./attribute-settings";
+export * from "./uri-attributes-settings";
+export * from "./role-mapping-settings";

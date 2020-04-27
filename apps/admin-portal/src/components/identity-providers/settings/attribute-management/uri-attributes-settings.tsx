@@ -21,7 +21,7 @@ import { Heading, Hint } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider, Grid } from "semantic-ui-react";
-import { DropdownOptionsInterface } from "./attribute-settings";
+import { DropdownOptionsInterface } from "../attribute-settings";
 
 interface AdvanceAttributeSettingsPropsInterface {
     dropDownOptions: DropdownOptionsInterface[];
@@ -33,7 +33,7 @@ interface AdvanceAttributeSettingsPropsInterface {
     triggerSubmit: boolean;
 }
 
-export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSettingsPropsInterface> = (
+export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPropsInterface> = (
     props
 ): ReactElement => {
 
@@ -59,7 +59,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     <Divider hidden/>
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    <Forms submitState={ triggerSubmit }>
+                    {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+                    <Forms submitState={ triggerSubmit } onSubmit={ (): void => { } }>
                         <Divider hidden/>
                         <Heading as="h5">Subject</Heading>
                         <Divider hidden/>
@@ -92,7 +93,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         <Divider hidden/>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Forms submitState={ triggerSubmit }>
+                        {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+                        <Forms submitState={ triggerSubmit } onSubmit={ (): void => { } }>
                             <Divider hidden/>
                             <Heading as="h5">Role</Heading>
                             <Divider hidden/>
