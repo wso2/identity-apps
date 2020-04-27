@@ -16,15 +16,18 @@
  * under the License.
  */
 
-import { Heading, Hint, SelectionCard } from "@wso2is/react-components";
+import { Heading, Hint, SelectionCard, UserAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { ApplicationTemplateIllustrations, InboundProtocolLogos } from "../../../configs";
 import { ApplicationTemplateListItemInterface, AuthProtocolMetaListItemInterface } from "../../../models";
 import { useSelector } from "react-redux";
-import { AppState } from "../../../store";
+import { AppState, store } from "../../../store";
 import { ApplicationManagementUtils } from "../../../utils";
 import { EmptyPlaceholder } from "../../shared";
+import _ from "lodash";
+import { InboundProtocolsMeta } from "../meta";
+import { checkAvailableCustomInboundAuthProtocolMeta } from "../../../store/actions/application";
 
 /**
  * Proptypes for the protocol selection wizard form component.
@@ -35,6 +38,7 @@ interface ProtocolSelectionWizardFormPropsInterface {
     onSubmit: (values: ApplicationTemplateListItemInterface) => void;
     triggerSubmit: boolean;
     selectedProtocols: string[];
+    setSelectedCustomInboundProtocol: (selected: boolean) => void;
 }
 
 /**
@@ -52,11 +56,18 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
         selectedProtocols,
         onSubmit,
         defaultTemplates,
+        setSelectedCustomInboundProtocol,
         triggerSubmit
     } = props;
 
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
+
+    const availableCustomInboundProtocols = useSelector((state: AppState) =>
+        state.application.meta.customInboundProtocols);
+
+    const checkedCustomInboundProtocols = useSelector((state: AppState) =>
+        state.application.meta.customInboundProtocolChecked);
 
     const [
         selectedTemplate,
@@ -66,6 +77,24 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
         isApplicationTemplateRequestLoading,
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
+
+    const [isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading] = useState<boolean>(false);
+
+    /**
+     * Called on `checkedCustomInboundProtocols` prop update.
+     */
+    useEffect(() => {
+        if (checkedCustomInboundProtocols) {
+            return;
+        }
+
+        setInboundProtocolsRequestLoading(true);
+
+        ApplicationManagementUtils.getCustomInboundProtocols(InboundProtocolsMeta, true)
+            .finally(() => {
+                setInboundProtocolsRequestLoading(false);
+            });
+    }, [checkedCustomInboundProtocols]);
 
     /**
      * Called when submit is triggered.
@@ -104,6 +133,17 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
      *
      * @param {AuthProtocolMetaListItemInterface} protocol - Selected protocol.
      */
+    const handleCustomInboundProtocolSelection = (template: ApplicationTemplateListItemInterface): void => {
+        console.log(true);
+        setSelectedCustomInboundProtocol(true);
+        setSelectedTemplate(template);
+    };
+
+    /**
+     * Handles inbound protocol selection.
+     *
+     * @param {AuthProtocolMetaListItemInterface} protocol - Selected protocol.
+     */
     const handleInboundProtocolSelection = (template: ApplicationTemplateListItemInterface): void => {
         setSelectedTemplate(template);
     };
@@ -125,6 +165,30 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
     };
 
     /**
+     * Filter already existing protocol from the custom inbound template.
+     *
+     * @param templates Templates array to be filtered.
+     */
+    const filterCustomProtocol = (): ApplicationTemplateListItemInterface[] => {
+        const customTemplates: ApplicationTemplateListItemInterface[] = [];
+        console.log(selectedProtocols);
+        if (availableCustomInboundProtocols.length > 0) {
+            availableCustomInboundProtocols.map((protocol) => {
+                const customTemplate: ApplicationTemplateListItemInterface = {
+                    id: protocol.name,
+                    name: protocol.displayName,
+                    image: protocol.displayName,
+                    authenticationProtocol: protocol.name
+                };
+                customTemplates.push(customTemplate);
+            });
+            // return customTemplates.filter(
+            //     (temp) => !selectedProtocols.includes(temp.authenticationProtocol))
+            return customTemplates;
+        }
+    };
+
+    /**
      * Available default templates after filtering.
      */
     const availableDefaultTemplates = filterProtocol(defaultTemplates);
@@ -134,32 +198,56 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
      */
     const availableTemplates = filterProtocol(applicationTemplates);
 
+    /**
+     * Available custom protcol templates after filtering.
+     */
+    const availableCustomInboundTemplates = filterCustomProtocol();
+
     return (
         <Grid>
 
             {
-                (availableDefaultTemplates.length > 0)
-                &&
+                ((availableDefaultTemplates.length > 0) || availableCustomInboundTemplates.length > 0)
+                && !isInboundProtocolsRequestLoading &&
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Heading as="h4">Inbound protocol</Heading>
                         <Hint icon={ null }>Select one of the following inbound protocol</Hint>
-                        { availableDefaultTemplates.map((temp, index) => (
+                        { (availableDefaultTemplates.length > 0) &&
+                        availableDefaultTemplates.map((temp, index) => (
                             <SelectionCard
                                 inline
                                 id={ temp.id }
                                 key={ index }
                                 header={ temp.name }
-                                image={ InboundProtocolLogos[temp.image] }
+                                image={
+                                    ApplicationManagementUtils.findIcon(temp.image, InboundProtocolLogos)
+                                }
                                 onClick={ (): void => handleInboundProtocolSelection(temp) }
                                 selected={ selectedTemplate?.id === temp.id }
                             />))
+                        }
+                        {
+                            availableCustomInboundTemplates && (availableCustomInboundTemplates.length > 0) &&
+                            availableCustomInboundTemplates.map((temp, index) =>
+                                (
+                                    <SelectionCard
+                                        inline
+                                        id={ temp.id }
+                                        key={ index }
+                                        header={ temp.name }
+                                        image={ <UserAvatar name={ temp.name } size="tiny"/> }
+                                        onClick={ (): void => handleCustomInboundProtocolSelection(temp) }
+                                        selected={ selectedTemplate?.id === temp.id }
+                                    />
+                                ))
                         }
                     </Grid.Column>
                 </Grid.Row>
             }
             {
-                !isApplicationTemplateRequestLoading && availableTemplates.length > 0 &&
+                !isApplicationTemplateRequestLoading && availableTemplates.length > 0
+                && !isInboundProtocolsRequestLoading &&
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Heading as="h4">Templates</Heading>
