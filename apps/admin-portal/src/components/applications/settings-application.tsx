@@ -23,6 +23,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
 import { InboundFormFactory } from "./forms";
+import { ApplicationCreateWizard } from "./wizard";
 import { getAuthProtocolMetadata, regenerateClientSecret, updateAuthProtocolConfig } from "../../api";
 import { EmptyPlaceholderIllustrations, InboundProtocolLogos } from "../../configs";
 import {
@@ -34,7 +35,6 @@ import {
 import { AppState } from "../../store";
 import { setAuthProtocolMeta } from "../../store/actions";
 import { AuthenticatorAccordion } from "../shared";
-import { ApplicationCreateWizard } from "./wizard/application-create-wizard";
 
 /**
  * Proptypes for the applications settings component.
@@ -65,17 +65,17 @@ interface ApplicationSettingsPropsInterface {
      */
     showProtocolSelection: boolean;
     /**
-     * Selected protocol configurations.
+     * Protocol configurations.
      */
-    selectedInboundProtocolConfig: any;
+    inboundProtocolConfig: any;
     /**
      *  Selected inbound protocol.
      */
     selectedInboundProtocol: AuthProtocolMetaListItemInterface;
     /**
-     *  All the selected inbound protocol.
+     *  Inbound protocol list.
      */
-    allSelectedInboundProtocol: AuthProtocolMetaListItemInterface[];
+    inboundProtocolList: AuthProtocolMetaListItemInterface[];
     /**
      *  Change selected inbound protocol
      */
@@ -107,8 +107,8 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
         isLoading,
         onUpdate,
         selectedInboundProtocol,
-        selectedInboundProtocolConfig,
-        allSelectedInboundProtocol,
+        inboundProtocolConfig,
+        inboundProtocolList
     } = props;
 
     const dispatch = useDispatch();
@@ -189,7 +189,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
      */
     const getSelectedProtocols = (): string[] => {
         const protocols: string[] = [];
-        allSelectedInboundProtocol.map((selectedProtocol) => {
+        inboundProtocolList.map((selectedProtocol) => {
             protocols.push(selectedProtocol.id)
         });
         return protocols;
@@ -201,7 +201,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
      */
     const checkSelectedProtocol = (protocolName: string): boolean => {
         let selected = false;
-        allSelectedInboundProtocol.map((selectedProtocol) => {
+        inboundProtocolList.map((selectedProtocol) => {
             if (selectedProtocol.id === protocolName) {
                 selected = true
             }
@@ -227,10 +227,10 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                             <InboundFormFactory
                                 metadata={ authProtocolMeta[SupportedAuthProtocolTypes.OIDC] }
                                 initialValues={
-                                    selectedInboundProtocolConfig
-                                    && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+                                    inboundProtocolConfig
+                                    && Object.prototype.hasOwnProperty.call(inboundProtocolConfig,
                                         SupportedAuthProtocolTypes.OIDC)
-                                        ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.OIDC]
+                                        ? inboundProtocolConfig[SupportedAuthProtocolTypes.OIDC]
                                         : undefined
                                 }
                                 onSubmit={ handleInboundConfigFormSubmit }
@@ -249,10 +249,10 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                             <InboundFormFactory
                                 metadata={ authProtocolMeta[SupportedAuthProtocolTypes.SAML] }
                                 initialValues={
-                                    selectedInboundProtocolConfig
-                                    && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+                                    inboundProtocolConfig
+                                    && Object.prototype.hasOwnProperty.call(inboundProtocolConfig,
                                         SupportedAuthProtocolTypes.SAML)
-                                        ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.SAML]
+                                        ? inboundProtocolConfig[SupportedAuthProtocolTypes.SAML]
                                         : undefined
                                 }
                                 onSubmit={ handleInboundConfigFormSubmit }
@@ -269,10 +269,10 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                         content: (
                             <InboundFormFactory
                                 initialValues={
-                                    selectedInboundProtocolConfig
-                                    && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+                                    inboundProtocolConfig
+                                    && Object.prototype.hasOwnProperty.call(inboundProtocolConfig,
                                         SupportedAuthProtocolTypes.WS_FEDERATION)
-                                        ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.WS_FEDERATION]
+                                        ? inboundProtocolConfig[SupportedAuthProtocolTypes.WS_FEDERATION]
                                         : undefined
                                 }
                                 onSubmit={ handleInboundConfigFormSubmit }
@@ -290,10 +290,10 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                             <InboundFormFactory
                                 metadata={ authProtocolMeta[SupportedAuthProtocolTypes.WS_TRUST] }
                                 initialValues={
-                                    selectedInboundProtocolConfig
-                                    && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+                                    inboundProtocolConfig
+                                    && Object.prototype.hasOwnProperty.call(inboundProtocolConfig,
                                         SupportedAuthProtocolTypes.WS_TRUST)
-                                        ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.WS_TRUST]
+                                        ? inboundProtocolConfig[SupportedAuthProtocolTypes.WS_TRUST]
                                         : undefined
                                 }
                                 onSubmit={ handleInboundConfigFormSubmit }
@@ -324,7 +324,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
             return;
         }
 
-        allSelectedInboundProtocol.map((selected) => {
+        inboundProtocolList.map((selected) => {
             const selectedProtocol = selected.name as SupportedAuthProtocolMetaTypes;
 
             if (!Object.values(SupportedAuthProtocolMetaTypes).includes(
@@ -359,7 +359,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
             }
         })
 
-    }, [selectedInboundProtocol, allSelectedInboundProtocol]);
+    }, [selectedInboundProtocol, inboundProtocolList]);
 
     const alreadySelectedProtocols: string[] = getSelectedProtocols();
 
