@@ -109,8 +109,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * Called on `availableInboundProtocols` prop update.
      */
     useEffect(() => {
-        if (!_.isEmpty(availableInboundProtocols) && application?.id) {
-            findConfiguredInboundProtocol(application.id);
+        if (!_.isEmpty(availableInboundProtocols)) {
             return;
         }
 
@@ -121,6 +120,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 setInboundProtocolsRequestLoading(false);
             });
     }, [availableInboundProtocols]);
+
+    /**
+     * Watch for `inboundProtocols` array change and fetch configured protocols if there's a difference.
+     */
+    useEffect(() => {
+        if (!application?.inboundProtocols || !application?.id) {
+            return;
+        }
+
+        findConfiguredInboundProtocol(application.id);
+    }, [ application?.inboundProtocols ]);
 
     /**
      * Finds the configured inbound protocol.
