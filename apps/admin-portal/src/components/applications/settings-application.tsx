@@ -19,7 +19,7 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader, EmptyPlaceholder, GenericIconProps, PrimaryButton } from "@wso2is/react-components";
+import { ContentLoader, EmptyPlaceholder, GenericIconProps, PrimaryButton, UserAvatar } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -103,7 +103,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
      * @param values - Form values.
      * @param {SupportedAuthProtocolTypes} protocol - The protocol to be updated.
      */
-    const handleInboundConfigFormSubmit = (values: any, protocol: SupportedAuthProtocolTypes): void => {
+    const handleInboundConfigFormSubmit = (values: any, protocol: string): void => {
         updateAuthProtocolConfig(appId, values, protocol)
             .then(() => {
                 dispatch(addAlert({
@@ -171,7 +171,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
     const getSelectedProtocols = (): string[] => {
         const protocols: string[] = [];
         inboundProtocols.map((selectedProtocol) => {
-            protocols.push(selectedProtocol.id)
+            protocols.push(selectedProtocol.name)
         });
         return protocols;
     };
@@ -196,133 +196,178 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
      * @return {React.ReactElement}
      */
     const resolveInboundProtocolSettingsForm = (): ReactElement => {
+        // console.log(allSelectedInboundProtocol);
+        // // console.log(selectedInboundProtocolConfig);
+        // console.log("................");
+        // // console.log(Object.keys(selectedInboundProtocolConfig));
+        // console.log(authProtocolMeta);
         return (
             <AuthenticatorAccordion
                 globalActions={ [] }
-                authenticators={ [
-                    {
-                        actions: [],
-                        hidden: !checkSelectedProtocol(SupportedAuthProtocolTypes.OIDC),
-                        icon: { icon: InboundProtocolLogos.oidc, size: "micro" } as GenericIconProps,
-                        content: (
-                            <InboundFormFactory
-                                metadata={ authProtocolMeta[SupportedAuthProtocolTypes.OIDC] }
-                                initialValues={
-                                    inboundProtocolConfig
-                                    && Object.prototype.hasOwnProperty.call(inboundProtocolConfig,
-                                        SupportedAuthProtocolTypes.OIDC)
-                                        ? inboundProtocolConfig[SupportedAuthProtocolTypes.OIDC]
-                                        : undefined
-                                }
-                                onSubmit={
-                                    (values: any) => handleInboundConfigFormSubmit(values,
-                                        SupportedAuthProtocolTypes.OIDC)
-                                }
-                                type={ SupportedAuthProtocolTypes.OIDC }
-                                handleApplicationRegenerate={ handleApplicationRegenerate }
-                                readOnly={
-                                    !hasRequiredScopes(
-                                        featureConfig?.applications,
-                                        featureConfig?.applications?.scopes?.update
-                                    )
-                                }
-                            />
-                        ),
-                        id: SupportedAuthProtocolTypes.OIDC,
-                        title: "OIDC",
-                    },
-                    {
-                        actions: [],
-                        icon: { icon: InboundProtocolLogos.saml, size: "micro" } as GenericIconProps,
-                        hidden: !(checkSelectedProtocol(SupportedAuthProtocolTypes.SAML)),
-                        content: (
-                            <InboundFormFactory
-                                metadata={ authProtocolMeta[SupportedAuthProtocolTypes.SAML] }
-                                initialValues={
-                                    inboundProtocolConfig
-                                    && Object.prototype.hasOwnProperty.call(inboundProtocolConfig,
-                                        SupportedAuthProtocolTypes.SAML)
-                                        ? inboundProtocolConfig[SupportedAuthProtocolTypes.SAML]
-                                        : undefined
-                                }
-                                onSubmit={
-                                    (values: any) => handleInboundConfigFormSubmit(values,
-                                        SupportedAuthProtocolTypes.SAML)
-                                }
-                                type={ SupportedAuthProtocolTypes.SAML }
-                                readOnly={
-                                    !hasRequiredScopes(
-                                        featureConfig?.applications,
-                                        featureConfig?.applications?.scopes?.update
-                                    )
-                                }
-                            />
-                        ),
-                        id: SupportedAuthProtocolTypes.SAML,
-                        title: "SAML"
-                    },
-                    {
-                        actions: [],
-                        icon: { icon: InboundProtocolLogos.wsFed, size: "micro" } as GenericIconProps,
-                        hidden: !(checkSelectedProtocol(SupportedAuthProtocolTypes.WS_FEDERATION)),
-                        content: (
-                            <InboundFormFactory
-                                initialValues={
-                                    inboundProtocolConfig
-                                    && Object.prototype.hasOwnProperty.call(inboundProtocolConfig,
-                                        SupportedAuthProtocolTypes.WS_FEDERATION)
-                                        ? inboundProtocolConfig[SupportedAuthProtocolTypes.WS_FEDERATION]
-                                        : undefined
-                                }
-                                onSubmit={
-                                    (values: any) => handleInboundConfigFormSubmit(values,
-                                        SupportedAuthProtocolTypes.WS_FEDERATION)
-                                }
-                                type={ SupportedAuthProtocolTypes.WS_FEDERATION }
-                                readOnly={
-                                    !hasRequiredScopes(
-                                        featureConfig?.applications,
-                                        featureConfig?.applications?.scopes?.update
-                                    )
-                                }
-                            />
-                        ),
-                        id: SupportedAuthProtocolTypes.WS_FEDERATION,
-                        title: "Passive STS",
-                    },
-                    {
-                        actions: [],
-                        icon: { icon: InboundProtocolLogos.wsTrust, size: "micro" } as GenericIconProps,
-                        hidden: !(checkSelectedProtocol(SupportedAuthProtocolTypes.WS_TRUST)),
-                        content: (
-                            <InboundFormFactory
-                                metadata={ authProtocolMeta[SupportedAuthProtocolTypes.WS_TRUST] }
-                                initialValues={
-                                    inboundProtocolConfig
-                                    && Object.prototype.hasOwnProperty.call(inboundProtocolConfig,
-                                        SupportedAuthProtocolTypes.WS_TRUST)
-                                        ? inboundProtocolConfig[SupportedAuthProtocolTypes.WS_TRUST]
-                                        : undefined
-                                }
-                                onSubmit={
-                                    (values: any) => handleInboundConfigFormSubmit(values,
-                                        SupportedAuthProtocolTypes.WS_TRUST)
-                                }
-                                type={ SupportedAuthProtocolTypes.WS_TRUST }
-                                readOnly={
-                                    !hasRequiredScopes(
-                                        featureConfig?.applications,
-                                        featureConfig?.applications?.scopes?.update
-                                    )
-                                }
-                            />
-                        ),
-                        id: SupportedAuthProtocolTypes.WS_TRUST,
-                        title: "WS Trust"
-                    }
-                ] }
+                authenticators={
+                    Object.keys(inboundProtocolConfig).map((protocol) => {
+                        if (Object.values(SupportedAuthProtocolTypes).includes(protocol as SupportedAuthProtocolTypes)) {
+                            return {
+                                actions: [],
+                                icon: { icon: InboundProtocolLogos[protocol], size: "micro" } as GenericIconProps,
+                                content: (
+                                    <InboundFormFactory
+                                        metadata={ authProtocolMeta[protocol] }
+                                        initialValues={
+                                            _.isEmpty(inboundProtocolConfig[protocol])
+                                                ? undefined : inboundProtocolConfig[protocol]
+                                        }
+                                        onSubmit={
+                                            (values: any) => handleInboundConfigFormSubmit(values,
+                                                protocol)
+                                        }
+                                        type={ protocol as SupportedAuthProtocolTypes }
+                                        handleApplicationRegenerate={ handleApplicationRegenerate }
+                                        readOnly={
+                                            !hasRequiredScopes(
+                                                featureConfig?.applications,
+                                                featureConfig?.applications?.scopes?.update
+                                            )
+                                        }
+                                    />
+                                ),
+                                id: protocol,
+                                title: _.toUpper(protocol),
+
+                            }
+                        } else {
+                            return {
+                                actions: [],
+                                icon: {
+                                    icon: (
+                                        <UserAvatar
+                                            name={ protocol }
+                                            size="mini"
+                                        />
+                                    ),
+                                    size: "nano"
+                                } as GenericIconProps,
+                                content: (
+                                    <InboundFormFactory
+                                        metadata={ authProtocolMeta[protocol] }
+                                        initialValues={
+                                            _.isEmpty(inboundProtocolConfig[protocol])
+                                                ? undefined : inboundProtocolConfig[protocol]
+                                        }
+                                        onSubmit={
+                                            (values: any) => handleInboundConfigFormSubmit(values,
+                                                protocol)
+                                        }
+                                        type={ SupportedAuthProtocolTypes.CUSTOM }
+                                        handleApplicationRegenerate={ handleApplicationRegenerate }
+                                        readOnly={
+                                            !hasRequiredScopes(
+                                                featureConfig?.applications,
+                                                featureConfig?.applications?.scopes?.update
+                                            )
+                                        }
+                                    />
+                                ),
+                                id: protocol,
+                                title: _.toUpper(protocol),
+                            }
+                        }
+                    })
+                }
             />
         )
+
+        // return (
+        //     <AuthenticatorAccordion
+        //         globalActions={ [] }
+        //         authenticators={ [
+        //             {
+        //                 actions: [],
+        //                 hidden: !checkSelectedProtocol(SupportedAuthProtocolTypes.OIDC),
+        //                 icon: { icon: InboundProtocolLogos.oidc, size: "micro" } as GenericIconProps,
+        //                 content: (
+        //                     <InboundFormFactory
+        //                         metadata={ authProtocolMeta[SupportedAuthProtocolTypes.OIDC] }
+        //                         initialValues={
+        //                             selectedInboundProtocolConfig
+        //                             && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+        //                                 SupportedAuthProtocolTypes.OIDC)
+        //                                 ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.OIDC]
+        //                                 : undefined
+        //                         }
+        //                         onSubmit={ handleInboundConfigFormSubmit }
+        //                         type={ SupportedAuthProtocolTypes.OIDC }
+        //                         handleApplicationRegenerate={ handleApplicationRegenerate }
+        //                     />
+        //                 ),
+        //                 id: SupportedAuthProtocolTypes.OIDC,
+        //                 title: "OIDC",
+        //             },
+        //             {
+        //                 actions: [],
+        //                 icon: { icon: InboundProtocolLogos.saml, size: "micro" } as GenericIconProps,
+        //                 hidden: !(checkSelectedProtocol(SupportedAuthProtocolTypes.SAML)),
+        //                 content: (
+        //                     <InboundFormFactory
+        //                         metadata={ authProtocolMeta[SupportedAuthProtocolTypes.SAML] }
+        //                         initialValues={
+        //                             selectedInboundProtocolConfig
+        //                             && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+        //                                 SupportedAuthProtocolTypes.SAML)
+        //                                 ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.SAML]
+        //                                 : undefined
+        //                         }
+        //                         onSubmit={ handleInboundConfigFormSubmit }
+        //                         type={ SupportedAuthProtocolTypes.SAML }
+        //                     />
+        //                 ),
+        //                 id: SupportedAuthProtocolTypes.SAML,
+        //                 title: "SAML"
+        //             },
+        //             {
+        //                 actions: [],
+        //                 icon: { icon: InboundProtocolLogos.wsFed, size: "micro" } as GenericIconProps,
+        //                 hidden: !(checkSelectedProtocol(SupportedAuthProtocolTypes.WS_FEDERATION)),
+        //                 content: (
+        //                     <InboundFormFactory
+        //                         initialValues={
+        //                             selectedInboundProtocolConfig
+        //                             && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+        //                                 SupportedAuthProtocolTypes.WS_FEDERATION)
+        //                                 ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.WS_FEDERATION]
+        //                                 : undefined
+        //                         }
+        //                         onSubmit={ handleInboundConfigFormSubmit }
+        //                         type={ SupportedAuthProtocolTypes.WS_FEDERATION }
+        //                     />
+        //                 ),
+        //                 id: SupportedAuthProtocolTypes.WS_FEDERATION,
+        //                 title: "Passive STS",
+        //             },
+        //             {
+        //                 actions: [],
+        //                 icon: { icon: InboundProtocolLogos.wsTrust, size: "micro" } as GenericIconProps,
+        //                 hidden: !(checkSelectedProtocol(SupportedAuthProtocolTypes.WS_TRUST)),
+        //                 content: (
+        //                     <InboundFormFactory
+        //                         metadata={ authProtocolMeta[SupportedAuthProtocolTypes.WS_TRUST] }
+        //                         initialValues={
+        //                             selectedInboundProtocolConfig
+        //                             && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+        //                                 SupportedAuthProtocolTypes.WS_TRUST)
+        //                                 ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.WS_TRUST]
+        //                                 : undefined
+        //                         }
+        //                         onSubmit={ handleInboundConfigFormSubmit }
+        //                         type={ SupportedAuthProtocolTypes.WS_TRUST }
+        //                     />
+        //                 ),
+        //                 id: SupportedAuthProtocolTypes.WS_TRUST,
+        //                 title: "WS Trust",
+        //             }
+        //         ] }
+        //     />
+        // )
     };
 
     /**
@@ -336,16 +381,17 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
         inboundProtocols.map((selected) => {
             const selectedProtocol = selected.name as SupportedAuthProtocolMetaTypes;
 
-            if (!Object.values(SupportedAuthProtocolMetaTypes).includes(
-                selected.name as SupportedAuthProtocolMetaTypes)) {
-                return;
-            }
+            // if (!Object.values(SupportedAuthProtocolMetaTypes).includes(
+            //     selected.name as SupportedAuthProtocolMetaTypes)) {
+            //     return;
+            // }
 
                 // Check if the metadata for the selected auth protocol is available in redux store.
             // If not, fetch the metadata related to the selected auth protocol.
-            else if (!Object.prototype.hasOwnProperty.call(authProtocolMeta, selectedProtocol)) {
+            if (!Object.prototype.hasOwnProperty.call(authProtocolMeta, selectedProtocol)) {
                 getAuthProtocolMetadata(selectedProtocol)
                     .then((response) => {
+                        console.log(response);
                         dispatch(setAuthProtocolMeta(selectedProtocol, response));
                     })
                     .catch((error) => {
