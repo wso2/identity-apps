@@ -52,14 +52,15 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     }
 
     return (
-        <Forms submitState={ triggerSubmit }>
-            <Grid>
-                <Grid.Row>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Divider/>
+        <>
+            <Grid.Row>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                    <Divider/>
+                    <Divider hidden/>
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Forms submitState={ triggerSubmit }>
                         <Divider hidden/>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Heading as="h5">Subject</Heading>
                         <Divider hidden/>
                         <Field
@@ -80,16 +81,19 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         <Hint>
                             Specifies the attribute that identifies the user at the identity provider
                         </Hint>
+                    </Forms>
+                </Grid.Column>
+            </Grid.Row>
+            {
+                claimMappingOn &&
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                        <Divider/>
+                        <Divider hidden/>
                     </Grid.Column>
-                </Grid.Row>
-                {
-                    claimMappingOn &&
-                    <Grid.Row columns={ 2 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                            <Divider/>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Forms submitState={ triggerSubmit }>
                             <Divider hidden/>
-                        </Grid.Column>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Heading as="h5">Role</Heading>
                             <Divider hidden/>
                             <Field
@@ -110,10 +114,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             <Hint>
                                 Specifies the attribute that identifies the Roles at the Identity Provider
                             </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
-                }
-            </Grid>
-        </Forms>
+                        </Forms>
+                    </Grid.Column>
+                </Grid.Row>
+            }
+        </>
     )
 };

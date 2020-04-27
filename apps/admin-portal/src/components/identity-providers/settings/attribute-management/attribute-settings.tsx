@@ -16,18 +16,14 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { ContentLoader } from "@wso2is/react-components";
 import _, { isEmpty } from "lodash";
-import {bool, element} from "prop-types";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
-import { updateClaimsConfigs, updateJITProvisioningConfigs } from "../../../../api";
 import {
     IdentityProviderClaimInterface,
     IdentityProviderClaimMappingInterface,
@@ -39,6 +35,7 @@ import {
 import {
     buildProvisioningClaimList,
     createDropdownOption,
+    handleAttributeSettingsFormSubmit,
     initSelectedClaimMappings,
     initSelectedProvisioningClaimsWithDefaultValues,
     initSubjectAndRoleURIs,
@@ -149,9 +146,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     }, [availableLocalClaims]);
 
     useEffect(() => {
-        // Provisioning claims depend on the IdP claim mapping since they exists in the namespace of mapped values. The
-        // only exception occur when there are no claim mappings. In this case, provisioning claims needs to fall back
-        // to local claims.
+        // Provisioning claims, subject URI and role UR depend on the IdP claim mapping since they exists in the
+        // namespace of mapped values. The only exception occur when there are no claim mappings. In this case, they
+        // need to fall back to local claims.
         if (_.isEmpty(selectedClaimsWithMapping)) {
             // Set provisioning claims.
             setSelectedProvisioningClaimsWithDefaultValue(selectedProvisioningClaimsWithDefaultValue.filter(element =>
@@ -227,97 +224,75 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
 
         if (canSubmit) {
-            handleAttributeSettingsFormSubmit(claimConfigurations);
+            handleAttributeSettingsFormSubmit(idpId, claimConfigurations, onUpdate, dispatch);
         }
-    };
-
-    const handleAttributeSettingsFormSubmit = (values: IdentityProviderClaimsInterface): void => {
-        updateClaimsConfigs(idpId, values)
-            .then(() => {
-                dispatch(addAlert({
-                    description: "Successfully updated claims configurations.",
-                    level: AlertLevels.SUCCESS,
-                    message: "Update successful"
-                }));
-                onUpdate(idpId);
-            })
-            .catch(() => {
-                dispatch(addAlert({
-                    description: "An error occurred while the updating claims configurations.",
-                    level: AlertLevels.ERROR,
-                    message: "Update error"
-                }));
-            });
     };
 
     return (
         !isLoading ?
-        <Grid className="attributes-settings">
-            {/* Select attributes for mapping. */}
-            {selectedClaimsWithMapping &&
-            <AttributeSelection
-                attributeList={ availableLocalClaims }
-                selectedAttributesWithMapping={ selectedClaimsWithMapping }
-                setSelectedAttributesWithMapping={ setSelectedClaimsWithMapping }
-                uiProps={ {
-                    attributeColumnHeader: "Attribute",
-                    attributeMapColumnHeader: "Identity provider attribute",
-                    attributeMapInputPlaceholderPrefix: "eg: IdP's attribute for ",
-                    componentHeading: "Attributes Mapping",
-                    enablePrecedingDivider: false,
-                    hint: "Add attributes supported by Identity Provider"
-                } }
-            />
-            }
+            <Grid className="attributes-settings">
+                {/* Select attributes for mapping. */}
+                { selectedClaimsWithMapping &&
+                <AttributeSelection
+                    attributeList={ availableLocalClaims }
+                    selectedAttributesWithMapping={ selectedClaimsWithMapping }
+                    setSelectedAttributesWithMapping={ setSelectedClaimsWithMapping }
+                    uiProps={ {
+                        attributeColumnHeader: "Attribute",
+                        attributeMapColumnHeader: "Identity provider attribute",
+                        attributeMapInputPlaceholderPrefix: "eg: IdP's attribute for ",
+                        componentHeading: "Attributes Mapping",
+                        enablePrecedingDivider: false,
+                        hint: "Add attributes supported by Identity Provider"
+                    } }
+                /> }
 
-            { selectedClaimsWithMapping &&
-            <AdvanceAttributeSettings
-                dropDownOptions={ createDropdownOption(selectedClaimsWithMapping, availableLocalClaims).filter(
-                    element => !_.isEmpty(element)) }
-                initialRoleUri={ roleClaimUri }
-                initialSubjectUri={ subjectClaimUri }
-                claimMappingOn={ !isEmpty(selectedClaimsWithMapping) }
-                updateRole={ setRoleClaimUri }
-                updateSubject={ setSubjectClaimUri }
-                triggerSubmit={ triggerAdvanceOptionsValidations }
-            />
-            }
+                { selectedClaimsWithMapping &&
+                <AdvanceAttributeSettings
+                    dropDownOptions={ createDropdownOption(selectedClaimsWithMapping, availableLocalClaims).filter(
+                        element => !_.isEmpty(element)) }
+                    initialRoleUri={ roleClaimUri }
+                    initialSubjectUri={ subjectClaimUri }
+                    claimMappingOn={ !isEmpty(selectedClaimsWithMapping) }
+                    updateRole={ setRoleClaimUri }
+                    updateSubject={ setSubjectClaimUri }
+                    triggerSubmit={ triggerAdvanceOptionsValidations }
+                /> }
 
-            {/* Select attributes for provisioning. */}
-            {selectedProvisioningClaimsWithDefaultValue &&
-            <AttributeSelection
-                attributeList={ buildProvisioningClaimList(selectedClaimsWithMapping, availableLocalClaims).filter(
-                    element => !_.isEmpty(element?.uri)) }
-                selectedAttributesWithMapping={ selectedProvisioningClaimsWithDefaultValue }
-                setSelectedAttributesWithMapping={ setSelectedProvisioningClaimsWithDefaultValue }
-                uiProps={ {
-                    attributeColumnHeader: _.isEmpty(selectedClaimsWithMapping) ? "Attribute" : "Identity " +
-                        "provider attribute",
-                    attributeMapColumnHeader: "Default value",
-                    attributeMapInputPlaceholderPrefix: "eg: a default value for the ",
-                    componentHeading: "Provisioning Attributes Selection",
-                    enablePrecedingDivider: true,
-                    hint: "Specify required attributes for provisioning"
-                } }
-            />
-            }
+                {/* Select attributes for provisioning. */}
+                { selectedProvisioningClaimsWithDefaultValue &&
+                <AttributeSelection
+                    attributeList={ buildProvisioningClaimList(selectedClaimsWithMapping, availableLocalClaims).filter(
+                        element => !_.isEmpty(element?.uri)) }
+                    selectedAttributesWithMapping={ selectedProvisioningClaimsWithDefaultValue }
+                    setSelectedAttributesWithMapping={ setSelectedProvisioningClaimsWithDefaultValue }
+                    uiProps={ {
+                        attributeColumnHeader: _.isEmpty(selectedClaimsWithMapping) ? "Attribute" : "Identity " +
+                            "provider attribute",
+                        attributeMapColumnHeader: "Default value",
+                        attributeMapInputPlaceholderPrefix: "eg: a default value for the ",
+                        componentHeading: "Provisioning Attributes Selection",
+                        enablePrecedingDivider: true,
+                        hint: "Specify required attributes for provisioning"
+                    } }
+                /> }
 
-            {/*<RoleMapping*/}
-            {/*    submitState={ triggerAdvanceSettingFormSubmission }*/}
-            {/*    onSubmit={ setRoleMapping }*/}
-            {/*    initialMappings={ initialRoleMappings }*/}
-            {/*/>*/}
-            <Grid.Row>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
-                    <Button
-                        primary
-                        size="small"
-                        onClick={ handleUpdateButton }
-                    >
-                        Update
-                    </Button>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid> : <ContentLoader/>
+                {/*<RoleMapping*/}
+                {/*    submitState={ triggerAdvanceSettingFormSubmission }*/}
+                {/*    onSubmit={ setRoleMapping }*/}
+                {/*    initialMappings={ initialRoleMappings }*/}
+                {/*/>*/}
+                <Grid.Row>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
+                        <Button
+                            primary
+                            size="small"
+                            onClick={ handleUpdateButton }
+                        >
+                            Update
+                        </Button>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid> : <ContentLoader/>
     );
 };

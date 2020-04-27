@@ -15,14 +15,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import {AlertLevels} from "@wso2is/core/models";
-import {addAlert} from "@wso2is/core/store";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import _ from "lodash";
-import {getAllLocalClaims} from "../../../api";
+import { Dispatch } from "redux";
+import { getAllLocalClaims, updateClaimsConfigs } from "../../../api";
 import {
     Claim,
     IdentityProviderClaimInterface,
-    IdentityProviderClaimMappingInterface,
+    IdentityProviderClaimMappingInterface, IdentityProviderClaimsInterface,
     IdentityProviderCommonClaimMappingInterface,
     IdentityProviderProvisioningClaimInterface
 } from "../../../models";
@@ -145,3 +146,23 @@ export const initSubjectAndRoleURIs = (initialClaims, setSubjectClaimUri, setRol
     setSubjectClaimUri(initialClaims?.userIdClaim?.uri);
     setRoleClaimUri(initialClaims?.roleClaim?.uri);
 }
+
+export const handleAttributeSettingsFormSubmit = (idpId: string, values: IdentityProviderClaimsInterface, 
+                                                  onUpdate: (idpId: string) => void, dispatch: Dispatch<any>): void => {
+    updateClaimsConfigs(idpId, values)
+        .then(() => {
+            dispatch(addAlert({
+                description: "Successfully updated claims configurations.",
+                level: AlertLevels.SUCCESS,
+                message: "Update successful"
+            }));
+            onUpdate(idpId);
+        })
+        .catch(() => {
+            dispatch(addAlert({
+                description: "An error occurred while the updating claims configurations.",
+                level: AlertLevels.ERROR,
+                message: "Update error"
+            }));
+        });
+};

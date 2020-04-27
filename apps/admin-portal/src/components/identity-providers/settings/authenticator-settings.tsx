@@ -322,7 +322,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         setShowDeleteConfirmationModal(true);
     };
 
-     /**
+    /**
      * Handles add new authenticator action.
      */
     const handleAddAuthenticator = () => {
@@ -503,7 +503,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     {
                         availableAuthenticators.length > 0 ? showAuthenticatorList() : showEmptyPlaceholder()
                     }
-                    
+
                     {
                         deletingAuthenticator && (
                             <ConfirmationModal
