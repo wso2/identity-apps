@@ -152,7 +152,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         if (_.isEmpty(selectedClaimsWithMapping)) {
             // Set provisioning claims.
             setSelectedProvisioningClaimsWithDefaultValue(selectedProvisioningClaimsWithDefaultValue.filter(element =>
-                availableLocalClaims.find(claim => claim.id === element.claim.id)));
+                availableLocalClaims.find(claim => claim.uri === element.claim.uri)));
 
             // Set subject URI.
             if (_.isEmpty(availableLocalClaims?.find(element => element.uri === subjectClaimUri))) {
