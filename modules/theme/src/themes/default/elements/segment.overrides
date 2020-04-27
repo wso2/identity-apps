@@ -353,10 +353,10 @@
             position: relative;
             right: -3.5em;
         }
-    }
 
-    .ui.divider {
-        margin: 0.1em 0;
+        .ui.divider {
+            margin: 0.1em 0;
+        }
     }
 
     .certificate-ribbon {
