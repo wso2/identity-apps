@@ -22,7 +22,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { addExternalClaim, getAllLocalClaims } from "../../../api";
-import { AlertLevels, Claim, ClaimDialect } from "../../../models";
+import { AddExternalClaim, AlertLevels, Claim, ClaimDialect, ExternalClaim } from "../../../models";
 
 /**
  * Prop types for the `AddExternalClaims` component.
@@ -44,6 +44,10 @@ interface AddExternalClaimsPropsInterface {
      * Called on submit.
      */
     onSubmit?: (values: Map<string, FormValue>) => void;
+    /**
+     * The list of external claims belonging to the dialect.
+     */
+    externalClaims?: ExternalClaim[] | AddExternalClaim[];
 }
 
 /**
@@ -55,17 +59,23 @@ interface AddExternalClaimsPropsInterface {
  */
 export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): ReactElement => {
 
-    const { dialect, update, wizard, onSubmit } = props;
+    const { dialect, update, wizard, onSubmit, externalClaims } = props;
 
     const [ localClaims, setLocalClaims ] = useState<Claim[]>();
+    const [ filteredLocalClaims, setFilteredLocalClaims ] = useState<Claim[]>();
+    const [ localClaimsSet, setLocalClaimsSet ] = useState(false);
 
     const [ reset, setReset ] = useTrigger();
 
     const dispatch = useDispatch();
 
+    /**
+     * Gets the list of local claims.
+     */
     useEffect(() => {
         getAllLocalClaims(null).then(response => {
             setLocalClaims(response);
+            setFilteredLocalClaims(response);
         }).catch(error => {
             dispatch(addAlert(
                 {
@@ -74,8 +84,43 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                     message: error?.message || "Something went wrong"
                 }
             ));
-        })
+        });
     }, []);
+
+    /**
+     * Remove local claims that have already been mapped. 
+     */
+    useEffect(() => {
+        if (externalClaims && localClaims) {
+            let tempLocalClaims: Claim[] = [ ...localClaims ];
+            externalClaims.forEach((externalClaim: ExternalClaim) => {
+                tempLocalClaims = [ ...removeMappedLocalClaim(externalClaim.mappedLocalClaimURI, tempLocalClaims) ];
+            });
+            setFilteredLocalClaims(tempLocalClaims);
+        }
+    }, [ externalClaims, localClaimsSet ]);
+
+    /**
+     * Set `localClaimsSet`to true when `localClaims` is set.
+     */
+    useEffect(() => {
+        localClaims && setLocalClaimsSet(true);
+    }, [ localClaims ]);
+
+    /**
+     * This removes the mapped local claims from the local claims list.
+     * 
+     * @param {string} claimURI The claim URI of the mapped local claim.
+     * 
+     * @returns {Claim[]} The array of filtered Claims.
+     */
+    const removeMappedLocalClaim = (claimURI: string, filteredLocalClaims?: Claim[]): Claim[] => {
+        const claimsToFilter = filteredLocalClaims ? filteredLocalClaims : localClaims;
+
+        return claimsToFilter?.filter((claim: Claim) => {
+            return claim.claimURI !== claimURI;
+        });
+    };
 
     return (
         <Forms
@@ -132,7 +177,7 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                             placeholder="Select a Local Claim"
                             search
                             children={
-                                localClaims?.map((claim: Claim, index) => {
+                                filteredLocalClaims?.map((claim: Claim, index) => {
                                     return {
                                         key: index,
                                         text: claim.displayName,
@@ -152,7 +197,7 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                 </Grid.Row>
                 { wizard &&
                     (
-                    <Grid.Row columns={ 1 }>
+                        <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 } textAlign="right" verticalAlign="top">
                                 <Field className="wizard grid-button" type="submit" value="Add External Claim" />
                             </Grid.Column>

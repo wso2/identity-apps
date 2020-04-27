@@ -209,7 +209,11 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
 
     return (
         <>
-            <AddExternalClaims dialect={ dialect } update={ () => { getExternalClaims(null) } } />
+            <AddExternalClaims
+                dialect={ dialect }
+                update={ () => { getExternalClaims(null) } }
+                externalClaims={ claims }
+            />
             <Divider hidden/>
             {
                 claims?.length > 0
