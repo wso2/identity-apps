@@ -207,7 +207,7 @@ export const getAvailableInboundProtocols = (customOnly: boolean): Promise<AuthP
  * @return {Promise<T>} Promise of type T.
  * @throws {IdentityAppsApiException}
  */
-export const getAuthProtocolMetadata = <T>(protocol: SupportedAuthProtocolMetaTypes): Promise<T> => {
+export const getAuthProtocolMetadata = <T>(protocol: string): Promise<T> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
