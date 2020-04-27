@@ -17,7 +17,7 @@
  */
 
 import { getAppConfig } from "@wso2is/core/api";
-import { CommonHelpers } from "@wso2is/core/helpers";
+import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { emptyIdentityAppsSettings } from "@wso2is/core/models";
 import {
     setDeploymentConfigs,
@@ -65,6 +65,7 @@ export const App = (): ReactElement => {
 
     const userName: string = useSelector((state: AppState) => state.authenticationInformation.username);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const loginInit: boolean = useSelector((state: AppState) => state.authenticationInformation.loginInit);
 
 
     /**
@@ -149,6 +150,21 @@ export const App = (): ReactElement => {
        }
 
     }, [ config?.deployment?.tenant, userName ]);
+
+    /**
+     * Checks if the portal access should be granted based on the feature config.
+     */
+    useEffect(() => {
+        if (!config?.features || !loginInit) {
+            return;
+        }
+
+        if (isPortalAccessGranted<FeatureConfigInterface>(config.features)) {
+            return;
+        }
+
+        history.push(ApplicationConstants.PATHS.get("UNAUTHORIZED"));
+    }, [ config?.features, loginInit ]);
 
     return (
         <>
