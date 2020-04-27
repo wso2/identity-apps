@@ -133,7 +133,8 @@ export enum SupportedAuthProtocolTypes {
     SAML = "saml",
     OIDC = "oidc",
     WS_FEDERATION = "passive-sts",
-    WS_TRUST = "ws-trust"
+    WS_TRUST = "ws-trust",
+    CUSTOM= "custom"
 }
 
 /**
@@ -318,7 +319,7 @@ export interface PassiveStsConfigurationInterface {
     replyTo: string;
 }
 
-export enum customTypeEnum {
+export enum CustomTypeEnum {
     STRING = "STRING",
     BOOLEAN = "BOOLEAN",
     INTEGER = "INTEGER"
@@ -327,7 +328,7 @@ export enum customTypeEnum {
 export interface CustomInboundProtocolPropertyInterface {
     name: string;
     displayName: string;
-    type: customTypeEnum;
+    type: CustomTypeEnum;
     required: boolean;
     availableValues: string[];
     defaultValue: string;
@@ -344,7 +345,7 @@ export interface CustomInboundProtocolMetaDataInterface {
     properties: CustomInboundProtocolPropertyInterface[];
 }
 
-interface PropertyModelInterface {
+export interface PropertyModelInterface {
     key: string;
     value: string;
     friendlyName: string;
@@ -357,4 +358,22 @@ export interface CustomInboundProtocolConfigurationInterface {
     name: string;
     configName: string;
     properties: PropertyModelInterface[];
+}
+
+/**
+ * Interface face to hold config values.
+ */
+export interface SubmitFormCustomPropertiesInterface {
+    /**
+     * Config name.
+     */
+    key: string;
+    /**
+     * Config value.
+     */
+    value: string | boolean | number | string[];
+    /**
+     * Friendly name of the config.
+     */
+    friendlyName?: string;
 }
