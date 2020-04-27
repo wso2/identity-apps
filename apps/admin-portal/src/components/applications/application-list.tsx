@@ -30,7 +30,8 @@ import {
     ApplicationListInterface,
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface,
-    ConfigReducerStateInterface, FeatureConfigInterface
+    ConfigReducerStateInterface,
+    FeatureConfigInterface
 } from "../../models";
 import { AppState } from "../../store";
 import { ApplicationManagementUtils } from "../../utils";

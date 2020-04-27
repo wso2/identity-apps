@@ -236,7 +236,9 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         imageUrl={ imageUrl }
                         accessUrl={ accessUrl }
                         readOnly={
-                            !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                            !hasRequiredScopes(
+                                featureConfig?.applications, featureConfig?.applications?.scopes?.update
+                            )
                         }
                     />
                     {

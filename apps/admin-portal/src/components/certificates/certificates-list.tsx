@@ -16,8 +16,8 @@
 * under the License.
 */
 
-import { hasRequiredScopes } from "@wso2is/core/dist/src/helpers";
-import { SBACInterface } from "@wso2is/core/dist/src/models";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components";
 import { Avatar } from "@wso2is/react-components";

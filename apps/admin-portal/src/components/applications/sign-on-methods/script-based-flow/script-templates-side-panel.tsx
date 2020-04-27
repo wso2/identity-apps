@@ -170,7 +170,9 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                                                                     className="add-button"
                                                                                     name="add"
                                                                                     onClick={
-                                                                                        () => onTemplateSelect(template)
+                                                                                        () => onTemplateSelect(
+                                                                                            template
+                                                                                        )
                                                                                     }
                                                                                 />
                                                                             ) }

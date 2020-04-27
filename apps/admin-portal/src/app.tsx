@@ -67,7 +67,6 @@ export const App = (): ReactElement => {
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const loginInit: boolean = useSelector((state: AppState) => state.authenticationInformation.loginInit);
 
-
     /**
      * Set the deployment configs in redux state.
      */

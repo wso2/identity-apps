@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
@@ -31,7 +32,6 @@ import {
     AuthenticationStepInterface,
     FeatureConfigInterface
 } from "../../../models";
-import { hasRequiredScopes } from "@wso2is/core/dist/src/helpers";
 
 /**
  * Proptypes for the sign on methods component.
