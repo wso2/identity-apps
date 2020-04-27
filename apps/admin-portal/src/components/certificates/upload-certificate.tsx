@@ -312,10 +312,11 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             return file.text().then((value: string) => {
                 return convertFromPem(value).value;
             }).catch(() => {
-                setFileError(true);
-                return "";
+                throw Error();
             })
         }
+
+        return Promise.reject();
     };
 
     /**
@@ -453,7 +454,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
      * @param {File} file The file to be added.
      */
     const addFile = (file: File): void => {
-        checkCertType(file).then((value: string) => {
+        checkCertType(file)?.then((value: string) => {
             setFile(file);
             setCertEmpty(false);
             setFileError(false);
@@ -463,6 +464,8 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             fileName.pop();
             !name && setName(fileName.join("."));
             setFileDecoded(value);
+        }).catch(() => {
+            setFileError(true);
         })
     };
 
