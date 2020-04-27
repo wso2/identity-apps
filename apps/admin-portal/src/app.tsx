@@ -23,7 +23,8 @@ import {
     setDeploymentConfigs,
     setFeatureConfigs,
     setI18nConfigs,
-    setServiceResourceEndpoints, setUIConfigs
+    setServiceResourceEndpoints,
+    setUIConfigs
 } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
