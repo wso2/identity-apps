@@ -24,20 +24,17 @@ import { useDispatch } from "react-redux";
 import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
 import {
     getFederatedAuthenticatorDetails,
-    getFederatedAuthenticatorMeta,
+    getFederatedAuthenticatorMeta, getIdentityProviderTemplate,
     getIdentityProviderTemplateList,
     updateFederatedAuthenticator
 } from "../../../api";
-import { IdPCapabilityIcons } from "../../../configs";
 import {
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
     FederatedAuthenticatorWithMetaInterface,
     IdentityProviderTemplateListItemInterface,
     IdentityProviderTemplateListItemResponseInterface,
-    IdentityProviderTemplateListResponseInterface,
-    SupportedServices,
-    SupportedServicesInterface
+    IdentityProviderTemplateListResponseInterface
 } from "../../../models";
 import { AuthenticatorAccordion } from "../../shared";
 import { AuthenticatorFormFactory } from "../forms";
@@ -138,6 +135,24 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             });
     };
 
+    const handleIDPTemplateAPICallError = (error) => {
+        if (error.response && error.response.data && error.response.data.description) {
+            dispatch(addAlert({
+                description: error.response.data.description,
+                level: AlertLevels.ERROR,
+                message: "Retrieval error"
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: "An error occurred while retrieving IDP template.",
+            level: AlertLevels.ERROR,
+            message: "Retrieval error"
+        }));
+    };
+
     const handleAuthenticatorAPICallError = (error) => {
         if (error.response && error.response.data && error.response.data.description) {
             dispatch(addAlert({
@@ -150,7 +165,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         }
 
         dispatch(addAlert({
-            description: "An error occurred retrieving the federated authenticator details.",
+            description: "An error occurred while retrieving the federated authenticator details.",
             level: AlertLevels.ERROR,
             message: "Retrieval error"
         }));
@@ -168,7 +183,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         }
 
         dispatch(addAlert({
-            description: "An error occurred retrieving the federated authenticator metadata.",
+            description: "An error occurred while retrieving the federated authenticator metadata.",
             level: AlertLevels.ERROR,
             message: "Retrieval error"
         }));
@@ -202,7 +217,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     };
 
     /**
-     * Asynchronous function to Loop through federated authenticators, fetch data and metadata and
+     * Asynchronous function to loop through federated authenticators, fetch data and metadata and
      * return an array of available authenticators.
      */
     async function fetchAuthenticators() {
@@ -296,20 +311,32 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         setIsTemplatesLoading(true);
         setShowAddAuthenticatorWizard(false);
 
-        // Load available templates from the server
+        // Get the list of available templates from the server
         getIdentityProviderTemplateList()
             .then((response: IdentityProviderTemplateListResponseInterface) => {
                 if (!response?.totalResults) {
                     return;
                 }
-                // sort templateList based on display Order
-                response?.templates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
+                // Load each template
+                fetchIDPTemplates(response?.templates)
+                    .then((templates) => {
 
-                const availableTemplates: IdentityProviderTemplateListItemInterface[] = interpretAvailableTemplates(
-                    response?.templates);
+                        // Filter out already added authenticators and templates with federated authenticators.
+                        const availableAuthenticatorIDs = availableAuthenticators.map((a) => {
+                            return a.id;
+                        });
+                        const filteredTemplates = templates.filter((template) =>
+                            (template.idp.federatedAuthenticators.defaultAuthenticatorId &&
+                            !availableAuthenticatorIDs.includes(
+                                template.idp.federatedAuthenticators.defaultAuthenticatorId))
+                        );
 
-                setAvailableTemplates(availableTemplates);
-                setShowAddAuthenticatorWizard(true);
+                        // sort templateList based on display Order
+                        filteredTemplates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
+
+                        setAvailableTemplates(filteredTemplates);
+                        setShowAddAuthenticatorWizard(true);
+                    });
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -333,49 +360,32 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     };
 
     /**
-     * Interpret available templates from the response templates.
+     * Asynchronous function to loop through IDP templates list and fetch templates.
      *
-     * @param templates List of response templates.
-     * @return List of templates.
+     * @param templatesList List of templates.
      */
-    const interpretAvailableTemplates = (templates: IdentityProviderTemplateListItemResponseInterface[]):
-        IdentityProviderTemplateListItemInterface[] => {
-        return templates?.map(eachTemplate => {
-            if (eachTemplate.services[0] === "") {
-                return {
-                    ...eachTemplate,
-                    services: []
-                };
-            } else {
-                return {
-                    ...eachTemplate,
-                    services: buildSupportedServices(eachTemplate?.services)
-                };
-            }
-        });
-    };
+    async function fetchIDPTemplates(templatesList: IdentityProviderTemplateListItemResponseInterface[]) {
+        const templates: IdentityProviderTemplateListItemInterface[] = [];
+        for (const template of templatesList) {
+            templates.push(await fetchIDPTemplate(template.id));
+        }
+        return templates;
+    }
 
     /**
-     * Build supported services from the given service identifiers.
+     * Fetch IDP template corresponds to the given tempalte ID.
      *
-     * @param serviceIdentifiers Set of service identifiers.
+     * @param templateId ID of the authenticator.
      */
-    const buildSupportedServices = (serviceIdentifiers: string[]): SupportedServicesInterface[] => {
-        return serviceIdentifiers?.map((serviceIdentifier: string): SupportedServicesInterface => {
-            switch (serviceIdentifier) {
-                case SupportedServices.AUTHENTICATION:
-                    return {
-                        displayName: "Authentication Service",
-                        logo: IdPCapabilityIcons[SupportedServices.AUTHENTICATION],
-                        name: SupportedServices.AUTHENTICATION
-                    };
-                case SupportedServices.PROVISIONING:
-                    return {
-                        displayName: "Provisioning Service",
-                        logo: IdPCapabilityIcons[SupportedServices.PROVISIONING],
-                        name: SupportedServices.PROVISIONING
-                    }
-            }
+    const fetchIDPTemplate = (templateId: string): Promise<IdentityProviderTemplateListItemInterface> => {
+        return new Promise(resolve => {
+            getIdentityProviderTemplate(templateId)
+                .then(response => {
+                    resolve(response)
+                })
+                .catch(error => {
+                    handleIDPTemplateAPICallError(error);
+                });
         });
     };
 

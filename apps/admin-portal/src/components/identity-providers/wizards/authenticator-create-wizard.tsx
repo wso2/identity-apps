@@ -27,13 +27,14 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AuthenticatorSettings, WizardSummary } from "./steps";
 import { AuthenticatorTemplateSelection } from "./steps/authenticator-create-steps/authenticator-template-selection";
 import {
-    getFederatedAuthenticatorMetadata, getIdentityProviderTemplate, updateFederatedAuthenticator
+    getFederatedAuthenticatorMetadata,
+    updateFederatedAuthenticator
 } from "../../../api";
 import { IdentityProviderWizardStepIcons } from "../../../configs";
 import {
     FederatedAuthenticatorMetaInterface,
-    IdentityProviderInterface, IdentityProviderTemplateListItemInterface,
-    OutboundProvisioningConnectorMetaInterface
+    IdentityProviderInterface,
+    IdentityProviderTemplateListItemInterface
 } from "../../../models";
 
 /**
@@ -55,7 +56,7 @@ interface AddAuthenticatorWizardPropsInterface {
  * @enum {string}
  */
 enum WizardConstants {
-    IDENTITY_PROVIDER = "identityProvider"
+    AUTHENTICATOR = "authenticator"
 }
 
 /**
@@ -112,10 +113,8 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
     const [wizardState, setWizardState] = useState<WizardStateInterface>(undefined);
     const [partiallyCompletedStep, setPartiallyCompletedStep] = useState<number>(undefined);
     const [currentWizardStep, setCurrentWizardStep] = useState<number>(currentStep);
-    const [defaultAuthenticatorMetadata, setDefaultAuthenticatorMetadata] =
+    const [selectedAuthenticatorMetadata, setSelectedAuthenticatorMetadata] =
         useState<FederatedAuthenticatorMetaInterface>(undefined);
-    const [defaultOutboundProvisioningConnectorMetadata, setDefaultOutboundProvisioningConnectorMetadata] =
-        useState<OutboundProvisioningConnectorMetaInterface>(undefined);
     const [selectedTemplateId, setSelectedTemplateId] = useState<string>(undefined);
 
     const dispatch = useDispatch();
@@ -155,7 +154,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
      */
     const navigateToPrevious = (): void => {
         if (wizardSteps[currentWizardStep]?.name === WizardSteps.AUTHENTICATOR_SETTINGS) {
-            setDefaultAuthenticatorMetadata(undefined);
+            setSelectedAuthenticatorMetadata(undefined);
             setSelectedTemplateId(undefined);
         }
         setPartiallyCompletedStep(currentWizardStep);
@@ -168,9 +167,12 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
      * @param {WizardConstants} formType - Type of the form.
      */
     const handleWizardFormSubmit = (values: any, formType: WizardConstants): void => {
-        setSelectedTemplateId(values.templateId);
+		if (values.templateId) {
+            setSelectedTemplateId(values.templateId);
+        } else {
+            setWizardState(_.merge(wizardState, { [formType]: values }));
+        }
         setCurrentWizardStep(currentWizardStep + 1);
-        setWizardState(_.merge(wizardState, { [formType]: values }));
     };
 
     /**
@@ -180,7 +182,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         if (!wizardState) {
             return;
         }
-        return wizardState[WizardConstants.IDENTITY_PROVIDER];
+        return wizardState[WizardConstants.AUTHENTICATOR];
     };
 
     /**
@@ -189,7 +191,8 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
      * @param identityProvider - Identity provider data.
      */
     const handleWizardFormFinish = (identityProvider: IdentityProviderInterface): void => {
-        const authenticator = identityProvider?.federatedAuthenticators?.authenticators[0];
+        const authenticator = identityProvider?.federatedAuthenticators?.authenticators.find((a) =>
+            a.authenticatorId === identityProvider?.federatedAuthenticators?.defaultAuthenticatorId);
         authenticator.isDefault = false;
         addNewAuthenticator(authenticator);
     };
@@ -229,8 +232,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
     const handleWizardClose = (): void => {
 
         // Clear data.
-        setDefaultOutboundProvisioningConnectorMetadata(undefined);
-        setDefaultAuthenticatorMetadata(undefined);
+        setSelectedAuthenticatorMetadata(undefined);
 
         // Trigger the close method from props.
         closeWizard();
@@ -254,7 +256,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                     <AuthenticatorTemplateSelection
                         triggerSubmit={ submitTemplateSelection }
                         onSubmit={ (values): void => handleWizardFormSubmit(values,
-                            WizardConstants.IDENTITY_PROVIDER) }
+                            WizardConstants.AUTHENTICATOR) }
                         defaultTemplates={ {} }
                         authenticatorTemplates={ availableTemplates }
                     />
@@ -263,10 +265,10 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
             case WizardSteps.AUTHENTICATOR_SETTINGS: {
                 return (
                     <AuthenticatorSettings
-                        metadata={ defaultAuthenticatorMetadata }
-                        initialValues={ wizardState[WizardConstants.IDENTITY_PROVIDER] }
+                        metadata={ selectedAuthenticatorMetadata }
+                        initialValues={ wizardState[WizardConstants.AUTHENTICATOR] }
                         onSubmit={ (values): void => handleWizardFormSubmit(
-                            values, WizardConstants.IDENTITY_PROVIDER) }
+                            values, WizardConstants.AUTHENTICATOR) }
                         triggerSubmit={ submitAuthenticator }
                     />
                 )
@@ -274,8 +276,8 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
             case WizardSteps.SUMMARY: {
                 return (
                     <WizardSummary
-                        provisioningConnectorMetadata={ defaultOutboundProvisioningConnectorMetadata }
-                        authenticatorMetadata={ defaultAuthenticatorMetadata }
+                        provisioningConnectorMetadata={ {} }
+                        authenticatorMetadata={ selectedAuthenticatorMetadata }
                         triggerSubmit={ finishSubmit }
                         identityProvider={ generateWizardSummary() }
                         onSubmit={ handleWizardFormFinish }
@@ -288,60 +290,35 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
 
     useEffect(() => {
         if (selectedTemplateId) {
-            getIdentityProviderTemplate(selectedTemplateId)
+            const selectedTemplate = availableTemplates.find((template) => {
+                return template.id === selectedTemplateId;
+            });
+            setWizardState({
+                ...wizardState,
+                [WizardConstants.AUTHENTICATOR]: selectedTemplate.idp
+            });
+            const authenticatorId = selectedTemplate.idp.federatedAuthenticators.defaultAuthenticatorId;
+            getFederatedAuthenticatorMetadata(authenticatorId)
                 .then((response) => {
-                    setWizardState({
-                        ...wizardState,
-                        [WizardConstants.IDENTITY_PROVIDER]: response.idp
-                    });
-                    setAuthenticatorMetadata(response.idp.federatedAuthenticators.defaultAuthenticatorId)
-
+                    setSelectedAuthenticatorMetadata(response);
                 })
                 .catch((error) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(addAlert({
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
-                            message: "Identity Provider Template Fetch Error"
+                            message: "Retrieval error"
                         }));
-
                         return;
                     }
                     dispatch(addAlert({
-                        description: "An error occurred while retrieving identity provider template list",
+                        description: "An error occurred retrieving the authenticator: ." + authenticatorId,
                         level: AlertLevels.ERROR,
-                        message: "Retrieval Error"
+                        message: "Retrieval error"
                     }));
                 });
         }
     }, [selectedTemplateId]);
-
-    /**
-     * Gets the authenticator meta data.
-     *
-     * @param authenticatorId
-     */
-    const setAuthenticatorMetadata = (authenticatorId: string) => {
-        getFederatedAuthenticatorMetadata(authenticatorId)
-            .then((response) => {
-                setDefaultAuthenticatorMetadata(response);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Retrieval error"
-                    }));
-                    return;
-                }
-                dispatch(addAlert({
-                    description: "An error occurred retrieving the authenticator: ." + authenticatorId,
-                    level: AlertLevels.ERROR,
-                    message: "Retrieval error"
-                }));
-            });
-    };
 
     /**
      * Called when required backend data are gathered.
@@ -352,7 +329,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         }
 
         setWizardState(_.merge(wizardState, {
-            [WizardConstants.IDENTITY_PROVIDER]: {}
+            [WizardConstants.AUTHENTICATOR]: {}
         }));
         setWizardSteps([
             {
