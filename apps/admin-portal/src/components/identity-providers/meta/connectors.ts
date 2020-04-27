@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ConnectorIcons } from "../../../configs";
+import { GoogleLogo, SalesforceLogo, SCIMLogo } from "@wso2is/theme";
 
 export const OutboundConnectors = [
     {
@@ -24,20 +24,20 @@ export const OutboundConnectors = [
         name: "googleapps",
         self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/Z29vZ2xlYXBwcw",
         displayName: "Google",
-        icon: ConnectorIcons.google
+        icon: GoogleLogo
     },
     {
         connectorId: "c2FsZXNmb3JjZQ",
         name: "salesforce",
         self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/c2FsZXNmb3JjZQ",
         displayName: "Salesforce",
-        icon: ConnectorIcons.salesforce
+        icon: SalesforceLogo
     },
     {
         connectorId: "c2NpbQ",
         name: "scim",
         self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/c2NpbQ",
         displayName: "SCIM",
-        icon: ConnectorIcons.scim
+        icon: SCIMLogo
     }
 ];
