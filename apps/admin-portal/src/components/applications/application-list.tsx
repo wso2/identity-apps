@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/dist/src/helpers";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AppAvatar, ConfirmationModal, ResourceList, ResourceListActionInterface } from "@wso2is/react-components";
@@ -24,6 +24,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useDispatch, useSelector } from "react-redux";
 import { Label } from "semantic-ui-react";
 import { deleteApplication } from "../../api";
+import { ApplicationManagementConstants } from "../../constants";
 import { history } from "../../helpers";
 import {
     ApplicationListInterface,
@@ -148,6 +149,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     const resolveListActions = (app: ApplicationListItemInterface): ResourceListActionInterface[]  => {
         const actions: ResourceListActionInterface[] = [
             {
+                hidden: !isFeatureEnabled(
+                    featureConfig?.applications,
+                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: "pencil alternate",
                 onClick: (): void => handleApplicationEdit(app.id),
                 popupText: "Edit",
@@ -155,18 +159,19 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             }
         ];
 
-        if (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.delete)) {
-            actions.push({
-                hidden: config.ui.doNotDeleteApplications.includes(app.name),
-                icon: "trash alternate",
-                onClick: (): void => {
-                    setShowDeleteConfirmationModal(true);
-                    setDeletingApplication(app);
-                },
-                popupText: "Delete",
-                type: "button"
-            });
-        }
+        actions.push({
+            hidden: !hasRequiredScopes(
+                featureConfig?.applications,
+                featureConfig?.applications?.scopes?.delete)
+                || config.ui.doNotDeleteApplications.includes(app.name),
+            icon: "trash alternate",
+            onClick: (): void => {
+                setShowDeleteConfirmationModal(true);
+                setDeletingApplication(app);
+            },
+            popupText: "Delete",
+            type: "button"
+        });
 
         return actions;
     };
