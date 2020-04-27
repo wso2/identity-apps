@@ -32,6 +32,7 @@ import { AddRoleUsers } from "../create-role-wizard/role-user-assign";
 
 interface RoleUserDetailsProps {
     roleObject: RolesInterface;
+    isGroup: boolean;
     onRoleUpdate: () => void;
 }
 
@@ -40,7 +41,8 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
 ): ReactElement => {
     const {
         roleObject,
-        onRoleUpdate
+        onRoleUpdate,
+        isGroup
     } = props;
 
     const { t } = useTranslation();
@@ -102,6 +104,11 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
     };
 
     return (
-        <AddRoleUsers isEdit={ true } assignedUsers={ roleObject.members } onSubmit={ onUserUpdate }/>
+        <AddRoleUsers 
+            isGroup={ isGroup } 
+            isEdit={ true } 
+            assignedUsers={ roleObject.members } 
+            onSubmit={ onUserUpdate }
+        />
     )
 };

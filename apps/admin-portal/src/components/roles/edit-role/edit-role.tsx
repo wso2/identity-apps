@@ -17,11 +17,12 @@
  */
 
 import { ResourceTab } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { BaiscRoleDetails } from "./edit-role-basic";
 import { RolePermissionDetails } from "./edit-role-permission";
 import { RoleUserDetails } from "./edit-role-users";
 import { RolesInterface } from "../../../models";
+import { history } from "../../../helpers";
 
 /**
  * Captures props needed for edit role component
@@ -44,6 +45,15 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         onRoleUpdate
     } = props;
 
+    const [ isGroup, setIsGroup ] = useState<boolean>(false);
+
+    /**
+     * Get is groups url to proceed as groups
+     */
+    useEffect(() => {
+        setIsGroup(history.location.pathname.includes("/groups/"));
+    }, []);
+
     const panes = () => ([
         {
             menuItem: "Basics",
@@ -63,7 +73,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
             menuItem: "Users",
             render: () => (
                 <ResourceTab.Pane attached={ false }>
-                    <RoleUserDetails roleObject={ roleObject } onRoleUpdate={ onRoleUpdate }/>
+                    <RoleUserDetails isGroup={ isGroup } roleObject={ roleObject } onRoleUpdate={ onRoleUpdate }/>
                 </ResourceTab.Pane>
             )
         }

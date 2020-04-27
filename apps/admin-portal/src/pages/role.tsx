@@ -246,6 +246,7 @@ export const RolesPage = (): ReactElement => {
                 totalListSize={ roleList?.totalResults }
             >
                 <RoleList 
+                    isGroup={ false }
                     roleList={ roleList?.Resources }
                     handleRoleDelete={ handleOnDelete }
                 />

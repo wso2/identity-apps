@@ -43,6 +43,7 @@ interface AddRoleUserProps {
     onSubmit?: (values: any) => void;
     assignedUsers?: RolesMemberInterface[];
     isEdit: boolean;
+    isGroup: boolean;
     initialValues?: UserBasicInterface[];
 }
 
@@ -52,7 +53,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         onSubmit,
         assignedUsers,
         isEdit,
-        initialValues
+        initialValues,
+        isGroup
     } = props;
 
     const [ tempUserList, setTempUserList ] = useState<UserBasicInterface[]>([]);
@@ -289,9 +291,13 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     const addNewUserModal = () => (
         <Modal open={ showAddNewUserModal } size="small" className="user-roles">
             <Modal.Header>
-                Update Role Users
+                { isGroup ? "Update Group Users" : "Update Role Users" }
                 <Heading subHeading ellipsis as="h6">
-                    Add new users or remove existing users assigned to the role.
+                    { 
+                        isGroup ? 
+                        "Add new users or remove existing users assigned to the group." : 
+                        "Add new users or remove existing users assigned to the role." 
+                    }
                 </Heading>
             </Modal.Header>
             <Modal.Content image>
@@ -437,6 +443,9 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         <EmptyPlaceholder
                                             title="No Users Assigned"
                                             subtitle={ [
+                                                isGroup ?
+                                                "There are no Users assigned to the group at the moment."
+                                                 : 
                                                 "There are no Users assigned to the role at the moment."
                                             ] }
                                             action={

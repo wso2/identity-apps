@@ -267,6 +267,7 @@ export const GroupsPage = (): ReactElement => {
                 totalListSize={ roleList?.totalResults }
             >
                 <RoleList 
+                    isGroup
                     roleList={ roleList?.Resources }
                     handleRoleDelete={ handleOnDelete }
                 />
