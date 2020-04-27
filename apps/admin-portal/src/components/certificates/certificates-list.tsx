@@ -26,13 +26,20 @@ import { saveAs } from "file-saver";
 import * as forge from "node-forge";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Input, Modal } from "semantic-ui-react";
+import { Modal } from "semantic-ui-react";
 import { Certificate as CertificateDisplay } from ".";
-import { deleteKeystoreCertificate, retrieveCertificateAlias, retrieveClientCertificate, retrievePublicCertificate } from "../../api";
+import {
+    deleteKeystoreCertificate,
+    retrieveCertificateAlias,
+    retrieveClientCertificate,
+    retrievePublicCertificate
+} from "../../api";
 import { CertificateIllustrations } from "../../configs";
 import { CERTIFICATE_BEGIN, CERTIFICATE_END, END_LINE } from "../../constants";
 import { AlertLevels, Certificate, DisplayCertificate, FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
+import { ResourceList } from "@wso2is/react-components";
+
 
 /**
  * @constant
@@ -87,9 +94,6 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     const [ certificateModal, setCertificateModal ] = useState(false);
     const [ deleteCertificatePem, setDeleteCertificatePem ] = useState("");
     const [ tenantCertificate, setTenantCertificate ] = useState("");
-    const [ tenantAlias, setTenantAlias ] = useState("");
-    const [ aliasEmptyError, setAliasEmptyError ] = useState(false);
-    const [ aliasMismatch, setAliasMismatch ] = useState(false);
 
     const tenantDomain: string = useSelector<AppState, string>((state: AppState) => state.config.deployment.tenant);
 
@@ -155,7 +159,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 message: error?.message ?? "Something went wrong!"
             }));
         })
-    }, [])
+    }, []);
 
     /**
      * Shows the delete confirmation modal.
@@ -179,30 +183,25 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 secondaryAction="Cancel"
                 onSecondaryActionClick={ closeDeleteConfirm }
                 onPrimaryActionClick={ (): void => {
-                    if (!tenantAlias) {
-                        setAliasEmptyError(true);
-                    } else if (tenantAlias !== deleteID) {
-                        setAliasMismatch(true);
-                    } else {
-                        deleteKeystoreCertificate(deleteID).then(() => {
-                            dispatch(addAlert({
-                                description: "The certificate has been successfully deleted.",
-                                level: AlertLevels.SUCCESS,
-                                message: "Certificate deleted successfully"
-                            }));
-                            update();
-                        }).catch((error) => {
-                            dispatch(addAlert({
-                                description: error?.description
-                                    ?? "There was an error while deleting the certificate",
-                                level: AlertLevels.ERROR,
-                                message: error?.message ?? "Something went wrong!"
-                            }));
-                        }).finally(() => {
-                            closeDeleteConfirm();
-                        });
-                    }
-                } }
+                    deleteKeystoreCertificate(deleteID).then(() => {
+                        dispatch(addAlert({
+                            description: "The certificate has been successfully deleted.",
+                            level: AlertLevels.SUCCESS,
+                            message: "Certificate deleted successfully"
+                        }));
+                        update();
+                    }).catch((error) => {
+                        dispatch(addAlert({
+                            description: error?.description
+                                ?? "There was an error while deleting the certificate",
+                            level: AlertLevels.ERROR,
+                            message: error?.message ?? "Something went wrong!"
+                        }));
+                    }).finally(() => {
+                        closeDeleteConfirm();
+                    });
+                }
+                }
             >
                 <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
                 { isTenantCertificate

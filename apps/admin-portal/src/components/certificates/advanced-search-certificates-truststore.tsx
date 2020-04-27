@@ -212,7 +212,8 @@ export const CertificatesTruststoreSearch: FunctionComponent<CertificatesTrustst
                                             label={ t("devPortal:components.applications.search.forms.searchForm" +
                                                 ".inputs.filterCondition.label") }
                                             name={ FILTER_CONDITION_FIELD_IDENTIFIER }
-                                            placeholder={ "E.g. alias, certificate etc." }
+                                            placeholder={ t("devPortal:components.applications.search.forms." +
+                                                "searchForm.inputs.filterCondition.placeholder") }
                                             required={ true }
                                             requiredErrorMessage={ t("devPortal:components.applications.search.forms" +
                                                 ".searchForm.inputs.filterCondition.validations.empty") }
