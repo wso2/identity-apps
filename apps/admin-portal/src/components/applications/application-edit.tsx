@@ -69,12 +69,6 @@ interface EditApplicationPropsInterface {
      */
     permissions?: CRUDPermissionsInterface;
     /**
-     * Callback to be triggered when the inbound protocol is changed.
-     *
-     * @param {AuthProtocolMetaListItemInterface} protocol - Inbound protocol.
-     */
-    onInboundProtocolSelect: (protocol: AuthProtocolMetaListItemInterface) => void;
-    /**
      * Application template.
      */
     template?: ApplicationTemplateListItemInterface;
@@ -97,28 +91,25 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         onDelete,
         onUpdate,
         permissions,
-        onInboundProtocolSelect,
         template
     } = props;
 
     const dispatch = useDispatch();
 
-    const availableInboundProtocols = useSelector((state: AppState) => state.application.meta.inboundProtocols);
+    const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
+        useSelector((state: AppState) => state.application.meta.inboundProtocols);
 
     const [isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading] = useState<boolean>(true);
-    const [selectedInboundProtocol, setSelectedInboundProtocol] = useState<AuthProtocolMetaListItemInterface>(null);
-    const [selectedInboundProtocolList, setSelectedInboundProtocolList] =
+    const [inboundProtocolList, setInboundProtocolList] =
         useState<AuthProtocolMetaListItemInterface[]>([]);
-    const [selectedInboundProtocolConfig, setSelectedInboundProtocolConfig] = useState<any>(undefined);
-    const [showProtocolSelection, setShowProtocolSelection] = useState<boolean>(true);
+    const [inboundProtocolConfig, setInboundProtocolConfig] = useState<any>(undefined);
     const [isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading] = useState<boolean>(false);
 
     /**
      * Called on `availableInboundProtocols` prop update.
      */
     useEffect(() => {
-        if (!_.isEmpty(availableInboundProtocols) && application?.id) {
-            findConfiguredInboundProtocol(application.id);
+        if (!_.isEmpty(availableInboundProtocols)) {
             return;
         }
 
@@ -131,24 +122,23 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     }, [availableInboundProtocols]);
 
     /**
-     * Triggered when the inbound protocol is selected.
+     * Watch for `inboundProtocols` array change and fetch configured protocols if there's a difference.
      */
     useEffect(() => {
-        if (!selectedInboundProtocol) {
+        if (!application?.inboundProtocols || !application?.id) {
             return;
         }
 
-        onInboundProtocolSelect(selectedInboundProtocol);
-    }, [selectedInboundProtocol]);
+        findConfiguredInboundProtocol(application.id);
+    }, [ application?.inboundProtocols ]);
 
     /**
      * Finds the configured inbound protocol.
      */
     const findConfiguredInboundProtocol = (appId): void => {
 
-        let found = false;
-        let allSelectedProtocolConfigs = {};
-        const allSelectedInboundProtocols = [];
+        let protocolConfigs: any = {};
+        const protocolList: AuthProtocolMetaListItemInterface[] = [];
 
         for (const protocol of availableInboundProtocols) {
             if (Object.values(SupportedAuthProtocolTypes).includes(protocol.id as SupportedAuthProtocolTypes)) {
@@ -157,15 +147,12 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
                 getInboundProtocolConfig(appId, protocol.id)
                     .then((response) => {
-                        found = true;
-
-                        setSelectedInboundProtocol(protocol);
-                        allSelectedProtocolConfigs = {
-                            ...allSelectedProtocolConfigs,
+                        protocolConfigs = {
+                            ...protocolConfigs,
                             [protocol.id]: response
                         };
-                        allSelectedInboundProtocols.push(protocol);
-                        setShowProtocolSelection(false);
+
+                        protocolList.push(protocol);
                     })
                     .catch((error) => {
                         if (error?.response?.status === 404) {
@@ -189,8 +176,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         }));
                     })
                     .finally(() => {
-                        setSelectedInboundProtocolList(allSelectedInboundProtocols);
-                        setSelectedInboundProtocolConfig(allSelectedProtocolConfigs);
+                        setInboundProtocolList(protocolList);
+                        setInboundProtocolConfig(protocolConfigs);
                         setIsInboundProtocolConfigRequestLoading(false);
                     });
             }
@@ -211,7 +198,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onUpdate={ onUpdate }
                 permissions={ permissions }
                 // TODO we need check whether application is active or not as well.
-                showRevoke={ selectedInboundProtocol?.id === SupportedAuthProtocolTypes.OIDC }
+                showRevoke={
+                    inboundProtocolList.some((protocol) => protocol.id === SupportedAuthProtocolTypes.OIDC)
+                }
                 template={ template }
             />
         </ResourceTab.Pane>
@@ -222,15 +211,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             <ApplicationSettings
                 appId={ application.id }
                 appName={ application.name }
-                inboundProtocols={ application.inboundProtocols }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 isInboundProtocolConfigRequestLoading={ isInboundProtocolConfigRequestLoading }
-                selectedInboundProtocol={ selectedInboundProtocol }
-                selectedInboundProtocolConfig={ selectedInboundProtocolConfig }
-                allSelectedInboundProtocol={ selectedInboundProtocolList }
-                setSelectedInboundProtocol={ setSelectedInboundProtocol }
-                showProtocolSelection={ showProtocolSelection }
+                inboundProtocolConfig={ inboundProtocolConfig }
+                inboundProtocols={ inboundProtocolList }
                 permissions={ permissions }
             />
         </ResourceTab.Pane>
@@ -241,8 +226,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             <AttributeSettings
                 appId={ application.id }
                 claimConfigurations={ application.claimConfiguration }
-                selectedInboundProtocol={ selectedInboundProtocolList }
                 permissions={ permissions }
+                isOIDCConfigured={
+                    inboundProtocolList.some((protocol) => protocol.id === SupportedAuthProtocolTypes.OIDC)
+                }
             />
         </ResourceTab.Pane>
     );

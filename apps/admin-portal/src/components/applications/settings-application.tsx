@@ -19,22 +19,22 @@
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, EmptyPlaceholder, GenericIconProps, PrimaryButton } from "@wso2is/react-components";
+import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
 import { InboundFormFactory } from "./forms";
+import { ApplicationCreateWizard } from "./wizard";
 import { getAuthProtocolMetadata, regenerateClientSecret, updateAuthProtocolConfig } from "../../api";
 import { EmptyPlaceholderIllustrations, InboundProtocolLogos } from "../../configs";
 import {
     AuthProtocolMetaListItemInterface,
-    InboundProtocolListItemInterface,
     SupportedAuthProtocolMetaTypes,
     SupportedAuthProtocolTypes
 } from "../../models";
 import { AppState } from "../../store";
 import { setAuthProtocolMeta } from "../../store/actions";
 import { AuthenticatorAccordion } from "../shared";
-import { ApplicationCreateWizard } from "./wizard/application-create-wizard";
 
 /**
  * Proptypes for the applications settings component.
@@ -49,9 +49,13 @@ interface ApplicationSettingsPropsInterface {
      */
     appName: string;
     /**
-     * Currently configured inbound protocols.
+     * Protocol configurations.
      */
-    inboundProtocols: InboundProtocolListItemInterface[];
+    inboundProtocolConfig: any;
+    /**
+     *  Currently configured inbound protocols.
+     */
+    inboundProtocols: AuthProtocolMetaListItemInterface[];
     /**
      * Is the application info request loading.
      */
@@ -60,26 +64,6 @@ interface ApplicationSettingsPropsInterface {
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
-    /**
-     * Show protocol selection option.
-     */
-    showProtocolSelection: boolean;
-    /**
-     * Selected protocol configurations.
-     */
-    selectedInboundProtocolConfig: any;
-    /**
-     *  Selected inbound protocol.
-     */
-    selectedInboundProtocol: AuthProtocolMetaListItemInterface;
-    /**
-     *  All the selected inbound protocol.
-     */
-    allSelectedInboundProtocol: AuthProtocolMetaListItemInterface[];
-    /**
-     *  Change selected inbound protocol
-     */
-    setSelectedInboundProtocol: (protocol: AuthProtocolMetaListItemInterface) => void;
     /**
      *  Is inbound protocol config request is still loading.
      */
@@ -103,17 +87,14 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
     const {
         appId,
         appName,
+        inboundProtocolConfig,
         inboundProtocols,
         isLoading,
-        onUpdate,
-        selectedInboundProtocol,
-        selectedInboundProtocolConfig,
-        allSelectedInboundProtocol,
+        onUpdate
     } = props;
 
     const dispatch = useDispatch();
 
-    const availableInboundProtocols = useSelector((state: AppState) => state.application.meta.inboundProtocols);
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
     const [showWizard, setShowWizard] = useState<boolean>(false);
 
@@ -121,9 +102,10 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
      * Handles the inbound config form submit action.
      *
      * @param values - Form values.
+     * @param {SupportedAuthProtocolTypes} protocol - The protocol to be updated.
      */
-    const handleInboundConfigFormSubmit = (values: any): void => {
-        updateAuthProtocolConfig(appId, values, selectedInboundProtocol.id as SupportedAuthProtocolTypes)
+    const handleInboundConfigFormSubmit = (values: any, protocol: SupportedAuthProtocolTypes): void => {
+        updateAuthProtocolConfig(appId, values, protocol)
             .then(() => {
                 dispatch(addAlert({
                     description: "Successfully updated the inbound protocol configurations.",
@@ -189,7 +171,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
      */
     const getSelectedProtocols = (): string[] => {
         const protocols: string[] = [];
-        allSelectedInboundProtocol.map((selectedProtocol) => {
+        inboundProtocols.map((selectedProtocol) => {
             protocols.push(selectedProtocol.id)
         });
         return protocols;
@@ -201,7 +183,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
      */
     const checkSelectedProtocol = (protocolName: string): boolean => {
         let selected = false;
-        allSelectedInboundProtocol.map((selectedProtocol) => {
+        inboundProtocols.map((selectedProtocol) => {
             if (selectedProtocol.id === protocolName) {
                 selected = true
             }
@@ -227,13 +209,16 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                             <InboundFormFactory
                                 metadata={ authProtocolMeta[SupportedAuthProtocolTypes.OIDC] }
                                 initialValues={
-                                    selectedInboundProtocolConfig
-                                    && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+                                    inboundProtocolConfig
+                                    && Object.prototype.hasOwnProperty.call(inboundProtocolConfig,
                                         SupportedAuthProtocolTypes.OIDC)
-                                        ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.OIDC]
+                                        ? inboundProtocolConfig[SupportedAuthProtocolTypes.OIDC]
                                         : undefined
                                 }
-                                onSubmit={ handleInboundConfigFormSubmit }
+                                onSubmit={
+                                    (values: any) => handleInboundConfigFormSubmit(values,
+                                        SupportedAuthProtocolTypes.OIDC)
+                                }
                                 type={ SupportedAuthProtocolTypes.OIDC }
                                 handleApplicationRegenerate={ handleApplicationRegenerate }
                             />
@@ -249,13 +234,16 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                             <InboundFormFactory
                                 metadata={ authProtocolMeta[SupportedAuthProtocolTypes.SAML] }
                                 initialValues={
-                                    selectedInboundProtocolConfig
-                                    && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+                                    inboundProtocolConfig
+                                    && Object.prototype.hasOwnProperty.call(inboundProtocolConfig,
                                         SupportedAuthProtocolTypes.SAML)
-                                        ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.SAML]
+                                        ? inboundProtocolConfig[SupportedAuthProtocolTypes.SAML]
                                         : undefined
                                 }
-                                onSubmit={ handleInboundConfigFormSubmit }
+                                onSubmit={
+                                    (values: any) => handleInboundConfigFormSubmit(values,
+                                        SupportedAuthProtocolTypes.SAML)
+                                }
                                 type={ SupportedAuthProtocolTypes.SAML }
                             />
                         ),
@@ -269,13 +257,16 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                         content: (
                             <InboundFormFactory
                                 initialValues={
-                                    selectedInboundProtocolConfig
-                                    && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+                                    inboundProtocolConfig
+                                    && Object.prototype.hasOwnProperty.call(inboundProtocolConfig,
                                         SupportedAuthProtocolTypes.WS_FEDERATION)
-                                        ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.WS_FEDERATION]
+                                        ? inboundProtocolConfig[SupportedAuthProtocolTypes.WS_FEDERATION]
                                         : undefined
                                 }
-                                onSubmit={ handleInboundConfigFormSubmit }
+                                onSubmit={
+                                    (values: any) => handleInboundConfigFormSubmit(values,
+                                        SupportedAuthProtocolTypes.WS_FEDERATION)
+                                }
                                 type={ SupportedAuthProtocolTypes.WS_FEDERATION }
                             />
                         ),
@@ -290,18 +281,21 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                             <InboundFormFactory
                                 metadata={ authProtocolMeta[SupportedAuthProtocolTypes.WS_TRUST] }
                                 initialValues={
-                                    selectedInboundProtocolConfig
-                                    && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+                                    inboundProtocolConfig
+                                    && Object.prototype.hasOwnProperty.call(inboundProtocolConfig,
                                         SupportedAuthProtocolTypes.WS_TRUST)
-                                        ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.WS_TRUST]
+                                        ? inboundProtocolConfig[SupportedAuthProtocolTypes.WS_TRUST]
                                         : undefined
                                 }
-                                onSubmit={ handleInboundConfigFormSubmit }
+                                onSubmit={
+                                    (values: any) => handleInboundConfigFormSubmit(values,
+                                        SupportedAuthProtocolTypes.WS_TRUST)
+                                }
                                 type={ SupportedAuthProtocolTypes.WS_TRUST }
                             />
                         ),
                         id: SupportedAuthProtocolTypes.WS_TRUST,
-                        title: "WS Trust",
+                        title: "WS Trust"
                     }
                 ] }
             />
@@ -312,19 +306,11 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
      * Use effect hook to be run when an inbound protocol is selected.
      */
     useEffect(() => {
-
-        // Checks if the `inboundProtocols` is undefined. Terminate the rest of the operations.
-        // If this check isn't done, fast navigation to the settings tab will potentially
-        // break the UI.
-        if (!inboundProtocols) {
+        if (_.isEmpty(inboundProtocols)) {
             return;
         }
 
-        if (!selectedInboundProtocol) {
-            return;
-        }
-
-        allSelectedInboundProtocol.map((selected) => {
+        inboundProtocols.map((selected) => {
             const selectedProtocol = selected.name as SupportedAuthProtocolMetaTypes;
 
             if (!Object.values(SupportedAuthProtocolMetaTypes).includes(
@@ -359,7 +345,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
             }
         })
 
-    }, [selectedInboundProtocol, allSelectedInboundProtocol]);
+    }, [inboundProtocols]);
 
     const alreadySelectedProtocols: string[] = getSelectedProtocols();
 
@@ -400,7 +386,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            { selectedInboundProtocol && resolveInboundProtocolSettingsForm() }
+                            { resolveInboundProtocolSettingsForm() }
                         </Grid.Column>
                     </Grid.Row>
                     {

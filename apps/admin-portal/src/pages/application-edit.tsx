@@ -46,7 +46,6 @@ import {
     ApplicationInterface,
     ApplicationSampleInterface,
     ApplicationTemplateListItemInterface,
-    AuthProtocolMetaListItemInterface,
     emptyApplication
 } from "../models";
 import { AppState } from "../store";
@@ -81,7 +80,6 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
     const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
     const [ helpPanelTabsActiveIndex, setHelpPanelTabsActiveIndex ] = useState<number>(0);
     const [ helpPanelSampleContent, setHelpPanelSampleContent ] = useState<string>(undefined);
-    const [ selectedInboundProtocol, setSelectedInboundProtocol ] = useState<AuthProtocolMetaListItemInterface>(null);
     const [ helpPanelSelectedSample, setHelpPanelSelectedSample ] = useState<ApplicationSampleInterface>(undefined);
     const [ samplesTabBackButtonEnabled, setSamplesTabBackButtonEnabled ] = useState<boolean>(true);
     const [ samples, setSamples ] = useState<ApplicationSampleInterface[]>(undefined);
@@ -464,7 +462,6 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                     onDelete={ handleApplicationDelete }
                     onUpdate={ handleApplicationUpdate }
                     permissions={ permissions }
-                    onInboundProtocolSelect={ setSelectedInboundProtocol }
                     template={ applicationTemplate }
                 />
             </PageLayout>
