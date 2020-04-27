@@ -103,10 +103,10 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                 {
                     key: -2,
                     text: "All userstores",
-                    value: null
+                    value: "all"
                 },
                 {
-                    key: -1, 
+                    key: -1,
                     text: "Primary",
                     value: "primary"
                 }
@@ -114,7 +114,7 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
 
         let storeOption = {
             key: null,
-            text: "", 
+            text: "",
             value: ""
         };
 
@@ -295,7 +295,11 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     };
 
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
-        setUserStore(data.value as string);
+        if (data.value === "all") {
+            setUserStore(null);
+        } else {
+            setUserStore(data.value as string);
+        }
     };
 
     const handleUserDelete = (userId: string): void => {

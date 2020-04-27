@@ -92,9 +92,16 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         getUserStores();
     }, []);
 
+    /**
+     * Set the password setup option to 'createPw'.
+     */
+    useEffect(() => {
+        setPasswordOption("createPw");
+    }, []);
+
     const passwordOptions = [
-        { label: "Invite user to set password", value: "askPw" },
-        { label: "Set user password", value: "createPw" }
+        { label: "Set user password", value: "createPw" },
+        { label: "Invite user to set password", value: "askPw" }
     ];
 
     /**
@@ -404,7 +411,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             type="radio"
                             label="Select the method to set the user password"
                             name="passwordOption"
-                            default="Ask password"
+                            default="createPw"
                             listen={ (values) => { setPasswordOption(values.get("passwordOption").toString()); } }
                             children={ passwordOptions }
                             value={ initialValues && initialValues.passwordOption }
