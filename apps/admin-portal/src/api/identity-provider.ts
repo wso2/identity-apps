@@ -34,6 +34,7 @@ import {
     JITProvisioningResponseInterface,
     LocalAuthenticatorInterface,
     OutboundProvisioningConnectorInterface,
+    OutboundProvisioningConnectorListItemInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../models";
 import { store } from "../store";
@@ -722,5 +723,32 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
                 error.request,
                 error.response,
                 error.config);
+        });
+};
+
+/**
+ * Fetch the list of outbound provisioning connectors.
+ *
+ * @return {Promise<any>} A promise containing the response.
+ */
+export const getOutboundProvisioningConnectorsList = (): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.identityProviders + "/meta/outbound-provisioning-connectors"
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to fetch outbound provisioning connectors"));
+            }
+            return Promise.resolve(response.data as OutboundProvisioningConnectorListItemInterface[]);
+        }).catch((error) => {
+            return Promise.reject(error);
         });
 };
