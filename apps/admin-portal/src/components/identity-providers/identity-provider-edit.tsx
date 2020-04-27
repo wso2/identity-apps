@@ -122,7 +122,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     const OutboundProvisioningSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane attached={ false }>
             <OutboundProvisioningSettings
-                idpId={ identityProvider.id }
+                identityProvider={ identityProvider }
                 outboundConnectors={ identityProvider.provisioning?.outboundConnectors }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
@@ -169,14 +169,10 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             render: AuthenticatorSettingsTabPane
         });
 
-        // todo Once multiple connector support added, this check needs to be removed and edit view should allow
-        //  adding connectors.
-        if (identityProvider?.provisioning?.outboundConnectors?.defaultConnectorId) {
-            panes.push({
-                menuItem: "Outbound Provisioning",
-                render: OutboundProvisioningSettingsTabPane
-            });
-        }
+        panes.push({
+            menuItem: "Outbound Provisioning",
+            render: OutboundProvisioningSettingsTabPane
+        });
 
         panes.push({
             menuItem: "Just-in-time Provisioning",
