@@ -18,12 +18,12 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { GenericIcon, Heading, Hint, LinkButton } from "@wso2is/react-components";
+import { GenericIcon, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
-import { Card, Divider, Grid, Icon, Popup } from "semantic-ui-react";
+import { Card, Divider, Dropdown, DropdownProps, Grid, Header, Icon, Popup } from "semantic-ui-react";
 import { AuthenticationStep } from "./authentication-step";
 import { AuthenticatorSidePanel } from "./authenticator-side-panel";
 import { getIdentityProviderDetail, getIdentityProviderList } from "../../../../api";
@@ -415,21 +415,25 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     };
 
     /**
-     * Handles the subject identifier checkbox onchange event.
+     * Handles the subject identifier value onchange event.
      *
-     * @param {number} id - Step index.
+     * @param {React.SyntheticEvent<HTMLElement>} event - Change Event.
+     * @param data - Dropdown data.
      */
-    const handleSubjectCheckboxChange = (id: number): void => {
-        setSubjectStepId(id);
+    const handleSubjectRetrievalStepChange =  (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
+        const { value } = data;
+        setSubjectStepId(value as number);
     };
 
     /**
-     * Handles the attribute identifier checkbox onchange event.
+     * Handles the attribute identifier value onchange event.
      *
-     * @param {number} id - Step index.
+     * @param {React.SyntheticEvent<HTMLElement>} event - Change Event.
+     * @param data - Dropdown data.
      */
-    const handleAttributeCheckboxChange = (id: number): void => {
-        setAttributeStepId(id);
+    const handleAttributeRetrievalStepChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
+        const { value } = data;
+        setAttributeStepId(value as number);
     };
 
     /**
@@ -560,6 +564,67 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                 )
                             }
                         </Grid.Row>
+                        {
+                            !readOnly && (
+                                <Grid.Row verticalAlign="middle">
+                                    <Grid.Column computer={ 5 } mobile={ 16 }>
+                                        <Header as="h6">
+                                            <Header.Content>
+                                            Subject identifier from step - {" "}
+                                            <Dropdown
+                                                placeholder="Select step"
+                                                scrolling
+                                                options={
+                                                    authenticationSteps
+                                                    && authenticationSteps instanceof Array
+                                                    && authenticationSteps.length > 0
+                                                    && authenticationSteps.map((step, index) => {
+                                                        return {
+                                                            key: step.id,
+                                                            text: index + 1,
+                                                            value: index + 1
+                                                        }
+                                                    })
+                                                }
+                                                onChange={ handleSubjectRetrievalStepChange }
+                                                value={ subjectStepId }
+                                            />
+                                            </Header.Content>
+                                        </Header>
+                                    </Grid.Column>
+                                    <Grid.Column computer={ 5 } mobile={ 16 }>
+                                        <Header as="h6">
+                                            <Header.Content>
+                                                Attributes from step - {" "}
+                                                <Dropdown
+                                                    placeholder="Select step"
+                                                    scrolling
+                                                    options={
+                                                        authenticationSteps
+                                                        && authenticationSteps instanceof Array
+                                                        && authenticationSteps.length > 0
+                                                        && authenticationSteps.map((step, index) => {
+                                                            return {
+                                                                key: step.id,
+                                                                text: index + 1,
+                                                                value: index + 1
+                                                            }
+                                                        })
+                                                    }
+                                                    onChange={ handleAttributeRetrievalStepChange }
+                                                    value={ attributeStepId }
+                                                />
+                                            </Header.Content>
+                                        </Header>
+                                    </Grid.Column>
+                                    <Grid.Column computer={ 6 } mobile={ 16 } textAlign="right">
+                                        <PrimaryButton onClick={ handleAuthenticationStepAdd }>
+                                            <Icon name="add"/>New Authentication Step
+                                        </PrimaryButton>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                        }
                         <Grid.Row>
                             <Grid.Column computer={ 16 }>
                                 <div className="authentication-steps-section">
@@ -568,35 +633,23 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                         && authenticationSteps instanceof Array
                                         && authenticationSteps.length > 0
                                             ? authenticationSteps.map((step, stepIndex) => (
-                                                <AuthenticationStep
-                                                    key={ stepIndex }
-                                                    authenticators={
-                                                        [ ...localAuthenticators, ...federatedAuthenticators ]
-                                                    }
-                                                    attributeStepId={ attributeStepId }
-                                                    droppableId={ AUTHENTICATION_STEP_DROPPABLE_ID + stepIndex }
-                                                    onAttributeCheckboxChange={ handleAttributeCheckboxChange }
-                                                    onStepDelete={ handleStepDelete }
-                                                    onStepOptionDelete={ handleStepOptionDelete }
-                                                    onSubjectCheckboxChange={ handleSubjectCheckboxChange }
-                                                    step={ step }
-                                                    stepIndex={ stepIndex }
-                                                    subjectStepId={ subjectStepId }
-                                                    readOnly={ readOnly }
-                                                />
+                                                <>
+                                                    <AuthenticationStep
+                                                        key={ stepIndex }
+                                                        authenticators={
+                                                            [ ...localAuthenticators, ...federatedAuthenticators ]
+                                                        }
+                                                        droppableId={ AUTHENTICATION_STEP_DROPPABLE_ID + stepIndex }
+                                                        onStepDelete={ handleStepDelete }
+                                                        onStepOptionDelete={ handleStepOptionDelete }
+                                                        step={ step }
+                                                        stepIndex={ stepIndex }
+                                                        readOnly={ readOnly }
+                                                    />
+                                                    <Divider hidden />
+                                                </>
                                             ))
                                             : null
-                                    }
-                                    <Divider hidden/>
-                                    {
-                                        !readOnly && (
-                                            <LinkButton
-                                                className="add-step-button"
-                                                onClick={ handleAuthenticationStepAdd }
-                                            >
-                                                <Icon name="plus"/>Add authentication step
-                                            </LinkButton>
-                                        )
                                     }
                                 </div>
                             </Grid.Column>

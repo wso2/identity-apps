@@ -20,7 +20,7 @@ import { EmptyPlaceholder, Heading, LabeledCard } from "@wso2is/react-components
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Droppable, DroppableProvided } from "react-beautiful-dnd";
-import { Checkbox, Icon } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../../models";
 import { AuthenticatorListItemInterface } from "../../meta";
 
@@ -33,10 +33,6 @@ interface AuthenticationStepPropsInterface {
      */
     authenticators: AuthenticatorListItemInterface[];
     /**
-     * Step chosen to get the attributes.
-     */
-    attributeStepId: number;
-    /**
      * Additional CSS classes.
      */
     className?: string;
@@ -44,10 +40,6 @@ interface AuthenticationStepPropsInterface {
      * ID for the dropable field.
      */
     droppableId: string;
-    /**
-     * On Change callback for the attribute step checkbox.
-     */
-    onAttributeCheckboxChange: (stepIndex: number) => void;
     /**
      * Callback for the step delete.
      */
@@ -57,10 +49,6 @@ interface AuthenticationStepPropsInterface {
      */
     onStepOptionDelete: (stepIndex: number, optionIndex: number) => void;
     /**
-     * On Change callback for the subject step checkbox.
-     */
-    onSubjectCheckboxChange: (stepIndex: number) => void;
-    /**
      * Current step.
      */
     step: AuthenticationStepInterface;
@@ -68,10 +56,6 @@ interface AuthenticationStepPropsInterface {
      * Index of the current step.
      */
     stepIndex: number;
-    /**
-     * Step chosen to get the subject.
-     */
-    subjectStepId: number;
     /**
      * Make the form read only.
      */
@@ -90,17 +74,13 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
 
     const {
         authenticators,
-        attributeStepId,
         className,
         droppableId,
-        onAttributeCheckboxChange,
         onStepDelete,
         onStepOptionDelete,
-        onSubjectCheckboxChange,
         readOnly,
         step,
-        stepIndex,
-        subjectStepId
+        stepIndex
     } = props;
 
     const classes = classNames("authentication-step-container", className);
@@ -113,7 +93,9 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
      * @param {number} optionIndex - Index of the option.
      * @return {ReactElement}
      */
-    const resolveStepOption = (option: AuthenticatorInterface, stepIndex: number, optionIndex: number): ReactElement => {
+    const resolveStepOption = (option: AuthenticatorInterface, stepIndex: number,
+                               optionIndex: number): ReactElement => {
+
         if (authenticators && authenticators instanceof Array && authenticators.length > 0) {
 
             const authenticator = authenticators.find((item) => item.authenticator === option.authenticator);
@@ -163,20 +145,6 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                 )
                         }
                         { provided.placeholder }
-                    </div>
-                    <div className="checkboxes">
-                        <Checkbox
-                            label="Use subject identifier from this step"
-                            checked={ subjectStepId === (stepIndex + 1) }
-                            onChange={ (): void => onSubjectCheckboxChange(stepIndex + 1) }
-                            readOnly={ readOnly }
-                        />
-                        <Checkbox
-                            label="Use attributes from this step"
-                            checked={ attributeStepId === (stepIndex + 1) }
-                            onChange={ (): void => onAttributeCheckboxChange(stepIndex + 1) }
-                            readOnly={ readOnly }
-                        />
                     </div>
                 </div>
             ) }
