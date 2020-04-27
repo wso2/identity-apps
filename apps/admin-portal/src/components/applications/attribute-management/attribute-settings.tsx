@@ -28,7 +28,6 @@ import { AttributeSelection } from "./attribute-selection";
 import { RoleMapping } from "./role-mapping";
 import { getAllExternalClaims, getAllLocalClaims, getDialects, updateClaimConfiguration } from "../../../api/";
 import {
-    AuthProtocolMetaListItemInterface,
     Claim,
     ClaimConfigurationInterface,
     ClaimDialect,
@@ -36,8 +35,7 @@ import {
     ExternalClaim,
     RoleConfigInterface,
     RoleMappingInterface,
-    SubjectConfigInterface,
-    SupportedAuthProtocolTypes
+    SubjectConfigInterface
 } from "../../../models";
 
 export interface SelectedDialectInterface {
@@ -81,9 +79,9 @@ interface AttributeSelectionPropsInterface {
      */
     claimConfigurations: ClaimConfigurationInterface;
     /**
-     * Selected inbound protocol.
+     * Is OIDC configured for the application.
      */
-    selectedInboundProtocol: AuthProtocolMetaListItemInterface[];
+    isOIDCConfigured: boolean;
     /**
      * CRUD permissions,
      */
@@ -113,7 +111,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const {
         appId,
         claimConfigurations,
-        selectedInboundProtocol
+        isOIDCConfigured
     } = props;
 
     const dispatch = useDispatch();
@@ -522,15 +520,17 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
         //TODO  move this logic to backend
         setIsClaimRequestLoading(true);
-        if (selectedInboundProtocol.length === 1
-            && selectedInboundProtocol[0]?.id === SupportedAuthProtocolTypes.OIDC) {
+
+        if (isOIDCConfigured) {
             setIsClaimRequestLoading(false);
-            changeSelectedDialect("http://wso2.org/oidc/claim")
-        } else {
-            setIsClaimRequestLoading(false);
-            changeSelectedDialect(localDialectURI);
+            changeSelectedDialect("http://wso2.org/oidc/claim");
+
+            return;
         }
-    }, [selectedInboundProtocol, dialect]);
+
+        setIsClaimRequestLoading(false);
+        changeSelectedDialect(localDialectURI);
+    }, [isOIDCConfigured, dialect]);
 
     useEffect(() => {
 
