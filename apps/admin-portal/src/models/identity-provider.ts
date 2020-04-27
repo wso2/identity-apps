@@ -288,6 +288,7 @@ export interface OutboundProvisioningConnectorListItemInterface {
 }
 
 export interface OutboundProvisioningConnectorInterface extends CommonPluggableComponentInterface{
+    name?: string;
     connectorId?: string;
     isEnabled?: boolean;
     isDefault?: boolean;
@@ -301,6 +302,12 @@ export interface OutboundProvisioningConnectorMetaInterface extends CommonPlugga
     displayName?: string;
     blockingEnabled?: boolean;
     rulesEnabled?: boolean;
+}
+
+export interface OutboundProvisioningConnectorWithMetaInterface {
+    id?: string;
+    meta?: FederatedAuthenticatorMetaInterface;
+    data?: FederatedAuthenticatorInterface;
 }
 
 export interface CommonPluggableComponentFormPropsInterface {
