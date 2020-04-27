@@ -21,7 +21,7 @@ import _ from "lodash";
 import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { DropdownItemProps, DropdownProps, Icon, PaginationProps, Popup, Button, Dropdown } from "semantic-ui-react";
 import { deleteRoleById, getRolesList, getUserStoreList, searchRoleList } from "../api";
 
 import { RoleList, RoleSearch } from "../components/roles";
@@ -30,6 +30,7 @@ import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, UserConstants } from "../constants
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertInterface, AlertLevels, RoleListInterface, RolesInterface, SearchRoleInterface } from "../models"
 import { addAlert } from "../store/actions";
+import { Field } from "@wso2is/forms";
 
 const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -49,6 +50,24 @@ const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
     }
 ];
 
+const filterOptions: DropdownItemProps[] = [
+    {
+        key: 'all',
+        text: 'Show All',
+        value: 'all'
+    },
+    {
+        key: APPLICATION_DOMAIN,
+        text: 'Application Domain',
+        value: APPLICATION_DOMAIN
+    },
+    {
+        key: INTERNAL_DOMAIN,
+        text: 'Internal Domain',
+        value: INTERNAL_DOMAIN
+    }
+];
+
 /**
  * React component to list User Roles.
  * 
@@ -65,6 +84,7 @@ export const RolesPage = (): ReactElement => {
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ userStore, setUserStore ] = useState(undefined);
+    const [ filterBy, setFilterBy ] = useState<string>('all');
 
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(ROLES_SORTING_OPTIONS[ 0 ]);
 
@@ -87,6 +107,10 @@ export const RolesPage = (): ReactElement => {
 
     useEffect(() => {
         getRoles();
+    }, [ filterBy ]);
+
+    useEffect(() => {
+        getRoles();
     }, [ userStore ]);
 
     const getRoles = () => {
@@ -96,8 +120,14 @@ export const RolesPage = (): ReactElement => {
 
                 if (roleResources && roleResources instanceof Array) {
                     const updatedResources = roleResources.filter((role: RolesInterface) => {
-                        return role.displayName.includes(APPLICATION_DOMAIN) || 
+                        if (filterBy === 'all') {
+                            return role.displayName.includes(APPLICATION_DOMAIN) || 
                                 role.displayName.includes(INTERNAL_DOMAIN);
+                        } else if (APPLICATION_DOMAIN === filterBy) {
+                            return role.displayName.includes(APPLICATION_DOMAIN);
+                        } else if (INTERNAL_DOMAIN === filterBy) {
+                            return role.displayName.includes(INTERNAL_DOMAIN);
+                        }
                     })
                     response.data.Resources = updatedResources;
                 }
@@ -175,6 +205,10 @@ export const RolesPage = (): ReactElement => {
         setListItemLimit(data.value as number);
     };
 
+    const handleFilterChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+        setFilterBy(data.value as string);
+    }
+
     /**
      * Dispatches the alert object to the redux store.
      *
@@ -219,6 +253,8 @@ export const RolesPage = (): ReactElement => {
         searchRoleListHandler(query);
     };
 
+
+
     return (
         <PageLayout
             title="Roles"
@@ -239,6 +275,16 @@ export const RolesPage = (): ReactElement => {
                             <Icon name="add"/>
                             New Role
                         </PrimaryButton>
+                    )
+                }
+                leftActionPanel={
+                    (
+                        <Dropdown
+                            selection
+                            options={ filterOptions }
+                            placeholder="Filter by"
+                            onChange={ handleFilterChange }
+                        />
                     )
                 }
                 showPagination={ true }
