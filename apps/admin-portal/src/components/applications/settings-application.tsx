@@ -306,7 +306,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
      * Use effect hook to be run when an inbound protocol is selected.
      */
     useEffect(() => {
-        if (!inboundProtocols || _.isEmpty(inboundProtocols)) {
+        if (_.isEmpty(inboundProtocols)) {
             return;
         }
 
