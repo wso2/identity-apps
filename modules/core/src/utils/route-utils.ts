@@ -67,7 +67,7 @@ export class RouteUtils {
                     return true;
                 }
 
-                return hasRequiredScopes(feature, feature.scopes.read);
+                return hasRequiredScopes(feature, feature?.scopes?.read);
             });
         };
 
