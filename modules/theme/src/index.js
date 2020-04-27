@@ -45,6 +45,7 @@ export const AppIcon = require("../dist/lib/themes/default/assets/images/icons/a
 export const ArrowRight = require("../dist/lib/themes/default/assets/images/icons/arrow-right-icon.svg");
 export const AuthenticatorAppIcon = 
     require("../dist/lib/themes/default/assets/images/icons/authenticator-app-icon.svg");
+export const BasicAuthIcon = require("../dist/lib/themes/default/assets/images/authenticators/basic-auth.png");
 export const BlockedMagnifierIcon =
     require("../dist/lib/themes/default/assets/images/icons/blocked-magnifier-icon.svg");
 export const BoxIcon = require("../dist/lib/themes/default/assets/images/icons/box-icon.svg");
