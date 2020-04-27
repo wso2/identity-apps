@@ -20,13 +20,12 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, Heading, Hint, LinkButton } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import Draggable from "react-draggable";
 import { useDispatch } from "react-redux";
-import { Accordion, Card, Divider, Grid, Icon, Popup } from "semantic-ui-react";
+import { Card, Divider, Grid, Icon, Popup } from "semantic-ui-react";
 import { AuthenticationStep } from "./authentication-step";
-import { Authenticators } from "./authenticators";
+import { AuthenticatorSidePanel } from "./authenticator-side-panel";
 import { getIdentityProviderDetail, getIdentityProviderList } from "../../../../api";
 import { OperationIcons } from "../../../../configs";
 import {
@@ -133,7 +132,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const [ subjectStepId, setSubjectStepId ] = useState<number>(undefined);
     const [ attributeStepId, setAttributeStepId ] = useState<number>(undefined);
     const [ showAuthenticatorsSidePanel, setAuthenticatorsSidePanelVisibility ] = useState<boolean>(true);
-    const [ authenticatorsAccordionActiveIndexes, setAuthenticatorsAccordionActiveIndexes ] = useState<number[]>([ 0 ]);
 
     /**
      * Called when update is triggered.
@@ -480,25 +478,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     };
 
     /**
-     * Handles accordion title click.
-     *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {number} index - Clicked on index.
-     */
-    const handleAuthenticatorsAccordionOnClick = (e: SyntheticEvent, { index }: { index: number }): void => {
-        const newIndexes = [ ...authenticatorsAccordionActiveIndexes ];
-
-        if (authenticatorsAccordionActiveIndexes.includes(index)) {
-            const removingIndex = authenticatorsAccordionActiveIndexes.indexOf(index);
-            newIndexes.splice(removingIndex, 1);
-        } else {
-            newIndexes.push(index);
-        }
-
-        setAuthenticatorsAccordionActiveIndexes(newIndexes);
-    };
-
-    /**
      * Loads federated authenticators and local authenticators
      * on component load.
      */
@@ -624,133 +603,30 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                         </Grid.Row>
                     </Grid>
                 </div>
-                {
-                    showAuthenticatorsSidePanel && (
-                        <div className="authenticators-panel" ref={ authenticatorsSidePanelRef }>
-                            <Draggable handle=".drag-handle" disabled={ readOnly }>
-                                <Card>
-                                    <Card.Content>
-                                        <Heading as="h6" floated="left" compact>Authenticators</Heading>
-                                        <Popup
-                                            trigger={ (
-                                                <div className="inline floated right mt-1">
-                                                    <GenericIcon
-                                                        className="drag-handle"
-                                                        icon={ OperationIcons.drag }
-                                                        size="nano"
-                                                        transparent
-                                                    />
-                                                </div>
-                                            ) }
-                                            position="top center"
-                                            content="drag"
-                                            inverted
-                                        />
-                                        <Popup
-                                            trigger={ (
-                                                <div
-                                                    className="inline floated right mr-2 mt-1"
-                                                    onClick={ toggleAuthenticatorsSidePanelVisibility }
-                                                >
-                                                    <GenericIcon
-                                                        icon={
-                                                            showAuthenticatorsSidePanel
-                                                                ? OperationIcons.minimize
-                                                                : OperationIcons.maximize
-                                                        }
-                                                        size="nano"
-                                                        transparent
-                                                    />
-                                                </div>
-                                            ) }
-                                            position="top center"
-                                            content="minimize"
-                                            inverted
-                                        />
-                                    </Card.Content>
-                                    <Card.Content>
-                                        <div className="authenticators-section">
-                                            <Accordion>
-                                                {
-                                                    filterAuthenticators(AuthenticatorTypes.FIRST_FACTOR).length > 0 && (
-                                                    <>
-                                                        <Accordion.Title
-                                                            active={ authenticatorsAccordionActiveIndexes.includes(0) }
-                                                            index={ 0 }
-                                                            onClick={ handleAuthenticatorsAccordionOnClick }
-                                                        >
-                                                            <div className="inline floated right" >
-                                                                <Icon name="angle right" className="caret-icon" />
-                                                            </div>
-                                                            Local
-                                                        </Accordion.Title>
-                                                        <Accordion.Content active={ authenticatorsAccordionActiveIndexes.includes(0) }>
-                                                            <Authenticators
-                                                                authenticators={
-                                                                    filterAuthenticators(AuthenticatorTypes.FIRST_FACTOR)
-                                                                }
-                                                                droppableId={ LOCAL_AUTHENTICATORS_DROPPABLE_ID }
-                                                                readOnly={ readOnly }
-                                                            />
-                                                        </Accordion.Content>
-                                                    </>
-                                                ) }
-
-                                                { filterAuthenticators(AuthenticatorTypes.SECOND_FACTOR).length > 0 && (
-                                                    <>
-                                                        <Accordion.Title
-                                                            active={ authenticatorsAccordionActiveIndexes.includes(1) }
-                                                            index={ 1 }
-                                                            onClick={ handleAuthenticatorsAccordionOnClick }
-                                                        >
-                                                            <div className="inline floated right" >
-                                                                <Icon name="angle right" className="caret-icon" />
-                                                            </div>
-                                                            Second factor
-                                                        </Accordion.Title>
-                                                        <Accordion.Content active={ authenticatorsAccordionActiveIndexes.includes(1) }>
-                                                            <Authenticators
-                                                                authenticators={
-                                                                    filterAuthenticators(AuthenticatorTypes.SECOND_FACTOR)
-                                                                }
-                                                                droppableId={ SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID }
-                                                                readOnly={ readOnly }
-                                                            />
-                                                        </Accordion.Content>
-                                                    </>
-                                                ) }
-
-                                                { filterAuthenticators(AuthenticatorTypes.SOCIAL).length > 0 && (
-                                                    <>
-                                                        <Accordion.Title
-                                                            active={ authenticatorsAccordionActiveIndexes.includes(2) }
-                                                            index={ 2 }
-                                                            onClick={ handleAuthenticatorsAccordionOnClick }
-                                                        >
-                                                            <div className="inline floated right" >
-                                                                <Icon name="angle right" className="caret-icon" />
-                                                            </div>
-                                                            Social logins
-                                                        </Accordion.Title>
-                                                        <Accordion.Content active={ authenticatorsAccordionActiveIndexes.includes(2) }>
-                                                            <Authenticators
-                                                                authenticators={
-                                                                    filterAuthenticators(AuthenticatorTypes.SOCIAL)
-                                                                }
-                                                                droppableId={ SOCIAL_AUTHENTICATORS_DROPPABLE_ID }
-                                                                readOnly={ readOnly }
-                                                            />
-                                                        </Accordion.Content>
-                                                    </>
-                                                ) }
-                                            </Accordion>
-                                        </div>
-                                    </Card.Content>
-                                </Card>
-                            </Draggable>
-                        </div>
-                    )
-                }
+                <AuthenticatorSidePanel
+                    heading="Authenticators"
+                    onSidePanelVisibilityToggle={ toggleAuthenticatorsSidePanelVisibility }
+                    readOnly={ readOnly }
+                    ref={ authenticatorsSidePanelRef }
+                    authenticatorGroup={ [
+                        {
+                            authenticators: filterAuthenticators(AuthenticatorTypes.FIRST_FACTOR),
+                            droppableId: LOCAL_AUTHENTICATORS_DROPPABLE_ID,
+                            heading: "Local"
+                        },
+                        {
+                            authenticators: filterAuthenticators(AuthenticatorTypes.SECOND_FACTOR),
+                            droppableId: SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID,
+                            heading: "Second factor"
+                        },
+                        {
+                            authenticators: filterAuthenticators(AuthenticatorTypes.SOCIAL),
+                            droppableId: SOCIAL_AUTHENTICATORS_DROPPABLE_ID,
+                            heading: "Social logins"
+                        }
+                    ] }
+                    visibility={ showAuthenticatorsSidePanel }
+                />
             </DragDropContext>
         </div>
     );
