@@ -401,18 +401,26 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                             </Grid.Row>
                                             <Grid.Row>
                                                 <Table singleLine compact>
+                                                <Table.Header>
+                                                    <Table.Row>
+                                                        <Table.HeaderCell />
+                                                        <Table.HeaderCell>Users</Table.HeaderCell>
+                                                    </Table.Row>
+                                                </Table.Header>
                                                     <Table.Body>
                                                         {
                                                             selectedUsers?.map((user) => {
                                                                 return (
                                                                     <Table.Row>
-                                                                        <Table.Cell>
+                                                                        <Table.Cell collapsing>
                                                                             <UserAvatar
                                                                                 name={ user.userName }
                                                                                 size="mini"
                                                                                 floated="left"
                                                                                 image={ user.profileUrl }
                                                                             />
+                                                                        </Table.Cell>
+                                                                        <Table.Cell>
                                                                             { user.userName }
                                                                         </Table.Cell>
                                                                     </Table.Row>
