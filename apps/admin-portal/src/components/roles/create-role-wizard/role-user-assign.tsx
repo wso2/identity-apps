@@ -29,7 +29,7 @@ import {
 } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Checkbox, Grid, Icon, Input, Modal, Segment, Table } from "semantic-ui-react";
+import { Grid, Icon, Input, Modal, Segment, Table } from "semantic-ui-react";
 import { getUsersList } from "../../../api";
 import { EmptyPlaceholderIllustrations } from "../../../configs";
 import { UserConstants } from "../../../constants";
@@ -108,19 +108,27 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     const getList = (limit: number, offset: number, filter: string, attribute: string) => {
         getUsersList(limit, offset, filter, attribute, null)
             .then((response) => {
-                setUsersList(response.Resources);
-                setInitialUserList(response.Resources);
+                const responseUsers = response.Resources;
+                responseUsers.sort((userObject, comparedUserObject) => 
+                    userObject.name.givenName.localeCompare(comparedUserObject.name.givenName)
+                );
+                setUsersList(responseUsers);
+                setInitialUserList(responseUsers);
 
                 if (assignedUsers && assignedUsers.length !== 0) {
                     const selectedUserList: UserBasicInterface[] = [];
-                    if (response.Resources && response.Resources instanceof Array ) {
-                        response.Resources.forEach(user => {
+                    if (responseUsers && responseUsers instanceof Array ) {
+                        responseUsers.slice().reverse().forEach(user => {
                             assignedUsers.forEach(assignedUser => {
                                 if (user.id === assignedUser.value) {
                                     selectedUserList.push(user);
+                                    responseUsers.splice(responseUsers.indexOf(user), 1);
                                 }
                             });
                         });
+                        selectedUserList.sort((userObject, comparedUserObject) => 
+                            userObject.name.givenName.localeCompare(comparedUserObject.name.givenName)
+                        );
                         setSelectedUsers(selectedUserList);
                         setInitialSelectedUsers(selectedUserList);
                         setTempUserList(selectedUserList);
@@ -137,6 +145,9 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                 }
                             });
                         });
+                        selectedUserList.sort((userObject, comparedUserObject) => 
+                            userObject.name.givenName.localeCompare(comparedUserObject.name.givenName)
+                        );
                         setSelectedUsers(selectedUserList);
                         setInitialSelectedUsers(selectedUserList);
                         setTempUserList(selectedUserList);
@@ -235,6 +246,9 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
             checkedUnassignedListItems.map((user) => {
                 if (!(tempUserList.includes(user))) {
                     addedRoles.push(user);
+                    setUsersList(usersList.filter((item) => {
+                        return item.id !== user.id;
+                    }));
                 }
             });
         }
@@ -246,11 +260,14 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         const removedUsers = [ ...tempUserList ];
         
         if (checkedAssignedListItems?.length > 0) {
-            checkedAssignedListItems.map((role) => {
-                removedUsers.splice(tempUserList.indexOf(role), 1);
-                setCheckedAssignedListItems(checkedAssignedListItems.splice(tempUserList.indexOf(role), 1));
+            checkedAssignedListItems.map((user) => {
+                removedUsers.splice(tempUserList.indexOf(user), 1);
+                setCheckedAssignedListItems(checkedAssignedListItems.splice(tempUserList.indexOf(user), 1));
                 setTempUserList(removedUsers);
+                usersList.push(user)
+                setUsersList(usersList);
             });
+            setCheckedAssignedListItems([]);
         }
     };
 
