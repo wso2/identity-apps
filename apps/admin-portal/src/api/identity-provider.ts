@@ -23,7 +23,8 @@ import { IdentityProviderManagementConstants } from "../constants";
 import {
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface,
-    HttpMethods, IdentityProviderClaimsInterface,
+    HttpMethods,
+    IdentityProviderClaimsInterface,
     IdentityProviderInterface,
     IdentityProviderListResponseInterface,
     IdentityProviderResponseInterface,
