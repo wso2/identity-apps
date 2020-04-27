@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
@@ -37,7 +38,7 @@ import { Divider, Grid, Label, SemanticICONS } from "semantic-ui-react";
 import { getApplicationDetails, getRawDocumentation } from "../api";
 import { EditApplication } from "../components";
 import { HelpSidebarIcons, TechnologyLogos } from "../configs";
-import { ApplicationConstants, HelpPanelConstants, UIConstants } from "../constants";
+import { ApplicationConstants, ApplicationManagementConstants, HelpPanelConstants, UIConstants } from "../constants";
 import { generateApplicationSamples, history } from "../helpers";
 import { HelpPanelLayout, PageLayout } from "../layouts";
 import {
@@ -103,6 +104,21 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
 
         getApplication(id);
     }, []);
+
+    /**
+     * Push to 404 if application edit feature is disabled.
+     */
+    useEffect(() => {
+        if (!featureConfig || !featureConfig.applications) {
+            return;
+        }
+
+        if(!isFeatureEnabled(featureConfig.applications,
+            ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT"))) {
+
+            history.push(ApplicationConstants.PATHS.get("404"));
+        }
+    }, [ featureConfig ]);
 
     /**
      * Set the template once application templates list is available in redux.
