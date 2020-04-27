@@ -356,6 +356,11 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                 </TransferComponent>
             </Modal.Content>
             <Modal.Actions>
+                <LinkButton
+                    onClick={ handleCloseAddNewGroupModal }
+                >
+                    Cancel
+                </LinkButton>
                 <PrimaryButton
                     onClick={ () => { 
                         handleAddUserSubmit()
@@ -363,11 +368,6 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                 >
                     Save
                 </PrimaryButton>
-                <LinkButton
-                    onClick={ handleCloseAddNewGroupModal }
-                >
-                    Cancel
-                </LinkButton>
             </Modal.Actions>
         </Modal>
     );
