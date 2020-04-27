@@ -352,7 +352,12 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 </Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
-                <Steps.Group header="Fill the following mandatory details of the new role." current={ currentStep }>
+                <Steps.Group 
+                    header={ isAddGroup ? "Fill the following mandatory details of the new group." : 
+                        "Fill the following mandatory details of the new role." 
+                    }
+                    current={ currentStep }
+                >
                     { WIZARD_STEPS.map((step, index) => (
                         <Steps.Step
                             key={ index }
