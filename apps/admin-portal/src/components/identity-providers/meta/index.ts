@@ -17,3 +17,4 @@
  */
 
 export * from "./templates";
+export * from "./connectors";
