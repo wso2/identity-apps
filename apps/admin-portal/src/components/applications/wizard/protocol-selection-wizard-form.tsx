@@ -221,13 +221,11 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
     const availableCustomInboundTemplates = filterCustomProtocol();
 
     return (
-        <Grid>
+        <>
             { !isApplicationTemplateRequestLoading && (
                 <TemplateGrid<ApplicationTemplateListItemInterface>
                     type="application"
-                    templates={
-                        availableTemplates
-                    }
+                    templates={ availableTemplates }
                     templateIcons={ ApplicationTemplateIllustrations }
                     heading="Select From Templates"
                     subHeading={ "Get the inbound protocol settings from the template" }
@@ -257,7 +255,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                     secondaryTemplates={ availableCustomInboundTemplates }
                     templateIcons={ InboundProtocolLogos }
                     heading="Select Manually"
-                    subHeading={ "Configure one of the following inbound protocol manually" }
+                    subHeading={ "Configure one of the following inbound protocol" }
                     onTemplateSelect={ handleTemplateSelection }
                     onSecondaryTemplateSelect={ handleTemplateCustomProtocolSelection }
                     useNameInitialAsImage={ true }
@@ -279,6 +277,6 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                     ) }
                 />
             ) }
-        </Grid>
+        </>
     );
 };
