@@ -16,10 +16,10 @@
 * under the License.
 */
 
-import { ResourceTab } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react"
 import { useDispatch } from "react-redux";
-import { getADialect } from "../api";
+import { Divider, Grid, Header, Segment } from "semantic-ui-react";
+import { getADialect, getAllExternalClaims } from "../api";
 import {
     EditDialectDetails,
     EditExternalClaims
@@ -27,7 +27,7 @@ import {
 import { CLAIM_DIALECTS_PATH } from "../constants";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts"
-import { AlertLevels, ClaimDialect } from "../models";
+import { AlertLevels, ClaimDialect, ExternalClaim } from "../models";
 import { addAlert } from "../store/actions";
 
 /**
@@ -40,6 +40,8 @@ export const ExternalDialectEditPage = (props): ReactElement => {
     const dialectId = props.match.params.id;
 
     const [ dialect, setDialect ] = useState<ClaimDialect>(null);
+    const [ claims, setClaims ] = useState<ExternalClaim[]>(null);
+    const [ isLoading, setIsLoading ] = useState(true);
 
     const dispatch = useDispatch();
 
@@ -65,24 +67,38 @@ export const ExternalDialectEditPage = (props): ReactElement => {
     }, [ dialectId ]);
 
     /**
-     * Contains the data of the panes
+     * Fetch external claims.
+     *
+     * @param {number} limit.
+     * @param {number} offset.
+     * @param {string} sort.
+     * @param {string} filter.
      */
-    const panes = [
-        {
-            menuItem: "Dialect Details",
-            render: () => (
-                <EditDialectDetails
-                    dialect={ dialect }
-                />
-            )
-        },
-        {
-            menuItem: "External Claims",
-            render: () => (
-                <EditExternalClaims dialectID={ dialect.id }/>
-            )
-        }
-    ];
+    const getExternalClaims = (limit?: number, offset?: number, sort?: string, filter?: string) => {
+        dialectId && setIsLoading(true);
+        dialectId && getAllExternalClaims(dialectId, {
+            filter,
+            limit,
+            offset,
+            sort
+        }).then(response => {
+            setClaims(response);
+        }).catch(error => {
+            dispatch(addAlert(
+                {
+                    description: error?.description || "There was an error while fetching the external claims",
+                    level: AlertLevels.ERROR,
+                    message: error?.message || "Something went wrong"
+                }
+            ));
+        }).finally(() => {
+            setIsLoading(false);
+        });
+    }
+
+    useEffect(() => {
+        getExternalClaims();
+    }, [ dialectId ]);
 
     return (
         <PageLayout
@@ -97,7 +113,36 @@ export const ExternalDialectEditPage = (props): ReactElement => {
             titleTextAlign="left"
             bottomMargin={ false }
         >
-            <ResourceTab panes={ panes } />
+            <Divider />
+
+            <Grid>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 8 }>
+                        <Header as="h5">Update Dialect URI</Header>
+                        <EditDialectDetails
+                            dialect={ dialect }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+            <Divider hidden />
+            <Divider />
+            <Grid columns={ 1 }>
+                <Grid.Column width={ 16 }>
+                    <Header as="h5">Update External Claims</Header>
+                </Grid.Column>
+            </Grid>
+
+            <Divider hidden />
+
+            <Segment>
+                <EditExternalClaims
+                    dialectID={ dialectId }
+                    isLoading={ isLoading }
+                    claims={ claims }
+                    update={ getExternalClaims }
+                />
+            </Segment>
         </PageLayout>
     )
 }
