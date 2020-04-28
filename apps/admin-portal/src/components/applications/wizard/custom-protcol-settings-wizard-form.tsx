@@ -137,10 +137,6 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
         });
 
     const generateFormElements = (() => {
-        // return metadata?.properties.map((config) => {
-        //     return createInputComponent(config);
-        // })
-        // const configs: CustomInboundProtocolPropertyInterface[] = metaDataHard?.properties;
         if (metadata) {
             const configs: CustomInboundProtocolPropertyInterface[] = metadata?.properties;
             if (configs.length > 0) {
@@ -157,7 +153,6 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
 
             })
         }
-
     });
 
     /**
@@ -222,7 +217,6 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
             <Forms
                 onSubmit={ (values) => {
                     onSubmit(updateConfiguration(values));
-                    // console.log(updateConfiguration(values))
                 } }
                 submitState={ triggerSubmit }
             >

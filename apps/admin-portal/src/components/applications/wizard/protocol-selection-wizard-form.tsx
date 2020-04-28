@@ -16,18 +16,20 @@
  * under the License.
  */
 
-import { Heading, Hint, SelectionCard, UserAvatar } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { TemplateGrid } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
-import { ApplicationTemplateIllustrations, InboundProtocolLogos } from "../../../configs";
-import { ApplicationTemplateListItemInterface, AuthProtocolMetaListItemInterface } from "../../../models";
+import {
+    ApplicationTemplateIllustrations,
+    EmptyPlaceholderIllustrations,
+    InboundProtocolLogos
+} from "../../../configs";
+import { ApplicationTemplateListItemInterface } from "../../../models";
 import { useSelector } from "react-redux";
-import { AppState, store } from "../../../store";
+import { AppState } from "../../../store";
 import { ApplicationManagementUtils } from "../../../utils";
 import { EmptyPlaceholder } from "../../shared";
-import _ from "lodash";
 import { InboundProtocolsMeta } from "../meta";
-import { checkAvailableCustomInboundAuthProtocolMeta } from "../../../store/actions/application";
 
 /**
  * Proptypes for the protocol selection wizard form component.
@@ -129,23 +131,40 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
     }, [initialSelectedTemplate]);
 
     /**
-     * Handles inbound protocol selection.
+     * Handles template selection.
      *
-     * @param {AuthProtocolMetaListItemInterface} protocol - Selected protocol.
+     * @param {React.SyntheticEvent} e - Click event.
+     * @param {string} id - Id of the template.
      */
-    const handleCustomInboundProtocolSelection = (template: ApplicationTemplateListItemInterface): void => {
-        console.log(true);
-        setSelectedCustomInboundProtocol(true);
-        setSelectedTemplate(template);
+    const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
+
+        let selected = defaultTemplates?.find((template) => template.id === id);
+
+        if (!selected) {
+            selected = applicationTemplates?.find((template) => template.id === id);
+        }
+
+        if (!selected) {
+            return;
+        }
+        setSelectedTemplate(selected);
     };
 
     /**
-     * Handles inbound protocol selection.
+     * Handles template selection for custom protocols.
      *
-     * @param {AuthProtocolMetaListItemInterface} protocol - Selected protocol.
+     * @param {React.SyntheticEvent} e - Click event.
+     * @param {string} id - Id of the template.
      */
-    const handleInboundProtocolSelection = (template: ApplicationTemplateListItemInterface): void => {
-        setSelectedTemplate(template);
+    const handleTemplateCustomProtocolSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
+
+        const selected = availableCustomInboundTemplates?.find((template) => template.id === id);
+
+        if (!selected) {
+            return;
+        }
+        setSelectedCustomInboundProtocol(true);
+        setSelectedTemplate(selected);
     };
 
     /**
@@ -171,7 +190,6 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
      */
     const filterCustomProtocol = (): ApplicationTemplateListItemInterface[] => {
         const customTemplates: ApplicationTemplateListItemInterface[] = [];
-        console.log(selectedProtocols);
         if (availableCustomInboundProtocols.length > 0) {
             availableCustomInboundProtocols.map((protocol) => {
                 const customTemplate: ApplicationTemplateListItemInterface = {
@@ -182,9 +200,8 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                 };
                 customTemplates.push(customTemplate);
             });
-            // return customTemplates.filter(
-            //     (temp) => !selectedProtocols.includes(temp.authenticationProtocol))
-            return customTemplates;
+            return customTemplates.filter(
+                (temp) => !selectedProtocols.includes(temp.authenticationProtocol))
         }
     };
 
@@ -199,86 +216,69 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
     const availableTemplates = filterProtocol(applicationTemplates);
 
     /**
-     * Available custom protcol templates after filtering.
+     * Available custom protocol templates after filtering.
      */
     const availableCustomInboundTemplates = filterCustomProtocol();
 
     return (
         <Grid>
-
-            {
-                ((availableDefaultTemplates.length > 0) || availableCustomInboundTemplates.length > 0)
-                && !isInboundProtocolsRequestLoading &&
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <Heading as="h4">Inbound protocol</Heading>
-                        <Hint icon={ null }>Select one of the following inbound protocol</Hint>
-                        { (availableDefaultTemplates.length > 0) &&
-                        availableDefaultTemplates.map((temp, index) => (
-                            <SelectionCard
-                                inline
-                                id={ temp.id }
-                                key={ index }
-                                header={ temp.name }
-                                image={
-                                    ApplicationManagementUtils.findIcon(temp.image, InboundProtocolLogos)
-                                }
-                                onClick={ (): void => handleInboundProtocolSelection(temp) }
-                                selected={ selectedTemplate?.id === temp.id }
-                            />))
-                        }
-                        {
-                            availableCustomInboundTemplates && (availableCustomInboundTemplates.length > 0) &&
-                            availableCustomInboundTemplates.map((temp, index) =>
-                                (
-                                    <SelectionCard
-                                        inline
-                                        id={ temp.id }
-                                        key={ index }
-                                        header={ temp.name }
-                                        image={ <UserAvatar name={ temp.name } size="tiny"/> }
-                                        onClick={ (): void => handleCustomInboundProtocolSelection(temp) }
-                                        selected={ selectedTemplate?.id === temp.id }
-                                    />
-                                ))
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-            }
-            {
-                !isApplicationTemplateRequestLoading && availableTemplates.length > 0
-                && !isInboundProtocolsRequestLoading &&
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <Heading as="h4">Templates</Heading>
-                        <Hint icon={ null }>Get the inbound protocol settings from the template</Hint>
-                        { availableTemplates.map((temp, index) => (
-                            <SelectionCard
-                                inline
-                                id={ temp.id }
-                                key={ index }
-                                header={ temp.name }
-                                image={
-                                    ApplicationManagementUtils.findIcon(temp.image, ApplicationTemplateIllustrations)
-                                }
-                                onClick={ (): void => handleInboundProtocolSelection(temp) }
-                                selected={ selectedTemplate?.id === temp.id }
-                            />))
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-            }
-            {
-                availableDefaultTemplates.length === 0 && availableTemplates.length === 0 &&
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+            { !isApplicationTemplateRequestLoading && (
+                <TemplateGrid<ApplicationTemplateListItemInterface>
+                    type="application"
+                    templates={
+                        availableTemplates
+                    }
+                    templateIcons={ ApplicationTemplateIllustrations }
+                    heading="Select From Templates"
+                    subHeading={ "Get the inbound protocol settings from the template" }
+                    onTemplateSelect={ handleTemplateSelection }
+                    paginate={ true }
+                    paginationLimit={ 4 }
+                    paginationOptions={ {
+                        showLessButtonLabel: "Show Less",
+                        showMoreButtonLabel: "Show More"
+                    } }
+                    selectedTemplate={ selectedTemplate }
+                    useSelectionCard={ true }
+                    emptyPlaceholder={ (
                         <EmptyPlaceholder
+                            image={ EmptyPlaceholderIllustrations.newList }
+                            imageSize="tiny"
                             title="No templates available"
                             subtitle="All the protocols have been configured"
                         />
-                    </Grid.Column>
-                </Grid.Row>
-            }
+                    ) }
+                />
+            ) }
+            { !isInboundProtocolsRequestLoading && (
+                <TemplateGrid<ApplicationTemplateListItemInterface>
+                    type="application"
+                    templates={ availableDefaultTemplates }
+                    secondaryTemplates={ availableCustomInboundTemplates }
+                    templateIcons={ InboundProtocolLogos }
+                    heading="Select Manually"
+                    subHeading={ "Configure one of the following inbound protocol manually" }
+                    onTemplateSelect={ handleTemplateSelection }
+                    onSecondaryTemplateSelect={ handleTemplateCustomProtocolSelection }
+                    useNameInitialAsImage={ true }
+                    paginate={ true }
+                    paginationLimit={ 4 }
+                    paginationOptions={ {
+                        showLessButtonLabel: "Show Less",
+                        showMoreButtonLabel: "Show More"
+                    } }
+                    selectedTemplate={ selectedTemplate }
+                    useSelectionCard={ true }
+                    emptyPlaceholder={ (
+                        <EmptyPlaceholder
+                            image={ EmptyPlaceholderIllustrations.newList }
+                            imageSize="tiny"
+                            title="No protocols available"
+                            subtitle="All the protocols have been configured"
+                        />
+                    ) }
+                />
+            ) }
         </Grid>
     );
 };

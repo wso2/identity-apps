@@ -29,7 +29,6 @@ import {
 } from "../../../models";
 
 
-
 /**
  * Proptypes for the inbound custom protocol form component.
  */
@@ -134,10 +133,6 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
         });
 
     const generateFormElements = (() => {
-        // return metadata?.properties.map((config) => {
-        //     return createInputComponent(config);
-        // })
-        // const configs: CustomInboundProtocolPropertyInterface[] = metaDataHard?.properties;
         if (metadata) {
             const configs: CustomInboundProtocolPropertyInterface[] = metadata?.properties;
             if (configs.length > 0) {
@@ -200,7 +195,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
     };
 
     useEffect(() => {
-        console.log(metadata);
+        // console.log(metadata);
         if (metadata) {
             generateFormElements();
         }
@@ -209,8 +204,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
     return (
         <Forms
             onSubmit={ (values) => {
-                // onSubmit(updateConfiguration(values));
-                console.log(updateConfiguration(values))
+                onSubmit(updateConfiguration(values));
             } }
         >
             <Grid>

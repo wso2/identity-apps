@@ -43,6 +43,10 @@ export class ApplicationManagementConstants {
         "status code while fetching adaptive authentication templates.";
     public static readonly ADAPTIVE_AUTH_TEMPLATES_FETCH_ERROR: string = "An error occurred while fetching the " +
         "required adaptive authentication template.";
+    public static readonly APP_PROTOCOL_DELETE_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while deleting the protocol config.";
+    public static readonly APP_PROTOCOL_DELETE_ERROR: string = "An error occurred while deleting the" +
+        "protocol config.";
 
     public static readonly DEFAULT_ADAPTIVE_AUTH_SCRIPT: string[] = [
         "var onLoginRequest = function(context) {",
