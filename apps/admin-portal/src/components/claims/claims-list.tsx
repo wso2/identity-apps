@@ -119,7 +119,6 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
 
     useEffect(() => {
         if (isLocalClaim(list)) {
-            console.log(list);
             getUserStores(null).then(response => {
                 setUserStores(response);
             }).catch(error => {

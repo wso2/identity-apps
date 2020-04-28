@@ -242,7 +242,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                     >
                         <Modal.Header>
                             Add External Claim
-                                </Modal.Header>
+                        </Modal.Header>
                         <Modal.Content>
                             <AddExternalClaims
                                 dialectId={ dialectID }
