@@ -88,7 +88,7 @@ export const AddTemplateLocale: FunctionComponent = (): ReactElement => {
         <PageLayout
             title={ templateId === "" ? 
                 "Add new template for " + emailTemplateTypeDetails?.displayName : 
-                "Edit " + localeName + " template" }
+                "Edit template - " + localeName }
             backButton={ {
                 onClick: handleBackButtonClick,
                 text: "Go back to " + emailTemplateName + " template"

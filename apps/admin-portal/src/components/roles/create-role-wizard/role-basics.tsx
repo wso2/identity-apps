@@ -16,11 +16,12 @@
  * under the License.
  */
 
-import { Field, Forms } from "@wso2is/forms";
-import React, { FunctionComponent, ReactElement } from "react";
+import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
+import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../../constants";
-import { CreateRoleFormData } from "../../../models";
+import { CreateRoleFormData, SearchRoleInterface } from "../../../models";
+import { searchRoleList } from "../../../api";
 
 /**
  * Interface to capture role basics props.
@@ -47,6 +48,17 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         isAddGroup
     } = props;
 
+    const [ isValidRoleName, setIsValidRoleName ] = useState<boolean>(true);
+    const [ updatedRoleName, setUpdatedRoleName ] = useState<string>(initialValues?.roleName);
+
+    /**
+     * Triggers when updatedRoleName is changed.
+     */
+    useEffect(() => {
+        setIsValidRoleName(false);
+        validateRoleName(updatedRoleName);
+    }, [ updatedRoleName ]);
+
     /**
      * Contains domains needed for role creation.
      * 
@@ -65,6 +77,35 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     },{
         key: 0, text: INTERNAL_DOMAIN, value: INTERNAL_DOMAIN
     }];
+
+    /**
+     * Util method to validate if the provided role name exists in the system.
+     * 
+     * @param roleName - new role name user entered.
+     */
+    const validateRoleName = (roleName: string): void => {
+        const searchData: SearchRoleInterface = {
+            filter: "displayName eq " + roleName,
+            schemas: [
+                "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
+            ],
+            startIndex: 1
+        }
+
+        searchRoleList(searchData)
+            .then((response) => {
+                setIsValidRoleName(response?.data?.totalResults === 0);
+            });
+    };
+
+    /**
+     * The following function handles the change of the username.
+     *
+     * @param values - form values from the listen event.
+     */
+    const roleNameChangeListener = (values: Map<string, FormValue>): void => {
+        setUpdatedRoleName(values?.get("rolename")?.toString());
+    };
 
     /**
      * Util method to collect form data for processing.
@@ -90,7 +131,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                     <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             type="dropdown"
-                            label="Role Type"
+                            label={ isAddGroup ? "Group Type" : "Role Type" }
                             name="domain"
                             children={ isAddGroup ? groupDomains : roleDomains }
                             placeholder="Domain"
@@ -108,11 +149,26 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                         <Field
                             type="text"
                             name="rolename"
-                            label="Role Name"
-                            placeholder="Enter Role Name"
+                            label={ isAddGroup ? "Group Name" : "Role Name" }
+                            placeholder={ isAddGroup ? "Enter Group Name" : "Enter Role Name" }
                             required={ true }
-                            requiredErrorMessage="Role Name is required to proceed."
+                            requiredErrorMessage={ 
+                                isAddGroup ? 
+                                    "Group Name is required to proceed." : 
+                                    "Role Name is required to proceed." 
+                            }
+                            validation={ (value: string, validation: Validation) => {
+                                if (isValidRoleName === false) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(
+                                        isAddGroup ? 
+                                            "A group already exists with the given group name." : 
+                                            "A role already exists with the given role name."
+                                    );
+                                }
+                            } }
                             value={ initialValues && initialValues.roleName }
+                            listen={ roleNameChangeListener }
                         />
                     </GridColumn>
                 </GridRow>
