@@ -19,14 +19,21 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader, EmptyPlaceholder, GenericIconProps, PrimaryButton, UserAvatar } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    ContentLoader,
+    EmptyPlaceholder,
+    GenericIconProps,
+    PrimaryButton,
+    UserAvatar
+} from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
 import { InboundFormFactory } from "./forms";
 import { ApplicationCreateWizard } from "./wizard";
-import { getAuthProtocolMetadata, regenerateClientSecret, updateAuthProtocolConfig } from "../../api";
+import { deleteProtocol, getAuthProtocolMetadata, regenerateClientSecret, updateAuthProtocolConfig } from "../../api";
 import { EmptyPlaceholderIllustrations, InboundProtocolLogos } from "../../configs";
 import {
     AuthProtocolMetaListItemInterface,
@@ -57,7 +64,7 @@ interface ApplicationSettingsPropsInterface extends SBACInterface<FeatureConfigI
     /**
      *  Currently configured inbound protocols.
      */
-    inboundProtocols: AuthProtocolMetaListItemInterface[];
+    inboundProtocols: string[];
     /**
      * Is the application info request loading.
      */
@@ -96,6 +103,43 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
 
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
     const [showWizard, setShowWizard] = useState<boolean>(false);
+    const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState<boolean>(false);
+    const [protocolToDelete, setProtocolToDelete] = useState<string>(undefined);
+
+    /**
+     * Handles the inbound config delete action.
+     *
+     * @param {SupportedAuthProtocolTypes} protocol - The protocol to be deleted.
+     */
+    const handleInboundConfigDelete = (protocol: string): void => {
+        deleteProtocol(appId, protocol)
+            .then(() => {
+                dispatch(addAlert({
+                    description: `Successfully deleted the ${ protocol } protocol configurations.`,
+                    level: AlertLevels.SUCCESS,
+                    message: "Delete successful"
+                }));
+
+                onUpdate(appId);
+            })
+            .catch((error) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.description,
+                        level: AlertLevels.ERROR,
+                        message: "Delete error"
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: "An error occurred while deleting inbound protocol configurations.",
+                    level: AlertLevels.ERROR,
+                    message: "Delete error"
+                }));
+            });
+    };
 
     /**
      * Handles the inbound config form submit action.
@@ -115,7 +159,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                 onUpdate(appId);
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
+                if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
@@ -166,28 +210,25 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
     };
 
     /**
-     * Filter the available protocol names.
+     * Handles Authenticator delete button on click action.
+     *
+     * @param {React.MouseEvent<HTMLDivElement>} e - Click event.
+     * @param {string} id - Id of the authenticator.
      */
-    const getSelectedProtocols = (): string[] => {
-        const protocols: string[] = [];
-        inboundProtocols.map((selectedProtocol) => {
-            protocols.push(selectedProtocol.name)
-        });
-        return protocols;
-    };
+    const handleProtocolDeleteOnClick = (e: MouseEvent<HTMLDivElement>, name: string): void => {
+        if (!name) {
+            return;
+        }
 
-    /**
-     * Check if the protocol is selected or not.
-     * @param protocolName Protocol name to be checked.
-     */
-    const checkSelectedProtocol = (protocolName: string): boolean => {
-        let selected = false;
-        inboundProtocols.map((selectedProtocol) => {
-            if (selectedProtocol.id === protocolName) {
-                selected = true
-            }
-        });
-        return selected;
+        const deletingProtocol = inboundProtocols
+            .find((protocol) => protocol === name);
+
+        if (!deletingProtocol) {
+            return;
+        }
+
+        setProtocolToDelete(deletingProtocol);
+        setShowDeleteConfirmationModal(true);
     };
 
     /**
@@ -196,14 +237,15 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
      * @return {React.ReactElement}
      */
     const resolveInboundProtocolSettingsForm = (): ReactElement => {
-        // console.log(allSelectedInboundProtocol);
-        // // console.log(selectedInboundProtocolConfig);
-        // console.log("................");
-        // // console.log(Object.keys(selectedInboundProtocolConfig));
-        // console.log(authProtocolMeta);
         return (
             <AuthenticatorAccordion
-                globalActions={ [] }
+                globalActions={ [
+                    {
+                        icon: "trash alternate",
+                        onClick: handleProtocolDeleteOnClick,
+                        type: "icon"
+                    }
+                ] }
                 authenticators={
                     Object.keys(inboundProtocolConfig).map((protocol) => {
                         if (Object.values(SupportedAuthProtocolTypes).includes(protocol as SupportedAuthProtocolTypes)) {
@@ -232,8 +274,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                     />
                                 ),
                                 id: protocol,
-                                title: _.toUpper(protocol),
-
+                                title: _.upperCase(protocol),
                             }
                         } else {
                             return {
@@ -269,105 +310,13 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                     />
                                 ),
                                 id: protocol,
-                                title: _.toUpper(protocol),
+                                title: _.upperCase(protocol),
                             }
                         }
                     })
                 }
             />
         )
-
-        // return (
-        //     <AuthenticatorAccordion
-        //         globalActions={ [] }
-        //         authenticators={ [
-        //             {
-        //                 actions: [],
-        //                 hidden: !checkSelectedProtocol(SupportedAuthProtocolTypes.OIDC),
-        //                 icon: { icon: InboundProtocolLogos.oidc, size: "micro" } as GenericIconProps,
-        //                 content: (
-        //                     <InboundFormFactory
-        //                         metadata={ authProtocolMeta[SupportedAuthProtocolTypes.OIDC] }
-        //                         initialValues={
-        //                             selectedInboundProtocolConfig
-        //                             && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
-        //                                 SupportedAuthProtocolTypes.OIDC)
-        //                                 ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.OIDC]
-        //                                 : undefined
-        //                         }
-        //                         onSubmit={ handleInboundConfigFormSubmit }
-        //                         type={ SupportedAuthProtocolTypes.OIDC }
-        //                         handleApplicationRegenerate={ handleApplicationRegenerate }
-        //                     />
-        //                 ),
-        //                 id: SupportedAuthProtocolTypes.OIDC,
-        //                 title: "OIDC",
-        //             },
-        //             {
-        //                 actions: [],
-        //                 icon: { icon: InboundProtocolLogos.saml, size: "micro" } as GenericIconProps,
-        //                 hidden: !(checkSelectedProtocol(SupportedAuthProtocolTypes.SAML)),
-        //                 content: (
-        //                     <InboundFormFactory
-        //                         metadata={ authProtocolMeta[SupportedAuthProtocolTypes.SAML] }
-        //                         initialValues={
-        //                             selectedInboundProtocolConfig
-        //                             && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
-        //                                 SupportedAuthProtocolTypes.SAML)
-        //                                 ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.SAML]
-        //                                 : undefined
-        //                         }
-        //                         onSubmit={ handleInboundConfigFormSubmit }
-        //                         type={ SupportedAuthProtocolTypes.SAML }
-        //                     />
-        //                 ),
-        //                 id: SupportedAuthProtocolTypes.SAML,
-        //                 title: "SAML"
-        //             },
-        //             {
-        //                 actions: [],
-        //                 icon: { icon: InboundProtocolLogos.wsFed, size: "micro" } as GenericIconProps,
-        //                 hidden: !(checkSelectedProtocol(SupportedAuthProtocolTypes.WS_FEDERATION)),
-        //                 content: (
-        //                     <InboundFormFactory
-        //                         initialValues={
-        //                             selectedInboundProtocolConfig
-        //                             && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
-        //                                 SupportedAuthProtocolTypes.WS_FEDERATION)
-        //                                 ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.WS_FEDERATION]
-        //                                 : undefined
-        //                         }
-        //                         onSubmit={ handleInboundConfigFormSubmit }
-        //                         type={ SupportedAuthProtocolTypes.WS_FEDERATION }
-        //                     />
-        //                 ),
-        //                 id: SupportedAuthProtocolTypes.WS_FEDERATION,
-        //                 title: "Passive STS",
-        //             },
-        //             {
-        //                 actions: [],
-        //                 icon: { icon: InboundProtocolLogos.wsTrust, size: "micro" } as GenericIconProps,
-        //                 hidden: !(checkSelectedProtocol(SupportedAuthProtocolTypes.WS_TRUST)),
-        //                 content: (
-        //                     <InboundFormFactory
-        //                         metadata={ authProtocolMeta[SupportedAuthProtocolTypes.WS_TRUST] }
-        //                         initialValues={
-        //                             selectedInboundProtocolConfig
-        //                             && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
-        //                                 SupportedAuthProtocolTypes.WS_TRUST)
-        //                                 ? selectedInboundProtocolConfig[SupportedAuthProtocolTypes.WS_TRUST]
-        //                                 : undefined
-        //                         }
-        //                         onSubmit={ handleInboundConfigFormSubmit }
-        //                         type={ SupportedAuthProtocolTypes.WS_TRUST }
-        //                     />
-        //                 ),
-        //                 id: SupportedAuthProtocolTypes.WS_TRUST,
-        //                 title: "WS Trust",
-        //             }
-        //         ] }
-        //     />
-        // )
     };
 
     /**
@@ -379,19 +328,18 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
         }
 
         inboundProtocols.map((selected) => {
-            const selectedProtocol = selected.name as SupportedAuthProtocolMetaTypes;
 
-            // if (!Object.values(SupportedAuthProtocolMetaTypes).includes(
-            //     selected.name as SupportedAuthProtocolMetaTypes)) {
-            //     return;
-            // }
+            if (selected === SupportedAuthProtocolTypes.WS_FEDERATION) {
+                return
+            }
 
-                // Check if the metadata for the selected auth protocol is available in redux store.
+            const selectedProtocol = selected as SupportedAuthProtocolMetaTypes;
+
+            // Check if the metadata for the selected auth protocol is available in redux store.
             // If not, fetch the metadata related to the selected auth protocol.
             if (!Object.prototype.hasOwnProperty.call(authProtocolMeta, selectedProtocol)) {
                 getAuthProtocolMetadata(selectedProtocol)
                     .then((response) => {
-                        console.log(response);
                         dispatch(setAuthProtocolMeta(selectedProtocol, response));
                     })
                     .catch((error) => {
@@ -413,10 +361,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                     });
             }
         })
-
     }, [inboundProtocols]);
-
-    const alreadySelectedProtocols: string[] = getSelectedProtocols();
 
     return (
         !isLoading
@@ -425,7 +370,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             {
-                                alreadySelectedProtocols.length > 0
+                                inboundProtocols.length > 0
                                     ? hasRequiredScopes(
                                         featureConfig?.applications,
                                         featureConfig?.applications?.scopes?.update) && (
@@ -470,14 +415,46 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                     {
                         showWizard && (
                             <ApplicationCreateWizard
-                                title={ "Add New Protocol" }
-                                subTitle={ "Add new protocol to " + appName + " application " }
+                                title={ "Add Protocol" }
+                                subTitle={ `Add new protocol to ${ appName } application` }
                                 closeWizard={ (): void => setShowWizard(false) }
                                 addProtocol={ true }
-                                selectedProtocols={ alreadySelectedProtocols }
+                                selectedProtocols={ inboundProtocols }
                                 onUpdate={ onUpdate }
                                 appId={ appId }
                             />
+                        )
+                    }
+                    {
+                        showDeleteConfirmationModal && (
+                            <ConfirmationModal
+                                onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                                type="warning"
+                                open={ showDeleteConfirmationModal }
+                                assertion={ protocolToDelete }
+                                assertionHint={ (
+                                    <p>Please type <strong>{ protocolToDelete }</strong> to confirm.</p>
+                                ) }
+                                assertionType="input"
+                                primaryAction="Confirm"
+                                secondaryAction="Cancel"
+                                onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                                onPrimaryActionClick={
+                                    (): void => {
+                                        handleInboundConfigDelete(protocolToDelete);
+                                        setShowDeleteConfirmationModal(false);
+                                    }
+                                }
+                            >
+                                <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+                                <ConfirmationModal.Message attached warning>
+                                    This action is irreversible and will permanently delete the protocol.
+                                </ConfirmationModal.Message>
+                                <ConfirmationModal.Content>
+                                    If you delete this protocol, you will not be able to get it back. All the
+                                    applications depending on this also might stop working. Please proceed with caution.
+                                </ConfirmationModal.Content>
+                            </ConfirmationModal>
                         )
                     }
                 </Grid>

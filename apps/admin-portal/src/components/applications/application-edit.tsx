@@ -93,8 +93,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
 
     const [isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading] = useState<boolean>(true);
-    const [inboundProtocolList, setInboundProtocolList] =
-        useState<AuthProtocolMetaListItemInterface[]>([]);
+    const [inboundProtocolList, setInboundProtocolList] = useState<string[]>([]);
     const [inboundProtocolConfig, setInboundProtocolConfig] = useState<any>(undefined);
     const [isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading] = useState<boolean>(false);
 
@@ -123,7 +122,23 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         findConfiguredInboundProtocol(application.id);
-    }, [ application?.inboundProtocols ]);
+    }, [application?.inboundProtocols]);
+
+    const mapProtocolTypeToName = ((type: string): string => {
+        let protocolName = type;
+
+        if (protocolName === "oauth2") {
+            protocolName = SupportedAuthProtocolTypes.OIDC;
+        } else if (protocolName === "passivests") {
+            protocolName = SupportedAuthProtocolTypes.WS_FEDERATION;
+        } else if (protocolName === "wstrust") {
+            protocolName = SupportedAuthProtocolTypes.WS_TRUST;
+        } else if (protocolName === "samlsso") {
+            protocolName = SupportedAuthProtocolTypes.SAML;
+        }
+
+        return protocolName;
+    });
 
     /**
      * Finds the configured inbound protocol.
@@ -131,50 +146,50 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const findConfiguredInboundProtocol = (appId): void => {
 
         let protocolConfigs: any = {};
-        const protocolList: AuthProtocolMetaListItemInterface[] = [];
+        const selectedProtocolList: string[] = [];
 
-        for (const protocol of availableInboundProtocols) {
-            if (Object.values(SupportedAuthProtocolTypes).includes(protocol.id as SupportedAuthProtocolTypes)) {
+        application.inboundProtocols.map((protocol) => {
 
-                setIsInboundProtocolConfigRequestLoading(true);
+            const protocolName = mapProtocolTypeToName(protocol.type);
 
-                getInboundProtocolConfig(appId, protocol.id)
-                    .then((response) => {
-                        protocolConfigs = {
-                            ...protocolConfigs,
-                            [protocol.id]: response
-                        };
+            setIsInboundProtocolConfigRequestLoading(true);
 
-                        protocolList.push(protocol);
-                    })
-                    .catch((error) => {
-                        if (error?.response?.status === 404) {
-                            return;
-                        }
+            getInboundProtocolConfig(appId, protocolName)
+                .then((response) => {
+                    protocolConfigs = {
+                        ...protocolConfigs,
+                        [protocolName]: response
+                    };
 
-                        if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                            dispatch(addAlert({
-                                description: error.response?.data?.description,
-                                level: AlertLevels.ERROR,
-                                message: "Retrieval error"
-                            }));
+                    selectedProtocolList.push(protocolName);
+                })
+                .catch((error) => {
+                    if (error?.response?.status === 404) {
+                        return;
+                    }
 
-                            return;
-                        }
-
+                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
                         dispatch(addAlert({
-                            description: "An error occurred retrieving the protocol configurations.",
+                            description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
                             message: "Retrieval error"
                         }));
-                    })
-                    .finally(() => {
-                        setInboundProtocolList(protocolList);
-                        setInboundProtocolConfig(protocolConfigs);
-                        setIsInboundProtocolConfigRequestLoading(false);
-                    });
-            }
-        }
+
+                        return;
+                    }
+
+                    dispatch(addAlert({
+                        description: "An error occurred retrieving the protocol configurations.",
+                        level: AlertLevels.ERROR,
+                        message: "Retrieval error"
+                    }));
+                })
+                .finally(() => {
+                    setInboundProtocolList(selectedProtocolList);
+                    setInboundProtocolConfig(protocolConfigs);
+                    setIsInboundProtocolConfigRequestLoading(false);
+                });
+        });
     };
 
     const GeneralApplicationSettingsTabPane = (): ReactElement => (
@@ -192,7 +207,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 featureConfig={ featureConfig }
                 // TODO we need check whether application is active or not as well.
                 showRevoke={
-                    inboundProtocolList.some((protocol) => protocol.id === SupportedAuthProtocolTypes.OIDC)
+                    inboundProtocolList.some((protocol) => protocol === SupportedAuthProtocolTypes.OIDC)
                 }
                 template={ template }
             />
@@ -220,8 +235,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 claimConfigurations={ application.claimConfiguration }
                 featureConfig={ featureConfig }
-                isOIDCConfigured={
-                    inboundProtocolList.some((protocol) => protocol.id === SupportedAuthProtocolTypes.OIDC)
+                onlyOIDCConfigured={
+                    inboundProtocolList.length === 1 && (inboundProtocolList[0] === SupportedAuthProtocolTypes.OIDC)
                 }
             />
         </ResourceTab.Pane>
