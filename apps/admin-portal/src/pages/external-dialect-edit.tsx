@@ -66,7 +66,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
                 This action is irreversible and will permanently delete the selected external dialect.
                         </ConfirmationModal.Message>
             <ConfirmationModal.Content>
-                If you delete this external dialect, all teh associated external claims will also be deleted.
+                If you delete this external dialect, all the associated external claims will also be deleted.
                 Please proceed with caution.
             </ConfirmationModal.Content>
         </ConfirmationModal>
