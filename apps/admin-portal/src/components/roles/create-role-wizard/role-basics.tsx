@@ -108,10 +108,14 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                         <Field
                             type="text"
                             name="rolename"
-                            label="Role Name"
-                            placeholder="Enter Role Name"
+                            label={ isAddGroup ? "Group Name" : "Role Name" }
+                            placeholder={ isAddGroup ? "Enter Group Name" : "Enter Role Name" }
                             required={ true }
-                            requiredErrorMessage="Role Name is required to proceed."
+                            requiredErrorMessage={ 
+                                isAddGroup ? 
+                                    "Group Name is required to proceed." : 
+                                    "Role Name is required to proceed." 
+                            }
                             value={ initialValues && initialValues.roleName }
                         />
                     </GridColumn>
