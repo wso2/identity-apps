@@ -122,7 +122,7 @@ export const devPortal: DevPortalNS = {
             templates: {
                 manualSetup: {
                     heading: "Manual Setup",
-                    subHeading: "Create an applications with custom configurations."
+                    subHeading: "Create an application with custom configurations."
                 },
                 quickSetup: {
                     heading: "Quick Setup",
@@ -229,11 +229,11 @@ export const devPortal: DevPortalNS = {
             templates: {
                 manualSetup: {
                     heading: "Manual Setup",
-                    subHeading: "Create an applications with custom configurations."
+                    subHeading: "Create an identity provider with custom configurations."
                 },
                 quickSetup: {
                     heading: "Quick Setup",
-                    subHeading: "Predefined set of application templates to speed up your application creation."
+                    subHeading: "Predefined set of templates to speed up your identity provider creation."
                 }
             }
         },

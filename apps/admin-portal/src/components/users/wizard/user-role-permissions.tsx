@@ -18,7 +18,7 @@
 
 import { Heading, LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Icon, Segment } from "semantic-ui-react";
+import { Divider, Icon, Segment } from "semantic-ui-react";
 import { getRoleById } from "../../../api";
 import { RolesInterface } from "../../../models";
 import { PermissionList } from "../../roles";
@@ -86,11 +86,7 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
                 <Heading as="h5">
                     Permissions for { role.displayName }
                 </Heading>
-                <Segment data-testid={ props[ `data-testid`] }>
-                    <div className="permissions-edit-container">
-                        <PermissionList isEdit={ false } isRole roleObject={ role }/>
-                    </div>
-                </Segment>
+                <Divider hidden/>
                 <LinkButton
                     data-testid={ `${ props[ `data-testid`] }_back_button` }
                     floated="left"
@@ -99,6 +95,13 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
                     <Icon name="arrow left"/>
                     Back to list
                 </LinkButton>
+                <Divider hidden/>
+                <Divider hidden/>
+                <Segment data-testid={ props[ `data-testid`] }>
+                    <div className="permissions-edit-container">
+                        <PermissionList isEdit={ false } isRole roleObject={ role }/>
+                    </div>
+                </Segment>
              </>
         )
     )
