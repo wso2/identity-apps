@@ -67,7 +67,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
         setShowAddModal(false);
     };
 
-    // search operation for available claims.
+    // Search operation for available claims.
     const searchTempAvailable = (event) => {
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
