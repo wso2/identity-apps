@@ -52,7 +52,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const [ updatedRoleName, setUpdatedRoleName ] = useState<string>(initialValues?.roleName);
 
     /**
-     * Triggers when updatedRoleName is changed
+     * Triggers when updatedRoleName is changed.
      */
     useEffect(() => {
         setIsValidRoleName(false);
@@ -101,7 +101,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     /**
      * The following function handles the change of the username.
      *
-     * @param values
+     * @param values - form values from the listen event.
      */
     const roleNameChangeListener = (values: Map<string, FormValue>): void => {
         setUpdatedRoleName(values?.get("rolename")?.toString());
