@@ -99,6 +99,7 @@ export interface FederatedAuthenticatorMetaDataInterface {
     authenticatorId: string;
     icon: any;
     name: string;
+    displayName: string;
 }
 
 export interface FederatedAuthenticatorListItemInterface extends FederatedAuthenticatorInterface {

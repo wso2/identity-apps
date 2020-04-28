@@ -18,12 +18,16 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AppAvatar, ResourceList } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import { AppAvatar, ConfirmationModal, ResourceList } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteIdentityProvider } from "../../api";
 import { history } from "../../helpers";
-import { ConfigReducerStateInterface, IdentityProviderListResponseInterface } from "../../models";
+import {
+    ConfigReducerStateInterface,
+    FederatedAuthenticatorListItemInterface, IdentityProviderListItemInterface,
+    IdentityProviderListResponseInterface
+} from "../../models";
 import { AppState } from "../../store";
 
 /**
@@ -53,6 +57,9 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
+    const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ deletingIDP, setDeletingIDP ] = useState<IdentityProviderListItemInterface>(undefined);
+
     /**
      * Redirects to the identity provider edit page when the edit button is clicked.
      *
@@ -60,6 +67,16 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
      */
     const handleIdentityProviderEdit = (idpId: string): void => {
         history.push(`identity-providers/${idpId}`);
+    };
+
+    /**
+     * Deletes an identity provider when the delete identity provider button is clicked.
+     *
+     * @param {string} idpId Identity provider id.
+     */
+    const handleIdentityProviderDeleteAction = (idpId: string): void => {
+        setDeletingIDP(list.identityProviders.find(idp => idp.id === idpId));
+        setShowDeleteConfirmationModal(true);
     };
 
     /**
@@ -97,6 +114,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
             });
     };
 
+
     return (
         <ResourceList className="identity-providers-list">
             {
@@ -117,7 +135,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                                     {
                                         hidden: config.ui.doNotDeleteIdentityProviders.includes(idp.name),
                                         icon: "trash alternate",
-                                        onClick: (): void => handleIdentityProviderDelete(idp.id),
+                                        onClick: (): void => handleIdentityProviderDeleteAction(idp.id),
                                         popupText: "delete",
                                         type: "dropdown"
                                     }
@@ -137,6 +155,35 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         );
                     }
                 })
+            }
+            {
+                deletingIDP && (
+                    <ConfirmationModal
+                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                        type="warning"
+                        open={ showDeleteConfirmationModal }
+                        assertion={ deletingIDP?.name }
+                        assertionHint={ (
+                            <p>Please type <strong>{ deletingIDP?.name }</strong> to confirm.</p>
+                        ) }
+                        assertionType="input"
+                        primaryAction="Confirm"
+                        secondaryAction="Cancel"
+                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                        onPrimaryActionClick={
+                            (): void => handleIdentityProviderDelete(deletingIDP.id)
+                        }
+                    >
+                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+                        <ConfirmationModal.Message attached warning>
+                            This action is irreversible and will permanently delete the IDP.
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            If you delete this identity provider, you will not be able to get it back. All the
+                            applications depending on this also might stop working. Please proceed with caution.
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
             }
         </ResourceList>
     );
