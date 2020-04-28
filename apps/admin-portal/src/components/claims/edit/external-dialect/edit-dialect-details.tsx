@@ -48,7 +48,7 @@ export const EditDialectDetails = (props: EditDialectDetailsPropsInterface): Rea
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
-                <Grid.Column width={ 8 }>
+                <Grid.Column width={ 16 }>
                     <Forms
                         onSubmit={ (values: Map<string, FormValue>) => {
                             const dialectURI = values.get("dialectURI").toString();
