@@ -31,6 +31,7 @@ interface AttributeListItemPropInterface {
 
 /**
  * Selected Attribute list item.
+ *
  * @param props AttributeListItemPropInterface
  */
 export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface> = (
