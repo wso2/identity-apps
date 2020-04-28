@@ -44,7 +44,7 @@ export const getLocalDialectURI = (): string => {
     let localDialect = "http://wso2.org/claims";
     getAllLocalClaims(null)
         .then((response) => {
-            // setClaims(response.slice(0, 10));
+          
             const retrieved = response.slice(0, 1)[0].dialectURI;
             if (!_.isEmpty(retrieved)) {
                 localDialect = retrieved;
