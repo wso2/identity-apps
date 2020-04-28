@@ -111,7 +111,7 @@ export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): React
                             {
                                 claims.length === 0 && (
                                     <Table.Row>
-                                        <Table.Cell colspan={ 3 } textAlign='center'>
+                                        <Table.Cell colSpan={ 3 } textAlign='center'>
                                             <Message warning>No external claim was added.</Message>
                                         </Table.Cell>
                                     </Table.Row>
@@ -123,6 +123,4 @@ export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): React
             </Grid.Row>
         </Grid>
     )
-}
-
-
+};
