@@ -40,7 +40,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
     const dialectId = props.match.params.id;
 
     const [ dialect, setDialect ] = useState<ClaimDialect>(null);
-    const [ claims, setClaims ] = useState<ExternalClaim[]>(null);
+    const [ claims, setClaims ] = useState<ExternalClaim[]>([]);
     const [ isLoading, setIsLoading ] = useState(true);
 
     const dispatch = useDispatch();

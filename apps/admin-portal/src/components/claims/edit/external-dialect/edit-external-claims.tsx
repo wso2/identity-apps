@@ -77,10 +77,11 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
 
     const [ offset, setOffset ] = useState(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
-    const [ filteredClaims, setFilteredClaims ] = useState<ExternalClaim[]>(null);
+    const [ filteredClaims, setFilteredClaims ] = useState<ExternalClaim[]>([]);
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
     const [ showAddExternalClaim, setShowAddExternalClaim ] = useState(false);
+    const [ query, setQuery ] = useState("");
 
     const [ triggerAddExternalClaim, setTriggerAddExternalClaim ] = useTrigger();
 
@@ -177,11 +178,8 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
     };
 
     return (
-        claims?.length > 0
-            ? (
-                <ListLayout
-                    advancedSearch={
-                    <AdvancedSearchWithBasicFilters
+        <ListLayout
+            advancedSearch={ <AdvancedSearchWithBasicFilters
                                     onFilter={ handleExternalClaimFilter  }
                                     filterAttributeOptions={ [
                                         {
@@ -210,87 +208,115 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                                     placeholder={ t("devPortal:components.claims.external.advancedSearch.placeholder") }
                                     defaultSearchAttribute="claimURI"
                                     defaultSearchOperator="co"
-                                />
-                    }
-                    currentListSize={ listItemLimit }
-                    listItemLimit={ listItemLimit }
-                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                    onPageChange={ handlePaginationChange }
-                    onSortStrategyChange={ handleSortStrategyChange }
-                    onSortOrderChange={ handleSortOrderChange }
-                    showPagination={ true }
-                    sortOptions={ SORT_BY }
-                    sortStrategy={ sortBy }
-                    totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
-                    totalListSize={ filteredClaims?.length }
-                    rightActionPanel={
-                        <PrimaryButton
-                            onClick={ (): void => {
-                                setShowAddExternalClaim(true);
-                            } }
-                            disabled={ showAddExternalClaim }
-                        >
-                            <Icon name="add" />
+                                /> }
+            currentListSize={ listItemLimit }
+            listItemLimit={ listItemLimit }
+            onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+            onPageChange={ handlePaginationChange }
+            onSortStrategyChange={ handleSortStrategyChange }
+            onSortOrderChange={ handleSortOrderChange }
+            showPagination={ true }
+            sortOptions={ SORT_BY }
+            sortStrategy={ sortBy }
+            totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
+            totalListSize={ filteredClaims?.length }
+            rightActionPanel={
+                <PrimaryButton
+                    onClick={ (): void => {
+                        setShowAddExternalClaim(true);
+                    } }
+                    disabled={ showAddExternalClaim }
+                >
+                    <Icon name="add" />
                             New External Claim
                         </PrimaryButton>
-                    }
-                >
-                    {
-                        showAddExternalClaim && (
-                            <Modal
-                                open={ showAddExternalClaim }
-                                onClose={ () => { setShowAddExternalClaim(false) } }
-                                dimmer="blurring"
-                                size="small"
-                            >
-                                <Modal.Header>
-                                    Add External Claim
+            }
+        >
+            {
+                showAddExternalClaim && (
+                    <Modal
+                        open={ showAddExternalClaim }
+                        onClose={ () => { setShowAddExternalClaim(false) } }
+                        dimmer="blurring"
+                        size="small"
+                    >
+                        <Modal.Header>
+                            Add External Claim
                                 </Modal.Header>
-                                <Modal.Content>
-                                    <AddExternalClaims
-                                        dialectId={ dialectID }
-                                        update={ update }
-                                        externalClaims={ claims }
-                                        triggerSubmit={ triggerAddExternalClaim }
-                                        cancel={ () => { setShowAddExternalClaim(false) } }
-                                    />
-                                </Modal.Content>
-                                <Modal.Actions>
-                                    <LinkButton onClick={ () => { setShowAddExternalClaim(false) } }>
-                                        Cancel
-                                    </LinkButton>
-                                    <PrimaryButton
-                                        onClick={ () => {
-                                            setTriggerAddExternalClaim();
-                                        }
-                                        }
-                                    >
-                                        Save
-                                    </PrimaryButton>
-                                </Modal.Actions>
-                            </Modal>
-                        )
-                    }
-                    <Grid columns={ 1 }>
-                        <Grid.Column width={ 16 }>
-                            <Divider hidden />
-                            <ClaimsList
-                                list={ paginate(filteredClaims, listItemLimit, offset) }
-                                localClaim={ ListType.EXTERNAL }
-                                update={ () => update() }
-                                dialectID={ dialectID }
+                        <Modal.Content>
+                            <AddExternalClaims
+                                dialectId={ dialectID }
+                                update={ update }
+                                externalClaims={ claims }
+                                triggerSubmit={ triggerAddExternalClaim }
+                                cancel={ () => { setShowAddExternalClaim(false) } }
                             />
-                        </Grid.Column>
-                    </Grid>
-                </ListLayout>
-            )
-            : !isLoading && (
-                <EmptyPlaceholder
-                    title="No External Claim"
-                    subtitle={ [ "Currently, there is no external claim available for this dialect." ] }
-                    image={ EmptyPlaceholderIllustrations.emptyList }
-                    imageSize="tiny"
-                />
-            )
-    );
+                        </Modal.Content>
+                        <Modal.Actions>
+                            <LinkButton onClick={ () => { setShowAddExternalClaim(false) } }>
+                                Cancel
+                                    </LinkButton>
+                            <PrimaryButton
+                                onClick={ () => {
+                                    setTriggerAddExternalClaim();
+                                }
+                                }
+                            >
+                                Save
+                                    </PrimaryButton>
+                        </Modal.Actions>
+                    </Modal>
+                )
+            }
+            <Grid columns={ 1 }>
+                <Grid.Column width={ 16 }>
+                    <Divider hidden />
+                    {
+                        filteredClaims?.length > 0
+                            ? (
+                                <ClaimsList
+                                    list={ paginate(filteredClaims, listItemLimit, offset) }
+                                    localClaim={ ListType.EXTERNAL }
+                                    update={ () => update() }
+                                    dialectID={ dialectID }
+                                />
+                            ) : !isLoading &&
+                                (claims && claims?.length !== 0 && filteredClaims?.length === 0)
+                                ? (
+                                    <EmptyPlaceholder
+                                        action={ (
+                                            <LinkButton onClick={ () => {
+                                                setFilteredClaims(claims);
+                                            } }
+                                            >
+                                                Clear search query
+                                            </LinkButton>
+                                        ) }
+                                        image={ EmptyPlaceholderIllustrations.emptySearch }
+                                        imageSize="tiny"
+                                        title={ "No results found" }
+                                        subtitle={ [
+                                            `We couldn't find any results for "${query}"`,
+                                            "Please try a different search term."
+                                        ] }
+                                    />
+                                )
+                                : !isLoading && (
+                                    <EmptyPlaceholder
+                                        title="No External Claim"
+                                        subtitle={ [ "Currently, there is no external claim " +
+                                            "available for this dialect." ] }
+                                        image={ EmptyPlaceholderIllustrations.emptyList }
+                                        imageSize="tiny"
+                                    />
+                                )
+                    }
+                </Grid.Column>
+            </Grid>
+        </ListLayout>
+    )
+};
+
+EditExternalClaims.defaultProps = {
+    isLoading: true
 };
