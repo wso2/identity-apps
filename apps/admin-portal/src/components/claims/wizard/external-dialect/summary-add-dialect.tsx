@@ -17,7 +17,7 @@
 */
 
 import React, { ReactElement } from "react";
-import { Grid, Table } from "semantic-ui-react";
+import { Grid, Message, Table } from "semantic-ui-react";
 import { AddExternalClaim } from "../../../../models";
 
 /**
@@ -80,6 +80,15 @@ export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): React
                                     </Table.Row>
                                 )
                             }) }
+                            {
+                                claims.length === 0 && (
+                                    <Table.Row>
+                                        <Table.Cell colspan={ 2 } textAlign='center'>
+                                            <Message warning>No external claim was added.</Message>
+                                        </Table.Cell>
+                                    </Table.Row>
+                                )
+                            }
                         </Table.Body>
                     </Table>
                 </Grid.Column>
