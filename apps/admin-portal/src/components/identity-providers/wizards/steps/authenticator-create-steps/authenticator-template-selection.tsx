@@ -33,7 +33,7 @@ import {
 interface AuthenticatorTemplateSelectionWizardFormPropsInterface {
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
-    expertModeOptions: FederatedAuthenticatorMetaDataInterface[];
+    manualModeOptions: FederatedAuthenticatorMetaDataInterface[];
     authenticatorTemplates: IdentityProviderTemplateListItemInterface[];
 }
 
@@ -51,12 +51,12 @@ export const AuthenticatorTemplateSelection:
     const {
         triggerSubmit,
         onSubmit,
-        expertModeOptions,
+        manualModeOptions,
         authenticatorTemplates
     } = props;
 
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderInterface>(undefined);
-    const [ selectedExpertModeOption, setSelectedExpertModeOption ] = useState<any>(undefined);
+    const [ selectedManualModeOption, setSelectedManualModeOption ] = useState<any>(undefined);
 
     /**
      * Handles template selection.
@@ -65,16 +65,16 @@ export const AuthenticatorTemplateSelection:
      */
     const handleTemplateSelection = (template: IdentityProviderInterface): void => {
         setSelectedTemplate(template);
-        setSelectedExpertModeOption(undefined);
+        setSelectedManualModeOption(undefined);
     };
 
     /**
-     * Handles expert mode option selection.
+     * Handles manual mode option selection.
      *
-     * @param option - Selected expert mode option.
+     * @param option - Selected manual mode option.
      */
-    const handleExpertModeOptionSelection = (option): void => {
-        setSelectedExpertModeOption(option);
+    const handleManualModeOptionSelection = (option): void => {
+        setSelectedManualModeOption(option);
         setSelectedTemplate(undefined);
     };
 
@@ -85,9 +85,9 @@ export const AuthenticatorTemplateSelection:
                     onSubmit({
                         templateId: selectedTemplate.id
                     })
-                } else if (selectedExpertModeOption) {
+                } else if (selectedManualModeOption) {
                     onSubmit({
-                        expertModeOptionId: selectedExpertModeOption.authenticatorId
+                        manualModeOptionId: selectedManualModeOption.authenticatorId
                     })
                 }
             } }
@@ -99,8 +99,10 @@ export const AuthenticatorTemplateSelection:
                         authenticatorTemplates.length > 0) &&
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <Heading as="h4">Templates</Heading>
-                            <Hint icon={ null }>Get the authenticator settings from an already available template</Hint>
+                            <Heading as="h4">Quick Setup</Heading>
+                            <Hint icon={ null }>
+                                Predefined authenticator templates to speed up your add operation.
+                            </Hint>
                             { authenticatorTemplates.map((template, index) => (
                                 <SelectionCard
                                     inline
@@ -116,21 +118,21 @@ export const AuthenticatorTemplateSelection:
                     </Grid.Row>
                 }
                 {
-                    (expertModeOptions && expertModeOptions instanceof Array && expertModeOptions.length > 0)
+                    (manualModeOptions && manualModeOptions instanceof Array && manualModeOptions.length > 0)
                     &&
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <Heading as="h4">Expert Mode</Heading>
-                            <Hint icon={ null }>Add a new authenticator by manually configuring the settings.</Hint>
-                            { expertModeOptions.map((option, index) => (
+                            <Heading as="h4">Manual Setup</Heading>
+                            <Hint icon={ null }>Add a new authenticator with custom configurations.</Hint>
+                            { manualModeOptions.map((option, index) => (
                                 <SelectionCard
                                     inline
                                     id={ option.authenticatorId }
                                     key={ index }
-                                    header={ option.name }
+                                    header={ option.displayName }
                                     image={ option.icon }
-                                    onClick={ (): void => handleExpertModeOptionSelection(option) }
-                                    selected={ selectedExpertModeOption?.authenticatorId === option.authenticatorId }
+                                    onClick={ (): void => handleManualModeOptionSelection(option) }
+                                    selected={ selectedManualModeOption?.authenticatorId === option.authenticatorId }
                                 />))
                             }
                         </Grid.Column>

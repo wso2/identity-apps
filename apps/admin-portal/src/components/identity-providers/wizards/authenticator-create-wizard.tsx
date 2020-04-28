@@ -46,7 +46,7 @@ interface AddAuthenticatorWizardPropsInterface {
     title: string;
     closeWizard: () => void;
     subTitle?: string;
-    expertModeOptions: FederatedAuthenticatorMetaDataInterface[];
+    manualModeOptions: FederatedAuthenticatorMetaDataInterface[];
     availableTemplates?: IdentityProviderTemplateListItemInterface[];
     idpId?: string;
 }
@@ -104,7 +104,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         currentStep,
         title,
         subTitle,
-        expertModeOptions,
+        manualModeOptions,
         availableTemplates,
         idpId
     } = props;
@@ -119,7 +119,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
     const [ selectedAuthenticatorMetadata, setSelectedAuthenticatorMetadata ] =
         useState<FederatedAuthenticatorMetaInterface>(undefined);
     const [ selectedTemplateId, setSelectedTemplateId ] = useState<string>(undefined);
-    const [ selectedExpertModeOptionId, setSelectedExpertModeOptionId ] = useState<string>(undefined);
+    const [ selectedManualModeOptionId, setSelectedManualModeOptionId ] = useState<string>(undefined);
 
     const dispatch = useDispatch();
 
@@ -160,7 +160,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         if (wizardSteps[currentWizardStep]?.name === WizardSteps.AUTHENTICATOR_SETTINGS) {
             setSelectedAuthenticatorMetadata(undefined);
             setSelectedTemplateId(undefined);
-            setSelectedExpertModeOptionId(undefined)
+            setSelectedManualModeOptionId(undefined)
         }
         setPartiallyCompletedStep(currentWizardStep);
     };
@@ -174,8 +174,8 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
     const handleWizardFormSubmit = (values: any, formType: WizardConstants): void => {
 		if (values.templateId) {
             setSelectedTemplateId(values.templateId);
-        } else if (values.expertModeOptionId) {
-            setSelectedExpertModeOptionId(values.expertModeOptionId);
+        } else if (values.manualModeOptionId) {
+            setSelectedManualModeOptionId(values.manualModeOptionId);
         } else {
             setWizardState(_.merge(wizardState, { [formType]: values }));
         }
@@ -264,7 +264,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                         triggerSubmit={ submitTemplateSelection }
                         onSubmit={ (values): void => handleWizardFormSubmit(values,
                             WizardConstants.AUTHENTICATOR) }
-                        expertModeOptions={ expertModeOptions }
+                        manualModeOptions={ manualModeOptions }
                         authenticatorTemplates={ availableTemplates }
                     />
                 );
@@ -331,14 +331,14 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
     }, [selectedTemplateId]);
 
     useEffect(() => {
-        if (selectedExpertModeOptionId) {
-            loadAuthenticatorMetadata(selectedExpertModeOptionId);
+        if (selectedManualModeOptionId) {
+            loadAuthenticatorMetadata(selectedManualModeOptionId);
             setWizardState({
                 ...wizardState,
                 [WizardConstants.AUTHENTICATOR]: {}
             });
         }
-    }, [selectedExpertModeOptionId]);
+    }, [selectedManualModeOptionId]);
 
     /**
      * Called when required backend data are gathered.
@@ -356,7 +356,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                 icon: IdentityProviderWizardStepIcons.general,
                 name: WizardSteps.TEMPLATE_SELECTION,
                 submitCallback: setSubmitTemplateSelection,
-                title: "Template Selection"
+                title: "Authenticator Selection"
             },
             {
                 icon: IdentityProviderWizardStepIcons.authenticatorSettings,

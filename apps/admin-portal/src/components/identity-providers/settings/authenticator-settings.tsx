@@ -100,7 +100,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         useState<FederatedAuthenticatorWithMetaInterface[]>([]);
     const [ availableTemplates, setAvailableTemplates ] =
         useState<IdentityProviderTemplateListItemInterface[]>(undefined);
-    const [ availableExpertModeOptions, setAvailableExpertModeOptions ] =
+    const [ availableManualModeOptions, setAvailableManualModeOptions ] =
         useState<FederatedAuthenticatorMetaDataInterface[]>(undefined);
     const [ showAddAuthenticatorWizard, setShowAddAuthenticatorWizard ] = useState<boolean>(false);
     const [ isTemplatesLoading, setIsTemplatesLoading ] = useState<boolean>(false);
@@ -349,8 +349,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                 template.idp.federatedAuthenticators.defaultAuthenticatorId))
                         );
 
-                        // Set filtered expert mode options.
-                        setAvailableExpertModeOptions(FederatedAuthenticators.filter(a =>
+                        // Set filtered manual mode options.
+                        setAvailableManualModeOptions(FederatedAuthenticators.filter(a =>
                             !availableAuthenticatorIDs.includes(a.authenticatorId)));
 
                         // sort templateList based on display Order
@@ -445,11 +445,12 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     <Grid.Column width={ 16 }>
                         <AuthenticatorAccordion
                             globalActions={ [
-                                {
-                                    icon: "trash alternate",
-                                    onClick: handleAuthenticatorDeleteOnClick,
-                                    type: "icon"
-                                }
+                                // TODO: Uncomment the delete icon once backend support is available.
+                                // {
+                                //     icon: "trash alternate",
+                                //     onClick: handleAuthenticatorDeleteOnClick,
+                                //     type: "icon"
+                                // }
                             ] }
                             authenticators={
                                 availableAuthenticators.map((authenticator) => {
@@ -483,7 +484,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                     (fedAuth.authenticatorId === authenticator.id))).icon
                                         },
                                         id: authenticator?.id,
-                                        title: authenticator.meta?.displayName
+                                        title: authenticator.id && (FederatedAuthenticators.find((fedAuth) =>
+                                            (fedAuth.authenticatorId === authenticator.id))).displayName
                                     }
                                 })
                             }
@@ -541,7 +543,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                      setAvailableAuthenticators([]);
                                      onUpdate(idpId)
                                  } }
-                                 expertModeOptions={ availableExpertModeOptions }
+                                 manualModeOptions={ availableManualModeOptions }
                                  availableTemplates={ availableTemplates }
                                  idpId={ idpId }
                              />
