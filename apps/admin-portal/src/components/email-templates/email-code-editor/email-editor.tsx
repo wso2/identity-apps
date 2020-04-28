@@ -57,6 +57,16 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                 :
                     <ResourceTab panes={ [
                         {
+                            menuItem: "Preview",
+                            render: () => (
+                                <ResourceTab.Pane className="render-view" attached={ false }>
+                                    <iframe id="iframe" srcDoc={ htmlContent }>
+                                        <p>Your browser does not support iframes.</p>
+                                    </iframe>
+                                </ResourceTab.Pane>
+                            ),
+                        },
+                        {
                             menuItem: "Code",
                             render: () => (
                                 <ResourceTab.Pane attached={ false }>
@@ -75,15 +85,6 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                                         readOnly={ isReadOnly }
                                         theme={  "dark" }
                                     />
-                                </ResourceTab.Pane>
-                            ),
-                        },{
-                            menuItem: "Preview",
-                            render: () => (
-                                <ResourceTab.Pane className="render-view" attached={ false }>
-                                    <iframe id="iframe" srcDoc={ htmlContent }>
-                                        <p>Your browser does not support iframes.</p>
-                                    </iframe>
                                 </ResourceTab.Pane>
                             ),
                         }
