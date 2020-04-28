@@ -18,7 +18,7 @@
 
 import React, { FunctionComponent, ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
-import { DisplayCertificate, DistinguishedName } from "../../models";
+import { DisplayCertificate, DistinguishedName } from "../../../models";
 
 /**
  * Prop types of the of the `CertificateSummary` component 

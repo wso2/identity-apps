@@ -19,9 +19,9 @@
 import * as forge from "node-forge";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Divider, Form, Icon, Message, Segment, Tab, TextArea } from "semantic-ui-react";
-import { CertificateIllustrations } from "../../configs";
-import { CERTIFICATE_BEGIN, CERTIFICATE_END, END_LINE } from "../../constants";
-import { Certificate } from "../../models";
+import { CertificateIllustrations } from "../../../configs";
+import { CERTIFICATE_BEGIN, CERTIFICATE_END, END_LINE } from "../../../constants";
+import { Certificate } from "../../../models";
 
 /**
  * The model of the object returned by the `convertFromPem()` function.

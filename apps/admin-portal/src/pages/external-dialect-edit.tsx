@@ -189,6 +189,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
             titleTextAlign="left"
             bottomMargin={ false }
         >
+            
             <Divider />
 
             <Grid>
@@ -219,7 +220,9 @@ export const ExternalDialectEditPage = (props): ReactElement => {
                     update={ getExternalClaims }
                 />
             </Segment>
+
             <Divider hidden />
+
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>

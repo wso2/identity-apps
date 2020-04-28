@@ -16,7 +16,5 @@
 * under the License.
 */
 
-export * from "./certificates-list";
-export * from "./wizard";
-export * from "./certificate";
-export * from "./import-certificate";
+export * from "./advanced-search-certificates-keystore";
+export * from "./advanced-search-certificates-truststore";

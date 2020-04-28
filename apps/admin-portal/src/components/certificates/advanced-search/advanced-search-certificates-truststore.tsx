@@ -22,7 +22,7 @@ import { AdvancedSearch } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
-import { AdvancedSearchIcons } from "../../configs";
+import { AdvancedSearchIcons } from "../../../configs";
 
 /**
  * Filter attribute field identifier.
