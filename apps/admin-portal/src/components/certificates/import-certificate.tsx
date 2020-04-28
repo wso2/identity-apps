@@ -222,7 +222,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
             className="wizard application-create-wizard"
         >
             <Modal.Header className="wizard-header">
-                Import certificate
+                Import Certificate
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group

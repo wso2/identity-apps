@@ -168,7 +168,8 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
      * 
      */
     const showDeleteConfirm = (): ReactElement => {
-        const isTenantCertificate: boolean = decodeCertificate(deleteCertificatePem).serialNumber === tenantCertificate;
+        const isTenantCertificate: boolean = decodeCertificate(deleteCertificatePem)
+            .serialNumber === tenantCertificate;
         return (
             <ConfirmationModal
                 onClose={ closeDeleteConfirm }
@@ -345,7 +346,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 onClose={ () => { setCertificateModal(false) } }
             >
                 <Modal.Header>
-                    View certificate
+                    View Certificate
                 </Modal.Header>
                 <Modal.Content className="certificate-content">
                     <CertificateDisplay certificate={ certificateDisplay } />
