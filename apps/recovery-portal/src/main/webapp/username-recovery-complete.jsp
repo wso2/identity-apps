@@ -28,11 +28,9 @@
 <%
     String callback = (String) request.getAttribute("callback");
     String tenantDomain = (String) request.getAttribute("tenantDomain");
-    boolean isUserPortalURL = (boolean) request.getAttribute("isUserPortalURL");
-
     CallBackValidator callBackValidator = new CallBackValidator();
     try {
-        if (!callBackValidator.isValidCallbackURL(callback, tenantDomain, isUserPortalURL)) {
+        if (!callBackValidator.isValidCallbackURL(callback, tenantDomain)) {
             request.setAttribute("error", true);
             request.setAttribute("errorMsg", "Configured callback URL does not match with the provided callback " +
                     "URL in the request.");
