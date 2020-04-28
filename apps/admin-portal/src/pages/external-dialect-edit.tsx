@@ -18,9 +18,10 @@
 
 import React, { ReactElement, useEffect, useState } from "react"
 import { useDispatch } from "react-redux";
-import { Divider, Grid, Header, Segment } from "semantic-ui-react";
+import { Divider, Grid, Header, Image, Segment } from "semantic-ui-react";
 import { getADialect, getAllExternalClaims } from "../api";
 import {
+    AvatarBackground,
     EditDialectDetails,
     EditExternalClaims
 } from "../components";
@@ -100,8 +101,32 @@ export const ExternalDialectEditPage = (props): ReactElement => {
         getExternalClaims();
     }, [ dialectId ]);
 
+    /**
+     * This generates the first letter of a dialect
+     * @param {string} name 
+     * @return {string} The first letter of a dialect
+     */
+    const generateDialectLetter = (name: string): string => {
+        const stringArray = name.replace("http://", "").split("/");
+        return stringArray[ 0 ][ 0 ].toLocaleUpperCase();
+    }
+
     return (
         <PageLayout
+            image={
+                <Image
+                    floated="left"
+                    verticalAlign="middle"
+                    rounded
+                    centered
+                    size="tiny"
+                >
+                    <AvatarBackground />
+                    <span className="claims-letter">
+                        { dialect && generateDialectLetter(dialect.dialectURI) }
+                    </span>
+                </Image>
+            }
             title={ dialect?.dialectURI }
             description={ "Edit external dialect and its claims" }
             backButton={ {
