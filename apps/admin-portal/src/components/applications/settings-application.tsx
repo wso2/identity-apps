@@ -35,12 +35,7 @@ import { InboundFormFactory } from "./forms";
 import { ApplicationCreateWizard } from "./wizard";
 import { deleteProtocol, getAuthProtocolMetadata, regenerateClientSecret, updateAuthProtocolConfig } from "../../api";
 import { EmptyPlaceholderIllustrations, InboundProtocolLogos } from "../../configs";
-import {
-    AuthProtocolMetaListItemInterface,
-    FeatureConfigInterface,
-    SupportedAuthProtocolMetaTypes,
-    SupportedAuthProtocolTypes
-} from "../../models";
+import { FeatureConfigInterface, SupportedAuthProtocolMetaTypes, SupportedAuthProtocolTypes } from "../../models";
 import { AppState } from "../../store";
 import { setAuthProtocolMeta } from "../../store/actions";
 import { AuthenticatorAccordion } from "../shared";
@@ -274,7 +269,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                     />
                                 ),
                                 id: protocol,
-                                title: _.upperCase(protocol),
+                                title: _.upperCase(protocol)
                             }
                         } else {
                             return {
@@ -310,7 +305,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                     />
                                 ),
                                 id: protocol,
-                                title: _.upperCase(protocol),
+                                title: _.upperCase(protocol)
                             }
                         }
                     })
@@ -372,26 +367,26 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                             {
                                 inboundProtocols.length > 0
                                     ? hasRequiredScopes(
-                                        featureConfig?.applications,
-                                        featureConfig?.applications?.scopes?.update) && (
-                                            <Button
-                                                floated="right"
-                                                primary
-                                                onClick={ () => setShowWizard(true) }
-                                            >
-                                                <Icon name="add"/>New Protocol
-                                            </Button>
-                                    )
+                                    featureConfig?.applications,
+                                    featureConfig?.applications?.scopes?.update) && (
+                                    <Button
+                                        floated="right"
+                                        primary
+                                        onClick={ () => setShowWizard(true) }
+                                    >
+                                        <Icon name="add"/>New Protocol
+                                    </Button>
+                                )
                                     : (
                                         <EmptyPlaceholder
                                             action={
                                                 hasRequiredScopes(
                                                     featureConfig?.applications,
                                                     featureConfig?.applications?.scopes?.update) && (
-                                                        <PrimaryButton onClick={ () => setShowWizard(true) }>
-                                                            <Icon name="add" />
-                                                            New Protocol
-                                                        </PrimaryButton>
+                                                    <PrimaryButton onClick={ () => setShowWizard(true) }>
+                                                        <Icon name="add"/>
+                                                        New Protocol
+                                                    </PrimaryButton>
                                                 )
                                             }
                                             image={ EmptyPlaceholderIllustrations.newList }

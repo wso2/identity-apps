@@ -107,7 +107,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                     {
                                         label: config.displayName,
                                         value: config.name
-                                    },
+                                    }
                                 ] }
                             />
                         </Grid.Column>
@@ -140,7 +140,9 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                     (a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
             }
             return configs.map((config) => {
-                const initialValue: PropertyModelInterface = initialValues.properties.find((prop) => prop.key === config.name);
+                const initialValue: PropertyModelInterface = initialValues.properties.find(
+                    (prop) => prop.key === config.name
+                );
                 return createInputComponent(config, initialValue);
             })
         }

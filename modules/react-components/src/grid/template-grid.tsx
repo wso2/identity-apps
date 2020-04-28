@@ -20,10 +20,10 @@ import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import _ from "lodash";
 import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
+import { UserAvatar } from "../avatar";
 import { LinkButton } from "../button";
 import { SelectionCard, TemplateCard, TemplateCardPropsInterface } from "../card";
 import { Heading } from "../typography";
-import { UserAvatar } from "../avatar";
 
 /**
  * Proptypes for the template grid component.
@@ -282,6 +282,26 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
         return null
     });
 
+    /**
+     * Calculate pagination limit exceeded or not
+     */
+    const paginationLimitExceed = ((): boolean => {
+        let exceeded = false;
+        let length = 0;
+        if (secondaryTemplates && secondaryTemplates instanceof Array) {
+            length += secondaryTemplates.length
+        }
+        if (templates && templates instanceof Array) {
+            length += templates.length
+        }
+
+        if (length > paginationLimit) {
+            exceeded = true
+        }
+
+        return exceeded;
+    });
+
     return (
         <Grid>
             {
@@ -304,9 +324,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                 paginate && (
                                     <Grid.Column textAlign="right">
                                         {
-                                            (templates
-                                                && templates instanceof Array
-                                                && templates.length >= paginationLimit)
+                                            (paginationLimitExceed())
                                                 ? (
                                                     isShowMoreClicked ? (
                                                         <LinkButton onClick={ viewLessTemplates }>

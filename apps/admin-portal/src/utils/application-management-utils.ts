@@ -104,8 +104,11 @@ export class ApplicationManagementUtils {
                 const filteredMeta = _.intersectionBy(meta, response, "name");
 
                 store.dispatch(
-                    setAvailableCustomInboundAuthProtocolMeta(_.unionBy<AuthProtocolMetaListItemInterface>(filteredMeta,
-                        response, "name"))
+                    setAvailableCustomInboundAuthProtocolMeta(_.unionBy<AuthProtocolMetaListItemInterface>(
+                        filteredMeta,
+                        response,
+                        "name")
+                    )
                 );
                 store.dispatch(checkAvailableCustomInboundAuthProtocolMeta(true))
             })

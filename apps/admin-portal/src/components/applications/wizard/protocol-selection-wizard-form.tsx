@@ -18,14 +18,13 @@
 
 import { TemplateGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
-import { Grid } from "semantic-ui-react";
+import { useSelector } from "react-redux";
 import {
     ApplicationTemplateIllustrations,
     EmptyPlaceholderIllustrations,
     InboundProtocolLogos
 } from "../../../configs";
 import { ApplicationTemplateListItemInterface } from "../../../models";
-import { useSelector } from "react-redux";
 import { AppState } from "../../../store";
 import { ApplicationManagementUtils } from "../../../utils";
 import { EmptyPlaceholder } from "../../shared";
@@ -227,8 +226,8 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                     type="application"
                     templates={ availableTemplates }
                     templateIcons={ ApplicationTemplateIllustrations }
-                    heading="Select From Templates"
-                    subHeading={ "Get the inbound protocol settings from the template" }
+                    heading="Quick Setup"
+                    subHeading={ "Get protocol configuration from a template" }
                     onTemplateSelect={ handleTemplateSelection }
                     paginate={ true }
                     paginationLimit={ 4 }
@@ -254,8 +253,8 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                     templates={ availableDefaultTemplates }
                     secondaryTemplates={ availableCustomInboundTemplates }
                     templateIcons={ InboundProtocolLogos }
-                    heading="Select Manually"
-                    subHeading={ "Configure one of the following inbound protocol" }
+                    heading="Manual Setup"
+                    subHeading={ "Add an protocol with custom configurations" }
                     onTemplateSelect={ handleTemplateSelection }
                     onSecondaryTemplateSelect={ handleTemplateCustomProtocolSelection }
                     useNameInitialAsImage={ true }

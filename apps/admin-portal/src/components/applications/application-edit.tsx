@@ -124,9 +124,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         findConfiguredInboundProtocol(application.id);
     }, [application?.inboundProtocols]);
 
+    /**
+     * Todo Remove this mapping and fix the backend.
+     */
     const mapProtocolTypeToName = ((type: string): string => {
         let protocolName = type;
-
         if (protocolName === "oauth2") {
             protocolName = SupportedAuthProtocolTypes.OIDC;
         } else if (protocolName === "passivests") {

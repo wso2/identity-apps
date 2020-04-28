@@ -17,6 +17,7 @@
  */
 
 import { Field, Forms } from "@wso2is/forms";
+import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { Grid } from "semantic-ui-react";
 import {
@@ -26,7 +27,6 @@ import {
     PropertyModelInterface,
     SubmitFormCustomPropertiesInterface
 } from "../../../models";
-import { ContentLoader } from "@wso2is/react-components";
 
 
 /**
@@ -111,7 +111,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                                     {
                                         label: config.displayName,
                                         value: config.name
-                                    },
+                                    }
                                 ] }
                             />
                         </Grid.Column>
@@ -144,13 +144,14 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                     (a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
             }
             return configs.map((config) => {
-                const initialValue: PropertyModelInterface = initialValues?.properties.find((prop) => prop.key === config.name);
+                const initialValue: PropertyModelInterface = initialValues?.properties.find(
+                    (prop) => prop.key === config.name
+                );
                 if (initialValue) {
                     return createInputComponent(config, initialValue);
                 } else {
                     return (createInputComponent(config));
                 }
-
             })
         }
     });
