@@ -264,7 +264,8 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                             ? (
                                 <EmptyPlaceholder
                                     action={
-                                        (appConfig?.certificates?.features?.keystore?.permissions?.create && !isSuper) && (
+                                        (appConfig?.certificates?.features?.keystore?.permissions?.create
+                                            && !isSuper) && (
                                             <PrimaryButton
                                                 onClick={ () => {
                                                     setOpenModal(true);
