@@ -19,8 +19,10 @@
 import { ResourceTab } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react"
 import { useDispatch } from "react-redux";
+import { Image } from "semantic-ui-react";
 import { getAClaim } from "../api";
 import {
+    AvatarBackground,
     EditAdditionalPropertiesLocalClaims,
     EditBasicDetailsLocalClaims,
     EditMappedAttributesLocalClaims
@@ -97,8 +99,32 @@ export const LocalClaimsEditPage = (props): ReactElement => {
         }
     ];
 
+    /**
+     * This generates the first letter of a claim
+     * @param {string} name 
+     * @return {string} The first letter of a claim
+     */
+    const generateClaimLetter = (name: string): string => {
+        const stringArray = name?.replace("http://", "")?.split("/");
+        return stringArray[ stringArray?.length - 1 ][ 0 ]?.toLocaleUpperCase();
+    };
+
     return (
         <PageLayout
+            image={
+                <Image
+                    floated="left"
+                    verticalAlign="middle"
+                    rounded
+                    centered
+                    size="tiny"
+                >
+                    <AvatarBackground />
+                    <span className="claims-letter">
+                        { claim && generateClaimLetter(claim?.claimURI) }
+                    </span>
+                </Image>
+            }
             title={ claim?.displayName }
             description={ "Edit local claim" }
             backButton={ {
