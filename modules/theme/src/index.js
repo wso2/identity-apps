@@ -71,6 +71,7 @@ export const GearsIcon = require("../dist/lib/themes/default/assets/images/icons
 export const InfoIcon = require("../dist/lib/themes/default/assets/images/icons/info-icon.svg");
 export const LaunchIcon = require("../dist/lib/themes/default/assets/images/icons/launch-icon.svg");
 export const LockIcon = require("../dist/lib/themes/default/assets/images/icons/lock-icon.svg");
+export const LockShieldIcon = require("../dist/lib/themes/default/assets/images/icons/lock-shield.svg");
 export const MagnifierIcon = require("../dist/lib/themes/default/assets/images/icons/magnifier-icon.svg");
 export const MaximizeIcon = require("../dist/lib/themes/default/assets/images/icons/maximize-icon.svg");
 export const MinimizeIcon = require("../dist/lib/themes/default/assets/images/icons/minimize-icon.svg");
