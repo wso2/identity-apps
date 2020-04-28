@@ -137,8 +137,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
                 if (initialValues && initialValues instanceof Array) {
                     const selectedUserList: UserBasicInterface[] = [];
-                    if (response.Resources && response.Resources instanceof Array ) {
-                        response.Resources.forEach(user => {
+                    if (responseUsers && responseUsers instanceof Array ) {
+                        responseUsers.forEach(user => {
                             initialValues.forEach(assignedUser => {
                                 if (user.id === assignedUser.id) {
                                     selectedUserList.push(user);
@@ -246,29 +246,29 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
             checkedUnassignedListItems.map((user) => {
                 if (!(tempUserList.includes(user))) {
                     addedRoles.push(user);
-                    setUsersList(usersList.filter((item) => {
-                        return item.id !== user.id;
-                    }));
                 }
             });
         }
+        setUsersList(usersList.filter(user => (
+            checkedUnassignedListItems.indexOf(user) === -1
+        )))
         setTempUserList(addedRoles);
         setIsSelectAllUnAssignedUsers(false);
     };
 
     const removeUser = () => {
         const removedUsers = [ ...tempUserList ];
-        
+
         if (checkedAssignedListItems?.length > 0) {
-            checkedAssignedListItems.map((user) => {
-                removedUsers.splice(tempUserList.indexOf(user), 1);
-                setCheckedAssignedListItems(checkedAssignedListItems.splice(tempUserList.indexOf(user), 1));
-                setTempUserList(removedUsers);
+            checkedAssignedListItems.map(user => {
+                removedUsers.splice(removedUsers.indexOf(user), 1);
                 usersList.push(user)
-                setUsersList(usersList);
             });
+            setUsersList(usersList);
+            setTempUserList(removedUsers);
             setCheckedAssignedListItems([]);
         }
+
     };
 
     const handleOpenAddNewGroupModal = () => {
