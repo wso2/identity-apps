@@ -81,9 +81,9 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
         >
             <Modal.Header className="wizard-header template-type-wizard">
                 { templateData?.subject }
-                <Heading as="h6">Preview Email Template</Heading>
+                <Heading as="h6">Email Template Preview</Heading>
             </Modal.Header>
-            <Modal.Content className="content-container" scrolling>
+            <Modal.Content className="content-container template-view-content" scrolling>
                 {WIZARD_STEPS[0].content}
             </Modal.Content>
             <Modal.Actions>
