@@ -306,7 +306,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     }
 
     const addNewUserModal = () => (
-        <Modal open={ showAddNewUserModal } size="small" className="user-roles">
+        <Modal dimmer="blurring" open={ showAddNewUserModal } size="small" className="user-roles">
             <Modal.Header>
                 { isGroup ? "Update Group Users" : "Update Role Users" }
                 <Heading subHeading ellipsis as="h6">
