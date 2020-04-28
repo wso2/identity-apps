@@ -119,6 +119,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
 
     useEffect(() => {
         if (isLocalClaim(list)) {
+            console.log(list);
             getUserStores(null).then(response => {
                 setUserStores(response);
             }).catch(error => {
@@ -129,7 +130,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                 }))
             })
         }
-    }, [ list ]);
+    }, [ JSON.stringify(list) ]);
 
     /**
      * This check if the input claim is mapped to attribute from every userstore.

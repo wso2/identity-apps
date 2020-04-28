@@ -18,7 +18,7 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useContext, useEffect, useState } from "react";
+import React, { ReactElement, useContext, useEffect, useRef, useState } from "react";
 import { useDispatch,useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getADialect, getAllLocalClaims } from "../api";
@@ -71,6 +71,8 @@ export const LocalClaimsPage = (): ReactElement => {
 
     const dispatch = useDispatch();
 
+    const initialRender = useRef(true);
+
     /**
     * Fetches all the local claims.
     *
@@ -104,7 +106,11 @@ export const LocalClaimsPage = (): ReactElement => {
     };
 
     useEffect(() => {
-        setFilteredClaims(sortList(filteredClaims, sortBy.value as string, sortOrder));
+        if (initialRender.current) {
+            initialRender.current = false;
+        } else {
+            setFilteredClaims(sortList(filteredClaims, sortBy.value as string, sortOrder));
+        }
     }, [ sortBy, sortOrder ]);
 
     useEffect(() => {
@@ -148,7 +154,7 @@ export const LocalClaimsPage = (): ReactElement => {
 
     /**
     * Paginates.
-     *
+    *
     * @param {React.MouseEvent<HTMLAnchorElement>} event.
     * @param {PaginationProps} data.
     */
@@ -168,7 +174,7 @@ export const LocalClaimsPage = (): ReactElement => {
 
     /**
     * Handles sort order change.
-     *
+    *
     * @param {boolean} isAscending.
     */
     const handleSortOrderChange = (isAscending: boolean) => {
