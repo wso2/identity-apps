@@ -99,9 +99,10 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         <ResourceTab.Pane attached={ false }>
             <AttributeSettings
                 idpId={ identityProvider.id }
-                claims={ identityProvider.claims }
+                initialClaims={ identityProvider.claims }
                 initialRoleMappings={ identityProvider.roles.mappings }
-                outboundProvisioningRoles={ identityProvider.roles.outboundProvisioningRoles }
+                isLoading={ isLoading }
+                onUpdate={ onUpdate }
             />
         </ResourceTab.Pane>
     );

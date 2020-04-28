@@ -16,5 +16,6 @@
  * under the License.
  */
 
-export * from "./attribute-settings-utils"
-export * from "./common-pluggable-component-utils"
+export * from "./attribute-selection";
+export * from "./uri-attributes-settings";
+export * from "./role-mapping-settings";

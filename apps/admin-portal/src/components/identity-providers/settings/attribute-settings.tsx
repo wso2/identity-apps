@@ -16,27 +16,43 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/dist/src/models";
-import { addAlert } from "@wso2is/core/dist/src/store";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, Hint } from "@wso2is/react-components";
+import { ContentLoader } from "@wso2is/react-components";
+import _, { isEmpty } from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Button, Divider, Grid } from "semantic-ui-react";
-import { getRolesList, updateIDPRoleMappings } from "../../../api";
+import { Button, Grid } from "semantic-ui-react";
+import { AttributeSelection, RoleMappingSettings, UriAttributesSettings } from "./attribute-management";
 import {
+    IdentityProviderClaimInterface,
+    IdentityProviderClaimMappingInterface,
     IdentityProviderClaimsInterface,
-    IdentityProviderRoleMappingInterface, IdentityProviderRolesInterface,
-    RoleListInterface,
-    RolesInterface
+    IdentityProviderCommonClaimMappingInterface,
+    IdentityProviderProvisioningClaimInterface,
+    IdentityProviderRoleMappingInterface
 } from "../../../models";
-import { DynamicField } from "../../claims";
+import {
+    buildProvisioningClaimList,
+    createDropdownOption,
+    handleAttributeSettingsFormSubmit,
+    initSelectedClaimMappings,
+    initSelectedProvisioningClaimsWithDefaultValues,
+    initSubjectAndRoleURIs,
+    isClaimExistsInIdPClaims,
+    updateAvailableLocalClaims
+} from "../utils";
 
-/**
- * Proptypes for the identity providers settings component.
- */
-interface IdentityProviderSettingsPropsInterface {
 
+export interface DropdownOptionsInterface {
+    key: string;
+    text: string;
+    value: string;
+}
+
+
+interface AttributeSelectionPropsInterface {
     /**
      * Currently editing idp id.
      */
@@ -45,7 +61,7 @@ interface IdentityProviderSettingsPropsInterface {
     /**
      * Claims of the IDP
      */
-    claims?: IdentityProviderClaimsInterface;
+    initialClaims?: IdentityProviderClaimsInterface;
 
     /**
      * Roles of the IDP
@@ -53,150 +69,246 @@ interface IdentityProviderSettingsPropsInterface {
     initialRoleMappings?: IdentityProviderRoleMappingInterface[];
 
     /**
-     * Outbound provisioning roles of the IDP
+     * Is the idp info request loading.
      */
-    outboundProvisioningRoles?: string[];
+    isLoading?: boolean;
+
+    /**
+     * Callback to update the idp details.
+     */
+    onUpdate: (id: string) => void;
 }
 
-/**
- *  Identity Provider and advance settings component.
- *
- * @param {IdentityProviderSettingsPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
- */
-export const AttributeSettings: FunctionComponent<IdentityProviderSettingsPropsInterface> = (
-    props: IdentityProviderSettingsPropsInterface
-): ReactElement => {
+export const LocalDialectURI = "http://wso2.org/claims";
 
-    const [roleList, setRoleList] = useState<RolesInterface[]>();
-    const [submit, setSubmit] = useTrigger();
+export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterface> = (
+    props
+): ReactElement => {
 
     const {
         idpId,
-        claims,
+        initialClaims,
         initialRoleMappings,
-        outboundProvisioningRoles
+        isLoading,
+        onUpdate
     } = props;
 
     const dispatch = useDispatch();
 
-    /**
-     * Filter out Application related and Internal roles
-     */
-    const getFilteredRoles = () => {
-        const filterRole: RolesInterface[] = roleList.filter(
-            (role) => {
-                return !(role.displayName.includes("Application/") || role.displayName.includes("Internal/"))
-            });
+    // Manage available local claims.
+    const [availableLocalClaims, setAvailableLocalClaims] = useState<IdentityProviderClaimInterface[]>([]);
 
-        return filterRole.map(role => {
-            return {
-                id: role.displayName,
-                value: role.displayName
+    // Selected local claims in claim mapping.
+    const [selectedClaimsWithMapping, setSelectedClaimsWithMapping]
+        = useState<IdentityProviderCommonClaimMappingInterface[]>([]);
+
+    // Selected provisioning claims.
+    const [selectedProvisioningClaimsWithDefaultValue, setSelectedProvisioningClaimsWithDefaultValue]
+        = useState<IdentityProviderCommonClaimMappingInterface[]>([]);
+
+    // Selected subject.
+    const [subjectClaimUri, setSubjectClaimUri] = useState<string>();
+
+    // Selected role.
+    const [roleClaimUri, setRoleClaimUri] = useState<string>();
+
+    // Selected role mapping.
+    const [roleMapping, setRoleMapping] = useState<IdentityProviderRoleMappingInterface[]>(undefined);
+
+    // Trigger uri settings fields to enforce validations.
+    const [triggerUriOptionsValidations, setTriggerUriOptionsValidations] = useTrigger();
+
+    // Trigger role mapping field to submission.
+    const [triggerSubmission, setTriggerSubmission] = useTrigger();
+
+    useEffect(() => {
+        updateAvailableLocalClaims(setAvailableLocalClaims, dispatch);
+    }, []);
+
+    const setInitialValues = () => {
+        // Initial values for subject and role.
+        initSubjectAndRoleURIs(initialClaims, setSubjectClaimUri, setRoleClaimUri);
+
+        // Initial values for selected claim mappings.
+        initSelectedClaimMappings(initialClaims, setSelectedClaimsWithMapping);
+
+        // Initial values for selected provisioning claims and it's default values.
+        initSelectedProvisioningClaimsWithDefaultValues(initialClaims, setSelectedProvisioningClaimsWithDefaultValue);
+    };
+
+    /**
+     * Set initial value for claim mapping.
+     */
+    useEffect(() => {
+        if (isEmpty(availableLocalClaims)) {
+            return;
+        }
+        setInitialValues();
+    }, [availableLocalClaims]);
+
+    useEffect(() => {
+        // Provisioning claims, subject URI and role UR depend on the IdP claim mapping unless there are no claim
+        // mappings configured. In this case, they need to fall back to local claims.
+        if (_.isEmpty(selectedClaimsWithMapping)) {
+            // Set provisioning claims.
+            setSelectedProvisioningClaimsWithDefaultValue(selectedProvisioningClaimsWithDefaultValue.filter(element =>
+                availableLocalClaims.find(claim => claim.uri === element.claim.uri)));
+
+            // Set subject URI.
+            if (_.isEmpty(availableLocalClaims?.find(element => element.uri === subjectClaimUri))) {
+                setSubjectClaimUri("");
             }
+        } else {
+            setSelectedProvisioningClaimsWithDefaultValue(selectedProvisioningClaimsWithDefaultValue.filter(
+                claimWithDefaultValue => isClaimExistsInIdPClaims(claimWithDefaultValue, selectedClaimsWithMapping)));
+
+            // Set role URI.
+            if (_.isEmpty(selectedClaimsWithMapping?.find(element => element.mappedValue === roleClaimUri))) {
+                setRoleClaimUri("");
+            }
+
+            // Set subject URI.
+            if (_.isEmpty(selectedClaimsWithMapping?.find(element => element.mappedValue === subjectClaimUri))) {
+                setSubjectClaimUri("");
+            }
+        }
+    }, [selectedClaimsWithMapping]);
+
+    const handleAttributesUpdate = () => {
+
+        let canSubmit = true;
+        const claimConfigurations: IdentityProviderClaimsInterface = { ...initialClaims };
+
+        // Prepare claim mapping for submission.
+        if (!_.isEmpty(selectedClaimsWithMapping?.filter(element => _.isEmpty(element.mappedValue)))) {
+            canSubmit = false;
+        }
+        claimConfigurations["mappings"] = selectedClaimsWithMapping.map(element => {
+            return {
+                idpClaim: element.mappedValue,
+                localClaim: element.claim
+            } as IdentityProviderClaimMappingInterface;
         });
+
+        // Prepare provisioning claims for submission.
+        if (!_.isEmpty(selectedProvisioningClaimsWithDefaultValue?.filter(element => _.isEmpty(element.mappedValue)))) {
+            canSubmit = false;
+        }
+        claimConfigurations["provisioningClaims"] = selectedProvisioningClaimsWithDefaultValue.map(element => {
+            return {
+                claim: element.claim,
+                defaultValue: element.mappedValue
+            } as IdentityProviderProvisioningClaimInterface;
+        });
+
+        // Prepare subject for submission.
+        if (_.isEmpty(subjectClaimUri)) {
+            // Trigger form field validation on the empty subject uri.
+            setTriggerUriOptionsValidations();
+            canSubmit = false;
+        }
+        const matchingLocalClaim = availableLocalClaims.find(element => element.uri === subjectClaimUri);
+        claimConfigurations["userIdClaim"] = matchingLocalClaim ? matchingLocalClaim : { uri: subjectClaimUri } as
+            IdentityProviderClaimInterface;
+
+        // Prepare role for submission.
+        if (!_.isEmpty(selectedClaimsWithMapping)) {
+            if (_.isEmpty(roleClaimUri)) {
+                // Trigger form field validation on the empty subject uri.
+                setTriggerUriOptionsValidations();
+                canSubmit = false;
+            }
+            const matchingLocalClaim = availableLocalClaims.find(element => element.uri === roleClaimUri);
+            claimConfigurations["roleClaim"] = matchingLocalClaim ? matchingLocalClaim : { uri: roleClaimUri } as
+                IdentityProviderClaimInterface;
+        }
+
+        if (canSubmit) {
+            handleAttributeSettingsFormSubmit(idpId, claimConfigurations, roleMapping, onUpdate, dispatch);
+        } else {
+            dispatch(addAlert(
+                {
+                    description: "Need to configure all the mandatory properties.",
+                    level: AlertLevels.WARNING,
+                    message: "Cannot perform update"
+                }
+            ));
+        }
     };
 
     useEffect(() => {
-        getRolesList(null)
-            .then((response) => {
-                if (response.status === 200) {
-                    const allRole: RoleListInterface = response.data;
-                    setRoleList(allRole.Resources);
-                }
-            })
-            .catch(() => {
-                dispatch(addAlert({
-                    description: "An error occurred while retrieving roles.",
-                    level: AlertLevels.ERROR,
-                    message: "Get Error"
-                }));
-            });
-    }, [initialRoleMappings]);
-
-    const onSubmit = (mappings) => {
-        const data: IdentityProviderRolesInterface = {
-            mappings: mappings,
-            outboundProvisioningRoles: outboundProvisioningRoles
-        };
-        updateIDPRoleMappings(idpId, data).then(() => {
-            dispatch(addAlert(
-                {
-                    description: "Attributes of the identity provider updated successfully!",
-                    level: AlertLevels.SUCCESS,
-                    message: "Identity Provider updated successfully"
-                }
-            ));
-        }).catch(error => {
-            dispatch(addAlert(
-                {
-                    description: error?.description || "There was an error while updating the identity provider",
-                    level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
-                }
-            ));
-        })
-    };
+        if (roleMapping == undefined) {
+            return;
+        }
+        handleAttributesUpdate();
+    }, [roleMapping]);
 
     return (
-        <Grid className="claim-mapping">
-            <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    <Heading as="h5">Claim Configuration</Heading>
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    <Divider />
-                    <Heading as="h5">Role Mapping</Heading>
-                    <Hint>Map local roles with the Identity Provider roles</Hint>
-                    <DynamicField
-                        data={
-                            initialRoleMappings ?
-                                initialRoleMappings.map(mapping => {
-                                    return {
-                                        key: mapping.localRole,
-                                        value: mapping.idpRole
-                                    }
-                                }) : []
-                        }
-                        keyType="dropdown"
-                        keyData={ roleList ? getFilteredRoles() : [] }
-                        keyName="Local Role"
-                        valueName="Identity Provider Role"
-                        keyRequiredMessage="Please enter the local role"
-                        valueRequiredErrorMessage="Please enter an IDP role to map to"
-                        duplicateKeyErrorMsg="This role is already mapped. Please select another role"
-                        submit={ submit }
-                        update={ (data) => {
-                            if (data.length > 0) {
-                                const finalData: IdentityProviderRoleMappingInterface[] = data.map(mapping => {
-                                    return {
-                                        idpRole: mapping.value,
-                                        localRole: mapping.key
-                                    }
-                                });
-                                onSubmit(finalData);
-                            } else {
-                                onSubmit([]);
-                            }
-                        } }
-                    />
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
-                    <Button
-                        primary
-                        size="small"
-                        onClick={ () => {
-                            setSubmit();
-                        } }
-                    >
-                        Update
-                    </Button>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
+        !isLoading ?
+            <Grid className="attributes-settings">
+                {/* Select attributes for mapping. */}
+                { selectedClaimsWithMapping &&
+                <AttributeSelection
+                    attributeList={ availableLocalClaims }
+                    selectedAttributesWithMapping={ selectedClaimsWithMapping }
+                    setSelectedAttributesWithMapping={ setSelectedClaimsWithMapping }
+                    uiProps={ {
+                        attributeColumnHeader: "Attribute",
+                        attributeMapColumnHeader: "Identity provider attribute",
+                        attributeMapInputPlaceholderPrefix: "eg: IdP's attribute for ",
+                        componentHeading: "Attributes Mapping",
+                        enablePrecedingDivider: false,
+                        hint: "Add attributes supported by Identity Provider"
+                    } }
+                /> }
+
+                { selectedClaimsWithMapping &&
+                <UriAttributesSettings
+                    dropDownOptions={ createDropdownOption(selectedClaimsWithMapping, availableLocalClaims).filter(
+                        element => !_.isEmpty(element)) }
+                    initialRoleUri={ roleClaimUri }
+                    initialSubjectUri={ subjectClaimUri }
+                    claimMappingOn={ !isEmpty(selectedClaimsWithMapping) }
+                    updateRole={ setRoleClaimUri }
+                    updateSubject={ setSubjectClaimUri }
+                /> }
+
+                {/* Select attributes for provisioning. */}
+                { selectedProvisioningClaimsWithDefaultValue &&
+                <AttributeSelection
+                    attributeList={ buildProvisioningClaimList(selectedClaimsWithMapping, availableLocalClaims).filter(
+                        element => !_.isEmpty(element?.uri)) }
+                    selectedAttributesWithMapping={ selectedProvisioningClaimsWithDefaultValue }
+                    setSelectedAttributesWithMapping={ setSelectedProvisioningClaimsWithDefaultValue }
+                    uiProps={ {
+                        attributeColumnHeader: _.isEmpty(selectedClaimsWithMapping) ? "Attribute" : "Identity " +
+                            "provider attribute",
+                        attributeMapColumnHeader: "Default value",
+                        attributeMapInputPlaceholderPrefix: "eg: a default value for the ",
+                        componentHeading: "Provisioning Attributes Selection",
+                        enablePrecedingDivider: true,
+                        hint: "Specify required attributes for provisioning"
+                    } }
+                /> }
+
+                {/* Set role mappings. */}
+                <RoleMappingSettings
+                    triggerSubmit={ triggerSubmission }
+                    initialRoleMappings={ initialRoleMappings }
+                    onSubmit={ setRoleMapping }
+                />
+
+                <Grid.Row>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
+                        <Button
+                            primary
+                            size="small"
+                            onClick={ setTriggerSubmission }
+                        >
+                            Update
+                        </Button>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid> : <ContentLoader/>
     );
 };
