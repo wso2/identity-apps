@@ -47,6 +47,7 @@
     Integer defaultPurposeCatId = null;
     Integer userNameValidityStatusCode = null;
     String username = request.getParameter("username");
+    String tenantDomain = request.getParameter("tenantDomain");
     String consentPurposeGroupName = "SELF-SIGNUP";
     String consentPurposeGroupType = "SYSTEM";
     String[] missingClaimList = new String[0];
@@ -63,7 +64,7 @@
     boolean skipSignUpEnableCheck = Boolean.parseBoolean(request.getParameter("skipsignupenablecheck"));
     boolean isPasswordProvisionEnabled = Boolean.parseBoolean(request.getParameter("passwordProvisionEnabled"));
     String callback = Encode.forHtmlAttribute(request.getParameter("callback"));
-    User user = IdentityManagementServiceUtil.getInstance().getUser(username);
+    User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, false);
 
     if (skipSignUpEnableCheck) {
         consentPurposeGroupName = "JIT";
@@ -78,7 +79,7 @@
 
     try {
         userNameValidityStatusCode = selfRegistrationMgtClient
-                .checkUsernameValidity(username, skipSignUpEnableCheck);
+                .checkUsernameValidity(user, skipSignUpEnableCheck);
     } catch (SelfRegistrationMgtClientException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil

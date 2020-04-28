@@ -39,8 +39,9 @@
 
 <%
     String username = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("username"));
-
-    User user = IdentityManagementServiceUtil.getInstance().getUser(username);
+    String tenantDomain = request.getParameter("tenantDomain");
+    boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
+    User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
 
     NotificationApi notificationApi = new NotificationApi();
 

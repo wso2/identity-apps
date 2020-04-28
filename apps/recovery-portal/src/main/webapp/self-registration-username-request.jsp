@@ -22,7 +22,6 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
-<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 
@@ -52,17 +51,11 @@
         errorMsg = "Self registration is disabled for tenant - " + user.getTenantDomain();
     } else if (SelfRegistrationStatusCodes.CODE_USER_NAME_INVALID.equalsIgnoreCase(errorCode)) {
         errorMsg = user.getUsername() + " is an invalid user name. Please pick a valid username.";
+    } else if (StringUtils.equalsIgnoreCase(SelfRegistrationStatusCodes.ERROR_CODE_INVALID_EMAIL_USERNAME,
+            errorCode)) {
+        errorMsg = "Username is invalid. Username should be in email format.";
     } else if (errorMsgObj != null) {
         errorMsg = errorMsgObj.toString();
-    }
-
-    String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
-    Boolean isEmailUsernameEnabled = false;
-
-    if (StringUtils.isNotBlank(emailUsernameEnable)) {
-        isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
-    } else {
-        isEmailUsernameEnabled = isEmailUsernameEnabled();
     }
 %>
 
@@ -192,48 +185,12 @@
                         console.warn("Prevented a possible double submit event");
                     } else {
                         e.preventDefault();
-                        
-                        var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
-                        var isSaaSApp = JSON.parse("<%= isSaaSApp %>");
-                        var tenantName = "<%= tenantDomain %>";
 
                         var userName = document.getElementById("username");
                         var usernameUserInput = document.getElementById("usernameUserInput");
 
                         if (usernameUserInput) {
-                            var usernameUserInputValue = usernameUserInput.value.trim();
-
-                            if (tenantName !== "null") {
-
-                                if (isEmailUsernameEnabled) {
-
-                                    if (usernameUserInputValue.split("@").length <= 1) {
-                                        var errorMessage = document.getElementById("error-msg");
-
-                                        errorMessage.innerHTML = "Invalid Username. Username has to be an email address.";
-                                        errorMessage.style.display = "block";
-
-                                        return;
-                                    }
-
-                                    if (usernameUserInputValue.split("@").length === 2) {
-                                        userName.value = usernameUserInputValue + "@" + tenantName;
-                                    }
-                                    else {
-                                        userName.value = usernameUserInputValue;
-                                    }
-                                } else {
-                                    if (usernameUserInputValue.split("@").length > 1) {
-                                        userName.value = usernameUserInputValue;
-                                    } else {
-                                        userName.value = usernameUserInputValue + "@" + tenantName;
-                                    }
-
-                                }
-                                
-                            } else {
-                                userName.value = usernameUserInputValue;
-                            }
+                            userName.value = usernameUserInput.value.trim();
                         }
 
                         // Mark it so that the next submit can be ignored.

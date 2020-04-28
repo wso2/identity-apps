@@ -30,7 +30,6 @@
 <%@ page import="javax.ws.rs.core.Response" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isSelfSignUpEPAvailable" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isRecoveryEPAvailable" %>
-<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
 <%@ page import="org.apache.commons.codec.binary.Base64" %>
 <%@ page import="java.nio.charset.Charset" %>
@@ -40,17 +39,6 @@
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
-
-<%
-    String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
-    Boolean isEmailUsernameEnabled = false;
-
-    if (StringUtils.isNotBlank(emailUsernameEnable)) {
-        isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
-    } else {
-        isEmailUsernameEnabled = isEmailUsernameEnabled();
-    }
-%>
 
 <script>
     function goBack() {
@@ -69,47 +57,13 @@
                 } else {
                     e.preventDefault();
 
-                    var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
-                    var isSaaSApp = JSON.parse(getParameterByName("isSaaSApp").toLowerCase());
                     var tenantName = getParameterByName("tenantDomain");
 
                     var userName = document.getElementById("username");
                     var usernameUserInput = document.getElementById("usernameUserInput");
 
                     if (usernameUserInput) {
-                        var usernameUserInputValue = usernameUserInput.value.trim();
-
-                        if (tenantName && tenantName !== "null") {
-
-                            if (isEmailUsernameEnabled) {
-
-                                if (usernameUserInputValue.split("@").length <= 1) {
-                                    var errorMessage = document.getElementById("error-msg");
-
-                                    errorMessage.innerHTML = "Invalid Username. Username has to be an email address.";
-                                    errorMessage.style.display = "block";
-
-                                    return;
-                                }
-
-                                if (usernameUserInputValue.split("@").length === 2) {
-                                    userName.value = usernameUserInputValue + "@" + tenantName;
-                                }
-                                else {
-                                    userName.value = usernameUserInputValue;
-                                }
-                            } else {
-                                if (usernameUserInputValue.split("@").length > 1) {
-                                    userName.value = usernameUserInputValue;
-                                } else {
-                                    userName.value = usernameUserInputValue + "@" + tenantName;
-                                }
-
-                            }
-                            
-                        } else {
-                            userName.value = usernameUserInputValue;
-                        }
+                        userName.value = usernameUserInput.value.trim();
                     }
 
                     if (userName.value) {

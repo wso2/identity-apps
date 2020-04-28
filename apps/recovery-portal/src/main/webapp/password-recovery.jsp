@@ -20,13 +20,11 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.ReCaptchaApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
-<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.*" %>
 
@@ -36,8 +34,12 @@
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
     String username = request.getParameter("username");
-    boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
     String tenantDomain = request.getParameter("tenantDomain");
+    boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
+
+    if (StringUtils.isBlank(tenantDomain)) {
+        tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
+    }
 
     ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
     try {
@@ -68,15 +70,6 @@
     if (request.getAttribute("reCaptcha") != null &&
             "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
         reCaptchaEnabled = true;
-    }
-
-    String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
-    Boolean isEmailUsernameEnabled = false;
-
-    if (StringUtils.isNotBlank(emailUsernameEnable)) {
-        isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
-    } else {
-        isEmailUsernameEnabled = isEmailUsernameEnabled();
     }
 %>
 
@@ -142,7 +135,9 @@
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.your.username.here")%>
                             </label>
                             <input id="usernameUserInput" name="usernameUserInput" type="text" tabindex="0" required>
-                            <input id="username" name="username" type="hidden" required>
+                            <input id="username" name="username" type="hidden">
+                            <input id="tenantDomain" name="tenantDomain" value="<%= tenantDomain %>" type="hidden">
+                            <input id="isSaaSApp" name="isSaaSApp" value="<%= isSaaSApp %>" type="hidden">
                         </div>
 
                         <%
@@ -242,38 +237,11 @@
                 var errorMessage = $("#error-msg");
                 errorMessage.hide();
 
-                var isSaaSApp = JSON.parse("<%= isSaaSApp %>");
-                var tenantDomain = "<%= tenantDomain %>";
-                var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
-
                 var userName = document.getElementById("username");
                 var usernameUserInput = document.getElementById("usernameUserInput");
-                var usernameUserInputValue = usernameUserInput.value.trim();
-
-                if ((tenantDomain !== "null") && !isSaaSApp) {
-                    if (!isEmailUsernameEnabled && (usernameUserInputValue.split("@").length >= 2)) {
-
-                        errorMessage.text(
-                            "Invalid Username. Username shouldn't have '@' or any other special characters.");
-                        errorMessage.show();
-
-                        return;
-                    }
-
-                    if (isEmailUsernameEnabled && (usernameUserInputValue.split("@").length <= 1)) {
-
-                        errorMessage.text("Invalid Username. Username has to be an email address.");
-                        errorMessage.show();
-
-                        return;
-                    }
-                    
-                    userName.value = usernameUserInputValue + "@" + tenantDomain;
-                } else {
-                    userName.value = usernameUserInputValue;
+                if (usernameUserInput) {
+                    userName.value = usernameUserInput.value.trim();
                 }
-
-
                 // Validate User Name
                 var firstName = $("#username").val();
 
