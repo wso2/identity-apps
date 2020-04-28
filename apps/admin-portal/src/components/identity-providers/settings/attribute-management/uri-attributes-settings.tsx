@@ -16,11 +16,10 @@
  * under the License.
  */
 
-import { Field, Forms } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement } from "react";
-import { Divider, Grid } from "semantic-ui-react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
+import { Divider, Form, Grid } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "../attribute-settings";
 
 interface AdvanceAttributeSettingsPropsInterface {
@@ -30,7 +29,6 @@ interface AdvanceAttributeSettingsPropsInterface {
     claimMappingOn: boolean;
     updateRole: (roleUri: string) => void;
     updateSubject: (subjectUri: string) => void;
-    triggerSubmit: boolean;
 }
 
 export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPropsInterface> = (
@@ -43,8 +41,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
         initialRoleUri,
         claimMappingOn,
         updateRole,
-        updateSubject,
-        triggerSubmit
+        updateSubject
     } = props;
 
     const getValidatedInitialValue = (initialValue: string) => {
@@ -59,30 +56,32 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                     <Divider hidden/>
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-                    <Forms submitState={ triggerSubmit } onSubmit={ (): void => { } }>
-                        <Divider hidden/>
-                        <Heading as="h5">Subject</Heading>
-                        <Divider hidden/>
-                        <Field
-                            name="subjectAttribute"
-                            label="Subject attribute"
+                    <Heading as="h5">Subject</Heading>
+                    <Divider hidden/>
+                    <Form>
+                        <Form.Select
+                            fluid
                             required={ true }
-                            requiredErrorMessage="Select the subject attribute"
-                            type="dropdown"
+                            options={ dropDownOptions }
                             value={ getValidatedInitialValue(initialSubjectUri) }
-                            children={ dropDownOptions }
-                            listen={
-                                (values) => {
-                                    updateSubject(values.get("subjectAttribute").toString())
+                            placeholder={ "Select Attribute" }
+                            onChange={
+                                (event, data) => {
+                                    updateSubject(data.value.toString())
                                 }
                             }
-                            placeholder={ "Select Attribute" }
+                            search
+                            fullTextSearch={ false }
+                            error={ _.isEmpty(getValidatedInitialValue(initialSubjectUri)) && {
+                                content: "Please select an attribute for subject",
+                                pointing: "above"
+                            } }
+                            label={ "Subject Attribute" }
                         />
-                        <Hint>
-                            Specifies the attribute that identifies the user at the identity provider
-                        </Hint>
-                    </Forms>
+                    </Form>
+                    <Hint>
+                        Specifies the attribute that identifies the user at the identity provider
+                    </Hint>
                 </Grid.Column>
             </Grid.Row>
             {
@@ -93,30 +92,32 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                         <Divider hidden/>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-                        <Forms submitState={ triggerSubmit } onSubmit={ (): void => { } }>
-                            <Divider hidden/>
-                            <Heading as="h5">Role</Heading>
-                            <Divider hidden/>
-                            <Field
-                                name="roleAttribute"
-                                label="Role attribute"
+                        <Heading as="h5">Role</Heading>
+                        <Divider hidden/>
+                        <Form>
+                            <Form.Select
+                                fluid
                                 required={ true }
-                                requiredErrorMessage="Select the role attribute"
-                                type="dropdown"
+                                options={ dropDownOptions }
                                 value={ getValidatedInitialValue(initialRoleUri) }
-                                children={ dropDownOptions }
-                                listen={
-                                    (values) => {
-                                        updateRole(values.get("roleAttribute").toString())
+                                placeholder={ "Select Attribute" }
+                                onChange={
+                                    (event, data) => {
+                                        updateRole(data.value.toString())
                                     }
                                 }
-                                placeholder={ "Select Attribute" }
+                                search
+                                fullTextSearch={ false }
+                                error={ _.isEmpty(getValidatedInitialValue(initialRoleUri)) && {
+                                    content: "Please select an attribute for role",
+                                    pointing: "above"
+                                } }
+                                label={ "Role Attribute" }
                             />
-                            <Hint>
-                                Specifies the attribute that identifies the Roles at the Identity Provider
-                            </Hint>
-                        </Forms>
+                        </Form>
+                        <Hint>
+                            Specifies the attribute that identifies the Roles at the Identity Provider
+                        </Hint>
                     </Grid.Column>
                 </Grid.Row>
             }

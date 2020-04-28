@@ -92,9 +92,10 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                     setRoleList(allRole.Resources);
                 }
             })
-            .catch(() => {
+            .catch((error) => {
                 dispatch(addAlert({
-                    description: "An error occurred while retrieving roles.",
+                    description: error?.response?.data?.description ? error.response.data.description : "An error " +
+                        "occurred while retrieving roles.",
                     level: AlertLevels.ERROR,
                     message: "Get Error"
                 }));

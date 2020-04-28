@@ -271,7 +271,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     claimMappingOn={ !isEmpty(selectedClaimsWithMapping) }
                     updateRole={ setRoleClaimUri }
                     updateSubject={ setSubjectClaimUri }
-                    triggerSubmit={ triggerUriOptionsValidations }
                 /> }
 
                 {/* Select attributes for provisioning. */}
