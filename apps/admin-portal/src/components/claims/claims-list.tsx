@@ -565,20 +565,23 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                             }
                                             actionsFloated="right"
                                             itemHeader={ claim.claimURI }
-                                            itemDescription={ claim.mappedLocalClaimURI }
                                             metaContent={ [
+                                                editClaim !== claim?.id
+                                                    ? claim.mappedLocalClaimURI
+                                                    : null,
                                                 editClaim === claim?.id
-                                                && <EditExternalClaim
-                                                    claimID={ claim.id }
-                                                    dialectID={ dialectID }
-                                                    update={ () => {
-                                                        setEditClaim("");
-                                                        update();
-                                                    } }
-                                                    submit={ submitExternalClaim }
-                                                    claimURI={ claim.claimURI }
-                                                />
-                                            ] }
+                                                    ? <EditExternalClaim
+                                                        claimID={ claim.id }
+                                                        dialectID={ dialectID }
+                                                        update={ () => {
+                                                            setEditClaim("");
+                                                            update();
+                                                        } }
+                                                        submit={ submitExternalClaim }
+                                                        claimURI={ claim.claimURI }
+                                                    />
+                                                    : null
+                                            ].filter(meta => meta !== null) }
                                         />
                                     )
                                 })
