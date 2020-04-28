@@ -188,7 +188,9 @@ export const InboundProtocolLogos = {
     openid: OpenIDLogo,
     saml: SamlLogo,
     wsFed: WSFedLogo,
-    wsTrust: WSTrustLogo
+    wsTrust: WSTrustLogo,
+    "ws-trust": WSTrustLogo,
+    "passive-sts": WSFedLogo
 };
 
 export const ApplicationTemplateIllustrations = {
