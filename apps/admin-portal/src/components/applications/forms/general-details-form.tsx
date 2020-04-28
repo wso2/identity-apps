@@ -55,6 +55,10 @@ interface GeneralDetailsFormPopsInterface {
      * On submit callback.
      */
     onSubmit: (values: any) => void;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -71,7 +75,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         discoverability,
         imageUrl,
         accessUrl,
-        onSubmit
+        onSubmit,
+        readOnly
     } = props;
 
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
@@ -126,6 +131,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             placeholder={ name }
                             type="text"
                             value={ name }
+                            readOnly={ readOnly }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -139,6 +145,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             placeholder="Enter a description for the application"
                             type="textarea"
                             value={ description }
+                            readOnly={ readOnly }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -158,6 +165,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 }
                             } }
                             value={ imageUrl }
+                            readOnly={ readOnly }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -175,6 +183,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 }
                             ] }
                             value={ isDiscoverable ? [ "discoverable" ] : [] }
+                            readOnly={ readOnly }
                         />
                         <Field
                             name="accessUrl"
@@ -191,19 +200,24 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 }
                             } }
                             value={ accessUrl }
+                            readOnly={ readOnly }
                         />
                         <Hint>
                             Applications flagged as discoverable are visible for end users.
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Button primary type="submit" size="small" className="form-button">
-                            Update
-                        </Button>
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    !readOnly && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Button primary type="submit" size="small" className="form-button">
+                                    Update
+                                </Button>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
             </Grid>
         </Forms>
     );

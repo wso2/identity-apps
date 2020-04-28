@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -28,13 +29,14 @@ import { updateAuthenticationSequence } from "../../../api";
 import {
     AdaptiveAuthTemplateInterface,
     AuthenticationSequenceInterface,
-    AuthenticationStepInterface
+    AuthenticationStepInterface,
+    FeatureConfigInterface
 } from "../../../models";
 
 /**
  * Proptypes for the sign on methods component.
  */
-interface SignOnMethodsPropsInterface {
+interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
      * ID of the application.
      */
@@ -51,10 +53,6 @@ interface SignOnMethodsPropsInterface {
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
-    /**
-     * CRUD permissions,
-     */
-    permissions?: CRUDPermissionsInterface;
 }
 
 /**
@@ -70,6 +68,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const {
         appId,
         authenticationSequence,
+        featureConfig,
         isLoading,
         onUpdate
     } = props;
@@ -200,6 +199,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 isLoading={ isLoading }
                 onUpdate={ handleSequenceUpdate }
                 triggerUpdate={ updateTrigger }
+                readOnly={
+                    !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                }
             />
             <Divider hidden />
             <ScriptBasedFlow
@@ -207,9 +209,16 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 isLoading={ isLoading }
                 onTemplateSelect={ handleLoadingDataFromTemplate }
                 onScriptChange={ handleAdaptiveScriptChange }
+                readOnly={
+                    !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                }
             />
             <Divider hidden/>
-            <PrimaryButton onClick={ handleUpdateClick }>Update</PrimaryButton>
+            {
+                hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update) && (
+                    <PrimaryButton onClick={ handleUpdateClick }>Update</PrimaryButton>
+                )
+            }
         </div>
     );
 };

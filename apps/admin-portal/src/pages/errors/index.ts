@@ -17,4 +17,5 @@
  */
 
 export * from "./404";
+export * from "./unauthorized";
 export * from "./under-construction";

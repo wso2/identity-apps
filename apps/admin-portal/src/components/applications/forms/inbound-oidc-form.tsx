@@ -39,6 +39,10 @@ interface InboundOIDCFormPropsInterface {
     initialValues: OIDCDataInterface;
     onSubmit: (values: any) => void;
     handleApplicationRegenerate: () => void;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -56,7 +60,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         metadata,
         initialValues,
         onSubmit,
-        handleApplicationRegenerate
+        handleApplicationRegenerate,
+        readOnly
     } = props;
 
     const [isEncryptionEnabled, setEncryptionEnable] = useState(false);
@@ -293,13 +298,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         />
                                     </Grid.Column>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 4 }>
-                                        <Button
-                                            color="red"
-                                            className="oidc-regenerate-button"
-                                            onClick={ handleRegenerateButton }
-                                        >
-                                            Regenerate
-                                        </Button>
+                                        {
+                                            !readOnly && (
+                                                <Button
+                                                    color="red"
+                                                    className="oidc-regenerate-button"
+                                                    onClick={ handleRegenerateButton }
+                                                >
+                                                    Regenerate
+                                                </Button>
+                                            )
+                                        }
                                         <ConfirmationModal
                                             onClose={ (): void => setShowRegenerateConfirmationModal(false) }
                                             type="warning"
@@ -344,6 +353,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     requiredErrorMessage="Select at least a  grant type"
                                     children={ getAllowedList(metadata.allowedGrantTypes, true, true) }
                                     value={ initialValues.grantTypes }
+                                    readOnly={ readOnly }
                                 />
                                 <Hint>This will determine how the application communicates with the token service</Hint>
                             </Grid.Column>
@@ -366,6 +376,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             setShowError={ setShowURLError }
                             hint={ " After the authentication, we will only redirect to the above callback URLs " +
                             "and you can specify multiple URLs" }
+                            readOnly={ readOnly }
                         />
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -406,6 +417,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             value: "supportPublicClients"
                                         }
                                     ] }
+                                    readOnly={ readOnly }
                                 />
                                 <Hint>
                                     Allow the client to authenticate without a client secret.
@@ -443,6 +455,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             value: "supportPlainTransformAlgorithm"
                                         }
                                     ] }
+                                    readOnly={ readOnly }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -467,6 +480,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         : metadata.accessTokenType.defaultValue }
                                     type="radio"
                                     children={ getAllowedList(metadata.accessTokenType, true) }
+                                    readOnly={ readOnly }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -482,6 +496,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         metadata.defaultUserAccessTokenExpiryTime }
                                     placeholder="Enter the user access token expiry time "
                                     type="number"
+                                    readOnly={ readOnly }
                                 />
                                 <Hint>Configure the user access token expiry time (in seconds).</Hint>
                             </Grid.Column>
@@ -527,6 +542,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             value: "refreshToken"
                                         }
                                     ] }
+                                    readOnly={ readOnly }
                                 />
                                 <Hint>Issue a new refresh token per request when Refresh Token Grant is used.</Hint>
                             </Grid.Column>
@@ -543,6 +559,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         initialValues.refreshToken.expiryInSeconds.toString() :
                                         metadata.defaultRefreshTokenExpiryTime }
                                     type="number"
+                                    readOnly={ readOnly }
                                 />
                                 <Hint>Configure the refresh token expiry time (in seconds).</Hint>
                             </Grid.Column>
@@ -565,6 +582,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     placeholder="Enter Audience"
                                     value={ initialValues.idToken?.audience.toString() }
                                     type="textarea"
+                                    readOnly={ readOnly }
                                 />
                                 <Hint>The recipients that the ID token is intended for.</Hint>
                             </Grid.Column>
@@ -592,6 +610,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             value: "enableEncryption"
                                         }
                                     ] }
+                                    readOnly={ readOnly }
                                 />
                                 <Hint>Enable ID token encryption.</Hint>
                             </Grid.Column>
@@ -628,6 +647,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     placeholder="Select Method"
                                     children={ getAllowedList(metadata.idTokenEncryptionMethod) }
                                     disabled={ !isEncryptionEnabled }
+                                    readOnly={ readOnly }
                                 />
                                 <Hint disabled={ !isEncryptionEnabled }>
                                     Choose the method for the ID token encryption.
@@ -645,6 +665,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     value={ initialValues.idToken ? initialValues.idToken.expiryInSeconds.toString() :
                                         metadata.defaultIdTokenExpiryTime }
                                     type="number"
+                                    readOnly={ readOnly }
                                 />
                                 <Hint>Configure the ID token expiry time (in seconds).</Hint>
                             </Grid.Column>
@@ -667,6 +688,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     placeholder="Enter the Back Channel Logout URL"
                                     type="text"
                                     value={ initialValues.logout?.backChannelLogoutUrl }
+                                    readOnly={ readOnly }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -680,6 +702,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     placeholder="Enter the Front Channel Logout URL"
                                     type="text"
                                     value={ initialValues.logout?.frontChannelLogoutUrl }
+                                    readOnly={ readOnly }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -699,6 +722,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             value: "EnableRequestObjectSignatureValidation"
                                         }
                                     ] }
+                                    readOnly={ readOnly }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -719,16 +743,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     type="checkbox"
                                     value={ initialValues.scopeValidators }
                                     children={ getAllowedList(metadata.scopeValidators, true) }
+                                    readOnly={ readOnly }
                                 />
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Button primary type="submit" size="small" className="form-button">
-                                    Update
-                                </Button>
-                            </Grid.Column>
-                        </Grid.Row>
+                        {
+                            !readOnly && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                        <Button primary type="submit" size="small" className="form-button">
+                                            Update
+                                        </Button>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                        }
                     </Grid>
                 </Forms>
             )

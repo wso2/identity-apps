@@ -17,6 +17,7 @@
  */
 
 import { commonConfigReducer } from "@wso2is/core/store";
+import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { combineReducers } from "redux";
 import {
     LoadersReducer,
@@ -27,7 +28,12 @@ import {
     identityProviderReducer
 } from "./reducers";
 import { helpPanelReducer } from "./reducers/help-panel";
-import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "../models";
+import {
+    DeploymentConfigInterface,
+    FeatureConfigInterface,
+    ServiceResourceEndpointsInterface,
+    UIConfigInterface
+} from "../models";
 
 /**
  * Combines all the reducers.
@@ -37,8 +43,13 @@ import { RuntimeConfigInterface, ServiceResourceEndpointsInterface } from "../mo
 export const reducers = combineReducers({
     application: applicationReducer,
     authenticationInformation: authenticateReducer,
-    config: commonConfigReducer<RuntimeConfigInterface, ServiceResourceEndpointsInterface>(
-        commonConfigReducerInitialState),
+    config: commonConfigReducer<
+        DeploymentConfigInterface,
+        ServiceResourceEndpointsInterface,
+        FeatureConfigInterface,
+        I18nModuleOptionsInterface,
+        UIConfigInterface
+        >(commonConfigReducerInitialState),
     global: globalReducer,
     helpPanel: helpPanelReducer,
     identityProvider: identityProviderReducer,

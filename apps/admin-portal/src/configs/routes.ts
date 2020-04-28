@@ -19,6 +19,7 @@
 import { RouteInterface } from "@wso2is/core/models";
 import { SignIn, SignOut } from "../components/authentication";
 import {
+    ApplicationConstants,
     CLAIM_DIALECTS_PATH,
     EDIT_EXTERNAL_DIALECT,
     EDIT_LOCAL_CLAIMS_PATH,
@@ -27,12 +28,15 @@ import {
 } from "../constants";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultPageLayout, ErrorPageLayout } from "../layouts";
 import {
+    AddTemplateLocale,
     ApplicationEditPage,
     ApplicationTemplateSelectPage,
     ApplicationsPage,
     CertificatesKeystore,
     ClaimDialectsPage,
     CustomizePage,
+    EmailTemplateTypes,
+    EmailTemplates,
     ExternalDialectEditPage,
     GroupsPage,
     HomePage,
@@ -46,13 +50,11 @@ import {
     RoleEditPage,
     RolesPage,
     ServerConfigurationsPage,
+    UnauthorizedErrorPage,
     UserEditPage,
     UserStores,
     UserStoresEditPage,
-    UsersPage,
-    EmailTemplateTypes,
-    EmailTemplates,
-    AddTemplateLocale
+    UsersPage
 } from "../pages";
 
 /**
@@ -164,7 +166,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 component: GroupsPage,
                 exact: true,
                 icon: "childIcon",
-                id: "userGroups",
+                id: "groups",
                 level: 2,
                 name: "Groups",
                 path: "/groups",
@@ -221,32 +223,45 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
-        component: LocalClaimsPage,
-        exact: true,
-        icon: "childIcon",
-        id: "localDialect",
-        level: 2,
-        name: "Local Dialect",
-        path: LOCAL_CLAIMS_PATH,
-        protected: true,
-        showOnSidePanel: false
-    },
-    {
-        component: ExternalDialectEditPage,
-        exact: true,
-        icon: "childIcon",
-        id: "editExternalDialect",
-        level: 2,
-        name: "Edit External Dialect",
-        path: `${EDIT_EXTERNAL_DIALECT}/:id`,
-        protected: true,
-        showOnSidePanel: false
-    },
-    {
+        children: [
+            {
+                component: LocalClaimsEditPage,
+                exact: true,
+                icon: "childIcon",
+                id: "editLocalClaims",
+                level: 2,
+                name: "Edit Local Claims",
+                path: `${EDIT_LOCAL_CLAIMS_PATH}/:id`,
+                protected: true,
+                showOnSidePanel: false
+            },
+            {
+                component: LocalClaimsPage,
+                exact: true,
+                icon: "childIcon",
+                id: "localDialect",
+                level: 2,
+                name: "Local Dialect",
+                path: LOCAL_CLAIMS_PATH,
+                protected: true,
+                showOnSidePanel: false
+            },
+            {
+                component: ExternalDialectEditPage,
+                exact: true,
+                icon: "childIcon",
+                id: "editExternalDialect",
+                level: 2,
+                name: "Edit External Dialect",
+                path: `${EDIT_EXTERNAL_DIALECT}/:id`,
+                protected: true,
+                showOnSidePanel: false
+            },
+        ],
         component: ClaimDialectsPage,
         exact: true,
         icon: "claims",
-        id: "claimDialects",
+        id: "attributeDialects",
         level: 2,
         name: "Claim Dialects",
         path: CLAIM_DIALECTS_PATH,
@@ -254,17 +269,17 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
-        component: LocalClaimsEditPage,
-        exact: true,
-        icon: "childIcon",
-        id: "editLocalClaims",
-        level: 2,
-        name: "Edit Local Claims",
-        path: `${EDIT_LOCAL_CLAIMS_PATH}/:id`,
-        protected: true,
-        showOnSidePanel: false
-    },
-    {
+        children: [
+            {
+                component: UserStoresEditPage,
+                icon: "userStore",
+                id: "edit-user-store",
+                name: "Edit Userstore",
+                path: "/edit-user-store/:id",
+                protected: true,
+                showOnSidePanel: false
+            }
+        ],
         component: UserStores,
         icon: "userStore",
         id: "userStores",
@@ -272,15 +287,6 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         path: USER_STORES_PATH,
         protected: true,
         showOnSidePanel: true
-    },
-    {
-        component: UserStoresEditPage,
-        icon: "userStore",
-        id: "edit-user-store",
-        name: "Edit Userstore",
-        path: "/edit-user-store/:id",
-        protected: true,
-        showOnSidePanel: false
     },
     {
         component: CertificatesKeystore,
@@ -292,18 +298,12 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
-        exact: true,
-        icon: "serverConfigurations",
-        id: "serverConfigurations",
-        name: "Configurations",
-        protected: true,
-        showOnSidePanel: true,
         children: [
             {
                 component: ServerConfigurationsPage,
                 exact: true,
                 icon: "childIcon",
-                id: "serverConfigurations",
+                id: "generalConfigurations",
                 level: 2,
                 name: "General",
                 path: "/server-configurations",
@@ -312,8 +312,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             },{
                 component: EmailTemplateTypes,
                 exact: true,
-                icon: "serverConfigurations",
-                id: "emailTemplateTypes",
+                icon: "childIcon",
+                id: "emailTemplates",
                 level: 2,
                 name: "Email Templates",
                 path: "/email-templates",
@@ -348,6 +348,12 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             }
         ],
+        exact: true,
+        icon: "serverConfigurations",
+        id: "serverConfigurations",
+        name: "Configurations",
+        protected: true,
+        showOnSidePanel: true
     },
     {
         component: CustomizePage,
@@ -398,6 +404,15 @@ const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
  * Error page layout routes array.
  */
 const ERROR_LAYOUT_ROUTES: RouteInterface[] = [
+    {
+        component: UnauthorizedErrorPage,
+        icon: null,
+        id: "unauthorized",
+        name: "Unauthorized",
+        path: ApplicationConstants.PATHS.get("UNAUTHORIZED"),
+        protected: true,
+        showOnSidePanel: false
+    },
     {
         component: PageNotFound,
         icon: null,
@@ -461,6 +476,16 @@ const APP_ROUTES: RouteInterface[] = [
         id: "appRoutePrivacy",
         name: "Privacy",
         path: "/privacy",
+        protected: true,
+        showOnSidePanel: false
+    },
+    {
+        component: ErrorPageLayout,
+        exact: true,
+        icon: null,
+        id: "unauthorized",
+        name: "Unauthorized",
+        path: ApplicationConstants.PATHS.get("UNAUTHORIZED"),
         protected: true,
         showOnSidePanel: false
     },

@@ -40,11 +40,21 @@ interface RoleMappingPropsInterface {
      * Initial values of the role mapping
      */
     initialMappings: RoleMappingInterface[];
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 export const RoleMapping = (props: RoleMappingPropsInterface): React.ReactElement => {
 
-    const { onSubmit, submitState, initialMappings } = props;
+    const {
+        onSubmit,
+        submitState,
+        initialMappings,
+        readOnly
+    } = props;
+
     const [roleList, setRoleList] = useState<RolesInterface[]>();
     const dispatch = useDispatch();
 
@@ -124,6 +134,7 @@ export const RoleMapping = (props: RoleMappingPropsInterface): React.ReactElemen
                                 onSubmit([]);
                             }
                         } }
+                        readOnly={ readOnly }
                     />
                 </Grid.Column>
             </Grid.Row>

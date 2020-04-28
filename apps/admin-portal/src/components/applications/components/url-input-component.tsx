@@ -35,6 +35,10 @@ interface URLInputComponentInterface {
     required?: boolean;
     disabled?: boolean;
     hideComponent?: boolean;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -56,7 +60,8 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
         hint,
         required,
         disabled,
-        hideComponent
+        hideComponent,
+        readOnly
     } = props;
 
     const [changeUrl, setChangeUrl] = useState<string>("");
@@ -215,18 +220,20 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                         onBlur={ handleOnBlur }
                         placeholder={ placeholder }
                         action
+                        readOnly={ readOnly }
                     >
                         <input
                             disabled={ disabled ? disabled : false }
                         />
                         <Popup
+                            disabled={ readOnly }
                             trigger={
                                 (
                                     <Button
                                         onClick={ (e) => addFromButton(e) }
                                         icon="add"
                                         type="button"
-                                        disabled={ disabled ? disabled : false }
+                                        disabled={ readOnly || disabled }
                                     />
                                 )
                             }
@@ -279,10 +286,14 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Label>
                                     { url }
-                                    <Icon
-                                        name="delete"
-                                        onClick={ () => removeValue(url) }
-                                    />
+                                    {
+                                        !readOnly && (
+                                            <Icon
+                                                name="delete"
+                                                onClick={ () => removeValue(url) }
+                                            />
+                                        )
+                                    }
                                 </Label>
                             </Grid.Column>
                         </Grid.Row>
@@ -297,8 +308,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
-            )
-            }
+            ) }
         </>
     );
 };

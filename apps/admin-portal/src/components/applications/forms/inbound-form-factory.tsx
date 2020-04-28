@@ -32,6 +32,10 @@ interface InboundFormFactoryInterface {
     onSubmit: (values: any) => void;
     type: SupportedAuthProtocolTypes;
     handleApplicationRegenerate?: () => void;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -49,7 +53,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         initialValues,
         onSubmit,
         type,
-        handleApplicationRegenerate
+        handleApplicationRegenerate,
+        readOnly
     } = props;
 
     switch (type) {
@@ -60,14 +65,35 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     metadata={ metadata }
                     onSubmit={ onSubmit }
                     handleApplicationRegenerate={ handleApplicationRegenerate }
+                    readOnly={ readOnly }
                 />
             );
         case SupportedAuthProtocolTypes.SAML:
-            return <InboundSAMLForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit }/>;
+            return (
+                <InboundSAMLForm
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    readOnly={ readOnly }
+                />
+            );
         case SupportedAuthProtocolTypes.WS_TRUST:
-            return <InboundWSTrustForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit }/>;
+            return (
+                <InboundWSTrustForm
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    readOnly={ readOnly }
+                />
+            );
         case SupportedAuthProtocolTypes.WS_FEDERATION:
-            return <InboundPassiveStsForm initialValues={ initialValues } onSubmit={ onSubmit }/>;
+            return (
+                <InboundPassiveStsForm
+                    initialValues={ initialValues }
+                    onSubmit={ onSubmit }
+                    readOnly={ readOnly }
+                />
+            );
         default:
             return null;
     }

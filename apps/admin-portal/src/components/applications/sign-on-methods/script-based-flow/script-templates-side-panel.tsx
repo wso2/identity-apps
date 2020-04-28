@@ -63,6 +63,10 @@ interface ScriptTemplatesSidePanelInterface {
      * Ref for the component.
      */
     ref?: React.RefObject<ScriptTemplatesSidePanelRefType>;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -81,7 +85,8 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
             onTemplateSelect,
             templates,
             title,
-            visible
+            visible,
+            readOnly
         } = props;
 
         const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
@@ -157,20 +162,26 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                                                     content={ template.name }
                                                                     inverted
                                                                 />
-                                                                <Popup
-                                                                    trigger={ (
-                                                                        <Icon
-                                                                            className="add-button"
-                                                                            name="add"
-                                                                            onClick={
-                                                                                () => onTemplateSelect(template)
-                                                                            }
+                                                                {
+                                                                    !readOnly && (
+                                                                        <Popup
+                                                                            trigger={ (
+                                                                                <Icon
+                                                                                    className="add-button"
+                                                                                    name="add"
+                                                                                    onClick={
+                                                                                        () => onTemplateSelect(
+                                                                                            template
+                                                                                        )
+                                                                                    }
+                                                                                />
+                                                                            ) }
+                                                                            position="top center"
+                                                                            content="Add"
+                                                                            inverted
                                                                         />
-                                                                    ) }
-                                                                    position="top center"
-                                                                    content="Add"
-                                                                    inverted
-                                                                />
+                                                                    )
+                                                                }
                                                             </Menu.Item>
                                                         ))
                                                     }

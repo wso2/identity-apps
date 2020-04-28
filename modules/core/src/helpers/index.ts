@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./access-control";
 export * from "./history";
 export * from "./http-headers";
 export * from "./profile";

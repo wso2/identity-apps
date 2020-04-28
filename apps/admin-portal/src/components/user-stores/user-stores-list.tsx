@@ -16,19 +16,21 @@
 * under the License.
 */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { SBACInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components";
-import React, { ReactElement, useContext, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Modal } from "semantic-ui-react";
 import { deleteUserStore } from "../../api";
-import { AppConfig, history } from "../../helpers";
-import { AlertLevels, AppConfigInterface, UserStoreListItem } from "../../models";
-import { addAlert } from "../../store/actions";
+import { history } from "../../helpers";
+import { AlertLevels, FeatureConfigInterface, UserStoreListItem } from "../../models";
 
 /**
  * Prop types of the `UserStoresList` component
  */
-interface UserStoresListPropsInterface {
+interface UserStoresListPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
      * The userstore list
      */
@@ -46,14 +48,16 @@ interface UserStoresListPropsInterface {
  */
 export const UserStoresList = (props: UserStoresListPropsInterface): ReactElement => {
 
-    const { list, update } = props;
+    const {
+        featureConfig,
+        list,
+        update
+    } = props;
 
     const [deleteConfirm, setDeleteConfirm] = useState(false);
     const [deleteID, setDeleteID] = useState<string>(null);
 
     const dispatch = useDispatch();
-
-    const appConfig: AppConfigInterface = useContext(AppConfig);
 
     /**
      * Delete a userstore
@@ -137,33 +141,35 @@ export const UserStoresList = (props: UserStoresListPropsInterface): ReactElemen
             {showDeleteConfirm()}
             <ResourceList>
                 {
-                    appConfig?.userStores?.permissions?.read
-                    && list?.map((userStore: UserStoreListItem, index: number) => {
-                        return (
-                            <ResourceList.Item
-                                key={ index }
-                                actions={ [
-                                    appConfig?.userStores?.permissions?.update && {
-                                        icon: "pencil alternate",
-                                        onClick: () => {
-                                            history.push("/edit-user-store/"+userStore?.id);
-                                        },
-                                        popupText: "Edit",
-                                        type: "button"
+                    list?.map((userStore: UserStoreListItem, index: number) => (
+                        <ResourceList.Item
+                            key={ index }
+                            actions={ [
+                                {
+                                    icon: "pencil alternate",
+                                    onClick: () => {
+                                        history.push("/edit-user-store/" + userStore?.id);
                                     },
-                                    appConfig?.userStores?.permissions?.delete && {
-                                        icon: "trash alternate",
-                                        onClick: () => { initDelete(userStore?.id) },
-                                        popupText: "Delete",
-                                        type: "dropdown"
-                                    }
-                                ] }
-                                actionsFloated="right"
-                                itemHeader={ userStore.name }
-                                metaContent={ userStore.description }
-                            />
-                        )
-                    })
+                                    popupText: "Edit",
+                                    type: "button"
+                                },
+                                {
+                                    hidden: !hasRequiredScopes(
+                                        featureConfig?.userStores,
+                                        featureConfig?.userStores?.scopes?.delete),
+                                    icon: "trash alternate",
+                                    onClick: () => {
+                                        initDelete(userStore?.id)
+                                    },
+                                    popupText: "Delete",
+                                    type: "dropdown"
+                                }
+                            ] }
+                            actionsFloated="right"
+                            itemHeader={ userStore.name }
+                            metaContent={ userStore.description }
+                        />
+                    ))
                 }
             </ResourceList>
         </>

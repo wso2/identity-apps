@@ -62,6 +62,10 @@ interface AuthenticatorsPropsInterface {
      * Is the application info request loading.
      */
     isLoading?: boolean;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 const portal: HTMLElement = document.createElement("div");
@@ -88,7 +92,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         className,
         droppableId,
         heading,
-        isDropDisabled
+        isDropDisabled,
+        readOnly
     } = props;
 
     const classes = classNames("authenticators", className);
@@ -140,6 +145,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                         key={ `${ authenticator.authenticator }-${ index }` }
                                         draggableId={ authenticator.authenticator }
                                         index={ index }
+                                        isDragDisabled={ readOnly }
                                     >
                                         {
                                             (

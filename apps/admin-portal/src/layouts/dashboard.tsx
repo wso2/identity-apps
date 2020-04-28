@@ -41,8 +41,8 @@ import { BaseLayout } from "./base";
 import { ProtectedRoute } from "../components";
 import { LogoImage, SidePanelIcons, SidePanelMiscIcons, routes } from "../configs";
 import { UIConstants } from "../constants";
-import { AppConfig, history } from "../helpers";
-import { AppConfigInterface, AuthStateInterface, ConfigReducerStateInterface } from "../models";
+import { history } from "../helpers";
+import { AuthStateInterface, ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 
 /**
@@ -72,6 +72,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(routes);
     const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(routes[0]);
@@ -79,8 +80,6 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
     const [ footerHeight, setFooterHeight ] = useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
-
-    const appConfig: AppConfigInterface = useContext(AppConfig);
 
     const classes = classNames(
         "layout",
@@ -260,7 +259,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
 
     useEffect(() => {
         // Filter the routes and get only the enabled routes defined in the app config.
-        setFilteredRoutes(RouteUtils.filterEnabledRoutes<AppConfigInterface>(routes, appConfig));
+        setFilteredRoutes(RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(routes, featureConfig));
 
         if (_.isEmpty(profileDetails)) {
             dispatch(getProfileInfo(() => null));
@@ -374,8 +373,8 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     copyright={ state.copyrightText && state.copyrightText !== "" ?
                         state.copyrightText
                         :
-                        config.deployment.copyrightText
-                            ? config.deployment.copyrightText
+                        config.ui.copyrightText
+                            ? config.ui.copyrightText
                             : null
                     }
                     fixed="bottom"

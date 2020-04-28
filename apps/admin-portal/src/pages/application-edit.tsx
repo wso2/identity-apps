@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import {
@@ -30,7 +31,7 @@ import {
     SelectionCard
 } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, useContext, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Label, SemanticICONS } from "semantic-ui-react";
@@ -38,14 +39,14 @@ import { getApplicationDetails, getRawDocumentation } from "../api";
 import { EditApplication } from "../components";
 import { HelpSidebarIcons, TechnologyLogos } from "../configs";
 import { ApplicationConstants, ApplicationManagementConstants, HelpPanelConstants, UIConstants } from "../constants";
-import { AppConfig, generateApplicationSamples, history } from "../helpers";
+import { generateApplicationSamples, history } from "../helpers";
 import { HelpPanelLayout, PageLayout } from "../layouts";
 import {
-    AppConfigInterface,
-    ApplicationEditFeaturesConfigInterface,
     ApplicationInterface,
     ApplicationSampleInterface,
     ApplicationTemplateListItemInterface,
+    FeatureConfigInterface,
+    PortalDocumentationStructureInterface,
     emptyApplication
 } from "../models";
 import { AppState } from "../store";
@@ -63,19 +64,17 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
 
     const dispatch = useDispatch();
 
-    const helpPanelDocURL = useSelector((state: AppState) => state.helpPanel.docURL);
-    const helpPanelDocStructure = useSelector((state: AppState) => state.helpPanel.docStructure);
+    const helpPanelDocURL: string = useSelector((state: AppState) => state.helpPanel.docURL);
+    const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
+        (state: AppState) => state.helpPanel.docStructure);
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
-
-    const appConfig: AppConfigInterface = useContext(AppConfig);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
 
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
     const [ applicationTemplateName, setApplicationTemplateName ] = useState<string>(undefined);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(false);
-    const [ permissions, setPermissions ] = useState<CRUDPermissionsInterface>(undefined);
-    const [ features, setFeatures ] = useState<ApplicationEditFeaturesConfigInterface>(undefined);
     const [ helpSidebarVisibility, setHelpSidebarVisibility ] = useState<boolean>(false);
     const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
     const [ helpPanelTabsActiveIndex, setHelpPanelTabsActiveIndex ] = useState<number>(0);
@@ -105,6 +104,21 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
 
         getApplication(id);
     }, []);
+
+    /**
+     * Push to 404 if application edit feature is disabled.
+     */
+    useEffect(() => {
+        if (!featureConfig || !featureConfig.applications) {
+            return;
+        }
+
+        if(!isFeatureEnabled(featureConfig.applications,
+            ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT"))) {
+
+            history.push(ApplicationConstants.PATHS.get("404"));
+        }
+    }, [ featureConfig ]);
 
     /**
      * Set the template once application templates list is available in redux.
@@ -206,18 +220,6 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                 setHelpPanelSamplesContentRequestLoadingStatus(false);
             });
     }, [ helpPanelSelectedSample ]);
-
-    /**
-     * Called when the app config value changes.
-     */
-    useEffect(() => {
-        if (!appConfig) {
-            return;
-        }
-
-        setPermissions(_.get(appConfig, ApplicationManagementConstants.CRUD_PERMISSIONS_APP_CONFIG_KEY));
-        setFeatures(_.get(appConfig, ApplicationManagementConstants.EDIT_FEATURES_APP_CONFIG_KEY));
-    }, [ appConfig ]);
 
     /**
      * Retrieves application details from the API.
@@ -457,11 +459,10 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
             >
                 <EditApplication
                     application={ application }
-                    features={ features }
+                    featureConfig={ featureConfig }
                     isLoading={ isApplicationRequestLoading }
                     onDelete={ handleApplicationDelete }
                     onUpdate={ handleApplicationUpdate }
-                    permissions={ permissions }
                     template={ applicationTemplate }
                 />
             </PageLayout>

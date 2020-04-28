@@ -51,20 +51,20 @@ export class ApplicationManagementConstants {
     ];
 
     /**
-     * Key to access the application management CRUD operation permissions in the app config file.
+     * Set of keys used to enable/disable features.
      * @constant
-     * @type {string}
+     * @type {Map<string, string>}
      * @default
      */
-    public static readonly CRUD_PERMISSIONS_APP_CONFIG_KEY: string = "applications.permissions";
-
-    /**
-     * Key to access the application management features.
-     * @constant
-     * @type {string}
-     * @default
-     */
-    public static readonly EDIT_FEATURES_APP_CONFIG_KEY: string = "applications.features.edit";
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("APPLICATION_ADD", "application.add")
+        .set("APPLICATION_EDIT", "application.edit")
+        .set("APPLICATION_EDIT_GENERAL_SETTINGS", "application.edit.generalSettings")
+        .set("APPLICATION_EDIT_ACCESS_CONFIG", "applications.edit.accessConfiguration")
+        .set("APPLICATION_EDIT_ATTRIBUTE_MAPPING", "applications.edit.attributeMapping")
+        .set("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG", "applications.edit.signOnMethodConfiguration")
+        .set("APPLICATION_EDIT_PROVISIONING_SETTINGS", "applications.edit.provisioningSettings")
+        .set("APPLICATION_EDIT_ADVANCED_SETTINGS", "applications.edit.advancedSettings");
 
     public static readonly APPLICATION_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching application template.";

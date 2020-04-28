@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import _ from "lodash";
@@ -33,10 +33,12 @@ import {
     ClaimDialect,
     ClaimMappingInterface,
     ExternalClaim,
+    FeatureConfigInterface,
     RoleConfigInterface,
     RoleMappingInterface,
     SubjectConfigInterface
 } from "../../../models";
+import { hasRequiredScopes } from "@wso2is/core/dist/src/helpers";
 
 export interface SelectedDialectInterface {
     dialectURI: string;
@@ -69,7 +71,7 @@ export interface AdvanceSettingsSubmissionInterface {
     role: RoleConfigInterface;
 }
 
-interface AttributeSelectionPropsInterface {
+interface AttributeSelectionPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
      * Id of the application.
      */
@@ -82,10 +84,6 @@ interface AttributeSelectionPropsInterface {
      * Is OIDC configured for the application.
      */
     isOIDCConfigured: boolean;
-    /**
-     * CRUD permissions,
-     */
-    permissions?: CRUDPermissionsInterface;
 }
 
 export const getLocalDialectURI = (): string => {
@@ -110,6 +108,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     const {
         appId,
+        featureConfig,
         claimConfigurations,
         isOIDCConfigured
     } = props;
@@ -575,6 +574,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     claimMappingOn={ claimMappingOn }
                     setClaimMappingOn={ setClaimMappingOn }
                     claimMappingError={ claimMappingError }
+                    readOnly={
+                        !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                    }
                 />
                 <AdvanceAttributeSettings
                     dropDownOptions={ createDropdownOption() }
@@ -583,23 +585,33 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     initialRole={ claimConfigurations.role }
                     initialSubject={ claimConfigurations.subject }
                     claimMappingOn={ claimMappingOn }
+                    readOnly={
+                        !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                    }
                 />
                 <RoleMapping
                     submitState={ triggerAdvanceSettingFormSubmission }
                     onSubmit={ setRoleMapping }
                     initialMappings={ claimConfigurations.role?.mappings }
+                    readOnly={
+                        !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                    }
                 />
-                <Grid.Row>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
-                        <Button
-                            primary
-                            size="small"
-                            onClick={ updateValues }
-                        >
-                            Update
-                        </Button>
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update) && (
+                        <Grid.Row>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
+                                <Button
+                                    primary
+                                    size="small"
+                                    onClick={ updateValues }
+                                >
+                                    Update
+                                </Button>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
             </Grid>
             : null
     );

@@ -16,18 +16,19 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useContext, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { ReactElement, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getUserStores } from "../api";
 import { AddUserStore, UserStoresList, UserStoresSearch } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { UserConstants } from "../constants";
-import { AppConfig } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
-import { AlertLevels, AppConfigInterface, QueryParams, UserStoreListItem } from "../models";
-import { addAlert } from "../store/actions";
+import { AlertLevels, FeatureConfigInterface, QueryParams, UserStoreListItem } from "../models";
+import { AppState } from "../store";
 import { filterList, sortList } from "../utils";
 
 /**
@@ -53,6 +54,8 @@ export const UserStores = (): ReactElement => {
         }
     ];
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
+
     const [userStores, setUserStores] = useState<UserStoreListItem[]>(null);
     const [offset, setOffset] = useState(0);
     const [listItemLimit, setListItemLimit] = useState<number>(0);
@@ -63,8 +66,6 @@ export const UserStores = (): ReactElement => {
     const [sortOrder, setSortOrder] = useState(true);
 
     const dispatch = useDispatch();
-
-    const appConfig: AppConfigInterface = useContext(AppConfig);
 
     /**
      * Fetches all userstores.
@@ -199,7 +200,9 @@ export const UserStores = (): ReactElement => {
                                 onSortStrategyChange={ handleSortStrategyChange }
                                 onSortOrderChange={ handleSortOrderChange }
                                 rightActionPanel={
-                                   appConfig?.userStores?.permissions?.create &&  (
+                                    hasRequiredScopes(
+                                        featureConfig?.userStores,
+                                        featureConfig?.userStores?.scopes?.create) && (
                                         <PrimaryButton
                                             onClick={ () => {
                                                 setOpenModal(true);
@@ -219,6 +222,7 @@ export const UserStores = (): ReactElement => {
                                 <UserStoresList
                                     list={ paginate(filteredUserStores, listItemLimit, offset) }
                                     update={ fetchUserStores }
+                                    featureConfig={ featureConfig }
                                 />
                             </ListLayout>
                         )

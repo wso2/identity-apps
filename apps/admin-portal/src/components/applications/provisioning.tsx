@@ -16,16 +16,15 @@
  * under the License.
  */
 
-import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Divider } from "semantic-ui-react";
-import { AdvancedConfigurationsForm, ProvisioningConfigurationsForm } from "./forms";
+import { ProvisioningConfigurationsForm } from "./forms";
 import { getUserStoreList, updateApplicationConfigurations } from "../../api";
 import {
-    AdvancedConfigurationsInterface,
+    FeatureConfigInterface,
     ProvisioningConfigurationInterface,
     SimpleUserStoreListItemInterface
 } from "../../models";
@@ -33,7 +32,7 @@ import {
 /**
  * Proptypes for the provision settings component.
  */
-interface ProvisioningSettingsPropsInterface {
+interface ProvisioningSettingsPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
      * Currently editing application id.
      */
@@ -46,10 +45,6 @@ interface ProvisioningSettingsPropsInterface {
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
-    /**
-     * CRUD permissions,
-     */
-    permissions?: CRUDPermissionsInterface;
 }
 
 /**
@@ -64,6 +59,7 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
 
     const {
         appId,
+        featureConfig,
         provisioningConfigurations,
         onUpdate
     } = props;
@@ -120,6 +116,9 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
                     config={ provisioningConfigurations }
                     onSubmit={ handleProvisioningConfigFormSubmit }
                     useStoreList={ userStore }
+                    readOnly={
+                        !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                    }
                 />
             }
         </>

@@ -56,6 +56,10 @@ interface AttributeSelectionPropsInterface {
     claimMappingOn: boolean;
     setClaimMappingOn: (mappingOn: boolean) => void;
     claimMappingError: boolean;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -86,7 +90,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         claimConfigurations,
         claimMappingOn,
         setClaimMappingOn,
-        claimMappingError
+        claimMappingError,
+        readOnly
     } = props;
 
 
@@ -540,9 +545,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                         "There are no attributes selected to the application at the moment."
                                     ] }
                                     action={
-                                        <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">
-                                            Add Attribute
-                                        </PrimaryButton>
+                                        !readOnly && (
+                                            <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">
+                                                Add Attribute
+                                            </PrimaryButton>
+                                        )
                                     }
                                     image={ EmptyPlaceholderIllustrations.emptyList }
                                     imageSize="tiny"

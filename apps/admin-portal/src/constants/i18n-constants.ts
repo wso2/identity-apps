@@ -70,7 +70,7 @@ export class I18nConstants {
                 language,
                 namespace,
                 window["runConfig"].appBaseNameWithoutTenant,
-                store.getState().config.deployment.i18nModuleOptions
+                store.getState().config.i18n
             )
         },
         ns: [ I18nConstants.COMMON_NAMESPACE, I18nConstants.PORTAL_NAMESPACE ]

@@ -17,11 +17,17 @@
  */
 
 import { getAppConfig } from "@wso2is/core/api";
-import { CommonHelpers } from "@wso2is/core/helpers";
+import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { emptyIdentityAppsSettings } from "@wso2is/core/models";
-import { setDeploymentConfigs, setServiceResourceEndpoints } from "@wso2is/core/store";
+import {
+    setDeploymentConfigs,
+    setFeatureConfigs,
+    setI18nConfigs,
+    setServiceResourceEndpoints,
+    setUIConfigs
+} from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
-import { I18n } from "@wso2is/i18n";
+import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ContentLoader, ThemeContext } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { ReactElement, Suspense, useContext, useEffect, useState } from "react";
@@ -33,12 +39,14 @@ import { getPortalDocumentationStructure } from "./api";
 import { ProtectedRoute } from "./components";
 import { Config, baseRoutes } from "./configs";
 import { ApplicationConstants } from "./constants";
-import { AppConfig, history } from "./helpers";
+import { history } from "./helpers";
 import {
-    AppConfigInterface,
+    ConfigInterface,
     ConfigReducerStateInterface,
-    RuntimeConfigInterface,
-    ServiceResourceEndpointsInterface
+    DeploymentConfigInterface,
+    FeatureConfigInterface,
+    ServiceResourceEndpointsInterface,
+    UIConfigInterface
 } from "./models";
 import { AppState } from "./store";
 import { setHelpPanelDocStructure } from "./store/actions";
@@ -54,11 +62,11 @@ export const App = (): ReactElement => {
 
     const dispatch = useDispatch();
 
-    const [ appConfig, setAppConfig ] = useState<AppConfigInterface>(null);
     const [ isAppLoading, setAppLoadingStatus ] = useState<boolean>(false);
-    const userName: string = useSelector((state: AppState) => state.authenticationInformation.username);
 
+    const userName: string = useSelector((state: AppState) => state.authenticationInformation.username);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const loginInit: boolean = useSelector((state: AppState) => state.authenticationInformation.loginInit);
 
     /**
      * Set the deployment configs in redux state.
@@ -66,8 +74,10 @@ export const App = (): ReactElement => {
     useEffect(() => {
         // Replace `RuntimeConfigInterface` with the proper deployment config interface,
         // once runtime config is refactored.
-        dispatch(setDeploymentConfigs<RuntimeConfigInterface>(Config.getRuntimeConfig()));
+        dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
+        dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
+        dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
     }, []);
 
     /**
@@ -95,7 +105,7 @@ export const App = (): ReactElement => {
      * Obtain app.config.json from the server root when the app mounts.
      */
     useEffect(() => {
-        if (!config?.deployment || _.isEmpty(config.deployment)) {
+        if (!config?.deployment || _.isEmpty(config.deployment) || !config.deployment.appBaseNameWithoutTenant) {
             return;
         }
 
@@ -103,15 +113,15 @@ export const App = (): ReactElement => {
         // will fail. Using `appBaseNameWithoutTenant` will create a path without the tenant. Therefore,
         // `getAppConfig()` will look for the app config file in `https://localhost:9443/admin-portal` rather than
         // looking it in `https://localhost:9443/t/wso2.com/admin-portal`.
-        getAppConfig<AppConfigInterface>(ApplicationConstants.APP_CONFIG_FILE_NAME,
+        getAppConfig<ConfigInterface>(ApplicationConstants.APP_CONFIG_FILE_NAME,
             config.deployment.appBaseNameWithoutTenant)
             .then((response) => {
-                setAppConfig(response);
+                dispatch(setFeatureConfigs<FeatureConfigInterface>(response?.features));
             })
             .catch(() => {
                 // TODO: Log the error here.
             });
-    }, [ config ]);
+    }, [ config?.deployment?.appBaseNameWithoutTenant ]);
 
     /**
      * Set the application settings of the user to the local storage.
@@ -141,6 +151,21 @@ export const App = (): ReactElement => {
 
     }, [ config?.deployment?.tenant, userName ]);
 
+    /**
+     * Checks if the portal access should be granted based on the feature config.
+     */
+    useEffect(() => {
+        if (!config?.features || !loginInit) {
+            return;
+        }
+
+        if (isPortalAccessGranted<FeatureConfigInterface>(config.features)) {
+            return;
+        }
+
+        history.push(ApplicationConstants.PATHS.get("UNAUTHORIZED"));
+    }, [ config?.features, loginInit ]);
+
     return (
         <>
             {
@@ -149,53 +174,51 @@ export const App = (): ReactElement => {
                         <Router history={ history }>
                             <div className="container-fluid">
                                 <I18nextProvider i18n={ I18n.instance }>
-                                    <AppConfig.Provider value={ appConfig }>
-                                        <Suspense fallback={ <ContentLoader dimmer/> }>
-                                            <Helmet>
-                                                <link
-                                                    href={ `/libs/themes/${ state.theme }/theme.min.css` }
-                                                    rel="stylesheet"
-                                                    type="text/css"
-                                                />
-                                                <style type="text/css">
-                                                    { state.css }
-                                                </style>
-                                            </Helmet>
-                                            <Switch>
-                                                <Redirect
-                                                    exact={ true }
-                                                    path="/"
-                                                    to={ config.deployment.appLoginPath }
-                                                />
-                                                {
-                                                    baseRoutes.map((route, index) => {
-                                                        return (
-                                                            route.protected ?
-                                                                (
-                                                                    <ProtectedRoute
-                                                                        component={ route.component }
-                                                                        path={ route.path }
-                                                                        key={ index }
-                                                                        exact={ route.exact }
-                                                                    />
-                                                                )
-                                                                :
-                                                                (
-                                                                    <Route
-                                                                        path={ route.path }
-                                                                        render={ (props) =>
-                                                                            (<route.component { ...props } />)
-                                                                        }
-                                                                        key={ index }
-                                                                        exact={ route.exact }
-                                                                    />
-                                                                )
-                                                        );
-                                                    })
-                                                }
-                                            </Switch>
-                                        </Suspense>
-                                    </AppConfig.Provider>
+                                    <Suspense fallback={ <ContentLoader dimmer/> }>
+                                        <Helmet>
+                                            <link
+                                                href={ `/libs/themes/${ state.theme }/theme.min.css` }
+                                                rel="stylesheet"
+                                                type="text/css"
+                                            />
+                                            <style type="text/css">
+                                                { state.css }
+                                            </style>
+                                        </Helmet>
+                                        <Switch>
+                                            <Redirect
+                                                exact={ true }
+                                                path="/"
+                                                to={ config.deployment.appLoginPath }
+                                            />
+                                            {
+                                                baseRoutes.map((route, index) => {
+                                                    return (
+                                                        route.protected ?
+                                                            (
+                                                                <ProtectedRoute
+                                                                    component={ route.component }
+                                                                    path={ route.path }
+                                                                    key={ index }
+                                                                    exact={ route.exact }
+                                                                />
+                                                            )
+                                                            :
+                                                            (
+                                                                <Route
+                                                                    path={ route.path }
+                                                                    render={ (props) =>
+                                                                        (<route.component { ...props } />)
+                                                                    }
+                                                                    key={ index }
+                                                                    exact={ route.exact }
+                                                                />
+                                                            )
+                                                    );
+                                                })
+                                            }
+                                        </Switch>
+                                    </Suspense>
                                 </I18nextProvider>
                             </div>
                         </Router>

@@ -72,6 +72,10 @@ interface AuthenticationStepPropsInterface {
      * Step chosen to get the subject.
      */
     subjectStepId: number;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -93,6 +97,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         onStepDelete,
         onStepOptionDelete,
         onSubjectCheckboxChange,
+        readOnly,
         step,
         stepIndex,
         subjectStepId
@@ -122,7 +127,11 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                     image={ authenticator.image }
                     label={ authenticator.displayName }
                     bottomMargin={ false }
-                    onCloseClick={ (): void => onStepOptionDelete(stepIndex, optionIndex) }
+                    onCloseClick={
+                        !readOnly && (
+                            (): void => onStepOptionDelete(stepIndex, optionIndex)
+                        )
+                    }
                 />
             );
         }
@@ -131,6 +140,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
     return (
         <Droppable
             droppableId={ droppableId }
+            isDropDisabled={ readOnly }
         >
             { (provided: DroppableProvided): React.ReactElement<HTMLElement> => (
                 <div
@@ -159,11 +169,13 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                             label="Use subject identifier from this step"
                             checked={ subjectStepId === (stepIndex + 1) }
                             onChange={ (): void => onSubjectCheckboxChange(stepIndex + 1) }
+                            readOnly={ readOnly }
                         />
                         <Checkbox
                             label="Use attributes from this step"
                             checked={ attributeStepId === (stepIndex + 1) }
                             onChange={ (): void => onAttributeCheckboxChange(stepIndex + 1) }
+                            readOnly={ readOnly }
                         />
                     </div>
                 </div>

@@ -16,7 +16,6 @@
  * under the License.
  */
 
-export * from "./app-config-context"; 
 export * from "./help-panel";
 export * from "./history";
 export * from "./http-headers";

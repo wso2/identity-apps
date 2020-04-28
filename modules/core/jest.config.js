@@ -16,10 +16,11 @@
  * under the License.
  */
 
-import React from "react";
-import { AppConfigInterface } from "../models";
-
-/**
- * This creates a React context that will hold the application configuration
- */
-export const AppConfig = React.createContext<AppConfigInterface>(null);
+module.exports = {
+    moduleFileExtensions: [ "ts", "js", "json", "node"],
+    roots: ["<rootDir>/src"],
+    testRegex: "/__tests__/.*\\.test\\.ts$",
+    transform: {
+        "^.+\\.ts?$": "ts-jest"
+    }
+};

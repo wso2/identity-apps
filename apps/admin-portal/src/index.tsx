@@ -38,27 +38,28 @@ import { setSupportedI18nLanguages } from "./store/actions";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
 
 // Set the runtime config in the context.
-ContextUtils.setRuntimeConfig(Config.getRuntimeConfig());
+ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
 // Set up the Http client.
 HttpUtils.setupHttpClient(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
 
 // Set up the i18n module.
 I18n.init({
-    ...Config.getRuntimeConfig().i18nModuleOptions?.initOptions,
-    debug: Config.getRuntimeConfig().debug
+    ...Config.getI18nConfig()?.initOptions,
+    debug: Config.getDeploymentConfig().debug
     },
-    Config.getRuntimeConfig().i18nModuleOptions?.overrideOptions,
-    Config.getRuntimeConfig().i18nModuleOptions?.langAutoDetectEnabled,
-    Config.getRuntimeConfig().i18nModuleOptions?.xhrBackendPluginEnabled)
+    Config.getI18nConfig()?.overrideOptions,
+    Config.getI18nConfig()?.langAutoDetectEnabled,
+    Config.getI18nConfig()?.xhrBackendPluginEnabled)
     .then(() => {
 
         // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
         // will fail. This constructs the path without the tenant, therefore it'll look for the file in
         // `https://localhost:9443/admin-portal/resources/i18n/meta.json` rather than looking for the file in
         // `https://localhost:9443/t/wso2.com/admin-portal/resources/i18n/meta.json`.
-        const metaPath = `/${ StringUtils.removeSlashesFromPath(Config.getRuntimeConfig().appBaseNameWithoutTenant) }/${
-            StringUtils.removeSlashesFromPath(Config.getRuntimeConfig().i18nModuleOptions.resourcePath) }/meta.json`;
+        const metaPath = `/${
+            StringUtils.removeSlashesFromPath(Config.getDeploymentConfig().appBaseNameWithoutTenant)
+        }/${ StringUtils.removeSlashesFromPath(Config.getI18nConfig().resourcePath) }/meta.json`;
 
         // Fetch the meta file to get the supported languages.
         axios.get(metaPath)

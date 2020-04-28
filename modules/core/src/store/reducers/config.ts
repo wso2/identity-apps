@@ -16,20 +16,20 @@
  * under the License.
  */
 
-import { CommonConfigActions, CommonConfigActionTypes } from "../actions/types";
 import { CommonConfigReducerStateInterface } from "../../models";
+import { CommonConfigActionTypes, CommonConfigActions } from "../actions/types";
 
 /**
  * Reducer to handle the state of common config actions.
  *
- * @param {CommonConfigReducerStateInterface<T, S>} initialState - Reducer initial state.
+ * @param {CommonConfigReducerStateInterface<T, S, U, V, W>} initialState - Reducer initial state.
  *
- * @return {CommonConfigReducerStateInterface<T, S>} The new state.
+ * @return {CommonConfigReducerStateInterface<T, S, U, V, W> The new state.
  */
-export const commonConfigReducer = <T, S>(initialState: CommonConfigReducerStateInterface<T, S>) => (
-    state: CommonConfigReducerStateInterface<T, S> = initialState,
-    action: CommonConfigActions<T, S>
-): CommonConfigReducerStateInterface<T, S> => {
+export const commonConfigReducer = <T, S, U, V, W>(initialState: CommonConfigReducerStateInterface<T, S, U, V, W>) => (
+    state: CommonConfigReducerStateInterface<T, S, U, V, W> = initialState,
+    action: CommonConfigActions<T, S, U, V, W>
+): CommonConfigReducerStateInterface<T, S, U, V, W> => {
 
     switch (action.type) {
         case CommonConfigActionTypes.SET_DEPLOYMENT_CONFIGS:
@@ -41,6 +41,21 @@ export const commonConfigReducer = <T, S>(initialState: CommonConfigReducerState
             return {
                 ...state,
                 endpoints: action.payload
+            };
+        case CommonConfigActionTypes.SET_FEATURE_CONFIGS:
+            return {
+                ...state,
+                features: action.payload
+            };
+        case CommonConfigActionTypes.SET_I18N_CONFIGS:
+            return {
+                ...state,
+                i18n: action.payload
+            };
+        case CommonConfigActionTypes.SET_UI_CONFIGS:
+            return {
+                ...state,
+                ui: action.payload
             };
         default:
             return state;

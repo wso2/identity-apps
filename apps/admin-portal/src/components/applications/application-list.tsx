@@ -16,19 +16,22 @@
  * under the License.
  */
 
-import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AppAvatar, ConfirmationModal, ResourceList, ResourceListActionInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Label } from "semantic-ui-react";
 import { deleteApplication } from "../../api";
+import { ApplicationManagementConstants } from "../../constants";
 import { history } from "../../helpers";
 import {
     ApplicationListInterface,
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface,
-    ConfigReducerStateInterface
+    ConfigReducerStateInterface,
+    FeatureConfigInterface
 } from "../../models";
 import { AppState } from "../../store";
 import { ApplicationManagementUtils } from "../../utils";
@@ -37,7 +40,7 @@ import { ApplicationManagementUtils } from "../../utils";
  *
  * Proptypes for the applications list component.
  */
-interface ApplicationListPropsInterface {
+interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
      * Application list.
      */
@@ -46,10 +49,6 @@ interface ApplicationListPropsInterface {
      * On application delete callback.
      */
     onApplicationDelete: () => void;
-    /**
-     * CRUD permissions,
-     */
-    permissions?: CRUDPermissionsInterface;
 }
 
 /**
@@ -63,9 +62,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 ): ReactElement => {
 
     const {
+        featureConfig,
         list,
-        onApplicationDelete,
-        permissions
+        onApplicationDelete
     } = props;
 
     const dispatch = useDispatch();
@@ -151,6 +150,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     const resolveListActions = (app: ApplicationListItemInterface): ResourceListActionInterface[]  => {
         const actions: ResourceListActionInterface[] = [
             {
+                hidden: !isFeatureEnabled(
+                    featureConfig?.applications,
+                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: "pencil alternate",
                 onClick: (): void => handleApplicationEdit(app.id),
                 popupText: "Edit",
@@ -158,12 +160,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             }
         ];
 
-        if (permissions && permissions.delete === false) {
-            return actions;
-        }
-
         actions.push({
-            hidden: config.deployment.doNotDeleteApplications.includes(app.name),
+            hidden: !hasRequiredScopes(
+                featureConfig?.applications,
+                featureConfig?.applications?.scopes?.delete)
+                || config.ui.doNotDeleteApplications.includes(app.name),
             icon: "trash alternate",
             onClick: (): void => {
                 setShowDeleteConfirmationModal(true);

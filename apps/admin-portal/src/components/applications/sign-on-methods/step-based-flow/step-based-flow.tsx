@@ -67,6 +67,10 @@ interface AuthenticationFlowPropsInterface {
      * Trigger for update.
      */
     triggerUpdate: boolean;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -114,6 +118,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const {
         authenticationSequence,
         onUpdate,
+        readOnly,
         triggerUpdate
     } = props;
 
@@ -586,7 +591,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                             ? authenticationSteps.map((step, stepIndex) => (
                                                 <AuthenticationStep
                                                     key={ stepIndex }
-                                                    authenticators={ [ ...localAuthenticators, ...federatedAuthenticators ] }
+                                                    authenticators={
+                                                        [ ...localAuthenticators, ...federatedAuthenticators ]
+                                                    }
                                                     attributeStepId={ attributeStepId }
                                                     droppableId={ AUTHENTICATION_STEP_DROPPABLE_ID + stepIndex }
                                                     onAttributeCheckboxChange={ handleAttributeCheckboxChange }
@@ -596,14 +603,22 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                     step={ step }
                                                     stepIndex={ stepIndex }
                                                     subjectStepId={ subjectStepId }
+                                                    readOnly={ readOnly }
                                                 />
                                             ))
                                             : null
                                     }
                                     <Divider hidden/>
-                                    <LinkButton className="add-step-button" onClick={ handleAuthenticationStepAdd }>
-                                        <Icon name="plus"/>Add authentication step
-                                    </LinkButton>
+                                    {
+                                        !readOnly && (
+                                            <LinkButton
+                                                className="add-step-button"
+                                                onClick={ handleAuthenticationStepAdd }
+                                            >
+                                                <Icon name="plus"/>Add authentication step
+                                            </LinkButton>
+                                        )
+                                    }
                                 </div>
                             </Grid.Column>
                         </Grid.Row>
@@ -612,7 +627,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 {
                     showAuthenticatorsSidePanel && (
                         <div className="authenticators-panel" ref={ authenticatorsSidePanelRef }>
-                            <Draggable handle=".drag-handle">
+                            <Draggable handle=".drag-handle" disabled={ readOnly }>
                                 <Card>
                                     <Card.Content>
                                         <Heading as="h6" floated="left" compact>Authenticators</Heading>
@@ -675,6 +690,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                                     filterAuthenticators(AuthenticatorTypes.FIRST_FACTOR)
                                                                 }
                                                                 droppableId={ LOCAL_AUTHENTICATORS_DROPPABLE_ID }
+                                                                readOnly={ readOnly }
                                                             />
                                                         </Accordion.Content>
                                                     </>
@@ -698,6 +714,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                                     filterAuthenticators(AuthenticatorTypes.SECOND_FACTOR)
                                                                 }
                                                                 droppableId={ SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID }
+                                                                readOnly={ readOnly }
                                                             />
                                                         </Accordion.Content>
                                                     </>
@@ -721,6 +738,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                                     filterAuthenticators(AuthenticatorTypes.SOCIAL)
                                                                 }
                                                                 droppableId={ SOCIAL_AUTHENTICATORS_DROPPABLE_ID }
+                                                                readOnly={ readOnly }
                                                             />
                                                         </Accordion.Content>
                                                     </>

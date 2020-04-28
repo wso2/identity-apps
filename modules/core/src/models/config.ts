@@ -17,43 +17,29 @@
  */
 
 /**
- * CRUD permissions interface.
+ * Common interface for configs.
  */
-export interface CRUDPermissionsInterface {
+export interface CommonConfigInterface<T, S, U, V, W> {
     /**
-     * Create permission.
+     * Deployment related configurations.
      */
-    create: boolean;
+    deployment?: T;
     /**
-     * Read permission.
+     * Resource endpoints.
      */
-    read: boolean;
+    endpoints?: S;
     /**
-     * Update permission.
+     * Feature configurations.
      */
-    update: boolean;
+    features?: U;
     /**
-     * Delete permission.
+     * I18n configurations.
      */
-    delete: boolean;
-}
-
-/**
- * Common config interface for features.
- */
-export interface FeatureConfigInterface<T = {}> {
+    i18n?: V;
     /**
-     * If the feature is enabled or not.
+     * UI configurations.
      */
-    enabled: boolean;
-    /**
-     * CRUD permissions for the feature.
-     */
-    permissions?: CRUDPermissionsInterface;
-    /**
-     * Sub features.
-     */
-    features?: T;
+    ui?: W;
 }
 
 /**
@@ -126,4 +112,50 @@ export interface CommonDeploymentConfigInterface {
      * ex: `/t/`
      */
     tenantPath: string;
+}
+
+/**
+ * Interface to extent in-order to enable scope based access control.
+ */
+export interface FeatureAccessConfigInterface {
+    /**
+     * CRUD scopes for the feature.
+     */
+    scopes: CRUDScopesInterface;
+    /**
+     * Set of disabled features.
+     */
+    disabledFeatures?: string[];
+}
+
+/**
+ * Interface for Scopes related to CRUD permission.
+ */
+export interface CRUDScopesInterface {
+    /**
+     * Create permission scopes array.
+     */
+    create: string[];
+    /**
+     * Read permission scopes array.
+     */
+    read: string[];
+    /**
+     * Update permission scopes array.
+     */
+    update: string[];
+    /**
+     * Delete permission scopes array.
+     */
+    delete: string[];
+}
+
+/**
+ * Interface to extend when scope based access control should be enabled for a component.
+ */
+export interface SBACInterface<T> {
+    /**
+     * Feature config.
+     */
+    featureConfig?: T;
 }

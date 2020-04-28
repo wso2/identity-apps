@@ -56,6 +56,10 @@ interface AdaptiveScriptsPropsInterface {
      * @param {string | string[]} script - Authentication script.
      */
     onScriptChange: (script: string | string[]) => void;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -71,7 +75,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const {
         authenticationSequence,
         onTemplateSelect,
-        onScriptChange
+        onScriptChange,
+        readOnly
     } = props;
 
     const dispatch = useDispatch();
@@ -201,6 +206,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     scriptTemplates?.templatesJSON && Object.values(scriptTemplates.templatesJSON)
                                 }
                                 visible={ showAuthTemplatesSidePanel }
+                                readOnly={ readOnly }
                             />
                             <Sidebar.Pusher>
                                 <div className="script-editor-container" ref={ scriptEditorSectionRef }>
@@ -234,6 +240,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 onScriptChange(value)
                                             } }
                                             theme={ isEditorDarkMode ? "dark" : "light" }
+                                            readOnly={ readOnly }
                                         />
                                     </div>
                                 </div>

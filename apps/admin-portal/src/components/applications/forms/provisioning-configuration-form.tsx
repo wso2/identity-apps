@@ -33,6 +33,10 @@ interface ProvisioningConfigurationFormPropsInterface {
     config: ProvisioningConfigurationInterface;
     onSubmit: (values: any) => void;
     useStoreList: SimpleUserStoreListItemInterface[];
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -48,6 +52,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
     const {
         config,
         onSubmit,
+        readOnly,
         useStoreList
     } = props;
 
@@ -120,6 +125,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                                     value: "modeOn"
                                 }
                             ] }
+                            readOnly={ readOnly }
                         />
                         <Hint>
                             Users/Groups are not provisioned to the user store. They are only outbound provisioned.
@@ -138,19 +144,24 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                             value={ config?.inboundProvisioning?.provisioningUserstoreDomain }
                             children={ getUserStoreOption() }
                             disabled={ isProxyModeOn }
+                            readOnly={ readOnly }
                         />
                         <Hint>
                             Select userstore domain name to provision users and groups.
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Button primary type="submit" size="small" className="form-button">
-                            Update
-                        </Button>
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    !readOnly && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Button primary type="submit" size="small" className="form-button">
+                                    Update
+                                </Button>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
             </Grid>
         </Forms>
     );
