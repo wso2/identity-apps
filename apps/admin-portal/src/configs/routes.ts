@@ -216,7 +216,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         exact: true,
         icon: "usersAndRoles",
         id: "usersAndRoles",
-        name: "Users & Roles",
+        name: "Users & Groups",
         protected: true,
         showOnSidePanel: true
     },

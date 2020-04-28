@@ -90,7 +90,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                     <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             type="dropdown"
-                            label="Role Type"
+                            label={ isAddGroup ? "Group Type" : "Role Type" }
                             name="domain"
                             children={ isAddGroup ? groupDomains : roleDomains }
                             placeholder="Domain"
