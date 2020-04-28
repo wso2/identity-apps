@@ -166,11 +166,11 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
     return (
         <PageLayout
             title={ emailTemplateTypeDetails && 
-                    emailTemplateTypeDetails.displayName ? emailTemplateTypeDetails.displayName + " - Template Type" 
+                    emailTemplateTypeDetails.displayName ? "Templates - " + emailTemplateTypeDetails.displayName 
                     : "Email Templates" }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: "Go back to email templates"
+                text: "Go back to email templates types"
             } }
             titleTextAlign="left"
             bottomMargin={ false }
