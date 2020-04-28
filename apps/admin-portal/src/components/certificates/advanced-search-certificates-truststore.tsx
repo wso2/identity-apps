@@ -236,20 +236,23 @@ export const CertificatesTruststoreSearch: FunctionComponent<CertificatesTrustst
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
-                            <Divider hidden />
-                            <Form.Group inline={ true }>
-                                <Field
-                                    size="small"
-                                    type="submit"
-                                    value={ t("common:search").toString() }
-                                />
-                                <Field
-                                    className="link-button"
-                                    size="small"
-                                    type="reset"
-                                    value={ t("common:resetFilters").toString() }
-                                />
-                            </Form.Group>
+                            <Grid columns={ 1 }>
+                                <Grid.Column width={ 16 }>
+                                    <Form.Group inline={ true }>
+                                        <Field
+                                            size="small"
+                                            type="submit"
+                                            value={ t("common:search").toString() }
+                                        />
+                                        <Field
+                                            className="link-button"
+                                            size="small"
+                                            type="reset"
+                                            value={ t("common:resetFilters").toString() }
+                                        />
+                                    </Form.Group>
+                                </Grid.Column>
+                            </Grid>
                         </Forms>
                     </Grid.Column>
                 </Grid.Row>
