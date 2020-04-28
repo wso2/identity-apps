@@ -17,10 +17,14 @@
  */
 
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
-import { AppAvatar } from "@wso2is/react-components";
+import { AppAvatar, UserAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Grid, Label } from "semantic-ui-react";
-import { MainApplicationInterface, SupportedAuthProtocolTypes } from "../../../models";
+import {
+    MainApplicationInterface,
+    SubmitFormCustomPropertiesInterface,
+    SupportedAuthProtocolTypes
+} from "../../../models";
 import { ApplicationManagementUtils } from "../../../utils/application-management-utils";
 import { InboundProtocolLogos } from "../../../configs/ui";
 
@@ -32,6 +36,7 @@ interface ProtocolWizardSummaryPropsInterface {
     summary: any;
     triggerSubmit: boolean;
     onSubmit: (application: MainApplicationInterface) => void;
+    customProtocol: boolean;
     image: string;
 }
 
@@ -49,7 +54,8 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
         summary,
         triggerSubmit,
         onSubmit,
-        image
+        image,
+        customProtocol
     } = props;
 
     const [protocolImage, setProtocolImage] = useState<string>("");
@@ -83,10 +89,14 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details">
-                        <AppAvatar
-                            image={ ApplicationManagementUtils.findIcon(protocolImage, InboundProtocolLogos) }
-                            size="tiny"
-                        />
+                        { customProtocol
+                            ?
+                            <UserAvatar name={ summary?.name } size="tiny"/>
+                            : < AppAvatar
+                                image={ ApplicationManagementUtils.findIcon(protocolImage, InboundProtocolLogos) }
+                                size="tiny"
+                            />
+                        }
                     </div>
                 </Grid.Column>
             </Grid.Row>
@@ -149,7 +159,7 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                             <div className="label">Metadata URL</div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                            <div className="value url">{  summary?.metadataURL }</div>
+                            <div className="value url">{ summary?.metadataURL }</div>
                         </Grid.Column>
                     </Grid.Row>
                 )
@@ -222,6 +232,19 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                             <div className="value url">{ summary?.replyTo }</div>
                         </Grid.Column>
                     </Grid.Row>
+                )
+            }
+            {
+                customProtocol && summary?.properties.map((prop: SubmitFormCustomPropertiesInterface) => (
+                        <Grid.Row className="summary-field" columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                                <div className="label">{ prop.key }</div>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                                <div className="value url">{ prop.value }</div>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
                 )
             }
         </Grid>

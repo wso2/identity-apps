@@ -36,6 +36,18 @@ export enum ApplicationActionTypes {
      */
     SET_AVAILABLE_INBOUND_AUTH_PROTOCOL_META = "SET_AVAILABLE_INBOUND_AUTH_PROTOCOL_META",
     /**
+     * Action type to set the list of available custom inbound authentication protocols.
+     *
+     * @type {string}
+     */
+    SET_AVAILABLE_CUSTOM_INBOUND_AUTH_PROTOCOL_META = "SET_AVAILABLE_CUSTOM_INBOUND_AUTH_PROTOCOL_META",
+    /**
+     * Action type to set  if available custom inbound authentication protocols set or not.
+     *
+     * @type {string}
+     */
+    CHECK_CUSTOM_INBOUND_AUTH_PROTOCOL_META = "CHECK_AVAILABLE_CUSTOM_INBOUND_AUTH_PROTOCOL_META",
+    /**
      * Action type to set metadata related to auth protocol.
      *
      * @type {string}
@@ -65,6 +77,22 @@ export interface SetAvailableInboundProtocolsMetaInterface extends ApplicationBa
 }
 
 /**
+ * Set the available custom inbound authentication protocols action interface.
+ */
+export interface SetAvailableCustomInboundProtocolsMetaInterface extends ApplicationBaseActionInterface {
+    payload: AuthProtocolMetaListItemInterface[];
+    type: ApplicationActionTypes.SET_AVAILABLE_CUSTOM_INBOUND_AUTH_PROTOCOL_META;
+}
+
+/**
+ * Set the checked available custom inbound authentication protocols action interface.
+ */
+export interface CheckAvailableCustomInboundProtocolsMetaInterface extends ApplicationBaseActionInterface {
+    payload: boolean;
+    type: ApplicationActionTypes.CHECK_CUSTOM_INBOUND_AUTH_PROTOCOL_META;
+}
+
+/**
  * Set the metadata related to the auth protocol action interface.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -84,6 +112,8 @@ export interface SetApplicationTemplatesActionInterface extends ApplicationBaseA
 /**
  * Export action interfaces.
  */
-export type ApplicationActions = SetAvailableInboundProtocolsMetaInterface
+export type ApplicationActions = CheckAvailableCustomInboundProtocolsMetaInterface
+    | SetAvailableInboundProtocolsMetaInterface
     | SetAuthProtocolMetaInterface
-    | SetApplicationTemplatesActionInterface;
+    | SetApplicationTemplatesActionInterface
+    | SetAvailableCustomInboundProtocolsMetaInterface;

@@ -32,7 +32,12 @@ import {
     MainApplicationInterface
 } from "../models";
 import { store } from "../store";
-import { setApplicationTemplates, setAvailableInboundAuthProtocolMeta } from "../store/actions";
+import {
+    checkAvailableCustomInboundAuthProtocolMeta,
+    setAvailableCustomInboundAuthProtocolMeta,
+    setApplicationTemplates,
+    setAvailableInboundAuthProtocolMeta
+} from "../store/actions";
 
 /**
  * Utility class for application(service provider) operations.
@@ -84,6 +89,48 @@ export class ApplicationManagementUtils {
             });
     }
 
+
+    /**
+     * Gets the list of available custom inbound protocols list and sets them in the redux store.
+     *
+     * @param {AuthProtocolMetaListItemInterface[]} meta - Meta data to filter.
+     * @param {boolean} customOnly - Whether to fetch just the custom protocols.
+     */
+    public static getCustomInboundProtocols(
+        meta: AuthProtocolMetaListItemInterface[], customOnly = true): Promise<void> {
+        return getAvailableInboundProtocols(customOnly)
+            .then((response) => {
+                // Filter meta based on the available protocols.
+                const filteredMeta = _.intersectionBy(meta, response, "name");
+
+                store.dispatch(
+                    setAvailableCustomInboundAuthProtocolMeta(_.unionBy<AuthProtocolMetaListItemInterface>(
+                        filteredMeta,
+                        response,
+                        "name")
+                    )
+                );
+                store.dispatch(checkAvailableCustomInboundAuthProtocolMeta(true))
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    store.dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Retrieval error"
+                    }));
+
+                    return;
+                }
+
+                store.dispatch(addAlert({
+                    description: "An error occurred retrieving the available inbound protocols.",
+                    level: AlertLevels.ERROR,
+                    message: "Retrieval error"
+                }));
+            });
+    }
+
     /**
      * Retrieve Application template list form the API and sets it in redux state.
      */
@@ -91,6 +138,11 @@ export class ApplicationManagementUtils {
         return getApplicationTemplateList()
             .then((response) => {
                 const applicationTemplates = (response as ApplicationTemplateListInterface).templates;
+
+                // Sort templates based  on displayOrder.
+                applicationTemplates.sort(
+                    (a, b) =>
+                        (a.displayOrder > b.displayOrder) ? 1 : -1);
 
                 // Add on the custom application template to the application template list
                 applicationTemplates.unshift(CustomApplicationTemplate);

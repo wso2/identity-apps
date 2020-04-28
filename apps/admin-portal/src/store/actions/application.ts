@@ -17,9 +17,11 @@
  */
 
 import {
-    ApplicationActionTypes, SetApplicationTemplatesActionInterface,
+    ApplicationActionTypes,
+    SetApplicationTemplatesActionInterface,
     SetAuthProtocolMetaInterface,
-    SetAvailableInboundProtocolsMetaInterface
+    SetAvailableInboundProtocolsMetaInterface,
+    SetAvailableCustomInboundProtocolsMetaInterface
 } from "./types";
 import {
     ApplicationTemplateListItemInterface,
@@ -27,6 +29,7 @@ import {
     OIDCMetadataInterface,
     SupportedAuthProtocolMetaTypes
 } from "../../models";
+import { CheckAvailableCustomInboundProtocolsMetaInterface } from "./types/application";
 
 /**
  * Redux action to set the list of available inbound authentication protocols.
@@ -39,6 +42,28 @@ export const setAvailableInboundAuthProtocolMeta = (
 ): SetAvailableInboundProtocolsMetaInterface => ({
     payload: meta,
     type: ApplicationActionTypes.SET_AVAILABLE_INBOUND_AUTH_PROTOCOL_META
+});
+
+/**
+ * Redux action to set the list of available custom inbound authentication protocols.
+ *
+ * @param {AuthProtocolMetaListItemInterface} meta - Inbound auth protocol meta.
+ *
+ * @return {SetAvailableCustomInboundProtocolsMetaInterface}
+ * An action of type `SET_AVAILABLE_CUSTOM_INBOUND_AUTH_PROTOCOL_META`
+ */
+export const setAvailableCustomInboundAuthProtocolMeta = (
+    meta: AuthProtocolMetaListItemInterface[]
+): SetAvailableCustomInboundProtocolsMetaInterface => ({
+    payload: meta,
+    type: ApplicationActionTypes.SET_AVAILABLE_CUSTOM_INBOUND_AUTH_PROTOCOL_META
+});
+
+export const checkAvailableCustomInboundAuthProtocolMeta = (
+    meta: boolean
+): CheckAvailableCustomInboundProtocolsMetaInterface => ({
+    payload: meta,
+    type: ApplicationActionTypes.CHECK_CUSTOM_INBOUND_AUTH_PROTOCOL_META
 });
 
 /**

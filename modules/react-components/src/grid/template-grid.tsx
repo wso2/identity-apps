@@ -20,8 +20,9 @@ import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import _ from "lodash";
 import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
+import { UserAvatar } from "../avatar";
 import { LinkButton } from "../button";
-import { TemplateCard, TemplateCardPropsInterface } from "../card";
+import { SelectionCard, TemplateCard, TemplateCardPropsInterface } from "../card";
 import { Heading } from "../typography";
 
 /**
@@ -40,6 +41,10 @@ interface TemplateGridPropsInterface<T> {
      * Callback to be fired on template selection.
      */
     onTemplateSelect: (e: SyntheticEvent, { id }: { id: string }) => void;
+    /**
+     * Callback to be fired on secondary template selection.
+     */
+    onSecondaryTemplateSelect?: (e: SyntheticEvent, { id }: { id: string }) => void;
     /**
      * Enable/ Disable pagination.
      */
@@ -65,6 +70,14 @@ interface TemplateGridPropsInterface<T> {
      */
     templates: T[];
     /**
+     * List of secondary templates.
+     */
+    secondaryTemplates?: T[];
+    /**
+     * Selected template.
+     */
+    selectedTemplate?: T;
+    /**
      * Template icons.
      */
     templateIcons?: object;
@@ -72,6 +85,14 @@ interface TemplateGridPropsInterface<T> {
      * Grid type.
      */
     type: "application" | "idp";
+    /**
+     * Use selection card
+     */
+    useSelectionCard?: boolean;
+    /**
+     * Use initial as Image
+     */
+    useNameInitialAsImage?: boolean;
 }
 
 /**
@@ -147,22 +168,42 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
         subHeading,
         tagsSectionTitle,
         templates,
+        selectedTemplate,
         templateIcons,
-        type
+        type,
+        useSelectionCard,
+        onSecondaryTemplateSelect,
+        secondaryTemplates,
+        useNameInitialAsImage
     } = props;
 
-    const [ templateList, setTemplateList ] = useState<T[]>([]);
-    const [ isShowMoreClicked, setIsShowMoreClicked ] = useState<boolean>(false);
+    const [templateList, setTemplateList] = useState<T[]>([]);
+    const [secondaryTemplateList, setSecondaryTemplateList] = useState<T[]>([]);
+    const [isShowMoreClicked, setIsShowMoreClicked] = useState<boolean>(false);
 
     useEffect(() => {
-        if (paginate) {
+        if (paginate && !isShowMoreClicked) {
             setTemplateList(_.take(templates, paginationLimit));
 
             return;
         }
 
         setTemplateList(templates);
-    }, [ templates ]);
+    }, [templates]);
+
+    useEffect(() => {
+        if (secondaryTemplates) {
+            if (paginate && !isShowMoreClicked) {
+                let balanceLimit = (paginationLimit - templates.length);
+                balanceLimit = (balanceLimit < 0) ? 0 : balanceLimit;
+                setSecondaryTemplateList(_.take(secondaryTemplates, balanceLimit));
+
+                return;
+            }
+            setSecondaryTemplateList(secondaryTemplates);
+        }
+    }, [secondaryTemplates, templates]);
+
 
     /**
      * Checks if the template image URL is a valid image URL and if not checks if it's
@@ -191,7 +232,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
 
         const match = Object.keys(templateIcons).find(key => key.toString() === image);
 
-        return match ? templateIcons[ match ] : image;
+        return match ? templateIcons[match] : image;
     };
 
     /**
@@ -200,6 +241,9 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
     const viewMoreTemplates = (): void => {
         setIsShowMoreClicked(true);
         setTemplateList(templates);
+        if (secondaryTemplates) {
+            setSecondaryTemplateList(secondaryTemplates);
+        }
     };
 
     /**
@@ -208,7 +252,55 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
     const viewLessTemplates = (): void => {
         setIsShowMoreClicked(false);
         setTemplateList(_.take(templates, paginationLimit));
+        if (secondaryTemplates) {
+            let balanceLimit = (paginationLimit - templates.length);
+            balanceLimit = (balanceLimit < 0) ? 0 : balanceLimit;
+            setSecondaryTemplateList(_.take(secondaryTemplates, balanceLimit));
+        }
     };
+
+    const resolveCardListing = ((templateList: T[], onClick: any, useNameImage: boolean): ReactElement[] => {
+        if (templateList.length > 0) {
+            return templateList.map((template, index) => (
+                    <SelectionCard
+                        key={ index }
+                        inline
+                        id={ template.id }
+                        header={ template.name }
+                        image={
+                            useNameImage
+                                ?
+                                <UserAvatar name={ template.name } size="tiny"/>
+                                : resolveTemplateImage(template.image)
+                        }
+                        onClick={ onClick }
+                        selected={ selectedTemplate?.id === template.id }
+                    />
+                )
+            )
+        }
+        return null
+    });
+
+    /**
+     * Calculate pagination limit exceeded or not
+     */
+    const paginationLimitExceed = ((): boolean => {
+        let exceeded = false;
+        let length = 0;
+        if (secondaryTemplates && secondaryTemplates instanceof Array) {
+            length += secondaryTemplates.length
+        }
+        if (templates && templates instanceof Array) {
+            length += templates.length
+        }
+
+        if (length > paginationLimit) {
+            exceeded = true
+        }
+
+        return exceeded;
+    });
 
     return (
         <Grid>
@@ -232,9 +324,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                 paginate && (
                                     <Grid.Column textAlign="right">
                                         {
-                                            (templates
-                                                && templates instanceof Array
-                                                && templates.length >= paginationLimit)
+                                            (paginationLimitExceed())
                                                 ? (
                                                     isShowMoreClicked ? (
                                                         <LinkButton onClick={ viewLessTemplates }>
@@ -257,31 +347,55 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
             }
             <Grid.Row>
                 <Grid.Column>
-                    {
-                        (templateList && templateList instanceof Array && templateList.length > 0)
-                            ? templateList.map((template, index) => (
-                                <TemplateCard
-                                    key={ index }
-                                    description={ template.description }
-                                    image={ resolveTemplateImage(template.image) }
-                                    tagsSectionTitle={ tagsSectionTitle }
-                                    tags={
-                                        type === "application"
-                                            ? template.types
-                                            : template.services
+                    { useSelectionCard
+                        ?
+                        (
+                            (
+                                (templateList && templateList instanceof Array && templateList.length > 0) ||
+                                (secondaryTemplateList && secondaryTemplateList instanceof Array
+                                    && secondaryTemplateList.length > 0)
+                            )
+                                ?
+                                <>
+                                    {
+                                        resolveCardListing(templateList, onTemplateSelect, false)
                                     }
-                                    tagsAs={
-                                        type === "application"
-                                            ? "icon"
-                                            : "label"
+                                    {
+                                        resolveCardListing(
+                                            secondaryTemplateList,
+                                            onSecondaryTemplateSelect,
+                                            useNameInitialAsImage
+                                        )
                                     }
-                                    name={ template.name }
-                                    id={ template.id }
-                                    onClick={ onTemplateSelect }
-                                    imageSize="tiny"
-                                />
-                            ))
-                            : emptyPlaceholder && emptyPlaceholder
+                                </>
+                                : emptyPlaceholder && emptyPlaceholder
+                        )
+                        : (
+                            (templateList && templateList instanceof Array && templateList.length > 0)
+                                ? templateList.map((template, index) => (
+                                    <TemplateCard
+                                        key={ index }
+                                        description={ template.description }
+                                        image={ resolveTemplateImage(template.image) }
+                                        tagsSectionTitle={ tagsSectionTitle }
+                                        tags={
+                                            type === "application"
+                                                ? template.types
+                                                : template.services
+                                        }
+                                        tagsAs={
+                                            type === "application"
+                                                ? "icon"
+                                                : "label"
+                                        }
+                                        name={ template.name }
+                                        id={ template.id }
+                                        onClick={ onTemplateSelect }
+                                        imageSize="tiny"
+                                    />
+                                ))
+                                : emptyPlaceholder && emptyPlaceholder
+                        )
                     }
                 </Grid.Column>
             </Grid.Row>
@@ -299,5 +413,6 @@ TemplateGrid.defaultProps = {
         showLessButtonLabel: "Show less",
         showMoreButtonLabel: "Show more"
     },
-    tagsSectionTitle: "Tags"
+    tagsSectionTitle: "Tags",
+    useSelectionCard: false
 };

@@ -207,7 +207,7 @@ export const getAvailableInboundProtocols = (customOnly: boolean): Promise<AuthP
  * @return {Promise<T>} Promise of type T.
  * @throws {IdentityAppsApiException}
  */
-export const getAuthProtocolMetadata = <T>(protocol: SupportedAuthProtocolMetaTypes): Promise<T> => {
+export const getAuthProtocolMetadata = <T>(protocol: string): Promise<T> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -370,6 +370,50 @@ export const updateAuthProtocolConfig = <T>(id: string, config: any,
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ApplicationManagementConstants.AUTH_PROTOCOL_CONFIG_UPDATE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Generic function to delete the authentication protocol config of an application.
+ *
+ * @param {string} id - Application ID.
+ * @param {SupportedAuthProtocolTypes} protocol - The protocol to be deleted.
+ *
+ * @return {Promise<T>} Promise of type T.
+ * @throws {IdentityAppsApiException}
+ */
+export const deleteProtocol = <T>(id: string, protocol: string): Promise<T> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: `${ store.getState().config.endpoints.applications}/${ id }/inbound-protocols/${ protocol }`
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 204) {
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.APP_PROTOCOL_DELETE_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as T);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.APP_PROTOCOL_DELETE_ERROR,
                 error.stack,
                 error.code,
                 error.request,

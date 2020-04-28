@@ -59,6 +59,8 @@ export interface ApplicationReducerStateInterface {
  */
 interface ApplicationMetaInterface {
     inboundProtocols: AuthProtocolMetaListItemInterface[];
+    customInboundProtocols: AuthProtocolMetaListItemInterface[];
+    customInboundProtocolChecked: boolean;
     protocolMeta: AuthProtocolMetaInterface;
 }
 

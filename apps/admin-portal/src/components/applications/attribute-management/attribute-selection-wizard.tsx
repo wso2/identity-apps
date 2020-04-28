@@ -88,7 +88,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     const searchTempAvailable = (event) => {
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
-            setFilterTempAvailableClaims(filterTempAvailableClaims.filter((item) =>
+            setFilterTempAvailableClaims(tempAvailableClaims.filter((item) =>
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1))
         } else {
             setFilterTempAvailableClaims(tempAvailableClaims);
@@ -99,14 +99,14 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     const searchTempSelected = (event) => {
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
-            setFilterTempSelectedClaims(filterTempSelectedClaims.filter((item) =>
+            setFilterTempSelectedClaims(tempSelectedClaims.filter((item) =>
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1))
         } else {
             setFilterTempSelectedClaims(tempSelectedClaims);
         }
     };
 
-    const addRoles = () => {
+    const addAttributes = () => {
         const addedClaims = [...tempSelectedClaims];
         if (checkedUnassignedListItems?.length > 0) {
             checkedUnassignedListItems.map((claim) => {
@@ -122,7 +122,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
         setSelectUnassignedClaimsAllClaimsChecked(false);
     };
 
-    const removeRoles = () => {
+    const removeAttributes = () => {
         const removedRoles = [...tempAvailableClaims];
         if (checkedAssignedListItems?.length > 0) {
             checkedAssignedListItems.map((claim) => {
@@ -244,16 +244,16 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     return (
         <Modal open={ showAddModal } size="small" className="user-roles">
             <Modal.Header>
-                Update attribute selection
+                Update Attribute Selection
                 <Heading subHeading ellipsis as="h6">
                     Add new attributes or remove existing attributes.
                 </Heading>
             </Modal.Header>
             <Modal.Content image>
                 <TransferComponent
-                    searchPlaceholder="Search roles"
-                    addItems={ addRoles }
-                    removeItems={ removeRoles }
+                    searchPlaceholder="Search attribute"
+                    addItems={ addAttributes }
+                    removeItems={ removeAttributes }
                     handleUnelectedListSearch={ searchTempAvailable }
                     handleSelectedListSearch={ searchTempSelected }
                 >
