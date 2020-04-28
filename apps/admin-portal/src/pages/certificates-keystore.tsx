@@ -17,10 +17,8 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { listCertificateAliases } from "../api";
@@ -31,6 +29,7 @@ import { ListLayout, PageLayout } from "../layouts";
 import { AlertLevels, Certificate, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { filterList, sortList } from "../utils";
+import { useTranslation } from "react-i18next";
 
 /**
  * This renders the Userstores page.
@@ -50,15 +49,16 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
         }
     ];
 
-    const [ certificatesKeystore, setCertificatesKeystore ] = useState<Certificate[]>(null);
+    const [ certificatesKeystore, setCertificatesKeystore ] = useState<Certificate[]>([]);
     const [ offset, setOffset ] = useState(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ openModal, setOpenModal ] = useState(false);
     const [ isLoading, setIsLoading ] = useState(true);
-    const [ filteredCertificatesKeystore, setFilteredCertificatesKeystore ] = useState<Certificate[]>(null);
+    const [ filteredCertificatesKeystore, setFilteredCertificatesKeystore ] = useState<Certificate[]>([]);
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
     const [ isSuper, setIsSuper ] = useState(true);
+    const [ query, setQuery ] = useState("");
 
     const tenantDomain: string = useSelector<AppState, string>((state: AppState) => state.config.deployment.tenant);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
@@ -258,27 +258,47 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                             />
                         </ListLayout>
                         )
-                        : !isLoading && (
-                            <EmptyPlaceholder
-                                action={
-                                    (hasRequiredScopes(featureConfig?.certificates,
-                                        featureConfig?.certificates?.scopes?.create)
-                                        && !isSuper) && (
-                                        <PrimaryButton
-                                            onClick={ () => {
-                                                setOpenModal(true);
-                                            } }
+                        : !isLoading &&
+                            (!certificatesKeystore
+                                || (certificatesKeystore.length === 0 && filteredCertificatesKeystore.length === 0))
+                            ? (
+                                <EmptyPlaceholder
+                                    action={
+                                        (appConfig?.certificates?.features?.keystore?.permissions?.create && !isSuper) && (
+                                            <PrimaryButton
+                                                onClick={ () => {
+                                                    setOpenModal(true);
+                                                } }
+                                            >
+                                                <Icon name="upload" /> Import Certificate
+                                            </PrimaryButton>
+                                        )
+                                    }
+                                    title="Import Certificate"
+                                    subtitle={ [ "Currently, there are no certificates available." ] }
+                                    image={ EmptyPlaceholderIllustrations.emptyList }
+                                    imageSize="tiny"
+                                />
+                            )
+                            : !isLoading && (
+                                <EmptyPlaceholder
+                                    action={ (
+                                        <LinkButton onClick={ () => {
+                                            setFilteredCertificatesKeystore(certificatesKeystore);
+                                        } }
                                         >
-                                            <Icon name="upload" /> Import Certificate
-                                        </PrimaryButton>
-                                    )
-                                }
-                                title="Import Certificate"
-                                subtitle={ [ "Currently, there are no certificates available." ] }
-                                image={ EmptyPlaceholderIllustrations.emptyList }
-                                imageSize="tiny"
-                            />
-                        )
+                                            Clear search query
+                                        </LinkButton>
+                                    ) }
+                                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                                    imageSize="tiny"
+                                    title={ "No results found" }
+                                    subtitle={ [
+                                        `We couldn't find any results for "${query}"`,
+                                        "Please try a different search term."
+                                    ] }
+                                />
+                            )
                 }
             </PageLayout>
         </>
