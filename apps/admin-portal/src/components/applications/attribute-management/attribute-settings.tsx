@@ -81,9 +81,9 @@ interface AttributeSelectionPropsInterface extends SBACInterface<FeatureConfigIn
      */
     claimConfigurations: ClaimConfigurationInterface;
     /**
-     * Is OIDC configured for the application.
+     * If only OIDC configured for the application.
      */
-    isOIDCConfigured: boolean;
+    onlyOIDCConfigured: boolean;
 }
 
 export const getLocalDialectURI = (): string => {
@@ -110,7 +110,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         appId,
         featureConfig,
         claimConfigurations,
-        isOIDCConfigured
+        onlyOIDCConfigured
     } = props;
 
     const dispatch = useDispatch();
@@ -520,7 +520,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         //TODO  move this logic to backend
         setIsClaimRequestLoading(true);
 
-        if (isOIDCConfigured) {
+        if (onlyOIDCConfigured) {
             setIsClaimRequestLoading(false);
             changeSelectedDialect("http://wso2.org/oidc/claim");
 
@@ -529,7 +529,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
         setIsClaimRequestLoading(false);
         changeSelectedDialect(localDialectURI);
-    }, [isOIDCConfigured, dialect]);
+    }, [onlyOIDCConfigured, dialect]);
 
     useEffect(() => {
 
