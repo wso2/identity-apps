@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
 import { getDialects } from "../api";
-import { AddDialect, AdvancedSearchWithBasicFilters, AvatarBackground } from "../components";
+import { AddDialect, AdvancedSearchWithBasicFilters, AvatarBackground, DialectSearch } from "../components";
 import { ClaimsList, ListType } from "../components";
 import { LOCAL_CLAIMS_PATH, UserConstants } from "../constants";
 import { history } from "../helpers";
