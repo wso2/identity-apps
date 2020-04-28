@@ -42,16 +42,10 @@
     String newPassword = request.getParameter("reset-password");
     String callback = request.getParameter("callback");
     String tenantDomain = request.getParameter(IdentityManagementEndpointConstants.TENANT_DOMAIN);
-    boolean isUserPortalURL = false;
 
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
-    }
-
-    if (callback.equals(IdentityManagementEndpointUtil.getUserPortalUrl(application
-            .getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL)))) {
-        isUserPortalURL = true;
     }
 
     if (StringUtils.isNotBlank(newPassword)) {
@@ -62,11 +56,6 @@
         property.setKey("callback");
         property.setValue(URLEncoder.encode(callback, "UTF-8"));
         properties.add(property);
-
-        Property userPortalURLProperty = new Property();
-        userPortalURLProperty.setKey("isUserPortalURL");
-        userPortalURLProperty.setValue(String.valueOf(isUserPortalURL));
-        properties.add(userPortalURLProperty);
 
         Property tenantProperty = new Property();
         tenantProperty.setKey(IdentityManagementEndpointConstants.TENANT_DOMAIN);
