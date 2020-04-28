@@ -16,10 +16,11 @@
 * under the License.
 */
 
+import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react"
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Header, Image, Segment } from "semantic-ui-react";
-import { getADialect, getAllExternalClaims } from "../api";
+import { deleteADialect, getADialect, getAllExternalClaims } from "../api";
 import {
     AvatarBackground,
     EditDialectDetails,
@@ -43,8 +44,33 @@ export const ExternalDialectEditPage = (props): ReactElement => {
     const [ dialect, setDialect ] = useState<ClaimDialect>(null);
     const [ claims, setClaims ] = useState<ExternalClaim[]>([]);
     const [ isLoading, setIsLoading ] = useState(true);
+    const [ confirmDelete, setConfirmDelete ] = useState(false);
 
     const dispatch = useDispatch();
+
+    const deleteConfirmation = (): ReactElement => (
+        <ConfirmationModal
+            onClose={ (): void => setConfirmDelete(false) }
+            type="warning"
+            open={ confirmDelete }
+            assertion={ dialect.dialectURI }
+            assertionHint={ <p>Please type <strong>{ dialect.dialectURI }</strong> to confirm.</p> }
+            assertionType="input"
+            primaryAction="Confirm"
+            secondaryAction="Cancel"
+            onSecondaryActionClick={ (): void => setConfirmDelete(false) }
+            onPrimaryActionClick={ (): void => deleteDialect(dialect.id) }
+        >
+            <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+            <ConfirmationModal.Message attached warning>
+                This action is irreversible and will permanently delete the selected external dialect.
+                        </ConfirmationModal.Message>
+            <ConfirmationModal.Content>
+                If you delete this external dialect, all teh associated external claims will also be deleted.
+                Please proceed with caution.
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
+    );
 
     /**
      * Fetches the local claim
@@ -111,6 +137,31 @@ export const ExternalDialectEditPage = (props): ReactElement => {
         return stringArray[ 0 ][ 0 ].toLocaleUpperCase();
     }
 
+    /**
+     * This deletes a dialect
+     * @param {string} dialectID 
+     */
+    const deleteDialect = (dialectID: string) => {
+        deleteADialect(dialectID).then(() => {
+            history.push(CLAIM_DIALECTS_PATH);
+            dispatch(addAlert(
+                {
+                    description: "The dialect has been deleted successfully!",
+                    level: AlertLevels.SUCCESS,
+                    message: "Dialect deleted successfully"
+                }
+            ));
+        }).catch(error => {
+            dispatch(addAlert(
+                {
+                    description: error?.description || "There was an error while deleting the dialect",
+                    level: AlertLevels.ERROR,
+                    message: error?.message || "Something went wrong"
+                }
+            ));
+        })
+    };
+
     return (
         <PageLayout
             image={
@@ -168,6 +219,23 @@ export const ExternalDialectEditPage = (props): ReactElement => {
                     update={ getExternalClaims }
                 />
             </Segment>
+            <Divider hidden />
+            <Grid>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 16 }>
+                        <DangerZoneGroup sectionHeader="Danger Zone">
+                            <DangerZone
+                                actionTitle="Delete External Dialect"
+                                header="Delete External Dialect"
+                                subheader={ "Once you delete an external dialect, there is no going back. " +
+                                    "Please be certain." }
+                                onActionClick={ () => setConfirmDelete(true) }
+                            />
+                        </DangerZoneGroup>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+            { confirmDelete && deleteConfirmation() }
         </PageLayout>
     )
 }
