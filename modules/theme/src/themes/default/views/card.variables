@@ -98,6 +98,7 @@ Recent Application Card
 @labeledCardMarginBottom: 5px;
 @labeledCardLabelFontColor: 0.8em;
 @labeledCardWrapperMarginBottom: 8px;
+@labeledCardTiny: 68px;
 
 /*-------------------------------
            Info Card
