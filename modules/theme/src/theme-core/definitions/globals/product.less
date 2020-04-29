@@ -683,29 +683,6 @@ body {
             visibility: visible;
         }
     }
-    .advanced-search-options {
-        max-width: @advancedSearchDropdownMaxWidth;
-        min-width: @advancedSearchDropdownMinWidth;
-        position: absolute;
-        width: 100%;
-        z-index: 9;
-        background: white;
-        box-shadow: @advancedSearchOptionsShadow;
-        border: @advancedSearchOptionsBorder;
-        margin-top: 10px;
-
-        &.hidden {
-            display: none;
-        }
-        .header {
-            padding: 0.7em 1em;
-            border-bottom: @advancedSearchOptionsHeaderBorderBottom;
-            font-weight: 500;
-        }
-        .form-wrapper {
-            padding: 0.7em 1em;
-        }
-    }
 }
 
 /*****************************************
@@ -1121,7 +1098,7 @@ body {
         &.primary{
             fill: @primaryColor;
         }
-        
+
         &.secondary {
             fill: @dustyGray;
         }
@@ -1153,7 +1130,7 @@ svg.illustration {
         &.secondary {
             fill: @paleGray;
         }
-    } 
+    }
 
     .stroke {
         &.primary {
