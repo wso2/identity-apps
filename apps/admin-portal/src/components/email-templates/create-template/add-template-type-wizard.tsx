@@ -27,7 +27,7 @@ import { AxiosResponse } from "axios";
 import { AlertLevels, AlertInterface } from "@wso2is/core/dist/src/models";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { addAlert } from "@wso2is/core/dist/src/store";
+import { addAlert } from "@wso2is/core/store";
 import { history } from "../../../helpers";
 import { EMAIL_TEMPLATE_VIEW_PATH } from "../../../constants";
 
