@@ -33,8 +33,11 @@ interface PlaceholderProps {
 
 /**
  * Placeholder component.
+ * TODO: Remove this component. Use from `@wso2is/react-components`.
+ * @deprecated
  *
  * @param {PlaceholderProps} props - Props injected in to the placeholder component.
+ *
  * @return {JSX.Element}
  */
 export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: PlaceholderProps): JSX.Element => {
