@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { ApplicationTemplateListItemInterface } from "../../../models";
+import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../../../models";
 
 export const CustomApplicationTemplate: ApplicationTemplateListItemInterface = {
     authenticationProtocol: "",
-    category: "DEFAULT",
+    category: ApplicationTemplateCategories.DEFAULT_CUSTOM,
     description: "Manually configure the inbound authentication protocol, authentication flow, etc.",
     displayOrder: 0,
     id: "custom-application",

@@ -268,6 +268,18 @@ export enum SupportedApplicationTemplateCategories {
 }
 
 /**
+ * Enum for application template categories.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum ApplicationTemplateCategories {
+    DEFAULT = "DEFAULT",
+    CUSTOM = "CUSTOM",
+    DEFAULT_CUSTOM = "DEFAULT_CUSTOM"
+}
+
+/**
  *  Application template technology interface.
  */
 export interface ApplicationTemplateTechnology {
