@@ -1,3 +1,14 @@
 /*******************************
       Divider Overrides
 *******************************/
+
+/*------------------------------
+            Compact
+-------------------------------*/
+
+.ui.divider {
+    &.compact {
+        margin-top: @dividerCompactMargin;
+        margin-bottom: @dividerCompactMargin;
+    }
+}
