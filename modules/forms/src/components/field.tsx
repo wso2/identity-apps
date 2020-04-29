@@ -19,7 +19,8 @@
 import classNames from "classnames";
 import React from "react";
 import { Button, Divider, Form, Radio } from "semantic-ui-react";
-import { FormField, FormValue, RadioChild } from "../models";
+import { Password } from "./password";
+import { QueryParameters } from "./query-parameters";
 import {
     isButtonField,
     isCheckBoxField,
@@ -34,9 +35,8 @@ import {
     isTextField,
     isToggleField
 } from "../helpers";
+import { FormField, FormValue, RadioChild } from "../models";
 import { filterPassedProps } from "../utils";
-import { Password } from "./password";
-import { QueryParameters } from "./query-parameters";
 
 /**
  * prop types for the Field component
