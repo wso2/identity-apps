@@ -32,9 +32,6 @@ interface ProvisioningConfigurationFormPropsInterface {
     config: ProvisioningConfigurationInterface;
     onSubmit: (values: any) => void;
     useStoreList: SimpleUserStoreListItemInterface[];
-    /**
-     * Make the form read only.
-     */
     readOnly?: boolean;
 }
 

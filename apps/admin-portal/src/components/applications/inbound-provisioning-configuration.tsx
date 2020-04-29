@@ -25,7 +25,7 @@ import {
     ProvisioningConfigurationInterface,
     SimpleUserStoreListItemInterface
 } from "../../models";
-import { AlertLevels, CRUDPermissionsInterface, SBACInterface } from "@wso2is/core/dist/src/models";
+import { AlertLevels, SBACInterface } from "@wso2is/core/dist/src/models";
 import { getUserStoreList, updateApplicationConfigurations } from "../../api";
 import { addAlert } from "@wso2is/core/dist/src/store";
 import { useDispatch } from "react-redux";
@@ -48,10 +48,6 @@ interface InboundProvisioningConfigurationsPropsInterface extends SBACInterface<
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
-    /**
-     * CRUD permissions,
-     */
-    permissions?: CRUDPermissionsInterface;
     /**
      * Make the form read only.
      */

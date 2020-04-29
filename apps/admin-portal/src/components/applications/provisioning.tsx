@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -48,10 +48,6 @@ interface ProvisioningSettingsPropsInterface extends SBACInterface<FeatureConfig
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
-    /**
-     * CRUD permissions,
-     */
-    permissions?: CRUDPermissionsInterface;
 }
 
 /**

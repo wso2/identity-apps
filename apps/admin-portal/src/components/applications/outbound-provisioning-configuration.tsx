@@ -25,7 +25,7 @@ import {
     OutboundProvisioningConfigurationInterface,
     ProvisioningConfigurationInterface
 } from "../../models";
-import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/dist/src/models";
+import { AlertLevels } from "@wso2is/core/dist/src/models";
 import { getApplicationDetails, updateApplicationConfigurations } from "../../api";
 import { addAlert } from "@wso2is/core/dist/src/store";
 import { useDispatch } from "react-redux";
@@ -49,10 +49,6 @@ interface OutboundProvisioningConfigurationsPropsInterface {
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
-    /**
-     * CRUD permissions,
-     */
-    permissions?: CRUDPermissionsInterface;
 }
 
 /**
