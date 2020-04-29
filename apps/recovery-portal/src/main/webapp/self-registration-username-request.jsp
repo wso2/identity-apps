@@ -33,7 +33,7 @@
     boolean skipSignUpEnableCheck = Boolean.parseBoolean(request.getParameter("skipsignupenablecheck"));
     String username = request.getParameter("username");
     String tenantDomain = request.getParameter("tenantDomain");
-    User user = IdentityManagementServiceUtil.getInstance().getUser(username);
+    User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, false);
     Object errorCodeObj = request.getAttribute("errorCode");
     Object errorMsgObj = request.getAttribute("errorMsg");
     String callback = Encode.forHtmlAttribute(request.getParameter("callback"));
