@@ -175,12 +175,12 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         });
 
         panes.push({
-            menuItem: "Just-in-time Provisioning",
+            menuItem: "Just-in-Time Provisioning",
             render: JITProvisioningSettingsTabPane
         });
 
         panes.push({
-            menuItem: "Advance",
+            menuItem: "Advanced",
             render: AdvancedSettingsTabPane
         });
 
