@@ -18,15 +18,23 @@
 
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { SummaryUserStores } from "./wizards";
-import { BasicDetailsUserStore, ConnectionDetails } from "./wizards";
+import { BasicDetailsUserStore, ConnectionDetails, GroupDetails, SummaryUserStores, UserDetails } from "./wizards";
 import { addUserStore } from "../../api";
 import { ApplicationWizardStepIcons } from "../../configs";
-import { AlertLevels, Type, UserStorePostData } from "../../models";
+import { USER_STORES_PATH } from "../../constants";
+import { history } from "../../helpers";
+import {
+    AlertLevels,
+    CategorizedProperties,
+    UserStorePostData,
+    UserStoreProperty,
+    UserstoreType
+} from "../../models";
 import { addAlert } from "../../store/actions";
+import { reOrganizeProperties } from "../../utils";
 
 /**
  * Prop types of the `AddUserStore` component
@@ -40,7 +48,10 @@ interface AddUserStoreProps {
      * Called when the modal is closed
      */
     onClose: () => void;
-
+    /**
+     * The userstore type.
+     */
+    type: UserstoreType;
 }
 
 /**
@@ -50,18 +61,34 @@ interface AddUserStoreProps {
  */
 export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
 
-    const { open, onClose } = props;
+    const { open, onClose, type } = props;
 
-    const [currentWizardStep, setCurrentWizardStep] = useState(0);
-    const [basicDetailsData, setBasicDetailsData] = useState<Map<string, FormValue>>(null);
-    const [connectionDetailsData, setConnectionDetailsData] = useState<Map<string, FormValue>>(null);
-    const [type, setType] = useState<Type>(null);
-    const [userStore, setUserStore] = useState<UserStorePostData>(null);
+    const [ currentWizardStep, setCurrentWizardStep ] = useState(0);
+    const [ basicDetailsData, setBasicDetailsData ] = useState<Map<string, FormValue>>(null);
+    const [ connectionDetailsData, setConnectionDetailsData ] = useState<Map<string, FormValue>>(null);
+    const [ userDetailsData, setUserDetailsData ] = useState<Map<string, FormValue>>(null);
+    const [ groupDetailsData, setGroupDetailsData ] = useState<Map<string, FormValue>>(null);
+    const [ userStore, setUserStore ] = useState<UserStorePostData>(null);
+    const [ properties, setProperties ] = useState<CategorizedProperties>(null);
 
-    const [firstStep, setFirstStep] = useTrigger();
-    const [secondStep, setSecondStep] = useTrigger();
+    const [ firstStep, setFirstStep ] = useTrigger();
+    const [ secondStep, setSecondStep ] = useTrigger();
+    const [ thirdStep, setThirdStep ] = useTrigger();
+    const [ fourthStep, setFourthStep ] = useTrigger();
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        type && setProperties(reOrganizeProperties(type.properties));
+    }, [ type ]);
+
+    useEffect(() => {
+        userStore && setCurrentWizardStep(4);
+    }, [ userStore ]);
+
+    useEffect(() => {
+        groupDetailsData && serializeData();
+    }, [ groupDetailsData ]);
 
     /**
      * Adds the userstore
@@ -80,13 +107,14 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
                 message: "Updating Userstore list takes time"
             }));
             onClose();
+            history.push(USER_STORES_PATH);
         }).catch(error => {
-                dispatch(addAlert({
-                    description: error?.description ?? "There was an error while creating the userstore",
-                    level: AlertLevels.ERROR,
-                    message: error?.message ?? "Something went wrong!"
-                }))
-            })
+            dispatch(addAlert({
+                description: error?.description ?? "There was an error while creating the userstore",
+                level: AlertLevels.ERROR,
+                message: error?.message ?? "Something went wrong!"
+            }))
+        })
     };
 
     /**
@@ -101,27 +129,55 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
     /**
      * This saves the Connection Details values along with the te Type
      * @param {Map<string, FormValue>} values Connection Details Values
-     * @param {Type} type 
      */
-    const onSubmitConnectionDetails = (values: Map<string, FormValue>, type: Type) => {
+    const onSubmitConnectionDetails = (values: Map<string, FormValue>) => {
         setConnectionDetailsData(values);
-        setType(type);
+        setCurrentWizardStep(2);
+    }
 
-        const data = new Map([...Array.from(basicDetailsData ?? []), ...Array.from(values ?? [])]);
+    const onSubmitUserDetails = (values: Map<string, FormValue>) => {
+        setUserDetailsData(values);
+        setCurrentWizardStep(3);
+    }
+
+    const onSubmitGroupDetails = (values: Map<string, FormValue>) => {
+        setGroupDetailsData(values);
+    }
+
+    const serializeData = () => {
         const userStore: UserStorePostData = {
-            description: data.get("description")?.toString(),
-            name: data.get("name")?.toString(),
-            properties: type?.properties?.Mandatory?.map(property => {
-                return {
-                    name: property.name,
-                    value: data.get(property.name)?.toString()
-                }
-            }),
-            typeId: data.get("type")?.toString()
+            description: basicDetailsData?.get("description")?.toString(),
+            name: basicDetailsData?.get("name")?.toString(),
+            properties: serializeProperties(),
+            typeId: type?.typeId
         };
 
         setUserStore(userStore);
-        setCurrentWizardStep(2);
+    }
+
+    const serializeProperties = (): UserStoreProperty[] => {
+        const connectionProperties: UserStoreProperty[] = properties.connection.required.map(property => {
+            return {
+                name: property.name,
+                value: connectionDetailsData.get(property.name).toString()
+            }
+        });
+
+        const userProperties: UserStoreProperty[] = properties.user.required.map(property => {
+            return {
+                name: property.name,
+                value: userDetailsData.get(property.name).toString()
+            }
+        });
+
+        const groupProperties: UserStoreProperty[] = properties.group.required.map(property => {
+            return {
+                name: property.name,
+                value: groupDetailsData.get(property.name).toString()
+            }
+        });
+
+        return [ ...connectionProperties, ...userProperties, ...groupProperties ];
     }
 
     /**
@@ -145,7 +201,8 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
                     submitState={ secondStep }
                     onSubmit={ onSubmitConnectionDetails }
                     values={ connectionDetailsData }
-                    typeId={ basicDetailsData?.get("type").toString() }
+                    type={ type }
+                    properties={ properties?.connection?.required }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
@@ -153,20 +210,45 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
         },
         {
             content: (
+                <UserDetails
+                    submitState={ thirdStep }
+                    onSubmit={ onSubmitUserDetails }
+                    values={ userDetailsData }
+                    properties={ properties?.user?.required }
+                />
+            ),
+            icon: ApplicationWizardStepIcons.general,
+            title: "User details"
+        },
+        {
+            content: (
+                <GroupDetails
+                    submitState={ fourthStep }
+                    onSubmit={ onSubmitGroupDetails }
+                    values={ groupDetailsData }
+                    properties={ properties?.group?.required }
+                />
+            ),
+            icon: ApplicationWizardStepIcons.general,
+            title: "Group details"
+        },
+        {
+            content: (
                 <SummaryUserStores
                     data={ userStore }
-                    properties={ type?.properties?.Mandatory }
+                    connectionProperties={ properties?.connection?.required }
+                    userProperties={ properties?.user?.required }
+                    groupProperties={ properties?.group?.required }
                     type={ type?.typeName }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
             title: "Summary"
-
         }
     ];
 
     /**
-     * Moves to teh next step in the wizard
+     * Moves to the next step in the wizard
      */
     const next = () => {
         switch (currentWizardStep) {
@@ -177,6 +259,12 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
                 setSecondStep();
                 break;
             case 2:
+                setThirdStep();
+                break;
+            case 3:
+                setFourthStep();
+                break;
+            case 4:
                 handleSubmit();
                 break;
         }
@@ -194,7 +282,7 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
             open={ open }
             onClose={ onClose }
             dimmer="blurring"
-            size="small"
+            size="large"
             className="wizard application-create-wizard"
         >
             <Modal.Header className="wizard-header">
@@ -205,17 +293,17 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
                     header="Fill in the following details to create a userstore."
                     current={ currentWizardStep }
                 >
-                    {STEPS.map((step, index) => (
+                    { STEPS.map((step, index) => (
                         <Steps.Step
                             key={ index }
                             icon={ step.icon }
                             title={ step.title }
                         />
-                    ))}
+                    )) }
                 </Steps.Group>
             </Modal.Content >
             <Modal.Content className="content-container" scrolling>
-                {STEPS[currentWizardStep].content}
+                { STEPS[ currentWizardStep ].content }
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
@@ -224,20 +312,20 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
                             <LinkButton floated="left" onClick={ () => onClose() }>Cancel</LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            {currentWizardStep < STEPS.length - 1 && (
+                            { currentWizardStep < STEPS.length - 1 && (
                                 <PrimaryButton floated="right" onClick={ next }>
                                     Next <Icon name="arrow right" />
                                 </PrimaryButton>
-                            )}
-                            {currentWizardStep === STEPS.length - 1 && (
+                            ) }
+                            { currentWizardStep === STEPS.length - 1 && (
                                 <PrimaryButton floated="right" onClick={ next }>
                                     Finish</PrimaryButton>
-                            )}
-                            {currentWizardStep > 0 && (
+                            ) }
+                            { currentWizardStep > 0 && (
                                 <LinkButton floated="right" onClick={ previous }>
                                     <Icon name="arrow left" /> Previous
                                 </LinkButton>
-                            )}
+                            ) }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
