@@ -22,6 +22,7 @@ import React, {
     FunctionComponent,
     PropsWithChildren,
     ReactElement,
+    ReactNode,
     ReactPortal
 } from "react";
 import {
@@ -32,7 +33,7 @@ import {
     DroppableProvided
 } from "react-beautiful-dnd";
 import ReactDOM from "react-dom";
-import { AuthenticatorListItemInterface } from "../../meta";
+import { GenericAuthenticatorInterface } from "../../../../models";
 
 /**
  * Proptypes for the authenticators component.
@@ -41,15 +42,23 @@ interface AuthenticatorsPropsInterface {
     /**
      * List of authenticators.
      */
-    authenticators: AuthenticatorListItemInterface[];
+    authenticators: GenericAuthenticatorInterface[];
     /**
      * Additional CSS classes.
      */
     className?: string;
     /**
+     * Default name for authenticators with no name.
+     */
+    defaultName?: string;
+    /**
      * ID for the droppable field.
      */
     droppableId: string;
+    /**
+     * Empty placeholder.
+     */
+    emptyPlaceholder?: ReactNode;
     /**
      * Heading for the authenticators section.
      */
@@ -90,7 +99,9 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     const {
         authenticators,
         className,
+        defaultName,
         droppableId,
+        emptyPlaceholder,
         heading,
         isDropDisabled,
         readOnly
@@ -107,10 +118,14 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
      * @return {React.ReactElement | React.ReactPortal}
      */
     const PortalAwareDraggable = (
-        props: PropsWithChildren<{ provided: DraggableProvided; snapshot: DraggableStateSnapshot}>
+        props: PropsWithChildren<{ provided: DraggableProvided; snapshot: DraggableStateSnapshot }>
     ): ReactElement | ReactPortal => {
 
-        const { children, provided, snapshot } = props;
+        const {
+            children,
+            provided,
+            snapshot
+        } = props;
 
         const usePortal: boolean = snapshot.isDragging;
 
@@ -119,6 +134,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                 ref={ provided.innerRef }
                 { ...provided.draggableProps }
                 { ...provided.dragHandleProps }
+                className="inline"
             >
                 { children }
             </div>
@@ -140,31 +156,36 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     <Droppable droppableId={ droppableId } direction="horizontal" isDropDisabled={ isDropDisabled }>
                         { (provided: DroppableProvided): React.ReactElement<HTMLElement> => (
                             <div ref={ provided.innerRef } { ...provided.droppableProps } className={ classes }>
-                                { authenticators.map((authenticator, index) => (
-                                    <Draggable
-                                        key={ `${ authenticator.authenticator }-${ index }` }
-                                        draggableId={ authenticator.authenticator }
-                                        index={ index }
-                                        isDragDisabled={ readOnly }
-                                    >
-                                        {
-                                            (
-                                                draggableProvided: DraggableProvided,
-                                                draggableSnapshot: DraggableStateSnapshot
-                                            ): React.ReactElement<HTMLElement> => (
-                                                <PortalAwareDraggable
-                                                    provided={ draggableProvided }
-                                                    snapshot={ draggableSnapshot }
-                                                >
-                                                    <LabeledCard
-                                                        image={ authenticator.image }
-                                                        label={ authenticator.displayName }
-                                                    />
-                                                </PortalAwareDraggable>
-                                            )
-                                        }
-                                    </Draggable>
-                                ))
+
+                                {
+                                    authenticators.map((authenticator, index) => (
+                                        <Draggable
+                                            key={ `${ authenticator.idp }-${ authenticator.id }` }
+                                            draggableId={ authenticator.id }
+                                            index={ index }
+                                            isDragDisabled={ readOnly }
+                                        >
+                                            {
+                                                (
+                                                    draggableProvided: DraggableProvided,
+                                                    draggableSnapshot: DraggableStateSnapshot
+                                                ): React.ReactElement<HTMLElement> => (
+                                                    <PortalAwareDraggable
+                                                        provided={ draggableProvided }
+                                                        snapshot={ draggableSnapshot }
+                                                    >
+
+                                                        <LabeledCard
+                                                            size="tiny"
+                                                            image={ authenticator.image }
+                                                            label={ authenticator.displayName || defaultName }
+                                                            labelEllipsis={ true }
+                                                        />
+                                                    </PortalAwareDraggable>
+                                                )
+                                            }
+                                        </Draggable>
+                                    ))
                                 }
                                 { provided.placeholder }
                             </div>
@@ -172,7 +193,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     </Droppable>
                 </>
             )
-            : null
+            : <>{ emptyPlaceholder }</>
     );
 };
 
@@ -180,5 +201,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
  * Default props for the authenticators component.
  */
 Authenticators.defaultProps = {
+    defaultName: "Unknown",
     isDropDisabled: true
 };

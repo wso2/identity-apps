@@ -25,8 +25,8 @@ import { deleteIdentityProvider } from "../../api";
 import { history } from "../../helpers";
 import {
     ConfigReducerStateInterface,
-    FederatedAuthenticatorListItemInterface, IdentityProviderListItemInterface,
-    IdentityProviderListResponseInterface
+    IdentityProviderListResponseInterface,
+    StrictIdentityProviderInterface
 } from "../../models";
 import { AppState } from "../../store";
 
@@ -58,7 +58,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
-    const [ deletingIDP, setDeletingIDP ] = useState<IdentityProviderListItemInterface>(undefined);
+    const [ deletingIDP, setDeletingIDP ] = useState<StrictIdentityProviderInterface>(undefined);
 
     /**
      * Redirects to the identity provider edit page when the edit button is clicked.

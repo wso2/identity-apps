@@ -77,15 +77,15 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
 
     const getPropertySummary = (properties: any[], metaProperties: any[]) => {
 
-        const sortedProperties = properties.sort((a, b) => {
-            const firstOrder = metaProperties.find(eachPropMetadata =>
+        const sortedProperties = properties?.sort((a, b) => {
+            const firstOrder = metaProperties?.find(eachPropMetadata =>
                 a.key === eachPropMetadata.key)?.displayOrder;
-            const secondOrder = metaProperties.find(eachPropMetadata =>
+            const secondOrder = metaProperties?.find(eachPropMetadata =>
                 b.key === eachPropMetadata.key)?.displayOrder;
             return firstOrder - secondOrder;
         });
 
-        return sortedProperties.map((eachProp) => {
+        return sortedProperties?.map((eachProp) => {
             const propertyMetadata = getPropertyMetadata(eachProp?.key, metaProperties);
             if (eachProp.value !== undefined && !_.isEmpty(eachProp?.value.toString()) &&
                 !propertyMetadata?.isConfidential) {

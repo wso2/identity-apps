@@ -31,10 +31,12 @@ import {
     CaretRightIcon,
     CertificateAvatar,
     CertificateBadge,
+    CertificateColoredIcon,
     CertificateIcon,
     CertificateIllustration,
     CertificateRibbon,
     ClaimsIcon,
+    ClockColoredIcon,
     CloseIcon,
     CodeIcon,
     CordovaLogo,
@@ -52,9 +54,9 @@ import {
     ErrorIcon,
     ExpertModeIdPIcon,
     FIDOLogo,
-    FileUploadIllustration,
     FacebookIdPIcon,
     FacebookLogo,
+    FileUploadIllustration,
     ForbiddenIcon,
     GearsIcon,
     GithubIdPIcon,
@@ -63,17 +65,22 @@ import {
     HTMLLogo,
     HomeTileIcons,
     InfoIcon,
+    JWTLogo,
     JavaLogo,
     JavaScriptLogo,
     LaunchIcon,
+    LockShieldIcon,
     Logo,
     MFAIconSet,
+    MagnifierColoredIcon,
     MagnifierIcon,
     MaximizeIcon,
+    MicrosoftLogo,
     MinimizeIcon,
     NodeJSLogo,
     OIDCLogo,
     OIDCWebAppTemplateIllustration,
+    Office365Logo,
     OpenIDLogo,
     PassiveSTSTemplateIllustration,
     PinIcon,
@@ -84,9 +91,12 @@ import {
     SAMLWebAppTemplateIllustration,
     SMSOTPIcon,
     SPATemplateIllustration,
+    SalesforceLogo,
     SamlLogo,
+    SCIMLogo,
     SettigsSectionIconSet,
     SpinWheelIcon,
+    SPMLLogo,
     SuccessIcon,
     TOTPIcon,
     TwitterIdPIcon,
@@ -97,7 +107,8 @@ import {
     WSTrustLogo,
     WSTrustTemplateIllustration,
     WarningIcon,
-    WindowsTemplateIllustration
+    WindowsTemplateIllustration,
+    YahooLogo
 } from "@wso2is/theme";
 
 import { SupportedServices } from "../models";
@@ -244,13 +255,28 @@ export const IdentityProviderWizardStepIcons = {
 
 export const AuthenticatorIcons = {
     basic: BasicAuthIcon,
+    default: LockShieldIcon,
     emailOTP: EmailOTPIcon,
     facebook: FacebookLogo,
     fido: FIDOLogo,
     google: GoogleLogo,
+    identifierFirst: MagnifierColoredIcon,
+    jwtBasic: JWTLogo,
+    microsoft: MicrosoftLogo,
+    office365: Office365Logo,
+    sessionExecutor: ClockColoredIcon,
     smsOTP: SMSOTPIcon,
     totp: TOTPIcon,
-    twitter: TwitterLogo
+    twitter: TwitterLogo,
+    x509: CertificateColoredIcon,
+    yahoo: YahooLogo
+};
+
+export const ConnectorIcons = {
+    google: GoogleIdPIcon,
+    salesforce: SalesforceLogo,
+    scim: SCIMLogo,
+    spml: SPMLLogo
 };
 
 export const PlaceHolderIcons = {
@@ -321,4 +347,10 @@ export const CertificateIllustrations = {
      * File upload placeholder.
      */
     uploadPlaceholder: FileUploadIllustration
+};
+
+export const OutboundProvisioningConnectorWizard = {
+    connectorDetails: DocumentIcon,
+    connectorSelection: GearsIcon,
+    summary: ReportIcon
 };
