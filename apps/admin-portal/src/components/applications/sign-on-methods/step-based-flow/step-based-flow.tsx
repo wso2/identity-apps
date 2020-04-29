@@ -23,27 +23,18 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
-import { Card, Divider, Dropdown, DropdownProps, Grid, Header, Icon, Popup } from "semantic-ui-react";
+import { Card, Divider, DropdownProps, Form, Grid, Icon, Popup } from "semantic-ui-react";
 import { AuthenticationStep } from "./authentication-step";
 import { AuthenticatorSidePanel } from "./authenticator-side-panel";
-import { getIdentityProviderDetail, getIdentityProviderList } from "../../../../api";
 import { OperationIcons } from "../../../../configs";
 import {
     AuthenticationSequenceInterface,
     AuthenticationSequenceType,
     AuthenticationStepInterface,
     AuthenticatorInterface,
-    IDPNameInterface,
-    IdentityProviderListItemInterface,
-    IdentityProviderListResponseInterface,
-    IdentityProviderResponseInterface
+    GenericAuthenticatorInterface
 } from "../../../../models";
-import {
-    AuthenticatorListItemInterface,
-    AuthenticatorTypes,
-    selectedFederatedAuthenticators,
-    selectedLocalAuthenticators
-} from "../../meta";
+import { IdentityProviderManagementUtils } from "../../../../utils";
 
 /**
  * Proptypes for the applications settings component.
@@ -89,25 +80,18 @@ const AUTHENTICATION_STEP_DROPPABLE_ID = "authentication-step-";
 const LOCAL_AUTHENTICATORS_DROPPABLE_ID = "local-authenticators";
 
 /**
- * Droppable id for the second factor authenticators section.
+ * Droppable id for the external authenticators section.
  * @constant
  * @type {string}
  * @default
  */
-const SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID = "second-factor-authenticators";
-
-/**
- * Droppable id for the social authenticators section.
- * @constant
- * @type {string}
- * @default
- */
-const SOCIAL_AUTHENTICATORS_DROPPABLE_ID = "social-authenticators";
+const EXTERNAL_AUTHENTICATORS_DROPPABLE_ID = "external-authenticators";
 
 /**
  * Configure the authentication flow of an application.
  *
  * @param {AuthenticationFlowPropsInterface} props - Props injected to the component.
+ *
  * @return {ReactElement}
  */
 export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> = (
@@ -126,12 +110,51 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const authenticatorsSidePanelRef = useRef<HTMLDivElement>(null);
     const mainContentRef = useRef<HTMLDivElement>(null);
 
-    const [ federatedAuthenticators, setFederatedAuthenticators ] = useState<AuthenticatorListItemInterface[]>([]);
-    const [ localAuthenticators, setLocalAuthenticators ] = useState<AuthenticatorListItemInterface[]>([]);
+    const [ federatedAuthenticators, setFederatedAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
+    const [ localAuthenticators, setLocalAuthenticators ] = useState<GenericAuthenticatorInterface[]>([]);
     const [ authenticationSteps, setAuthenticationSteps ] = useState<AuthenticationStepInterface[]>([]);
     const [ subjectStepId, setSubjectStepId ] = useState<number>(undefined);
     const [ attributeStepId, setAttributeStepId ] = useState<number>(undefined);
     const [ showAuthenticatorsSidePanel, setAuthenticatorsSidePanelVisibility ] = useState<boolean>(true);
+
+    /**
+     * Loads federated authenticators and local authenticators
+     * on component load.
+     */
+    useEffect(() => {
+        IdentityProviderManagementUtils.getAllAuthenticators()
+            .then(([ localAuthenticators, federatedAuthenticators ]) => {
+                setLocalAuthenticators(localAuthenticators);
+                setFederatedAuthenticators(federatedAuthenticators);
+            })
+    }, []);
+
+    /**
+     * If the `authenticationSequence` prop is available, sets the authentication steps,
+     * subject step id, and attribute step id.
+     */
+    useEffect(() => {
+        if (!authenticationSequence) {
+            return;
+        }
+
+        setAuthenticationSteps(authenticationSequence?.steps);
+        setSubjectStepId(authenticationSequence?.subjectStepId);
+        setAttributeStepId(authenticationSequence?.attributeStepId);
+    }, [ authenticationSequence ]);
+
+    /**
+     * Triggered on `showAuthenticatorsSidePanel` change.
+     */
+    useEffect(() => {
+        let width = "100%";
+
+        if (showAuthenticatorsSidePanel) {
+            width = `calc(100% - ${ authenticatorsSidePanelRef?.current?.clientWidth }px)`;
+        }
+
+        mainContentRef.current.style.width = width;
+    }, [ showAuthenticatorsSidePanel ]);
 
     /**
      * Called when update is triggered.
@@ -157,149 +180,17 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     }, [ triggerUpdate ]);
 
     /**
-     * Add Federated IDP name and ID in to the state.
-     *
-     * @param {string} id - Identity Provider ID
-     * @return {Promise<void | IDPNameInterface>}
-     */
-    const updateFederatedIDPNameListItem = (id: string): Promise<void | IDPNameInterface> => {
-        return getIdentityProviderDetail(id)
-            .then((response: IdentityProviderResponseInterface) => {
-                const iDPNamePair: IDPNameInterface = {
-                    authenticatorId: response?.federatedAuthenticators?.defaultAuthenticatorId,
-                    idp: response.name,
-                    image: response.image
-                };
-                if (typeof iDPNamePair.image === "undefined") {
-                    delete iDPNamePair.image;
-                }
-                return Promise.resolve(iDPNamePair);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Update Error"
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: "An error occurred while updating the IPD name",
-                    level: AlertLevels.ERROR,
-                    message: "Update Error"
-                }));
-            });
-    };
-
-    /**
-     * Updates the federatedIDPNameList with available IDPs.
-     *
-     * @return {Promise<any | IDPNameInterface[]>}
-     */
-    const updateFederateIDPNameList = (): Promise<any | IDPNameInterface[]> => {
-        return getIdentityProviderList()
-            .then((response: IdentityProviderListResponseInterface) => {
-                // If no IDP's are configured in IS, the api drops the
-                // `identityProviders` attribute. If it is not available,
-                // return from the function to avoid iteration
-                if (!response?.identityProviders) {
-                    return;
-                }
-
-                return Promise.all(
-                    response.identityProviders
-                    && response.identityProviders instanceof Array
-                    && response.identityProviders.length > 0
-                    && response.identityProviders.map((item: IdentityProviderListItemInterface) => {
-                        if (item.isEnabled) {
-                            return updateFederatedIDPNameListItem(item.id);
-                        }
-                    })
-                );
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Retrieval Error"
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: "An error occurred while retrieving the IPD list",
-                    level: AlertLevels.ERROR,
-                    message: "Retrieval Error"
-                }));
-            });
-    };
-
-    /**
-     *  Merge the IDP name list and meta details to populate the final federated List.
-     */
-    const loadFederatedAuthenticators = (): void => {
-        updateFederateIDPNameList()
-            .then((response) => {
-                // If `updateFederateIDPNameList()` function returns a falsy value
-                // return from the function.
-                if (!response) {
-                    return;
-                }
-
-                const selectedFederatedList = [ ...selectedFederatedAuthenticators ];
-                const newIDPNameList: IDPNameInterface[] = [ ...response ];
-
-                const finalList = _(selectedFederatedList)
-                    .concat(newIDPNameList)
-                    .groupBy("authenticatorId")
-                    .map(_.spread(_.merge))
-                    .value();
-
-                // Updates the federated authenticator List.
-                setFederatedAuthenticators(finalList.filter((item) => item.authenticatorId !== undefined));
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Retrieval Error"
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: "An error occurred while retrieving the federated authenticators.",
-                    level: AlertLevels.ERROR,
-                    message: "Retrieval Error"
-                }));
-            });
-    };
-
-    /**
-     * Load local authenticator list.
-     */
-    const loadLocalAuthenticators = (): void => {
-        setLocalAuthenticators([ ...selectedLocalAuthenticators ]);
-    };
-
-    /**
      * Validates if the addition to the step is valid.
      *
-     * @param {AuthenticatorListItemInterface} authenticator - Authenticator to be added.
+     * @param {GenericAuthenticatorInterface} authenticator - Authenticator to be added.
      * @param {AuthenticatorInterface[]} options - Current step options
+     *
      * @return {boolean} True or false.
      */
-    const validateStepAddition = (authenticator: AuthenticatorListItemInterface,
+    const validateStepAddition = (authenticator: GenericAuthenticatorInterface,
                                   options: AuthenticatorInterface[]): boolean => {
 
-        if (options.find((option) => option.authenticator === authenticator.authenticator)) {
+        if (options.find((option) => option.authenticator === authenticator?.defaultAuthenticator?.name)) {
             dispatch(addAlert({
                 description: "The same authenticator is not allowed to repeated in a single step.",
                 level: AlertLevels.WARNING,
@@ -319,10 +210,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
      * @param {string} authenticatorId - Id of the authenticator.
      */
     const updateAuthenticationStep = (stepNo: number, authenticatorId: string): void => {
-        const authenticators: AuthenticatorListItemInterface[] = [ ...localAuthenticators, ...federatedAuthenticators ];
+        const authenticators: GenericAuthenticatorInterface[] = [ ...localAuthenticators, ...federatedAuthenticators ];
 
-        const authenticator: AuthenticatorListItemInterface = authenticators
-            .find((item) => item.authenticator === authenticatorId);
+        const authenticator: GenericAuthenticatorInterface = authenticators
+            .find((item) => item.id === authenticatorId);
 
         if (!authenticator) {
             return;
@@ -336,7 +227,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             return;
         }
 
-        steps[ stepNo ].options.push({ authenticator: authenticator.authenticator, idp: authenticator.idp });
+        const defaultAuthenticator = authenticator.authenticators.find(
+            (item) => item.authenticatorId === authenticator.defaultAuthenticator.authenticatorId);
+
+        steps[ stepNo ].options.push({ authenticator: defaultAuthenticator.name, idp: authenticator.idp });
 
         setAuthenticationSteps(steps);
     };
@@ -462,60 +356,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     };
 
     /**
-     * Filters the list of federated & local authenticators and returns a list of
-     * authenticators of the selected type.
-     *
-     * @param {AuthenticatorTypes} type - Authenticator type.
-     * @return {AuthenticatorListItemInterface[]} A filtered list of authenticators.
-     */
-    const filterAuthenticators = (type: AuthenticatorTypes): AuthenticatorListItemInterface[] => {
-        const authenticators: AuthenticatorListItemInterface[] = [ ...localAuthenticators, ...federatedAuthenticators ];
-
-        return authenticators.filter((authenticator) => authenticator.type === type && authenticator.idp);
-    };
-
-    /**
      * Toggles the authenticator side panel visibility.
      */
     const toggleAuthenticatorsSidePanelVisibility = (): void => {
         setAuthenticatorsSidePanelVisibility(!showAuthenticatorsSidePanel);
     };
-
-    /**
-     * Loads federated authenticators and local authenticators
-     * on component load.
-     */
-    useEffect(() => {
-        loadFederatedAuthenticators();
-        loadLocalAuthenticators();
-    }, []);
-
-    /**
-     * If the `authenticationSequence` prop is available, sets the authentication steps,
-     * subject step id, and attribute step id.
-     */
-    useEffect(() => {
-        if (!authenticationSequence) {
-            return;
-        }
-
-        setAuthenticationSteps(authenticationSequence?.steps);
-        setSubjectStepId(authenticationSequence?.subjectStepId);
-        setAttributeStepId(authenticationSequence?.attributeStepId);
-    }, [ authenticationSequence ]);
-
-    /**
-     * Triggered on `showAuthenticatorsSidePanel` change.
-     */
-    useEffect(() => {
-        let width = "100%";
-
-        if (showAuthenticatorsSidePanel) {
-            width = `calc(100% - ${ authenticatorsSidePanelRef?.current?.clientWidth }px)`;
-        }
-
-        mainContentRef.current.style.width = width;
-    }, [ showAuthenticatorsSidePanel ]);
 
     return (
         <div className={ `authentication-flow-section ${ showAuthenticatorsSidePanel ? "flex" : "" }` }>
@@ -568,35 +413,13 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                             !readOnly && (
                                 <Grid.Row verticalAlign="middle">
                                     <Grid.Column computer={ 5 } mobile={ 16 }>
-                                        <Header as="h6">
-                                            <Header.Content>
-                                            Subject identifier from step - {" "}
-                                            <Dropdown
-                                                placeholder="Select step"
-                                                scrolling
-                                                options={
-                                                    authenticationSteps
-                                                    && authenticationSteps instanceof Array
-                                                    && authenticationSteps.length > 0
-                                                    && authenticationSteps.map((step, index) => {
-                                                        return {
-                                                            key: step.id,
-                                                            text: index + 1,
-                                                            value: index + 1
-                                                        }
-                                                    })
-                                                }
-                                                onChange={ handleSubjectRetrievalStepChange }
-                                                value={ subjectStepId }
-                                            />
-                                            </Header.Content>
-                                        </Header>
-                                    </Grid.Column>
-                                    <Grid.Column computer={ 5 } mobile={ 16 }>
-                                        <Header as="h6">
-                                            <Header.Content>
-                                                Attributes from step - {" "}
-                                                <Dropdown
+                                        <Form>
+                                            <Form.Field inline>
+                                                <Form.Select
+                                                    inline
+                                                    compact
+                                                    label="Use Subject identifier from"
+                                                    className="mr-2"
                                                     placeholder="Select step"
                                                     scrolling
                                                     options={
@@ -606,7 +429,35 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                         && authenticationSteps.map((step, index) => {
                                                             return {
                                                                 key: step.id,
-                                                                text: index + 1,
+                                                                text: `Step ${ index + 1 }`,
+                                                                value: index + 1
+                                                            }
+                                                        })
+                                                    }
+                                                    onChange={ handleSubjectRetrievalStepChange }
+                                                    value={ subjectStepId }
+                                                />
+                                            </Form.Field>
+                                        </Form>
+                                    </Grid.Column>
+                                    <Grid.Column computer={ 5 } mobile={ 16 }>
+                                        <Form>
+                                            <Form.Field inline>
+                                                <Form.Select
+                                                    inline
+                                                    compact
+                                                    label="Use Attributes from"
+                                                    className="mr-2"
+                                                    placeholder="Select step"
+                                                    scrolling
+                                                    options={
+                                                        authenticationSteps
+                                                        && authenticationSteps instanceof Array
+                                                        && authenticationSteps.length > 0
+                                                        && authenticationSteps.map((step, index) => {
+                                                            return {
+                                                                key: step.id,
+                                                                text: `Step ${ index + 1 }`,
                                                                 value: index + 1
                                                             }
                                                         })
@@ -614,8 +465,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                     onChange={ handleAttributeRetrievalStepChange }
                                                     value={ attributeStepId }
                                                 />
-                                            </Header.Content>
-                                        </Header>
+                                            </Form.Field>
+                                        </Form>
                                     </Grid.Column>
                                     <Grid.Column computer={ 6 } mobile={ 16 } textAlign="right">
                                         <PrimaryButton onClick={ handleAuthenticationStepAdd }>
@@ -663,19 +514,14 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                     ref={ authenticatorsSidePanelRef }
                     authenticatorGroup={ [
                         {
-                            authenticators: filterAuthenticators(AuthenticatorTypes.FIRST_FACTOR),
+                            authenticators: localAuthenticators,
                             droppableId: LOCAL_AUTHENTICATORS_DROPPABLE_ID,
                             heading: "Local"
                         },
                         {
-                            authenticators: filterAuthenticators(AuthenticatorTypes.SECOND_FACTOR),
-                            droppableId: SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID,
-                            heading: "Second factor"
-                        },
-                        {
-                            authenticators: filterAuthenticators(AuthenticatorTypes.SOCIAL),
-                            droppableId: SOCIAL_AUTHENTICATORS_DROPPABLE_ID,
-                            heading: "Social logins"
+                            authenticators: federatedAuthenticators,
+                            droppableId: EXTERNAL_AUTHENTICATORS_DROPPABLE_ID,
+                            heading: "External"
                         }
                     ] }
                     visibility={ showAuthenticatorsSidePanel }

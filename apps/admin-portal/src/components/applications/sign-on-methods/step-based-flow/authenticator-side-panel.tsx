@@ -23,7 +23,7 @@ import Draggable from "react-draggable";
 import { Accordion, Card, Icon, Popup } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
 import { OperationIcons } from "../../../../configs";
-import { AuthenticatorListItemInterface } from "../../meta";
+import { GenericAuthenticatorInterface } from "../../../../models";
 
 /**
  * Proptypes for the authenticator side panel component.
@@ -63,7 +63,7 @@ interface AuthenticatorInterface {
     /**
      * Set of authenticators.
      */
-    authenticators: AuthenticatorListItemInterface[];
+    authenticators: GenericAuthenticatorInterface[];
     /**
      * Droppable id.
      */
