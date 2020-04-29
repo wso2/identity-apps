@@ -16,12 +16,8 @@
 * under the License.
 */
 
-import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import React, { ReactElement, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { getTypes } from "../../../api";
-import { AlertLevels, TypeResponse } from "../../../models";
+import React, { ReactElement } from "react";
 
 /**
  * Prop types of `BasicDetailsUserStore` component
@@ -52,22 +48,6 @@ export const BasicDetailsUserStore = (
 
     const { submitState, onSubmit, values } = props;
 
-    const [types, setTypes] = useState<TypeResponse[]>(null);
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        getTypes().then((response) => {
-            setTypes(response);
-        }).catch((error) => {
-            dispatch(addAlert({
-                description: error?.description,
-                level: AlertLevels.ERROR,
-                message: error?.message || "Something went wrong"
-            }))
-        })
-    }, []);
-
     return (
         <Forms
             onSubmit={
@@ -94,24 +74,6 @@ export const BasicDetailsUserStore = (
                 requiredErrorMessage=""
                 placeholder="Enter a description"
                 value={ values?.get("description")?.toString() }
-            />
-            <Field
-                search={ true }
-                label="Type"
-                name="type"
-                type="dropdown"
-                required={ true }
-                requiredErrorMessage="Select a Type"
-                value={ values?.get("type")?.toString() }
-                children={
-                    types?.map(type => {
-                        return {
-                            key: type.typeId,
-                            text: type.typeName,
-                            value: type.typeId
-                        }
-                    })
-                }
             />
         </Forms>
     )
