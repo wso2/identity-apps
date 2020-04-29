@@ -18,7 +18,7 @@
 
 import classNames from "classnames";
 import React, { FunctionComponent } from "react";
-import { Card, CardProps, Label, LabelProps, SemanticSIZES } from "semantic-ui-react";
+import { Card, CardProps, Label, LabelProps, Popup, SemanticSIZES } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
 
 /**
@@ -162,7 +162,13 @@ export const LabeledCard: FunctionComponent<LabeledCardPropsInterface> = (
                     />
                 </Card.Content>
             </Card>
-            <div className={ "card-label" + labelEllipsis ? " ellipsis" : "" }>{ label }</div>
+            <Popup
+                disabled={ !labelEllipsis }
+                trigger={ <div className={ "card-label" + labelEllipsis ? " ellipsis" : "" }>{ label }</div> }
+                position="bottom center"
+                content={ label }
+                inverted
+            />
         </div>
     );
 };
