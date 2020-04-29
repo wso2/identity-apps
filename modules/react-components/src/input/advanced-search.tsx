@@ -35,7 +35,7 @@ import { Heading } from "../typography";
  *
  * Proptypes for the advanced search component.
  */
-interface AdvancedSearchProps {
+export interface AdvancedSearchPropsInterface {
     /**
      * Text alignment.
      */
@@ -111,12 +111,12 @@ interface AdvancedSearchProps {
 /**
  * Advanced search component.
  *
- * @param {React.PropsWithChildren<AdvancedSearchProps>} props - Props injected to the component.
+ * @param {React.PropsWithChildren<AdvancedSearchPropsInterface>} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedSearchProps>> = (
-    props: React.PropsWithChildren<AdvancedSearchProps>
+export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedSearchPropsInterface>> = (
+    props: React.PropsWithChildren<AdvancedSearchPropsInterface>
 ): ReactElement => {
 
     const {
