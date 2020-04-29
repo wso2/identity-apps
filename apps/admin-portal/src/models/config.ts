@@ -136,6 +136,7 @@ export interface ServiceResourceEndpointsInterface {
     identityProviders: string;
     issuer: string;
     jwks: string;
+    localAuthenticators: string;
     localClaims: string;
     logout: string;
     me: string;

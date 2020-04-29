@@ -343,6 +343,9 @@
 .labeled-card-wrapper {
     text-align: center;
 
+    &.tiny {
+        width: @labeledCardTiny;
+    }
     &.with-bottom-margin {
         margin-bottom: @labeledCardWrapperMarginBottom;
     }
@@ -402,6 +405,10 @@
 
     .card-label {
         font-size: @labeledCardLabelFontColor;
+    }
+
+    &.fluid {
+        width: 100%;
     }
 }
 

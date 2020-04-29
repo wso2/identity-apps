@@ -20,9 +20,14 @@ import { EmptyPlaceholder, Heading, LabeledCard } from "@wso2is/react-components
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Droppable, DroppableProvided } from "react-beautiful-dnd";
-import { Checkbox, Icon } from "semantic-ui-react";
-import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../../models";
-import { AuthenticatorListItemInterface } from "../../meta";
+import { Form, Icon, Label, Popup, Radio } from "semantic-ui-react";
+import { IdentityProviderManagementConstants } from "../../../../constants";
+import {
+    AuthenticationStepInterface,
+    AuthenticatorInterface,
+    FederatedAuthenticatorInterface,
+    GenericAuthenticatorInterface
+} from "../../../../models";
 
 /**
  * Proptypes for the authentication step component.
@@ -31,11 +36,7 @@ interface AuthenticationStepPropsInterface {
     /**
      * List of all available authenticators.
      */
-    authenticators: AuthenticatorListItemInterface[];
-    /**
-     * Step chosen to get the attributes.
-     */
-    attributeStepId: number;
+    authenticators: GenericAuthenticatorInterface[];
     /**
      * Additional CSS classes.
      */
@@ -45,21 +46,23 @@ interface AuthenticationStepPropsInterface {
      */
     droppableId: string;
     /**
-     * On Change callback for the attribute step checkbox.
-     */
-    onAttributeCheckboxChange: (stepIndex: number) => void;
-    /**
      * Callback for the step delete.
      */
     onStepDelete: (stepIndex: number) => void;
     /**
+     * Callback for step option authenticator change.
+     * @param {number} stepIndex - Step index.
+     * @param {number} optionIndex - Option Index.
+     * @param {FederatedAuthenticatorInterface} authenticator - Selected authenticator.
+     */
+    onStepOptionAuthenticatorChange: (
+        stepIndex: number,
+        optionIndex: number,
+        authenticator: FederatedAuthenticatorInterface) => void;
+    /**
      * Callback for the step option delete.
      */
     onStepOptionDelete: (stepIndex: number, optionIndex: number) => void;
-    /**
-     * On Change callback for the subject step checkbox.
-     */
-    onSubjectCheckboxChange: (stepIndex: number) => void;
     /**
      * Current step.
      */
@@ -68,10 +71,6 @@ interface AuthenticationStepPropsInterface {
      * Index of the current step.
      */
     stepIndex: number;
-    /**
-     * Step chosen to get the subject.
-     */
-    subjectStepId: number;
     /**
      * Make the form read only.
      */
@@ -82,6 +81,7 @@ interface AuthenticationStepPropsInterface {
  * Component to render the authentication step.
  *
  * @param {AuthenticationStepPropsInterface} props - Props injected to the component.
+ *
  * @return {ReactElement}
  */
 export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterface> = (
@@ -90,17 +90,14 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
 
     const {
         authenticators,
-        attributeStepId,
         className,
         droppableId,
-        onAttributeCheckboxChange,
         onStepDelete,
+        onStepOptionAuthenticatorChange,
         onStepOptionDelete,
-        onSubjectCheckboxChange,
         readOnly,
         step,
-        stepIndex,
-        subjectStepId
+        stepIndex
     } = props;
 
     const classes = classNames("authentication-step-container", className);
@@ -111,28 +108,84 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
      * @param {AuthenticatorInterface} option - Authenticator step option.
      * @param {number} stepIndex - Index of the step.
      * @param {number} optionIndex - Index of the option.
+     *
      * @return {ReactElement}
      */
-    const resolveStepOption = (option: AuthenticatorInterface, stepIndex: number, optionIndex: number): ReactElement => {
+    const resolveStepOption = (option: AuthenticatorInterface, stepIndex: number,
+                               optionIndex: number): ReactElement => {
+
         if (authenticators && authenticators instanceof Array && authenticators.length > 0) {
 
-            const authenticator = authenticators.find((item) => item.authenticator === option.authenticator);
+            let authenticator: GenericAuthenticatorInterface = null;
+
+            if (option.idp === IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER) {
+                authenticator = authenticators.find((item) => item.defaultAuthenticator.name === option.authenticator)
+            } else {
+                authenticator = authenticators.find((item) => item.idp === option.idp);
+            }
 
             if (!authenticator) {
                 return null;
             }
 
             return (
-                <LabeledCard
-                    image={ authenticator.image }
-                    label={ authenticator.displayName }
-                    bottomMargin={ false }
-                    onCloseClick={
-                        !readOnly && (
-                            (): void => onStepOptionDelete(stepIndex, optionIndex)
+                <Popup
+                    wide
+                    style={ {
+                        minWidth: "200px"
+                    } }
+                    hoverable
+                    disabled={
+                        !(authenticator?.authenticators
+                            && authenticator.authenticators instanceof Array
+                            && authenticator.authenticators.length > 1)
+                    }
+                    trigger={ (
+                        <div className="inline">
+                            <LabeledCard
+                                image={ authenticator.image }
+                                label={ authenticator.displayName }
+                                labelEllipsis={ true }
+                                bottomMargin={ false }
+                                size="tiny"
+                                onCloseClick={
+                                    !readOnly && (
+                                        (): void => onStepOptionDelete(stepIndex, optionIndex)
+                                    )
+                                }
+                            />
+                        </div>
+                    ) }
+                    content={
+                        (
+                            <>
+                                <Label attached="top">Select an Authenticator</Label>
+                                <Form className="mt-3 mb-3">
+                                    {
+                                        authenticator?.authenticators?.map((item) => {
+                                            return (
+                                                <Form.Field>
+                                                    <Radio
+                                                        label={ item.name }
+                                                        name={ item.name }
+                                                        value={ item.authenticatorId }
+                                                        checked={ item.name === option.authenticator }
+                                                        onChange={ () => onStepOptionAuthenticatorChange(
+                                                            stepIndex,
+                                                            optionIndex,
+                                                            item
+                                                        ) }
+                                                    />
+                                                </Form.Field>
+                                            )
+                                        })
+                                    }
+                                </Form>
+                            </>
                         )
                     }
-                />
+                >
+                </Popup>
             );
         }
     };
@@ -163,20 +216,6 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                 )
                         }
                         { provided.placeholder }
-                    </div>
-                    <div className="checkboxes">
-                        <Checkbox
-                            label="Use subject identifier from this step"
-                            checked={ subjectStepId === (stepIndex + 1) }
-                            onChange={ (): void => onSubjectCheckboxChange(stepIndex + 1) }
-                            readOnly={ readOnly }
-                        />
-                        <Checkbox
-                            label="Use attributes from this step"
-                            checked={ attributeStepId === (stepIndex + 1) }
-                            onChange={ (): void => onAttributeCheckboxChange(stepIndex + 1) }
-                            readOnly={ readOnly }
-                        />
                     </div>
                 </div>
             ) }
