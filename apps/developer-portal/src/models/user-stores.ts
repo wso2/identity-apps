@@ -16,9 +16,9 @@
  * under the License.
  */
 
- /**
-  * Type of query param objects
-  */
+/**
+ * Type of query param objects
+ */
 export interface QueryParams {
     limit: number;
     offset: number;
@@ -55,7 +55,7 @@ export interface UserStorePostData {
 }
 
 /**
- * Userstore object returned by retrieval 
+ * Userstore object returned by retrieval
  */
 export interface UserStore {
     typeName: string;
@@ -69,7 +69,7 @@ export interface UserStore {
 /**
  * Type of object passed to Test a JDBC connection
  */
-export interface TestConnection{
+export interface TestConnection {
     driverName: string;
     connectionURL: string;
     username: string;
@@ -79,7 +79,7 @@ export interface TestConnection{
 /**
  * Type of object return by Types list endpoint
  */
-export interface TypeResponse{
+export interface TypeResponse {
     typeId: string;
     typeName: string;
     className: string;
@@ -88,16 +88,18 @@ export interface TypeResponse{
 /**
  * The type of properties object in Type object
  */
-export interface TypeProperty{
+export interface TypeProperty {
     name: string;
     defaultValue: string;
     description: string;
+    attributes: PropertyAttribute[];
+    value?: string;
 }
 
 /**
  * The type of object returned by the type meta endpoint
  */
-export interface Type{
+export interface UserstoreType {
     name: string;
     typeName: string;
     typeId: string;
@@ -111,10 +113,41 @@ export interface Type{
 }
 
 /**
- * Type of patch data 
+ * Type of patch data
  */
 export interface PatchData {
     operation: string;
     path: string;
     value: string;
+}
+
+/**
+ * Model of the key-value pair attribute object of properties.
+ */
+export interface PropertyAttribute {
+    name: "category" | "type" | "required";
+    value: string;
+}
+
+/**
+ *  Model to split the property into required and optional.
+ */
+export interface RequiredBinary{
+    required: TypeProperty[];
+    optional: TypeProperty[];
+}
+
+/**
+ * The model of the UI-level categorization of the type properties.
+ */
+export interface CategorizedProperties {
+    user: RequiredBinary;
+    connection: RequiredBinary;
+    group: RequiredBinary;
+}
+
+export enum UserstorePropertiesCategories {
+    CONNECTION = "connection",
+    USER = "user",
+    GROUP = "group"
 }
