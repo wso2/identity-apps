@@ -18,7 +18,7 @@
 
 import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
 import { PageLayout, ListLayout } from "../layouts";
-import { PrimaryButton } from "@wso2is/react-components";
+import { PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
 import { Icon, PaginationProps, DropdownProps } from "semantic-ui-react";
 import { history } from "../helpers";
 import { EmailTemplateDetails, EmailTemplate, AlertInterface, AlertLevels } from "../models";
@@ -29,6 +29,7 @@ import { UserConstants, EMAIL_TEMPLATE_VIEW_PATH } from "../constants";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { addAlert } from "@wso2is/core/dist/src/store";
+import { EmailTemplateIllustrations } from "../configs";
 
 /**
  * Component will list all available locale based email templates for 
@@ -175,29 +176,47 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
             titleTextAlign="left"
             bottomMargin={ false }
         >
-            <ListLayout
-                currentListSize={ listItemLimit }
-                listItemLimit={ listItemLimit }
-                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                onPageChange={ handlePaginationChange }
-                showPagination={ true }
-                totalPages={ Math.ceil(emailTemplates?.length / listItemLimit) }
-                totalListSize={ emailTemplates?.length }
-                rightActionPanel={
-                    (
-                        <PrimaryButton onClick={ () => handleAddNewTemplate() }>
-                            <Icon name="add"/>
-                            New Template
+            { paginatedemailTemplates.length > 0 ?
+                <ListLayout
+                    currentListSize={ listItemLimit }
+                    listItemLimit={ listItemLimit }
+                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                    onPageChange={ handlePaginationChange }
+                    showPagination={ true }
+                    totalPages={ Math.ceil(emailTemplates?.length / listItemLimit) }
+                    totalListSize={ emailTemplates?.length }
+                    rightActionPanel={
+                        (
+                            <PrimaryButton onClick={ () => handleAddNewTemplate() }>
+                                <Icon name="add"/>
+                                New Template
+                            </PrimaryButton>
+                        )
+                    }
+                >
+                    <EmailTemplateList 
+                        onDelete={ deleteTemplateType } 
+                        templateTypeId={ templateTypeId } 
+                        templateList={ paginatedemailTemplates }
+                    />
+                </ListLayout>
+                :
+                <EmptyPlaceholder
+                    action={
+                        <PrimaryButton
+                            onClick={ () => {
+                                handleAddNewTemplate();
+                            } }
+                        >
+                            <Icon name="add"/> New Template
                         </PrimaryButton>
-                    )
-                }
-            >
-                <EmailTemplateList 
-                    onDelete={ deleteTemplateType } 
-                    templateTypeId={ templateTypeId } 
-                    templateList={ paginatedemailTemplates }
-                />
-            </ListLayout>
+                    }
+                    title="Add Template"
+                    subtitle={ ["There are no templates available for the selected email template type."] }
+                    image={ EmailTemplateIllustrations.emptyEmailListing }
+                    imageSize="tiny"
+                /> 
+            }
         </PageLayout>
     )
 }

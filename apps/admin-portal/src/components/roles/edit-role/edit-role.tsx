@@ -59,14 +59,14 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
             menuItem: "Basics",
             render: () => (
                 <ResourceTab.Pane attached={ false }>
-                    <BaiscRoleDetails roleObject={ roleObject } onRoleUpdate={ onRoleUpdate } />
+                    <BaiscRoleDetails isGroup={ isGroup } roleObject={ roleObject } onRoleUpdate={ onRoleUpdate } />
                 </ResourceTab.Pane>
             )
         },{
             menuItem: "Permissions",
             render: () => (
                 <ResourceTab.Pane attached={ false }>
-                    <RolePermissionDetails roleObject={ roleObject } onRoleUpdate={ onRoleUpdate }/>
+                    <RolePermissionDetails isGroup={ isGroup }  roleObject={ roleObject } onRoleUpdate={ onRoleUpdate }/>
                 </ResourceTab.Pane>
             )
         },{

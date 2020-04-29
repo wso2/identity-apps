@@ -44,6 +44,7 @@ interface AddRoleUserProps {
     assignedUsers?: RolesMemberInterface[];
     isEdit: boolean;
     isGroup: boolean;
+    userStore?: string;
     initialValues?: UserBasicInterface[];
 }
 
@@ -54,7 +55,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         assignedUsers,
         isEdit,
         initialValues,
-        isGroup
+        isGroup,
+        userStore
     } = props;
 
     const [ tempUserList, setTempUserList ] = useState<UserBasicInterface[]>([]);
@@ -105,12 +107,12 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         setIsSelectAllAssignedUsers(!isSelectAllAssignedUsers);
     };
 
-    const getList = (limit: number, offset: number, filter: string, attribute: string) => {
-        getUsersList(limit, offset, filter, attribute, null)
+    const getList = (limit: number, offset: number, filter: string, attribute: string, userStore: string) => {
+        getUsersList(limit, offset, filter, attribute, userStore)
             .then((response) => {
                 const responseUsers = response.Resources;
-                responseUsers.sort((userObject, comparedUserObject) => 
-                    userObject.name.givenName.localeCompare(comparedUserObject.name.givenName)
+                responseUsers.sort((userObject, comparedUserObject) =>
+                    userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                 );
                 setUsersList(responseUsers);
                 setInitialUserList(responseUsers);
@@ -127,7 +129,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                             });
                         });
                         selectedUserList.sort((userObject, comparedUserObject) => 
-                            userObject.name.givenName.localeCompare(comparedUserObject.name.givenName)
+                            userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                         );
                         setSelectedUsers(selectedUserList);
                         setInitialSelectedUsers(selectedUserList);
@@ -146,8 +148,11 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                             });
                         });
                         selectedUserList.sort((userObject, comparedUserObject) => 
-                            userObject.name.givenName.localeCompare(comparedUserObject.name.givenName)
+                            userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                         );
+                        setUsersList(responseUsers.filter(function(user) {
+                            return selectedUserList.indexOf(user) == -1;
+                        }));
                         setSelectedUsers(selectedUserList);
                         setInitialSelectedUsers(selectedUserList);
                         setTempUserList(selectedUserList);
@@ -192,7 +197,11 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     useEffect(() => {
         if (userListMetaContent) {
             const attributes = generateAttributesString(userListMetaContent.values());
-            getList(listItemLimit, listOffset, null, attributes);
+            if (isGroup) {
+                getList(listItemLimit, listOffset, null, attributes, userStore);
+            } else {
+                getList(listItemLimit, listOffset, null, attributes, null);
+            }
         }
     }, [ listOffset, listItemLimit ]);
 

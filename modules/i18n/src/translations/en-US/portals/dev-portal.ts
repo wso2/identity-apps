@@ -781,7 +781,11 @@ export const devPortal: DevPortalNS = {
             edit: {
                 basics: {
                     fields: {
-                        roleName: "Role Name"
+                        roleName: {
+                            name: "Role Name",
+                            required: "Role name is required",
+                            placeholder: "Enter your role name"
+                        }
                     }
                 }
             },
@@ -892,7 +896,11 @@ export const devPortal: DevPortalNS = {
             edit: {
                 basics: {
                     fields: {
-                        roleName: "Group Name"
+                        groupName: {
+                            name: "Group Name",
+                            required: "Group name is required",
+                            placeholder: "Enter your group name"
+                        }
                     }
                 }
             },

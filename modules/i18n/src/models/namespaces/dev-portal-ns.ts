@@ -373,7 +373,11 @@ export interface DevPortalNS {
             edit: {
                 basics: {
                     fields: {
-                        roleName: string;
+                        roleName: {
+                            name: string;
+                            required: string;
+                            placeholder: string;
+                        }
                     };
                 };
             };
@@ -432,7 +436,11 @@ export interface DevPortalNS {
             edit: {
                 basics: {
                     fields: {
-                        roleName: string;
+                        groupName: {
+                            name: string;
+                            required: string;
+                            placeholder: string;
+                        }
                     };
                 };
             };

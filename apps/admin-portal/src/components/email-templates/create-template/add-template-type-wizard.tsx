@@ -28,6 +28,8 @@ import { AlertLevels, AlertInterface } from "@wso2is/core/dist/src/models";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { addAlert } from "@wso2is/core/dist/src/store";
+import { history } from "../../../helpers";
+import { EMAIL_TEMPLATE_VIEW_PATH } from "../../../constants";
 
 interface EmailTemplateTypeWizardProps {
     onCloseHandler: () => void;
@@ -89,6 +91,7 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
                     )
                 });
             }
+            history.push(EMAIL_TEMPLATE_VIEW_PATH + response.data?.id);
             onCloseHandler();
         }).catch(error => {
             handleAlerts({

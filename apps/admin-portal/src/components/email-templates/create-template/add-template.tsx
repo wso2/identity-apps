@@ -74,6 +74,7 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
             localeDropDown.push({
                 key: index,
                 value: locale,
+                flag: countryCode.toLowerCase(),
                 text: country ? language + " (" + country + ")" : language,
             })
         });
@@ -198,21 +199,25 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                     templateId === "" &&
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 4 }>
-                            <Dropdown
-                                placeholder="Select Locale"
-                                label="Locale "
-                                name="locale"
-                                requiredErrorMessage="Select locale"
-                                required={ true }
-                                options={ localeList ? localeList : [] }
-                                onChange={ (event: SyntheticEvent, data: DropdownProps) => {
-                                    setLocale(data.value.toString());
-                                } }
-                                value={ locale }
-                                selection
-                                fluid
-                                scrolling
-                            />
+                            <Form.Field>
+                                <label>Locale</label>
+                                <Dropdown
+                                    placeholder="Select Locale"
+                                    label="Locale "
+                                    name="locale"
+                                    requiredErrorMessage="Select locale"
+                                    required={ true }
+                                    options={ localeList ? localeList : [] }
+                                    onChange={ (event: SyntheticEvent, data: DropdownProps) => {
+                                        setLocale(data.value.toString());
+                                    } }
+                                    search
+                                    value={ locale }
+                                    selection
+                                    fluid
+                                    scrolling
+                                />
+                            </Form.Field>
                         </Grid.Column>
                     </Grid.Row>
                 }
@@ -237,6 +242,8 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                             <EmailTemplateEditor 
                                 htmlContent={ htmlBodyContent } 
                                 isReadOnly={ false }
+                                isSignature
+                                isAddFlow={ templateId === "" }
                                 updateHtmlContent={ setHtmlBodyContent }
                             />
                         </Form.Field>
@@ -249,6 +256,8 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                             <EmailTemplateEditor 
                                 htmlContent={ htmlFooterContent } 
                                 isReadOnly={ false }
+                                isSignature={ false }
+                                isAddFlow={ templateId === "" }
                                 customClass="mail-signature"
                                 updateHtmlContent={ setHtmlFooterContent }
                             />
