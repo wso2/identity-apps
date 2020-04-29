@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { CrossIcon } from "@wso2is/theme";
 import classNames from "classnames";
 import React, {
@@ -35,7 +36,7 @@ import { Heading } from "../typography";
  *
  * Proptypes for the advanced search component.
  */
-export interface AdvancedSearchPropsInterface {
+export interface AdvancedSearchPropsInterface extends TestableComponentInterface {
     /**
      * Text alignment.
      */
@@ -102,10 +103,6 @@ export interface AdvancedSearchPropsInterface {
      * Is form submitted.
      */
     submitted?: boolean;
-    /**
-     * Unit test id.
-     */
-    "data-testid"?: string;
 }
 
 /**

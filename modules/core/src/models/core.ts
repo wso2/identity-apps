@@ -96,3 +96,13 @@ export interface RuntimeConfigInterface {
      */
     titleText?: string;
 }
+
+/**
+ * Common interface to extend testable components.
+ */
+export interface TestableComponentInterface {
+    /**
+     * Unit test id.
+     */
+    "data-testid"?: string;
+}
