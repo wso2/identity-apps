@@ -50,8 +50,11 @@ export const BlockedMagnifierIcon =
     require("../dist/lib/themes/default/assets/images/icons/blocked-magnifier-icon.svg");
 export const BoxIcon = require("../dist/lib/themes/default/assets/images/icons/box-icon.svg");
 export const CaretRightIcon = require("../dist/lib/themes/default/assets/images/icons/caret-right-icon.svg");
+export const CertificateColoredIcon =
+    require("../dist/lib/themes/default/assets/images/icons/certificate-colored-icon.svg");
 export const CertificateIcon = require("../dist/lib/themes/default/assets/images/icons/certificate-icon.svg");
 export const ClaimsIcon = require("../dist/lib/themes/default/assets/images/icons/claims-icon.svg");
+export const ClockColoredIcon = require("../dist/lib/themes/default/assets/images/icons/clock-colored-icon.svg");
 export const CloseIcon = require("../dist/lib/themes/default/assets/images/icons/close-icon.svg");
 export const CodeIcon = require("../dist/lib/themes/default/assets/images/icons/code-icon.svg");
 export const ConsentIcon = require("../dist/lib/themes/default/assets/images/icons/consent-icon.svg");
@@ -72,6 +75,8 @@ export const InfoIcon = require("../dist/lib/themes/default/assets/images/icons/
 export const LaunchIcon = require("../dist/lib/themes/default/assets/images/icons/launch-icon.svg");
 export const LockIcon = require("../dist/lib/themes/default/assets/images/icons/lock-icon.svg");
 export const LockShieldIcon = require("../dist/lib/themes/default/assets/images/icons/lock-shield.svg");
+export const MagnifierColoredIcon =
+    require("../dist/lib/themes/default/assets/images/icons/magnifier-colored-icon.svg");
 export const MagnifierIcon = require("../dist/lib/themes/default/assets/images/icons/magnifier-icon.svg");
 export const MaximizeIcon = require("../dist/lib/themes/default/assets/images/icons/maximize-icon.svg");
 export const MinimizeIcon = require("../dist/lib/themes/default/assets/images/icons/minimize-icon.svg");
@@ -188,9 +193,10 @@ export const CSharpLogo = require("../dist/lib/themes/default/assets/images/tech
 export const CordovaLogo = require("../dist/lib/themes/default/assets/images/technologies/cordova-logo.svg");
 export const DotNetLogo = require("../dist/lib/themes/default/assets/images/technologies/dotnet-logo.svg");
 export const HTMLLogo = require("../dist/lib/themes/default/assets/images/technologies/html-logo.svg");
-export const NodeJSLogo = require("../dist/lib/themes/default/assets/images/technologies/nodejs-logo.svg");
+export const JWTLogo = require("../dist/lib/themes/default/assets/images/technologies/jwt-logo.svg");
 export const JavaLogo = require("../dist/lib/themes/default/assets/images/technologies/java-logo.svg");
 export const JavaScriptLogo = require("../dist/lib/themes/default/assets/images/technologies/javascript-logo.svg");
+export const NodeJSLogo = require("../dist/lib/themes/default/assets/images/technologies/nodejs-logo.svg");
 export const ReactLogo = require("../dist/lib/themes/default/assets/images/technologies/react-logo.svg");
 export const VueLogo = require("../dist/lib/themes/default/assets/images/technologies/vue-logo.svg");
 

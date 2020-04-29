@@ -22,12 +22,12 @@ import { StrictGenericAuthenticatorInterface } from "../../../models";
 export const selectedLocalAuthenticators: StrictGenericAuthenticatorInterface[] = [
     {
         id: "SWRlbnRpZmllckV4ZWN1dG9y",
-        image: undefined,
+        image: AuthenticatorIcons.identifierFirst,
         name: "IdentifierExecutor"
     },
     {
         id: "SldUQmFzaWNBdXRoZW50aWNhdG9y",
-        image: undefined,
+        image: AuthenticatorIcons.jwtBasic,
         name: "JWTBasicAuthenticator"
     },
     {
@@ -37,12 +37,12 @@ export const selectedLocalAuthenticators: StrictGenericAuthenticatorInterface[] 
     },
     {
         id: "eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg",
-        image: undefined,
+        image: AuthenticatorIcons.x509,
         name: "x509CertificateAuthenticator"
     },
     {
         id: "dG90cA",
-        image: undefined,
+        image: AuthenticatorIcons.totp,
         name: "totp"
     },
     {
@@ -52,7 +52,7 @@ export const selectedLocalAuthenticators: StrictGenericAuthenticatorInterface[] 
     },
     {
         id: "U2Vzc2lvbkV4ZWN1dG9y",
-        image: undefined,
+        image: AuthenticatorIcons.sessionExecutor,
         name: "SessionExecutor"
     }
 ];

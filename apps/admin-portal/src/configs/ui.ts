@@ -31,10 +31,12 @@ import {
     CaretRightIcon,
     CertificateAvatar,
     CertificateBadge,
+    CertificateColoredIcon,
     CertificateIcon,
     CertificateIllustration,
     CertificateRibbon,
     ClaimsIcon,
+    ClockColoredIcon,
     CloseIcon,
     CodeIcon,
     CordovaLogo,
@@ -52,9 +54,9 @@ import {
     ErrorIcon,
     ExpertModeIdPIcon,
     FIDOLogo,
-    FileUploadIllustration,
     FacebookIdPIcon,
     FacebookLogo,
+    FileUploadIllustration,
     ForbiddenIcon,
     GearsIcon,
     GithubIdPIcon,
@@ -63,11 +65,14 @@ import {
     HTMLLogo,
     HomeTileIcons,
     InfoIcon,
+    JWTLogo,
     JavaLogo,
     JavaScriptLogo,
     LaunchIcon,
+    LockShieldIcon,
     Logo,
     MFAIconSet,
+    MagnifierColoredIcon,
     MagnifierIcon,
     MaximizeIcon,
     MinimizeIcon,
@@ -244,13 +249,18 @@ export const IdentityProviderWizardStepIcons = {
 
 export const AuthenticatorIcons = {
     basic: BasicAuthIcon,
+    default: LockShieldIcon,
     emailOTP: EmailOTPIcon,
     facebook: FacebookLogo,
     fido: FIDOLogo,
     google: GoogleLogo,
+    identifierFirst: MagnifierColoredIcon,
+    jwtBasic: JWTLogo,
+    sessionExecutor: ClockColoredIcon,
     smsOTP: SMSOTPIcon,
     totp: TOTPIcon,
-    twitter: TwitterLogo
+    twitter: TwitterLogo,
+    x509: CertificateColoredIcon
 };
 
 export const PlaceHolderIcons = {
