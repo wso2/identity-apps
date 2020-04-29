@@ -19,3 +19,5 @@
 export * from "./basic-details-user-store";
 export * from "./connection-details";
 export * from "./summary";
+export * from "./user-details";
+export * from "./group-details";
