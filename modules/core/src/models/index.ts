@@ -17,7 +17,7 @@
  */
 
 export * from "./config";
-export * from "./global";
+export * from "./core";
 export * from "./http";
 export * from "./profile";
 export * from "./reducer-state";

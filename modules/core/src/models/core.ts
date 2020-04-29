@@ -63,6 +63,8 @@ export enum AlertLevels {
 
 /**
  * Interface for the runtime config.
+ * TODO: Remove this and use the ones passed from portals.
+ * @deprecated
  */
 export interface RuntimeConfigInterface {
     /**
