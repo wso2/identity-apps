@@ -222,6 +222,11 @@ export const HomeTileIcons = {
     security: require("../dist/lib/themes/default/assets/images/home_security_mgt.png")
 };
 
+//Connectors
+export const SCIMLogo = require("../dist/lib/themes/default/assets/images/connectors/scim.png");
+export const SalesforceLogo = require("../dist/lib/themes/default/assets/images/connectors/salesforce.png");
+export const SPMLLogo = require("../dist/lib/themes/default/assets/images/connectors/spml.png");
+
 export const SidePanelIconSet = {
     account: require("../dist/lib/themes/default/assets/images/icons/controls-icon.svg"),
     apps: require("../dist/lib/themes/default/assets/images/icons/app-icon.svg"),

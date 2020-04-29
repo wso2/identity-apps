@@ -65,11 +65,7 @@ export const OutboundProvisioningConnectorFormFactory: FunctionComponent<
 
     return (
         <>
-            <Heading as="h5">OutBound Provisioning Connectors</Heading>
-            <Divider hidden/>
-            <Heading as="h5">{ metadata?.displayName }</Heading>
             { generateConnector() }
-            <Divider hidden/>
         </>
     )
 };

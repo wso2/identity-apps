@@ -91,9 +91,12 @@ import {
     SAMLWebAppTemplateIllustration,
     SMSOTPIcon,
     SPATemplateIllustration,
+    SalesforceLogo,
     SamlLogo,
+    SCIMLogo,
     SettigsSectionIconSet,
     SpinWheelIcon,
+    SPMLLogo,
     SuccessIcon,
     TOTPIcon,
     TwitterIdPIcon,
@@ -269,6 +272,13 @@ export const AuthenticatorIcons = {
     yahoo: YahooLogo
 };
 
+export const ConnectorIcons = {
+    google: GoogleIdPIcon,
+    salesforce: SalesforceLogo,
+    scim: SCIMLogo,
+    spml: SPMLLogo
+};
+
 export const PlaceHolderIcons = {
     drag: DragIcon
 };
@@ -337,4 +347,10 @@ export const CertificateIllustrations = {
      * File upload placeholder.
      */
     uploadPlaceholder: FileUploadIllustration
+};
+
+export const OutboundProvisioningConnectorWizard = {
+    connectorDetails: DocumentIcon,
+    connectorSelection: GearsIcon,
+    summary: ReportIcon
 };

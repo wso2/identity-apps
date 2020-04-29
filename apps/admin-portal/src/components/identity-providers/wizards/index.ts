@@ -18,3 +18,4 @@
 
 export * from "./identity-provider-create-wizard";
 export * from "./steps";
+export * from "./outbound-provisioning-connector-create-wizard";

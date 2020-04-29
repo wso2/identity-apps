@@ -22,23 +22,21 @@ import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Button, Divider, DropdownItemProps, Form, Grid, Icon, Label, Popup } from "semantic-ui-react";
-import { getRolesList } from "../../../../api";
-import { RoleListInterface, RolesInterface } from "../../../../models";
+import { getRolesList, updateIDPRoleMappings } from "../../../../api";
+import { IdentityProviderRolesInterface, RoleListInterface, RolesInterface } from "../../../../models";
 
 
 interface OutboundProvisioningRolesPropsInterface {
-    initialRoles: string[];
-    triggerSubmit: boolean;
-    onSubmit: (selectedRoles: string[]) => void;
+    idpId: string;
+    idpRoles: IdentityProviderRolesInterface;
 }
 
 export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRolesPropsInterface> = (
     props: OutboundProvisioningRolesPropsInterface) => {
 
     const {
-        initialRoles,
-        onSubmit,
-        triggerSubmit
+        idpId,
+        idpRoles
     } = props;
 
     const [selectedRole, setSelectedRole] = useState<string>(undefined);
@@ -83,28 +81,45 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                     message: "Get Error"
                 }));
             });
-        setSelectedRoles(initialRoles === undefined ? [] : initialRoles);
+        setSelectedRoles(idpRoles.outboundProvisioningRoles === undefined ? [] :
+            idpRoles.outboundProvisioningRoles);
     }, []);
 
-    useEffect(() => {
-        if (selectedRoles === undefined) {
-            return;
-        }
-        onSubmit(selectedRoles);
-    }, [triggerSubmit]);
+    const handleOutboundProvisioningRoleMapping = (outboundProvisioningRoles: string[]) => {
+        updateIDPRoleMappings(idpId, {
+                ...idpRoles,
+                outboundProvisioningRoles: outboundProvisioningRoles
+            }
+        ).then(() => {
+            dispatch(addAlert(
+                {
+                    description: "Successfully updated outbound provisioning role configurations.",
+                    level: AlertLevels.SUCCESS,
+                    message: "Update successful"
+                }
+            ));
+        }).catch(error => {
+            dispatch(addAlert(
+                {
+                    description: error?.description || "There was an error while updating outbound provisioning role " +
+                        "configurations",
+                    level: AlertLevels.ERROR,
+                    message: "Update error"
+                }
+            ));
+        })
+    }
 
     return (
         <Grid>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    <Divider/>
-                    <Divider hidden/>
+            <Grid.Row>
+                <Grid.Column width={ 8 }>
                     <Heading as="h5">OutBound Provisioning Roles</Heading>
                 </Grid.Column>
             </Grid.Row>
 
-            <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+            <Grid.Row>
+                <Grid.Column width={ 8 }>
                     <Form className="outbound-provisioning-roles role-select-dropdown">
                         <Form.Select
                             options={ roleList?.map((role) => {
@@ -164,6 +179,22 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                             );
                         })
                     }
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+                <Grid.Column width={ 8 }>
+                    <Button
+                        primary
+                        size="small"
+                        onClick={ () => {
+                            if (selectedRoles === undefined) {
+                                return;
+                            }
+                            handleOutboundProvisioningRoleMapping(selectedRoles);
+                        } }
+                    >
+                        Update
+                    </Button>
                 </Grid.Column>
             </Grid.Row>
         </Grid>
