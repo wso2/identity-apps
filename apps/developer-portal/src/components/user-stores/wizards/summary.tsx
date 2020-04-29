@@ -17,7 +17,7 @@
 */
 
 import React, { ReactElement } from "react";
-import { Grid } from "semantic-ui-react";
+import { Grid, Header } from "semantic-ui-react";
 import { TypeProperty, UserStorePostData, UserStoreProperty } from "../../../models";
 
 /**
@@ -25,15 +25,23 @@ import { TypeProperty, UserStorePostData, UserStoreProperty } from "../../../mod
  */
 interface SummaryUserStoresPropsInterface {
     /**
-     * The complete data ready to be submitted
+     * The connection properties.
+     */
+    connectionProperties: TypeProperty[];
+    /**
+     * The user properties.
+     */
+    userProperties: TypeProperty[];
+    /**
+     * The group properties.
+     */
+    groupProperties: TypeProperty[];
+    /**
+     * The userstore data ready to be posted.
      */
     data: UserStorePostData;
     /**
-     * The connection properties
-     */
-    properties: TypeProperty[];
-    /**
-     * The type of the userstore
+     * The type of the userstore.
      */
     type: string;
 }
@@ -45,7 +53,7 @@ interface SummaryUserStoresPropsInterface {
  */
 export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): ReactElement => {
 
-    const { data, properties, type } = props;
+    const { data, connectionProperties, userProperties, groupProperties, type } = props;
 
     /**
      * This generates a summary row
@@ -73,21 +81,70 @@ export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): React
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details">
-                        <h3>{data?.name}</h3>
-                        <div className="description">{data?.description}</div>
+                        <h3>{data.name}</h3>
+                        <div className="description">{data.description}</div>
                     </div>
                 </Grid.Column>
             </Grid.Row>
-            {type ? generateSummaryLine("Userstore Type", type) : null}
+            { type ? generateSummaryLine("Userstore Type", type) : null }
+
+            <Grid.Row columns={ 2 }>
+                <Grid.Column width={ 16 }>
+                    <Header as="h5" textAlign="center">Connection Details</Header>
+                </Grid.Column>
+            </Grid.Row>
+
             {
-                properties?.map((property: TypeProperty) => {
-                    if (!property.name.toLocaleLowerCase().includes("password")) {
+                connectionProperties?.map((property: TypeProperty) => {
+                    if (!(property.attributes.find(attribute=>attribute.name==="type")?.value==="password")) {
                         return (
                             generateSummaryLine(
                                 property.description.split("#")[0],
                                 data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
                                     return userStoreProperty.name === property.name
                                 }))[0].value
+                            )
+                        )
+                    }
+                })
+            }
+
+            <Grid.Row columns={ 2 }>
+                <Grid.Column width={ 16 }>
+                    <Header as="h5" textAlign="center">User Details</Header>
+                </Grid.Column>
+            </Grid.Row>
+
+            {
+                userProperties?.map((property: TypeProperty) => {
+                    if (!(property.attributes.find(attribute => attribute.name === "type")?.value === "password")) {
+                        return (
+                            generateSummaryLine(
+                                property.description.split("#")[ 0 ],
+                                data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
+                                    return userStoreProperty.name === property.name
+                                }))[ 0 ].value
+                            )
+                        )
+                    }
+                })
+            }
+
+            <Grid.Row columns={ 2 }>
+                <Grid.Column width={ 16 }>
+                    <Header as="h5" textAlign="center">Group Details</Header>
+                </Grid.Column>
+            </Grid.Row>
+
+            {
+                groupProperties?.map((property: TypeProperty) => {
+                    if (!(property.attributes.find(attribute => attribute.name === "type")?.value === "password")) {
+                        return (
+                            generateSummaryLine(
+                                property.description.split("#")[ 0 ],
+                                data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
+                                    return userStoreProperty.name === property.name
+                                }))[ 0 ].value
                             )
                         )
                     }
