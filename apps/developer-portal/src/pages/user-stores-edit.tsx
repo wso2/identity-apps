@@ -23,10 +23,9 @@ import { getAType, getAUserStore } from "../api";
 import {
     EditBasicDetailsUserStore,
     EditConnectionDetails,
-    MemoEditOptionalProperties
+    EditGroupDetails,
+    EditUserDetails
 } from "../components";
-import { EditGroupDetails } from "../components/user-stores/edit/edit-group-details-userstore";
-import { EditUserDetails } from "../components/user-stores/edit/edit-user-details-userstore";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts"
 import { AlertLevels, CategorizedProperties, UserStore, UserstoreType } from "../models";
