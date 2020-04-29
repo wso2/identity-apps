@@ -25,12 +25,12 @@ import {
     ProvisioningConfigurationInterface,
     SimpleUserStoreListItemInterface
 } from "../../models";
-import { AlertLevels, SBACInterface } from "@wso2is/core/dist/src/models";
+import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { getUserStoreList, updateApplicationConfigurations } from "../../api";
-import { addAlert } from "@wso2is/core/dist/src/store";
+import { addAlert } from "@wso2is/core/store";
 import { useDispatch } from "react-redux";
 import { ProvisioningConfigurationsForm } from "./forms";
-import { hasRequiredScopes } from "@wso2is/core/dist/src/helpers";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 
 /**
  *  Inbound Provisioning Configurations for the Application.
@@ -139,7 +139,8 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
                                                 onSubmit={ handleProvisioningConfigFormSubmit }
                                                 useStoreList={ userStore }
                                                 readOnly={
-                                                    !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                                                    !hasRequiredScopes(featureConfig?.applications,
+                                                        featureConfig?.applications?.scopes?.update)
                                                 }
                                             />
                                         ),

@@ -25,13 +25,13 @@ import {
     OutboundProvisioningConfigurationInterface,
     ProvisioningConfigurationInterface
 } from "../../models";
-import { AlertLevels } from "@wso2is/core/dist/src/models";
+import { AlertLevels } from "@wso2is/core/models";
 import { getApplicationDetails, updateApplicationConfigurations } from "../../api";
-import { addAlert } from "@wso2is/core/dist/src/store";
+import { addAlert } from "@wso2is/core/store";
 import { useDispatch } from "react-redux";
 import { EmptyPlaceholderIllustrations } from "../../configs";
-import { OutboundProvisioningIdpCreateWizard } from "./wizard/outbound-provisioning-idp-creation-wizard";
-import { OutboundProvisioningWizardIdpForm } from "./wizard/outbound-provisioining-idp-wizard-form";
+import { OutboundProvisioningIdpCreateWizard } from "./wizard";
+import { OutboundProvisioningWizardIdpForm } from "./wizard";
 
 /**
  *  Provisioning Configurations for the Application.
@@ -176,7 +176,8 @@ export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvi
                         <Grid.Row>
                             <Grid.Column>
                                 {
-                                    editingApp?.provisioningConfigurations?.outboundProvisioningIdps?.map((provisioningIdp) => {
+                                    editingApp?.provisioningConfigurations?.outboundProvisioningIdps?.map(
+                                        (provisioningIdp) => {
                                         return (
                                             <AuthenticatorAccordion
                                                 globalActions={ [
@@ -194,7 +195,8 @@ export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvi
                                                                     initialValues={ {
                                                                         idp: provisioningIdp?.idp,
                                                                         connector: provisioningIdp?.connector,
-                                                                        blocking: provisioningIdp?.blocking ? "blocking" : "",
+                                                                        blocking: provisioningIdp?.blocking ?
+                                                                            "blocking" : "",
                                                                         rules: provisioningIdp?.rules ? "rules" : "",
                                                                         jit: provisioningIdp?.jit ? "jit" : ""
                                                                     } }

@@ -30,7 +30,7 @@ import {
 } from "../../models";
 import { OutboundProvisioningConfigurations } from "./outbound-provisioning-configuration";
 import { InboundProvisioningConfigurations } from "./inbound-provisioning-configuration";
-import { SBACInterface } from "@wso2is/core/dist/src/models";
+import { SBACInterface } from "@wso2is/core/models";
 
 /**
  * Proptypes for the provision settings component.

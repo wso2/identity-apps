@@ -17,8 +17,8 @@
  */
 
 import { ApplicationWizardStepIcons } from "../../../configs";
-import { addAlert } from "@wso2is/core/dist/src/store";
-import { AlertLevels } from "@wso2is/core/dist/src/models";
+import { addAlert } from "@wso2is/core/store";
+import { AlertLevels } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import {
     IdentityProviderInterface,
