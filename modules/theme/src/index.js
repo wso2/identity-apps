@@ -45,12 +45,16 @@ export const AppIcon = require("../dist/lib/themes/default/assets/images/icons/a
 export const ArrowRight = require("../dist/lib/themes/default/assets/images/icons/arrow-right-icon.svg");
 export const AuthenticatorAppIcon = 
     require("../dist/lib/themes/default/assets/images/icons/authenticator-app-icon.svg");
+export const BasicAuthIcon = require("../dist/lib/themes/default/assets/images/authenticators/basic-auth.png");
 export const BlockedMagnifierIcon =
     require("../dist/lib/themes/default/assets/images/icons/blocked-magnifier-icon.svg");
 export const BoxIcon = require("../dist/lib/themes/default/assets/images/icons/box-icon.svg");
 export const CaretRightIcon = require("../dist/lib/themes/default/assets/images/icons/caret-right-icon.svg");
+export const CertificateColoredIcon =
+    require("../dist/lib/themes/default/assets/images/icons/certificate-colored-icon.svg");
 export const CertificateIcon = require("../dist/lib/themes/default/assets/images/icons/certificate-icon.svg");
 export const ClaimsIcon = require("../dist/lib/themes/default/assets/images/icons/claims-icon.svg");
+export const ClockColoredIcon = require("../dist/lib/themes/default/assets/images/icons/clock-colored-icon.svg");
 export const CloseIcon = require("../dist/lib/themes/default/assets/images/icons/close-icon.svg");
 export const CodeIcon = require("../dist/lib/themes/default/assets/images/icons/code-icon.svg");
 export const ConsentIcon = require("../dist/lib/themes/default/assets/images/icons/consent-icon.svg");
@@ -70,6 +74,9 @@ export const GearsIcon = require("../dist/lib/themes/default/assets/images/icons
 export const InfoIcon = require("../dist/lib/themes/default/assets/images/icons/info-icon.svg");
 export const LaunchIcon = require("../dist/lib/themes/default/assets/images/icons/launch-icon.svg");
 export const LockIcon = require("../dist/lib/themes/default/assets/images/icons/lock-icon.svg");
+export const LockShieldIcon = require("../dist/lib/themes/default/assets/images/icons/lock-shield.svg");
+export const MagnifierColoredIcon =
+    require("../dist/lib/themes/default/assets/images/icons/magnifier-colored-icon.svg");
 export const MagnifierIcon = require("../dist/lib/themes/default/assets/images/icons/magnifier-icon.svg");
 export const MaximizeIcon = require("../dist/lib/themes/default/assets/images/icons/maximize-icon.svg");
 export const MinimizeIcon = require("../dist/lib/themes/default/assets/images/icons/minimize-icon.svg");
@@ -186,9 +193,10 @@ export const CSharpLogo = require("../dist/lib/themes/default/assets/images/tech
 export const CordovaLogo = require("../dist/lib/themes/default/assets/images/technologies/cordova-logo.svg");
 export const DotNetLogo = require("../dist/lib/themes/default/assets/images/technologies/dotnet-logo.svg");
 export const HTMLLogo = require("../dist/lib/themes/default/assets/images/technologies/html-logo.svg");
-export const NodeJSLogo = require("../dist/lib/themes/default/assets/images/technologies/nodejs-logo.svg");
+export const JWTLogo = require("../dist/lib/themes/default/assets/images/technologies/jwt-logo.svg");
 export const JavaLogo = require("../dist/lib/themes/default/assets/images/technologies/java-logo.svg");
 export const JavaScriptLogo = require("../dist/lib/themes/default/assets/images/technologies/javascript-logo.svg");
+export const NodeJSLogo = require("../dist/lib/themes/default/assets/images/technologies/nodejs-logo.svg");
 export const ReactLogo = require("../dist/lib/themes/default/assets/images/technologies/react-logo.svg");
 export const VueLogo = require("../dist/lib/themes/default/assets/images/technologies/vue-logo.svg");
 
@@ -200,6 +208,11 @@ export const DummyUser = require("../dist/lib/themes/default/assets/images/user.
 export const FacebookLogo = require("../dist/lib/themes/default/assets/images/social/facebook.svg");
 export const GoogleLogo = require("../dist/lib/themes/default/assets/images/social/google.svg");
 export const TwitterLogo = require("../dist/lib/themes/default/assets/images/social/twitter.svg");
+
+// Third party logos.
+export const Office365Logo = require("../dist/lib/themes/default/assets/images/third-party/office-365-logo.svg");
+export const MicrosoftLogo = require("../dist/lib/themes/default/assets/images/third-party/microsoft-logo.svg");
+export const YahooLogo = require("../dist/lib/themes/default/assets/images/third-party/yahoo-logo.svg");
 
 /* eslint-enable import/order */
 

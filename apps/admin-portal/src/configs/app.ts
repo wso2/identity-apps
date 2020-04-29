@@ -150,6 +150,7 @@ export class Config {
             identityProviders: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-providers`,
             issuer: `${this.getDeploymentConfig().serverHost}/oauth2/token`,
             jwks: `${this.getDeploymentConfig().serverHost}/oauth2/jwks`,
+            localAuthenticators: `${this.getDeploymentConfig().serverHost}/api/server/v1/configs/authenticators`,
             localClaims: `${this.getDeploymentConfig().serverHost}/api/server/v1/claim-dialects/local/claims`,
             loginPolicies: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID

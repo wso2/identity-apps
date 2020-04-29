@@ -18,7 +18,7 @@
 
 import classNames from "classnames";
 import React, { FunctionComponent } from "react";
-import { Card, CardProps, Label, LabelProps } from "semantic-ui-react";
+import { Card, CardProps, Label, LabelProps, Popup, SemanticSIZES } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
 
 /**
@@ -38,6 +38,10 @@ interface LabeledCardPropsInterface {
      */
     disabled?: boolean;
     /**
+     * The card will take the size of the container.
+     */
+    fluid?: boolean;
+    /**
      * Id for the card.
      */
     id?: string;
@@ -50,9 +54,17 @@ interface LabeledCardPropsInterface {
      */
     imageSize?: GenericIconSizes;
     /**
+     * Should the card be inline.
+     */
+    inline?: boolean;
+    /**
      * Label of the card.
      */
     label: string;
+    /**
+     * Label ellipsis.
+     */
+    labelEllipsis?: boolean;
     /**
      * On click callback for the element.
      */
@@ -66,9 +78,9 @@ interface LabeledCardPropsInterface {
      */
     selected?: boolean;
     /**
-     * Should the card be inline.
+     * Set of sizes. Only tiny is currently supported.
      */
-    inline?: boolean;
+    size?: SemanticSIZES;
 }
 
 /**
@@ -86,21 +98,26 @@ export const LabeledCard: FunctionComponent<LabeledCardPropsInterface> = (
         bottomMargin,
         className,
         disabled,
+        fluid,
         id,
         inline,
         image,
         imageSize,
         label,
+        labelEllipsis,
         onClick,
         onCloseClick,
-        selected
+        selected,
+        size
     } = props;
 
     const wrapperClasses = classNames(
         "labeled-card-wrapper",
         {
-            [ "with-bottom-margin" ]: bottomMargin,
-            inline
+            fluid,
+            inline,
+            [ size ]: size,
+            [ "with-bottom-margin" ]: bottomMargin
         },
         className
     );
@@ -108,9 +125,9 @@ export const LabeledCard: FunctionComponent<LabeledCardPropsInterface> = (
     const cardClasses = classNames(
         "labeled-card",
         {
-            ["with-image"]: image,
             disabled,
-            selected
+            selected,
+            [ "with-image" ]: image
         }
     );
 
@@ -145,7 +162,13 @@ export const LabeledCard: FunctionComponent<LabeledCardPropsInterface> = (
                     />
                 </Card.Content>
             </Card>
-            <div className="card-label">{ label }</div>
+            <Popup
+                disabled={ !labelEllipsis }
+                trigger={ <div className={ "card-label" + labelEllipsis ? " ellipsis" : "" }>{ label }</div> }
+                position="bottom center"
+                content={ label }
+                inverted
+            />
         </div>
     );
 };

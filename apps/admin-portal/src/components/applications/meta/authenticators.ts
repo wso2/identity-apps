@@ -17,74 +17,90 @@
  */
 
 import { AuthenticatorIcons } from "../../../configs";
+import { StrictGenericAuthenticatorInterface } from "../../../models";
 
-export enum AuthenticatorTypes {
-    SECOND_FACTOR = "secondary",
-    FIRST_FACTOR = "first",
-    SOCIAL = "social"
-}
-
-export interface AuthenticatorListItemInterface {
-    authenticator?: string;
-    authenticatorId?: string;
-    displayName?: string;
-    idp?: string;
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    image?: any;
-    type?: AuthenticatorTypes;
-}
-
-export const selectedLocalAuthenticators: AuthenticatorListItemInterface[] = [
+export const selectedLocalAuthenticators: StrictGenericAuthenticatorInterface[] = [
     {
-        authenticator: "BasicAuthenticator",
-        displayName: "Basic",
-        idp: "LOCAL",
-        image: AuthenticatorIcons?.basic,
-        type: AuthenticatorTypes?.FIRST_FACTOR
+        id: "SWRlbnRpZmllckV4ZWN1dG9y",
+        image: AuthenticatorIcons.identifierFirst,
+        name: "IdentifierExecutor"
     },
     {
-        authenticator: "FIDOAuthenticator",
-        displayName: "FIDO",
-        idp: "LOCAL",
+        id: "SldUQmFzaWNBdXRoZW50aWNhdG9y",
+        image: AuthenticatorIcons.jwtBasic,
+        name: "JWTBasicAuthenticator"
+    },
+    {
+        id: "RklET0F1dGhlbnRpY2F0b3I",
         image: AuthenticatorIcons?.fido,
-        type: AuthenticatorTypes?.SECOND_FACTOR
+        name: "FIDOAuthenticator"
+    },
+    {
+        id: "eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg",
+        image: AuthenticatorIcons.x509,
+        name: "x509CertificateAuthenticator"
+    },
+    {
+        id: "dG90cA",
+        image: AuthenticatorIcons.totp,
+        name: "totp"
+    },
+    {
+        id: "QmFzaWNBdXRoZW50aWNhdG9y",
+        image: AuthenticatorIcons?.basic,
+        name: "BasicAuthenticator"
+    },
+    {
+        id: "U2Vzc2lvbkV4ZWN1dG9y",
+        image: AuthenticatorIcons.sessionExecutor,
+        name: "SessionExecutor"
     }
 ];
 
-export const selectedFederatedAuthenticators: AuthenticatorListItemInterface[] = [
+export const selectedFederatedAuthenticators: StrictGenericAuthenticatorInterface[] = [
     {
-        authenticator: "EmailOTP",
-        authenticatorId: "RW1haWxPVFA",
-        displayName: "Email OTP",
-        image: AuthenticatorIcons?.emailOTP,
-        type: AuthenticatorTypes?.SECOND_FACTOR
+        id: "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y",
+        image: AuthenticatorIcons?.microsoft,
+        name: "MicrosoftWindowsLiveAuthenticator"
     },
     {
-        authenticator: "SMSOTP",
-        authenticatorId: "U01TT1RQ",
-        displayName: "SMS OTP",
-        image: AuthenticatorIcons?.smsOTP,
-        type: AuthenticatorTypes?.SECOND_FACTOR
-    },
-    {
-        authenticator: "GoogleOIDCAuthenticator",
-        authenticatorId: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
-        displayName: "Google",
+        id: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
         image: AuthenticatorIcons?.google,
-        type: AuthenticatorTypes?.SOCIAL
+        name: "GoogleOIDCAuthenticator"
     },
     {
-        authenticator: "FacebookAuthenticator",
-        authenticatorId: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
-        displayName: "Facebook",
-        image: AuthenticatorIcons?.facebook,
-        type: AuthenticatorTypes?.SOCIAL
+        id: "U01TT1RQ",
+        image: AuthenticatorIcons?.smsOTP,
+        name: "SMSOTP"
     },
     {
-        authenticator: "TwitterAuthenticator",
-        authenticatorId: "VHdpdHRlckF1dGhlbnRpY2F0b3I",
-        displayName: "Twitter",
+        id: "VHdpdHRlckF1dGhlbnRpY2F0b3I",
         image: AuthenticatorIcons?.twitter,
-        type: AuthenticatorTypes?.SOCIAL
+        name: "TwitterAuthenticator"
+    },
+    {
+        id: "RW1haWxPVFA",
+        image: AuthenticatorIcons?.emailOTP,
+        name: "EmailOTP"
+    },
+    {
+        id: "WWFob29PQXV0aDJBdXRoZW50aWNhdG9y",
+        image: AuthenticatorIcons?.yahoo,
+        name: "YahooOAuth2Authenticator"
+    },
+    {
+        id: "SVdBS2VyYmVyb3NBdXRoZW50aWNhdG9y",
+        image: undefined,
+        name: "IWAKerberosAuthenticator"
+    },
+    {
+        id: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
+        image: AuthenticatorIcons?.facebook,
+        name: "FacebookAuthenticator"
+    },
+    {
+        id: "T2ZmaWNlMzY1QXV0aGVudGljYXRvcg",
+        image: AuthenticatorIcons?.office365,
+        name: "Office365Authenticator"
     }
 ];

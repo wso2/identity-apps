@@ -24,7 +24,7 @@ export interface IdentityProviderListResponseInterface {
     startIndex?: number;
     count?: number;
     links?: LinkInterface[];
-    identityProviders?: IdentityProviderListItemInterface[];
+    identityProviders?: StrictIdentityProviderInterface[];
 }
 
 interface LinkInterface {
@@ -35,28 +35,23 @@ interface LinkInterface {
 /**
  * Captures each Identity provider details from the list.
  */
-export interface IdentityProviderListItemInterface {
+export interface StrictIdentityProviderInterface {
     id?: string;
     name?: string;
     description?: string;
     isEnabled?: boolean;
     image?: string;
     self?: string;
+    federatedAuthenticators?: FederatedAuthenticatorListResponseInterface;
 }
 
-export interface IdentityProviderInterface {
-    id?: string;
-    name?: string;
-    description?: string;
-    isEnabled?: boolean;
+export interface IdentityProviderInterface extends StrictIdentityProviderInterface {
     isPrimary?: boolean;
     isFederationHub?: boolean;
-    image?: string;
     homeRealmIdentifier?: string;
     alias?: string;
     claims?: IdentityProviderClaimsInterface;
     roles?: IdentityProviderRolesInterface;
-    federatedAuthenticators?: FederatedAuthenticatorListResponseInterface;
     certificate?: CertificateConfigInterface;
     provisioning?: ProvisioningInterface;
 }
@@ -160,17 +155,6 @@ export interface IdentityProviderResponseInterface {
     image?: string;
     isEnabled?: string;
     federatedAuthenticators?: FederatedAuthenticatorListResponseInterface;
-}
-
-/**
- *  Captures IDPs name, logo and ID
- */
-
-/* eslint-disable @typescript-eslint/interface-name-prefix */
-export interface IDPNameInterface {
-    authenticatorId: string;
-    idp: string;
-    image?: string;
 }
 
 /**
@@ -392,7 +376,7 @@ export interface IdentityProviderTemplatesInterface {
     [key: string]: IdentityProviderTemplateListItemInterface[];
 }
 
-export const emptyIdentityProvider = (): IdentityProviderListItemInterface => ({
+export const emptyIdentityProvider = (): StrictIdentityProviderInterface => ({
     description: "",
     id: "",
     image: "",
@@ -412,4 +396,74 @@ export interface IdentityProviderReducerStateInterface {
  */
 interface IdentityProviderMetaInterface {
     authenticators: FederatedAuthenticatorListItemInterface[];
+}
+
+/**
+ * Interface for Local authenticator list response mapping.
+ */
+export interface LocalAuthenticatorInterface extends CommonPluggableComponentInterface {
+    /**
+     * ID of the local authenticator.
+     */
+    id: string;
+    /**
+     * Name of the local authenticator.
+     */
+    name: string;
+    /**
+     * Display name of the local authenticator.
+     */
+    displayName?: string;
+    /**
+     * Is authenticator enabled.
+     */
+    isEnabled?: boolean;
+    /**
+     * Details endpoint.
+     */
+    self?: string;
+}
+
+/**
+ * Generic interface for authenticators local/federated.
+ */
+export interface GenericAuthenticatorInterface extends StrictGenericAuthenticatorInterface {
+    /**
+     * Identity provider name. ex: LOCAL, Facebook etc.
+     */
+    idp: string;
+    /**
+     * Display name of the authenticator.
+     */
+    displayName: string;
+    /**
+     * Is authenticator enabled.
+     */
+    isEnabled: boolean;
+    /**
+     * Default authenticator info.
+     */
+    defaultAuthenticator: FederatedAuthenticatorInterface;
+    /**
+     * Set of authenticators(federated).
+     */
+    authenticators: FederatedAuthenticatorInterface[];
+}
+
+/**
+ * Interface  for strict attributes for the generic authenticator.
+ */
+export interface StrictGenericAuthenticatorInterface {
+    /**
+     * ID of the local authenticator.
+     */
+    id: string;
+    /**
+     * Name of the local authenticator.
+     */
+    name: string;
+    /**
+     * Image for the authenticator.
+     */
+    image: any;
 }

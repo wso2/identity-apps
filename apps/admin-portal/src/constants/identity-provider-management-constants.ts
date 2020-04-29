@@ -21,6 +21,14 @@
  */
 export class IdentityProviderManagementConstants {
 
+    /**
+     * Identifier for the local IDP.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly LOCAL_IDP_IDENTIFIER: string = "LOCAL";
+
     public static readonly IDENTITY_PROVIDER_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while fetching identity provider template.";
     public static readonly IDENTITY_PROVIDER_TEMPLATE_FETCH_ERROR: string = "An error occurred while fetching " +
@@ -31,6 +39,12 @@ export class IdentityProviderManagementConstants {
         "the required identity provider templates list.";
     public static readonly IDENTITY_PROVIDER_JIT_PROVISIONING_UPDATE_ERROR: string = "An error occurred while" +
         " updating the JIT provisioning configurations of the identity provider.";
+    public static readonly LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while fetching local authenticators.";
+    public static readonly LOCAL_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the local" +
+        "authenticators.";
+    public static readonly COMBINED_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the local" +
+        "and federated authenticators.";
     public static readonly IDENTITY_PROVIDER_CLAIMS_UPDATE_ERROR: string = "An error occurred while updating claims " +
         "configurations of the identity provider.";
 }

@@ -32,6 +32,7 @@ import {
     IdentityProviderTemplateListItemInterface,
     IdentityProviderTemplateListResponseInterface,
     JITProvisioningResponseInterface,
+    LocalAuthenticatorInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../models";
@@ -78,11 +79,17 @@ export const createIdentityProvider = (identityProvider: object): Promise<any> =
  * @param {number} limit - Maximum Limit of the IdP List.
  * @param {number} offset - Offset for get to start.
  * @param {string} filter - Search filter.
+ * @param {string} requiredAttributes - Extra attribute to be included in the list response. ex:`isFederationHub`
  *
  * @return {Promise<IdentityProviderListResponseInterface>} A promise containing the response.
  */
-export const getIdentityProviderList = (limit?: number, offset?: number,
-                                   filter?: string): Promise<IdentityProviderListResponseInterface> => {
+export const getIdentityProviderList = (
+    limit?: number,
+    offset?: number,
+    filter?: string,
+    requiredAttributes?: string
+): Promise<IdentityProviderListResponseInterface> => {
+
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -93,7 +100,8 @@ export const getIdentityProviderList = (limit?: number, offset?: number,
         params: {
             filter,
             limit,
-            offset
+            offset,
+            requiredAttributes
         },
         url: store.getState().config.endpoints.identityProviders
     };
@@ -673,5 +681,46 @@ export const updateIDPRoleMappings = (
             return Promise.resolve(response.data as IdentityProviderInterface);
         }).catch((error) => {
             return Promise.reject(error);
+        });
+};
+
+/**
+ * Get the list of local authenticators.
+ *
+ * @return {Promise<LocalAuthenticatorInterface[]>} Response as a promise.
+ */
+export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.localAuthenticators
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    IdentityProviderManagementConstants.LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as LocalAuthenticatorInterface[]);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                IdentityProviderManagementConstants.LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
