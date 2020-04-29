@@ -182,6 +182,7 @@ export const handleAttributeSettingsFormSubmit = (idpId: string, values: Identit
                 message: "Update successful"
             }
         ));
+        onUpdate(idpId);
     }).catch(error => {
         dispatch(addAlert(
             {

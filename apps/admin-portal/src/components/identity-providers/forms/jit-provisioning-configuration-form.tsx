@@ -106,8 +106,6 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Heading as="h5">Just-in-time Provisioning</Heading>
-                        <Divider hidden/>
                         <Field
                             name={ JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY }
                             label=""
@@ -128,10 +126,11 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             }
                             children={ [
                                 {
-                                    label: "Enable",
+                                    label: "Enable Just-in-time Provisioning",
                                     value: JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
                                 }
                             ] }
+                            toggle
                         />
                         <Hint>
                             Specifies if users federated from this identity provider needs to be provisioned locally.
@@ -193,7 +192,11 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                 
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Button primary type="submit" size="small" className="form-button">
+                        <Button
+                            primary type="submit"
+                            size="small"
+                            className="form-button"
+                        >
                             Update
                         </Button>
                     </Grid.Column>

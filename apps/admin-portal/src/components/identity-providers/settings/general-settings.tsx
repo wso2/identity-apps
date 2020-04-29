@@ -21,6 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { CheckboxProps } from "semantic-ui-react";
 import { deleteIdentityProvider, updateIdentityProviderDetails } from "../../../api";
 import { ConfigReducerStateInterface, IdentityProviderInterface } from "../../../models";
 import { AppState } from "../../../store";
@@ -157,6 +158,14 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
             });
     };
 
+    const handleIdentityProviderDisable = (event: any, data: CheckboxProps) => {
+        handleFormSubmit(
+            {
+               isEnabled: data.checked
+            }
+        );
+    };
+
     return (
         !isLoading
             ? (
@@ -165,12 +174,22 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                         name={ name }
                         idpId={ idpId }
                         description={ description }
-                        isEnabled={ isEnabled }
                         onSubmit={ handleFormSubmit }
                         imageUrl={ imageUrl }
                     />
                     { !(config.ui.doNotDeleteIdentityProviders.includes(name)) && (
                         <DangerZoneGroup sectionHeader="Danger Zone">
+                            <DangerZone
+                                actionTitle="Enable Identity Provider"
+                                header="Enable identity provider"
+                                subheader={ "Once you disable an identity provider, it can no longer be used until " +
+                                "you enable it again. Please be certain." }
+                                onActionClick={ undefined }
+                                toggle={ {
+                                    checked: isEnabled,
+                                    onChange: handleIdentityProviderDisable
+                                } }
+                            />
                             <DangerZone
                                 actionTitle="Delete Identity Provider"
                                 header="Delete identity provider"

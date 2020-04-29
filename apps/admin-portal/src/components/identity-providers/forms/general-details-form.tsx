@@ -19,6 +19,7 @@
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -39,10 +40,6 @@ interface GeneralDetailsFormPopsInterface {
      * Identity provider description.
      */
     description?: string;
-    /**
-     * Is the identity provider discoverable.
-     */
-    isEnabled?: boolean;
     /**
      * Identity provider logo URL.
      */
@@ -83,11 +80,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         imageUrl,
         onSubmit,
         triggerSubmit,
-        enableWizardMode,
-        isEnabled
+        enableWizardMode
     } = props;
 
-    const [isEnable, setIsEnable] = useState<boolean>(isEnabled);
     const [isNameValid, setIsNameValid] = useState<boolean>(true);
     const [modifiedName, setModifiedName] = useState<string>(name);
 
@@ -177,6 +172,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             } }
                             value={ name }
                         />
+                        <Hint>
+                            Enter a unique name for this identity provider
+                        </Hint>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
@@ -190,6 +188,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             type="textarea"
                             value={ description }
                         />
+                        <Hint>
+                            A meaningful description about the identity provider
+                        </Hint>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
@@ -209,37 +210,21 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             } }
                             value={ imageUrl }
                         />
+                        <Hint>
+                            A URL to configure the image of the identity provider
+                        </Hint>
                     </Grid.Column>
                 </Grid.Row>
 
                 {
                     !enableWizardMode ? (
-                        <>
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                    <Field
-                                        name="isEnable"
-                                        required={ false }
-                                        requiredErrorMessage=""
-                                        type="checkbox"
-                                        children={ [
-                                            {
-                                                label: "Enable",
-                                                value: "isEnable"
-                                            }
-                                        ] }
-                                        value={ isEnable ? ["isEnable"] : [] }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                    <Button primary type="submit" size="small" className="form-button">
-                                        Update
-                                    </Button>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Button primary type="submit" size="small" className="form-button">
+                                    Update
+                                </Button>
+                            </Grid.Column>
+                        </Grid.Row>
                     ) : null
                 }
             </Grid>
