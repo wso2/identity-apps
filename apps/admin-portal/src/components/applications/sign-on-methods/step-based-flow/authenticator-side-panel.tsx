@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { GenericIcon, Heading } from "@wso2is/react-components";
+import { EmptyPlaceholder, GenericIcon, Heading } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, Ref, SyntheticEvent, forwardRef, useState } from "react";
 import Draggable from "react-draggable";
@@ -84,132 +84,152 @@ interface AuthenticatorInterface {
 export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPropsInterface> =
     forwardRef((props: AuthenticatorSidePanelPropsInterface, ref): ReactElement => {
 
-    const {
-        authenticatorGroup,
-        className,
-        heading,
-        onSidePanelVisibilityToggle,
-        readOnly,
-        visibility
-    } = props;
+        const {
+            authenticatorGroup,
+            className,
+            heading,
+            onSidePanelVisibilityToggle,
+            readOnly,
+            visibility
+        } = props;
 
-    const [ authenticatorsAccordionActiveIndexes, setAuthenticatorsAccordionActiveIndexes ] = useState<number[]>([ 0 ]);
+        const [
+            authenticatorsAccordionActiveIndexes,
+            setAuthenticatorsAccordionActiveIndexes
+        ] = useState<number[]>([ 0 ]);
 
-    const classes = classNames(
-        "authenticators-panel",
-        className
-    );
+        const classes = classNames(
+            "authenticators-panel",
+            className
+        );
 
-    /**
-     * Handles accordion title click.
-     *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {number} index - Clicked on index.
-     */
-    const handleAuthenticatorsAccordionOnClick = (e: SyntheticEvent, { index }: { index: number }): void => {
-        const newIndexes = [ ...authenticatorsAccordionActiveIndexes ];
+        /**
+         * Handles accordion title click.
+         *
+         * @param {React.SyntheticEvent} e - Click event.
+         * @param {number} index - Clicked on index.
+         */
+        const handleAuthenticatorsAccordionOnClick = (e: SyntheticEvent, { index }: { index: number }): void => {
+            const newIndexes = [ ...authenticatorsAccordionActiveIndexes ];
 
-        if (authenticatorsAccordionActiveIndexes.includes(index)) {
-            const removingIndex = authenticatorsAccordionActiveIndexes.indexOf(index);
-            newIndexes.splice(removingIndex, 1);
-        } else {
-            newIndexes.push(index);
-        }
+            if (authenticatorsAccordionActiveIndexes.includes(index)) {
+                const removingIndex = authenticatorsAccordionActiveIndexes.indexOf(index);
+                newIndexes.splice(removingIndex, 1);
+            } else {
+                newIndexes.push(index);
+            }
 
-        setAuthenticatorsAccordionActiveIndexes(newIndexes);
-    };
+            setAuthenticatorsAccordionActiveIndexes(newIndexes);
+        };
 
-    return (
-        visibility && (
-            <div className={ classes } ref={ ref }>
-                <Draggable handle=".drag-handle" disabled={ readOnly }>
-                    <Card>
-                        <Card.Content>
-                            { heading && <Heading as="h6" floated="left" compact>{ heading }</Heading> }
-                            <Popup
-                                trigger={ (
-                                    <div className="inline floated right mt-1">
-                                        <GenericIcon
-                                            className="drag-handle"
-                                            icon={ OperationIcons.drag }
-                                            size="nano"
-                                            transparent
-                                        />
-                                    </div>
-                                ) }
-                                position="top center"
-                                content="drag"
-                                inverted
-                            />
-                            <Popup
-                                trigger={ (
-                                    <div
-                                        className="inline floated right mr-2 mt-1"
-                                        onClick={ onSidePanelVisibilityToggle }
-                                    >
-                                        <GenericIcon
-                                            icon={
-                                                visibility
-                                                    ? OperationIcons.minimize
-                                                    : OperationIcons.maximize
-                                            }
-                                            size="nano"
-                                            transparent
-                                        />
-                                    </div>
-                                ) }
-                                position="top center"
-                                content="minimize"
-                                inverted
-                            />
-                        </Card.Content>
-                        <Card.Content>
-                            <div className="authenticators-section">
-                                {
-                                    authenticatorGroup
-                                    && authenticatorGroup instanceof Array
-                                    && authenticatorGroup.length > 0 && (
-                                        <Accordion>
-                                            {
-                                                authenticatorGroup.map((authenticator, index: number) => (
-                                                    <>
-                                                        <Accordion.Title
-                                                            active={
-                                                                authenticatorsAccordionActiveIndexes.includes(index)
-                                                            }
-                                                            index={ index }
-                                                            onClick={ handleAuthenticatorsAccordionOnClick }
-                                                        >
-                                                            <div className="inline floated right">
-                                                                <Icon name="angle right" className="caret-icon"/>
-                                                            </div>
-                                                            { authenticator.heading }
-                                                        </Accordion.Title>
-                                                        <Accordion.Content
-                                                            active={
-                                                                authenticatorsAccordionActiveIndexes.includes(index)
-                                                            }
-                                                        >
-                                                            <Authenticators
-                                                                authenticators={ authenticator.authenticators }
-                                                                droppableId={ authenticator.droppableId }
-                                                                readOnly={ readOnly }
-                                                            />
-                                                        </Accordion.Content>
-                                                    </>
-                                                ))
-                                            }
-                                        </Accordion>
-                                    )
-                                }
-                            </div>
-                        </Card.Content>
-                    </Card>
-                </Draggable>
-            </div>
-        )
-    );
-});
+        return (
+            visibility && (
+                <div className={ classes } ref={ ref }>
+                    <Draggable handle=".drag-handle" disabled={ readOnly }>
+                        <Card>
+                            <Card.Content>
+                                { heading && <Heading as="h6" floated="left" compact>{ heading }</Heading> }
+                                <Popup
+                                    trigger={ (
+                                        <div className="inline floated right mt-1">
+                                            <GenericIcon
+                                                className="drag-handle"
+                                                icon={ OperationIcons.drag }
+                                                size="nano"
+                                                transparent
+                                            />
+                                        </div>
+                                    ) }
+                                    position="top center"
+                                    content="drag"
+                                    inverted
+                                />
+                                <Popup
+                                    trigger={ (
+                                        <div
+                                            className="inline floated right mr-2 mt-1"
+                                            onClick={ onSidePanelVisibilityToggle }
+                                        >
+                                            <GenericIcon
+                                                icon={
+                                                    visibility
+                                                        ? OperationIcons.minimize
+                                                        : OperationIcons.maximize
+                                                }
+                                                size="nano"
+                                                transparent
+                                            />
+                                        </div>
+                                    ) }
+                                    position="top center"
+                                    content="minimize"
+                                    inverted
+                                />
+                            </Card.Content>
+                            <Card.Content>
+                                <div className="authenticators-section">
+                                    {
+                                        authenticatorGroup
+                                        && authenticatorGroup instanceof Array
+                                        && authenticatorGroup.length > 0 && (
+                                            <Accordion>
+                                                {
+                                                    authenticatorGroup.map((authenticator, index: number) => (
+                                                        authenticator?.authenticators
+                                                        && authenticator.authenticators instanceof Array
+                                                        && authenticator.authenticators.length > 0 && (
+                                                            <>
+                                                                <Accordion.Title
+                                                                    active={
+                                                                        authenticatorsAccordionActiveIndexes.includes(
+                                                                            index)
+                                                                    }
+                                                                    index={ index }
+                                                                    onClick={ handleAuthenticatorsAccordionOnClick }
+                                                                >
+                                                                    <div className="inline floated right">
+                                                                        <Icon name="angle right"
+                                                                              className="caret-icon"/>
+                                                                    </div>
+                                                                    { authenticator.heading }
+                                                                </Accordion.Title>
+                                                                <Accordion.Content
+                                                                    active={
+                                                                        authenticatorsAccordionActiveIndexes.includes(
+                                                                            index)
+                                                                    }
+                                                                >
+                                                                    <Authenticators
+                                                                        authenticators={ authenticator.authenticators }
+                                                                        droppableId={ authenticator.droppableId }
+                                                                        readOnly={ readOnly }
+                                                                        emptyPlaceholder={ (
+                                                                            <EmptyPlaceholder
+                                                                                subtitle={
+                                                                                    [
+                                                                                        "Could not find any "
+                                                                                        + authenticator.heading
+                                                                                        + " authenticators"
+                                                                                    ]
+                                                                                }/>
+                                                                        ) }
+                                                                    />
+                                                                </Accordion.Content>
+                                                            </>
+                                                        )
+                                                    ))
+                                                }
+                                            </Accordion>
+                                        )
+                                    }
+                                </div>
+                            </Card.Content>
+                        </Card>
+                    </Draggable>
+                </div>
+            )
+        );
+    });
 
 /**
  * Authenticator side panel component default props.

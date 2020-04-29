@@ -103,6 +103,10 @@ export class IdentityProviderManagementUtils {
                 const localAuthenticators: GenericAuthenticatorInterface[] = [];
 
                 local.forEach((authenticator: LocalAuthenticatorInterface) => {
+                    if (!authenticator.isEnabled) {
+                        return;
+                    }
+
                     localAuthenticators.push({
                         authenticators: [
                             {

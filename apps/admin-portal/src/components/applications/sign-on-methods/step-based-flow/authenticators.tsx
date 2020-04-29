@@ -22,6 +22,7 @@ import React, {
     FunctionComponent,
     PropsWithChildren,
     ReactElement,
+    ReactNode,
     ReactPortal
 } from "react";
 import {
@@ -54,6 +55,10 @@ interface AuthenticatorsPropsInterface {
      * ID for the droppable field.
      */
     droppableId: string;
+    /**
+     * Empty placeholder.
+     */
+    emptyPlaceholder?: ReactNode;
     /**
      * Heading for the authenticators section.
      */
@@ -96,6 +101,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         className,
         defaultName,
         droppableId,
+        emptyPlaceholder,
         heading,
         isDropDisabled,
         readOnly
@@ -187,7 +193,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     </Droppable>
                 </>
             )
-            : null
+            : <>{ emptyPlaceholder }</>
     );
 };
 
