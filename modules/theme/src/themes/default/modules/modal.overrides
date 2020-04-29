@@ -248,6 +248,10 @@
                         &.url {
                             font-style: italic;
                         }
+
+                        &.constrain {
+                            word-wrap: break-word;
+                        }
                     }
                 }
                 .result-container {

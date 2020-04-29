@@ -16,12 +16,13 @@
  * under the License.
  */
 
-import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
+import { UploadFile } from "../../shared";
 import { URLInputComponent } from "../components";
 
 /**
@@ -29,7 +30,7 @@ import { URLInputComponent } from "../components";
  */
 interface SAMLProtocolAllSettingsWizardFormPropsInterface {
     initialValues: any;
-    templateValues?: any;
+    updateSelectedSAMLMetaFile: (selected: boolean) => void;
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
 }
@@ -52,7 +53,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
 
     const {
         initialValues,
-        templateValues,
+        updateSelectedSAMLMetaFile,
         triggerSubmit,
         onSubmit
     } = props;
@@ -60,6 +61,12 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
     const [assertionConsumerUrls, setAssertionConsumerUrls] = useState("");
     const [showAssertionConsumerUrlError, setAssertionConsumerUrlError] = useState(false);
     const [configureMode, setConfigureMode] = useState<string>(undefined);
+
+    const [fileName, setFileName] = useState("");
+    const [file, setFile] = useState<File>(null);
+    const [fileContent, setFileContent] = useState("");
+    const [filePasteContent, setFilePasteContent] = useState("");
+    const [emptyFileError, setEmptyFileError] = useState(false);
 
     useEffect(() => {
         if (_.isEmpty(initialValues?.inboundProtocolConfiguration?.saml)) {
@@ -72,9 +79,35 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                 setConfigureMode(SAMLConfigModes.MANUAL);
             } else if (!_.isEmpty(initialValues?.inboundProtocolConfiguration?.saml?.metadataURL)) {
                 setConfigureMode(SAMLConfigModes.META_URL);
+            } else if (!_.isEmpty(initialValues?.inboundProtocolConfiguration?.saml?.metadataFile)) {
+                setConfigureMode(SAMLConfigModes.META_FILE);
+                setFile(initialValues?.inboundProtocolConfiguration?.saml?.file);
+                setFileName(initialValues?.inboundProtocolConfiguration?.saml?.fileName);
+                setFilePasteContent(initialValues?.inboundProtocolConfiguration?.saml?.pasteValue);
+                setFileContent(initialValues?.inboundProtocolConfiguration?.saml?.metadataFile);
             }
         }
     }, [initialValues]);
+
+    /**
+     * Reset empty file error.
+     */
+    useEffect(() => {
+        if (file && emptyFileError) {
+            setEmptyFileError(false);
+        }
+    }, [fileContent]);
+
+    /**
+     * Watch metaFile selected or not.
+     */
+    useEffect(() => {
+        if (configureMode === SAMLConfigModes.META_FILE) {
+            updateSelectedSAMLMetaFile(true);
+            return
+        }
+        updateSelectedSAMLMetaFile(false);
+    }, [configureMode]);
 
     /**
      * Sanitizes and prepares the form values for submission.
@@ -104,8 +137,18 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                     }
                 }
             }
+        } else if (configureMode === SAMLConfigModes.META_FILE) {
+            result = {
+                inboundProtocolConfiguration: {
+                    saml: {
+                        metadataFile: fileContent,
+                        file: file,
+                        fileName: fileName,
+                        pasteValue: filePasteContent
+                    }
+                }
+            }
         }
-
         return result;
     };
 
@@ -116,6 +159,8 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                     // check whether assertionConsumer url is empty or not
                     if (configureMode === SAMLConfigModes.MANUAL && _.isEmpty(assertionConsumerUrls)) {
                         setAssertionConsumerUrlError(true);
+                    } else if (configureMode === SAMLConfigModes.META_FILE && _.isEmpty(fileContent)) {
+                        setEmptyFileError(true)
                     } else {
                         onSubmit(getFormValues(values));
                     }
@@ -139,6 +184,10 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                         {
                                             label: "Metadata URL",
                                             value: SAMLConfigModes.META_URL
+                                        },
+                                        {
+                                            label: "Metadata File",
+                                            value: SAMLConfigModes.META_FILE
                                         }
                                     ]
                                 }
@@ -218,6 +267,21 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                         </Grid.Row>
                     }
                 </Grid>
+                {
+                    (configureMode === SAMLConfigModes.META_FILE) &&
+                    <UploadFile
+                        encode={ true }
+                        updateFile={ setFile }
+                        updateContent={ setFileContent }
+                        updatePasteContent={ setFilePasteContent }
+                        updateFileName={ setFileName }
+                        initialName={ fileName }
+                        initialFile={ file }
+                        initialPasteValue={ filePasteContent }
+                        initialContent={ fileContent }
+                        triggerEmptyFileError={ emptyFileError }
+                    />
+                }
             </Forms>
             : <ContentLoader/>
     );
