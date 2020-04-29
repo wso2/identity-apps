@@ -59,6 +59,8 @@ export interface StorageHelpPanelPreferencesItemsInterface {
 
 /**
  * Interface for the user preferences object.
+ * TODO: Revisit the structure. Modify this interface to accept a generic portal settings type and
+ *  assign it to a dynamic key. Ex: [ portal: string ]: T;
  */
 export interface StorageIdentityUserPreferencesInterface {
     applicationPreferences: StorageApplicationSettingsItemsInterface;

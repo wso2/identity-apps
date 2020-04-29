@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { LocalStorageUtils } from "@wso2is/core/dist/src/utils";
 import { AlertLevels, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { LocalStorageUtils } from "@wso2is/core/utils";
 import { HelpPanel, HelpPanelPropsInterface, HelpPanelTabInterface } from "@wso2is/react-components";
 import classNames from "classnames";
 import _ from "lodash";
