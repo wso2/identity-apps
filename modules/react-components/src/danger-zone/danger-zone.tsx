@@ -17,7 +17,7 @@
  */
 
 import React, { SyntheticEvent } from "react";
-import { Button, Header, Responsive, Segment } from "semantic-ui-react";
+import { Button, Checkbox, CheckboxProps, Header, Responsive, Segment } from "semantic-ui-react";
 
 /**
  * Danger zone component Prop types.
@@ -44,10 +44,19 @@ export interface DangerZoneProps {
      */
     subheader: string;
     /**
+     * Use toggle button for the danger zone.
+     */
+    toggle?: DangerZoneToggleProps;
+    /**
      * OnClick callback for the danger zone action.
      * @param {React.SyntheticEvent<HTMLButtonElement>} e - Click event.
      */
     onActionClick: (e: SyntheticEvent<HTMLButtonElement>) => void;
+}
+
+export interface DangerZoneToggleProps {
+    checked: boolean;
+    onChange: (event, data: CheckboxProps) => void;
 }
 
 /**
@@ -65,6 +74,7 @@ export const DangerZone: React.FunctionComponent<DangerZoneProps> = (
         header,
         subheader,
         onActionClick,
+        toggle,
         deleteButtonTestId,
         dangerZoneTestId
     } = props;
@@ -75,20 +85,29 @@ export const DangerZone: React.FunctionComponent<DangerZoneProps> = (
                 { header }
                 <Header.Subheader className="sub-header">{ subheader }</Header.Subheader>
             </Header>
-            <Button
-                data-testid={ deleteButtonTestId }
-                fluid={ window.innerWidth <= Responsive.onlyTablet.maxWidth }
-                negative
-                className={
-                    (window.innerWidth <= Responsive.onlyTablet.maxWidth)
-                        ? "mb-1x mt-1x"
-                        : ""
-                }
-                floated="right"
-                onClick={ onActionClick }
-            >
-                { actionTitle }
-            </Button>
+            {
+                toggle ?
+                    <Checkbox
+                        toggle
+                        onChange={ toggle?.onChange }
+                        checked={ toggle?.checked }
+                    />
+                    :
+                    <Button
+                        data-testid={ deleteButtonTestId }
+                        fluid={ window.innerWidth <= Responsive.onlyTablet.maxWidth }
+                        negative
+                        className={
+                            (window.innerWidth <= Responsive.onlyTablet.maxWidth)
+                                ? "mb-1x mt-1x"
+                                : ""
+                        }
+                        floated="right"
+                        onClick={ onActionClick }
+                    >
+                        { actionTitle }
+                    </Button>
+            }
         </Segment>
     );
 };

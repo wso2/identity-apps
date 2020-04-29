@@ -75,7 +75,6 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
                     level: AlertLevels.SUCCESS,
                     message: "Update successful"
                 }));
-
                 onUpdate(idpId);
             })
             .catch(() => {
@@ -90,8 +89,6 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
     return (
         <>
             <div className="advanced-configuration-section">
-                <Heading as="h4">Advanced Configurations</Heading>
-                <Divider hidden/>
                 <AdvanceConfigurationsForm
                     config={ advancedConfigurations }
                     onSubmit={ handleAdvancedConfigFormSubmit }

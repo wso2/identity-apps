@@ -85,9 +85,10 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                                     value: "federationHub"
                                 }
                             ] }
+                            toggle
                         />
                         <Hint>
-                            Check if this points to a federation hub identity provider.
+                            Check if this points to a federation hub identity provider
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -102,6 +103,9 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             type="text"
                             value={ config.homeRealmIdentifier }
                         />
+                        <Hint>
+                            Enter the home realm identifier for this identity provider
+                        </Hint>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
