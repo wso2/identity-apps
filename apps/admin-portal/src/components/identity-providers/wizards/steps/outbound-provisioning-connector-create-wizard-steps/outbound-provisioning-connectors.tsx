@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { FunctionComponent, ReactElement, useState } from "react";
-import * as React from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { OutboundProvisioningConnectorListItemInterface } from "../../../../../models";
 import { Heading, SelectionCard } from "@wso2is/react-components";
 import { Grid } from "semantic-ui-react";

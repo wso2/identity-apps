@@ -121,7 +121,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                             })
                         })
                         .catch(error => {
-                            if (error.response && error.response.data && error.response.data.description) {
+                            if (error?.response?.data?.description) {
                                 dispatch(addAlert({
                                     description: error.response.data.description,
                                     level: AlertLevels.ERROR,
@@ -161,6 +161,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     /**
      * Asynchronous function to Loop through outbound provisioning connectors, fetch data and metadata and
      * return an array of available connectors.
+     *
+     * @return {OutboundProvisioningConnectorWithMetaInterface[]}
      */
     async function fetchConnectors() {
         const connectors: OutboundProvisioningConnectorWithMetaInterface[] = [];

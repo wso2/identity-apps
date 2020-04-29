@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import * as React from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import {
     IdentityProviderInterface, OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorListItemInterface,
@@ -164,7 +163,7 @@ export const OutboundProvisioningConnectorCreateWizard: FunctionComponent<Outbou
                 setConnectorList(response);
         })
             .catch(error => {
-                if (error.response && error.response.data && error.response.data.description) {
+                if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,

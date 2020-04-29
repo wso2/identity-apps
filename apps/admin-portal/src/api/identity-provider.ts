@@ -731,7 +731,7 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
  *
  * @return {Promise<any>} A promise containing the response.
  */
-export const getOutboundProvisioningConnectorsList = (): Promise<any> => {
+export const getOutboundProvisioningConnectorsList = (): Promise<OutboundProvisioningConnectorListItemInterface[]> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
