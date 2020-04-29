@@ -18,7 +18,7 @@
 
 import React, { ReactElement, FunctionComponent, useEffect, useState } from "react";
 import { ResourceTab, CodeEditor } from "@wso2is/react-components";
-import { HtmlEmailTemplateBoilerplate } from "../email-template-boilerplate";
+import { EMAIL_STARTER_TEMPLATE } from "../../../constants";
 
 interface EmailTemplateEditorPropsInterface {
     htmlContent: string;
@@ -47,18 +47,18 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
         customClass,
         isPreviewOnly,
         isAddFlow,
-        isSignature,
+        isSignature
     } = props;
 
     const [ content, setContent ] = useState<string>('')
 
     useEffect(() => {
         if (isAddFlow && isSignature) {
-            setContent(HtmlEmailTemplateBoilerplate)
+            setContent(EMAIL_STARTER_TEMPLATE);
         } else {
-            setContent(htmlContent)
+            setContent(htmlContent);
         }
-    },[htmlContent])
+    }, [htmlContent])
 
     return (
         <div className={ "email-code-editor " + customClass } >
