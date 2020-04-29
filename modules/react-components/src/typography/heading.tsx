@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { Header, HeaderProps } from "semantic-ui-react";
-import React, { ReactElement } from "react";
 import classNames from "classnames";
+import React, { ReactElement } from "react";
+import { Header, HeaderProps } from "semantic-ui-react";
 
 /**
  * Heading component prop types.
@@ -31,7 +31,7 @@ export interface HeadingPropsInterface extends HeaderProps {
     /**
      * Determines if the font weight should be bold.
      */
-    bold?: boolean;
+    bold?: boolean | "500";
     /**
      * Adds intentional omission to the header when a width is defined.
      */
@@ -70,7 +70,7 @@ export const Heading: React.FunctionComponent<HeadingPropsInterface> = (
     const classes = classNames(
         "heading",
         {
-            bold,
+            [ typeof bold === "boolean" ? "bold" : "bold-" + bold ]: bold,
             compact,
             disabled,
             ellipsis,

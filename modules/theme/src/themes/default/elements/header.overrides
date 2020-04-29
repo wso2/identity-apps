@@ -37,6 +37,11 @@ h6.ui.header .sub.header {
     }
 }
 
+/*------------------------------
+       Heading Component
+    @wso2is/react-components
+-------------------------------*/
+
 .ui.header {
     &.heading {
         &.ellipsis {
@@ -64,6 +69,10 @@ h6.ui.header .sub.header {
 
         &.bold {
             font-weight: bold;
+
+            &-500 {
+                font-weight: 500;
+            }
         }
     }
 }
