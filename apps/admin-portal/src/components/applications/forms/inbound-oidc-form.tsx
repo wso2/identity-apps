@@ -20,7 +20,7 @@ import { Field, Forms } from "@wso2is/forms";
 import { ConfirmationModal, CopyInputField, Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Button, Divider, Form, Grid } from "semantic-ui-react";
 import {
     MetadataPropertyInterface,
@@ -39,8 +39,8 @@ interface InboundOIDCFormPropsInterface {
     metadata: OIDCMetadataInterface;
     initialValues: OIDCDataInterface;
     onSubmit: (values: any) => void;
-    handleApplicationRegenerate: () => void;
-    handleApplicationRevoke: () => void;
+    onApplicationRegenerate: () => void;
+    onApplicationRevoke: () => void;
     /**
      * Make the form read only.
      */
@@ -62,8 +62,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         metadata,
         initialValues,
         onSubmit,
-        handleApplicationRegenerate,
-        handleApplicationRevoke,
+        onApplicationRegenerate,
+        onApplicationRevoke,
         readOnly
     } = props;
 
@@ -190,7 +190,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      *
      * @param event Button click event.
      */
-    const handleRegenerateButton = (event) => {
+    const handleRegenerateButton = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         setShowRegenerateConfirmationModal(true)
     };
@@ -200,7 +200,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      *
      * @param event Button click event.
      */
-    const handleRevokeButton = (event) => {
+    const handleRevokeButton = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         setShowRevokeConfirmationModal(true)
     };
@@ -356,7 +356,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             setShowRegenerateConfirmationModal(false)
                                         }
                                         onPrimaryActionClick={ (): void => {
-                                            handleApplicationRegenerate();
+                                            onApplicationRegenerate();
                                             setShowRegenerateConfirmationModal(false);
                                         }
                                         }
@@ -383,7 +383,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         secondaryAction="Cancel"
                                         onSecondaryActionClick={ (): void => setShowRevokeConfirmationModal(false) }
                                         onPrimaryActionClick={ (): void => {
-                                            handleApplicationRevoke();
+                                            onApplicationRevoke();
                                             setShowRevokeConfirmationModal(false);
                                         } }
                                     >

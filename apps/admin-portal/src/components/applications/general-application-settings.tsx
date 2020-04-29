@@ -193,18 +193,20 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         }
 
         if (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.delete)) {
-
             return (
                 <DangerZoneGroup sectionHeader="Danger Zone">
-                    { hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.delete) && (
-                        <DangerZone
-                            actionTitle="Delete"
-                            header="Delete application"
-                            subheader={ "Once you delete an application, there is no going back. " +
-                            "Please be certain." }
-                            onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
-                        />
-                    ) }
+                    {
+                        hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.delete) &&
+                        (
+                            <DangerZone
+                                actionTitle="Delete"
+                                header="Delete application"
+                                subheader={ "Once you delete an application, there is no going back. " +
+                                "Please be certain." }
+                                onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
+                            />
+                        )
+                    }
                 </DangerZoneGroup>
             );
         }

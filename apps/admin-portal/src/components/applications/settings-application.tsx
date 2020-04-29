@@ -297,8 +297,8 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                                 protocol)
                                         }
                                         type={ protocol as SupportedAuthProtocolTypes }
-                                        handleApplicationRegenerate={ handleApplicationRegenerate }
-                                        handleApplicationRevoke={ handleApplicationRevoke }
+                                        onApplicationRegenerate={ handleApplicationRegenerate }
+                                        onApplicationRevoke={ handleApplicationRevoke }
                                         readOnly={
                                             !hasRequiredScopes(
                                                 featureConfig?.applications,

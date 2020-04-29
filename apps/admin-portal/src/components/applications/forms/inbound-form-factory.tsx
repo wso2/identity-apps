@@ -17,12 +17,12 @@
  */
 
 import React, { FunctionComponent } from "react";
+import { InboundCustomProtocolForm } from "./inbound-custom-form";
 import { InboundOIDCForm } from "./inbound-oidc-form";
 import { InboundPassiveStsForm } from "./inbound-passive-sts-form";
 import { InboundSAMLForm } from "./inbound-saml-form";
 import { InboundWSTrustForm } from "./inbound-ws-trust-form";
 import { SupportedAuthProtocolTypes } from "../../../models";
-import { InboundCustomProtocolForm } from "./inbound-custom-form";
 
 /**
  * Proptypes for the inbound form factory component.
@@ -32,8 +32,8 @@ interface InboundFormFactoryInterface {
     initialValues: any;
     onSubmit: (values: any) => void;
     type: SupportedAuthProtocolTypes;
-    handleApplicationRegenerate?: () => void;
-    handleApplicationRevoke?: () => void;
+    onApplicationRegenerate?: () => void;
+    onApplicationRevoke?: () => void;
     /**
      * Make the form read only.
      */
@@ -55,8 +55,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         initialValues,
         onSubmit,
         type,
-        handleApplicationRegenerate,
-        handleApplicationRevoke,
+        onApplicationRegenerate,
+        onApplicationRevoke,
         readOnly
     } = props;
 
@@ -67,8 +67,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }
-                    handleApplicationRegenerate={ handleApplicationRegenerate }
-                    handleApplicationRevoke={ handleApplicationRevoke }
+                    onApplicationRegenerate={ onApplicationRegenerate }
+                    onApplicationRevoke={ onApplicationRevoke }
                     readOnly={ readOnly }
                 />
             );
