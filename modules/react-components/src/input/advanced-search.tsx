@@ -23,6 +23,7 @@ import React, {
     ChangeEvent,
     FunctionComponent,
     MutableRefObject,
+    PropsWithChildren,
     ReactElement,
     useEffect,
     useRef,
@@ -112,8 +113,8 @@ export interface AdvancedSearchPropsInterface extends TestableComponentInterface
  *
  * @return {React.ReactElement}
  */
-export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedSearchPropsInterface>> = (
-    props: React.PropsWithChildren<AdvancedSearchPropsInterface>
+export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchPropsInterface>> = (
+    props: PropsWithChildren<AdvancedSearchPropsInterface>
 ): ReactElement => {
 
     const {
