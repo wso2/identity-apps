@@ -33,6 +33,7 @@ interface InboundFormFactoryInterface {
     onSubmit: (values: any) => void;
     type: SupportedAuthProtocolTypes;
     handleApplicationRegenerate?: () => void;
+    handleApplicationRevoke?: () => void;
     /**
      * Make the form read only.
      */
@@ -55,6 +56,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         onSubmit,
         type,
         handleApplicationRegenerate,
+        handleApplicationRevoke,
         readOnly
     } = props;
 
@@ -66,6 +68,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     metadata={ metadata }
                     onSubmit={ onSubmit }
                     handleApplicationRegenerate={ handleApplicationRegenerate }
+                    handleApplicationRevoke={ handleApplicationRevoke }
                     readOnly={ readOnly }
                 />
             );

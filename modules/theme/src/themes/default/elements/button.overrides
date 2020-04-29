@@ -266,6 +266,10 @@
 
 .ui.button {
     &.oidc-regenerate-button {
-        margin-top: 25px;
+        margin-right: @OIDCButtonMarginRight;
+        width: @OIDCButtonWidth;
+    }
+    &.oidc-revoke-button {
+        width: @OIDCButtonWidth;
     }
 }

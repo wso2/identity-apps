@@ -27,6 +27,7 @@ import {
     OAuth2PKCEConfigurationInterface,
     OIDCDataInterface,
     OIDCMetadataInterface,
+    State,
     emptyOIDCConfig
 } from "../../../models";
 import { URLInputComponent } from "../components";
@@ -39,6 +40,7 @@ interface InboundOIDCFormPropsInterface {
     initialValues: OIDCDataInterface;
     onSubmit: (values: any) => void;
     handleApplicationRegenerate: () => void;
+    handleApplicationRevoke: () => void;
     /**
      * Make the form read only.
      */
@@ -61,6 +63,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         initialValues,
         onSubmit,
         handleApplicationRegenerate,
+        handleApplicationRevoke,
         readOnly
     } = props;
 
@@ -68,6 +71,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [callBackUrls, setCallBackUrls] = useState("");
     const [showURLError, setShowURLError] = useState(false);
     const [showRegenerateConfirmationModal, setShowRegenerateConfirmationModal] = useState<boolean>(false);
+    const [showRevokeConfirmationModal, setShowRevokeConfirmationModal] = useState<boolean>(false);
 
     /**
      * Add regexp to multiple callbackUrls and update configs.
@@ -192,6 +196,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     /**
+     * Show Revoke confirmation.
+     *
+     * @param event Button click event.
+     */
+    const handleRevokeButton = (event) => {
+        event.preventDefault();
+        setShowRevokeConfirmationModal(true)
+    };
+
+    /**
      * Prepares form values for submit.
      *
      * @param values - Form values.
@@ -297,45 +311,91 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             readOnly
                                         />
                                     </Grid.Column>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 4 }>
+                                </Grid.Row>
+                            )
+                        }
+                        {
+                            initialValues.clientSecret && (
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                         {
                                             !readOnly && (
-                                                <Button
-                                                    color="red"
-                                                    className="oidc-regenerate-button"
-                                                    onClick={ handleRegenerateButton }
-                                                >
-                                                    Regenerate
-                                                </Button>
+                                                <>
+                                                    <Button
+                                                        color="red"
+                                                        className="oidc-regenerate-button"
+                                                        onClick={ handleRegenerateButton }
+                                                    >
+                                                        Regenerate
+                                                    </Button>
+                                                    <Button
+                                                        color="red"
+                                                        className="oidc-revoke-button"
+                                                        onClick={ handleRevokeButton }
+                                                        disabled={ (initialValues?.state === State.REVOKED) }
+                                                    >
+                                                        Revoke
+                                                    </Button>
+                                                </>
+
                                             )
                                         }
-                                        <ConfirmationModal
-                                            onClose={ (): void => setShowRegenerateConfirmationModal(false) }
-                                            type="warning"
-                                            open={ showRegenerateConfirmationModal }
-                                            assertion={ initialValues?.clientId }
-                                            assertionHint={ <p>Please
-                                                type <strong>{ initialValues?.clientId }</strong> to confirm.</p> }
-                                            assertionType="input"
-                                            primaryAction="Confirm"
-                                            secondaryAction="Cancel"
-                                            onSecondaryActionClick={ (): void => setShowRegenerateConfirmationModal(false) }
-                                            onPrimaryActionClick={ (): void => {
-                                                handleApplicationRegenerate();
-                                                setShowRegenerateConfirmationModal(false);
-                                            }
-                                            }
-                                        >
-                                            <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
-                                            <ConfirmationModal.Message attached warning>
-                                                This action is irreversible and permanently change the client secret.
-                                            </ConfirmationModal.Message>
-                                            <ConfirmationModal.Content>
-                                                If you regenerate this application, All the applications
-                                                depending on this also might stop working. Please proceed with caution.
-                                            </ConfirmationModal.Content>
-                                        </ConfirmationModal>
                                     </Grid.Column>
+                                    <ConfirmationModal
+                                        onClose={ (): void => setShowRegenerateConfirmationModal(false) }
+                                        type="warning"
+                                        open={ showRegenerateConfirmationModal }
+                                        assertion={ initialValues?.clientId }
+                                        assertionHint={
+                                            <p>Please type <strong>{ initialValues?.clientId }</strong> to confirm.</p>
+                                        }
+                                        assertionType="input"
+                                        primaryAction="Confirm"
+                                        secondaryAction="Cancel"
+                                        onSecondaryActionClick={ (): void =>
+                                            setShowRegenerateConfirmationModal(false)
+                                        }
+                                        onPrimaryActionClick={ (): void => {
+                                            handleApplicationRegenerate();
+                                            setShowRegenerateConfirmationModal(false);
+                                        }
+                                        }
+                                    >
+                                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+                                        <ConfirmationModal.Message attached warning>
+                                            This action is irreversible and permanently change the client secret.
+                                        </ConfirmationModal.Message>
+                                        <ConfirmationModal.Content>
+                                            If you regenerate this application, All the applications
+                                            depending on this also might stop working. Please proceed with caution.
+                                        </ConfirmationModal.Content>
+                                    </ConfirmationModal>
+                                    <ConfirmationModal
+                                        onClose={ (): void => setShowRevokeConfirmationModal(false) }
+                                        type="warning"
+                                        open={ showRevokeConfirmationModal }
+                                        assertion={ initialValues?.clientId }
+                                        assertionHint={
+                                            <p>Please type <strong>{ initialValues?.clientId }</strong> to confirm.</p>
+                                        }
+                                        assertionType="input"
+                                        primaryAction="Confirm"
+                                        secondaryAction="Cancel"
+                                        onSecondaryActionClick={ (): void => setShowRevokeConfirmationModal(false) }
+                                        onPrimaryActionClick={ (): void => {
+                                            handleApplicationRevoke();
+                                            setShowRevokeConfirmationModal(false);
+                                        } }
+                                    >
+                                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+                                        <ConfirmationModal.Message attached warning>
+                                            This action is can be reversed by regenerating client secret.
+                                        </ConfirmationModal.Message>
+                                        <ConfirmationModal.Content>
+                                            If you Revoke this application, All the applications
+                                            depending on this also might stop working. Please proceed with caution.
+                                        </ConfirmationModal.Content>
+                                    </ConfirmationModal>
                                 </Grid.Row>
                             )
                         }

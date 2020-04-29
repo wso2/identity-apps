@@ -23,7 +23,7 @@ import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GeneralDetailsForm } from "./forms";
-import { deleteApplication, revokeClientSecret, updateApplicationDetails } from "../../api";
+import { deleteApplication, updateApplicationDetails } from "../../api";
 import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
@@ -74,14 +74,6 @@ interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfi
      */
     onUpdate: (id: string) => void;
     /**
-     * whether to show regenerate in danger zones or not
-     */
-    showRegenerate?: boolean;
-    /**
-     * whether to show revoke in danger zones or not
-     */
-    showRevoke?: boolean;
-    /**
      * Application template.
      */
     template?: ApplicationTemplateListItemInterface;
@@ -108,7 +100,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         isLoading,
         onDelete,
         onUpdate,
-        showRevoke,
         template
     } = props;
 
@@ -116,8 +107,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-    const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
-    const [ showRevokeConfirmationModal, setShowRevokeConfirmationModal ] = useState<boolean>(false);
+    const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState<boolean>(false);
 
     /**
      * Deletes an application.
@@ -152,41 +142,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                 }));
             });
     };
-
-    /**
-     * Revokes application.
-     */
-    const handleApplicationRevoke = (): void => {
-        revokeClientSecret(appId)
-            .then(() => {
-                dispatch(addAlert({
-                    description: "Successfully revoked the application",
-                    level: AlertLevels.SUCCESS,
-                    message: "Revoke successful"
-                }));
-
-                setShowRevokeConfirmationModal(false);
-                onUpdate(appId);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Application revoke Error"
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: "An error occurred while revoking the application",
-                    level: AlertLevels.ERROR,
-                    message: "Application Revoke Error"
-                }));
-            });
-    };
-
 
     /**
      * Handles form submit action.
@@ -237,20 +192,10 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
             return null;
         }
 
-        if (showRevoke
-            || hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.delete)) {
+        if (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.delete)) {
 
             return (
                 <DangerZoneGroup sectionHeader="Danger Zone">
-                    { showRevoke && (
-                        <DangerZone
-                            actionTitle="Revoke"
-                            header="Revoke the application"
-                            subheader="This action is reversible but cannot use the same
-                                                    client secret. Please proceed with caution."
-                            onActionClick={ (): void => setShowRevokeConfirmationModal(true) }
-                        />
-                    ) }
                     { hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.delete) && (
                         <DangerZone
                             actionTitle="Delete"
@@ -304,27 +249,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
                             If you delete this application, you will not be able to get it back. All the applications
-                            depending on this also might stop working. Please proceed with caution.
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>
-                    <ConfirmationModal
-                        onClose={ (): void => setShowRevokeConfirmationModal(false) }
-                        type="warning"
-                        open={ showRevokeConfirmationModal }
-                        assertion={ name }
-                        assertionHint={ <p>Please type <strong>{ name }</strong> to confirm.</p> }
-                        assertionType="input"
-                        primaryAction="Confirm"
-                        secondaryAction="Cancel"
-                        onSecondaryActionClick={ (): void => setShowRevokeConfirmationModal(false) }
-                        onPrimaryActionClick={ (): void => handleApplicationRevoke() }
-                    >
-                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
-                            This action is can be reversed by regenerating client secret.
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
-                            If you Revoke this application, All the applications
                             depending on this also might stop working. Please proceed with caution.
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
