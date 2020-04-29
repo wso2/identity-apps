@@ -69,6 +69,8 @@ export interface CommonNS {
     operations: string;
     overview: string;
     personalInfo: string;
+    pin: string;
+    pinned: string;
     priority: string;
     privacy: string;
     properties: string;
@@ -100,6 +102,8 @@ export interface CommonNS {
     terminateAll: string;
     terminateSession: string;
     type: string;
+    unpin: string;
+    unpinned: string;
     update: string;
     user: string;
     verify: string;

@@ -225,6 +225,18 @@ export const devPortal: DevPortalNS = {
         footer: {
             copyright: "WSO2 Identity Server © {{year}}"
         },
+        helpPanel: {
+            notifications: {
+                pin: {
+                    error: null,
+                    genericError: null,
+                    success: {
+                        description: "Help panel will always appear {{state}} unless you change explicitly.",
+                        message: "Help panel {{state}}"
+                    }
+                }
+            }
+        },
         idp: {
             templates: {
                 manualSetup: {

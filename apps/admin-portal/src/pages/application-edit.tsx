@@ -37,7 +37,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Label, SemanticICONS } from "semantic-ui-react";
 import { getApplicationDetails, getRawDocumentation } from "../api";
 import { EditApplication } from "../components";
-import { HelpSidebarIcons, TechnologyLogos } from "../configs";
+import { TechnologyLogos } from "../configs";
 import { ApplicationConstants, ApplicationManagementConstants, HelpPanelConstants, UIConstants } from "../constants";
 import { generateApplicationSamples, history } from "../helpers";
 import { HelpPanelLayout, PageLayout } from "../layouts";
@@ -75,9 +75,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
     const [ applicationTemplateName, setApplicationTemplateName ] = useState<string>(undefined);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(false);
-    const [ helpSidebarVisibility, setHelpSidebarVisibility ] = useState<boolean>(false);
     const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
-    const [ helpPanelTabsActiveIndex, setHelpPanelTabsActiveIndex ] = useState<number>(0);
     const [ helpPanelSampleContent, setHelpPanelSampleContent ] = useState<string>(undefined);
     const [ helpPanelSelectedSample, setHelpPanelSelectedSample ] = useState<ApplicationSampleInterface>(undefined);
     const [ samplesTabBackButtonEnabled, setSamplesTabBackButtonEnabled ] = useState<boolean>(true);
@@ -290,42 +288,12 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
     };
 
     /**
-     * Handles the help panel toggle action.
-     */
-    const handleHelpPanelToggle = () => {
-        setHelpSidebarVisibility(!helpSidebarVisibility);
-    };
-
-    /**
      * Handles help panel samples change event.
      *
      * @param sample - Selected sample.
      */
     const handleHelpPanelSelectedSample = (sample: any) => {
         setHelpPanelSelectedSample(sample);
-    };
-
-    /**
-     * Handles sidebar mini item click event.
-     *
-     * @param {string} item - Clicked item.
-     */
-    const handleSidebarMiniItemClick = (item: string) => {
-        getFilteredHelpPanelTabs().forEach((pane, index) => {
-            if (pane.heading === item) {
-                setHelpPanelTabsActiveIndex(index);
-            }
-        });
-        setHelpSidebarVisibility(true);
-    };
-
-    /**
-     * Filter the help panel tabs and remove hidden tabs.
-     *
-     * @return {HelpPanelTabInterface[]} Modified tabs array.
-     */
-    const getFilteredHelpPanelTabs = (): HelpPanelTabInterface[] => {
-        return helpPanelTabs.filter((tab) => !tab.hidden)
     };
 
     const helpPanelTabs: HelpPanelTabInterface[] = [
@@ -416,22 +384,9 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
 
     return (
         <HelpPanelLayout
-            actions={ [
-                /*{
-                    icon: HelpSidebarIcons.actionPanel.pin
-                },*/
-                {
-                    icon: HelpSidebarIcons.actionPanel.close,
-                    onClick: handleHelpPanelToggle
-                }
-            ] }
             sidebarDirection="right"
             sidebarMiniEnabled={ true }
-            tabs={ getFilteredHelpPanelTabs() }
-            tabsActiveIndex={ helpPanelTabsActiveIndex }
-            sidebarVisibility={ helpSidebarVisibility }
-            onSidebarToggle={ handleHelpPanelToggle }
-            onSidebarMiniItemClick={ handleSidebarMiniItemClick }
+            tabs={ helpPanelTabs }
         >
             <PageLayout
                 title={ application.name }

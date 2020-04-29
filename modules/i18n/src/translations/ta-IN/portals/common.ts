@@ -68,6 +68,8 @@ export const common: CommonNS = {
     operations: "செயற்பாடுகள்",
     overview: "கண்ணோட்டம்",
     personalInfo: "பயனர் விபரம்",
+    pin: "வை",
+    pinned: "வைக்கப்பட்டுள்ளது",
     priority: "முன்னுரிமை",
     privacy: "தனியுரிமை",
     properties: "உடைமைகள்",
@@ -99,6 +101,8 @@ export const common: CommonNS = {
     terminateAll: "அனைத்தையும் முடி",
     terminateSession: "அமர்வை முடி",
     type: "வகை",
+    unpin: "அகற்று",
+    unpinned: "அகற்றப்பட்டது",
     update: "புதுப்பி",
     user: "பயனர்",
     verify: "உறுதி செய்"

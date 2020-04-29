@@ -100,6 +100,11 @@ export interface DevPortalNS {
                 createTemplate: Notification;
             };
         };
+        helpPanel: {
+            notifications: {
+                pin: Notification;
+            };
+        };
         idp: {
             templates: {
                 manualSetup: {
