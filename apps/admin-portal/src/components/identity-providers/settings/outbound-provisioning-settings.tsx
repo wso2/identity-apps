@@ -18,25 +18,26 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, ContentLoader, EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
+import { ConfirmationModal, ContentLoader, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
+import { OutboundProvisioningRoles } from "./outbound-provisioning";
 import {
     getOutboundProvisioningConnector,
     getOutboundProvisioningConnectorMetadata,
     updateOutboundProvisioningConnector
 } from "../../../api";
+import { EmptyPlaceholderIllustrations } from "../../../configs";
 import {
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorListItemInterface,
-    OutboundProvisioningConnectorsInterface,
-    OutboundProvisioningConnectorWithMetaInterface
+    OutboundProvisioningConnectorWithMetaInterface,
+    OutboundProvisioningConnectorsInterface
 } from "../../../models";
-import { CheckboxProps, Grid, Icon, Segment } from "semantic-ui-react";
-import { OutboundProvisioningConnectorFormFactory } from "../forms";
 import { AuthenticatorAccordion } from "../../shared";
-import { EmptyPlaceholderIllustrations } from "../../../configs";
+import { OutboundProvisioningConnectorFormFactory } from "../forms";
 import { OutboundProvisioningConnectorCreateWizard } from "../wizards";
 
 /**
@@ -132,7 +133,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                             }
 
                             dispatch(addAlert({
-                                description: "An error occurred retrieving the outbound provisioning connector metadata.",
+                                description: "An error occurred retrieving the outbound provisioning connector " +
+                                    "metadata.",
                                 level: AlertLevels.ERROR,
                                 message: "Retrieval error"
                             }));
@@ -297,6 +299,12 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
 
     return (
         <>
+            <Grid.Row>
+                <Grid.Column width={ 8 }>
+                    <Heading as="h5">OutBound Provisioning Connectors</Heading>
+                </Grid.Column>
+            </Grid.Row>
+
             {
                 outboundConnectors.connectors.length > 0 ? (
                 (!isLoading)
@@ -333,14 +341,14 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                 defaultChecked: connector.data?.isDefault,
                                                                 label: "Make default",
                                                                 onChange: handleDefaultConnectorChange,
-                                                                type: "checkbox",
+                                                                type: "checkbox"
                                                             },
                                                             {
                                                                 defaultChecked: connector?.data?.isEnabled,
                                                                 label: "Enabled",
                                                                 onChange: handleConnectorEnableToggle,
-                                                                type: "toggle",
-                                                            },
+                                                                type: "toggle"
+                                                            }
                                                         ],
                                                         content: (
                                                             <OutboundProvisioningConnectorFormFactory
@@ -351,7 +359,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                             />
                                                         ),
                                                         id: connector?.id,
-                                                        title: connector?.meta?.displayName,
+                                                        title: connector?.meta?.displayName
                                                     }
                                                 })
                                             }
@@ -424,6 +432,20 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         onUpdate={ onUpdate }
                     />
                 )
+            }
+
+            {
+                identityProvider?.roles &&
+                (!isLoading) ? (
+                    <>
+                        <Divider/>
+                        <Divider hidden/>
+                        <OutboundProvisioningRoles
+                            idpRoles={ identityProvider?.roles }
+                            idpId={ identityProvider?.id }
+                        />
+                    </>
+                ) : <ContentLoader/>
             }
          </>
     );
