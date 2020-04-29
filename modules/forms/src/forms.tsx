@@ -16,12 +16,11 @@
  * under the License.
  */
 
-import { Error, FormField, FormValue, Validation } from "./models";
+import React, { useEffect, useState } from "react";
+import { Form } from "semantic-ui-react";
 import { Field, GroupFields, InnerField, InnerGroupFields } from "./components";
 import { isCheckBoxField, isDropdownField, isInputField, isRadioField, isTextField, isToggleField } from "./helpers";
-import React, { useEffect, useState } from "react";
-
-import { Form } from "semantic-ui-react";
+import { Error, FormField, FormValue, Validation } from "./models";
 import { useNonInitialEffect } from "./utils";
 
 /**
