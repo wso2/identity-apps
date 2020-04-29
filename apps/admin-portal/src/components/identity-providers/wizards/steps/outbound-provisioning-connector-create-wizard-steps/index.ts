@@ -16,5 +16,4 @@
  * under the License.
  */
 
-export * from "./templates";
-export * from "./connectors";
+export * from "./outbound-provisioning-connectors";

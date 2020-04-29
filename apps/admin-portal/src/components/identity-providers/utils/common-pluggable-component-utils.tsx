@@ -28,7 +28,7 @@ import { CommonPluggableComponentMetaPropertyInterface } from "../../../models";
 export const getPropertyMetadata = (propertyKey: string, metaProperties:
     CommonPluggableComponentMetaPropertyInterface[]): CommonPluggableComponentMetaPropertyInterface => {
     
-    for (let i = 0; i < metaProperties.length; i++) {
+    for (let i = 0; i < metaProperties?.length; i++) {
         const metaProperty = metaProperties[i];
         if (metaProperty.key === propertyKey) {
             return  metaProperty;
