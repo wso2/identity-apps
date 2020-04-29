@@ -17,11 +17,10 @@
  */
 
 import { Field, Forms } from "@wso2is/forms";
-import { Heading, Hint } from "@wso2is/react-components";
+import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Divider, Grid } from "semantic-ui-react";
+import { Button, Grid } from "semantic-ui-react";
 import {
-    MetadataPropertyInterface,
     ProvisioningConfigurationInterface,
     SimpleUserStoreListItemInterface
 } from "../../../models";
@@ -105,8 +104,6 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Heading as="h5">Inbound SCIM Provisioning</Heading>
-                        <Divider hidden/>
                         <Field
                             name="proxyMode"
                             label=""

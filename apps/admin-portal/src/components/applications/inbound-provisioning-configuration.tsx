@@ -16,26 +16,26 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { AuthenticatorAccordion } from "../shared";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Divider } from "semantic-ui-react";
-import { getUserStoreList, updateApplicationConfigurations } from "../../api";
+import { Divider, Grid } from "semantic-ui-react";
+import { Heading } from "@wso2is/react-components";
 import {
     FeatureConfigInterface,
     ProvisioningConfigurationInterface,
     SimpleUserStoreListItemInterface
 } from "../../models";
-import { OutboundProvisioningConfigurations } from "./outbound-provisioning-configuration";
-import { InboundProvisioningConfigurations } from "./inbound-provisioning-configuration";
-import { SBACInterface } from "@wso2is/core/dist/src/models";
+import { AlertLevels, CRUDPermissionsInterface, SBACInterface } from "@wso2is/core/dist/src/models";
+import { getUserStoreList, updateApplicationConfigurations } from "../../api";
+import { addAlert } from "@wso2is/core/dist/src/store";
+import { useDispatch } from "react-redux";
+import { ProvisioningConfigurationsForm } from "./forms";
+import { hasRequiredScopes } from "@wso2is/core/dist/src/helpers";
 
 /**
- * Proptypes for the provision settings component.
+ *  Inbound Provisioning Configurations for the Application.
  */
-interface ProvisioningSettingsPropsInterface extends SBACInterface<FeatureConfigInterface> {
+interface InboundProvisioningConfigurationsPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
      * Currently editing application id.
      */
@@ -52,23 +52,28 @@ interface ProvisioningSettingsPropsInterface extends SBACInterface<FeatureConfig
      * CRUD permissions,
      */
     permissions?: CRUDPermissionsInterface;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
- *  Provisioning component.
+ * Inbound Provisioning configurations form component.
  *
- * @param {ProvisioningSettingsPropsInterface} props - Props injected to the component.
+ * @param {ProvisioningConfigurationFormPropsInterface} props - Props injected to the component.
  * @return {ReactElement}
  */
-export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsInterface> = (
-    props: ProvisioningSettingsPropsInterface
+export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisioningConfigurationsPropsInterface> = (
+    props: InboundProvisioningConfigurationsPropsInterface
 ): ReactElement => {
 
     const {
         appId,
-        featureConfig,
         provisioningConfigurations,
-        onUpdate
+        onUpdate,
+        readOnly,
+        featureConfig
     } = props;
 
     const dispatch = useDispatch();
@@ -117,22 +122,41 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
 
     return (
         <>
-            <InboundProvisioningConfigurations
-                appId={ appId }
-                provisioningConfigurations={ provisioningConfigurations }
-                onUpdate={ onUpdate }
-                readOnly={
-                    !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
-                }
-            />
+            <Heading as="h4">
+                Inbound Provisioning
+                <Heading subHeading as="h6">
+                    Provision users or groups to a WSO2 Identity Server’s userstore via this application.
+                </Heading>
+            </Heading>
             <Divider hidden/>
-            <Divider/>
-            <Divider hidden/>
-            <OutboundProvisioningConfigurations
-                appId={ appId }
-                provisioningConfigurations={ provisioningConfigurations }
-                onUpdate={ onUpdate }
-            />
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column>
+                        <AuthenticatorAccordion
+                            globalActions={ [] }
+                            authenticators={
+                                [
+                                    {
+                                        content: (
+                                            <ProvisioningConfigurationsForm
+                                                config={ provisioningConfigurations }
+                                                onSubmit={ handleProvisioningConfigFormSubmit }
+                                                useStoreList={ userStore }
+                                                readOnly={
+                                                    !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                                                }
+                                            />
+                                        ),
+                                        id: "scim",
+                                        title: "SCIM",
+                                    }
+                                ]
+                            }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+
         </>
-    );
+    )
 };

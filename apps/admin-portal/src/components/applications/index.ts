@@ -29,3 +29,5 @@ export * from "./application-edit";
 export * from "./wizard";
 export * from "./components";
 export * from "./provisioning";
+export * from "./inbound-provisioning-configuration";
+export * from "./outbound-provisioning-configuration";
