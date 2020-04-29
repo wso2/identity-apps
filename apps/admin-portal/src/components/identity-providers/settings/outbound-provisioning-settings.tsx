@@ -18,16 +18,20 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader, Heading } from "@wso2is/react-components";
+import { useTrigger } from "@wso2is/forms";
+import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Divider } from "semantic-ui-react";
+import { Button, Grid } from "semantic-ui-react";
+import { OutboundProvisioningRoles } from "./outbound-provisioning";
 import {
     getOutboundProvisioningConnector,
     getOutboundProvisioningConnectorMetadata,
+    updateIDPRoleMappings,
     updateOutboundProvisioningConnector
 } from "../../../api";
 import {
+    IdentityProviderRolesInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface,
     OutboundProvisioningConnectorsInterface
@@ -38,7 +42,7 @@ import { OutboundProvisioningConnectorFormFactory } from "../forms";
  * Proptypes for the provisioning settings component.
  */
 interface ProvisioningSettingsPropsInterface {
-    /**OutboundProvisioningConnectorsInterface
+    /**
      * Currently editing idp id.
      */
     idpId: string;
@@ -47,10 +51,17 @@ interface ProvisioningSettingsPropsInterface {
      * Outbound connector details of the IDP
      */
     outboundConnectors: OutboundProvisioningConnectorsInterface;
+
+    /**
+     * Outbound provisioning roles of the IDP
+     */
+    idpRoles: IdentityProviderRolesInterface;
+
     /**
      * Is the idp info request loading.
      */
     isLoading?: boolean;
+
     /**
      * Callback to update the idp details.
      */
@@ -70,11 +81,14 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     const {
         idpId,
         outboundConnectors,
+        idpRoles,
         isLoading,
         onUpdate
     } = props;
 
     const dispatch = useDispatch();
+
+    const [triggerSubmission, setTriggerSubmission] = useTrigger();
 
     const [connectorMeta, setConnectorMeta] = useState<OutboundProvisioningConnectorMetaInterface>(undefined);
 
@@ -114,6 +128,31 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                 }));
             });
     };
+
+    const handleOutboundProvisioningRoleMapping = (outboundProvisioningRoles: string[]) => {
+        updateIDPRoleMappings(idpId, {
+                ...idpRoles,
+                outboundProvisioningRoles: outboundProvisioningRoles
+            }
+        ).then(() => {
+            dispatch(addAlert(
+                {
+                    description: "Successfully updated outbound provisioning role configurations.",
+                    level: AlertLevels.SUCCESS,
+                    message: "Update successful"
+                }
+            ));
+        }).catch(error => {
+            dispatch(addAlert(
+                {
+                    description: error?.description || "There was an error while updating outbound provisioning role " +
+                        "configurations",
+                    level: AlertLevels.ERROR,
+                    message: "Update error"
+                }
+            ));
+        })
+    }
 
     useEffect(() => {
         if (outboundConnectors.defaultConnectorId) {
@@ -164,27 +203,43 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     }, [props]);
 
     return (
-        (!isLoading && connectorMeta && connectorDetails)
-            ? (
-                <div className="default-provisioning-connector-section">
-                    {
-                        (
-                            <>
-                                <Heading as="h4">{connectorMeta?.displayName}</Heading>
-                                {
-                                    outboundConnectors.defaultConnectorId &&
-                                    <OutboundProvisioningConnectorFormFactory
-                                        metadata={ connectorMeta }
-                                        initialValues={ connectorDetails }
-                                        onSubmit={ handleConnectorConfigFormSubmit }
-                                        type={ connectorMeta?.name }
-                                    />
-                                }
-                                <Divider hidden/>
-                            </>
-                        )}
-                </div>
-            )
+        !isLoading ?
+            <>
+                {
+                    connectorMeta && connectorDetails && outboundConnectors?.defaultConnectorId &&
+                    <OutboundProvisioningConnectorFormFactory
+                        metadata={ connectorMeta }
+                        initialValues={ connectorDetails }
+                        triggerSubmit={ triggerSubmission }
+                        onSubmit={ handleConnectorConfigFormSubmit }
+                        type={ connectorMeta?.name }
+                        enableSubmitButton={ false }
+                    />
+                }
+
+                {
+                    idpRoles &&
+                    <OutboundProvisioningRoles
+                        onSubmit={ handleOutboundProvisioningRoleMapping }
+                        triggerSubmit={ triggerSubmission }
+                        initialRoles={ idpRoles?.outboundProvisioningRoles }
+                    />
+                }
+
+                <Grid>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Button
+                                primary
+                                size="small"
+                                onClick={ setTriggerSubmission }
+                            >
+                                Update
+                            </Button>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </>
             : <ContentLoader/>
     );
 };

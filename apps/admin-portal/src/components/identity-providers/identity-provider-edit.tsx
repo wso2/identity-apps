@@ -124,6 +124,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             <OutboundProvisioningSettings
                 idpId={ identityProvider.id }
                 outboundConnectors={ identityProvider.provisioning?.outboundConnectors }
+                idpRoles={ identityProvider.roles }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
             />

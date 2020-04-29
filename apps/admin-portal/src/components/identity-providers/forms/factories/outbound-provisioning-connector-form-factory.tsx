@@ -16,7 +16,9 @@
  * under the License.
  */
 
+import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+import { Divider } from "semantic-ui-react";
 import { OutboundProvisioningConnectorInterface, OutboundProvisioningConnectorMetaInterface } from "../../../../models";
 import { CommonOutboundProvisioningConnectorForm } from "../outbound-provisioning-connectors";
 
@@ -48,16 +50,28 @@ export const OutboundProvisioningConnectorFormFactory: FunctionComponent<
         enableSubmitButton
     } = props;
 
-    switch (type) {
-        default:
-            return <CommonOutboundProvisioningConnectorForm
-                initialValues={ initialValues }
-                metadata={ metadata }
-                onSubmit={ onSubmit }
-                triggerSubmit={ triggerSubmit }
-                enableSubmitButton={ enableSubmitButton }
-            />;
-    }
+    const generateConnector = (): ReactElement => {
+        switch (type) {
+            default:
+                return <CommonOutboundProvisioningConnectorForm
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    triggerSubmit={ triggerSubmit }
+                    enableSubmitButton={ enableSubmitButton }
+                />;
+        }
+    };
+
+    return (
+        <>
+            <Heading as="h5">OutBound Provisioning Connectors</Heading>
+            <Divider hidden/>
+            <Heading as="h5">{ metadata?.displayName }</Heading>
+            { generateConnector() }
+            <Divider hidden/>
+        </>
+    )
 };
 
 OutboundProvisioningConnectorFormFactory.defaultProps = {
