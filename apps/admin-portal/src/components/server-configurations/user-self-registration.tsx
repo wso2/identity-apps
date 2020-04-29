@@ -19,21 +19,15 @@
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
-import { EditSection, Hint, Section } from "@wso2is/react-components";
+import { EditSection, GenericIcon, Hint, LinkButton, Section } from "@wso2is/react-components";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Form, Grid, List } from "semantic-ui-react";
+import { Accordion, Divider, Form, Grid, Icon } from "semantic-ui-react";
 import { getSelfSignUpConfigurations, updateSelfSignUpConfigurations } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 import { SelfSignUpConfigurationsInterface } from "../../models/server-configurations";
-
-/**
- * Constant to store the self registration from identifier.
- * @type {string}
- */
-const USER_SELF_REGISTRATION_FORM_IDENTIFIER = "userSelfRegistrationForm";
 
 /**
  * Prop types for the change password component.
@@ -51,40 +45,13 @@ interface UserSelfRegistrationProps {
 export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> = (props: UserSelfRegistrationProps):
 	JSX.Element => {
 
-	const [editingForm, setEditingForm] = useState({
-		[USER_SELF_REGISTRATION_FORM_IDENTIFIER]: false
-	});
-
 	const [selfSignUpConfigs, setSelfSignUpConfigs] = useState<SelfSignUpConfigurationsInterface>({});
+	const [ accordionState, setAccordionState ] = useState<boolean>(false);
 	const [reset] = useTrigger();
 
 	const dispatch = useDispatch();
 
 	const { t } = useTranslation();
-
-	/**
-	 * Handles the onClick event of the cancel button.
-	 *
-	 * @param formName - Name of the form
-	 */
-	const hideFormEditView = (formName: string): void => {
-		setEditingForm({
-			...editingForm,
-			[formName]: false
-		});
-	};
-
-	/**
-	 * Handles the onClick event of the edit button.
-	 *
-	 * @param formName - Name of the form
-	 */
-	const showFormEditView = (formName: string): void => {
-		setEditingForm({
-			...editingForm,
-			[formName]: true
-		});
-	};
 
 	const errorMessage = {
 		description: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
@@ -112,6 +79,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 	const makeSelfRegistrationPatchCall = (data, successNotification) => {
 		updateSelfSignUpConfigurations(data)
 			.then(() => {
+				setSelfSignUpConfigsFromAPI();
 				dispatch(addAlert(successNotification));
 			})
 			.catch((error) => {
@@ -189,10 +157,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		makeSelfRegistrationPatchCall(data, successNotification);
 	};
 
-	/**
-	 * Load self registration configurations from the API, on page load.
-	 */
-	useEffect(() => {
+	const setSelfSignUpConfigsFromAPI = () => {
 		getSelfSignUpConfigurations()
 			.then((response) => {
 				const configs = {
@@ -211,7 +176,14 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 				};
 				setSelfSignUpConfigs(configs);
 			});
-	}, []);
+	};
+
+	/**
+	 * Load self registration configurations from the API, on page load.
+	 */
+	useEffect(() => {
+		setSelfSignUpConfigsFromAPI();
+	}, [props]);
 
 	const extractArrayValue = (response, key) => {
 		return response.properties.find(prop => prop.name === key).value === "true" ? [key] : [];
@@ -231,9 +203,12 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 
 	const userSelfRegistrationSummary = (
 		<Forms>
-			<Grid padded={ true }>
-				<Grid.Row columns={ 1 }>
-					<Grid.Column className="first-column" mobile={ 16 } tablet={ 16 } computer={ 14 }>
+			<Grid padded={ true } className="middle aligned">
+				<Grid.Row columns={ 2 } className="inner-list-item">
+					<Grid.Column className="first-column" mobile={ 14 } tablet={ 14 } computer={ 14 } >
+						<label>User self registration</label>
+					</Grid.Column>
+					<Grid.Column mobile={ 2 } tablet={ 2 } computer={ 2 }>
 						<Field
 							name={ ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE }
 							required={ false }
@@ -241,8 +216,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 							type="checkbox"
 							children={ [
 								{
-									label: t("devPortal:components.serverConfigs.selfRegistration.form." +
-										"enable.label"),
+									label: "",
 									value: ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE
 								}
 							] }
@@ -257,6 +231,16 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 							}
 							toggle
 						/>
+					</Grid.Column>
+				</Grid.Row>
+				<Divider className="m-0 mr-5 ml-5" />
+				<Grid.Row columns={ 2 } className="inner-list-item">
+					<Grid.Column className="first-column" mobile={ 14 } tablet={ 14 } computer={ 14 } >
+						<label className={ selfSignUpConfigs?.enable?.length > 0 ? "" : "meta" }>
+							Lock user account on creation
+						</label>
+					</Grid.Column>
+					<Grid.Column mobile={ 2 } tablet={ 2 } computer={ 2 }>
 						<Field
 							name={ ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION }
 							required={ false }
@@ -264,8 +248,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 							type="checkbox"
 							children={ [
 								{
-									label: t("devPortal:components.serverConfigs.selfRegistration.form." +
-										"enableAccountLockOnCreation.label"),
+									label: "",
 									value: ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION
 								}
 							] }
@@ -278,23 +261,33 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 										ACCOUNT_LOCK_ON_CREATION, value);
 								}
 							}
+							disabled={ !(selfSignUpConfigs?.enable?.length > 0) }
 							toggle
 						/>
-						<Field
-							name={ ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED }
-							required={ false }
-							requiredErrorMessage=""
-							type="checkbox"
-							children={ [
+					</Grid.Column>
+				</Grid.Row>
+				<Divider className="m-0 mr-5 ml-5" />
+				<Grid.Row columns={ 2 } className="inner-list-item">
+					<Grid.Column className="first-column" mobile={ 14 } tablet={ 14 } computer={ 14 } >
+						<label className={ selfSignUpConfigs?.enable?.length > 0 ? "" : "meta" }>
+							Internal notification management
+						</label>
+					</Grid.Column>
+					<Grid.Column mobile={ 2 } tablet={ 2 } computer={ 2 }>
+                        <Field
+                            name={ ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED }
+                            required={ false }
+                            requiredErrorMessage=""
+                            type="checkbox"
+                            children={ [
 								{
-									label: t("devPortal:components.serverConfigs.selfRegistration.form." +
-										"internalNotificationManagement.label"),
+									label: "",
 									value: ServerConfigurationsConstants.
 										SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED
 								}
 							] }
-							value={ selfSignUpConfigs.internalNotificationManagement }
-							listen={
+                            value={ selfSignUpConfigs.internalNotificationManagement }
+                            listen={
 								(values) => {
 									const value = values.get(ServerConfigurationsConstants.
 										SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED).length > 0 ? "true" : "false";
@@ -302,8 +295,19 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 										SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED, value);
 								}
 							}
-							toggle
-						/>
+							disabled={ !(selfSignUpConfigs?.enable?.length > 0) }
+                            toggle
+                        />
+					</Grid.Column>
+				</Grid.Row>
+				<Divider className="m-0 mr-5 ml-5" />
+				<Grid.Row columns={ 2 } className="inner-list-item">
+					<Grid.Column className="first-column" mobile={ 14 } tablet={ 14 } computer={ 14 } >
+						<label className={ selfSignUpConfigs?.enable?.length > 0 ? "" : "meta" }>
+							Enable reCaptcha
+						</label>
+					</Grid.Column>
+					<Grid.Column mobile={ 2 } tablet={ 2 } computer={ 2 }>
 						<Field
 							name={ ServerConfigurationsConstants.RE_CAPTCHA }
 							required={ false }
@@ -311,8 +315,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 							type="checkbox"
 							children={ [
 								{
-									label: t("devPortal:components.serverConfigs.selfRegistration.form." +
-										"enableReCaptcha.label"),
+									label: "",
 									value: ServerConfigurationsConstants.RE_CAPTCHA
 								}
 							] }
@@ -325,6 +328,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 									saveSelfRegistrationConfigs(ServerConfigurationsConstants.RE_CAPTCHA, value);
 								}
 							}
+							disabled={ !(selfSignUpConfigs?.enable?.length > 0) }
 							toggle
 						/>
 					</Grid.Column>
@@ -333,7 +337,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		</Forms>
 	);
 
-	const showUserSelfRegistrationView = editingForm[USER_SELF_REGISTRATION_FORM_IDENTIFIER] && (
+	const showUserSelfRegistrationView = (
 		<EditSection>
 			<Forms
 				onSubmit={ (values) => {
@@ -416,18 +420,6 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 									type="submit"
 									value={ t("common:save").toString() }
 								/>
-								<Field
-									name=""
-									required={ false }
-									requiredErrorMessage=""
-									className="link-button"
-									onClick={ () => {
-										hideFormEditView(USER_SELF_REGISTRATION_FORM_IDENTIFIER);
-									} }
-									size="small"
-									type="button"
-									value={ t("common:close").toString() }
-								/>
 							</Form.Group>
 						</Grid.Column>
 					</Grid.Row>
@@ -436,25 +428,60 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		</EditSection>
 	);
 
+
+	const handleAccordionClick = () => {
+		setAccordionState(!accordionState)
+	};
+
+	const accordion = (
+		<Accordion fluid styled>
+			<Accordion.Title
+				active={ accordionState }
+				index={ 0 }
+				onClick={ handleAccordionClick }
+				className={ (selfSignUpConfigs?.enable?.length > 0) ? "" : "disabled" }
+			>
+				<Grid className="middle aligned">
+					<Grid.Row columns={ 2 } className="inner-list-item">
+						<Grid.Column className="first-column" >
+							<LinkButton className="p-3">More</LinkButton>
+						</Grid.Column>
+						<Grid.Column className="last-column" textAlign="right" >
+							<GenericIcon
+								size="default"
+								defaultIcon
+								link
+								inline
+								transparent
+								verticalAlign="middle"
+								className="pr-3"
+								icon={ <Icon name="angle right" className="chevron"/> }
+							/>
+						</Grid.Column>
+					</Grid.Row>
+				</Grid>
+			</Accordion.Title>
+			<Accordion.Content active={ accordionState }>
+				{ showUserSelfRegistrationView }
+			</Accordion.Content>
+		</Accordion>
+	);
+
 	return (
 		<Section
 			description={ t("devPortal:components.serverConfigs.selfRegistration.description") }
 			header={ t("devPortal:components.serverConfigs.selfRegistration.heading") }
-			iconMini={ SettingsSectionIcons.federatedAssociationsMini }
+			icon={ SettingsSectionIcons.changePassword }
+			iconMini={ SettingsSectionIcons.changePasswordMini }
 			iconSize="auto"
 			iconStyle="colored"
 			iconFloated="right"
-			onPrimaryActionClick={ () => showFormEditView(USER_SELF_REGISTRATION_FORM_IDENTIFIER) }
-			primaryAction={ t("devPortal:components.serverConfigs.selfRegistration.actionTitles.config") }
-			primaryActionIcon="key"
-			showActionBar={ !editingForm[USER_SELF_REGISTRATION_FORM_IDENTIFIER] }
+			accordion={ accordion }
 		>
-			<List verticalAlign="middle" className="main-content-inner">
-				<List.Item className="inner-list-item">
-					{ userSelfRegistrationSummary }
-					{ showUserSelfRegistrationView }
-				</List.Item>
-			</List>
+			<Divider className="m-0 mb-2"/>
+			<div className="main-content-inner">
+				{ userSelfRegistrationSummary }
+			</div>
 		</Section>
 	);
 };

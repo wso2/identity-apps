@@ -45,8 +45,8 @@ export const ServerConfigurationsPage: FunctionComponent<{}> = (): ReactElement 
 
 	return (
 		<PageLayout
-			title="Server Configurations"
-			description="Manage configurations related to the server."
+			title="General Configurations"
+			description="Manage general configurations of the server."
 			showBottomDivider={ true }
 		>
 			<Grid>

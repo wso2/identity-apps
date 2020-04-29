@@ -2,6 +2,33 @@
       Accordion Overrides
 *******************************/
 
+.ui.accordion {
+    .title {
+        .chevron {
+             transition: transform .1s ease-in-out;
+         }
+         &.active {
+             .chevron {
+                 transform: rotate(90deg);
+             }
+         }
+    }
+}
+
+.ui.accordion {
+    .title {
+        .disabled {
+            cursor: default;
+            background-color: #dcddde !important;
+            color: rgba(0, 0, 0, 0.4) !important;
+            opacity: 0.3 !important;
+            background-image: none !important;
+            box-shadow: none !important;
+            pointer-events: none;
+        }
+    }
+}
+
 /*-----------------------------
       Segmented Variation
 ------------------------------*/
