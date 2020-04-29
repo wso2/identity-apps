@@ -17,32 +17,20 @@
 */
 
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
-import { LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
+import { Field, FormValue, Forms } from "@wso2is/forms";
+import { EditSection, LinkButton, PrimaryButton, Section } from "@wso2is/react-components";
+import React, { ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Grid } from "semantic-ui-react";
+import { Grid, List } from "semantic-ui-react";
 import { patchUserStore, testConnection } from "../../../api";
+import { SettingsSectionIcons } from "../../../configs";
 import { JDBC } from "../../../constants";
-import { AlertLevels, TestConnection, Type, UserStore, UserStoreProperty } from "../../../models";
-
-/**
- * Type of the property object
- */
-interface Property {
-    name: string;
-    description: string;
-    value: string;
-}
+import { AlertLevels, RequiredBinary, TestConnection, TypeProperty, UserstoreType } from "../../../models";
 
 /**
  * Prop types of `EditConnectionDetails` component
  */
 interface EditConnectionDetailsPropsInterface {
-    /**
-     * Userstore to be edited
-     */
-    userStore: UserStore;
     /**
      * Initiates an update
      */
@@ -54,184 +42,295 @@ interface EditConnectionDetailsPropsInterface {
     /**
      * The type meta data
      */
-    type: Type;
+    type: UserstoreType;
+    /**
+     * The connection properties.
+     */
+    properties: RequiredBinary;
 }
-const EditConnectionDetails = (
+export const EditConnectionDetails = (
     props: EditConnectionDetailsPropsInterface
 ): ReactElement => {
 
-    const { userStore, update, id, type } = props;
+    const { update, id, properties, type } = props;
 
-    const [ properties, setProperties ] = useState<Property[]>([]);
     const [ formValue, setFormValue ] = useState<Map<string, FormValue>>(null);
+    const [ showMore, setShowMore ] = useState(false);
 
     const dispatch = useDispatch();
 
-    const [ submit, setSubmit ] = useTrigger();
+    const requiredProperties = (): ReactElement => (
+        <Forms
+            onChange={ (isPure: boolean, values: Map<string, FormValue>) => {
+                setFormValue(values);
+            } }
+            onSubmit={ (values: Map<string, FormValue>) => {
 
-
-
-    useEffect(() => {
-        if (type) {
-            const mandatory = [];
-            const tempFormValue = new Map<string, FormValue>();
-
-            for (const property of type.properties.Mandatory) {
-                const mandatoryProperty = userStore.properties.find((value: UserStoreProperty) => {
-                    return value.name === property.name;
+                const data = properties.required.map((property: TypeProperty) => {
+                    return {
+                        operation: "REPLACE",
+                        path: `/properties/${property.name}`,
+                        value: values.get(property.name).toString()
+                    }
                 });
 
-                if (mandatoryProperty) {
-                    const tempProperty = { ...mandatoryProperty, description: property.description }
-                    mandatory.push(tempProperty);
-                    tempFormValue.set(mandatoryProperty.name, mandatoryProperty.value);
-                } else {
-                    mandatory.push({
-                        description: property.description,
-                        name: property.name,
-                        value: property.defaultValue
-                    });
-                }
-            }
-            setProperties(mandatory);
-            setFormValue(tempFormValue);
-        }
-    }, [ type ]);
-
-    const isBoolean = (value: string): boolean => {
-        return value === "true" || value === "false" || value === "True" || value === "False";
-    }
-
-    return (
-        <Grid>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column width={ 8 }>
-                    <Forms
-                        submitState={ submit }
-                        onChange={ (isPure: boolean, values: Map<string, FormValue>) => {
-                            setFormValue(values);
-                        } }
-                        onSubmit={ (values: Map<string, FormValue>) => {
-
-                            const data = properties.map((property: Property) => {
-                                return {
-                                    operation: "REPLACE",
-                                    path: `/properties/${property.name}`,
-                                    value: values.get(property.name).toString()
-                                }
-                            });
-
-                            patchUserStore(id, data).then(() => {
-                                dispatch(addAlert({
-                                    description: "This userstore has been updated successfully!",
-                                    level: AlertLevels.SUCCESS,
-                                    message: "Userstore updated successfully!"
-                                }));
-                                update();
-                            }).catch(error => {
-                                dispatch(addAlert({
-                                    description: error?.description
-                                        || "An error occurred while updating the userstore.",
-                                    level: AlertLevels.ERROR,
-                                    message: error?.message || "Something went wrong"
-                                }));
-                            });
-                        } }
-                    >
+                patchUserStore(id, data).then(() => {
+                    dispatch(addAlert({
+                        description: "This userstore has been updated successfully!",
+                        level: AlertLevels.SUCCESS,
+                        message: "Userstore updated successfully!"
+                    }));
+                    update();
+                }).catch(error => {
+                    dispatch(addAlert({
+                        description: error?.description
+                            || "An error occurred while updating the userstore.",
+                        level: AlertLevels.ERROR,
+                        message: error?.message || "Something went wrong"
+                    }));
+                });
+            } }
+        >
+            <Grid padded={ true }>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 16 }>
                         {
-                            properties?.map((property: Property, index: number) => {
-                                const isPassword = property.name
-                                    .toLocaleLowerCase()
-                                    .includes("password");
-                                if (isPassword) {
-                                    return (
-                                        <Field
-                                            name={ property.name }
-                                            type="password"
-                                            key={ index }
-                                            required={ true }
-                                            label={ property.description.split("#")[ 0 ] }
-                                            requiredErrorMessage={
-                                                `${property.description.split("#")[ 0 ]} is  required`
-                                            }
-                                            showPassword="Show Password"
-                                            hidePassword="Hide Password"
-                                        />
-                                    )
-                                } else if (isBoolean(property.value)) {
-                                    return (
-                                        <Field
-                                            name={ property.name }
-                                            value={ property.value }
-                                            type="toggle"
-                                            key={ index }
-                                            required={ true }
-                                            label={ property.description.split("#")[ 0 ] }
-                                            requiredErrorMessage={
-                                                `${property.description.split("#")[ 0 ]} is  required`
-                                            }
-                                        />
-                                    );
-                                } else {
-                                    return (
-                                        <Field
-                                            name={ property.name }
-                                            value={ property.value }
-                                            type="text"
-                                            key={ index }
-                                            required={ true }
-                                            label={ property.description.split("#")[ 0 ] }
-                                            requiredErrorMessage={
-                                                `${property.description.split("#")[ 0 ]} is  required`
-                                            }
-                                        />
-                                    );
-                                }
-
+                            properties?.required?.map((property: TypeProperty, index: number) => {
+                                const name = property.description.split("#")[ 0 ];
+                                const isPassword = property.attributes
+                                    .find(attribute => attribute.name === "type").value === "password";
+                                const toggle = property.attributes
+                                    .find(attribute => attribute.name === "type")?.value === "boolean";
+                                
+                                return (
+                                    isPassword
+                                        ? (
+                                            <Field
+                                                name={ property.name }
+                                                type="password"
+                                                key={ index }
+                                                required={ true }
+                                                label={ name }
+                                                requiredErrorMessage={
+                                                    `${property.description.split("#")[ 0 ]} is  required`
+                                                }
+                                                showPassword="Show Password"
+                                                hidePassword="Hide Password"
+                                            />
+                                        )
+                                        : toggle
+                                            ? (
+                                                <Field
+                                                    name={ property.name }
+                                                    value={ property.value ?? property.defaultValue }
+                                                    type="toggle"
+                                                    key={ index }
+                                                    required={ true }
+                                                    label={ property.description.split("#")[ 0 ] }
+                                                    requiredErrorMessage={
+                                                        `${property.description.split("#")[ 0 ]} is  required`
+                                                    }
+                                                    toggle
+                                                />
+                                            ) :
+                                            (
+                                                <Field
+                                                    name={ property.name }
+                                                    value={ property.value ?? property.defaultValue }
+                                                    type="text"
+                                                    key={ index }
+                                                    required={ true }
+                                                    label={ property.description.split("#")[ 0 ] }
+                                                    requiredErrorMessage={
+                                                        `${property.description.split("#")[ 0 ]} is  required`
+                                                    }
+                                                />
+                                            )
+                                );
                             })
                         }
-                    </Forms>
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column width={ 8 }>
-                    <PrimaryButton onClick={ () => { setSubmit() } }>
-                        Update
+
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 16 }>
+                        <PrimaryButton type="submit">
+                            Update
                     </PrimaryButton>
-                    <LinkButton
-                        onClick={
-                            () => {
-                                if (type.typeName.includes(JDBC)) {
-                                    const testData: TestConnection = {
-                                        connectionPassword: formValue?.get("password").toString(),
-                                        connectionURL: formValue?.get("url").toString(),
-                                        driverName: formValue?.get("driverName").toString(),
-                                        username: formValue?.get("userName").toString()
-                                    };
-                                    testConnection(testData).then(() => {
-                                        dispatch(addAlert({
-                                            description: "The connection is healthy",
-                                            level: AlertLevels.SUCCESS,
-                                            message: "Connection successful!"
-                                        }));
-                                    }).catch((error) => {
-                                        dispatch(addAlert({
-                                            description: error?.description
-                                                || "An error occurred while testing the connection to the userstore",
-                                            level: AlertLevels.ERROR,
-                                            message: error?.message || "Something went wrong"
-                                        }));
-                                    })
+                        <LinkButton
+                            type="button"
+                            onClick={
+                                () => {
+                                    if (type.typeName.includes(JDBC)) {
+                                        const testData: TestConnection = {
+                                            connectionPassword: formValue?.get("password").toString()
+                                                ?? properties.required
+                                                    .find(property => property.name === "password")?.value,
+                                            connectionURL: formValue?.get("url").toString()
+                                                ?? properties.required
+                                                    .find(property => property.name === "url")?.value,
+                                            driverName: formValue?.get("driverName").toString()
+                                                ?? properties.required
+                                                    .find(property => property.name === "driverName")?.value,
+                                            username: formValue?.get("userName").toString()
+                                                ?? properties.required
+                                                    .find(property => property.name === "userName")?.value
+                                        };
+                                        testConnection(testData).then(() => {
+                                            dispatch(addAlert({
+                                                description: "The connection is healthy",
+                                                level: AlertLevels.SUCCESS,
+                                                message: "Connection successful!"
+                                            }));
+                                        }).catch((error) => {
+                                            dispatch(addAlert({
+                                                description: error?.description
+                                                    || "An error occurred while testing the " +
+                                                    "connection to the userstore",
+                                                level: AlertLevels.ERROR,
+                                                message: error?.message || "Something went wrong"
+                                            }));
+                                        })
+                                    }
                                 }
                             }
-                        }
-                    >
-                        Test Connection
+                        >
+                            Test Connection
                     </LinkButton>
-                </Grid.Column>
-            </Grid.Row>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </Forms>
+    );
+
+    const optionalProperties = (): ReactElement => (
+        <EditSection>
+            <Forms
+                onSubmit={ (values: Map<string, FormValue>) => {
+                    const data = properties.optional.map((property: TypeProperty) => {
+                        return {
+                            operation: "REPLACE",
+                            path: `/properties/${property.name}`,
+                            value: values.get(property.name).toString()
+                        }
+                    });
+
+                    patchUserStore(id, data).then(() => {
+                        dispatch(addAlert({
+                            description: "This userstore has been updated successfully!",
+                            level: AlertLevels.SUCCESS,
+                            message: "Userstore updated successfully!"
+                        }));
+                        update();
+                    }).catch(error => {
+                        dispatch(addAlert({
+                            description: error?.description
+                                || "An error occurred while updating the userstore.",
+                            level: AlertLevels.ERROR,
+                            message: error?.message || "Something went wrong"
+                        }));
+                    });
+                } }
+            >
+                <Grid>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 16 }>
+                            {
+                                properties?.optional?.map((property: TypeProperty, index: number) => {
+                                    const name = property.description.split("#")[ 0 ];
+                                    const isPassword = property.attributes
+                                        .find(attribute => attribute.name === "type").value === "password";
+                                    const toggle = property.attributes
+                                        .find(attribute => attribute.name === "type")?.value === "boolean";
+                                    
+                                    return (
+                                        isPassword
+                                            ? (
+                                                <Field
+                                                    name={ property.name }
+                                                    type="password"
+                                                    key={ index }
+                                                    required={ false }
+                                                    label={ name }
+                                                    requiredErrorMessage={
+                                                        `${property.description.split("#")[ 0 ]} is  required`
+                                                    }
+                                                    showPassword="Show Password"
+                                                    hidePassword="Hide Password"
+                                                />
+                                            )
+                                            : toggle
+                                                ? (
+                                                    <Field
+                                                        name={ property.name }
+                                                        value={ property.value ?? property.defaultValue }
+                                                        type="toggle"
+                                                        key={ index }
+                                                        required={ false }
+                                                        label={ property.description.split("#")[ 0 ] }
+                                                        requiredErrorMessage={
+                                                            `${property.description.split("#")[ 0 ]} is  required`
+                                                        }
+                                                        toggle
+                                                    />
+                                                ) :
+                                                (
+                                                    <Field
+                                                        name={ property.name }
+                                                        value={ property.value ?? property.defaultValue }
+                                                        type="text"
+                                                        key={ index }
+                                                        required={ false }
+                                                        label={ property.description.split("#")[ 0 ] }
+                                                        requiredErrorMessage={
+                                                            `${property.description.split("#")[ 0 ]} is  required`
+                                                        }
+                                                    />
+                                                )
+                                    );
+                                })
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 16 }>
+                            <PrimaryButton type="submit">
+                                Update
+                            </PrimaryButton>
+                            <LinkButton type="button" onClick={ () => setShowMore(false) }>
+                                Close
+                            </LinkButton>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Forms>
+
+        </EditSection>
+    );
+
+    return (
+        <Grid columns={ 1 }>
+            <Grid.Column width={ 10 }>
+                <Section
+                    description={ "Edit the connection details of the userstore." }
+                    header={ "Connection Details" }
+                    iconMini={ SettingsSectionIcons.profileExportMini }
+                    iconSize="auto"
+                    iconStyle="colored"
+                    iconFloated="right"
+                    onPrimaryActionClick={ () => setShowMore(true) }
+                    primaryAction={ "More" }
+                    primaryActionIcon="key"
+                    showActionBar={ !showMore }
+                >
+                    <List verticalAlign="middle" className="main-content-inner">
+                        <List.Item className="inner-list-item">
+                            { requiredProperties() }
+                            { showMore && properties.optional.length > 0 && optionalProperties() }
+                        </List.Item>
+                    </List>
+                </Section>
+            </Grid.Column>
         </Grid>
     )
 };
-
-export const MemoEditConnectionDetails = React.memo(EditConnectionDetails);
