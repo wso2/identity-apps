@@ -19,7 +19,6 @@
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import { DangerZoneToggleProps } from "@wso2is/react-components/src";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CheckboxProps } from "semantic-ui-react";
@@ -189,8 +188,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 toggle={ {
                                     checked: isEnabled,
                                     onChange: handleIdentityProviderDisable
-                                } as DangerZoneToggleProps }
-                                initialValue={ "true" }
+                                } }
                             />
                             <DangerZone
                                 actionTitle="Delete Identity Provider"
