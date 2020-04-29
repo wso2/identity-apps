@@ -22,7 +22,12 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { Droppable, DroppableProvided } from "react-beautiful-dnd";
 import { Form, Icon, Label, Popup, Radio } from "semantic-ui-react";
 import { IdentityProviderManagementConstants } from "../../../../constants";
-import { AuthenticationStepInterface, AuthenticatorInterface, GenericAuthenticatorInterface } from "../../../../models";
+import {
+    AuthenticationStepInterface,
+    AuthenticatorInterface,
+    FederatedAuthenticatorInterface,
+    GenericAuthenticatorInterface
+} from "../../../../models";
 
 /**
  * Proptypes for the authentication step component.
@@ -44,6 +49,16 @@ interface AuthenticationStepPropsInterface {
      * Callback for the step delete.
      */
     onStepDelete: (stepIndex: number) => void;
+    /**
+     * Callback for step option authenticator change.
+     * @param {number} stepIndex - Step index.
+     * @param {number} optionIndex - Option Index.
+     * @param {FederatedAuthenticatorInterface} authenticator - Selected authenticator.
+     */
+    onStepOptionAuthenticatorChange: (
+        stepIndex: number,
+        optionIndex: number,
+        authenticator: FederatedAuthenticatorInterface) => void;
     /**
      * Callback for the step option delete.
      */
@@ -78,6 +93,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         className,
         droppableId,
         onStepDelete,
+        onStepOptionAuthenticatorChange,
         onStepOptionDelete,
         readOnly,
         step,
@@ -115,11 +131,14 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
             return (
                 <Popup
                     wide
+                    style={ {
+                        minWidth: "200px"
+                    } }
                     hoverable
                     disabled={
                         !(authenticator?.authenticators
                             && authenticator.authenticators instanceof Array
-                            && authenticator.authenticators.length > 0)
+                            && authenticator.authenticators.length > 1)
                     }
                     trigger={ (
                         <div className="inline">
@@ -144,16 +163,18 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                 <Form className="mt-3 mb-3">
                                     {
                                         authenticator?.authenticators?.map((item) => {
-                                            const checked = authenticator.defaultAuthenticator?.authenticatorId ===
-                                                item.authenticatorId;
-
                                             return (
                                                 <Form.Field>
                                                     <Radio
                                                         label={ item.name }
                                                         name={ item.name }
                                                         value={ item.authenticatorId }
-                                                        checked={ checked }
+                                                        checked={ item.name === option.authenticator }
+                                                        onChange={ () => onStepOptionAuthenticatorChange(
+                                                            stepIndex,
+                                                            optionIndex,
+                                                            item
+                                                        ) }
                                                     />
                                                 </Form.Field>
                                             )

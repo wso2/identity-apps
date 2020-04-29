@@ -32,6 +32,7 @@ import {
     AuthenticationSequenceType,
     AuthenticationStepInterface,
     AuthenticatorInterface,
+    FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface
 } from "../../../../models";
 import { IdentityProviderManagementUtils } from "../../../../utils";
@@ -268,6 +269,23 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     };
 
     /**
+     * Handles step option authenticator change.
+     *
+     * @param {number} stepIndex - Index of the step.
+     * @param {number} optionIndex - Index of the option.
+     * @param {FederatedAuthenticatorInterface} authenticator - Selected authenticator.
+     */
+    const handleStepOptionAuthenticatorChange = (stepIndex: number,
+                                                 optionIndex: number,
+                                                 authenticator: FederatedAuthenticatorInterface): void => {
+
+        const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
+
+        steps[ stepIndex ].options[optionIndex].authenticator = authenticator.name;
+        setAuthenticationSteps(steps);
+    };
+
+    /**
      * Handles step delete action.
      *
      * @param {number} stepIndex - Authentication step.
@@ -492,6 +510,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                         }
                                                         droppableId={ AUTHENTICATION_STEP_DROPPABLE_ID + stepIndex }
                                                         onStepDelete={ handleStepDelete }
+                                                        onStepOptionAuthenticatorChange={
+                                                            handleStepOptionAuthenticatorChange
+                                                        }
                                                         onStepOptionDelete={ handleStepOptionDelete }
                                                         step={ step }
                                                         stepIndex={ stepIndex }
