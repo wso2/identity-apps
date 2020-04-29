@@ -22,14 +22,16 @@ import { useDispatch } from "react-redux";
 import { getAType, getAUserStore } from "../api";
 import {
     EditBasicDetailsUserStore,
-    MemoEditAdvancedProperties,
-    MemoEditConnectionDetails,
+    EditConnectionDetails,
     MemoEditOptionalProperties
 } from "../components";
+import { EditGroupDetails } from "../components/user-stores/edit/edit-group-details-userstore";
+import { EditUserDetails } from "../components/user-stores/edit/edit-user-details-userstore";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts"
-import { AlertLevels, Type, UserStore } from "../models";
+import { AlertLevels, CategorizedProperties, UserStore, UserstoreType } from "../models";
 import { addAlert } from "../store/actions";
+import { reOrganizeProperties } from "../utils";
 
 /**
  * This renders the userstore edit page
@@ -40,8 +42,9 @@ export const UserStoresEditPage = (props): ReactElement => {
 
     const userStoreId = props.match.params.id;
 
-    const [userStore, setUserStore] = useState<UserStore>(null);
-    const [type, setType] = useState<Type>(null);
+    const [ userStore, setUserStore ] = useState<UserStore>(null);
+    const [ type, setType ] = useState<UserstoreType>(null);
+    const [ properties, setProperties ] = useState<CategorizedProperties>(null);
 
     const dispatch = useDispatch();
 
@@ -78,7 +81,13 @@ export const UserStoresEditPage = (props): ReactElement => {
                 }));
             });
         }
-    }, [userStore]);
+    }, [ userStore ]);
+
+    useEffect(() => {
+        if (type) {
+            setProperties(reOrganizeProperties(type.properties, userStore.properties));
+        }
+    }, [ type ])
 
     /**
      * The tab panes
@@ -97,33 +106,33 @@ export const UserStoresEditPage = (props): ReactElement => {
         {
             menuItem: "Connection Details",
             render: () => (
-                <MemoEditConnectionDetails
-                    userStore={ userStore }
+                <EditConnectionDetails
                     update={ getUserStore }
                     type={ type }
                     id={ userStoreId }
+                    properties={ properties.connection }
                 />
             )
         },
         {
-            menuItem: "Advanced Properties",
+            menuItem: "User Details",
             render: () => (
-                <MemoEditAdvancedProperties
-                    userStore={ userStore }
+                <EditUserDetails
                     update={ getUserStore }
                     type={ type }
                     id={ userStoreId }
+                    properties={ properties.user }
                 />
             )
         },
         {
-            menuItem: "Optional Properties",
+            menuItem: "Group Details",
             render: () => (
-                <MemoEditOptionalProperties
-                    userStore={ userStore }
+                <EditGroupDetails
                     update={ getUserStore }
                     type={ type }
                     id={ userStoreId }
+                    properties={ properties.group }
                 />
             )
         }
