@@ -209,6 +209,11 @@ export const FacebookLogo = require("../dist/lib/themes/default/assets/images/so
 export const GoogleLogo = require("../dist/lib/themes/default/assets/images/social/google.svg");
 export const TwitterLogo = require("../dist/lib/themes/default/assets/images/social/twitter.svg");
 
+// Third party logos.
+export const Office365Logo = require("../dist/lib/themes/default/assets/images/third-party/office-365-logo.svg");
+export const MicrosoftLogo = require("../dist/lib/themes/default/assets/images/third-party/microsoft-logo.svg");
+export const YahooLogo = require("../dist/lib/themes/default/assets/images/third-party/yahoo-logo.svg");
+
 /* eslint-enable import/order */
 
 export const HomeTileIcons = {

@@ -60,7 +60,7 @@ export const selectedLocalAuthenticators: StrictGenericAuthenticatorInterface[] 
 export const selectedFederatedAuthenticators: StrictGenericAuthenticatorInterface[] = [
     {
         id: "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y",
-        image: undefined,
+        image: AuthenticatorIcons?.microsoft,
         name: "MicrosoftWindowsLiveAuthenticator"
     },
     {
@@ -85,7 +85,7 @@ export const selectedFederatedAuthenticators: StrictGenericAuthenticatorInterfac
     },
     {
         id: "WWFob29PQXV0aDJBdXRoZW50aWNhdG9y",
-        image: undefined,
+        image: AuthenticatorIcons?.yahoo,
         name: "YahooOAuth2Authenticator"
     },
     {
@@ -100,7 +100,7 @@ export const selectedFederatedAuthenticators: StrictGenericAuthenticatorInterfac
     },
     {
         id: "T2ZmaWNlMzY1QXV0aGVudGljYXRvcg",
-        image: undefined,
+        image: AuthenticatorIcons?.office365,
         name: "Office365Authenticator"
     }
 ];

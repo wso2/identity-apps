@@ -75,10 +75,12 @@ import {
     MagnifierColoredIcon,
     MagnifierIcon,
     MaximizeIcon,
+    MicrosoftLogo,
     MinimizeIcon,
     NodeJSLogo,
     OIDCLogo,
     OIDCWebAppTemplateIllustration,
+    Office365Logo,
     OpenIDLogo,
     PassiveSTSTemplateIllustration,
     PinIcon,
@@ -102,7 +104,8 @@ import {
     WSTrustLogo,
     WSTrustTemplateIllustration,
     WarningIcon,
-    WindowsTemplateIllustration
+    WindowsTemplateIllustration,
+    YahooLogo
 } from "@wso2is/theme";
 
 import { SupportedServices } from "../models";
@@ -256,11 +259,14 @@ export const AuthenticatorIcons = {
     google: GoogleLogo,
     identifierFirst: MagnifierColoredIcon,
     jwtBasic: JWTLogo,
+    microsoft: MicrosoftLogo,
+    office365: Office365Logo,
     sessionExecutor: ClockColoredIcon,
     smsOTP: SMSOTPIcon,
     totp: TOTPIcon,
     twitter: TwitterLogo,
-    x509: CertificateColoredIcon
+    x509: CertificateColoredIcon,
+    yahoo: YahooLogo
 };
 
 export const PlaceHolderIcons = {
