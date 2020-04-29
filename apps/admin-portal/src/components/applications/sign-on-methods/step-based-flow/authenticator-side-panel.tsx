@@ -141,7 +141,7 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
                                         </div>
                                     ) }
                                     position="top center"
-                                    content="drag"
+                                    content="Drag"
                                     inverted
                                 />
                                 <Popup
@@ -162,7 +162,7 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
                                         </div>
                                     ) }
                                     position="top center"
-                                    content="minimize"
+                                    content="Minimize"
                                     inverted
                                 />
                             </Card.Content>

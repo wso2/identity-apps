@@ -418,7 +418,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                         </div>
                                                     ) }
                                                     position="top center"
-                                                    content="maximize"
+                                                    content="Maximize"
                                                     inverted
                                                 />
                                             </Card.Content>
