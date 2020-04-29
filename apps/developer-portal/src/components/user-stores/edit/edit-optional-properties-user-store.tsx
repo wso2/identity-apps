@@ -23,7 +23,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { patchUserStore } from "../../../api";
-import { AlertLevels, Type, UserStore, UserStoreProperty } from "../../../models";
+import { AlertLevels, UserStore, UserStoreProperty, UserstoreType } from "../../../models";
 
 /**
  * Type of the property object
@@ -53,7 +53,7 @@ interface EditOptionalPropertiesPropsInterface {
     /**
      * The type meta data
      */
-    type: Type;
+    type: UserstoreType;
 }
 const EditOptionalProperties = (
     props: EditOptionalPropertiesPropsInterface
