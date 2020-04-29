@@ -24,6 +24,7 @@ import React, { ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Modal } from "semantic-ui-react";
 import { deleteUserStore } from "../../api";
+import { EDIT_USER_STORE_PATH } from "../../constants";
 import { history } from "../../helpers";
 import { AlertLevels, FeatureConfigInterface, UserStoreListItem } from "../../models";
 
@@ -148,7 +149,7 @@ export const UserStoresList = (props: UserStoresListPropsInterface): ReactElemen
                                 {
                                     icon: "pencil alternate",
                                     onClick: () => {
-                                        history.push("/edit-user-store/" + userStore?.id);
+                                        history.push(`${EDIT_USER_STORE_PATH}/${userStore?.id}`);
                                     },
                                     popupText: "Edit",
                                     type: "button"
