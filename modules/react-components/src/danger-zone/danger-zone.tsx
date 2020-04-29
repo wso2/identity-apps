@@ -91,6 +91,7 @@ export const DangerZone: React.FunctionComponent<DangerZoneProps> = (
                         toggle
                         onChange={ toggle?.onChange }
                         checked={ toggle?.checked }
+                        className="danger-zone toggle-switch"
                     />
                     :
                     <Button
