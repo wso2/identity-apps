@@ -21,7 +21,7 @@ import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { BasicDetailsUserStore, ConnectionDetails, GroupDetails, SummaryUserStores, UserDetails } from "./wizards";
+import { GeneralDetails, GroupDetails, SummaryUserStores, UserDetails } from "./wizards";
 import { addUserStore } from "../../api";
 import { ApplicationWizardStepIcons } from "../../configs";
 import { USER_STORES_PATH } from "../../constants";
@@ -64,8 +64,7 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
     const { open, onClose, type } = props;
 
     const [ currentWizardStep, setCurrentWizardStep ] = useState(0);
-    const [ basicDetailsData, setBasicDetailsData ] = useState<Map<string, FormValue>>(null);
-    const [ connectionDetailsData, setConnectionDetailsData ] = useState<Map<string, FormValue>>(null);
+    const [ generalDetailsData, setGeneralDetailsData ] = useState<Map<string, FormValue>>(null);
     const [ userDetailsData, setUserDetailsData ] = useState<Map<string, FormValue>>(null);
     const [ groupDetailsData, setGroupDetailsData ] = useState<Map<string, FormValue>>(null);
     const [ userStore, setUserStore ] = useState<UserStorePostData>(null);
@@ -74,7 +73,6 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
     const [ firstStep, setFirstStep ] = useTrigger();
     const [ secondStep, setSecondStep ] = useTrigger();
     const [ thirdStep, setThirdStep ] = useTrigger();
-    const [ fourthStep, setFourthStep ] = useTrigger();
 
     const dispatch = useDispatch();
 
@@ -83,7 +81,7 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
     }, [ type ]);
 
     useEffect(() => {
-        userStore && setCurrentWizardStep(4);
+        userStore && setCurrentWizardStep(3);
     }, [ userStore ]);
 
     useEffect(() => {
@@ -118,26 +116,17 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
     };
 
     /**
-     * This saves the Basic Details values
-     * @param {Map<string, FormValue>} values Basic Details Values to be submitted
-     */
-    const onSubmitBasicDetails = (values: Map<string, FormValue>) => {
-        setBasicDetailsData(values);
-        setCurrentWizardStep(1);
-    }
-
-    /**
-     * This saves the Connection Details values along with the te Type
+     * This saves the General Details values along with the te Type
      * @param {Map<string, FormValue>} values Connection Details Values
      */
-    const onSubmitConnectionDetails = (values: Map<string, FormValue>) => {
-        setConnectionDetailsData(values);
-        setCurrentWizardStep(2);
+    const onSubmitGeneralDetails = (values: Map<string, FormValue>) => {
+        setGeneralDetailsData(values);
+        setCurrentWizardStep(1);
     }
 
     const onSubmitUserDetails = (values: Map<string, FormValue>) => {
         setUserDetailsData(values);
-        setCurrentWizardStep(3);
+        setCurrentWizardStep(2);
     }
 
     const onSubmitGroupDetails = (values: Map<string, FormValue>) => {
@@ -146,8 +135,8 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
 
     const serializeData = () => {
         const userStore: UserStorePostData = {
-            description: basicDetailsData?.get("description")?.toString(),
-            name: basicDetailsData?.get("name")?.toString(),
+            description: generalDetailsData?.get("description")?.toString(),
+            name: generalDetailsData?.get("name")?.toString(),
             properties: serializeProperties(),
             typeId: type?.typeId
         };
@@ -159,7 +148,7 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
         const connectionProperties: UserStoreProperty[] = properties.connection.required.map(property => {
             return {
                 name: property.name,
-                value: connectionDetailsData.get(property.name).toString()
+                value: generalDetailsData.get(property.name).toString()
             }
         });
 
@@ -177,7 +166,14 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
             }
         });
 
-        return [ ...connectionProperties, ...userProperties, ...groupProperties ];
+        const basicProperties: UserStoreProperty[] = properties.basic.required.map(property => {
+            return {
+                name: property.name,
+                value: generalDetailsData.get(property.name).toString()
+            }
+        });
+
+        return [ ...connectionProperties, ...userProperties, ...groupProperties,...basicProperties ];
     }
 
     /**
@@ -186,51 +182,41 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
     const STEPS = [
         {
             content: (
-                <BasicDetailsUserStore
+                <GeneralDetails
                     submitState={ firstStep }
-                    onSubmit={ onSubmitBasicDetails }
-                    values={ basicDetailsData }
-                />
-            ),
-            icon: ApplicationWizardStepIcons.general,
-            title: "Basic userstore details"
-        },
-        {
-            content: (
-                <ConnectionDetails
-                    submitState={ secondStep }
-                    onSubmit={ onSubmitConnectionDetails }
-                    values={ connectionDetailsData }
+                    onSubmit={ onSubmitGeneralDetails }
+                    values={ generalDetailsData }
                     type={ type }
-                    properties={ properties?.connection?.required }
+                    connectionProperties={ properties?.connection?.required }
+                    basicProperties={ properties?.basic?.required }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Connection details"
+            title: "General"
         },
         {
             content: (
                 <UserDetails
-                    submitState={ thirdStep }
+                    submitState={ secondStep }
                     onSubmit={ onSubmitUserDetails }
                     values={ userDetailsData }
                     properties={ properties?.user?.required }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "User details"
+            title: "User"
         },
         {
             content: (
                 <GroupDetails
-                    submitState={ fourthStep }
+                    submitState={ thirdStep }
                     onSubmit={ onSubmitGroupDetails }
                     values={ groupDetailsData }
                     properties={ properties?.group?.required }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Group details"
+            title: "Group"
         },
         {
             content: (
@@ -239,6 +225,7 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
                     connectionProperties={ properties?.connection?.required }
                     userProperties={ properties?.user?.required }
                     groupProperties={ properties?.group?.required }
+                    basicProperties={ properties?.basic?.required }
                     type={ type?.typeName }
                 />
             ),
@@ -262,9 +249,6 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
                 setThirdStep();
                 break;
             case 3:
-                setFourthStep();
-                break;
-            case 4:
                 handleSubmit();
                 break;
         }
@@ -282,7 +266,7 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
             open={ open }
             onClose={ onClose }
             dimmer="blurring"
-            size="large"
+            size="small"
             className="wizard application-create-wizard"
         >
             <Modal.Header className="wizard-header">
@@ -290,7 +274,6 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group
-                    header="Fill in the following details to create a userstore."
                     current={ currentWizardStep }
                 >
                     { STEPS.map((step, index) => (
