@@ -267,7 +267,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const ProvisioningSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane attached={ false }>
             <ProvisioningSettings
-                appId={ application.id }
+                application={ application }
                 provisioningConfigurations={ application.provisioningConfigurations }
                 onUpdate={ onUpdate }
                 featureConfig={ featureConfig }

@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { getUserStoreList, updateApplicationConfigurations } from "../../api";
 import {
+    ApplicationInterface,
     FeatureConfigInterface,
     ProvisioningConfigurationInterface,
     SimpleUserStoreListItemInterface
@@ -37,9 +38,9 @@ import { SBACInterface } from "@wso2is/core/models";
  */
 interface ProvisioningSettingsPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
-     * Currently editing application id.
+     * Editing application.
      */
-    appId: string;
+    application: ApplicationInterface;
     /**
      * Current advanced configurations.
      */
@@ -61,60 +62,16 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
 ): ReactElement => {
 
     const {
-        appId,
+        application,
         featureConfig,
         provisioningConfigurations,
         onUpdate
     } = props;
 
-    const dispatch = useDispatch();
-
-    const [userStore, setUserStore] = useState<SimpleUserStoreListItemInterface[]>([]);
-
-    /**
-     * Handles the provisioning config form submit action.
-     *
-     * @param values - Form values.
-     */
-    const handleProvisioningConfigFormSubmit = (values: any): void => {
-        updateApplicationConfigurations(appId, values)
-            .then(() => {
-                dispatch(addAlert({
-                    description: "Successfully updated the provisioning configurations.",
-                    level: AlertLevels.SUCCESS,
-                    message: "Update successful"
-                }));
-
-                onUpdate(appId);
-            })
-            .catch(() => {
-                dispatch(addAlert({
-                    description: "An error occurred while the provisioning configurations.",
-                    level: AlertLevels.ERROR,
-                    message: "Update error"
-                }));
-            });
-    };
-
-
-    useEffect(() => {
-        const userstore: SimpleUserStoreListItemInterface[] = [];
-        userstore.push({
-            id: "PRIMARY",
-            name: "PRIMARY"
-        });
-        getUserStoreList().then((response) => {
-            userstore.push(...response.data);
-            setUserStore(userstore);
-        }).catch(() => {
-            setUserStore(userstore);
-        });
-    }, []);
-
     return (
         <>
             <InboundProvisioningConfigurations
-                appId={ appId }
+                appId={ application.id }
                 provisioningConfigurations={ provisioningConfigurations }
                 onUpdate={ onUpdate }
                 readOnly={
@@ -125,7 +82,7 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
             <Divider/>
             <Divider hidden/>
             <OutboundProvisioningConfigurations
-                appId={ appId }
+                application={ application }
                 provisioningConfigurations={ provisioningConfigurations }
                 onUpdate={ onUpdate }
             />

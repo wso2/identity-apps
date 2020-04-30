@@ -60,6 +60,22 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
     const [ idpListOptions, setIdpListOptions ] = useState<DropdownOptionsInterface[]>([]);
     const [ connectorListOptions, setConnectorListOptions ] = useState<DropdownOptionsInterface[]>([]);
     const [ selectedIdp, setSelectedIdp ] = useState<string>();
+    const [ isBlockingChecked, setIsBlockingChecked ] = useState<boolean>(initialValues?.blocking);
+    const [ isJITChecked, setIsJITChecked ] = useState<boolean>(initialValues?.jit);
+    const [ isRulesChecked, setIsRulesChecked ] = useState<boolean>(initialValues?.rules);
+    const [ connector, setConnector ] = useState<string>(initialValues?.connector);
+
+
+    useEffect(() => {
+        if (!idpList) {
+            return;
+        }
+
+        if (initialValues?.idp) {
+            const idp = idpList?.find(idp => idp.name === initialValues?.idp);
+            setSelectedIdp(idp.id);
+        }
+    }, [ idpList ]);
 
     /**
      * Set the IDP options for the dropdown.
@@ -103,13 +119,15 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
         getIdentityProviderDetail(selectedIdp)
             .then((response) => {
                 response.provisioning.outboundConnectors.connectors.map((connector, index) => {
-                    // Add check for isEnabled
-                    connectorOption = {
-                        key: index,
-                        text: connector.name,
-                        value: connector.name
-                    };
-                    connectorOptions.push(connectorOption);
+                    // Check enabled connectors
+                    if (connector.isEnabled) {
+                        connectorOption = {
+                            key: index,
+                            text: connector.name,
+                            value: connector.name
+                        };
+                        connectorOptions.push(connectorOption);
+                    }
                 });
                 setConnectorListOptions(connectorOptions);
             });
@@ -134,34 +152,38 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
         const idpName = (idpListOptions.find(idp => idp.value === selectedIdp)).text;
         return {
             idp: idpName,
-            connector: values.get("connector").toString(),
-            blocking: !!values.get("blocking").includes("blocking"),
-            rules: !!values.get("rules").includes("rules"),
-            jit: !!values.get("jit").includes("jit")
+            connector: connector,
+            blocking: isBlockingChecked ? isBlockingChecked : !!values.get("blocking").includes("blocking"),
+            rules: isRulesChecked ? isRulesChecked : !!values.get("blocking").includes("blocking"),
+            jit: isJITChecked ? isJITChecked : !!values.get("jit").includes("jit")
         };
     };
 
     return (
         <Forms
             onSubmit={ (values) => onSubmit(getFormValues(values)) }
-            submitState={ triggerSubmit }
+            submitState={ triggerSubmit && triggerSubmit }
         >
             <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Field
-                            type="dropdown"
-                            label="Identity Provider"
-                            placeholder="Select identity provider"
-                            name="idp"
-                            children={ idpListOptions }
-                            requiredErrorMessage="It is mandatory to select an IDP."
-                            required={ false }
-                            value={ initialValues && initialValues.idp }
-                            listen={ handleIdpChange }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    !isEdit && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Field
+                                    type="dropdown"
+                                    label="Identity Provider"
+                                    placeholder="Select identity provider"
+                                    name="idp"
+                                    children={ idpListOptions }
+                                    requiredErrorMessage="It is mandatory to select an IDP."
+                                    required={ false }
+                                    value={ initialValues?.idp }
+                                    listen={ handleIdpChange }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Field
@@ -172,7 +194,12 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             children={ connectorListOptions }
                             requiredErrorMessage="It is mandatory to select a provisioning connector."
                             required={ false }
-                            value={ initialValues && initialValues.connector }
+                            value={ initialValues?.connector }
+                            listen={
+                                (values) => {
+                                    setConnector(values.get("connector").toString())
+                                }
+                            }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -189,7 +216,12 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                     value: "rules"
                                 }
                             ] }
-                            value={ [ initialValues && initialValues.rules ] }
+                            value={ initialValues?.rules ? [ "rules" ] : [] }
+                            listen={
+                                (values) => {
+                                    setIsRulesChecked(values.get("rules").includes("rules"))
+                                }
+                            }
                         />
                         <Hint>
                             Provision users based on the pre-defined XACML rules
@@ -209,7 +241,12 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                     value: "blocking"
                                 }
                             ] }
-                            value={ [ initialValues && initialValues.blocking ] }
+                            value={ initialValues?.blocking ? [ "blocking" ] : [] }
+                            listen={
+                                (values) => {
+                                    setIsBlockingChecked(values.get("blocking").includes("blocking"))
+                                }
+                            }
                         />
                         <Hint>
                             Block the authentication flow until the provisioning is completed.
@@ -229,7 +266,12 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                     value: "jit"
                                 }
                             ] }
-                            value={ [ initialValues && initialValues.jit ] }
+                            value={ initialValues?.jit ? [ "jit" ] : [] }
+                            listen={
+                                (values) => {
+                                    setIsJITChecked(values.get("jit").includes("jit"))
+                                }
+                            }
                         />
                         <Hint>
                             Provision users to the store authenticated using just-in-time provisioning.
@@ -240,7 +282,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                     isEdit && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <PrimaryButton type="submit">
+                                <PrimaryButton type="submit" size="small" className="form-button">
                                     Update
                                 </PrimaryButton>
                             </Grid.Column>

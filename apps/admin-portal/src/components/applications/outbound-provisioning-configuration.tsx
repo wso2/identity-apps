@@ -21,12 +21,12 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { ConfirmationModal, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
 import {
-    ApplicationInterface,
+    ApplicationInterface, IdentityProviderInterface,
     OutboundProvisioningConfigurationInterface,
     ProvisioningConfigurationInterface
 } from "../../models";
 import { AlertLevels } from "@wso2is/core/models";
-import { getApplicationDetails, updateApplicationConfigurations } from "../../api";
+import { getIdentityProviderList, updateApplicationConfigurations } from "../../api";
 import { addAlert } from "@wso2is/core/store";
 import { useDispatch } from "react-redux";
 import { EmptyPlaceholderIllustrations } from "../../configs";
@@ -38,9 +38,9 @@ import { OutboundProvisioningWizardIdpForm } from "./wizard";
  */
 interface OutboundProvisioningConfigurationsPropsInterface {
     /**
-     * Currently editing application id.
+     * Editing application.
      */
-    appId: string;
+    application: ApplicationInterface;
     /**
      * Current advanced configurations.
      */
@@ -62,47 +62,33 @@ export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvi
 ): ReactElement => {
 
     const {
-        appId,
+        application,
         onUpdate,
     } = props;
 
     const dispatch = useDispatch();
 
-    const [ editingApp, setEditingApp ] = useState<ApplicationInterface>(undefined);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ idpList, setIdpList ] = useState<IdentityProviderInterface[]>(undefined);
 
     const [
         deletingIdp,
         setDeletingIdp
     ] = useState<OutboundProvisioningConfigurationInterface>(undefined);
 
+    /**
+     * Fetch the IDP list.
+     */
     useEffect(() => {
-        if (editingApp) {
+        if (idpList) {
             return;
         }
 
-        getApplicationDetails(appId)
-            .then((response: ApplicationInterface) => {
-                setEditingApp(response);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Retrieval Error"
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: "An error occurred while retrieving application details",
-                    level: AlertLevels.ERROR,
-                    message: "Retrieval Error"
-                }));
-            })
+        getIdentityProviderList()
+            .then((response) => {
+                setIdpList(response.identityProviders);
+            });
     }, []);
 
     const addIdentityProvider = (id: string, values: any) => {
@@ -114,7 +100,7 @@ export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvi
                     message: "Update successful"
                 }));
 
-                onUpdate(appId);
+                onUpdate(application.id);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -137,7 +123,11 @@ export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvi
 
     const updateConfiguration = (values: any) => {
         const outboundConfigs: OutboundProvisioningConfigurationInterface[] =
-            editingApp?.provisioningConfigurations?.outboundProvisioningIdps;
+            application?.provisioningConfigurations?.outboundProvisioningIdps;
+
+        const editedIDP = outboundConfigs.find(idp =>
+            (idp.idp === values.idp) && (idp.connector === values.connector));
+        outboundConfigs.splice(outboundConfigs.indexOf(editedIDP), 1);
         outboundConfigs.push(values);
         return {
             provisioningConfigurations: {
@@ -150,7 +140,21 @@ export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvi
      * Handles the final wizard submission.
      */
     const updateIdentityProvider = (values: any): void => {
-        addIdentityProvider(editingApp.id, updateConfiguration(values));
+        addIdentityProvider(application.id, updateConfiguration(values));
+    };
+
+    const handleProvisioningIDPDelete = (deletingIDP: OutboundProvisioningConfigurationInterface): void => {
+        const outboundConfigs: OutboundProvisioningConfigurationInterface[] =
+            application?.provisioningConfigurations?.outboundProvisioningIdps;
+        outboundConfigs.splice(outboundConfigs.indexOf(deletingIDP), 1);
+        const newConfig = {
+            provisioningConfigurations: {
+                outboundProvisioningIdps: outboundConfigs
+            }
+        };
+
+        addIdentityProvider(application.id, newConfig);
+        setShowDeleteConfirmationModal(false);
     };
 
     return (
@@ -163,7 +167,7 @@ export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvi
         </Heading>
         <Divider hidden/>
             {
-                editingApp?.provisioningConfigurations?.outboundProvisioningIdps?.length > 0 ? (
+                application?.provisioningConfigurations?.outboundProvisioningIdps?.length > 0 ? (
                     <Grid>
                         <Grid.Row>
                             <Grid.Column>
@@ -176,14 +180,17 @@ export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvi
                         <Grid.Row>
                             <Grid.Column>
                                 {
-                                    editingApp?.provisioningConfigurations?.outboundProvisioningIdps?.map(
+                                    application?.provisioningConfigurations?.outboundProvisioningIdps?.map(
                                         (provisioningIdp) => {
                                         return (
                                             <AuthenticatorAccordion
                                                 globalActions={ [
                                                     {
                                                         icon: "trash alternate",
-                                                        onClick: null,
+                                                        onClick: (): void => {
+                                                            setShowDeleteConfirmationModal(true);
+                                                            setDeletingIdp(provisioningIdp);
+                                                        },
                                                         type: "icon"
                                                     }
                                                 ] }
@@ -192,19 +199,12 @@ export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvi
                                                         {
                                                             content: (
                                                                 <OutboundProvisioningWizardIdpForm
-                                                                    initialValues={ {
-                                                                        idp: provisioningIdp?.idp,
-                                                                        connector: provisioningIdp?.connector,
-                                                                        blocking: provisioningIdp?.blocking ?
-                                                                            "blocking" : "",
-                                                                        rules: provisioningIdp?.rules ? "rules" : "",
-                                                                        jit: provisioningIdp?.jit ? "jit" : ""
-                                                                    } }
+                                                                    initialValues={ provisioningIdp }
                                                                     triggerSubmit={ null }
                                                                     onSubmit={ (values): void => {
                                                                         updateIdentityProvider(values)
                                                                     } }
-                                                                    idpList={ null }
+                                                                    idpList={ idpList }
                                                                     isEdit={ true }
                                                                 />
                                                             ),
@@ -258,8 +258,8 @@ export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvi
                         primaryAction="Confirm"
                         secondaryAction="Cancel"
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                        onPrimaryActionClick={ null
-                            // (): void => handleDeleteConnector(deletingIdp)
+                        onPrimaryActionClick={
+                            (): void => handleProvisioningIDPDelete(deletingIdp)
                         }
                     >
                         <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
@@ -277,7 +277,7 @@ export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvi
                 showWizard && (
                     <OutboundProvisioningIdpCreateWizard
                         closeWizard={ () => setShowWizard(false) }
-                        application={ editingApp }
+                        application={ application }
                         onUpdate={ onUpdate }
                     />
                 )
