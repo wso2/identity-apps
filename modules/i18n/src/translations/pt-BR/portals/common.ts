@@ -68,6 +68,8 @@ export const common: CommonNS = {
     operations: "Operações",
     overview: "visão global",
     personalInfo: "Informação pessoal",
+    pin: "Bastão",
+    pinned: "Bastão",
     priority: "Prioridade",
     privacy: "Privacidade",
     properties: "Propriedades",
@@ -99,6 +101,8 @@ export const common: CommonNS = {
     terminateAll: "Terminar tudo",
     terminateSession: "Encerrar sessão",
     type: "Tipo",
+    unpin: "Solto",
+    unpinned: "Solto",
     update: "Atualizar",
     user: "Do utilizador",
     verify: "Verificar"

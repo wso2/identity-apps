@@ -17,8 +17,6 @@
 */
 
 export * from "./certificates-list";
-export * from "./advanced-search-certificates-keystore";
-export * from "./advanced-search-certificates-truststore";
 export * from "./upload-certificate";
 export * from "./certificate";
 export * from "./import-certificate";

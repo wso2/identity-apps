@@ -20,10 +20,11 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { listCertificateAliases } from "../api";
-import { CertificatesKeystoreSearch, CertificatesList, ImportCertificate } from "../components";
+import { AdvancedSearchWithBasicFilters, CertificatesList, ImportCertificate } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
@@ -63,6 +64,8 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (tenantDomain === "carbon.super") {
@@ -159,6 +162,19 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
         setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
     };
 
+    /**
+     * Handles the `onFilter` callback action from the search component.
+     *
+     * @param {string} query - Search query.
+     */
+    const handleKeystoreFilter = (query: string): void => {
+        // TODO: Implement once the API is ready
+        // fetchCertificatesKeystore(null, null, null, query);
+        setFilteredCertificatesKeystore(
+            filterList(certificatesKeystore, query, "alias", true)
+        );
+    };
+
     return (
         <>
             {
@@ -180,15 +196,32 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                     filteredCertificatesKeystore?.length > 0
                         ? (<ListLayout
                             advancedSearch={
-                                <CertificatesKeystoreSearch
-                                    onFilter={ (query) => {
-                                        // TODO: Implement once the API is ready
-                                        //  fetchCertificatesKeystore(null, null, null, query);
-                                        setFilteredCertificatesKeystore(
-                                            filterList(certificatesKeystore, query, "alias", true)
-                                        );
-
-                                    } }
+                                <AdvancedSearchWithBasicFilters
+                                    onFilter={ handleKeystoreFilter }
+                                    filterAttributeOptions={ [
+                                        {
+                                            key: 0,
+                                            text: "Alias",
+                                            value: "alias"
+                                        }
+                                    ] }
+                                    filterAttributePlaceholder={
+                                        t("devPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                            ".filterAttribute.placeholder")
+                                    }
+                                    filterConditionsPlaceholder={
+                                        t("devPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                            ".filterCondition.placeholder")
+                                    }
+                                    filterValuePlaceholder={
+                                        t("devPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                            ".filterValue.placeholder")
+                                    }
+                                    placeholder={
+                                        t("devPortal:components.certificates.keystore.advancedSearch.placeholder")
+                                    }
+                                    defaultSearchAttribute="alias"
+                                    defaultSearchOperator="co"
                                 />
                             }
                             currentListSize={ listItemLimit }

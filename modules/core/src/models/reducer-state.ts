@@ -17,7 +17,7 @@
  */
 
 import { CommonConfigInterface } from "./config";
-import { AlertInterface } from "./global";
+import { AlertInterface } from "./core";
 import { LinkedAccountInterface, ProfileInfoInterface, ProfileSchemaInterface } from "./profile";
 
 /**

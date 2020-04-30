@@ -23,57 +23,71 @@ import { EditPage, HelpPanelInterface, Notification, Page, Placeholder } from ".
  */
 export interface DevPortalNS {
     components: {
+        advancedSearch: {
+            form: {
+                inputs: {
+                    filterAttribute: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                        };
+                    };
+                    filterCondition: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                        };
+                    };
+                    filterValue: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                        };
+                    };
+                };
+            };
+            hints: {
+                querySearch: {
+                    actionKeys: string;
+                    label: string;
+                };
+            };
+            options: {
+                header: string;
+            };
+            placeholder: string;
+            popups: {
+                clear: string;
+                dropdown: string;
+            };
+            resultsIndicator: string;
+        };
         applications: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: string;
+                        };
+                        filterCondition: {
+                            placeholder: string;
+                        };
+                        filterValue: {
+                            placeholder: string;
+                        };
+                    };
+                };
+                placeholder: string;
+            };
             helpPanel: HelpPanelInterface;
             notifications: {
                 fetchApplications: Notification;
             };
             placeholders: {
                 emptyList: Placeholder;
-            };
-            search: {
-                forms: {
-                    searchForm: {
-                        inputs: {
-                            filerAttribute: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            filterCondition: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            filterValue: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                        };
-                    };
-                };
-                hints: {
-                    querySearch: {
-                        actionKeys: string;
-                        label: string;
-                    };
-                };
-                options: {
-                    header: string;
-                };
-                placeholder: string;
-                popups: {
-                    clear: string;
-                    dropdown: string;
-                };
-                resultsIndicator: string;
             };
             templates: {
                 manualSetup: {
@@ -83,6 +97,100 @@ export interface DevPortalNS {
                 quickSetup: {
                     heading: string;
                     subHeading: string;
+                };
+            };
+        };
+        certificates: {
+            keystore: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: string;
+                            };
+                            filterCondition: {
+                                placeholder: string;
+                            };
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+            };
+            truststore: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: string;
+                            };
+                            filterCondition: {
+                                placeholder: string;
+                            };
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+            };
+        };
+        claims: {
+            dialects: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: string;
+                            };
+                            filterCondition: {
+                                placeholder: string;
+                            };
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+            };
+            external: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: string;
+                            };
+                            filterCondition: {
+                                placeholder: string;
+                            };
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+            };
+            local: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: string;
+                            };
+                            filterCondition: {
+                                placeholder: string;
+                            };
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
                 };
             };
         };
@@ -100,7 +208,28 @@ export interface DevPortalNS {
                 createTemplate: Notification;
             };
         };
+        helpPanel: {
+            notifications: {
+                pin: Notification;
+            };
+        };
         idp: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: string;
+                        };
+                        filterCondition: {
+                            placeholder: string;
+                        };
+                        filterValue: {
+                            placeholder: string;
+                        };
+                    };
+                };
+                placeholder: string;
+            };
             templates: {
                 manualSetup: {
                     heading: string;
@@ -113,6 +242,22 @@ export interface DevPortalNS {
             };
         };
         users: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: string;
+                        };
+                        filterCondition: {
+                            placeholder: string;
+                        };
+                        filterValue: {
+                            placeholder: string;
+                        };
+                    };
+                };
+                placeholder: string;
+            };
             all: {
                 heading: string;
                 subHeading: string;
@@ -127,50 +272,6 @@ export interface DevPortalNS {
             };
             placeholders: {
                 emptyList: Placeholder;
-            };
-            search: {
-                forms: {
-                    searchForm: {
-                        inputs: {
-                            filerAttribute: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            filterCondition: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            filterValue: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                        };
-                    };
-                };
-                hints: {
-                    querySearch: {
-                        actionKeys: string;
-                        label: string;
-                    };
-                };
-                options: {
-                    header: string;
-                };
-                placeholder: string;
-                popups: {
-                    clear: string;
-                    dropdown: string;
-                };
-                resultsIndicator: string;
             };
         };
         user: {
@@ -369,7 +470,41 @@ export interface DevPortalNS {
                 };
             };
         };
+        userstores: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: string;
+                        };
+                        filterCondition: {
+                            placeholder: string;
+                        };
+                        filterValue: {
+                            placeholder: string;
+                        };
+                    };
+                };
+                placeholder: string;
+            };
+        }
         roles: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: string;
+                        };
+                        filterCondition: {
+                            placeholder: string;
+                        };
+                        filterValue: {
+                            placeholder: string;
+                        };
+                    };
+                };
+                placeholder: string;
+            };
             edit: {
                 basics: {
                     fields: {
@@ -387,52 +522,24 @@ export interface DevPortalNS {
                 createRole: Notification;
                 createPermission: Notification;
             };
-            search: {
-                forms: {
-                    searchForm: {
-                        inputs: {
-                            filerAttribute: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            filterCondition: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            filterValue: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
+        };
+        groups: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: string;
+                        };
+                        filterCondition: {
+                            placeholder: string;
+                        };
+                        filterValue: {
+                            placeholder: string;
                         };
                     };
                 };
-                hints: {
-                    querySearch: {
-                        actionKeys: string;
-                        label: string;
-                    };
-                };
-                options: {
-                    header: string;
-                };
                 placeholder: string;
-                popups: {
-                    clear: string;
-                    dropdown: string;
-                };
-                resultsIndicator: string;
             };
-        };
-        groups: {
             edit: {
                 basics: {
                     fields: {
@@ -449,50 +556,6 @@ export interface DevPortalNS {
                 updateGroup: Notification;
                 createGroup: Notification;
                 createPermission: Notification;
-            };
-            search: {
-                forms: {
-                    searchForm: {
-                        inputs: {
-                            filerAttribute: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            filterCondition: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            filterValue: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                        };
-                    };
-                };
-                hints: {
-                    querySearch: {
-                        actionKeys: string;
-                        label: string;
-                    };
-                };
-                options: {
-                    header: string;
-                };
-                placeholder: string;
-                popups: {
-                    clear: string;
-                    dropdown: string;
-                };
-                resultsIndicator: string;
             };
         };
         serverConfigs: {

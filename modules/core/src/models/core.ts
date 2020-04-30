@@ -63,6 +63,8 @@ export enum AlertLevels {
 
 /**
  * Interface for the runtime config.
+ * TODO: Remove this and use the ones passed from portals.
+ * @deprecated
  */
 export interface RuntimeConfigInterface {
     /**
@@ -93,4 +95,14 @@ export interface RuntimeConfigInterface {
      * Product title. ex: "WSO2 Identity Server".
      */
     titleText?: string;
+}
+
+/**
+ * Common interface to extend testable components.
+ */
+export interface TestableComponentInterface {
+    /**
+     * Unit test id.
+     */
+    "data-testid"?: string;
 }

@@ -20,10 +20,11 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getUserStores } from "../api";
-import { AddUserStore, UserStoresList, UserStoresSearch } from "../components";
+import { AddUserStore, AdvancedSearchWithBasicFilters, UserStoresList } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
@@ -66,6 +67,8 @@ export const UserStores = (): ReactElement => {
     const [sortOrder, setSortOrder] = useState(true);
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     /**
      * Fetches all userstores.
@@ -160,6 +163,19 @@ export const UserStores = (): ReactElement => {
         setSortBy(SORT_BY.filter(option => option.value === data.value)[0]);
     };
 
+    /**
+     * Handles the `onFilter` callback action from the search component.
+     *
+     * @param {string} query - Search query.
+     */
+    const handleUserstoreFilter = (query: string): void => {
+        // TODO: Implement once the API is ready
+        // fetchUserStores(null, null, null, query);
+        setFilteredUserStores(
+            filterList(userStores, query, "name", true)
+        );
+    };
+
     return (
         <>
             {
@@ -182,15 +198,37 @@ export const UserStores = (): ReactElement => {
                     filteredUserStores?.length > 0
                         ? (<ListLayout
                                 advancedSearch={
-                                    <UserStoresSearch
-                                        onFilter={ (query) => {
-                                            // TODO: Implement once the API is ready
-                                            //  fetchUserStores(null, null, null, query);
-                                            setFilteredUserStores(
-                                                filterList(userStores, query, "name", true)
-                                            );
-
-                                        } }
+                                    <AdvancedSearchWithBasicFilters
+                                        onFilter={ handleUserstoreFilter }
+                                        filterAttributeOptions={ [
+                                            {
+                                                key: 0,
+                                                text: t("common:name"),
+                                                value: "name"
+                                            },
+                                            {
+                                                key: 1,
+                                                text: t("common:description"),
+                                                value: "description"
+                                            }
+                                        ] }
+                                        filterAttributePlaceholder={
+                                            t("devPortal:components.userstores.advancedSearch.form.inputs" +
+                                                ".filterAttribute.placeholder")
+                                        }
+                                        filterConditionsPlaceholder={
+                                            t("devPortal:components.userstores.advancedSearch.form.inputs" +
+                                                ".filterCondition.placeholder")
+                                        }
+                                        filterValuePlaceholder={
+                                            t("devPortal:components.userstores.advancedSearch.form.inputs" +
+                                                ".filterValue.placeholder")
+                                        }
+                                        placeholder={
+                                            t("devPortal:components.userstores.advancedSearch.placeholder")
+                                        }
+                                        defaultSearchAttribute="name"
+                                        defaultSearchOperator="co"
                                     />
                                 }
                                 currentListSize={ listItemLimit }

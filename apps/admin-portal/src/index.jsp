@@ -86,6 +86,7 @@
 
             var defaultUserPortalClientHost = serverOriginAddress + getTenantPath(tenantName);
             var defaultUserPortalBaseName = "user-portal";
+            var defaultMyAccountPath = "/personal-info";
 
             /** ===================================================== */
 
@@ -104,6 +105,7 @@
                     (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ?
                     tenantAdminPortalClientID : defaultAdminPortalClientID,
                 doNotDeleteApplications: doNotDeleteApplications || [],
+                myAccountPath: window.userConfig.myAccountPath || defaultMyAccountPath,
                 serverHost: window.userConfig.serverHost || serverOriginAddress + getTenantPath(tenantName),
                 serverOrigin: window.userConfig.serverOrigin || serverOriginAddress,
                 tenant: window.userConfig.tenant || (tenantName === "") ? getSuperTenant() : tenantName,

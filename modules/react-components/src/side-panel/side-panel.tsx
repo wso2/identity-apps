@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
-import { Container, Responsive, Sidebar } from "semantic-ui-react";
-import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
-import _ from "lodash";
-import classNames from "classnames";
-import { SidePanelItems } from "./side-panel-items";
 import { UIConstants } from "@wso2is/core/constants";
+import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
+import classNames from "classnames";
+import _ from "lodash";
+import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
+import { Container, Responsive, Sidebar } from "semantic-ui-react";
+import { SidePanelItems } from "./side-panel-items";
 
 /**
  * Common side panel base component Prop types.
@@ -115,8 +115,10 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
      *
      * @return {RouteInterface[]} Modified set of routes.
      */
-    const evaluateSidePanelItemExtension = (routesArray: RouteInterface[] | ChildRouteInterface[],
-                                            route: RouteInterface | ChildRouteInterface): RouteInterface[] => {
+    const evaluateSidePanelItemExtension = (
+        routesArray: RouteInterface[] | ChildRouteInterface[],
+        route: RouteInterface | ChildRouteInterface): RouteInterface[] | ChildRouteInterface[] => {
+
         return _.filter([ ...routesArray ], (evalRoute) => {
             if (evalRoute.id === route.id) {
                 evalRoute.open = !evalRoute.open;
@@ -124,7 +126,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
             if (evalRoute.children) {
                 evaluateSidePanelItemExtension(evalRoute.children, route);
             }
-            return evalRoute;
+            return true;
         });
     };
 

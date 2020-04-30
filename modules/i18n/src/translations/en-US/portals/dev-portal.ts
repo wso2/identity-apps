@@ -19,7 +19,65 @@ import { DevPortalNS } from "../../../models";
 
 export const devPortal: DevPortalNS = {
     components: {
+        advancedSearch: {
+            form: {
+                inputs: {
+                    filterAttribute: {
+                        label: "Filter attribute",
+                        placeholder: "E.g. Name, Description etc.",
+                        validations: {
+                            empty: "Filter attribute is a required field."
+                        }
+                    },
+                    filterCondition: {
+                        label: "Filter condition",
+                        placeholder: "E.g. Starts with etc.",
+                        validations: {
+                            empty: "Filter condition is a required field."
+                        }
+                    },
+                    filterValue: {
+                        label: "Filter value",
+                        placeholder: "E.g. admin, wso2 etc.",
+                        validations: {
+                            empty: "Filter value is a required field."
+                        }
+                    }
+                }
+            },
+            hints: {
+                querySearch: {
+                    actionKeys: "Shift + Enter",
+                    label: "To search as a query"
+                }
+            },
+            options: {
+                header: "Advanced search"
+            },
+            placeholder: "Search by {{attribute}}",
+            popups: {
+                clear: "clear search",
+                dropdown: "Show options"
+            },
+            resultsIndicator: "Showing results for the query \"{{query}}\""
+        },
         applications: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: "E.g. Name, Description etc."
+                        },
+                        filterCondition: {
+                            placeholder: "E.g. Starts with etc."
+                        },
+                        filterValue: {
+                            placeholder: "E.g. Zoom, Salesforce etc."
+                        }
+                    }
+                },
+                placeholder: "Search by application name"
+            },
             helpPanel: {
                 tabs: {
                     docs: {
@@ -75,50 +133,6 @@ export const devPortal: DevPortalNS = {
                     title: "No Applications"
                 }
             },
-            search: {
-                forms: {
-                    searchForm: {
-                        inputs: {
-                            filerAttribute: {
-                                label: "Filter attribute",
-                                placeholder: "E.g. name, description etc.",
-                                validations: {
-                                    empty: "Filter attribute is a required field"
-                                }
-                            },
-                            filterCondition: {
-                                label: "Filter condition",
-                                placeholder: "E.g. Starts with etc.",
-                                validations: {
-                                    empty: "Filter condition is a required field"
-                                }
-                            },
-                            filterValue: {
-                                label: "Filter value",
-                                placeholder: "E.g. facebook, slack etc.",
-                                validations: {
-                                    empty: "Filter value is a required field"
-                                }
-                            }
-                        }
-                    }
-                },
-                hints: {
-                    querySearch: {
-                        actionKeys: "Shift + Enter",
-                        label: "To search as a query"
-                    }
-                },
-                options: {
-                    header: "Advanced search"
-                },
-                placeholder: "Search by name",
-                popups: {
-                    clear: "clear search",
-                    dropdown: "Show options"
-                },
-                resultsIndicator: "Showing results for the query \"{{query}}\""
-            },
             templates: {
                 manualSetup: {
                     heading: "Manual Setup",
@@ -127,6 +141,100 @@ export const devPortal: DevPortalNS = {
                 quickSetup: {
                     heading: "Quick Setup",
                     subHeading: "Predefined set of application templates to speed up your application creation."
+                }
+            }
+        },
+        certificates: {
+            keystore: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. alias etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "E.g. wso2carbon etc."
+                            }
+                        }
+                    },
+                    placeholder: "Search by alias"
+                }
+            },
+            truststore: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. alias, certificate etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "E.g. wso2carbon etc."
+                            }
+                        }
+                    },
+                    placeholder: "Search by group name"
+                }
+            }
+        },
+        claims: {
+            dialects: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Dialect URI etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "E.g. http://wso2.org/oidc/claim"
+                            }
+                        }
+                    },
+                    placeholder: "Search by Dialect URI"
+                }
+            },
+            external: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Claim URI etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "E.g. http://axschema.org/namePerson/last"
+                            }
+                        }
+                    },
+                    placeholder: "Search by Claim URI"
+                }
+            },
+            local: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. name, claim ID etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "E.g. address, gender etc."
+                            }
+                        }
+                    },
+                    placeholder: "Search by claim"
                 }
             }
         },
@@ -225,7 +333,35 @@ export const devPortal: DevPortalNS = {
         footer: {
             copyright: "WSO2 Identity Server © {{year}}"
         },
+        helpPanel: {
+            notifications: {
+                pin: {
+                    error: null,
+                    genericError: null,
+                    success: {
+                        description: "Help panel will always appear {{state}} unless you change explicitly.",
+                        message: "Help panel {{state}}"
+                    }
+                }
+            }
+        },
         idp: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: "E.g. Name, Enabled etc."
+                        },
+                        filterCondition: {
+                            placeholder: "E.g. Starts with etc."
+                        },
+                        filterValue: {
+                            placeholder: "E.g. Google, Github etc."
+                        }
+                    }
+                },
+                placeholder: "Search by IdP name"
+            },
             templates: {
                 manualSetup: {
                     heading: "Manual Setup",
@@ -671,6 +807,22 @@ export const devPortal: DevPortalNS = {
             }
         },
         users: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: "E.g. Username, Email etc."
+                        },
+                        filterCondition: {
+                            placeholder: "E.g. Starts with etc."
+                        },
+                        filterValue: {
+                            placeholder: "Enter value to search"
+                        }
+                    }
+                },
+                placeholder: "Search by Username"
+            },
             all: {
                 heading: "Users",
                 subHeading: "Add and manage user accounts, assign roles to the users and maintain user identities."
@@ -731,53 +883,43 @@ export const devPortal: DevPortalNS = {
                     },
                     title: "No Users Found"
                 }
-            },
-            search: {
-                forms: {
-                    searchForm: {
-                        inputs: {
-                            filerAttribute: {
-                                label: "Filter attribute",
-                                placeholder: "E.g. username, email etc.",
-                                validations: {
-                                    empty: "Filter attribute is a required field"
-                                }
-                            },
-                            filterCondition: {
-                                label: "Filter condition",
-                                placeholder: "E.g. Starts with etc.",
-                                validations: {
-                                    empty: "Filter condition is a required field"
-                                }
-                            },
-                            filterValue: {
-                                label: "Filter value",
-                                placeholder: "Enter value to search",
-                                validations: {
-                                    empty: "Filter value is a required field"
-                                }
-                            }
+            }
+        },
+        userstores: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: "E.g. Name, Description etc."
+                        },
+                        filterCondition: {
+                            placeholder: "E.g. Starts with etc."
+                        },
+                        filterValue: {
+                            placeholder: "E.g. PRIMARY, SECONDARY etc."
                         }
                     }
                 },
-                hints: {
-                    querySearch: {
-                        actionKeys: "Shift + Enter",
-                        label: "To search as a query"
-                    }
-                },
-                options: {
-                    header: "Advanced search"
-                },
-                placeholder: "Search by  username",
-                popups: {
-                    clear: "Clear search",
-                    dropdown: "Show options"
-                },
-                resultsIndicator: "Showing results for the query \"{{query}}\""
+                placeholder: "Search by userstore name"
             }
         },
         roles: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: "E.g. role name."
+                        },
+                        filterCondition: {
+                            placeholder: "E.g. Starts with etc."
+                        },
+                        filterValue: {
+                            placeholder: "Enter value to search"
+                        }
+                    }
+                },
+                placeholder: "Search by role name"
+            },
             edit: {
                 basics: {
                     fields: {
@@ -846,53 +988,25 @@ export const devPortal: DevPortalNS = {
                         message: "Role created successfully."
                     }
                 }
-            },
-            search: {
-                forms: {
-                    searchForm: {
-                        inputs: {
-                            filerAttribute: {
-                                label: "Filter Attribute",
-                                placeholder: "E.g. role name.",
-                                validations: {
-                                    empty: "Filter attribute is a required field"
-                                }
-                            },
-                            filterCondition: {
-                                label: "Filter Condition",
-                                placeholder: "E.g. Starts with etc.",
-                                validations: {
-                                    empty: "Filter condition is a required field"
-                                }
-                            },
-                            filterValue: {
-                                label: "Filter Value",
-                                placeholder: "Enter value to search",
-                                validations: {
-                                    empty: "Filter value is a required field"
-                                }
-                            }
-                        }
-                    }
-                },
-                hints: {
-                    querySearch: {
-                        actionKeys: "Shift + Enter",
-                        label: "To search as a query"
-                    }
-                },
-                options: {
-                    header: "Advanced Search"
-                },
-                placeholder: "Search by role name",
-                popups: {
-                    clear: "Clear search",
-                    dropdown: "Show options"
-                },
-                resultsIndicator: "Showing results for the query \"{{query}}\""
             }
         },
         groups: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: "E.g. group name."
+                        },
+                        filterCondition: {
+                            placeholder: "E.g. Starts with etc."
+                        },
+                        filterValue: {
+                            placeholder: "Enter value to search"
+                        }
+                    }
+                },
+                placeholder: "Search by group name"
+            },
             edit: {
                 basics: {
                     fields: {
@@ -961,50 +1075,6 @@ export const devPortal: DevPortalNS = {
                         message: "Group created successfully."
                     }
                 }
-            },
-            search: {
-                forms: {
-                    searchForm: {
-                        inputs: {
-                            filerAttribute: {
-                                label: "Filter Attribute",
-                                placeholder: "E.g. group name.",
-                                validations: {
-                                    empty: "Filter attribute is a required field"
-                                }
-                            },
-                            filterCondition: {
-                                label: "Filter Condition",
-                                placeholder: "E.g. Starts with etc.",
-                                validations: {
-                                    empty: "Filter condition is a required field"
-                                }
-                            },
-                            filterValue: {
-                                label: "Filter Value",
-                                placeholder: "Enter value to search",
-                                validations: {
-                                    empty: "Filter value is a required field"
-                                }
-                            }
-                        }
-                    }
-                },
-                hints: {
-                    querySearch: {
-                        actionKeys: "Shift + Enter",
-                        label: "To search as a query"
-                    }
-                },
-                options: {
-                    header: "Advanced Search"
-                },
-                placeholder: "Search by group name",
-                popups: {
-                    clear: "Clear search",
-                    dropdown: "Show options"
-                },
-                resultsIndicator: "Showing results for the query \"{{query}}\""
             }
         },
         serverConfigs: {

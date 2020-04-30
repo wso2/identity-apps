@@ -55,6 +55,8 @@ export type ThemeIconSizes =
 
 /**
  * Generic component to render icons.
+ * TODO: Remove this component. Use `GenericIcon` component form `@wso2is/react-components`.
+ * @deprecated
  *
  * @param {React.PropsWithChildren<any>} props
  * @return {any}

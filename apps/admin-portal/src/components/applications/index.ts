@@ -18,7 +18,6 @@
 
 export * from "./application-list";
 export * from "./application-edit";
-export * from "./application-search";
 export * from "./dropdown-details";
 export * from "./dropdown-details-general";
 export * from "./forms";

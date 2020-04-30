@@ -329,7 +329,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                             onClick={
                                 (): void => {
                                     window.open(config.deployment.userPortalClientHost + "/"
-                                        + config.deployment.userPortalBaseName
+                                        + config.deployment.userPortalBaseName + config.ui.myAccountPath
                                     );
                                 }
                             }

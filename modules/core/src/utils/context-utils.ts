@@ -20,6 +20,7 @@ import { RuntimeConfigInterface } from "../models";
 
 /**
  * Utility class for context operations.
+ * TODO: accept the runtime config time from the caller.
  */
 export class ContextUtils {
 
