@@ -17,7 +17,6 @@
 */
 
 export * from "./user-stores-list";
-export * from "./advanced-search-user-stores";
 export * from "./add-user-store";
 export * from "./edit";
 export * from "./wizards";
