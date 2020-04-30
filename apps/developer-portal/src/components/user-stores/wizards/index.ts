@@ -16,7 +16,6 @@
 * under the License.
 */
 
-export * from "./basic-details-user-store";
 export * from "./general-details-userstore";
 export * from "./summary";
 export * from "./user-details";

@@ -16,7 +16,7 @@
 * under the License.
 */
 
-export * from "./edit-basic-details-user-store";
-export * from "./edit-connection-details-user-store";
 export * from "./edit-user-details-userstore";
 export * from "./edit-group-details-userstore";
+export * from "./edit-connection-details-user-store";
+export * from "./edit-basic-details-user-store";

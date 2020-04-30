@@ -17,7 +17,7 @@
 */
 
 import React, { ReactElement } from "react";
-import { Divider, Grid, Header } from "semantic-ui-react";
+import { Divider, Grid } from "semantic-ui-react";
 import { TypeProperty, UserStorePostData, UserStoreProperty } from "../../../models";
 
 /**
