@@ -274,7 +274,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                     lineWrapping: true
                                 } }
                                 onChange={ (editor, data, value) => {
-                                    onChange(propertyValue, value);
+                                    onChange(propertyName, value);
                                 } }
                                 theme={ isEditorDarkMode ? "dark" : "light" }
                             />
