@@ -56,7 +56,7 @@
         <module>components/org.wso2.identity.apps.common</module>
         <module>features/org.wso2.identity.apps.common.server.feature</module>
         <module>features/org.wso2.identity.apps.user.portal.server.feature</module>
-        <module>features/org.wso2.identity.apps.admin.portal.server.feature</module>
+        <module>features/org.wso2.identity.apps.developer.portal.server.feature</module>
         <module>features/org.wso2.identity.apps.authentication.portal.server.feature</module>
         <module>features/org.wso2.identity.apps.recovery.portal.server.feature</module>
         <module>features/org.wso2.identity.apps.feature</module>
@@ -513,7 +513,7 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.identity.apps</groupId>
-                <artifactId>org.wso2.identity.apps.admin.portal.server.feature</artifactId>
+                <artifactId>org.wso2.identity.apps.developer.portal.server.feature</artifactId>
                 <version>${project.version}</version>
                 <type>zip</type>
             </dependency>

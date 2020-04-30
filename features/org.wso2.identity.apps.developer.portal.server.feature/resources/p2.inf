@@ -1,9 +1,9 @@
 instructions.configure = \
-org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.identity.apps.admin.portal.server_${feature.version}/developer-portal.war,target:${installFolder}/../../deployment/server/webapps/developer-portal.war,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.identity.apps.developer.portal.server_${feature.version}/developer-portal.war,target:${installFolder}/../../deployment/server/webapps/developer-portal.war,overwrite:true);\
 org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../repository);\
 org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../repository/resources);\
 org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../repository/resources/identity);\
 org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../repository/resources/identity/templates);\
 org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../repository/resources/identity/templates/applications);\
 org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/../../../repository/resources/identity/templates/identity-providers);\
-org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.identity.apps.admin.portal.server_${feature.version}/templates/,target:${installFolder}/../../resources/identity/templates/,overwrite:true);\
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.identity.apps.developer.portal.server_${feature.version}/templates/,target:${installFolder}/../../resources/identity/templates/,overwrite:true);\
