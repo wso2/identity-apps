@@ -305,7 +305,7 @@
 .ui.segment {
     &.user-role-edit-header-segment {
         &.attributes {
-           height: 300px;
+           max-height: 300px;
         }
         .ui.input {
             margin-bottom: @EditRoleSegmentHeaderMarginBottom;

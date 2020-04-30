@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { ContentLoader, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Checkbox, Divider, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
 import { AttributeSelectionWizardOtherDialect } from "./attirbute-selection-wizard-other-dialect";
 import { AttributeListItem } from "./attribute-list-item";
@@ -104,6 +104,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const [initializationFinished, setInitializationFinished] = useState(false);
 
     const [showSelectionModal, setShowSelectionModal] = useState(false);
+
+    const initValue = useRef(false);
 
     const updateMandatory = (claimURI: string, mandatory: boolean) => {
         if (selectedDialect.localDialect) {
@@ -237,7 +239,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const setInitialValues = () => {
         // set local dialect values.
         if (selectedDialect.localDialect) {
-            setInitializationFinished(false);
             const initialRequest = getInitiallySelectedClaimsURI();
             const initialSelectedClaims: ExtendedClaimInterface[] = [];
             const initialAvailableClaims: ExtendedClaimInterface[] = [];
@@ -292,7 +293,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             }
             setInitializationFinished(true);
         } else {
-            setInitializationFinished(false);
             const initialRequest = getInitiallySelectedClaimsURI();
             const initialSelectedClaims: ExtendedExternalClaimInterface[] = [];
             const initialAvailableClaims: ExtendedExternalClaimInterface[] = [];
@@ -356,7 +356,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     }, [selectedClaims, selectedExternalClaims]);
 
     useEffect(() => {
-        setInitialValues();
+        if (!initValue.current) {
+            setInitializationFinished(false);
+            setInitialValues();
+            initValue.current = true;
+        }
     }, [claimConfigurations]);
 
     const addSelectionModal = (() => {
@@ -390,176 +394,178 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
 
     return (
-        initializationFinished &&
-        <>
-            <Heading as="h5">
-                Attribute Selection
-            </Heading>
-            <Divider hidden/>
-            <Grid.Row>
-                <Grid.Column computer={ (selectedDialect.localDialect) ? 10 : 8 }>
-                    {
-                        (selectedClaims.length > 0 || selectedExternalClaims.length > 0) ? (
-                            <Segment.Group fluid>
-                                <Segment className="user-role-edit-header-segment clearing attributes">
-                                    <Grid.Row>
-                                        <Table basic="very" compact>
-                                            <Table.Body>
-                                                <Table.Row>
-                                                    <Table.Cell>
-                                                        <Input
-                                                            icon={ <Icon name="search"/> }
-                                                            onChange={ handleChange }
-                                                            placeholder="Search attributes"
-                                                            floated="left"
-                                                            size="small"
-                                                        />
-                                                    </Table.Cell>
-                                                    { selectedDialect.localDialect &&
-                                                    (
-                                                        <Table.Cell textAlign="right">
-                                                            <Checkbox
-                                                                slider
-                                                                defaultChecked={ claimMappingOn }
-                                                                onChange={ handelMapButtonClick }
-                                                                label="Enable mapping"
+        claimConfigurations && initializationFinished
+            ?
+            <>
+                <Heading as="h5">
+                    Attribute Selection
+                </Heading>
+                <Divider hidden/>
+                <Grid.Row>
+                    <Grid.Column computer={ (selectedDialect.localDialect) ? 10 : 8 }>
+                        {
+                            (selectedClaims.length > 0 || selectedExternalClaims.length > 0) ? (
+                                <Segment.Group fluid>
+                                    <Segment className="user-role-edit-header-segment clearing attributes">
+                                        <Grid.Row>
+                                            <Table basic="very" compact>
+                                                <Table.Body>
+                                                    <Table.Row>
+                                                        <Table.Cell>
+                                                            <Input
+                                                                icon={ <Icon name="search"/> }
+                                                                onChange={ handleChange }
+                                                                placeholder="Search attributes"
+                                                                floated="left"
+                                                                size="small"
                                                             />
                                                         </Table.Cell>
-                                                    )
-                                                    }
-                                                    <Table.Cell textAlign="right">
-                                                        <Button
-                                                            size="medium"
-                                                            icon="pencil"
-                                                            floated="right"
-                                                            onClick={ handleOpenSelectionModal }
-                                                        />
-                                                    </Table.Cell>
-                                                </Table.Row>
-                                            </Table.Body>
-                                        </Table>
-                                    </Grid.Row>
-                                    <Grid.Row>
-                                        { selectedDialect.localDialect ? (
-                                                <Table singleLine compact>
-                                                    <Table.Header>
-                                                        { claimMappingOn ?
-                                                            (
-                                                                <Table.Row>
-                                                                    <Table.HeaderCell>
-                                                                        <strong>Attribute</strong>
-                                                                    </Table.HeaderCell>
-                                                                    <Table.HeaderCell>
-                                                                        <strong>Application attribute</strong>
-                                                                    </Table.HeaderCell>
-                                                                    <Table.HeaderCell>
-                                                                        <strong> Requested </strong>
-                                                                    </Table.HeaderCell>
-                                                                    <Table.HeaderCell>
-                                                                        <strong>Mandatory</strong>
-                                                                    </Table.HeaderCell>
-                                                                </Table.Row>
-                                                            ) :
-                                                            (
-                                                                <Table.Row>
-                                                                    <Table.HeaderCell>
-                                                                        <strong>Attribute</strong>
-                                                                    </Table.HeaderCell>
-                                                                    <Table.HeaderCell>
-                                                                        <strong>Application attribute</strong>
-                                                                    </Table.HeaderCell>
-                                                                    <Table.HeaderCell>
-                                                                        <strong> Requested </strong>
-                                                                    </Table.HeaderCell>
-                                                                    <Table.HeaderCell>
-                                                                        <strong>Mandatory</strong>
-                                                                    </Table.HeaderCell>
-                                                                </Table.Row>
-                                                            )
+                                                        { selectedDialect.localDialect &&
+                                                        (
+                                                            <Table.Cell textAlign="right">
+                                                                <Checkbox
+                                                                    slider
+                                                                    defaultChecked={ claimMappingOn }
+                                                                    onChange={ handelMapButtonClick }
+                                                                    label="Enable mapping"
+                                                                />
+                                                            </Table.Cell>
+                                                        )
                                                         }
+                                                        <Table.Cell textAlign="right">
+                                                            <Button
+                                                                size="medium"
+                                                                icon="pencil"
+                                                                floated="right"
+                                                                onClick={ handleOpenSelectionModal }
+                                                            />
+                                                        </Table.Cell>
+                                                    </Table.Row>
+                                                </Table.Body>
+                                            </Table>
+                                        </Grid.Row>
+                                        <Grid.Row>
+                                            { selectedDialect.localDialect ? (
+                                                    <Table singleLine compact>
+                                                        <Table.Header>
+                                                            { claimMappingOn ?
+                                                                (
+                                                                    <Table.Row>
+                                                                        <Table.HeaderCell>
+                                                                            <strong>Attribute</strong>
+                                                                        </Table.HeaderCell>
+                                                                        <Table.HeaderCell>
+                                                                            <strong>Application attribute</strong>
+                                                                        </Table.HeaderCell>
+                                                                        <Table.HeaderCell>
+                                                                            <strong> Requested </strong>
+                                                                        </Table.HeaderCell>
+                                                                        <Table.HeaderCell>
+                                                                            <strong>Mandatory</strong>
+                                                                        </Table.HeaderCell>
+                                                                    </Table.Row>
+                                                                ) :
+                                                                (
+                                                                    <Table.Row>
+                                                                        <Table.HeaderCell>
+                                                                            <strong>Attribute</strong>
+                                                                        </Table.HeaderCell>
+                                                                        <Table.HeaderCell>
+                                                                            <strong>Application attribute</strong>
+                                                                        </Table.HeaderCell>
+                                                                        <Table.HeaderCell>
+                                                                            <strong> Requested </strong>
+                                                                        </Table.HeaderCell>
+                                                                        <Table.HeaderCell>
+                                                                            <strong>Mandatory</strong>
+                                                                        </Table.HeaderCell>
+                                                                    </Table.Row>
+                                                                )
+                                                            }
+                                                        </Table.Header>
+                                                        <Table.Body>
+                                                            {
+                                                                filterSelectedClaims?.map((claim) => {
+                                                                    return (
+                                                                        <AttributeListItem
+                                                                            key={ claim.id }
+                                                                            claimURI={ claim.claimURI }
+                                                                            displayName={ claim.displayName }
+                                                                            mappedURI={ claim.claimURI }
+                                                                            localDialect={ true }
+                                                                            updateMapping={ updateClaimMapping }
+                                                                            addToMapping={ addToClaimMapping }
+                                                                            mapping={ getCurrentMapping(claim.claimURI) }
+                                                                            initialMandatory={ claim.mandatory }
+                                                                            initialRequested={ claim.requested }
+                                                                            selectMandatory={ updateMandatory }
+                                                                            selectRequested={ updateRequested }
+                                                                            claimMappingOn={ claimMappingOn }
+                                                                            claimMappingError={ claimMappingError }
+                                                                        />
+                                                                    )
+
+                                                                })
+                                                            }
+                                                        </Table.Body>
+                                                    </Table>) :
+                                                (<Table singleLine compact>
+                                                    <Table.Header>
+                                                        <Table.Row>
+                                                            <Table.HeaderCell>
+                                                                <strong>Attribute</strong>
+                                                            </Table.HeaderCell>
+                                                            <Table.HeaderCell>
+                                                                <strong>Mandatory</strong>
+                                                            </Table.HeaderCell>
+                                                        </Table.Row>
                                                     </Table.Header>
                                                     <Table.Body>
                                                         {
-                                                            filterSelectedClaims?.map((claim) => {
+                                                            filterSelectedExternalClaims?.map((claim) => {
                                                                 return (
                                                                     <AttributeListItem
                                                                         key={ claim.id }
                                                                         claimURI={ claim.claimURI }
-                                                                        displayName={ claim.displayName }
-                                                                        mappedURI={ claim.claimURI }
-                                                                        localDialect={ true }
-                                                                        updateMapping={ updateClaimMapping }
-                                                                        addToMapping={ addToClaimMapping }
-                                                                        mapping={ getCurrentMapping(claim.claimURI) }
+                                                                        displayName={ claim.claimURI }
+                                                                        mappedURI={ claim.mappedLocalClaimURI }
+                                                                        localDialect={ false }
                                                                         initialMandatory={ claim.mandatory }
-                                                                        initialRequested={ claim.requested }
                                                                         selectMandatory={ updateMandatory }
-                                                                        selectRequested={ updateRequested }
-                                                                        claimMappingOn={ claimMappingOn }
-                                                                        claimMappingError={ claimMappingError }
                                                                     />
                                                                 )
-
                                                             })
                                                         }
                                                     </Table.Body>
-                                                </Table>) :
-                                            (<Table singleLine compact>
-                                                <Table.Header>
-                                                    <Table.Row>
-                                                        <Table.HeaderCell>
-                                                            <strong>Attribute</strong>
-                                                        </Table.HeaderCell>
-                                                        <Table.HeaderCell>
-                                                            <strong>Mandatory</strong>
-                                                        </Table.HeaderCell>
-                                                    </Table.Row>
-                                                </Table.Header>
-                                                <Table.Body>
-                                                    {
-                                                        filterSelectedExternalClaims?.map((claim) => {
-                                                            return (
-                                                                <AttributeListItem
-                                                                    key={ claim.id }
-                                                                    claimURI={ claim.claimURI }
-                                                                    displayName={ claim.claimURI }
-                                                                    mappedURI={ claim.mappedLocalClaimURI }
-                                                                    localDialect={ false }
-                                                                    initialMandatory={ claim.mandatory }
-                                                                    selectMandatory={ updateMandatory }
-                                                                />
-                                                            )
-                                                        })
-                                                    }
-                                                </Table.Body>
-                                            </Table>)
+                                                </Table>)
+                                            }
+                                        </Grid.Row>
+                                    </Segment>
+                                </Segment.Group>
+                            ) : (
+                                <Segment>
+                                    <EmptyPlaceholder
+                                        title="No attributes added"
+                                        subtitle={ [
+                                            "There are no attributes selected to the application at the moment."
+                                        ] }
+                                        action={
+                                            !readOnly && (
+                                                <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">
+                                                    Add Attribute
+                                                </PrimaryButton>
+                                            )
                                         }
-                                    </Grid.Row>
+                                        image={ EmptyPlaceholderIllustrations.emptyList }
+                                        imageSize="tiny"
+                                    />
                                 </Segment>
-                            </Segment.Group>
-                        ) : (
-                            <Segment>
-                                <EmptyPlaceholder
-                                    title="No attributes added"
-                                    subtitle={ [
-                                        "There are no attributes selected to the application at the moment."
-                                    ] }
-                                    action={
-                                        !readOnly && (
-                                            <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">
-                                                Add Attribute
-                                            </PrimaryButton>
-                                        )
-                                    }
-                                    image={ EmptyPlaceholderIllustrations.emptyList }
-                                    imageSize="tiny"
-                                />
-                            </Segment>
-                        )
-                    }
-                </Grid.Column>
-            </Grid.Row>
-            { addSelectionModal() }
-        </>
+                            )
+                        }
+                    </Grid.Column>
+                </Grid.Row>
+                { addSelectionModal() }
+            </>
+            : <ContentLoader/>
     );
 };
