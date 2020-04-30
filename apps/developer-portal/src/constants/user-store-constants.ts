@@ -16,11 +16,37 @@
  * under the License.
  */
 
- /**
-  * The ID of the userstore type JDBC.
-  * 
-  * @constant
-  * 
-  * @type {string}
-  */
+/**
+ * The ID of the userstore type JDBC.
+ *
+ * @constant
+ *
+ * @type {string}
+ */
 export const JDBC = "JDBC";
+
+export const UserstoreTypeDescriptions = {
+    ActiveDirectoryUserStoreManager: "Active Directory based userstore.",
+    CarbonRemoteUserStoreManger: "Userstore on another Identity Server instance.",
+    JDBCUserStoreManager: "Java Database Connectivity based userstore.",
+    ReadOnlyLDAPUserStoreManager: "Lightweight Directory Access Protocol based userstore which is read only.",
+    ReadWriteLDAPUserStoreManager:
+        "Lightweight Directory Access Protocol based userstore " + "which can both be read and written to",
+    UniqueIDActiveDirectoryUserStoreManager: "Active Directory based userstore.",
+    UniqueIDJDBCUserStoreManager: "Java Database Connectivity based userstore.",
+    UniqueIDReadOnlyLDAPUserStoreManager: "Lightweight Directory Access Protocol based userstore which is read only.",
+    UniqueIDReadWriteLDAPUserStoreManager:
+        "Lightweight Directory Access Protocol based userstore " + "which can both be read and written to"
+};
+
+export const UserstoreTypeDisplayNames = {
+    ActiveDirectoryUserStoreManager: "Active Directory",
+    CarbonRemoteUserStoreManger: "Carbon Remote",
+    JDBCUserStoreManager: "JDBC",
+    ReadOnlyLDAPUserStoreManager: "Read Only LDAP",
+    ReadWriteLDAPUserStoreManager: "Read Write LDAP",
+    UniqueIDActiveDirectoryUserStoreManager: "Active Directory",
+    UniqueIDJDBCUserStoreManager: "JDBC",
+    UniqueIDReadOnlyLDAPUserStoreManager: "Read Only LDAP",
+    UniqueIDReadWriteLDAPUserStoreManager: "Read Write LDAP"
+};
