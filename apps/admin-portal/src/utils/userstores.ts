@@ -129,9 +129,9 @@ export const reOrganizeProperties = (
             optional: {
                 nonSql: basicOptionalProperties,
                 sql: {
-                    select: basicOptionalSqlSelectProperties,
-                    insert: basicOptionalSqlInsertProperties,
                     delete: basicOptionalSqlDeleteProperties,
+                    insert: basicOptionalSqlInsertProperties,
+                    select: basicOptionalSqlSelectProperties,
                     update: basicOptionalSqlUpdateProperties
                 }
             },
@@ -141,9 +141,9 @@ export const reOrganizeProperties = (
             optional: {
                 nonSql: connectionOptionalProperties,
                 sql: {
-                    select: connectionOptionalSqlSelectProperties,
-                    insert: connectionOptionalSqlInsertProperties,
                     delete: connectionOptionalSqlDeleteProperties,
+                    insert: connectionOptionalSqlInsertProperties,
+                    select: connectionOptionalSqlSelectProperties,
                     update: connectionOptionalSqlUpdateProperties
                 }
             },
@@ -153,9 +153,9 @@ export const reOrganizeProperties = (
             optional: {
                 nonSql: groupOptionalProperties,
                 sql: {
-                    select: groupOptionalSqlSelectProperties,
-                    insert: groupOptionalSqlInsertProperties,
                     delete: groupOptionalSqlDeleteProperties,
+                    insert: groupOptionalSqlInsertProperties,
+                    select: groupOptionalSqlSelectProperties,
                     update: groupOptionalSqlUpdateProperties
                 }
             },
@@ -165,9 +165,9 @@ export const reOrganizeProperties = (
             optional: {
                 nonSql: userOptionalProperties,
                 sql: {
-                    select: userOptionalSqlSelectProperties,
-                    insert: userOptionalSqlInsertProperties,
                     delete: userOptionalSqlDeleteProperties,
+                    insert: userOptionalSqlInsertProperties,
+                    select: userOptionalSqlSelectProperties,
                     update: userOptionalSqlUpdateProperties
                 }
             },
