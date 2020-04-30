@@ -245,18 +245,18 @@ export const LocalClaimsPage = (): ReactElement => {
                                         }
                                     ] }
                                     filterAttributePlaceholder={
-                                        "E.g. Name, Attribute URI etc."
+                                        t("devPortal:components.claims.local.advancedSearch.form." +
+                                            "inputs.filterAttribute.placeholder")
                                     }
                                     filterConditionsPlaceholder={
-                                        t("devPortal:components.userstores.advancedSearch.form.inputs" +
-                                            ".filterCondition.placeholder")
+                                        t("devPortal:components.claims.local.advancedSearch.form." +
+                                            "inputs.filterCondition.placeholder")
                                     }
                                     filterValuePlaceholder={
-                                        "E.g. Name, Mobile etc."
+                                        t("devPortal:components.claims.local.advancedSearch.form.inputs." +
+                                            "filterValue.placeholder")
                                     }
-                                    placeholder={
-                                        "Search by name"
-                                    }
+                                    placeholder={ t("devPortal:components.claims.local.advancedSearch.placeholder") }
                                     defaultSearchAttribute="displayName"
                                     defaultSearchOperator="co"
                                 />

@@ -224,7 +224,7 @@ export const devPortal: DevPortalNS = {
                     form: {
                         inputs: {
                             filterAttribute: {
-                                placeholder: "E.g. name, attribute ID etc."
+                                placeholder: "E.g. name, attribute URI etc."
                             },
                             filterCondition: {
                                 placeholder: "E.g. Starts with etc."
@@ -234,7 +234,7 @@ export const devPortal: DevPortalNS = {
                             }
                         }
                     },
-                    placeholder: "Search by attribute"
+                    placeholder: "Search by name"
                 }
             }
         },
