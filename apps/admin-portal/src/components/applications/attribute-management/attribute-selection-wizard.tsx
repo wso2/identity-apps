@@ -173,14 +173,14 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     };
 
     /**
-     * The following function enables the user to select all the roles at once.
+     * The following function enables the user to select all the attributes at once.
      */
     const selectAllUnAssignedList = () => {
         setSelectUnassignedClaimsAllClaimsChecked(!isSelectUnassignedClaimsAllClaimsChecked);
     };
 
     /**
-     * The following function enables the user to deselect all the roles at once.
+     * The following function enables the user to deselect all the attributes at once.
      */
     const selectAllAssignedList = () => {
         setIsSelectAssignedAllClaimsChecked(!isSelectAssignedAllClaimsChecked);
@@ -230,14 +230,14 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
      */
     const updateSelectedClaims = (() => {
         const selectedClaimsValues = [...tempSelectedClaims];
-        const removedClaims = selectedClaims.filter((claim) => !selectedClaimsValues.includes(claim));
-        const added = selectedClaimsValues.filter((claim) => !selectedClaims.includes(claim));
+        const removedClaims = selectedClaims.filter((claim) => !selectedClaimsValues?.includes(claim));
+        const added = selectedClaimsValues.filter((claim) => !selectedClaims?.includes(claim));
         added.map((claim) => createMapping(claim));
         removedClaims.map((claim) => removeMapping(claim));
         // setSelectedClaims(selectedClaimsValues);
         setInitialSelectedClaims(selectedClaimsValues);
         setAvailableClaims([...tempAvailableClaims]);
-        handleAttributeModal();
+        setShowAddModal(false);
     });
 
 

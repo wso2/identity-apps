@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { updateAClaim } from "../../../../api";
 import { AlertLevels, Claim } from "../../../../models";
-import { DynamicField } from "../../dynamic-fields";
+import { DynamicField } from "../../../shared/";
 
 /**
  * Prop types for `EditAdditionalPropertiesLocalClaims` component

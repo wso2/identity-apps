@@ -22,3 +22,4 @@ export * from "./icon";
 export * from "./empty-placeholder";
 export * from "./avatar-svg-background";
 export * from "./upload-file";
+export * from "./dynamic-fields";

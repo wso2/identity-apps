@@ -16,9 +16,11 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
+import { ContentLoader } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -38,7 +40,6 @@ import {
     RoleMappingInterface,
     SubjectConfigInterface
 } from "../../../models";
-import { hasRequiredScopes } from "@wso2is/core/dist/src/helpers";
 
 export interface SelectedDialectInterface {
     dialectURI: string;
@@ -84,6 +85,10 @@ interface AttributeSelectionPropsInterface extends SBACInterface<FeatureConfigIn
      * If only OIDC configured for the application.
      */
     onlyOIDCConfigured: boolean;
+    /**
+     * Callback to update the application details.
+     */
+    onUpdate: (id: string) => void;
 }
 
 export const getLocalDialectURI = (): string => {
@@ -110,7 +115,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         appId,
         featureConfig,
         claimConfigurations,
-        onlyOIDCConfigured
+        onlyOIDCConfigured,
+        onUpdate
     } = props;
 
     const dispatch = useDispatch();
@@ -217,7 +223,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 },
                 addMapping: false
             };
-            if (!(claimMappingList.filter((claimMap) => claimMap.localClaim.uri === claim.claimURI).length > 0)) {
+            if (!(claimMappingList.some((claimMap) => claimMap.localClaim.uri === claim.claimURI))) {
                 claimMappingList.push(newClaimMapping);
             }
             setClaimMapping(claimMappingList);
@@ -491,6 +497,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
         updateClaimConfiguration(appId, submitValue)
             .then((response) => {
+                onUpdate(appId);
                 dispatch(addAlert({
                     description: "Successfully updated the claim configuration.",
                     level: AlertLevels.SUCCESS,
@@ -551,7 +558,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     }, [claimConfigurations]);
 
     return (
-        !isClaimRequestLoading && selectedDialect && !(_.isEmpty(claims) && _.isEmpty(externalClaims)) ?
+        !isClaimRequestLoading && selectedDialect && !(_.isEmpty(claims) && _.isEmpty(externalClaims))
+            ?
             <Grid className="claim-mapping">
                 <AttributeSelection
                     claims={ claims }
@@ -613,6 +621,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     )
                 }
             </Grid>
-            : null
+            : <ContentLoader/>
     );
 };

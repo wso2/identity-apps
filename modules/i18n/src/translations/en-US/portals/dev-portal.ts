@@ -1595,16 +1595,16 @@ export const devPortal: DevPortalNS = {
     },
     pages: {
         applicationTemplate: {
-            backButton: "Select Application Type",
+            backButton: "Go back to applications",
             subTitle: "Please choose one of the following application types.",
-            title: "Applications"
+            title: "Select Application Type"
         },
         applications: {
             subTitle: "Create applications based on templates and configure authentication.",
             title: "Applications"
         },
         applicationsEdit: {
-            backButton: "Go back to Applications",
+            backButton: "Go back to applications",
             subTitle: null,
             title: null
         },

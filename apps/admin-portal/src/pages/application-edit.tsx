@@ -35,7 +35,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Label, SemanticICONS } from "semantic-ui-react";
-import { getApplicationDetails, getRawDocumentation } from "../api";
+import { getApplicationDetails, getRawDocumentation, updateApplicationConfigurations } from "../api";
 import { EditApplication } from "../components";
 import { TechnologyLogos } from "../configs";
 import { ApplicationConstants, ApplicationManagementConstants, HelpPanelConstants, UIConstants } from "../constants";
@@ -218,6 +218,40 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                 setHelpPanelSamplesContentRequestLoadingStatus(false);
             });
     }, [ helpPanelSelectedSample ]);
+
+    /**
+     * Remove template name if multiple protocols configured.
+     */
+    useEffect(() => {
+        if (applicationTemplateName && (application?.inboundProtocols?.length > 1)) {
+            updateApplicationConfigurations(application.id, { description: application.description })
+                .then(() => {
+                    handleApplicationUpdate(application.id)
+                })
+                .catch((error) => {
+                    if (error?.response?.status === 404) {
+                        return;
+                    }
+
+                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
+                        dispatch(addAlert({
+                            description: error.response?.data?.description,
+                            level: AlertLevels.ERROR,
+                            message: "Update error"
+                        }));
+
+                        return;
+                    }
+
+                    dispatch(addAlert({
+                        description: "An error occurred updating the application",
+                        level: AlertLevels.ERROR,
+                        message: "Update error"
+                    }));
+                })
+        }
+
+    }, [applicationTemplateName, application]);
 
     /**
      * Retrieves application details from the API.

@@ -236,6 +236,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onlyOIDCConfigured={
                     inboundProtocolList.length === 1 && (inboundProtocolList[0] === SupportedAuthProtocolTypes.OIDC)
                 }
+                onUpdate={ onUpdate }
             />
         </ResourceTab.Pane>
     );

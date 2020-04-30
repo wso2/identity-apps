@@ -103,8 +103,20 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                         <div className="label">Issuer</div>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                        <div className="value url">
+                        <div className="value">
                             { summary.inboundProtocolConfiguration.saml.manualConfiguration.issuer }
+                        </div>
+                    </Grid.Column>
+                </Grid.Row>
+            ) }
+            { summary?.inboundProtocolConfiguration?.saml?.manualConfiguration?.serviceProviderQualifier && (
+                <Grid.Row className="summary-field" columns={ 2 }>
+                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                        <div className="label">Application qualifier</div>
+                    </Grid.Column>
+                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                        <div className="value">
+                            { summary.inboundProtocolConfiguration.saml.manualConfiguration.serviceProviderQualifier }
                         </div>
                     </Grid.Column>
                 </Grid.Row>

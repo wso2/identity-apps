@@ -25,7 +25,7 @@ interface URLInputComponentInterface {
     setURLState: any;
     placeholder?: string;
     labelName: string;
-    computerWidth?: any;
+    computerWidth?: number;
     validation: (value?) => boolean;
     validationErrorMsg: string;
     value?: string;
@@ -61,6 +61,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
         required,
         disabled,
         hideComponent,
+        computerWidth,
         readOnly
     } = props;
 
@@ -81,8 +82,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
         if (urlState === "" || urlState === undefined) {
             setURLState(url);
             setChangeUrl("");
-        }
-        else {
+        } else {
             const availableURls = urlState.split(",");
             const duplicate = availableURls.includes(url);
             setDuplicateURL(duplicate);
@@ -193,10 +193,12 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
         }, [hideComponent]
     );
 
+    const computerSize: any = (computerWidth) ? computerWidth : 8;
+
     return (!hideEntireComponent &&
         <>
             <Grid.Row columns={ 1 } className={ "urlComponentLabelRow" }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
                     {
                         required ? (
                             <div className={ "required field" }>
@@ -209,7 +211,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row className={ "urlComponentInputRow" }>
-                <Grid.Column mobile={ 14 } tablet={ 14 } computer={ 8 }>
+                <Grid.Column mobile={ 14 } tablet={ 14 } computer={ computerSize }>
                     <Input
                         fluid
                         error={ validURL && !duplicateURL ? false : true }
@@ -261,7 +263,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row className={ "urlComponentInputRow" }>
-                <Grid.Column mobile={ 14 } tablet={ 14 } computer={ 8 }>
+                <Grid.Column mobile={ 14 } tablet={ 14 } computer={ computerSize }>
                     {
                         (predictValue.length > 0) &&
                         predictValue.map((predict) => {
@@ -283,7 +285,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                 if (url !== "") {
                     return (
                         <Grid.Row key={ url } className={ "urlComponentTagRow" }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
                                 <Label>
                                     { url }
                                     {
@@ -302,7 +304,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
             }) }
             { hint && (
                 <Grid.Row className={ "urlComponentTagRow" }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
                         <Hint>
                             { hint }
                         </Hint>
