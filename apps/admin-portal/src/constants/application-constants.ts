@@ -147,6 +147,14 @@ export class ApplicationConstants {
      * @default
      */
     public static readonly APP_CONFIG_FILE_NAME: string = "app.config.json";
+
+    /**
+     * Path for the user portal personal info page.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly MY_ACCOUNT_PATH: string = "/personal-info";
 }
 
 /**
