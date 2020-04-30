@@ -93,9 +93,10 @@ export const UserStoresEditPage = (props): ReactElement => {
      */
     const panes = [
         {
-            menuItem: "Basic Details",
+            menuItem: "General",
             render: () => (
                 <EditBasicDetailsUserStore
+                    properties={ properties?.basic }
                     userStore={ userStore }
                     update={ getUserStore }
                     id={ userStoreId }
@@ -103,35 +104,35 @@ export const UserStoresEditPage = (props): ReactElement => {
             )
         },
         {
-            menuItem: "Connection Details",
+            menuItem: "Connection",
             render: () => (
                 <EditConnectionDetails
                     update={ getUserStore }
                     type={ type }
                     id={ userStoreId }
-                    properties={ properties.connection }
+                    properties={ properties?.connection }
                 />
             )
         },
         {
-            menuItem: "User Details",
+            menuItem: "User",
             render: () => (
                 <EditUserDetails
                     update={ getUserStore }
                     type={ type }
                     id={ userStoreId }
-                    properties={ properties.user }
+                    properties={ properties?.user }
                 />
             )
         },
         {
-            menuItem: "Group Details",
+            menuItem: "Group",
             render: () => (
                 <EditGroupDetails
                     update={ getUserStore }
                     type={ type }
                     id={ userStoreId }
-                    properties={ properties.group }
+                    properties={ properties?.group }
                 />
             )
         }
