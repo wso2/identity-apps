@@ -26,7 +26,7 @@ import { CustomApplicationTemplate } from "../components/applications/meta";
 import { ApplicationTemplateIllustrations, EmptyPlaceholderIllustrations } from "../configs";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
-import { ApplicationTemplateListItemInterface } from "../models";
+import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../models";
 import { AppState } from "../store";
 import { ApplicationManagementUtils } from "../utils";
 
@@ -113,7 +113,8 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
                             <TemplateGrid<ApplicationTemplateListItemInterface>
                                 type="application"
                                 templates={
-                                    applicationTemplates.filter((template) => template.id !== "custom-application")
+                                    applicationTemplates.filter((template) =>
+                                        template.category === ApplicationTemplateCategories.DEFAULT)
                                 }
                                 templateIcons={ ApplicationTemplateIllustrations }
                                 heading={ t("devPortal:components.applications.templates.quickSetup.heading") }
@@ -143,7 +144,10 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
             <div className="custom-templates">
                 <TemplateGrid<ApplicationTemplateListItemInterface>
                     type="application"
-                    templates={ [CustomApplicationTemplate] }
+                    templates={
+                        applicationTemplates.filter((template) =>
+                            template.category === ApplicationTemplateCategories.DEFAULT_CUSTOM)
+                    }
                     templateIcons={ ApplicationTemplateIllustrations }
                     heading={ t("devPortal:components.applications.templates.manualSetup.heading") }
                     subHeading={ t("devPortal:components.applications.templates.manualSetup.subHeading") }

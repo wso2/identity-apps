@@ -175,6 +175,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     const [triggerProtocolSelectionSubmit, setTriggerProtocolSelectionSubmit] = useState<boolean>(false);
     const [selectedCustomInboundProtocol, setSelectedCustomInboundProtocol] = useState<boolean>(false);
 
+    const [selectedSAMLMetaFile, setSelectedSAMLMetaFile] = useState<boolean>(false);
+
     /**
      *  Retrieve Application template data.
      *
@@ -518,7 +520,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                 <SAMLProtocolAllSettingsWizardForm
                                     triggerSubmit={ submitOAuth }
                                     initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
-                                    templateValues={ templateSettings }
+                                    updateSelectedSAMLMetaFile={ setSelectedSAMLMetaFile }
                                     onSubmit={ (values): void => handleWizardFormSubmit(values,
                                         WizardStepsFormTypes.PROTOCOL_SETTINGS) }
                                 /> :
@@ -565,6 +567,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                             onSubmit={ HandleApplicationProtocolsUpdate }
                             image={ selectedTemplate.authenticationProtocol }
                             customProtocol={ selectedCustomInboundProtocol }
+                            samlMetaFileSelected={ selectedSAMLMetaFile }
                         />
                     )
                 } else {
