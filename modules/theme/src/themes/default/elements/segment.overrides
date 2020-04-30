@@ -282,6 +282,11 @@
         &.group-label {
             margin-right: @rolesListingLabelMargin;
         }
+
+        &.primary-label {
+            background: @roleListPrimaryLabelColor !important;
+            margin-right: @rolesListingLabelMargin;
+        }
     }
 }
 

@@ -76,7 +76,18 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     </>
                 )
             } else {
-                return displayName;
+                return (
+                    <>
+                        <Label
+                            content={ "Primary" }
+                            size="mini"
+                            color="olive"
+                            className={ "primary-label" }
+                        />
+                        { "/ " + displayName }
+                    </>
+                )
+                return "" + displayName;
             }
         } else {
             if (displayName.includes(APPLICATION_DOMAIN)) {

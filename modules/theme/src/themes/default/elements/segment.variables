@@ -74,6 +74,7 @@
 *************************************/
 
 @rolesListingLabelMargin: 1em;
+@roleListPrimaryLabelColor: #00b894;
 
 /*************************************
              Variation
