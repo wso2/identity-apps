@@ -586,7 +586,7 @@ export const devPortal: DevPortalNS = {
                 addUserForm: {
                     inputs: {
                         confirmPassword: {
-                            label: "Confirm password",
+                            label: "Confirm Password",
                             placeholder: "Enter the new password",
                             validations: {
                                 empty: "Confirm password is a required field",
@@ -601,7 +601,7 @@ export const devPortal: DevPortalNS = {
                             }
                         },
                         email: {
-                            label: "Email address",
+                            label: "Email Address",
                             placeholder: "Enter the email address",
                             validations: {
                                 empty: "Email address cannot be empty",
@@ -609,21 +609,21 @@ export const devPortal: DevPortalNS = {
                             }
                         },
                         firstName: {
-                            label: "First name",
+                            label: "First Name",
                             placeholder: "Enter your first name",
                             validations: {
                                 empty: "First name is a required field"
                             }
                         },
                         lastName: {
-                            label: "Last name",
+                            label: "Last Name",
                             placeholder: "Enter your last name",
                             validations: {
                                 empty: "Last name is a required field"
                             }
                         },
                         newPassword: {
-                            label: "New password",
+                            label: "New Password",
                             placeholder: "Enter the new password",
                             validations: {
                                 empty: "New password is a required field"
@@ -665,13 +665,12 @@ export const devPortal: DevPortalNS = {
                         "assign roles to this user please click on the button below."
                 },
                 addUserWizard: {
-                    title: "Add user",
-                    subTitle: "Follow the steps to add the new user",
+                    title: "Create User",
+                    subTitle: "Follow the steps to create the new user",
                     steps: {
-                        title: "Fill the following details to create a new user.",
-                        basicDetails: "Basic details",
-                        roles: "User roles",
-                        groups: "User groups",
+                        basicDetails: "Basic Details",
+                        roles: "User Roles",
+                        groups: "User Groups",
                         summary: "Summary"
                     },
                     buttons: {
@@ -683,22 +682,22 @@ export const devPortal: DevPortalNS = {
             profile: {
                 fields: {
                     /* eslint-disable @typescript-eslint/camelcase */
-                    addresses_home: "Home address",
-                    addresses_work: "Work address",
+                    addresses_home: "Home Address",
+                    addresses_work: "Work Address",
                     emails: "Email",
-                    emails_home: "Home email",
-                    emails_other: "Other email",
-                    emails_work: "Work email",
+                    emails_home: "Home Email",
+                    emails_other: "Other Email",
+                    emails_work: "Work Email",
                     generic: {
                         default: "Add {{fieldName}}"
                     },
-                    name_familyName: "Last name",
-                    name_givenName: "First name",
-                    phoneNumbers: "Phone number",
-                    phoneNumbers_home: "Home phone number",
-                    phoneNumbers_mobile: "Mobile number",
-                    phoneNumbers_other: "Other phone number",
-                    phoneNumbers_work: "Work phone number",
+                    name_familyName: "Last Name",
+                    name_givenName: "First Name",
+                    phoneNumbers: "Phone Number",
+                    phoneNumbers_home: "Home Phone Number",
+                    phoneNumbers_mobile: "Mobile Number",
+                    phoneNumbers_other: "Other Phone Number",
+                    phoneNumbers_work: "Work Phone Number",
                     profileUrl: "URL",
                     userName: "Username"
                     /* eslint-enable @typescript-eslint/camelcase */

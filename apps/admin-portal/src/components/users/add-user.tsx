@@ -96,7 +96,9 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      * Set the password setup option to 'createPw'.
      */
     useEffect(() => {
-        setPasswordOption("createPw");
+        if (!passwordOption) {
+            setPasswordOption("createPw");
+        }
     }, []);
 
     const passwordOptions = [
@@ -377,7 +379,9 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             data-testid="user_mgt_add_user_form_email_input"
-                            label="Email address"
+                            label={ t(
+                                "devPortal:components.user.forms.addUserForm.inputs.email.label"
+                            ) }
                             name="email"
                             placeholder={ t(
                                 "devPortal:components.user.forms.addUserForm.inputs." +

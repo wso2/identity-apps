@@ -660,7 +660,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group
-                    header={ t("devPortal:components.user.modals.addUserWizard.steps.title") }
                     current={ currentWizardStep }
                 >
                     { STEPS.map((step, index) => (
