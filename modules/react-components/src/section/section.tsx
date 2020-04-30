@@ -45,6 +45,7 @@ export interface SectionProps {
     secondaryActionIcon?: SemanticICONS;
     showActionBar?: boolean;
     topActionBar?: React.ReactNode;
+    accordion?: any;
 }
 
 /**
@@ -78,7 +79,8 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
         secondaryActionDisabled,
         secondaryActionIcon,
         showActionBar,
-        topActionBar
+        topActionBar,
+        accordion
     } = props;
 
     const classes = classNames({
@@ -261,7 +263,9 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                             </List>
                         </Card.Content>
                     )
-                    : null
+                    : (
+                        accordion
+                    )
             }
         </Card>
     );
