@@ -81,8 +81,8 @@
             var clientOriginAddress = "<%= htmlWebpackPlugin.options.serverUrl %>";
 
             var tenantName = getTenantName();
-            var defaultAdminPortalClientID = "DEVELOPER_PORTAL";
-            var tenantAdminPortalClientID = defaultAdminPortalClientID + "_" + tenantName;
+            var defaultDeveloperPortalClientID = "DEVELOPER_PORTAL";
+            var tenantDeveloperPortalClientID = defaultDeveloperPortalClientID + "_" + tenantName;
 
             var defaultUserPortalClientHost = serverOriginAddress + getTenantPath(tenantName);
             var defaultUserPortalBaseName = "user-portal";
@@ -103,7 +103,7 @@
                 clientOrigin: window.userConfig.clientOrigin || clientOriginAddress,
                 clientID: window.userConfig.clientID ||
                     (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ?
-                    tenantAdminPortalClientID : defaultAdminPortalClientID,
+                    tenantDeveloperPortalClientID : defaultDeveloperPortalClientID,
                 doNotDeleteApplications: doNotDeleteApplications || [],
                 myAccountPath: window.userConfig.myAccountPath || defaultMyAccountPath,
                 serverHost: window.userConfig.serverHost || serverOriginAddress + getTenantPath(tenantName),
