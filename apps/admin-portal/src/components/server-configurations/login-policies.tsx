@@ -19,21 +19,15 @@
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
-import { EditSection, Hint, Section } from "@wso2is/react-components";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import { EditSection, GenericIcon, Hint, LinkButton, Section } from "@wso2is/react-components";
+import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Form, Grid, List } from "semantic-ui-react";
+import { Accordion, Checkbox, CheckboxProps, Divider, Form, Grid, Icon } from "semantic-ui-react";
 import { getAllLoginPolicies, updateAllLoginPolicies } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 import { LoginPoliciesInterface } from "../../models/server-configurations";
-
-/**
- * Constant to store the login policies from identifier.
- * @type {string}
- */
-const LOGIN_POLICIES_FORM_IDENTIFIER = "loginPoliciesForm";
 
 /**
  * Prop types for the login policies component.
@@ -50,40 +44,14 @@ interface LoginPoliciesProps {
  */
 export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: LoginPoliciesProps): JSX.Element => {
 
-    const [editingForm, setEditingForm] = useState({
-        [LOGIN_POLICIES_FORM_IDENTIFIER]: false
-    });
-
-    const [loginPoliciesConfigs, setLoginPoliciesConfigs] = useState<LoginPoliciesInterface>({});
-    const [reset] = useTrigger();
+    const [ loginPoliciesConfigs, setLoginPoliciesConfigs ] = useState<LoginPoliciesInterface>({});
+    const [ mainAccordionActiveState, setMainAccordionActiveState ] = useState<boolean>(false);
+    const [ subAccordionActiveIndex, setSubAccordionActiveIndex ] = useState<number>(undefined);
+    const [ reset ] = useTrigger();
 
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
-
-    /**
-     * Handles the onClick event of the cancel button.
-     *
-     * @param formName - Name of the form
-     */
-    const hideFormEditView = (formName: string): void => {
-        setEditingForm({
-            ...editingForm,
-            [formName]: false
-        });
-    };
-
-    /**
-     * Handles the onClick event of the edit button.
-     *
-     * @param formName - Name of the form
-     */
-    const showFormEditView = (formName: string): void => {
-        setEditingForm({
-            ...editingForm,
-            [formName]: true
-        });
-    };
 
     const errorMessage = {
         description: t("devPortal:components.serverConfigs.loginPolicies.notifications.updateConfigurations." +
@@ -107,6 +75,8 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
     const makeLoginPoliciesPatchCall = (data, successNotification) => {
         updateAllLoginPolicies(data)
             .then(() => {
+                setLoginPoliciesConfigsFromAPI();
+                setSubAccordionActiveIndex(undefined);
                 dispatch(addAlert(successNotification));
             })
             .catch((error) => {
@@ -138,49 +108,36 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
         switch (key) {
             case ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE:
                 successNotification.description = t("devPortal:components.serverConfigs.loginPolicies." +
-                    "notifications.accountLockEnable.success.description");
+                    "notifications.updateAccountLockEnable.success.description");
                 break;
             case ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE:
                 successNotification.description = t("devPortal:components.serverConfigs.loginPolicies." +
-                    "notifications.accountDisablingEnable.success.description");
+                    "notifications.updateAccountDisablingEnable.success.description");
+                break;
+            case ServerConfigurationsConstants.ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT:
+                successNotification.description = t("devPortal:components.serverConfigs.loginPolicies." +
+                    "notifications.updateAccountDisablingEnable.success.description");
                 break;
         }
         makeLoginPoliciesPatchCall(data, successNotification);
     };
 
-    const saveLoginPoliciesAdvancedConfigs = (loginPoliciesConfigs) => {
+    const saveLoginPoliciesAdvancedConfigs = (values) => {
+        const configs = {
+            maxFailedLoginAttemptsToReCaptcha: values.get(
+                ServerConfigurationsConstants.MAX_FAILED_LOGIN_ATTEMPTS_TO_RE_CAPTCHA),
+            reCaptchaPreference: values.get("reCaptchaPreference")
+        };
         const data = {
             "operation": "UPDATE",
             "properties": [
                 {
-                    "name": ServerConfigurationsConstants.MAX_FAILED_LOGIN_ATTEMPTS_TO_ACCOUNT_LOCK,
-                    "value": loginPoliciesConfigs.maxFailedLoginAttemptsToAccountLock
-                },
-                {
-                    "name": ServerConfigurationsConstants.ACCOUNT_LOCK_TIME,
-                    "value": loginPoliciesConfigs.accountLockTime
-                },
-                {
-                    "name": ServerConfigurationsConstants.ACCOUNT_LOCK_TIME_INCREMENT_FACTOR,
-                    "value": loginPoliciesConfigs.accountLockTimeIncrementFactor
-                },
-                {
-                    "name": ServerConfigurationsConstants.ACCOUNT_LOCK_INTERNAL_NOTIFICATION_MANAGEMENT,
-                    "value": loginPoliciesConfigs.accountLockInternalNotificationManagement.length > 0 ?
-                        "true" : "false"
-                },
-                {
-                    "name": ServerConfigurationsConstants.ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT,
-                    "value": loginPoliciesConfigs.accountDisableInternalNotificationManagement.length > 0 ?
-                        "true" : "false"
-                },
-                {
                     "name": ServerConfigurationsConstants.MAX_FAILED_LOGIN_ATTEMPTS_TO_RE_CAPTCHA,
-                    "value": loginPoliciesConfigs.maxFailedLoginAttemptsToReCaptcha
+                    "value": configs.maxFailedLoginAttemptsToReCaptcha
                 }
             ]
         };
-        if (loginPoliciesConfigs.reCaptchaPreference === ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE) {
+        if (configs.reCaptchaPreference === ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE) {
             data.properties.push(
                 {
                     "name": ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE,
@@ -191,7 +148,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
                     "value": "false"
                 }
             )
-        } else if (loginPoliciesConfigs.reCaptchaPreference ===
+        } else if (configs.reCaptchaPreference ===
             ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE) {
             data.properties.push(
                 {
@@ -214,12 +171,8 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
         makeLoginPoliciesPatchCall(data, successNotification);
     };
 
-    const getFormValues = (values) => {
-        return {
-            accountDisableInternalNotificationManagement: values.get(
-                ServerConfigurationsConstants.ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT),
-            accountDisablingEnable: loginPoliciesConfigs.accountDisablingEnable,
-            accountLockEnable: loginPoliciesConfigs.accountLockEnable,
+    const saveAccountLockSettings = (values) => {
+        const configs = {
             accountLockInternalNotificationManagement: values.get(
                 ServerConfigurationsConstants.ACCOUNT_LOCK_INTERNAL_NOTIFICATION_MANAGEMENT),
             accountLockTime: values.get(
@@ -227,23 +180,47 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
             accountLockTimeIncrementFactor: values.get(
                 ServerConfigurationsConstants.ACCOUNT_LOCK_TIME_INCREMENT_FACTOR),
             maxFailedLoginAttemptsToAccountLock: values.get(
-                ServerConfigurationsConstants.MAX_FAILED_LOGIN_ATTEMPTS_TO_ACCOUNT_LOCK),
-            maxFailedLoginAttemptsToReCaptcha: values.get(
-                ServerConfigurationsConstants.MAX_FAILED_LOGIN_ATTEMPTS_TO_RE_CAPTCHA),
-            reCaptchaPreference: values.get("reCaptchaPreference")
+                ServerConfigurationsConstants.MAX_FAILED_LOGIN_ATTEMPTS_TO_ACCOUNT_LOCK)
         };
+        const data = {
+            "operation": "UPDATE",
+            "properties": [
+                {
+                    "name": ServerConfigurationsConstants.MAX_FAILED_LOGIN_ATTEMPTS_TO_ACCOUNT_LOCK,
+                    "value": configs.maxFailedLoginAttemptsToAccountLock
+                },
+                {
+                    "name": ServerConfigurationsConstants.ACCOUNT_LOCK_TIME,
+                    "value": configs.accountLockTime
+                },
+                {
+                    "name": ServerConfigurationsConstants.ACCOUNT_LOCK_TIME_INCREMENT_FACTOR,
+                    "value": configs.accountLockTimeIncrementFactor
+                },
+                {
+                    "name": ServerConfigurationsConstants.ACCOUNT_LOCK_INTERNAL_NOTIFICATION_MANAGEMENT,
+                    "value": configs.accountLockInternalNotificationManagement.length > 0 ?
+                        "true" : "false"
+                }
+            ]
+        };
+        const successNotification = {
+            description: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
+                "updateConfigurations.success.description"),
+            level: AlertLevels.SUCCESS,
+            message: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
+                "updateConfigurations.success.message")
+        };
+        makeLoginPoliciesPatchCall(data, successNotification);
     };
 
-    /**
-     * Load login policies from the API, on page load.
-     */
-    useEffect(() => {
+    const setLoginPoliciesConfigsFromAPI = () => {
         getAllLoginPolicies()
             .then((response) => {
                 const configs = {
                     accountDisableInternalNotificationManagement: [],
                     accountDisablingEnable: [],
-                    accountLockEnable: [],
+                    accountLockEnable: false,
                     accountLockInternalNotificationManagement: [],
                     accountLockTime: "",
                     accountLockTimeIncrementFactor: "",
@@ -253,7 +230,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
                 };
                 response.connectors.map(connector => {
                     if (connector.id === ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID) {
-                        configs.accountLockEnable = extractArrayValue(connector,
+                        configs.accountLockEnable = extractBooleanValue(connector,
                             ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE);
                         configs.maxFailedLoginAttemptsToAccountLock = connector.properties.find(
                             property => property.name ==
@@ -289,194 +266,282 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
                 });
                 setLoginPoliciesConfigs(configs);
             });
-    }, []);
+    };
+
+    /**
+     * Load login policies from the API, on page load.
+     */
+    useEffect(() => {
+        setLoginPoliciesConfigsFromAPI()
+    }, [props]);
 
     const extractArrayValue = (response, key) => {
         return response.properties.find(prop => prop.name === key).value === "true" ? [key] : [];
     };
 
-    const showLoginPoliciesSummary = (
-        <Forms>
-            <Grid padded={ true }>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column className="first-column" mobile={ 16 } tablet={ 16 } computer={ 14 }>
+    const extractBooleanValue = (response, key) => {
+        return response.properties.find(prop => prop.name === key).value === "true";
+    };
+    
+    const handleSubAccordionClick = (index) => {
+        if (subAccordionActiveIndex === index) {
+            setSubAccordionActiveIndex(undefined)
+        } else {
+            setSubAccordionActiveIndex(index)
+        }
+    };
+
+    const handleMainAccordionClick = () => {
+        setMainAccordionActiveState(!mainAccordionActiveState)
+    };
+
+    const showAccountLockOtherSettings: ReactElement = (
+        <Grid className="middle aligned mt-1">
+            <Grid.Row columns={ 2 } className="inner-list-item mt-3 mb-3">
+                <Grid.Column className="first-column" mobile={ 1 } tablet={ 1 } computer={ 1 }>
+                </Grid.Column>
+                <Grid.Column mobile={ 15 } tablet={ 15 } computer={ 15 }>
+                    <Field
+                        label={ t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
+                            "form.maxFailedLoginAttemptsToAccountLock.label") }
+                        name={ ServerConfigurationsConstants.MAX_FAILED_LOGIN_ATTEMPTS_TO_ACCOUNT_LOCK }
+                        placeholder={ t("devPortal:components.serverConfigs.loginPolicies." +
+                            "accountLock.form.maxFailedLoginAttemptsToAccountLock.placeholder") }
+                        required={ true }
+                        requiredErrorMessage={ t("devPortal:components.serverConfigs.loginPolicies." +
+                            "accountLock.form.maxFailedLoginAttemptsToAccountLock.validations.empty") }
+                        type="number"
+                        value={ loginPoliciesConfigs.maxFailedLoginAttemptsToAccountLock }
+                        width={ 9 }
+                        disabled={ !loginPoliciesConfigs?.accountLockEnable }
+                    />
+                    <Hint disabled={ !loginPoliciesConfigs?.accountLockEnable }>
+                        { t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
+                            "form.maxFailedLoginAttemptsToAccountLock.hint") }
+                    </Hint>
+                    <Divider className="hidden"/>
+                    <Field
+                        label={ t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
+                            "form.accountLockTime.label") }
+                        name={ ServerConfigurationsConstants.ACCOUNT_LOCK_TIME }
+                        placeholder={ t("devPortal:components.serverConfigs.loginPolicies." +
+                            "accountLock.form.accountLockTime.placeholder") }
+                        required={ true }
+                        requiredErrorMessage={ t("devPortal:components.serverConfigs.loginPolicies." +
+                            "accountLock.form.accountLockTime.validations.empty") }
+                        type="number"
+                        value={ loginPoliciesConfigs.accountLockTime }
+                        width={ 9 }
+                        disabled={ !loginPoliciesConfigs?.accountLockEnable }
+                    />
+                    <Hint disabled={ !loginPoliciesConfigs?.accountLockEnable }>
+                        { t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
+                            "form.accountLockTime.hint") }
+                    </Hint>
+                    <Divider className="hidden"/>
+                    <Field
+                        label={ t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
+                            "form.accountLockTimeIncrementFactor.label") }
+                        name={ ServerConfigurationsConstants.ACCOUNT_LOCK_TIME_INCREMENT_FACTOR }
+                        placeholder={ t("devPortal:components.serverConfigs.loginPolicies." +
+                            "accountLock.form.accountLockTimeIncrementFactor.placeholder") }
+                        required={ true }
+                        requiredErrorMessage={ t("devPortal:components.serverConfigs.loginPolicies." +
+                            "accountLock.form.accountLockTimeIncrementFactor.validations.empty") }
+                        type="number"
+                        value={ loginPoliciesConfigs.accountLockTimeIncrementFactor }
+                        width={ 9 }
+                        disabled={ !loginPoliciesConfigs?.accountLockEnable }
+                    />
+                    <Hint disabled={ !loginPoliciesConfigs?.accountLockEnable }>
+                        { t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
+                            "form.accountLockTimeIncrementFactor.hint") }
+                    </Hint>
+                    <Divider className="hidden"/>
+                    <Field
+                        name={ ServerConfigurationsConstants.ACCOUNT_LOCK_INTERNAL_NOTIFICATION_MANAGEMENT }
+                        required={ false }
+                        requiredErrorMessage=""
+                        type="checkbox"
+                        children={ [
+                            {
+                                label: t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
+                                    "form.accountLockInternalNotificationManagement.label"),
+                                value: ServerConfigurationsConstants.
+                                    ACCOUNT_LOCK_INTERNAL_NOTIFICATION_MANAGEMENT
+                            }
+                        ] }
+                        value={ loginPoliciesConfigs.accountLockInternalNotificationManagement }
+                        disabled={ !loginPoliciesConfigs?.accountLockEnable }
+                    />
+                    <Hint disabled={ !loginPoliciesConfigs?.accountLockEnable }>
+                        { t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
+                            "form.accountLockInternalNotificationManagement.hint") }
+                    </Hint>
+                    <Form.Group
+                        className={ !loginPoliciesConfigs?.accountLockEnable ?  "disabled" : "" }
+                    >
                         <Field
-                            name={ ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE }
+                            name=""
                             required={ false }
                             requiredErrorMessage=""
-                            type="checkbox"
-                            children={ [
-                                {
-                                    label: t("devPortal:components.serverConfigs.loginPolicies." +
-                                        "accountLock.form.accountLockEnable.label"),
-                                    value: ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE
-                                }
-                            ] }
-                            value={ loginPoliciesConfigs.accountLockEnable }
-                            listen={
-                                (values) => {
-                                    const value = values.get(ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE).
-                                        length > 0 ? "true" : "false";
-                                    saveLoginPoliciesConfigs(ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE, value);
-                                }
-                            }
-                            toggle
+                            size="small"
+                            type="submit"
+                            value={ t("common:update").toString() }
                         />
-                        <Field
-                            name={ ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE }
-                            required={ false }
-                            requiredErrorMessage=""
-                            type="checkbox"
-                            children={ [
-                                {
-                                    label: t("devPortal:components.serverConfigs.loginPolicies." +
-                                        "accountDisable.form.accountDisablingEnable.label"),
-                                    value: ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE
-                                }
-                            ] }
-                            value={ loginPoliciesConfigs.accountDisablingEnable }
-                            listen={
-                                (values) => {
-                                    const value = values.get(ServerConfigurationsConstants.
-                                        ACCOUNT_DISABLING_ENABLE).length > 0 ? "true" : "false";
-                                    saveLoginPoliciesConfigs(ServerConfigurationsConstants.
-                                        ACCOUNT_DISABLING_ENABLE, value);
-                                }
-                            }
-                            toggle
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </Forms>
+                    </Form.Group>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
     );
 
-    const showAdvancedLoginPoliciesView = editingForm[LOGIN_POLICIES_FORM_IDENTIFIER] && (
+    const accountLockAccordion: ReactElement = (
+        <Accordion>
+            <Accordion.Title
+                active={ subAccordionActiveIndex === 1 }
+                index={ 0 }
+                onClick={ () => { handleSubAccordionClick(1) } }
+            >
+                <Grid className="middle aligned mt-1">
+                    <Grid.Row columns={ 3 } className="inner-list-item">
+                        <Grid.Column className="first-column pl-3" mobile={ 14 } tablet={ 14 } computer={ 14 } >
+                            { t("devPortal:components.serverConfigs.loginPolicies." +
+                                "accountLock.form.accountLockEnable.label") }
+                        </Grid.Column>
+                        <Grid.Column mobile={ 1 } tablet={ 1 } computer={ 1 }>
+                            <Checkbox
+                                toggle
+                                onChange={
+                                    (e: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
+                                        e.stopPropagation();
+                                        const value = data.checked ? "true" : "false";
+                                        saveLoginPoliciesConfigs(ServerConfigurationsConstants.
+                                            ACCOUNT_LOCK_ENABLE, value);
+                                    }
+                                }
+                                checked={ loginPoliciesConfigs.accountLockEnable }
+                            />
+                        </Grid.Column>
+                        <Grid.Column
+                            className="last-column pb-2" textAlign="right" mobile={ 1 } tablet={ 1 } computer={ 1 }
+                        >
+                            <GenericIcon
+                                size="default"
+                                defaultIcon
+                                link
+                                inline
+                                transparent
+                                verticalAlign="middle"
+                                className="pr-3"
+                                icon={ <Icon name="angle right" className="chevron"/> }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Accordion.Title>
+            <Accordion.Content active={ subAccordionActiveIndex === 1 }>
+                { showAccountLockOtherSettings }
+            </Accordion.Content>
+        </Accordion>
+    );
+
+    const showAccountDisableInternalNotificationManagement: ReactElement = (
+        <Grid className="middle aligned mt-1">
+            <Grid.Row columns={ 2 } className="inner-list-item mt-3 mb-3">
+                <Grid.Column className="first-column" mobile={ 1 } tablet={ 1 } computer={ 1 }>
+                </Grid.Column>
+                <Grid.Column mobile={ 15 } tablet={ 15 } computer={ 15 }>
+                    <Field
+                        name={ ServerConfigurationsConstants.ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT }
+                        required={ false }
+                        requiredErrorMessage=""
+                        type="checkbox"
+                        children={ [
+                            {
+                                label: t("devPortal:components.serverConfigs.loginPolicies." +
+                                    "accountDisable.form.accountDisableInternalNotificationManagement.label"),
+                                value: ServerConfigurationsConstants.
+                                    ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT
+                            }
+                        ] }
+                        value={ loginPoliciesConfigs.accountDisableInternalNotificationManagement }
+                        listen={
+                            (values) => {
+                                const value = values.get(ServerConfigurationsConstants.
+                                    ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT).length > 0 ? "true" : "false";
+                                saveLoginPoliciesConfigs(ServerConfigurationsConstants.
+                                    ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT, value);
+                            }
+                        }
+                    />
+                    <Hint>
+                        { t("devPortal:components.serverConfigs.loginPolicies." +
+                            "accountDisable.form.accountDisableInternalNotificationManagement.hint") }
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
+    );
+
+    const accountDisableAccordion: ReactElement = (
+        <Accordion>
+            <Accordion.Title
+                active={ subAccordionActiveIndex === 2 }
+                index={ 0 }
+                onClick={ () => { handleSubAccordionClick(2) } }
+                className={ (loginPoliciesConfigs?.accountDisablingEnable?.length > 0) ? "" : "disabled" }
+            >
+                <Grid className="middle aligned mt-1">
+                    <Grid.Row columns={ 2 } className="inner-list-item">
+                        <Grid.Column className="first-column" mobile={ 12 } tablet={ 12 } computer={ 12 }>
+                            <Icon
+                                className="modal-icon"
+                                name={ loginPoliciesConfigs?.accountDisableInternalNotificationManagement?.length > 0 ?
+                                    "check circle" : "circle outline" }
+                                size="large"
+                                color={ (loginPoliciesConfigs.accountDisablingEnable?.length > 0 &&
+                                    loginPoliciesConfigs?.accountDisableInternalNotificationManagement?.length > 0)
+                                    ? "orange" : "grey" }
+                            />
+                            { t("devPortal:components.serverConfigs.loginPolicies.accountDisable." +
+                                "form.accountDisableInternalNotificationManagement.label") }
+                        </Grid.Column>
+                        <Grid.Column
+                            className="last-column pb-2"
+                            textAlign="right"
+                            mobile={ 4 } tablet={ 4 } computer={ 4 }
+                        >
+                            <GenericIcon
+                                size="default"
+                                defaultIcon
+                                link
+                                inline
+                                transparent
+                                verticalAlign="middle"
+                                className="pr-3"
+                                icon={ <Icon name="angle right" className="chevron"/> }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Accordion.Title>
+            <Accordion.Content active={ subAccordionActiveIndex === 2 }>
+                { showAccountDisableInternalNotificationManagement }
+            </Accordion.Content>
+        </Accordion>
+    );
+
+    const showAdvancedLoginPoliciesView: ReactElement = (
         <EditSection>
             <Forms
                 onSubmit={ (values) => {
-                    saveLoginPoliciesAdvancedConfigs(getFormValues(values));
+                    saveLoginPoliciesAdvancedConfigs(values);
                 } }
                 resetState={ reset }
             >
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Divider/>
-                            <h4>Account Locking</h4>
-                            <Field
-                                label={ t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
-                                    "form.maxFailedLoginAttemptsToAccountLock.label") }
-                                name={ ServerConfigurationsConstants.MAX_FAILED_LOGIN_ATTEMPTS_TO_ACCOUNT_LOCK }
-                                placeholder={ t("devPortal:components.serverConfigs.loginPolicies." +
-                                    "accountLock.form.maxFailedLoginAttemptsToAccountLock.placeholder") }
-                                required={ true }
-                                requiredErrorMessage={ t("devPortal:components.serverConfigs.loginPolicies." +
-                                    "accountLock.form.maxFailedLoginAttemptsToAccountLock.validations.empty") }
-                                type="number"
-                                value={ loginPoliciesConfigs.maxFailedLoginAttemptsToAccountLock }
-                                width={ 9 }
-                            />
-                            <Hint>
-                                { t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
-                                    "form.maxFailedLoginAttemptsToAccountLock.hint") }
-                            </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Field
-                                label={ t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
-                                    "form.accountLockTime.label") }
-                                name={ ServerConfigurationsConstants.ACCOUNT_LOCK_TIME }
-                                placeholder={ t("devPortal:components.serverConfigs.loginPolicies." +
-                                    "accountLock.form.accountLockTime.placeholder") }
-                                required={ true }
-                                requiredErrorMessage={ t("devPortal:components.serverConfigs.loginPolicies." +
-                                    "accountLock.form.accountLockTime.validations.empty") }
-                                type="number"
-                                value={ loginPoliciesConfigs.accountLockTime }
-                                width={ 9 }
-                            />
-                            <Hint>
-                                { t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
-                                    "form.accountLockTime.hint") }
-                            </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Field
-                                label={ t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
-                                    "form.accountLockTimeIncrementFactor.label") }
-                                name={ ServerConfigurationsConstants.ACCOUNT_LOCK_TIME_INCREMENT_FACTOR }
-                                placeholder={ t("devPortal:components.serverConfigs.loginPolicies." +
-                                    "accountLock.form.accountLockTimeIncrementFactor.placeholder") }
-                                required={ true }
-                                requiredErrorMessage={ t("devPortal:components.serverConfigs.loginPolicies." +
-                                    "accountLock.form.accountLockTimeIncrementFactor.validations.empty") }
-                                type="number"
-                                value={ loginPoliciesConfigs.accountLockTimeIncrementFactor }
-                                width={ 9 }
-                            />
-                            <Hint>
-                                { t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
-                                    "form.accountLockTimeIncrementFactor.hint") }
-                            </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Field
-                                name={ ServerConfigurationsConstants.ACCOUNT_LOCK_INTERNAL_NOTIFICATION_MANAGEMENT }
-                                required={ false }
-                                requiredErrorMessage=""
-                                type="checkbox"
-                                children={ [
-                                    {
-                                        label: t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
-                                            "form.accountLockInternalNotificationManagement.label"),
-                                        value: ServerConfigurationsConstants.
-                                            ACCOUNT_LOCK_INTERNAL_NOTIFICATION_MANAGEMENT
-                                    }
-                                ] }
-                                value={ loginPoliciesConfigs.accountLockInternalNotificationManagement }
-                            />
-                            <Hint>
-                                { t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
-                                    "form.accountLockInternalNotificationManagement.hint") }
-                            </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Divider/>
-                            <h4>Account Disabling</h4>
-                            <Field
-                                name={ ServerConfigurationsConstants.ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT }
-                                required={ false }
-                                requiredErrorMessage=""
-                                type="checkbox"
-                                children={ [
-                                    {
-                                        label: t("devPortal:components.serverConfigs.loginPolicies." +
-                                            "accountDisable.form.accountDisableInternalNotificationManagement.label"),
-                                        value: ServerConfigurationsConstants.
-                                            ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT
-                                    }
-                                ] }
-                                value={ loginPoliciesConfigs.accountDisableInternalNotificationManagement }
-                            />
-                            <Hint>
-                                { t("devPortal:components.serverConfigs.loginPolicies." +
-                                    "accountDisable.form.accountDisableInternalNotificationManagement.hint") }
-                            </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Divider/>
-                            <h4>Captcha for SSO Login</h4>
                             <Field
                                 name={ "reCaptchaPreference" }
                                 required={ false }
@@ -533,18 +598,6 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
                                     type="submit"
                                     value={ t("common:save").toString() }
                                 />
-                                <Field
-                                    name=""
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    className="link-button"
-                                    onClick={ () => {
-                                        hideFormEditView(LOGIN_POLICIES_FORM_IDENTIFIER);
-                                    } }
-                                    size="small"
-                                    type="button"
-                                    value={ t("common:close").toString() }
-                                />
                             </Form.Group>
                         </Grid.Column>
                     </Grid.Row>
@@ -553,25 +606,109 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
         </EditSection>
     );
 
+    const mainAccordion: ReactElement = (
+        <Accordion fluid styled>
+            <Accordion.Title
+                active={ mainAccordionActiveState }
+                index={ 0 }
+                onClick={ handleMainAccordionClick }
+            >
+                <Grid className="middle aligned">
+                    <Grid.Row columns={ 2 } className="inner-list-item">
+                        <Grid.Column className="first-column" >
+                            <LinkButton className="p-3">Captcha for SSO login</LinkButton>
+                        </Grid.Column>
+                        <Grid.Column className="last-column" textAlign="right" >
+                            <GenericIcon
+                                size="default"
+                                defaultIcon
+                                link
+                                inline
+                                transparent
+                                verticalAlign="middle"
+                                className="pr-3"
+                                icon={ <Icon name="angle right" className="chevron"/> }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Accordion.Title>
+            <Accordion.Content active={ mainAccordionActiveState }>
+                { showAdvancedLoginPoliciesView }
+            </Accordion.Content>
+        </Accordion>
+    );
+
+    const showLoginPolicies = (
+        <Forms
+            onSubmit={ (values) => {
+                saveAccountLockSettings(values)
+            } }
+        >
+            <Grid padded={ true } className="middle aligned">
+                <Grid.Row columns={ 1 } className="inner-list-item">
+                    <Grid.Column className="first-column">
+                        { accountLockAccordion }
+                    </Grid.Column>
+                </Grid.Row>
+                <Divider className="mr-5 ml-5" />
+                <Grid.Row columns={ 2 } className="inner-list-item">
+                    <Grid.Column className="first-column" mobile={ 14 } tablet={ 14 } computer={ 14 } >
+                        <label>{ t("devPortal:components.serverConfigs.loginPolicies." +
+                            "accountDisable.form.accountDisablingEnable.label") }</label>
+                    </Grid.Column>
+                    <Grid.Column mobile={ 2 } tablet={ 2 } computer={ 2 }>
+                        <Field
+                            name={ ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE }
+                            required={ false }
+                            requiredErrorMessage=""
+                            type="checkbox"
+                            children={ [
+                                {
+                                    label: "",
+                                    value: ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE
+                                }
+                            ] }
+                            value={ loginPoliciesConfigs.accountDisablingEnable }
+                            listen={
+                                (values) => {
+                                    const value = values.get(ServerConfigurationsConstants.
+                                        ACCOUNT_DISABLING_ENABLE).length > 0 ? "true" : "false";
+                                    saveLoginPoliciesConfigs(ServerConfigurationsConstants.
+                                        ACCOUNT_DISABLING_ENABLE, value);
+                                }
+                            }
+                            toggle
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+
+                <Grid.Row columns={ 1 } className="inner-list-item mt-3 mb-3">
+                    <Grid.Column className="first-column">
+                        { accountDisableAccordion }
+                    </Grid.Column>
+                </Grid.Row>
+
+                <Divider className="mr-5 ml-5" hidden />
+            </Grid>
+        </Forms>
+    );
+
     return (
         <Section
             description={ t("devPortal:components.serverConfigs.loginPolicies.description") }
             header={ t("devPortal:components.serverConfigs.loginPolicies.heading") }
-            iconMini={ SettingsSectionIcons.profileExportMini }
+            icon={ SettingsSectionIcons.federatedAssociations }
+            iconMini={ SettingsSectionIcons.federatedAssociationsMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
-            onPrimaryActionClick={ () => showFormEditView(LOGIN_POLICIES_FORM_IDENTIFIER) }
-            primaryAction={ t("devPortal:components.serverConfigs.loginPolicies.actionTitles.config") }
-            primaryActionIcon="key"
-            showActionBar={ !editingForm[LOGIN_POLICIES_FORM_IDENTIFIER] }
+            accordion={ mainAccordion }
         >
-            <List verticalAlign="middle" className="main-content-inner">
-                <List.Item className="inner-list-item">
-                    { showLoginPoliciesSummary }
-                    { showAdvancedLoginPoliciesView }
-                </List.Item>
-            </List>
+            <Divider className="m-0 mb-2"/>
+            <div className="main-content-inner">
+                { showLoginPolicies }
+            </div>
         </Section>
     );
 };

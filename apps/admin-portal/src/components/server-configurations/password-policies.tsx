@@ -19,21 +19,15 @@
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
-import { EditSection, Hint, Section } from "@wso2is/react-components";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import { GenericIcon, Hint, Section } from "@wso2is/react-components";
+import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Form, Grid, List } from "semantic-ui-react";
+import { Accordion, Checkbox, CheckboxProps, Divider, Form, Grid, Icon } from "semantic-ui-react";
 import { getAllPasswordPolicies, updateAllPasswordPolicies } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 import { PasswordPoliciesInterface } from "../../models/server-configurations";
-
-/**
- * Constant to store the password policies from identifier.
- * @type {string}
- */
-const PASSWORD_POLICIES_FORM_IDENTIFIER = "passwordPoliciesForm";
 
 /**
  * Prop types for the password policies component.
@@ -48,429 +42,467 @@ interface PasswordPoliciesProps {
  * @param {Props} props - Props injected to the password policies component.
  * @return {JSX.Element}
  */
-export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> =
-    (props: PasswordPoliciesProps): JSX.Element => {
+export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props: PasswordPoliciesProps):
+    JSX.Element => {
 
-        const [editingForm, setEditingForm] = useState({
-            [PASSWORD_POLICIES_FORM_IDENTIFIER]: false
-        });
+    const [ passwordPoliciesConfigs, setPasswordPoliciesConfigs ] = useState<PasswordPoliciesInterface>({});
+    const [ subAccordionActiveIndex, setSubAccordionActiveIndex ] = useState<number>(undefined);
 
-        const [passwordPoliciesConfigs, setPasswordPoliciesConfigs] = useState<PasswordPoliciesInterface>({});
-        const [reset] = useTrigger();
+    const dispatch = useDispatch();
 
-        const dispatch = useDispatch();
+    const { t } = useTranslation();
 
-        const { t } = useTranslation();
+    const errorMessage = {
+        description: t("devPortal:components.serverConfigs.passwordPolicies.notifications.updateConfigurations." +
+            "error.description"),
+        level: AlertLevels.ERROR,
+        message: t("devPortal:components.serverConfigs.passwordPolicies.notifications.updateConfigurations." +
+            "error.message")
+    };
 
-        /**
-         * Handles the onClick event of the cancel button.
-         *
-         * @param formName - Name of the form
-         */
-        const hideFormEditView = (formName: string): void => {
-            setEditingForm({
-                ...editingForm,
-                [formName]: false
+    const genericErrorMessage = {
+        description: t("devPortal:components.serverConfigs.passwordPolicies.notifications.updateConfigurations." +
+            "genericError.description"),
+        level: AlertLevels.ERROR,
+        message: t("devPortal:components.serverConfigs.passwordPolicies.notifications.updateConfigurations." +
+            "genericError.message")
+    };
+
+    const handleSubAccordionClick = (index) => {
+        if (subAccordionActiveIndex === index) {
+            setSubAccordionActiveIndex(undefined)
+        } else {
+            setSubAccordionActiveIndex(index)
+        }
+    };
+
+    /**
+     * Calls the API and update the password policies configurations.
+     */
+    const makePasswordPoliciesPatchCall = (data, successNotification) => {
+        updateAllPasswordPolicies(data)
+            .then(() => {
+                setPasswordPolicyConfigsFromAPI();
+                setSubAccordionActiveIndex(undefined);
+                dispatch(addAlert(successNotification));
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.detail) {
+                    dispatch(addAlert(errorMessage));
+                } else {
+                    // Generic error message
+                    dispatch(addAlert(genericErrorMessage));
+                }
             });
-        };
+    };
 
-        /**
-         * Handles the onClick event of the edit button.
-         *
-         * @param formName - Name of the form
-         */
-        const showFormEditView = (formName: string): void => {
-            setEditingForm({
-                ...editingForm,
-                [formName]: true
-            });
+    const savePasswordPoliciesConfigs = (key, value) => {
+        const data = {
+            "operation": "UPDATE",
+            "properties": [
+                {
+                    "name": key,
+                    "value": value
+                }
+            ]
         };
-
-        const errorMessage = {
-            description: t("devPortal:components.serverConfigs.passwordPolicies.notifications.updateConfigurations." +
-                "error.description"),
-            level: AlertLevels.ERROR,
-            message: t("devPortal:components.serverConfigs.passwordPolicies.notifications.updateConfigurations." +
-                "error.message")
+        const successNotification = {
+            description: "",
+            level: AlertLevels.SUCCESS,
+            message: t("devPortal:components.serverConfigs.passwordPolicies.notifications." +
+                "updateConfigurations.success.message")
         };
+        switch (key) {
+            case ServerConfigurationsConstants.PASSWORD_HISTORY_ENABLE:
+                successNotification.description = t("devPortal:components.serverConfigs.passwordPolicies." +
+                    "notifications.accountLockEnable.success.description");
+                break;
+            case ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE:
+                successNotification.description = t("devPortal:components.serverConfigs.passwordPolicies." +
+                    "notifications.accountDisablingEnable.success.description");
+                break;
+        }
+        makePasswordPoliciesPatchCall(data, successNotification);
+    };
 
-        const genericErrorMessage = {
-            description: t("devPortal:components.serverConfigs.passwordPolicies.notifications.updateConfigurations." +
-                "genericError.description"),
-            level: AlertLevels.ERROR,
-            message: t("devPortal:components.serverConfigs.passwordPolicies.notifications.updateConfigurations." +
-                "genericError.message")
+    const savePasswordPoliciesAdvancedConfigs = (passwordPoliciesConfigs) => {
+        const data = {
+            "operation": "UPDATE",
+            "properties": [
+                {
+                    "name": ServerConfigurationsConstants.PASSWORD_HISTORY_COUNT,
+                    "value": passwordPoliciesConfigs.passwordHistoryCount
+                },
+                {
+                    "name": ServerConfigurationsConstants.PASSWORD_POLICY_PATTERN,
+                    "value": passwordPoliciesConfigs.passwordPolicyPattern
+                },
+                {
+                    "name": ServerConfigurationsConstants.PASSWORD_POLICY_MAX_LENGTH,
+                    "value": passwordPoliciesConfigs.passwordPolicyMaxLength
+                },
+                {
+                    "name": ServerConfigurationsConstants.PASSWORD_POLICY_MIN_LENGTH,
+                    "value": passwordPoliciesConfigs.passwordPolicyMinLength
+                },
+                {
+                    "name": ServerConfigurationsConstants.PASSWORD_POLICY_ERROR_MESSAGE,
+                    "value": passwordPoliciesConfigs.passwordPolicyErrorMessage
+                }
+            ]
         };
+        const successNotification = {
+            description: t("devPortal:components.serverConfigs.passwordPolicies.notifications." +
+                "updateConfigurations.success.description"),
+            level: AlertLevels.SUCCESS,
+            message: t("devPortal:components.serverConfigs.passwordPolicies.notifications." +
+                "updateConfigurations.success.message")
+        };
+        makePasswordPoliciesPatchCall(data, successNotification);
+    };
 
-        /**
-         * Calls the API and update the password policies configurations.
-         */
-        const makePasswordPoliciesPatchCall = (data, successNotification) => {
-            updateAllPasswordPolicies(data)
-                .then(() => {
-                    dispatch(addAlert(successNotification));
-                })
-                .catch((error) => {
-                    if (error.response && error.response.data && error.response.data.detail) {
-                        dispatch(addAlert(errorMessage));
-                    } else {
-                        // Generic error message
-                        dispatch(addAlert(genericErrorMessage));
+    const getFormValues = (values) => {
+        return {
+            passwordHistoryCount: values.get(ServerConfigurationsConstants.PASSWORD_HISTORY_COUNT),
+            passwordHistoryEnable: passwordPoliciesConfigs.passwordHistoryEnable,
+            passwordPolicyEnable: passwordPoliciesConfigs.passwordPolicyEnable,
+            passwordPolicyErrorMessage: values.get(
+                ServerConfigurationsConstants.PASSWORD_POLICY_ERROR_MESSAGE),
+            passwordPolicyMaxLength: values.get(
+                ServerConfigurationsConstants.PASSWORD_POLICY_MAX_LENGTH),
+            passwordPolicyMinLength: values.get(
+                ServerConfigurationsConstants.PASSWORD_POLICY_MIN_LENGTH),
+            passwordPolicyPattern: values.get(
+                ServerConfigurationsConstants.PASSWORD_POLICY_PATTERN)
+        };
+    };
+
+    const setPasswordPolicyConfigsFromAPI = () => {
+        getAllPasswordPolicies()
+            .then((response) => {
+                const configs = {
+                    passwordHistoryCount: "",
+                    passwordHistoryEnable: false,
+                    passwordPolicyEnable: false,
+                    passwordPolicyErrorMessage: "",
+                    passwordPolicyMaxLength: "",
+                    passwordPolicyMinLength: "",
+                    passwordPolicyPattern: ""
+                };
+                response.connectors.map(connector => {
+                    if (connector.id === ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID) {
+                        configs.passwordHistoryEnable = extractBooleanValue(connector,
+                            ServerConfigurationsConstants.PASSWORD_HISTORY_ENABLE);
+                        configs.passwordHistoryCount = connector.properties.find(
+                            property => property.name ==
+                                ServerConfigurationsConstants.PASSWORD_HISTORY_COUNT).value;
+                    } else if (connector.id === ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID) {
+                        configs.passwordPolicyEnable = extractBooleanValue(connector,
+                            ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE);
+                        configs.passwordPolicyMinLength = connector.properties.find(
+                            property => property.name ==
+                                ServerConfigurationsConstants.PASSWORD_POLICY_MIN_LENGTH).value;
+                        configs.passwordPolicyMaxLength = connector.properties.find(
+                            property => property.name ==
+                                ServerConfigurationsConstants.PASSWORD_POLICY_MAX_LENGTH).value;
+                        configs.passwordPolicyPattern = connector.properties.find(
+                            property => property.name ==
+                                ServerConfigurationsConstants.PASSWORD_POLICY_PATTERN).value;
+                        configs.passwordPolicyErrorMessage = connector.properties.find(
+                            property => property.name ==
+                                ServerConfigurationsConstants.PASSWORD_POLICY_ERROR_MESSAGE).value;
                     }
                 });
-        };
+                setPasswordPoliciesConfigs(configs);
+            });
+    };
 
-        const savePasswordPoliciesConfigs = (key, value) => {
-            const data = {
-                "operation": "UPDATE",
-                "properties": [
-                    {
-                        "name": key,
-                        "value": value
-                    }
-                ]
-            };
-            const successNotification = {
-                description: "",
-                level: AlertLevels.SUCCESS,
-                message: t("devPortal:components.serverConfigs.passwordPolicies.notifications." +
-                    "updateConfigurations.success.message")
-            };
-            switch (key) {
-                case ServerConfigurationsConstants.PASSWORD_HISTORY_ENABLE:
-                    successNotification.description = t("devPortal:components.serverConfigs.passwordPolicies." +
-                        "notifications.accountLockEnable.success.description");
-                    break;
-                case ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE:
-                    successNotification.description = t("devPortal:components.serverConfigs.passwordPolicies." +
-                        "notifications.accountDisablingEnable.success.description");
-                    break;
-            }
-            makePasswordPoliciesPatchCall(data, successNotification);
-        };
+    /**
+     * Load password policies from the API, on page load.
+     */
+    useEffect(() => {
+        setPasswordPolicyConfigsFromAPI()
+    }, [props]);
 
-        const savePasswordPoliciesAdvancedConfigs = (passwordPoliciesConfigs) => {
-            const data = {
-                "operation": "UPDATE",
-                "properties": [
-                    {
-                        "name": ServerConfigurationsConstants.PASSWORD_HISTORY_COUNT,
-                        "value": passwordPoliciesConfigs.passwordHistoryCount
-                    },
-                    {
-                        "name": ServerConfigurationsConstants.PASSWORD_POLICY_PATTERN,
-                        "value": passwordPoliciesConfigs.passwordPolicyPattern
-                    },
-                    {
-                        "name": ServerConfigurationsConstants.PASSWORD_POLICY_MAX_LENGTH,
-                        "value": passwordPoliciesConfigs.passwordPolicyMaxLength
-                    },
-                    {
-                        "name": ServerConfigurationsConstants.PASSWORD_POLICY_MIN_LENGTH,
-                        "value": passwordPoliciesConfigs.passwordPolicyMinLength
-                    },
-                    {
-                        "name": ServerConfigurationsConstants.PASSWORD_POLICY_ERROR_MESSAGE,
-                        "value": passwordPoliciesConfigs.passwordPolicyErrorMessage
-                    }
-                ]
-            };
-            const successNotification = {
-                description: t("devPortal:components.serverConfigs.passwordPolicies.notifications." +
-                    "updateConfigurations.success.description"),
-                level: AlertLevels.SUCCESS,
-                message: t("devPortal:components.serverConfigs.passwordPolicies.notifications." +
-                    "updateConfigurations.success.message")
-            };
-            makePasswordPoliciesPatchCall(data, successNotification);
-        };
+    const extractBooleanValue = (response, key) => {
+        return response.properties.find(prop => prop.name === key).value === "true";
+    };
+    
+    const showPasswordHistoryOtherSettings: ReactElement = (
+        <Grid className="middle aligned mt-1">
+            <Grid.Row columns={ 2 } className="inner-list-item mt-3 mb-3">
+                <Grid.Column className="first-column" mobile={ 1 } tablet={ 1 } computer={ 1 }>
+                </Grid.Column>
+                <Grid.Column mobile={ 15 } tablet={ 15 } computer={ 15 }>
+                    <Field
+                        label={ t("devPortal:components.serverConfigs.passwordPolicies.passwordHistory." +
+                            "form.passwordHistoryCount.label") }
+                        name={ ServerConfigurationsConstants.PASSWORD_HISTORY_COUNT }
+                        placeholder={ t("devPortal:components.serverConfigs.passwordPolicies." +
+                            "passwordHistory.form.passwordHistoryCount.placeholder") }
+                        required={ true }
+                        requiredErrorMessage={ t("devPortal:components.serverConfigs.passwordPolicies." +
+                            "passwordHistory.form.passwordHistoryCount.validations.empty") }
+                        type="number"
+                        value={ passwordPoliciesConfigs.passwordHistoryCount }
+                        width={ 9 }
+                        disabled={ !passwordPoliciesConfigs.passwordHistoryEnable }
+                    />
+                    <Hint disabled={ !passwordPoliciesConfigs.passwordHistoryEnable }>
+                        { t("devPortal:components.serverConfigs.passwordPolicies.passwordHistory." +
+                            "form.passwordHistoryCount.hint") }
+                    </Hint>
+                    <Form.Group
+                        className={ !passwordPoliciesConfigs.passwordHistoryEnable ? "disabled" : "" }
+                    >
+                        <Field
+                            name=""
+                            required={ false }
+                            requiredErrorMessage=""
+                            size="small"
+                            type="submit"
+                            value={ t("common:update").toString() }
+                        />
+                    </Form.Group>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
+    );
 
-        const getFormValues = (values) => {
-            return {
-                passwordHistoryEnable: passwordPoliciesConfigs.passwordHistoryEnable,
-                passwordHistoryCount: values.get(ServerConfigurationsConstants.PASSWORD_HISTORY_COUNT),
-                passwordPolicyEnable: passwordPoliciesConfigs.passwordPolicyEnable,
-                passwordPolicyErrorMessage: values.get(
-                    ServerConfigurationsConstants.PASSWORD_POLICY_ERROR_MESSAGE),
-                passwordPolicyMaxLength: values.get(
-                    ServerConfigurationsConstants.PASSWORD_POLICY_MAX_LENGTH),
-                passwordPolicyMinLength: values.get(
-                    ServerConfigurationsConstants.PASSWORD_POLICY_MIN_LENGTH),
-                passwordPolicyPattern: values.get(
-                    ServerConfigurationsConstants.PASSWORD_POLICY_PATTERN)
-            };
-        };
-
-        /**
-         * Load password policies from the API, on page load.
-         */
-        useEffect(() => {
-            getAllPasswordPolicies()
-                .then((response) => {
-                    const configs = {
-                        passwordHistoryCount: "",
-                        passwordHistoryEnable: [],
-                        passwordPolicyEnable: [],
-                        passwordPolicyErrorMessage: "",
-                        passwordPolicyMaxLength: "",
-                        passwordPolicyMinLength: "",
-                        passwordPolicyPattern: ""
-                    };
-                    response.connectors.map(connector => {
-                        if (connector.id === ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID) {
-                            configs.passwordHistoryEnable = extractArrayValue(connector,
-                                ServerConfigurationsConstants.PASSWORD_HISTORY_ENABLE);
-                            configs.passwordHistoryCount = connector.properties.find(
-                                property => property.name ==
-                                    ServerConfigurationsConstants.PASSWORD_HISTORY_COUNT).value;
-                        } else if (connector.id === ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID) {
-                            configs.passwordPolicyEnable = extractArrayValue(connector,
-                                ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE);
-                            configs.passwordPolicyMinLength = connector.properties.find(
-                                property => property.name ==
-                                    ServerConfigurationsConstants.PASSWORD_POLICY_MIN_LENGTH).value;
-                            configs.passwordPolicyMaxLength = connector.properties.find(
-                                property => property.name ==
-                                    ServerConfigurationsConstants.PASSWORD_POLICY_MAX_LENGTH).value;
-                            configs.passwordPolicyPattern = connector.properties.find(
-                                property => property.name ==
-                                    ServerConfigurationsConstants.PASSWORD_POLICY_PATTERN).value;
-                            configs.passwordPolicyErrorMessage = connector.properties.find(
-                                property => property.name ==
-                                    ServerConfigurationsConstants.PASSWORD_POLICY_ERROR_MESSAGE).value;
-                        }
-                    });
-                    setPasswordPoliciesConfigs(configs);
-                });
-        }, []);
-
-        const extractArrayValue = (response, key) => {
-            return response.properties.find(prop => prop.name === key).value === "true" ? [key] : [];
-        };
-
-        const showPasswordPoliciesSummary = (
-            <Forms>
-                <Grid padded={ true }>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column className="first-column" mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Field
-                                name={ ServerConfigurationsConstants.PASSWORD_HISTORY_ENABLE }
-                                required={ false }
-                                requiredErrorMessage=""
-                                type="checkbox"
-                                children={ [
-                                    {
-                                        label: t("devPortal:components.serverConfigs.passwordPolicies." +
-                                            "passwordHistory.form.enable.label"),
-                                        value: ServerConfigurationsConstants.PASSWORD_HISTORY_ENABLE
-                                    }
-                                ] }
-                                value={ passwordPoliciesConfigs.passwordHistoryEnable }
-                                listen={
-                                    (values) => {
-                                        const value = values.get(ServerConfigurationsConstants.PASSWORD_HISTORY_ENABLE).
-                                            length > 0 ? "true" : "false";
-                                        savePasswordPoliciesConfigs(ServerConfigurationsConstants.PASSWORD_HISTORY_ENABLE,
-                                            value);
-                                    }
-                                }
+    const passwordHistoryAccordion: ReactElement = (
+        <Accordion>
+            <Accordion.Title
+                active={ subAccordionActiveIndex === 1 }
+                index={ 0 }
+                onClick={ () => { handleSubAccordionClick(1) } }
+            >
+                <Grid className="middle aligned mt-1">
+                    <Grid.Row columns={ 3 } className="inner-list-item">
+                        <Grid.Column className="first-column pl-3" mobile={ 14 } tablet={ 14 } computer={ 14 } >
+                            { t("devPortal:components.serverConfigs.passwordPolicies." +
+                            "passwordHistory.form.enable.label") }
+                        </Grid.Column>
+                        <Grid.Column mobile={ 1 } tablet={ 1 } computer={ 1 }>
+                            <Checkbox
                                 toggle
-                            />
-                            <Field
-                                name={ ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE }
-                                required={ false }
-                                requiredErrorMessage=""
-                                type="checkbox"
-                                children={ [
-                                    {
-                                        label: t("devPortal:components.serverConfigs.passwordPolicies." +
-                                            "passwordPatterns.form.enable.label"),
-                                        value: ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE
-                                    }
-                                ] }
-                                value={ passwordPoliciesConfigs.passwordPolicyEnable }
-                                listen={
-                                    (values) => {
-                                        const value = values.get(ServerConfigurationsConstants.
-                                            PASSWORD_POLICY_ENABLE).length > 0 ? "true" : "false";
+                                onChange={
+                                    (e: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
+                                        e.stopPropagation();
+                                        const value = data.checked ? "true" : "false";
                                         savePasswordPoliciesConfigs(ServerConfigurationsConstants.
-                                            PASSWORD_POLICY_ENABLE, value);
+                                            PASSWORD_HISTORY_ENABLE, value);
                                     }
                                 }
-                                toggle
+                                checked={ passwordPoliciesConfigs.passwordHistoryEnable }
+                            />
+                        </Grid.Column>
+                        <Grid.Column
+                            className="last-column pb-2" textAlign="right" mobile={ 1 } tablet={ 1 } computer={ 1 }
+                        >
+                            <GenericIcon
+                                size="default"
+                                defaultIcon
+                                link
+                                inline
+                                transparent
+                                verticalAlign="middle"
+                                className="pr-3"
+                                icon={ <Icon name="angle right" className="chevron"/> }
                             />
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </Forms>
-        );
+            </Accordion.Title>
+            <Accordion.Content active={ subAccordionActiveIndex === 1 }>
+                { showPasswordHistoryOtherSettings }
+            </Accordion.Content>
+        </Accordion>
+    );
 
-        const showAdvancedPasswordPoliciesView = editingForm[PASSWORD_POLICIES_FORM_IDENTIFIER] && (
-            <EditSection>
-                <Forms
-                    onSubmit={ (values) => {
-                        savePasswordPoliciesAdvancedConfigs(getFormValues(values));
-                    } }
-                    resetState={ reset }
-                >
-                    <Grid>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                <Divider/>
-                                <h4>Password History</h4>
-                                <Field
-                                    label={ t("devPortal:components.serverConfigs.passwordPolicies.passwordHistory." +
-                                        "form.passwordHistoryCount.label") }
-                                    name={ ServerConfigurationsConstants.PASSWORD_HISTORY_COUNT }
-                                    placeholder={ t("devPortal:components.serverConfigs.passwordPolicies." +
-                                        "passwordHistory.form.passwordHistoryCount.placeholder") }
-                                    required={ true }
-                                    requiredErrorMessage={ t("devPortal:components.serverConfigs.passwordPolicies." +
-                                        "passwordHistory.form.passwordHistoryCount.validations.empty") }
-                                    type="number"
-                                    value={ passwordPoliciesConfigs.passwordHistoryCount }
-                                    width={ 9 }
-                                />
-                                <Hint>
-                                    { t("devPortal:components.serverConfigs.passwordPolicies.passwordHistory." +
-                                        "form.passwordHistoryCount.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                <Divider/>
-                                <h4>Password Pattern</h4>
-                                <Field
-                                    label={ t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
-                                        "form.policyMinLength.label") }
-                                    name={ ServerConfigurationsConstants.PASSWORD_POLICY_MIN_LENGTH }
-                                    placeholder={ t("devPortal:components.serverConfigs.passwordPolicies." +
-                                        "passwordPatterns.form.policyMinLength.placeholder") }
-                                    required={ true }
-                                    requiredErrorMessage={ t("devPortal:components.serverConfigs.passwordPolicies." +
-                                        "passwordPatterns.form.policyMinLength.validations.empty") }
-                                    type="number"
-                                    value={ passwordPoliciesConfigs.passwordPolicyMinLength }
-                                    width={ 9 }
-                                />
-                                <Hint>
-                                    { t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
-                                        "form.policyMinLength.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                <Field
-                                    label={ t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
-                                        "form.policyMaxLength.label") }
-                                    name={ ServerConfigurationsConstants.PASSWORD_POLICY_MAX_LENGTH }
-                                    placeholder={ t("devPortal:components.serverConfigs.passwordPolicies." +
-                                        "passwordPatterns.form.policyMaxLength.placeholder") }
-                                    required={ true }
-                                    requiredErrorMessage={ t("devPortal:components.serverConfigs.passwordPolicies." +
-                                        "passwordPatterns.form.policyMaxLength.validations.empty") }
-                                    type="number"
-                                    value={ passwordPoliciesConfigs.passwordPolicyMaxLength }
-                                    width={ 9 }
-                                />
-                                <Hint>
-                                    { t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
-                                        "form.policyMaxLength.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                <Field
-                                    label={ t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
-                                        "form.policyPattern.label") }
-                                    name={ ServerConfigurationsConstants.PASSWORD_POLICY_PATTERN }
-                                    placeholder={ t("devPortal:components.serverConfigs.passwordPolicies." +
-                                        "passwordPatterns.form.policyPattern.placeholder") }
-                                    required={ true }
-                                    requiredErrorMessage={ t("devPortal:components.serverConfigs.passwordPolicies." +
-                                        "passwordPatterns.form.policyPattern.validations.empty") }
-                                    type="text"
-                                    value={ passwordPoliciesConfigs.passwordPolicyPattern }
-                                />
-                                <Hint>
-                                    { t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
-                                        "form.policyPattern.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                <Field
-                                    label={ t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
-                                        "form.errorMessage.label") }
-                                    name={ ServerConfigurationsConstants.PASSWORD_POLICY_ERROR_MESSAGE }
-                                    placeholder={ t("devPortal:components.serverConfigs.passwordPolicies." +
-                                        "passwordPatterns.form.errorMessage.placeholder") }
-                                    required={ true }
-                                    requiredErrorMessage={ t("devPortal:components.serverConfigs.passwordPolicies." +
-                                        "passwordPatterns.form.errorMessage.validations.empty") }
-                                    type="text"
-                                    value={ passwordPoliciesConfigs.passwordPolicyErrorMessage }
-                                />
-                                <Hint>
-                                    { t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
-                                        "form.errorMessage.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                <Form.Group>
-                                    <Field
-                                        name=""
-                                        required={ false }
-                                        requiredErrorMessage=""
-                                        size="small"
-                                        type="submit"
-                                        value={ t("common:save").toString() }
-                                    />
-                                    <Field
-                                        name=""
-                                        required={ false }
-                                        requiredErrorMessage=""
-                                        className="link-button"
-                                        onClick={ () => {
-                                            hideFormEditView(PASSWORD_POLICIES_FORM_IDENTIFIER);
-                                        } }
-                                        size="small"
-                                        type="button"
-                                        value={ t("common:close").toString() }
-                                    />
-                                </Form.Group>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </Forms>
-            </EditSection>
-        );
+    const showPasswordPolicyOtherSettings: ReactElement = (
+        <Grid className="middle aligned mt-1">
+            <Grid.Row columns={ 2 } className="inner-list-item mt-3 mb-3">
+                <Grid.Column className="first-column" mobile={ 1 } tablet={ 1 } computer={ 1 }>
+                </Grid.Column>
+                <Grid.Column mobile={ 15 } tablet={ 15 } computer={ 15 }>
+                    <Field
+                        label={ t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
+                            "form.policyMinLength.label") }
+                        name={ ServerConfigurationsConstants.PASSWORD_POLICY_MIN_LENGTH }
+                        placeholder={ t("devPortal:components.serverConfigs.passwordPolicies." +
+                            "passwordPatterns.form.policyMinLength.placeholder") }
+                        required={ true }
+                        requiredErrorMessage={ t("devPortal:components.serverConfigs.passwordPolicies." +
+                            "passwordPatterns.form.policyMinLength.validations.empty") }
+                        type="number"
+                        value={ passwordPoliciesConfigs.passwordPolicyMinLength }
+                        width={ 9 }
+                        disabled={ !passwordPoliciesConfigs.passwordPolicyEnable }
+                    />
+                    <Hint disabled={ !passwordPoliciesConfigs.passwordPolicyEnable }>
+                        { t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
+                            "form.policyMinLength.hint") }
+                    </Hint>
+                    <Divider hidden />
+                    <Field
+                        label={ t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
+                            "form.policyMaxLength.label") }
+                        name={ ServerConfigurationsConstants.PASSWORD_POLICY_MAX_LENGTH }
+                        placeholder={ t("devPortal:components.serverConfigs.passwordPolicies." +
+                            "passwordPatterns.form.policyMaxLength.placeholder") }
+                        required={ true }
+                        requiredErrorMessage={ t("devPortal:components.serverConfigs.passwordPolicies." +
+                            "passwordPatterns.form.policyMaxLength.validations.empty") }
+                        type="number"
+                        value={ passwordPoliciesConfigs.passwordPolicyMaxLength }
+                        width={ 9 }
+                        disabled={ !passwordPoliciesConfigs.passwordPolicyEnable }
+                    />
+                    <Hint disabled={ !passwordPoliciesConfigs.passwordPolicyEnable }>
+                        { t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
+                            "form.policyMaxLength.hint") }
+                    </Hint>
+                    <Divider hidden />
+                    <Field
+                        label={ t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
+                            "form.policyPattern.label") }
+                        name={ ServerConfigurationsConstants.PASSWORD_POLICY_PATTERN }
+                        placeholder={ t("devPortal:components.serverConfigs.passwordPolicies." +
+                            "passwordPatterns.form.policyPattern.placeholder") }
+                        required={ true }
+                        requiredErrorMessage={ t("devPortal:components.serverConfigs.passwordPolicies." +
+                            "passwordPatterns.form.policyPattern.validations.empty") }
+                        type="text"
+                        value={ passwordPoliciesConfigs.passwordPolicyPattern }
+                        disabled={ !passwordPoliciesConfigs.passwordPolicyEnable }
+                    />
+                    <Hint disabled={ !passwordPoliciesConfigs.passwordPolicyEnable }>
+                        { t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
+                            "form.policyPattern.hint") }
+                    </Hint>
+                    <Divider hidden />
+                    <Field
+                        label={ t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
+                            "form.errorMessage.label") }
+                        name={ ServerConfigurationsConstants.PASSWORD_POLICY_ERROR_MESSAGE }
+                        placeholder={ t("devPortal:components.serverConfigs.passwordPolicies." +
+                            "passwordPatterns.form.errorMessage.placeholder") }
+                        required={ true }
+                        requiredErrorMessage={ t("devPortal:components.serverConfigs.passwordPolicies." +
+                            "passwordPatterns.form.errorMessage.validations.empty") }
+                        type="text"
+                        value={ passwordPoliciesConfigs.passwordPolicyErrorMessage }
+                        disabled={ !passwordPoliciesConfigs.passwordPolicyEnable }
+                    />
+                    <Hint disabled={ !passwordPoliciesConfigs.passwordPolicyEnable }>
+                        { t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
+                            "form.errorMessage.hint") }
+                    </Hint>
+                    <Divider hidden />
+                    <Form.Group
+                        className={ passwordPoliciesConfigs.passwordPolicyEnable ? "" : "disabled" }
+                    >
+                        <Field
+                            name=""
+                            required={ false }
+                            requiredErrorMessage=""
+                            size="small"
+                            type="submit"
+                            value={ t("common:update").toString() }
+                        />
+                    </Form.Group>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
+    );
 
-        return (
-            <Section
-                description={ t("devPortal:components.serverConfigs.passwordPolicies.description") }
-                header={ t("devPortal:components.serverConfigs.passwordPolicies.heading") }
-                iconMini={ SettingsSectionIcons.profileExportMini }
-                iconSize="auto"
-                iconStyle="colored"
-                iconFloated="right"
-                onPrimaryActionClick={ () => showFormEditView(PASSWORD_POLICIES_FORM_IDENTIFIER) }
-                primaryAction={ t("devPortal:components.serverConfigs.passwordPolicies.actionTitles.config") }
-                primaryActionIcon="key"
-                showActionBar={ !editingForm[PASSWORD_POLICIES_FORM_IDENTIFIER] }
+    const passwordPolicyAccordion: ReactElement = (
+        <Accordion>
+            <Accordion.Title
+                active={ subAccordionActiveIndex === 2 }
+                index={ 0 }
+                onClick={ () => { handleSubAccordionClick(2) } }
             >
-                <List verticalAlign="middle" className="main-content-inner">
-                    <List.Item className="inner-list-item">
-                        { showPasswordPoliciesSummary }
-                        { showAdvancedPasswordPoliciesView }
-                    </List.Item>
-                </List>
-            </Section>
-        );
-    };
+                <Grid className="middle aligned">
+                    <Grid.Row columns={ 3 } className="inner-list-item">
+                        <Grid.Column className="first-column pl-3" mobile={ 14 } tablet={ 14 } computer={ 14 } >
+                            { t("devPortal:components.serverConfigs.passwordPolicies." +
+                                "passwordPatterns.form.enable.label") }
+                        </Grid.Column>
+                        <Grid.Column mobile={ 1 } tablet={ 1 } computer={ 1 }>
+                            <Checkbox
+                                toggle
+                                onChange={
+                                    (e: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
+                                        e.stopPropagation();
+                                        const value = data.checked ? "true" : "false";
+                                        savePasswordPoliciesConfigs(ServerConfigurationsConstants.
+                                            PASSWORD_POLICY_ENABLE, value);
+                                    }
+                                }
+                                checked={ passwordPoliciesConfigs.passwordPolicyEnable }
+                            />
+                        </Grid.Column>
+                        <Grid.Column
+                            className="last-column pb-2" textAlign="right" mobile={ 1 } tablet={ 1 } computer={ 1 }
+                        >
+                            <GenericIcon
+                                size="default"
+                                defaultIcon
+                                link
+                                inline
+                                transparent
+                                verticalAlign="middle"
+                                className="pr-3"
+                                icon={ <Icon name="angle right" className="chevron"/> }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Accordion.Title>
+            <Accordion.Content active={ subAccordionActiveIndex === 2 }>
+                { showPasswordPolicyOtherSettings }
+            </Accordion.Content>
+        </Accordion>
+    );
+
+    const showPasswordPolicies = (
+        <Forms
+            onSubmit={ (values) => {
+                savePasswordPoliciesAdvancedConfigs(getFormValues(values))
+            } }
+        >
+            <Grid padded={ true } className="middle aligned">
+                <Grid.Row columns={ 1 } className="inner-list-item">
+                    <Grid.Column className="first-column">
+                        { passwordHistoryAccordion }
+                    </Grid.Column>
+                </Grid.Row>
+                <Divider className="mr-5 ml-5" />
+                <Grid.Row columns={ 1 } className="inner-list-item">
+                    <Grid.Column className="first-column">
+                        { passwordPolicyAccordion }
+                    </Grid.Column>
+                </Grid.Row>
+                <Divider className="mr-5 ml-5" hidden />
+            </Grid>
+        </Forms>
+    );
+
+    return (
+        <Section
+            description={ t("devPortal:components.serverConfigs.passwordPolicies.description") }
+            header={ t("devPortal:components.serverConfigs.passwordPolicies.heading") }
+            icon={ SettingsSectionIcons.changePassword }
+            iconMini={ SettingsSectionIcons.changePasswordMini }
+            iconSize="auto"
+            iconStyle="colored"
+            iconFloated="right"
+        >
+            <Divider className="m-0 mb-2"/>
+            <div className="main-content-inner">
+                { showPasswordPolicies }
+            </div>
+        </Section>
+    );
+};

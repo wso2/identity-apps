@@ -50,7 +50,7 @@ export interface AccountRecoveryConfigurationsInterface {
 }
 
 export interface LoginPoliciesInterface {
-	accountLockEnable?: string[];
+	accountLockEnable?: boolean;
 	accountLockTime?: string;
 	accountLockTimeIncrementFactor?: string;
 	accountLockInternalNotificationManagement?: string[];
@@ -62,9 +62,9 @@ export interface LoginPoliciesInterface {
 }
 
 export interface PasswordPoliciesInterface {
-	passwordHistoryEnable?: string[];
+	passwordHistoryEnable?: boolean;
 	passwordHistoryCount?: string;
-	passwordPolicyEnable?: string[];
+	passwordPolicyEnable?: boolean;
 	passwordPolicyMinLength?: string;
 	passwordPolicyMaxLength?: string;
 	passwordPolicyPattern?: string;
