@@ -24,7 +24,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails } from "./wizards";
 import { addUserStore } from "../../api";
 import { ApplicationWizardStepIcons } from "../../configs";
-import { USER_STORES_PATH } from "../../constants";
+import { USER_STORES_PATH, UserstoreTypeDisplayNames } from "../../constants";
 import { history } from "../../helpers";
 import {
     AlertLevels,
@@ -173,7 +173,7 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
             }
         });
 
-        return [ ...connectionProperties, ...userProperties, ...groupProperties,...basicProperties ];
+        return [ ...connectionProperties, ...userProperties, ...groupProperties, ...basicProperties ];
     }
 
     /**
@@ -270,7 +270,7 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
             className="wizard application-create-wizard"
         >
             <Modal.Header className="wizard-header">
-                Add Userstore
+                { "Add " + UserstoreTypeDisplayNames[ type.typeName ] + " Userstore" }
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group
