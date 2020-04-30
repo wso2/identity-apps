@@ -17,7 +17,7 @@
 */
 
 import React, { ReactElement } from "react";
-import { Grid, Header } from "semantic-ui-react";
+import { Divider, Grid, Header } from "semantic-ui-react";
 import { TypeProperty, UserStorePostData, UserStoreProperty } from "../../../models";
 
 /**
@@ -37,6 +37,10 @@ interface SummaryUserStoresPropsInterface {
      */
     groupProperties: TypeProperty[];
     /**
+     * The basic properties.
+     */
+    basicProperties: TypeProperty[];
+    /**
      * The userstore data ready to be posted.
      */
     data: UserStorePostData;
@@ -53,7 +57,7 @@ interface SummaryUserStoresPropsInterface {
  */
 export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): ReactElement => {
 
-    const { data, connectionProperties, userProperties, groupProperties, type } = props;
+    const { data, connectionProperties, userProperties, groupProperties, basicProperties, type } = props;
 
     /**
      * This generates a summary row
@@ -62,10 +66,11 @@ export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): React
      */
     const generateSummaryLine = (
         title: string,
-        description: string | number | ReactElement
+        description: string | number | ReactElement,
+        key?: number
     ): ReactElement => {
         return (
-            <Grid.Row className="summary-field" columns={ 2 }>
+            <Grid.Row key={ key } className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                     <div className="label">{title}</div>
                 </Grid.Column>
@@ -88,53 +93,58 @@ export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): React
             </Grid.Row>
             { type ? generateSummaryLine("Userstore Type", type) : null }
 
-            <Grid.Row columns={ 2 }>
-                <Grid.Column width={ 16 }>
-                    <Header as="h5" textAlign="center">Connection Details</Header>
-                </Grid.Column>
-            </Grid.Row>
+            <Divider horizontal>General</Divider>
 
             {
-                connectionProperties?.map((property: TypeProperty) => {
-                    if (!(property.attributes.find(attribute=>attribute.name==="type")?.value==="password")) {
-                        return (
-                            generateSummaryLine(
-                                property.description.split("#")[0],
-                                data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
-                                    return userStoreProperty.name === property.name
-                                }))[0].value
-                            )
-                        )
-                    }
-                })
-            }
-
-            <Grid.Row columns={ 2 }>
-                <Grid.Column width={ 16 }>
-                    <Header as="h5" textAlign="center">User Details</Header>
-                </Grid.Column>
-            </Grid.Row>
-
-            {
-                userProperties?.map((property: TypeProperty) => {
+                basicProperties?.map((property: TypeProperty, index: number) => {
                     if (!(property.attributes.find(attribute => attribute.name === "type")?.value === "password")) {
                         return (
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
                                 data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
                                     return userStoreProperty.name === property.name
-                                }))[ 0 ].value
+                                }))[ 0 ]?.value,
+                                index
+                            )
+                        )
+                    }
+                })
+            }
+            {
+                connectionProperties?.map((property: TypeProperty, index: number) => {
+                    if (!(property.attributes.find(attribute=>attribute.name==="type")?.value==="password")) {
+                        return (
+                            generateSummaryLine(
+                                property.description.split("#")[0],
+                                data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
+                                    return userStoreProperty.name === property.name
+                                }))[ 0 ]?.value,
+                                index
                             )
                         )
                     }
                 })
             }
 
-            <Grid.Row columns={ 2 }>
-                <Grid.Column width={ 16 }>
-                    <Header as="h5" textAlign="center">Group Details</Header>
-                </Grid.Column>
-            </Grid.Row>
+            <Divider horizontal>User</Divider>
+
+            {
+                userProperties?.map((property: TypeProperty, index: number) => {
+                    if (!(property.attributes.find(attribute => attribute.name === "type")?.value === "password")) {
+                        return (
+                            generateSummaryLine(
+                                property.description.split("#")[ 0 ],
+                                data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
+                                    return userStoreProperty.name === property.name
+                                }))[ 0 ]?.value,
+                                index
+                            )
+                        )
+                    }
+                })
+            }
+
+            <Divider horizontal>Group</Divider>
 
             {
                 groupProperties?.map((property: TypeProperty) => {
@@ -144,7 +154,7 @@ export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): React
                                 property.description.split("#")[ 0 ],
                                 data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
                                     return userStoreProperty.name === property.name
-                                }))[ 0 ].value
+                                }))[ 0 ]?.value
                             )
                         )
                     }
