@@ -24,16 +24,20 @@
  */
 
 import moment from "moment"
+import * as forge from "node-forge";
+import { CERTIFICATE_BEGIN, CERTIFICATE_END, END_LINE } from "../constants";
+import { DisplayCertificate } from "../models";
+
 /**
  * Class containing common utility methods used
  * throuought the application.
- * 
+ *
  */
 export class CommonUtils {
-    
+
     /**
      * A util method to humanize the last modified date.
-     * 
+     *
      * @param date - Date string which needs to be humanize
      */
     static humanizeDateDifference = (date: string): string => {
@@ -41,5 +45,68 @@ export class CommonUtils {
         const recievedDate = moment(date);
         return "Last modified " + moment.duration(now.diff(recievedDate)).humanize() + " ago";
     };
-    
+
+    /**
+     * Decodes the pem value.
+     *
+     * @param pem Pem value to be decoded.
+     */
+    public static decodeCertificate = (pem: string): forge.pki.Certificate => {
+        const pemValue = pem.split("\n");
+
+        // appends -----END CERTIFICATE-----.
+        pemValue.push(CERTIFICATE_END);
+
+        // appends a new line.
+        pemValue.push(END_LINE);
+
+        // pushes -----BEGIN CERTIFICATE----- to the top.
+        pemValue.unshift(CERTIFICATE_BEGIN);
+
+        const pemCert = pemValue.join("\n");
+
+        try {
+            const certificateForge = forge.pki
+                .certificateFromPem(pemCert);
+
+            return certificateForge;
+        } catch (e) {
+
+            return null
+        }
+    };
+
+    /**
+     * Decode the pem details and show in the DisplayCertificate format.
+     *
+     * @param pem Pem value to be decoded.
+     */
+    public static displayCertificate = (pem: string): DisplayCertificate => {
+
+        const certificateForge = CommonUtils.decodeCertificate(pem);
+        if (certificateForge) {
+            const displayCertificate: DisplayCertificate = {
+                issuerDN: certificateForge.issuer.attributes
+                    .map(attribute => {
+                        return {
+                            [attribute.shortName]: attribute.value
+                        }
+                    }),
+                serialNumber: certificateForge.serialNumber,
+                subjectDN: certificateForge.subject.attributes
+                    .map(attribute => {
+                        return {
+                            [attribute.shortName]: attribute.value
+                        }
+                    }),
+                validFrom: certificateForge.validity.notBefore,
+                validTill: certificateForge.validity.notAfter,
+                version: certificateForge.version
+            };
+
+            return displayCertificate;
+        }
+        return null;
+    };
+
 }
