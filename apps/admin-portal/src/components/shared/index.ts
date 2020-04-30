@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./advanced-search-with-basic-filters";
 export * from "./authenticator-accordion";
 export * from "./icon";
 export * from "./empty-placeholder";
