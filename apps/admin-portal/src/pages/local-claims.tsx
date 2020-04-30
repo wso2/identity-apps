@@ -218,7 +218,7 @@ export const LocalClaimsPage = (): ReactElement => {
             }
             <PageLayout
                 title="Local Attributes"
-                description="View, edit and add local attributes"
+                description="Create and manage local attributes"
                 showBottomDivider={ true }
                 backButton={ {
                     onClick: () => { history.push(CLAIM_DIALECTS_PATH) },
