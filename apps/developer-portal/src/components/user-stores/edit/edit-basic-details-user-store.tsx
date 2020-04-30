@@ -380,6 +380,7 @@ export const EditBasicDetailsUserStore = (
                                     onChange={ (name: string, value: string) => {
                                         const tempSql = new Map(sql);
                                         tempSql.set(name, value);
+                                        setSql(tempSql);
                                     } }
                                     properties={ properties.optional.sql }
                                 />
