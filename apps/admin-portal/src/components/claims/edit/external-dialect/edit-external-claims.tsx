@@ -73,6 +73,8 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
     const [ sortOrder, setSortOrder ] = useState(true);
     const [ isLoading, setIsLoading ] = useState(true);
 
+    const { t } = useTranslation();
+
     const dispatch = useDispatch();
 
     const { dialectID } = props;
@@ -184,6 +186,27 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
         setSortOrder(isAscending);
     };
 
+    /**
+     * Handles the `onFilter` callback action from the
+     * advanced search component.
+     *
+     * @param {string} query - Search query.
+     */
+    const handleExternalClaimFilter = (query: string): void => {
+        try {
+            const filteredList: ExternalClaim[] = filterList(
+                claims, query, sortBy.value, sortOrder
+            );
+            setFilteredClaims(filteredList);
+        } catch (error) {
+            dispatch(addAlert({
+                description: error?.message,
+                level: AlertLevels.ERROR,
+                message: "Filter query format incorrect"
+            }));
+        }
+    };
+
     return (
         <>
             <AddExternalClaims dialect={ dialect } update={ () => { getExternalClaims(null) } } />
@@ -192,21 +215,38 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                 claims?.length > 0
                     ? (
                         <ListLayout
-                            advancedSearch={ <ExternalClaimsSearch onFilter={ (query) => {
-                                //TODO: getExternalClaims(null, null, null, query);
-                                try {
-                                    const filteredList: ExternalClaim[] = filterList(
-                                        claims, query, sortBy.value, sortOrder
-                                    );
-                                    setFilteredClaims(filteredList);
-                                } catch (error) {
-                                    dispatch(addAlert({
-                                        description: error?.message,
-                                        level: AlertLevels.ERROR,
-                                        message: "Filter query format incorrect"
-                                    }));
-                                }
-                            } } /> }
+                            advancedSearch={ (
+                                <AdvancedSearchWithBasicFilters
+                                    onFilter={ handleExternalClaimFilter  }
+                                    filterAttributeOptions={ [
+                                        {
+                                            key: 0,
+                                            text: "Claim URI",
+                                            value: "claimURI"
+                                        },
+                                        {
+                                            key: 1,
+                                            text: "Mapped Local Claim URI",
+                                            value: "mappedLocalClaimURI"
+                                        }
+                                    ] }
+                                    filterAttributePlaceholder={
+                                        t("devPortal:components.claims.external.advancedSearch.form.inputs" +
+                                            ".filterAttribute.placeholder")
+                                    }
+                                    filterConditionsPlaceholder={
+                                        t("devPortal:components.claims.external.advancedSearch.form.inputs" +
+                                            ".filterCondition.placeholder")
+                                    }
+                                    filterValuePlaceholder={
+                                        t("devPortal:components.claims.external.advancedSearch.form.inputs" +
+                                            ".filterValue.placeholder")
+                                    }
+                                    placeholder={ t("devPortal:components.claims.external.advancedSearch.placeholder") }
+                                    defaultSearchAttribute="claimURI"
+                                    defaultSearchOperator="co"
+                                />
+                            ) }
                             currentListSize={ listItemLimit }
                             listItemLimit={ listItemLimit }
                             onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
