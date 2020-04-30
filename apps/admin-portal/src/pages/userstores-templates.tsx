@@ -50,6 +50,8 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
     const [ rawUserstoreTypes, setRawUserstoreTypes ] = useState<UserstoreType[]>([]);
     const [ openModal, setOpenModal ] = useState(false);
     const [ selectedType, setSelectedType ] = useState<UserstoreType>(null);
+    const [ isLoading, setIsLoading ] = useState(true);
+
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
@@ -60,13 +62,14 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
 
     useEffect(() => {
         !openModal && setSelectedType(null);
-    },[openModal])
+    }, [ openModal ])
 
     /**
      * Fetches the list of userstore types.
      */
     useEffect(() => {
         getUserstoreTypes().then(async (response: TypeResponse[]) => {
+            setIsLoading(true);
             const typeRequests: Promise<any>[] = response.map((type: TypeResponse) => {
                 return getAType(type.typeId, null);
             });
@@ -81,7 +84,7 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
                     }));
                 }))
             );
-            
+
             const userstoreTypes: UserstoreTypeListItem[] = [];
             const uniqueUserstoreTypes: UserstoreTypeListItem[] = [];
             const rawUserstoreTypes: UserstoreType[] = [];
@@ -102,7 +105,7 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
                             {
                                 description: type.description,
                                 id: type.typeId,
-                                image:"customApp",
+                                image: "customApp",
                                 name: type.typeName
                             }
                         )
@@ -117,6 +120,8 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
                 level: AlertLevels.ERROR,
                 message: error?.message || "Something went wrong"
             }));
+        }).finally(() => {
+            setIsLoading(false);
         });
     }, []);
 
@@ -134,51 +139,55 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
                     />
                 )
             }
-        <PageLayout
-            title="Userstores"
-            description="Please choose one of the following userstore types."
-            contentTopMargin={ true }
-            backButton={ {
-                onClick: () => {
-                    history.push(USER_STORES_PATH);
-                },
-                text: "Select Userstore Type"
-            } }
-            titleTextAlign="left"
-            bottomMargin={ false }
-            showBottomDivider
-        >
-            {
-                userstoreTypes && (
-                    <div className="quick-start-templates">
-                        <TemplateGrid<UserstoreTypeListItem>
-                            type="userstore"
-                            templates={ userstoreTypes }
-                            heading="Quick Setup"
-                            subHeading="Predefined set of templates to speed up your userstore creation."
-                            onTemplateSelect={ (e: SyntheticEvent, { id }: { id: string }) => {
-                                setSelectedType(rawUserstoreTypes.find((type) => type.typeId === id));
-                            } }
-                            templateIcons={ ApplicationTemplateIllustrations }
-                            paginate={ true }
-                            paginationLimit={ 4 }
-                            paginationOptions={ {
-                                showLessButtonLabel: t("common:showLess"),
-                                showMoreButtonLabel: t("common:showMore")
-                            } }
-                            emptyPlaceholder={ (
-                                <EmptyPlaceholder
-                                    image={ EmptyPlaceholderIllustrations.newList }
-                                    imageSize="tiny"
-                                    title={ t("devPortal:components.templates.emptyPlaceholder.title") }
-                                    subtitle={ [ t("devPortal:components.templates.emptyPlaceholder.subtitles") ] }
-                                />
-                            ) }
-                        />
-                    </div>
-                )
-            }
+            <PageLayout
+                title="Userstores"
+                description="Please choose one of the following userstore types."
+                contentTopMargin={ true }
+                backButton={ {
+                    onClick: () => {
+                        history.push(USER_STORES_PATH);
+                    },
+                    text: "Select Userstore Type"
+                } }
+                titleTextAlign="left"
+                bottomMargin={ false }
+                showBottomDivider
+            >
+                {
+                    userstoreTypes && (
+                        <div className="quick-start-templates">
+                            <TemplateGrid<UserstoreTypeListItem>
+                                type="userstore"
+                                templates={ userstoreTypes }
+                                heading="Quick Setup"
+                                subHeading="Predefined set of templates to speed up your userstore creation."
+                                onTemplateSelect={ (e: SyntheticEvent, { id }: { id: string }) => {
+                                    setSelectedType(rawUserstoreTypes.find((type) => type.typeId === id));
+                                } }
+                                templateIcons={ ApplicationTemplateIllustrations }
+                                paginate={ true }
+                                paginationLimit={ 4 }
+                                paginationOptions={ {
+                                    showLessButtonLabel: t("common:showLess"),
+                                    showMoreButtonLabel: t("common:showMore")
+                                } }
+                                emptyPlaceholder={ (
+                                    !isLoading && (
+                                        <EmptyPlaceholder
+                                            image={ EmptyPlaceholderIllustrations.newList }
+                                            imageSize="tiny"
+                                            title={ t("devPortal:components.templates.emptyPlaceholder.title") }
+                                            subtitle={
+                                                [ t("devPortal:components.templates.emptyPlaceholder.subtitles") ]
+                                            }
+                                        />
+                                    )
+                                ) }
+                            />
+                        </div>
+                    )
+                }
             </PageLayout>
-            </>
+        </>
     )
 };
