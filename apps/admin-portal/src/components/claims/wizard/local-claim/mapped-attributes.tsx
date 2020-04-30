@@ -72,7 +72,7 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): ReactEl
                 <Grid.Column width={ 14 }>
                     <h4>Map Attributes</h4>
                     <p>
-                        Enter the attribute from each userstore that you want to map to this claim.
+                        Enter the attribute from each userstore that you want to map to this attribute.
                     </p>
                     <Divider hidden />
                     <Divider hidden />

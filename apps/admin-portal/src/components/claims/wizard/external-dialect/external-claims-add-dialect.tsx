@@ -107,8 +107,9 @@ export const ExternalClaims = (props: ExternalClaimsPropsInterface): ReactElemen
                             )
                             : (
                                 <EmptyPlaceholder
-                                    title="No External Claim"
-                                    subtitle={ [ "Currently, there is no external claim available for this dialect." ] }
+                                    title="No External Attributes"
+                                    subtitle={ [ "Currently, there are no external attributes available for " + 
+                                    "this dialect." ] }
                                     image={ EmptyPlaceholderIllustrations.emptyList }
                                     imageSize="tiny"
                                 />

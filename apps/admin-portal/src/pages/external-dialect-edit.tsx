@@ -66,7 +66,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
                 This action is irreversible and will permanently delete the selected external dialect.
                         </ConfirmationModal.Message>
             <ConfirmationModal.Content>
-                If you delete this external dialect, all the associated external claims will also be deleted.
+                If you delete this external dialect, all the associated external attributes will also be deleted.
                 Please proceed with caution.
             </ConfirmationModal.Content>
         </ConfirmationModal>
@@ -113,7 +113,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while fetching the external claims",
+                    description: error?.description || "There was an error while fetching the external attribute",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -179,12 +179,12 @@ export const ExternalDialectEditPage = (props): ReactElement => {
                 </Image>
             }
             title={ dialect?.dialectURI }
-            description={ "Edit external dialect and its claims" }
+            description={ "Edit external dialect and its attributes" }
             backButton={ {
                 onClick: () => {
                     history.push(CLAIM_DIALECTS_PATH);
                 },
-                text: "Go back to claim dialects"
+                text: "Go back to attribute dialects"
             } }
             titleTextAlign="left"
             bottomMargin={ false }
@@ -206,7 +206,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
             <Divider />
             <Grid columns={ 1 }>
                 <Grid.Column width={ 16 }>
-                    <Header as="h5">Update External Claims</Header>
+                    <Header as="h5">Update External Attributes</Header>
                 </Grid.Column>
             </Grid>
 

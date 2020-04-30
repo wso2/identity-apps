@@ -19,7 +19,7 @@
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ConfirmationModal, CopyInputField, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import React, { ReactElement, useRef, useState } from "react";
+import React, { ReactElement, useRef, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Divider, Form, Grid, Popup } from "semantic-ui-react";
 import { deleteAClaim, updateAClaim } from "../../../../api";
@@ -52,6 +52,8 @@ export const EditBasicDetailsLocalClaims = (
 
     const dispatch = useDispatch();
 
+    const { claim, update } = props;
+
     const [ isShowNameHint, setIsShowNameHint ] = useState(false);
     const [ isShowRegExHint, setIsShowRegExHint ] = useState(false);
     const [ isShowDisplayOrderHint, setIsShowDisplayOrderHint ] = useState(false);
@@ -62,7 +64,11 @@ export const EditBasicDetailsLocalClaims = (
     const regExField = useRef<HTMLElement>(null);
     const displayOrderField = useRef<HTMLElement>(null);
 
-    const { claim, update } = props;
+    useEffect(() => {
+        if (claim?.supportedByDefault) {
+            setIsShowDisplayOrder(true);
+        }
+    }, [claim])
 
     const deleteConfirmation = (): ReactElement => (
         <ConfirmationModal
@@ -79,10 +85,10 @@ export const EditBasicDetailsLocalClaims = (
         >
             <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
             <ConfirmationModal.Message attached warning>
-                This action is irreversible and will permanently delete the selected local claim.
+                This action is irreversible and will permanently delete the selected local attribute.
                         </ConfirmationModal.Message>
             <ConfirmationModal.Content>
-                If you delete this local claim, the user data belonging to this claim will also be deleted.
+                If you delete this local attribute, the user data belonging to this attribute will also be deleted.
                 Please proceed with caution.
             </ConfirmationModal.Content>
         </ConfirmationModal>
@@ -99,13 +105,13 @@ export const EditBasicDetailsLocalClaims = (
                 {
                     description: "The local claim has been deleted successfully!",
                     level: AlertLevels.SUCCESS,
-                    message: "Local claim deleted successfully"
+                    message: "Local attribute deleted successfully"
                 }
             ));
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while deleting the local claim",
+                    description: error?.description || "There was an error while deleting the local attribute",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -121,7 +127,7 @@ export const EditBasicDetailsLocalClaims = (
                     <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                         <Form>
                             <Form.Field>
-                                <label>Claim URI</label>
+                                <label>Attribute URI</label>
                                 <CopyInputField value={ claim ? claim.claimURI : "" } />
                             </Form.Field>
                         </Form>
@@ -135,7 +141,8 @@ export const EditBasicDetailsLocalClaims = (
                         claimURI: claim.claimURI,
                         description: values.get("description").toString(),
                         displayName: values.get("name").toString(),
-                        displayOrder: parseInt(values.get("displayOrder").toString()),
+                        displayOrder: values.get("displayOrder") ? 
+                            parseInt(values.get("displayOrder").toString()) : claim.displayOrder,
                         properties: claim.properties,
                         readOnly: values.get("readOnly").length > 0,
                         regEx: values.get("regularExpression").toString(),
@@ -146,7 +153,7 @@ export const EditBasicDetailsLocalClaims = (
                     updateAClaim(claim.id, data).then(() => {
                         dispatch(addAlert(
                             {
-                                description: "The basic details of the local claim have been updated successfully!",
+                                description: "The basic details of the local attribute have been updated successfully!",
                                 level: AlertLevels.SUCCESS,
                                 message: "Basic details updated successfully"
                             }
@@ -155,7 +162,8 @@ export const EditBasicDetailsLocalClaims = (
                     }).catch(error => {
                         dispatch(addAlert(
                             {
-                                description: error?.description || "There was an error while updating the local claim",
+                                description: error?.description || "There was an error while updating the " +
+                                "local attribute",
                                 level: AlertLevels.ERROR,
                                 message: error?.message || "Something went wrong"
                             }
@@ -178,12 +186,12 @@ export const EditBasicDetailsLocalClaims = (
                                 label="Name"
                                 required={ true }
                                 requiredErrorMessage="Name is required"
-                                placeholder="Enter a name for the claim"
+                                placeholder="Enter a name for the attribute"
                                 value={ claim?.displayName }
                                 ref={ nameField }
                             />
                             <Popup
-                                content={ "Name of the claim that will be shown on the user profile " +
+                                content={ "Name of the attribute that will be shown on the user profile " +
                                     "and user registration page" }
                                 inverted
                                 open={ isShowNameHint }
@@ -222,7 +230,7 @@ export const EditBasicDetailsLocalClaims = (
                                 ref={ regExField }
                             />
                             <Popup
-                                content="This regular expression is used to validate the value this claim can take"
+                                content="This regular expression is used to validate the value this attribute can take"
                                 inverted
                                 open={ isShowRegExHint }
                                 trigger={ <span></span> }
@@ -239,7 +247,7 @@ export const EditBasicDetailsLocalClaims = (
                                 required={ false }
                                 requiredErrorMessage=""
                                 children={ [ {
-                                    label: "Show this claim on user profile and user registration page",
+                                    label: "Show this attribute on user profile and user registration page",
                                     value: "Support"
                                 } ] }
                                 value={ claim?.supportedByDefault ? [ "Support" ] : [] }
@@ -269,8 +277,8 @@ export const EditBasicDetailsLocalClaims = (
                                             ref={ displayOrderField }
                                         />
                                         <Popup
-                                            content={ "This determines the position at which this claim is displayed" +
-                                                " in the user profile and the user registration page" }
+                                            content={ "This determines the position at which this attribute is " + 
+                                            "displayed in the user profile and the user registration page" }
                                             inverted
                                             open={ isShowDisplayOrderHint }
                                             trigger={ <span></span> }
@@ -290,7 +298,7 @@ export const EditBasicDetailsLocalClaims = (
                                 required={ false }
                                 requiredErrorMessage=""
                                 children={ [ {
-                                    label: "Make this claim required during user registration",
+                                    label: "Make this attribute required during user registration",
                                     value: "Required"
                                 } ] }
                                 value={ claim?.required ? [ "Required" ] : [] }
@@ -302,7 +310,7 @@ export const EditBasicDetailsLocalClaims = (
                                 required={ false }
                                 requiredErrorMessage=""
                                 children={ [ {
-                                    label: "Make this claim read-only",
+                                    label: "Make this attribute read-only",
                                     value: "ReadOnly"
                                 } ] }
                                 value={ claim?.readOnly ? [ "ReadOnly" ] : [] }
@@ -321,9 +329,9 @@ export const EditBasicDetailsLocalClaims = (
                         <Grid.Column width={ 16 }>
                             <DangerZoneGroup sectionHeader="Danger Zone">
                                 <DangerZone
-                                    actionTitle="Delete Local Claim"
-                                    header="Delete Local Claim"
-                                    subheader={ "Once you delete a local claim, there is no going back. " +
+                                    actionTitle="Delete Local Attribute"
+                                    header="Delete Local Attribute"
+                                    subheader={ "Once you delete a local attribute, there is no going back. " +
                                         "Please be certain." }
                                     onActionClick={ () => setConfirmDelete(true) }
                                 />

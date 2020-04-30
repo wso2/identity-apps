@@ -83,7 +83,7 @@ export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): Reac
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while fetching local claims",
+                    description: error?.description || "There was an error while fetching local attributes",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -96,7 +96,7 @@ export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): Reac
             }).catch(error => {
                 dispatch(addAlert(
                     {
-                        description: error?.description || "There was an error while fetching the external claim",
+                        description: error?.description || "There was an error while fetching the external attribute",
                         level: AlertLevels.ERROR,
                         message: error?.message || "Something went wrong"
                     }
@@ -115,9 +115,9 @@ export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): Reac
                     }).then(() => {
                         dispatch(addAlert(
                             {
-                                description: "The external claim has been updated successfully!",
+                                description: "The external attribute has been updated successfully!",
                                 level: AlertLevels.SUCCESS,
-                                message: "External claim updated successfully"
+                                message: "External attribute updated successfully"
                             }
                         ));
                         update();
@@ -125,7 +125,7 @@ export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): Reac
                         dispatch(addAlert(
                             {
                                 description: error?.description || "There was an error while updating the" +
-                                    " external claim",
+                                    " external attribute",
                                 level: AlertLevels.ERROR,
                                 message: error?.message || "Something went wrong"
                             }
@@ -146,10 +146,10 @@ export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): Reac
                             <Grid.Column width={ 8 }>
                                 <Field
                                     name="claimURI"
-                                    label="Claim URI"
+                                    label="Attribute URI"
                                     required={ true }
-                                    requiredErrorMessage="Claim URI is required"
-                                    placeholder="Enter a claim URI"
+                                    requiredErrorMessage="Attribute URI is required"
+                                    placeholder="Enter an attribute URI"
                                     type="text"
                                     value={ addedClaim.claimURI }
                                 />
@@ -160,10 +160,10 @@ export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): Reac
                         <Field
                             type="dropdown"
                             name="localClaim"
-                            label="Local claim URI"
+                            label="Local attribute URI"
                             required={ true }
-                            requiredErrorMessage="Select a local claim to map to"
-                            placeholder="Select a local claim"
+                            requiredErrorMessage="Select a local attribute to map to"
+                            placeholder="Select a local attribute"
                             search
                             value={ wizard ? addedClaim.mappedLocalClaimURI : claim?.mappedLocalClaimURI }
                             children={

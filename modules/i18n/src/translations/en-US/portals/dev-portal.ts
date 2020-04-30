@@ -206,7 +206,7 @@ export const devPortal: DevPortalNS = {
                     form: {
                         inputs: {
                             filterAttribute: {
-                                placeholder: "E.g. Claim URI etc."
+                                placeholder: "E.g. Attribute URI etc."
                             },
                             filterCondition: {
                                 placeholder: "E.g. Starts with etc."
@@ -216,7 +216,7 @@ export const devPortal: DevPortalNS = {
                             }
                         }
                     },
-                    placeholder: "Search by Claim URI"
+                    placeholder: "Search by Attribute URI"
                 }
             },
             local: {
@@ -224,7 +224,7 @@ export const devPortal: DevPortalNS = {
                     form: {
                         inputs: {
                             filterAttribute: {
-                                placeholder: "E.g. name, claim ID etc."
+                                placeholder: "E.g. name, attribute ID etc."
                             },
                             filterCondition: {
                                 placeholder: "E.g. Starts with etc."
@@ -234,7 +234,7 @@ export const devPortal: DevPortalNS = {
                             }
                         }
                     },
-                    placeholder: "Search by claim"
+                    placeholder: "Search by attribute"
                 }
             }
         },

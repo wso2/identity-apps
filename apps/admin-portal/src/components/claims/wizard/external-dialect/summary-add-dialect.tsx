@@ -74,10 +74,10 @@ export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): React
 
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    External Claim URI
+                                    External Attribute URI
                                     </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    Mapped Local Claim URI
+                                    Mapped Local Attribute URI
                                     </Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
@@ -112,7 +112,7 @@ export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): React
                                 claims.length === 0 && (
                                     <Table.Row>
                                         <Table.Cell colSpan={ 3 } textAlign='center'>
-                                            <Message warning>No external claim was added.</Message>
+                                            <Message warning>No external attribute was added.</Message>
                                         </Table.Cell>
                                     </Table.Row>
                                 )

@@ -243,15 +243,15 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
             closeDeleteConfirm();
             dispatch(addAlert(
                 {
-                    description: "The local claim has been deleted successfully!",
+                    description: "The local attribute has been deleted successfully!",
                     level: AlertLevels.SUCCESS,
-                    message: "Local claim deleted successfully"
+                    message: "Local attribute deleted successfully"
                 }
             ));
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while deleting the local claim",
+                    description: error?.description || "There was an error while deleting the local attribute",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -270,15 +270,15 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
             closeDeleteConfirm();
             dispatch(addAlert(
                 {
-                    description: "The external claim has been deleted successfully!",
+                    description: "The external atribute has been deleted successfully!",
                     level: AlertLevels.SUCCESS,
-                    message: "External claim deleted successfully"
+                    message: "External attribute deleted successfully"
                 }
             ));
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while deleting the external claim",
+                    description: error?.description || "There was an error while deleting the external attribute",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -322,24 +322,24 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
             listItem = {
                 assertion: deleteItem.displayName,
                 delete: deleteLocalClaim,
-                message: "If you delete this local claim, the user data belonging " +
-                    "to this claim will also be deleted.",
-                name: "local claim"
+                message: "If you delete this local attribute, the user data belonging " +
+                    "to this attribute will also be deleted.",
+                name: "local attribute"
             }
         } else if (isDialect(deleteItem)) {
             listItem = {
                 assertion: deleteItem.dialectURI,
                 delete: deleteDialect,
                 message: "If you delete this external dialect, all the" +
-                    " associated external claims will also be deleted.",
+                    " associated external attributes will also be deleted.",
                 name: "external dialect"
             }
         } else {
             listItem = {
                 assertion: deleteItem.claimURI,
                 delete: deleteExternalClaim,
-                message: "This will permanently delete the external claim.",
-                name: "external claim"
+                message: "This will permanently delete the external attribute.",
+                name: "external attribute"
             }
         }
 
@@ -447,7 +447,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                     }
                                                     content={
                                                         <div>
-                                                            This claim has not been mapped to an attribute
+                                                            This attribute has not been mapped to an attribute
                                                             in the following userstores:
                                                         <ul>
                                                                 {

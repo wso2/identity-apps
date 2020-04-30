@@ -53,7 +53,7 @@ export const LocalClaimsPage = (): ReactElement => {
         },
         {
             key: 1,
-            text: "Claim URI",
+            text: "Attribute URI",
             value: "claimURI"
         }
     ];
@@ -99,7 +99,7 @@ export const LocalClaimsPage = (): ReactElement => {
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while fetching the local claims",
+                    description: error?.description || "There was an error while fetching the local attribute",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -217,54 +217,58 @@ export const LocalClaimsPage = (): ReactElement => {
                     : null
             }
             <PageLayout
-                title="Local Claims"
-                description="View, edit and add local claims"
+                title="Local Attributes"
+                description="Create and manage local attributes"
                 showBottomDivider={ true }
                 backButton={ {
                     onClick: () => { history.push(CLAIM_DIALECTS_PATH) },
-                    text: "Go back to claim dialects"
+                    text: "Go back to attribute dialects"
                 } }
             >
-                <ListLayout
-                    advancedSearch={ (
-                        <AdvancedSearchWithBasicFilters
-                            onFilter={ handleLocalClaimsFilter  }
-                            filterAttributeOptions={ [
-                                {
-                                    key: 0,
-                                    text: "Claim URI",
-                                    value: "claimURI"
-                                },
-                                {
-                                    key: 1,
-                                    text: "Mapped Local Claim URI",
-                                    value: "mappedLocalClaimURI"
-                                }
-                            ] }
-                            filterAttributePlaceholder={
-                                t("devPortal:components.claims.local.advancedSearch.form.inputs.filterAttribute" +
-                                    ".placeholder")
+                { filteredClaims && filteredClaims.length > 0 ?
+                    (
+                        <ListLayout
+                            advancedSearch={
+                                <AdvancedSearchWithBasicFilters
+                                    onFilter={ handleLocalClaimsFilter }
+                                    filterAttributeOptions={ [
+                                        {
+                                            key: 0,
+                                            text: t("common:name"),
+                                            value: "name"
+                                        },
+                                        {
+                                            key: 1,
+                                            text: t("common:description"),
+                                            value: "description"
+                                        }
+                                    ] }
+                                    filterAttributePlaceholder={
+                                        t("devPortal:components.userstores.advancedSearch.form.inputs" +
+                                            ".filterAttribute.placeholder")
+                                    }
+                                    filterConditionsPlaceholder={
+                                        t("devPortal:components.userstores.advancedSearch.form.inputs" +
+                                            ".filterCondition.placeholder")
+                                    }
+                                    filterValuePlaceholder={
+                                        t("devPortal:components.userstores.advancedSearch.form.inputs" +
+                                            ".filterValue.placeholder")
+                                    }
+                                    placeholder={
+                                        t("devPortal:components.userstores.advancedSearch.placeholder")
+                                    }
+                                    defaultSearchAttribute="name"
+                                    defaultSearchOperator="co"
+                                />
                             }
-                            filterConditionsPlaceholder={
-                                t("devPortal:components.claims.local.advancedSearch.form.inputs.filterCondition" +
-                                    ".placeholder")
-                            }
-                            filterValuePlaceholder={
-                                t("devPortal:components.claims.local.advancedSearch.form.inputs.filterValue" +
-                                    ".placeholder")
-                            }
-                            placeholder={ t("devPortal:components.claims.local.advancedSearch.placeholder") }
-                            defaultSearchAttribute="claimURI"
-                            defaultSearchOperator="co"
-                        />
-                    ) }
-                    currentListSize={ listItemLimit }
-                    listItemLimit={ listItemLimit }
-                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                    onPageChange={ handlePaginationChange }
-                    onSortStrategyChange={ handleSortStrategyChange }
-                    rightActionPanel={
-                        hasRequiredScopes(
+                            currentListSize={ listItemLimit }
+                            listItemLimit={ listItemLimit }
+                            onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                            onPageChange={ handlePaginationChange }
+                            onSortStrategyChange={ handleSortStrategyChange }
+                            rightActionPanel={
+                                 hasRequiredScopes(
                             featureConfig?.attributeDialects,
                             featureConfig?.attributeDialects?.scopes?.create) && (
                                     <PrimaryButton
@@ -272,7 +276,7 @@ export const LocalClaimsPage = (): ReactElement => {
                                             setOpenModal(true);
                                         } }
                                     >
-                                        <Icon name="add" />New Local Claim
+                                        <Icon name="add" />New Local Attribute
                                     </PrimaryButton>
                                 )
                             }

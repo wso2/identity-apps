@@ -74,9 +74,9 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
         addLocalClaim(data).then(() => {
             dispatch(addAlert(
                 {
-                    description: "The local claim has been added successfully!",
+                    description: "The local attribute has been added successfully!",
                     level: AlertLevels.SUCCESS,
-                    message: "Local claim added successfully"
+                    message: "Local attribute added successfully"
                 }
             ));
             onClose();
@@ -84,7 +84,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while adding the local claim",
+                    description: error?.description || "There was an error while adding the local attribute",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -130,7 +130,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Basic local-claim details"
+            title: "Basic attribute details"
         },
         {
             content: (
@@ -186,11 +186,10 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
             onClose={ onClose }
         >
             <Modal.Header className="wizard-header">
-                Add Local Claim
+                Add Local Attribute
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group
-                    header="Fill in the following details to create a local claim."
                     current={ currentWizardStep }
                 >
                     {STEPS.map((step, index) => (

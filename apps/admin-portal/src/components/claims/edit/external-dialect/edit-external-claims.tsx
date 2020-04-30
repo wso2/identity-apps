@@ -66,12 +66,12 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
     const SORT_BY = [
         {
             key: 0,
-            text: "Claim URI",
+            text: "Attribute URI",
             value: "claimURI"
         },
         {
             key: 1,
-            text: "Mapped Local Claim URI",
+            text: "Mapped Local Attribute URI",
             value: "mappedLocalClaimURI"
         }
     ];
@@ -185,12 +185,12 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                                     filterAttributeOptions={ [
                                         {
                                             key: 0,
-                                            text: "Claim URI",
+                                            text: "Attribute URI",
                                             value: "claimURI"
                                         },
                                         {
                                             key: 1,
-                                            text: "Mapped Local Claim URI",
+                                            text: "Mapped Local Attribute URI",
                                             value: "mappedLocalClaimURI"
                                         }
                                     ] }
@@ -229,7 +229,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                     disabled={ showAddExternalClaim }
                 >
                     <Icon name="add" />
-                            New External Claim
+                            New External Attribute
                         </PrimaryButton>
             }
         >
@@ -242,7 +242,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                         size="small"
                     >
                         <Modal.Header>
-                            Add External Claim
+                            Add External Attribute
                         </Modal.Header>
                         <Modal.Content>
                             <AddExternalClaims
@@ -305,7 +305,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                                 : !isLoading && (
                                     <EmptyPlaceholder
                                         title="No External Claim"
-                                        subtitle={ [ "Currently, there is no external claim " +
+                                        subtitle={ [ "Currently, there is no external attribute " +
                                             "available for this dialect." ] }
                                         image={ EmptyPlaceholderIllustrations.emptyList }
                                         imageSize="tiny"

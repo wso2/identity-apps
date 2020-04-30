@@ -59,7 +59,7 @@ export const EditAdditionalPropertiesLocalClaims = (
         <Grid>
             <Grid.Row columns={ 1 }>
                 <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
-                    <p>Use when writing an extension using current claims</p>
+                    <p>Use when writing an extension using current attributes</p>
                     <DynamicField
                         data={ claim.properties }
                         keyType="text"
@@ -81,7 +81,7 @@ export const EditAdditionalPropertiesLocalClaims = (
                             updateAClaim(claim.id, submitData).then(() => {
                                 dispatch(addAlert(
                                     {
-                                        description: "Additional Properties of this local claim have been " +
+                                        description: "Additional Properties of this local attribute have been " +
                                             "updated successfully!",
                                         level: AlertLevels.SUCCESS,
                                         message: "Additional Properties updated successfully"
@@ -92,7 +92,7 @@ export const EditAdditionalPropertiesLocalClaims = (
                                 dispatch(addAlert(
                                     {
                                         description: error?.description || "There was an error while updating the" +
-                                            " local claim",
+                                            " local attribute",
                                         level: AlertLevels.ERROR,
                                         message: error?.message || "Something went wrong"
                                     }

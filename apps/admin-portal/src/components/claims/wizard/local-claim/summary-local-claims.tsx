@@ -104,15 +104,15 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
                 <Grid.Column textAlign="center">
                     <List>
                         { data.supportedByDefault
-                            && generateLabels("This claim is shown on user profile and user registration page") }
+                            && generateLabels("This attribute is shown on user profile and user registration page") }
                         { data.required &&
-                            generateLabels("This claim is required during user registration") }
+                            generateLabels("This attribute is required during user registration") }
                         { data.readOnly &&
-                            generateLabels("This claim is read-only") }
+                            generateLabels("This attribute is read-only") }
                     </List>
                 </Grid.Column>
             </Grid.Row>
-            { data.claimURI ? generateSummaryLine("Claim URI", showClaimURI()) : null }
+            { data.claimURI ? generateSummaryLine("Attribute URI", showClaimURI()) : null }
             { data.displayOrder ? generateSummaryLine("Display Order", data.displayOrder) : null }
             { data.regEx ? generateSummaryLine("Regular Expression", data.regEx) : null }
             {
