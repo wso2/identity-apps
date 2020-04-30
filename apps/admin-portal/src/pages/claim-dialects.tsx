@@ -172,8 +172,8 @@ export const ClaimDialectsPage = (): ReactElement => {
                 update={ getDialect }
             />
             <PageLayout
-                title="Claim Dialects"
-                description="Create and manage claim dialects"
+                title="Attribute Dialects"
+                description="Create and manage attribute dialects"
                 showBottomDivider={ true }
             >
                 {
@@ -209,13 +209,16 @@ export const ClaimDialectsPage = (): ReactElement => {
                                                 <Popup
                                                     inverted
                                                     trigger={
-                                                        <Icon
-                                                            link
-                                                            name="arrow right"
+                                                        <span
+                                                            className="local-dialect-direct"
                                                             onClick={ () => {
                                                                 history.push(LOCAL_CLAIMS_PATH);
                                                             } }
-                                                        />
+                                                        >
+                                                            <Icon
+                                                                name="arrow right"
+                                                            />
+                                                        </span>
                                                     }
                                                     position="top center"
                                                     content="View local claims"
