@@ -174,7 +174,7 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                             label="Attribute URI"
                             required={ true }
                             requiredErrorMessage="Attribute URI is required"
-                            placeholder="Enter a attribute URI"
+                            placeholder="Enter an attribute URI"
                             type="text"
                         />
                     </Grid.Column>
