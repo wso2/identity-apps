@@ -46,7 +46,6 @@ export interface StorageDevPortalPreferencesInterface {
     helpPanel: StorageHelpPanelPreferencesItemsInterface;
 }
 
-
 /**
  * Interface for the help panel preferences.
  */
