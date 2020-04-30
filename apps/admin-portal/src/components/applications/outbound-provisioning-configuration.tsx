@@ -21,7 +21,8 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { ConfirmationModal, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
 import {
-    ApplicationInterface, IdentityProviderInterface,
+    ApplicationInterface,
+    IdentityProviderInterface,
     OutboundProvisioningConfigurationInterface,
     ProvisioningConfigurationInterface
 } from "../../models";
