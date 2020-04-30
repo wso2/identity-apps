@@ -17,12 +17,13 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useContext, useEffect, useRef, useState } from "react";
-import { useDispatch,useSelector } from "react-redux";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getADialect, getAllLocalClaims } from "../api";
-import { addAlert } from "@wso2is/core/store";
 import { AdvancedSearchWithBasicFilters, ClaimsList, ListType } from "../components";
 import { AddLocalClaims } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
@@ -33,7 +34,6 @@ import { PageLayout } from "../layouts";
 import { AlertLevels, Claim, ClaimsGetParams, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { filterList, sortList } from "../utils";
-import { useTranslation } from "react-i18next";
 
 /**
  * This returns the list of local claims.
@@ -195,6 +195,7 @@ export const LocalClaimsPage = (): ReactElement => {
         try {
             const filteredClaims = filterList(claims, query, sortBy.value as string, sortOrder);
             setFilteredClaims(filteredClaims);
+            setQuery(query);
         } catch (error) {
             dispatch(addAlert({
                 description: error?.message,
@@ -235,30 +236,28 @@ export const LocalClaimsPage = (): ReactElement => {
                                         {
                                             key: 0,
                                             text: t("common:name"),
-                                            value: "name"
+                                            value: "displayName"
                                         },
                                         {
                                             key: 1,
-                                            text: t("common:description"),
-                                            value: "description"
+                                            text: "Attribute URI",
+                                            value: "claimURI"
                                         }
                                     ] }
                                     filterAttributePlaceholder={
-                                        t("devPortal:components.userstores.advancedSearch.form.inputs" +
-                                            ".filterAttribute.placeholder")
+                                        t("devPortal:components.claims.local.advancedSearch.form." +
+                                            "inputs.filterAttribute.placeholder")
                                     }
                                     filterConditionsPlaceholder={
-                                        t("devPortal:components.userstores.advancedSearch.form.inputs" +
-                                            ".filterCondition.placeholder")
+                                        t("devPortal:components.claims.local.advancedSearch.form." +
+                                            "inputs.filterCondition.placeholder")
                                     }
                                     filterValuePlaceholder={
-                                        t("devPortal:components.userstores.advancedSearch.form.inputs" +
-                                            ".filterValue.placeholder")
+                                        t("devPortal:components.claims.local.advancedSearch.form.inputs." +
+                                            "filterValue.placeholder")
                                     }
-                                    placeholder={
-                                        t("devPortal:components.userstores.advancedSearch.placeholder")
-                                    }
-                                    defaultSearchAttribute="name"
+                                    placeholder={ t("devPortal:components.claims.local.advancedSearch.placeholder") }
+                                    defaultSearchAttribute="displayName"
                                     defaultSearchOperator="co"
                                 />
                             }
@@ -268,9 +267,9 @@ export const LocalClaimsPage = (): ReactElement => {
                             onPageChange={ handlePaginationChange }
                             onSortStrategyChange={ handleSortStrategyChange }
                             rightActionPanel={
-                                 hasRequiredScopes(
-                            featureConfig?.attributeDialects,
-                            featureConfig?.attributeDialects?.scopes?.create) && (
+                                hasRequiredScopes(
+                                    featureConfig?.attributeDialects,
+                                    featureConfig?.attributeDialects?.scopes?.create) && (
                                     <PrimaryButton
                                         onClick={ () => {
                                             setOpenModal(true);

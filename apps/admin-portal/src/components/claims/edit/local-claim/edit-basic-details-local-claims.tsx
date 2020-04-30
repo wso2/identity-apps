@@ -19,7 +19,7 @@
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ConfirmationModal, CopyInputField, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import React, { ReactElement, useRef, useState, useEffect } from "react";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Divider, Form, Grid, Popup } from "semantic-ui-react";
 import { deleteAClaim, updateAClaim } from "../../../../api";
@@ -68,7 +68,7 @@ export const EditBasicDetailsLocalClaims = (
         if (claim?.supportedByDefault) {
             setIsShowDisplayOrder(true);
         }
-    }, [claim])
+    }, [ claim ])
 
     const deleteConfirmation = (): ReactElement => (
         <ConfirmationModal
@@ -141,7 +141,7 @@ export const EditBasicDetailsLocalClaims = (
                         claimURI: claim.claimURI,
                         description: values.get("description").toString(),
                         displayName: values.get("name").toString(),
-                        displayOrder: values.get("displayOrder") ? 
+                        displayOrder: values.get("displayOrder") ?
                             parseInt(values.get("displayOrder").toString()) : claim.displayOrder,
                         properties: claim.properties,
                         readOnly: values.get("readOnly").length > 0,
@@ -163,7 +163,7 @@ export const EditBasicDetailsLocalClaims = (
                         dispatch(addAlert(
                             {
                                 description: error?.description || "There was an error while updating the " +
-                                "local attribute",
+                                    "local attribute",
                                 level: AlertLevels.ERROR,
                                 message: error?.message || "Something went wrong"
                             }
@@ -277,8 +277,8 @@ export const EditBasicDetailsLocalClaims = (
                                             ref={ displayOrderField }
                                         />
                                         <Popup
-                                            content={ "This determines the position at which this attribute is " + 
-                                            "displayed in the user profile and the user registration page" }
+                                            content={ "This determines the position at which this attribute is " +
+                                                "displayed in the user profile and the user registration page" }
                                             inverted
                                             open={ isShowDisplayOrderHint }
                                             trigger={ <span></span> }
@@ -325,21 +325,21 @@ export const EditBasicDetailsLocalClaims = (
                             />
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 16 }>
-                            <DangerZoneGroup sectionHeader="Danger Zone">
-                                <DangerZone
-                                    actionTitle="Delete Local Attribute"
-                                    header="Delete Local Attribute"
-                                    subheader={ "Once you delete a local attribute, there is no going back. " +
-                                        "Please be certain." }
-                                    onActionClick={ () => setConfirmDelete(true) }
-                                />
-                            </DangerZoneGroup>
-                        </Grid.Column>
-                    </Grid.Row>
                 </Grid>
             </Forms>
+            <Grid columns={ 1 }>
+                <Grid.Column width={ 16 }>
+                    <DangerZoneGroup sectionHeader="Danger Zone">
+                        <DangerZone
+                            actionTitle="Delete Local Attribute"
+                            header="Delete Local Attribute"
+                            subheader={ "Once you delete a local attribute, there is no going back. " +
+                                "Please be certain." }
+                            onActionClick={ () => setConfirmDelete(true) }
+                        />
+                    </DangerZoneGroup>
+                </Grid.Column>
+            </Grid>
         </>
     )
 };
