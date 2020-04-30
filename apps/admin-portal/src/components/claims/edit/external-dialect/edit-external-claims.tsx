@@ -17,18 +17,20 @@
  */
 
 import { addAlert } from "@wso2is/core/store";
+import { EmptyPlaceholder } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, DropdownProps, PaginationProps } from "semantic-ui-react";
-import { ClaimsList, ExternalClaimsSearch, ListType } from "../../..";
 import { getADialect, getAllExternalClaims } from "../../../../api";
 import { EmptyPlaceholderIllustrations } from "../../../../configs";
 import { UserConstants } from "../../../../constants";
 import { ListLayout } from "../../../../layouts";
 import { AlertLevels, ClaimDialect, ExternalClaim } from "../../../../models";
 import { filterList, sortList } from "../../../../utils";
-import { EmptyPlaceholder } from "../../../shared";
+import { AdvancedSearchWithBasicFilters } from "../../../shared";
 import { AddExternalClaims } from "../../add";
+import { ClaimsList, ListType } from "../../claims-list";
 
 interface EditExternalClaimsPropsInterface {
     /**

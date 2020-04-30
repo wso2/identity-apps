@@ -16,17 +16,18 @@
  * under the License.
  */
 
+import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownProps, PaginationProps } from "semantic-ui-react";
 import { listClientCertificates } from "../api";
-import { AddUserStore, CertificatesList, CertificatesTruststoreSearch } from "../components";
+import { AddUserStore, AdvancedSearchWithBasicFilters, CertificatesList } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertLevels, Certificate } from "../models";
-import { addAlert } from "../store/actions";
 import { filterList, sortList } from "../utils";
 
 /**
@@ -57,6 +58,8 @@ export const CertificatesTruststore: FunctionComponent< {} > = (): ReactElement 
     const [ sortOrder, setSortOrder ] = useState(true);
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     /**
      * Fetches all certificates.
@@ -145,6 +148,19 @@ export const CertificatesTruststore: FunctionComponent< {} > = (): ReactElement 
         setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
     };
 
+    /**
+     * Handles the `onFilter` callback action from the search component.
+     *
+     * @param {string} query - Search query.
+     */
+    const handleTruststoreFilter = (query: string): void => {
+        // TODO: Implement once the API is ready
+        // fetchCertificatesTruststore(null, null, null, query);
+        setFilteredCertificatesTruststore(
+            filterList(certificatesTruststore, query, "alias", true)
+        );
+    };
+
     return (
         <>
             {
@@ -167,15 +183,32 @@ export const CertificatesTruststore: FunctionComponent< {} > = (): ReactElement 
                     filteredCertificatesTruststore?.length > 0
                         ? (<ListLayout
                             advancedSearch={
-                                <CertificatesTruststoreSearch
-                                    onFilter={ (query) => {
-                                        // TODO: Implement once the API is ready
-                                        //  fetchCertificatesTruststore(null, null, null, query);
-                                        setFilteredCertificatesTruststore(
-                                            filterList(certificatesTruststore, query, "alias", true)
-                                        );
-
-                                    } }
+                                <AdvancedSearchWithBasicFilters
+                                    onFilter={ handleTruststoreFilter }
+                                    filterAttributeOptions={ [
+                                        {
+                                            key: 0,
+                                            text: "Alias",
+                                            value: "alias"
+                                        }
+                                    ] }
+                                    filterAttributePlaceholder={
+                                        t("devPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                                            ".filterAttribute.placeholder")
+                                    }
+                                    filterConditionsPlaceholder={
+                                        t("devPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                                            ".filterCondition.placeholder")
+                                    }
+                                    filterValuePlaceholder={
+                                        t("devPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                                            ".filterValue.placeholder")
+                                    }
+                                    placeholder={
+                                        t("devPortal:components.certificates.truststore.advancedSearch.placeholder")
+                                    }
+                                    defaultSearchAttribute="alias"
+                                    defaultSearchOperator="co"
                                 />
                             }
                             currentListSize={ listItemLimit }

@@ -29,10 +29,11 @@ import React, {
     useEffect,
     useState
 } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getApplicationList } from "../api";
-import { ApplicationList, ApplicationSearch } from "../components";
+import { AdvancedSearchWithBasicFilters, ApplicationList } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { ApplicationConstants } from "../constants";
 import { history } from "../helpers";
@@ -72,6 +73,8 @@ const DEFAULT_APP_LIST_ITEM_LIMIT = 10;
  * @return {React.ReactElement}
  */
 export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
+
+    const { t } = useTranslation();
 
     const dispatch = useDispatch();
 
@@ -243,7 +246,33 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
             showBottomDivider={ true }
         >
             <ListLayout
-                advancedSearch={ <ApplicationSearch onFilter={ handleApplicationFilter }/> }
+                advancedSearch={
+                    <AdvancedSearchWithBasicFilters
+                        onFilter={ handleApplicationFilter }
+                        filterAttributeOptions={ [
+                            {
+                                key: 0,
+                                text: t("common:name"),
+                                value: "name"
+                            }
+                        ] }
+                        filterAttributePlaceholder={
+                            t("devPortal:components.applications.advancedSearch.form.inputs.filterAttribute" +
+                                ".placeholder")
+                        }
+                        filterConditionsPlaceholder={
+                            t("devPortal:components.applications.advancedSearch.form.inputs.filterCondition" +
+                                ".placeholder")
+                        }
+                        filterValuePlaceholder={
+                            t("devPortal:components.applications.advancedSearch.form.inputs.filterValue" +
+                                ".placeholder")
+                        }
+                        placeholder={ t("devPortal:components.applications.advancedSearch.placeholder") }
+                        defaultSearchAttribute="name"
+                        defaultSearchOperator="co"
+                    />
+                }
                 currentListSize={ appList.count }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
