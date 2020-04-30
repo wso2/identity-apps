@@ -16,16 +16,10 @@
 }
 
 .ui.accordion {
-    .title {
-        .disabled {
-            cursor: default;
-            background-color: #dcddde !important;
-            color: rgba(0, 0, 0, 0.4) !important;
-            opacity: 0.3 !important;
-            background-image: none !important;
-            box-shadow: none !important;
-            pointer-events: none;
-        }
+    .title.disabled {
+        cursor: default;
+        opacity: 0.5 !important;
+        pointer-events: none;
     }
 }
 

@@ -452,6 +452,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 				active={ subAccordionActiveIndex === 1 }
 				index={ 0 }
 				onClick={ () => { handleUsernameRecoveryAccordionClick(1) } }
+				className={ (accountRecoveryConfigs?.enableUsernameRecovery?.length > 0) ? "" : "disabled" }
 			>
 				<Grid className="middle aligned mt-1">
 					<Grid.Row columns={ 2 } className="inner-list-item">
@@ -495,6 +496,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 				active={ subAccordionActiveIndex === 2 }
 				index={ 0 }
 				onClick={ () => { handleUsernameRecoveryAccordionClick(2) } }
+				className={ (accountRecoveryConfigs?.enableNotificationPasswordRecovery?.length > 0) ? "" : "disabled" }
 			>
 				<Grid className="middle aligned mt-1">
 					<Grid.Row columns={ 2 } className="inner-list-item">
@@ -538,6 +540,8 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 				active={ subAccordionActiveIndex === 3 }
 				index={ 0 }
 				onClick={ () => { handleUsernameRecoveryAccordionClick(3) } }
+				className={ (accountRecoveryConfigs?.enableSecurityQuestionPasswordRecovery?.length > 0) ? "" :
+					"disabled" }
 			>
 				<Grid className="middle aligned mt-1">
 					<Grid.Row columns={ 2 } className="inner-list-item">
