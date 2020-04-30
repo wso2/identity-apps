@@ -360,7 +360,6 @@ export interface DevPortalNS {
                     title: string;
                     subTitle: string;
                     steps: {
-                        title: string;
                         basicDetails: string;
                         roles: string;
                         groups: string;

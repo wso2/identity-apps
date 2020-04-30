@@ -242,7 +242,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
                     <Field
                         data-testid={ `user_mgt_user_profile_form_${ schema.name }_input` }
                         name={ schema.name }
-                        label={ schema.name === "profileUrl" ? "Profile image URL" : fieldName }
+                        label={ schema.name === "profileUrl" ? "Profile Image URL" : fieldName }
                         required={ schema.required }
                         requiredErrorMessage={ fieldName + " " + "is required" }
                         placeholder={ "Enter your" + " " + fieldName }
