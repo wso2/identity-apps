@@ -36,7 +36,7 @@
     <dependencies>
         <dependency>
             <groupId>org.wso2.identity.apps</groupId>
-            <artifactId>admin-portal</artifactId>
+            <artifactId>developer-portal</artifactId>
             <type>war</type>
         </dependency>
     </dependencies>
@@ -58,11 +58,11 @@
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.wso2.identity.apps</groupId>
-                                    <artifactId>admin-portal</artifactId>
+                                    <artifactId>developer-portal</artifactId>
                                     <type>war</type>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>${basedir}/src/main/resources/</outputDirectory>
-                                    <destFileName>admin-portal.war</destFileName>
+                                    <destFileName>developer-portal.war</destFileName>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
@@ -86,7 +86,7 @@
                                     <includes>
                                         <include>p2.inf</include>
                                         <include>build.properties</include>
-                                        <include>admin-portal.war</include>
+                                        <include>developer-portal.war</include>
                                         <include>**/*.json</include>
                                     </includes>
                                 </resource>

@@ -25,7 +25,7 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
 #### Run
 
 4. Execute `wso2server.sh` (For unix environment) or `wso2server.bat` (For windows environment) file from the `bin` directory to run the WSO2 Identity Server.
-5. Navigate to `https://localhost:9443/user-portal` or `https://localhost:9443/admin-portal` from the browser. (Add certificate exception if required)
+5. Navigate to `https://localhost:9443/user-portal` or `https://localhost:9443/developer-portal` from the browser. (Add certificate exception if required)
 
 ## Run in dev mode
 
@@ -84,7 +84,7 @@ regexp=(https://localhost:9443/user-portal/login|https://localhost:9443/user-por
 7. Similarly, update the callback url of the `DEVELOPER_PORTAL` application to the following.
 
 ```
-regexp=(https://localhost:9443/admin-portal/login|https://localhost:9443/admin-portal/logout|https://localhost:9001/admin-portal/login|https://localhost:9001/admin-portal/logout)
+regexp=(https://localhost:9443/developer-portal/login|https://localhost:9443/developer-portal/logout|https://localhost:9001/developer-portal/login|https://localhost:9001/developer-portal/logout)
 ```
 
 8. Open cloned or downloaded Identity Apps repo and Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependencies. _(Note:- Not necessary if you have already done above identity apps build steps)_

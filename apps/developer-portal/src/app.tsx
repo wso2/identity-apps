@@ -111,8 +111,8 @@ export const App = (): ReactElement => {
 
         // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
         // will fail. Using `appBaseNameWithoutTenant` will create a path without the tenant. Therefore,
-        // `getAppConfig()` will look for the app config file in `https://localhost:9443/admin-portal` rather than
-        // looking it in `https://localhost:9443/t/wso2.com/admin-portal`.
+        // `getAppConfig()` will look for the app config file in `https://localhost:9443/developer-portal` rather than
+        // looking it in `https://localhost:9443/t/wso2.com/developer-portal`.
         getAppConfig<ConfigInterface>(ApplicationConstants.APP_CONFIG_FILE_NAME,
             config.deployment.appBaseNameWithoutTenant)
             .then((response) => {

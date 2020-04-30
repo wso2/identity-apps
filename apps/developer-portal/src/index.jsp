@@ -76,7 +76,7 @@
              * =====================================================
              */
 
-            // Update below with tenant admin-portal application/service-provider details
+            // Update below with tenant developer-portal application/service-provider details
             var serverOriginAddress = "<%= htmlWebpackPlugin.options.serverUrl %>";
             var clientOriginAddress = "<%= htmlWebpackPlugin.options.serverUrl %>";
 

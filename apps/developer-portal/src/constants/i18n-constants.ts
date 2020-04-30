@@ -57,8 +57,8 @@ export class I18nConstants {
      * @remarks
      * Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs will fail.
      * Using `appBaseNameWithoutTenant` will create a path without the tenant. Therefore, `loadPath()` function will
-     * look for resource files in `https://localhost:9443/admin-portal/resources/i18n` rather than looking for the
-     * files in `https://localhost:9443/t/wso2.com/admin-portal/resources/i18n`.
+     * look for resource files in `https://localhost:9443/developer-portal/resources/i18n` rather than looking for the
+     * files in `https://localhost:9443/t/wso2.com/developer-portal/resources/i18n`.
      *
      * @constant
      * @type {I18nModuleInitOptions}
