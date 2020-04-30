@@ -182,9 +182,7 @@ export const LocalClaimsPage = (): ReactElement => {
      */
     const handleLocalClaimsFilter = (query: string): void => {
         try {
-            const filteredClaims = filterList(
-                claims, query, sortBy.value as string, sortOrder
-            );
+            const filteredClaims = filterList(claims, query, sortBy.value as string, sortOrder);
             setFilteredClaims(filteredClaims);
         } catch (error) {
             dispatch(addAlert({
