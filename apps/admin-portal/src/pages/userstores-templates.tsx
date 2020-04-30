@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import { getAType, getUserstoreTypes } from "../api";
 import { AddUserStore } from "../components";
 import { ApplicationTemplateIllustrations, EmptyPlaceholderIllustrations } from "../configs";
-import { USER_STORES_PATH } from "../constants";
+import { USER_STORES_PATH, UserstoreTypeDescriptions, UserstoreTypeDisplayNames } from "../constants";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import { AlertLevels, TypeResponse, UserstoreType } from "../models";
@@ -94,19 +94,21 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
                     if (type.typeName.toLowerCase().includes("unique")) {
                         uniqueUserstoreTypes.push(
                             {
-                                description: type.description,
+                                description: type.description
+                                    ?? UserstoreTypeDescriptions[ type.typeName ],
                                 id: type.typeId,
                                 image: "customApp",
-                                name: type.typeName
+                                name: UserstoreTypeDisplayNames[ type.typeName ]
                             }
                         )
                     } else {
                         userstoreTypes.push(
                             {
-                                description: type.description,
+                                description: type.description
+                                    ?? UserstoreTypeDescriptions[ type.typeName ],
                                 id: type.typeId,
                                 image: "customApp",
-                                name: type.typeName
+                                name: UserstoreTypeDisplayNames[ type.typeName ]
                             }
                         )
                     }
