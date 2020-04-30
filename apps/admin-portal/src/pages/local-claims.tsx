@@ -19,9 +19,9 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useContext, useEffect, useRef, useState } from "react";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getADialect, getAllLocalClaims } from "../api";
 import { AdvancedSearchWithBasicFilters, ClaimsList, ListType } from "../components";
@@ -195,6 +195,7 @@ export const LocalClaimsPage = (): ReactElement => {
         try {
             const filteredClaims = filterList(claims, query, sortBy.value as string, sortOrder);
             setFilteredClaims(filteredClaims);
+            setQuery(query);
         } catch (error) {
             dispatch(addAlert({
                 description: error?.message,
@@ -266,9 +267,9 @@ export const LocalClaimsPage = (): ReactElement => {
                             onPageChange={ handlePaginationChange }
                             onSortStrategyChange={ handleSortStrategyChange }
                             rightActionPanel={
-                                 hasRequiredScopes(
-                            featureConfig?.attributeDialects,
-                            featureConfig?.attributeDialects?.scopes?.create) && (
+                                hasRequiredScopes(
+                                    featureConfig?.attributeDialects,
+                                    featureConfig?.attributeDialects?.scopes?.create) && (
                                     <PrimaryButton
                                         onClick={ () => {
                                             setOpenModal(true);
