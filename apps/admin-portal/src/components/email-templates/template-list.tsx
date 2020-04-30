@@ -23,6 +23,7 @@ import { EmailTemplate } from "../../models";
 import { history } from "../../helpers";
 import { EMAIL_TEMPLATE_VIEW_PATH } from "../../constants";
 import { ViewLocaleTemplate } from "./view-template";
+import { Flag, FlagNameValues } from "semantic-ui-react";
 
 interface EmailTemplateListPropsInterface {
     templateTypeId: string;
@@ -71,36 +72,46 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                         languageCode = template.id.split("-")[0];
                     }
         
-                    const language = CountryLanguage.getLanguage(languageCode).name;
-                    const country = CountryLanguage.getCountry(countryCode).name;
+                    const language: string = CountryLanguage.getLanguage(languageCode).name;
+                    const country: string = CountryLanguage.getCountry(countryCode).name;
 
-                    return (<ResourceListItem
-                        key={ index }
-                        actionsFloated="right"
-                        actions={ [{
-                            icon: "pencil alternate",
-                            onClick: () => handleEditTemplate(templateTypeId, template.id),
-                            popupText: "Edit Locale Template",
-                            type: "button"
-                        },{
-                            icon: "eye",
-                            onClick: () => {
-                                setCurrentViewTemplate(template.id);
-                                setShowViewLocaleWizard(true);
-                            },
-                            popupText: "View Locale Template",
-                            type: "button"
-                        },{
-                            icon: "trash alternate",
-                            onClick: () => {
-                                setCurrentDeletingTemplate(template);
-                                setShowTemplateDeleteConfirmation(true);
-                            },
-                            popupText: "Delete Locale Template",
-                            type: "button"
-                        }] }
-                        itemHeader={ country ? language + " (" + country + ")" : language }
-                    />);
+                    return (
+                        <ResourceListItem
+                            key={ index }
+                            actionsFloated="right"
+                            actions={ [{
+                                icon: "eye",
+                                onClick: () => {
+                                    setCurrentViewTemplate(template.id);
+                                    setShowViewLocaleWizard(true);
+                                },
+                                popupText: "View Template",
+                                type: "button"
+                            },{
+                                icon: "pencil alternate",
+                                onClick: () => handleEditTemplate(templateTypeId, template.id),
+                                popupText: "Edit Template",
+                                type: "button"
+                            },{
+                                icon: "trash alternate",
+                                onClick: () => {
+                                    setCurrentDeletingTemplate(template);
+                                    setShowTemplateDeleteConfirmation(true);
+                                },
+                                popupText: "Delete Template",
+                                type: "button"
+                            }] }
+                            itemHeader={
+                                <>
+                                    <Flag 
+                                        className="email-template-flag " 
+                                        name={ countryCode.toLowerCase() as FlagNameValues } 
+                                    />
+                                    { country ? language + " (" + country + ")" : language }
+                                </>
+                            }
+                        />
+                    );
                 })
             }
         </ResourceList>

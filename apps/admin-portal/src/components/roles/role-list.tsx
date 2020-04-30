@@ -18,8 +18,8 @@
 
 import { ConfirmationModal, ResourceList, ResourceListItem } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
-import { Image } from "semantic-ui-react";
-import { ROLE_VIEW_PATH, GROUP_VIEW_PATH } from "../../constants";
+import { Image, Label } from "semantic-ui-react";
+import { ROLE_VIEW_PATH, GROUP_VIEW_PATH, APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../constants";
 import { history } from "../../helpers";
 import { RolesInterface } from "../../models";
 import { CommonUtils } from "../../utils";
@@ -55,6 +55,52 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
         }
     };
 
+    /**
+     * Util method to generate listing header content.
+     * 
+     * @param displayName - display name of the role/group
+     * @returns - React element if containing a prfix or the string
+     */
+    const generateHeaderContent = (displayName: string): ReactElement | string => {
+        if (isGroup) {
+            if (displayName.indexOf('/') !== -1){
+                return (
+                    <>
+                        <Label
+                            content={ displayName.split('/')[0] }
+                            size="mini"
+                            color="olive"
+                            className={ "group-label" }
+                        />
+                        { "/ " + displayName.split('/')[1] }
+                    </>
+                )
+            } else {
+                return displayName;
+            }
+        } else {
+            if (displayName.includes(APPLICATION_DOMAIN)) {
+                return  <>
+                            <Label
+                                content={ "Application" }
+                                size="mini"
+                                className={ "application-label" }
+                            />
+                            { "/ " + displayName.split('/')[1] }
+                        </>
+            } else if (displayName.includes(INTERNAL_DOMAIN)) {
+                return <>
+                            <Label
+                                content={ "Internal" }
+                                size="mini"
+                                className={ "internal-label" }
+                            />
+                            { "/ " + displayName.split('/')[1] }
+                        </>
+            }
+        }
+    }
+
     return (
         <>
             <ResourceList className="roles-list">
@@ -66,7 +112,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                             actions={ [{
                                     icon: "pencil alternate",
                                     onClick: () => handleRoleEdit(role.id),
-                                    popupText: "Edit Role",
+                                    popupText: isGroup ? "Edit Group" : "Edit Role" ,
                                     type: "button"
                                 },
                                 {
@@ -75,7 +121,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                         setCurrentDeletedRole(role);
                                         setShowDeleteConfirmationModal(!showRoleDeleteConfirmation);
                                     },
-                                    popupText: "Delete Role",
+                                    popupText: isGroup ? "Delete Group" : "Delete Role" ,
                                     type: "button"
                             }] }
                             avatar={ (
@@ -92,7 +138,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                     </span>
                                 </Image>
                             ) }
-                            itemHeader={ role.displayName }
+                            itemHeader={ generateHeaderContent(role.displayName) }
                             metaContent={ CommonUtils.humanizeDateDifference(role.meta.created) }
                         />
                     ))
@@ -119,12 +165,14 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     >
                         <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
                         <ConfirmationModal.Message attached warning>
-                            This action is irreversible and will permanently delete the selected role.
+                            This action is irreversible and will permanently delete the selected { 
+                                isGroup ? "group" : "role"
+                            }.
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            If you delete this role, the permissions attached to it will be deleted and the users 
-                            attached to it will no longer be able to perform intended actions which were previously
-                            allowed. Please proceed with caution.
+                            If you delete this { isGroup ? "group" : "role"}, the permissions attached to it will be 
+                            deleted and the users attached to it will no longer be able to perform intended actions 
+                            which were previously allowed. Please proceed with caution.
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
             }

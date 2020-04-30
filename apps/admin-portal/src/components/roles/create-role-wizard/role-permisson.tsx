@@ -20,7 +20,7 @@ import { Forms } from "@wso2is/forms";
 import { ContentLoader, TreeView } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Grid, Segment } from "semantic-ui-react";
+import { Button, Grid, Segment, Divider } from "semantic-ui-react";
 import { getPermissionList, getPermissionsForRole } from "../../../api";
 import { RolesInterface } from "../../../models";
 import { Permission } from "../../../models/permission";
@@ -325,13 +325,16 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                         <ContentLoader active />
                 }
                 { isEdit && !isPermissionsLoading &&
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Button primary type="submit" size="small" className="form-button">
-                                Update
-                            </Button>
-                        </Grid.Column>
-                    </Grid.Row>
+                    <>
+                        <Divider hidden/>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Button primary type="submit" size="small" className="form-button">
+                                    Update
+                                </Button>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </>
                 }
             </Forms>
         </Segment>

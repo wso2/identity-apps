@@ -65,6 +65,8 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
                 htmlContent={ templateData?.body }
                 isPreviewOnly
                 isReadOnly
+                isAddFlow={ false }
+                isSignature={ false }
             />
         ),
         icon: ApplicationWizardStepIcons.general

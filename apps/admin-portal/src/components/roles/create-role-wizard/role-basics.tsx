@@ -21,7 +21,7 @@ import React, { FunctionComponent, ReactElement, useState, useEffect } from "rea
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../../constants";
 import { CreateRoleFormData, SearchRoleInterface } from "../../../models";
-import { searchRoleList } from "../../../api";
+import { searchRoleList, getUserStoreList } from "../../../api";
 
 /**
  * Interface to capture role basics props.
@@ -50,6 +50,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
     const [ isValidRoleName, setIsValidRoleName ] = useState<boolean>(true);
     const [ updatedRoleName, setUpdatedRoleName ] = useState<string>(initialValues?.roleName);
+    const [ userStoreOptions, setUserStoresList ] = useState([]);
 
     /**
      * Triggers when updatedRoleName is changed.
@@ -58,6 +59,10 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         setIsValidRoleName(false);
         validateRoleName(updatedRoleName);
     }, [ updatedRoleName ]);
+
+    useEffect(() => {
+        getUserStores();
+    }, [isAddGroup])
 
     /**
      * Contains domains needed for role creation.
@@ -99,6 +104,34 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     };
 
     /**
+     * The following function fetch the user store list and set it to the state.
+     */
+    const getUserStores = () => {
+        const storeOptions = [
+                { text: "Primary", key: -1, value: "primary" }
+            ];
+        let storeOption = { text: "", key: null, value: "" };
+        getUserStoreList()
+            .then((response) => {
+                if (storeOptions === []) {
+                    storeOptions.push(storeOption);
+                }
+                response.data.map((store, index) => {
+                        storeOption = {
+                            key: index,
+                            text: store.name,
+                            value: store.name
+                        };
+                        storeOptions.push(storeOption);
+                    }
+                );
+                setUserStoresList(storeOptions);
+            });
+
+        setUserStoresList(storeOptions);
+    };
+
+    /**
      * The following function handles the change of the username.
      *
      * @param values - form values from the listen event.
@@ -131,17 +164,17 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                     <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             type="dropdown"
-                            label={ isAddGroup ? "Group Type" : "Role Type" }
+                            label={ isAddGroup ? "Userstore" : "Role Type" }
                             name="domain"
-                            children={ isAddGroup ? groupDomains : roleDomains }
+                            children={ isAddGroup ? userStoreOptions : roleDomains }
                             placeholder="Domain"
-                            requiredErrorMessage="Select Role Type"
+                            requiredErrorMessage={ isAddGroup ? "Select user store" : "Select Role Type" }
                             required={ true }
                             element={ <div></div> }
                             value={ initialValues?.domain ? 
                                     initialValues?.domain : 
                                         isAddGroup ? 
-                                            groupDomains[0].value : roleDomains[0].value 
+                                            userStoreOptions[0]?.value : roleDomains[0].value 
                             }
                         />
                     </GridColumn>

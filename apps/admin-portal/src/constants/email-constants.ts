@@ -17,3 +17,16 @@
  */
 
 export const EMAIL_TEMPLATE_VIEW_PATH = "/email-templates/";
+
+/**
+ * A Boilerplate template to start email template editing.
+ */
+export const EMAIL_STARTER_TEMPLATE = `<!DOCTYPE html>
+<html>
+    <head>
+        <title>HTML Email Template</title>
+    </head>
+    <body>
+        <p>Hello {{user.claim.givenname}}!</p>
+    </body>
+</html>`;

@@ -16,14 +16,14 @@
  * under the License
  */
 
-import { Field, Forms } from "@wso2is/forms"
+import { Forms } from "@wso2is/forms"
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react"
+import React, { FunctionComponent, ReactElement, useState, useEffect, ChangeEvent } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Divider, Grid } from "semantic-ui-react"
+import { Button, Divider, Grid, Input, Form, InputOnChangeData } from "semantic-ui-react"
 import { deleteRoleById, updateRoleDetails } from "../../../api";
-import { ROLE_VIEW_PATH } from "../../../constants";
+import { ROLE_VIEW_PATH, GROUP_VIEW_PATH } from "../../../constants";
 import { history } from "../../../helpers";
 import { AlertInterface, AlertLevels, PatchRoleDataInterface, RolesInterface } from "../../../models";
 import { addAlert } from "../../../store/actions";
@@ -33,6 +33,7 @@ import { addAlert } from "../../../store/actions";
  */
 interface BasicRoleProps {
     roleObject: RolesInterface;
+    isGroup: boolean;
     onRoleUpdate: () => void;
 }
 
@@ -47,10 +48,22 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
     const {
         roleObject,
-        onRoleUpdate
+        onRoleUpdate,
+        isGroup
     } = props;
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false)
+    const [ labelText, setLableText ] = useState<string>(undefined);
+    const [ nameValue, setNameValue ] = useState<string>('');
+
+    useEffect(() => {
+        if (roleObject && roleObject.displayName.indexOf('/') !== -1) {
+            setNameValue(roleObject.displayName.split('/')[1])
+            setLableText(roleObject.displayName.split('/')[0])
+        } else if (roleObject) {
+            setNameValue(roleObject.displayName);
+        }
+    }, [roleObject])
 
     /**
      * Dispatches the alert object to the redux store.
@@ -69,15 +82,19 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const handleOnDelete = (id: string): void => {
         deleteRoleById(id).then(() => {
             handleAlerts({
-                description: t(
-                    "devPortal:components.roles.notifications.deleteRole.success.description"
-                ),
+                description: isGroup ? 
+                    t("devPortal:components.groups.notifications.deleteGroup.success.description") : 
+                    t("devPortal:components.roles.notifications.deleteRole.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t(
-                    "devPortal:components.roles.notifications.deleteRole.success.message"
-                )
+                message: isGroup ? 
+                    t("devPortal:components.groups.notifications.deleteGroup.success.message") : 
+                    t("devPortal:components.roles.notifications.deleteRole.success.message")
             });
-            history.push(ROLE_VIEW_PATH);
+            if (isGroup) {
+                history.push(GROUP_VIEW_PATH);
+            } else {
+                history.push(ROLE_VIEW_PATH);
+            }
         });
     };
 
@@ -94,7 +111,7 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             Operations: [{
                 "op": "replace",
                 "value": {
-                    "displayName": values.get("rolename")
+                    "displayName": labelText ? labelText + "/" + nameValue : nameValue
                 }
             }]
         };
@@ -103,23 +120,23 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             .then(response => {
                 onRoleUpdate();
                 handleAlerts({
-                    description: t(
-                        "devPortal:components.roles.notifications.updateRole.success.description"
-                    ),
+                    description: isGroup ? 
+                        t("devPortal:components.groups.notifications.updateGroup.success.description") : 
+                        t("devPortal:components.roles.notifications.updateRole.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t(
-                        "devPortal:components.roles.notifications.updateRole.success.message"
-                    )
+                    message: isGroup ? 
+                        t("devPortal:components.groups.notifications.updateGroup.success.message") : 
+                        t("devPortal:components.roles.notifications.updateRole.success.message")
                 });
             }).catch(error => {
                 handleAlerts({
-                    description: t(
-                        "devPortal:components.roles.notifications.updateRole.error.description"
-                    ),
+                    description: isGroup ? 
+                        t("devPortal:components.groups.notifications.updateGroup.error.description") : 
+                        t("devPortal:components.roles.notifications.updateRole.error.description"),
                     level: AlertLevels.ERROR,
-                    message: t(
-                        "devPortal:components.roles.notifications.updateRole.error.message"
-                    )
+                    message: isGroup ? 
+                        t("devPortal:components.groups.notifications.updateGroup.error.message") : 
+                        t("devPortal:components.roles.notifications.updateRole.error.message")
                 });
             });
     };
@@ -134,15 +151,35 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
-                            <Field
-                                name={ "rolename" }
-                                label={ t("devPortal:components.roles.edit.basics.fields.roleName") }
-                                required={ true }
-                                requiredErrorMessage={ "Role name is required" }
-                                placeholder={ "Enter your role name" }
-                                value={ roleObject? roleObject.displayName : "" }
-                                type="text"
-                            />
+                            <Form.Field>
+                                <label>
+                                    { isGroup ? 
+                                        t("devPortal:components.groups.edit.basics.fields.groupName.name") : 
+                                        t("devPortal:components.roles.edit.basics.fields.roleName.name") 
+                                    }
+                                </label>
+                                <Input
+                                    required={ true }
+                                    name={ "rolename" }
+                                    label={ labelText + " /" }
+                                    requiredErrorMessage={ 
+                                        isGroup ? 
+                                            t("devPortal:components.groups.edit.basics.fields.groupName.required") : 
+                                            t("devPortal:components.roles.edit.basics.fields.roleName.required") 
+                                    }
+                                    placeholder={ 
+                                        isGroup ? 
+                                            t("devPortal:components.groups.edit.basics.fields.groupName.placeholder") : 
+                                            t("devPortal:components.roles.edit.basics.fields.roleName.placeholder") 
+                                    }
+                                    value={ nameValue }
+                                    onChange={ (event: ChangeEvent, data: InputOnChangeData) => {
+                                        setNameValue(data.value)
+                                    } }
+                                    type="text"
+                                />
+                            </Form.Field>
+                            
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row columns={ 1 }>
@@ -157,9 +194,13 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             <Divider hidden />
             <DangerZoneGroup sectionHeader="Danger Zone">
                 <DangerZone
-                    actionTitle="Delete Role"
-                    header="Delete role"
-                    subheader="Once you delete a role, there is no going back. Please be certain."
+                    actionTitle={ isGroup ? "Delete Group" : "Delete Role" }
+                    header={ isGroup ? "Delete group" : "Delete role" }
+                    subheader={ 
+                        isGroup ? 
+                            "Once you delete the group, there is no going back. Please be certain." : 
+                            "Once you delete the role, there is no going back. Please be certain." 
+                    }
                     onActionClick={ () => setShowDeleteConfirmationModal(!showRoleDeleteConfirmation) }
                 />
             </DangerZoneGroup> 
@@ -179,10 +220,14 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                     >
                         <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
                         <ConfirmationModal.Message attached warning>
-                            This action is irreversible and will permanently delete the selected role.
+                            This action is irreversible and will permanently delete the selected { 
+                                isGroup ? "group." : "role." 
+                            }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            If you delete this role, the permissions attached to it will be deleted and the users 
+                            If you delete this { 
+                                isGroup ? "group" : "role" 
+                            }, the permissions attached to it will be deleted and the users 
                             attached to it will no longer be able to perform intended actions which were previously
                             allowed. Please proceed with caution.
                         </ConfirmationModal.Content>

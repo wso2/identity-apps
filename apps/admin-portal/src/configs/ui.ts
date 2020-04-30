@@ -50,6 +50,7 @@ import {
     DragSquaresIcon,
     DummyUser,
     EmailOTPIcon,
+    EmailIcon,
     EmptySearchResultsIllustration,
     ErrorIcon,
     ExpertModeIdPIcon,
@@ -244,6 +245,17 @@ export const UserWizardStepIcons = {
     groups: GearsIcon,
     roles: SpinWheelIcon,
     summary: ReportIcon
+};
+
+export const RolesWizardStepIcons = {
+    general: DocumentIcon,
+    permissions: GearsIcon,
+    assignUser: UserIcon,
+    summary: ReportIcon
+};
+
+export const EmailTemplateIllustrations = {
+    emptyEmailListing: EmailIcon
 };
 
 export const IdentityProviderWizardStepIcons = {
