@@ -198,7 +198,7 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
             className="wizard application-create-wizard"
         >
             <Modal.Header className="wizard-header">
-                Add userstore
+                Add Userstore
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group

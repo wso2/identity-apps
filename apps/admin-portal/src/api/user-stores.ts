@@ -23,7 +23,7 @@ import { store } from "../store";
 /**
  * The error code that is returned when there is no item in the list.
  */
-const RESOURCE_NOT_FOUND_ERROR_CODE = "CMT-50017";
+const RESOURCE_NOT_FOUND_ERROR_MESSAGE = "Resource not found.";
 
 /**
  * Initialize an axios Http client.
@@ -58,7 +58,7 @@ export const getUserStores = (params: QueryParams): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            if (error?.response?.data?.code !== RESOURCE_NOT_FOUND_ERROR_CODE) {
+            if (error?.response?.data?.message !== RESOURCE_NOT_FOUND_ERROR_MESSAGE) {
                 return Promise.reject(error?.response?.data);
             }
         });
