@@ -37,10 +37,33 @@ export interface StorageApplicationSettingsItemsInterface {
 }
 
 /**
+ * Interface for the dev portal preferences.
+ */
+export interface StorageDevPortalPreferencesInterface {
+    /**
+     * Help panel preferences.
+     */
+    helpPanel: StorageHelpPanelPreferencesItemsInterface;
+}
+
+/**
+ * Interface for the help panel preferences.
+ */
+export interface StorageHelpPanelPreferencesItemsInterface {
+    /**
+     * Is help panel pinned.
+     */
+    isPinned: boolean;
+}
+
+/**
  * Interface for the user preferences object.
+ * TODO: Revisit the structure. Modify this interface to accept a generic portal settings type and
+ *  assign it to a dynamic key. Ex: [ portal: string ]: T;
  */
 export interface StorageIdentityUserPreferencesInterface {
     applicationPreferences: StorageApplicationSettingsItemsInterface;
+    devPortal: StorageDevPortalPreferencesInterface;
     userPreferences: StorageUserPreferencesItemsInterface;
 }
 
@@ -69,6 +92,11 @@ export const emptyIdentityAppsSettings = (): StorageIdentityAppsSettingsInterfac
     identityAppsSettings: {
         applicationPreferences: {
             recentApplications: []
+        },
+        devPortal: {
+            helpPanel: {
+                isPinned: false
+            }
         },
         userPreferences: {
             userListColumns: []
