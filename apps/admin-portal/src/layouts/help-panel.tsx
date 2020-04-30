@@ -171,7 +171,6 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<SidebarPusherL
             [ username ]: newPref
         }));
 
-
         dispatch(addAlert({
             description: t("devPortal:components.helpPanel.notifications.pin.success.description",
                 { state: isPinned ? t("common:unpinned") : t("common:pinned") }),
