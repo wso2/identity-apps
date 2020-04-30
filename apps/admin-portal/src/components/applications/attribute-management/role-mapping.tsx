@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { getRolesList } from "../../../api";
 import { RoleListInterface, RoleMappingInterface, RolesInterface } from "../../../models";
-import { DynamicField } from "../../claims"
+import { DynamicField } from "../../shared"
 
 interface RoleMappingPropsInterface {
     /**
