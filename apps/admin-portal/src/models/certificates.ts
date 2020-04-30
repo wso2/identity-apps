@@ -28,7 +28,7 @@ export interface Certificate{
  * Model for the Certificate object to be stored in the state.
  */
 export interface DisplayCertificate {
-    alias: string;
+    alias?: string;
     validFrom: Date;
     validTill: Date;
     issuerDN: DistinguishedName[];

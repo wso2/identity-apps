@@ -273,3 +273,9 @@
         width: @OIDCButtonWidth;
     }
 }
+
+.ui.button {
+   &.certificate-info-link-button {
+      padding-left: 0px;
+   }
+}

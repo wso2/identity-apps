@@ -23,7 +23,7 @@ import { ContentLoader, ResourceTab } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AdvanceSettings } from "./advance-application";
+import { AdvancedSettings } from "./advanced-settings";
 import { AttributeSettings } from "./attribute-management";
 import { GeneralApplicationSettings } from "./general-application-settings";
 import { InboundProtocolsMeta } from "./meta";
@@ -256,7 +256,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const AdvancedSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane attached={ false }>
-            <AdvanceSettings
+            <AdvancedSettings
                 appId={ application.id }
                 advancedConfigurations={ application.advancedConfigurations }
                 onUpdate={ onUpdate }

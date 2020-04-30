@@ -16,12 +16,18 @@
  * under the License.
  */
 
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { Heading, Hint } from "@wso2is/react-components";
+import { Heading, Hint, LinkButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, ReactElement, useState } from "react";
-import { Button, Divider, Grid } from "semantic-ui-react";
-import { AdvancedConfigurationsInterface } from "../../../models";
+import _ from "lodash";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Button, Divider, Grid, Modal } from "semantic-ui-react";
+import { AdvancedConfigurationsInterface, CertificateTypeInterface, DisplayCertificate } from "../../../models";
+import { CommonUtils } from "../../../utils/common-utils";
+import { Certificate as CertificateDisplay } from "../../certificates";
 
 /**
  *  Advanced Configurations for the Application.
@@ -51,7 +57,24 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
         readOnly
     } = props;
 
-    const [isPEMSelected, setPEMSelected] = useState<boolean>(false);
+    const [ isPEMSelected, setPEMSelected ] = useState<boolean>(false);
+    const [ PEMValue, setPEMValue ] = useState<string>(undefined);
+    const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
+    const [ certificateModal, setCertificateModal ] = useState(false);
+
+    const dispatch = useDispatch();
+
+    /**
+     * Set initial PEM values.
+     */
+    useEffect(() => {
+        if (CertificateTypeInterface.PEM === config?.certificate?.type) {
+            setPEMSelected(true);
+            if (config?.certificate?.value) {
+                setPEMValue(config?.certificate?.value)
+            }
+        }
+    }, [ config ]);
 
     /**
      * Prepare form values for submitting.
@@ -64,7 +87,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
             advancedConfigurations: {
                 certificate: {
                     type: values.get("type"),
-                    value: values.get("value")
+                    value: isPEMSelected ? values.get("certificateValue") : values.get("jwksValue")
                 },
                 enableAuthorization: !!values.get("enableAuthorization")?.includes("enableAuthorization"),
                 returnAuthenticatedIdpList: !!values.get("returnAuthenticatedIdpList")?.includes("returnAuthenticatedIdpList"),
@@ -73,6 +96,58 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 skipLogoutConsent: !!values.get("skipConsentLogout")?.includes("skipLogoutConsent")
             }
         };
+    };
+
+    /**
+     * Shows the certificate details in modal.
+     */
+    const renderCertificateModal = (): ReactElement => {
+        return (
+            <Modal
+                dimmer="blurring"
+                size="tiny"
+                open={ certificateModal }
+                onClose={ () => {
+                    setCertificateModal(false)
+                } }
+            >
+                <Modal.Header>
+                    View certificate
+                </Modal.Header>
+                <Modal.Content className="certificate-content">
+                    <CertificateDisplay certificate={ certificateDisplay }/>
+                </Modal.Content>
+            </Modal>
+        )
+    };
+
+    /**
+     * Construct the details from the pem value.
+     */
+    const viewCertificate = () => {
+        if (isPEMSelected && PEMValue) {
+            const displayCertificate: DisplayCertificate = CommonUtils.displayCertificate(PEMValue);
+            if (displayCertificate) {
+                setCertificateDisplay(displayCertificate);
+                setCertificateModal(true)
+            } else {
+                dispatch(addAlert({
+                    description: "Provided pem is malformed",
+                    level: AlertLevels.ERROR,
+                    message: "Decode Error"
+                }));
+            }
+        }
+    };
+
+    /**
+     * Handle view certificate.
+     *
+     * @param event Button click event.
+     */
+    const handleCertificateView = (event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        viewCertificate()
     };
 
     return (
@@ -85,7 +160,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             label=""
                             required={ false }
                             requiredErrorMessage="this is needed"
-                            value={ config?.saas ? ["saas"] : [] }
+                            value={ config?.saas ? [ "saas" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
@@ -96,8 +171,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             readOnly={ readOnly }
                         />
                         <Hint>
-                            Applications are by default restricted for usage by users of the service provider&apos;s 
-                            tenant. If this application is SaaS enabled it is opened up for all the users of all the 
+                            Applications are by default restricted for usage by users of the service provider&apos;s
+                            tenant. If this application is SaaS enabled it is opened up for all the users of all the
                             tenants.
                         </Hint>
                     </Grid.Column>
@@ -109,7 +184,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             label=""
                             required={ false }
                             requiredErrorMessage="this is needed"
-                            value={ config?.skipLoginConsent ? ["skipLoginConsent"] : [] }
+                            value={ config?.skipLoginConsent ? [ "skipLoginConsent" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
@@ -131,7 +206,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             label=""
                             required={ false }
                             requiredErrorMessage="this is needed"
-                            value={ config?.skipLogoutConsent ? ["skipLogoutConsent"] : [] }
+                            value={ config?.skipLogoutConsent ? [ "skipLogoutConsent" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
@@ -153,7 +228,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             label=""
                             required={ false }
                             requiredErrorMessage="this is needed"
-                            value={ config?.returnAuthenticatedIdpList ? ["returnAuthenticatedIdpList"] : [] }
+                            value={ config?.returnAuthenticatedIdpList ? [ "returnAuthenticatedIdpList" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
@@ -176,7 +251,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             label=""
                             required={ false }
                             requiredErrorMessage="this is needed"
-                            value={ config?.enableAuthorization ? ["enableAuthorization"] : [] }
+                            value={ config?.enableAuthorization ? [ "enableAuthorization" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
@@ -194,26 +269,27 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Divider/>
                         <Heading as="h5">Certificate</Heading>
-                        <Divider hidden/>
                         <Field
-                            label="Certificate type"
+                            label="Type"
                             name="type"
-                            default={ config?.certificate ? config?.certificate.type : "JWKS" }
+                            default={ CertificateTypeInterface.JWKS }
                             listen={
                                 (values) => {
                                     setPEMSelected(values.get("type") === "PEM" ? true : false);
                                 }
                             }
                             type="radio"
+                            value={ config?.certificate?.type }
                             children={ [
                                 {
-                                    label: "JWKS",
-                                    value: "JWKS"
+                                    label: "Use JWKS endpoint",
+                                    value: CertificateTypeInterface.JWKS
                                 },
                                 {
-                                    label: "PEM",
-                                    value: "PEM"
+                                    label: "Provide certificate",
+                                    value: CertificateTypeInterface.PEM
                                 }
                             ] }
                             readOnly={ readOnly }
@@ -223,45 +299,70 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         {
-                            isPEMSelected ?
+                            isPEMSelected
+                                ?
                                 (
-                                    <Field
-                                        name="value"
-                                        label="Value"
-                                        required={ false }
-                                        requiredErrorMessage="Certificate value is required"
-                                        placeholder={ "Value should be the certificate in PEM format." }
-                                        type="textarea"
-                                        value={ config?.certificate && config?.certificate?.value &&
-                                        config.certificate.value }
-                                        readOnly={ readOnly }
-                                    />
-                                ) : (
-                                    <Field
-                                        name="value"
-                                        label="Value"
-                                        required={ false }
-                                        requiredErrorMessage="Certificate value is required"
-                                        placeholder={ "Value should be jwks URL." }
-                                        type="text"
-                                        validation={ (value: string, validation: Validation) => {
-                                            if (!FormValidation.url(value)) {
-                                                validation.isValid = false;
-                                                validation.errorMessages.push("This is not a valid URL");
+                                    <>
+                                        <Field
+                                            name="certificateValue"
+                                            label="Value"
+                                            required={ false }
+                                            requiredErrorMessage="Certificate value is required"
+                                            placeholder={ "Certificate in PEM format." }
+                                            type="textarea"
+                                            value={
+                                                (CertificateTypeInterface.PEM === config?.certificate?.type)
+                                                && config?.certificate?.value
                                             }
-                                        } }
-                                        value={ config?.certificate && config?.certificate?.value &&
-                                        config.certificate.value }
-                                        readOnly={ readOnly }
-                                    />
+                                            listen={
+                                                (values) => {
+                                                    setPEMValue(
+                                                        values.get("certificateValue") as string
+                                                    );
+                                                }
+                                            }
+                                            readOnly={ readOnly }
+                                        />
+                                        < Hint>
+                                            The certificate (in PEM format) of the application.
+                                        </Hint>
+                                        <LinkButton
+                                            className="certificate-info-link-button"
+                                            onClick={ handleCertificateView }
+                                            disabled={ _.isEmpty(PEMValue) }
+                                        >
+                                            View certificate info
+                                        </LinkButton>
+                                    </>
+                                )
+                                : (
+                                    <>
+                                        <Field
+                                            name="jwksValue"
+                                            label="Value"
+                                            required={ false }
+                                            requiredErrorMessage="Certificate value is required"
+                                            placeholder={ "Application JWKS endpoint URL." }
+                                            type="text"
+                                            validation={ (value: string, validation: Validation) => {
+                                                if (!FormValidation.url(value)) {
+                                                    validation.isValid = false;
+                                                    validation.errorMessages.push("This is not a valid URL");
+                                                }
+                                            } }
+                                            value={
+                                                (CertificateTypeInterface.JWKS === config?.certificate?.type)
+                                                && config?.certificate?.value
+                                            }
+                                            readOnly={ readOnly }
+                                        />
+                                    </>
                                 )
                         }
-                        < Hint>
-                            If the type is JWKS, value should be a jwks URL. If the type is PEM, value should be the
-                            certificate in PEM format.
-                        </Hint>
+
                     </Grid.Column>
                 </Grid.Row>
+                { certificateModal && renderCertificateModal() }
                 {
                     !readOnly && (
                         <Grid.Row columns={ 1 }>

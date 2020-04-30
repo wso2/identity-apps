@@ -19,10 +19,8 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
-import { Divider } from "semantic-ui-react";
 import { AdvancedConfigurationsForm } from "./forms";
 import { updateApplicationConfigurations } from "../../api";
 import { AdvancedConfigurationsInterface, FeatureConfigInterface } from "../../models";
@@ -30,7 +28,7 @@ import { AdvancedConfigurationsInterface, FeatureConfigInterface } from "../../m
 /**
  * Proptypes for the advance settings component.
  */
-interface AdvanceSettingsPropsInterface extends SBACInterface<FeatureConfigInterface> {
+interface AdvancedSettingsPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
      * Currently editing application id.
      */
@@ -48,11 +46,11 @@ interface AdvanceSettingsPropsInterface extends SBACInterface<FeatureConfigInter
 /**
  *  advance settings component.
  *
- * @param {AdvanceSettingsPropsInterface} props - Props injected to the component.
+ * @param {AdvancedSettingsPropsInterface} props - Props injected to the component.
  * @return {ReactElement}
  */
-export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> = (
-    props: AdvanceSettingsPropsInterface
+export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface> = (
+    props: AdvancedSettingsPropsInterface
 ): ReactElement => {
 
     const {
@@ -80,7 +78,16 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
 
                 onUpdate(appId);
             })
-            .catch(() => {
+            .catch((error) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Update error"
+                    }));
+
+                    return;
+                }
                 dispatch(addAlert({
                     description: "An error occurred while the advanced configurations.",
                     level: AlertLevels.ERROR,
@@ -92,8 +99,6 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
     return (
         <>
             <div className="advanced-configuration-section">
-                <Heading as="h4">Advanced Configurations</Heading>
-                <Divider hidden/>
                 <AdvancedConfigurationsForm
                     config={ advancedConfigurations }
                     onSubmit={ handleAdvancedConfigFormSubmit }
