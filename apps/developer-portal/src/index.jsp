@@ -68,7 +68,7 @@
             */
 
             // Add applications which are not to be deleted in to this array.
-            var doNotDeleteApplications = ["Admin Portal", "User Portal"];
+            var doNotDeleteApplications = ["Developer Portal", "User Portal"];
 
             /**
              * =====================================================

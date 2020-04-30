@@ -63,7 +63,7 @@ export class HelpPanelConstants {
      * @constant
      * @type {string}
      */
-    public static readonly EDIT_APPLICATIONS_DOCS_KEY = "[\"Admin Portal\"].Applications[\"Edit Application\"]";
+    public static readonly EDIT_APPLICATIONS_DOCS_KEY = "[\"Developer Portal\"].Applications[\"Edit Application\"]";
 
     /**
      * Key for the application samples tag in the docs structure object.

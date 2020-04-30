@@ -24,7 +24,7 @@ import { HttpMethods, PortalDocumentationStructureInterface } from "../models";
 import { store } from "../store";
 
 /**
- * Gets the document structure for `Admin Portal`, defined in the `mkdocs.yml`
+ * Gets the document structure for `Developer Portal`, defined in the `mkdocs.yml`
  * file from the `wso2/docs-is` repo.
  * @see {@link https://github.com/wso2/docs-is/blob/master/en/mkdocs.yml}
  *

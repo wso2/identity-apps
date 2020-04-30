@@ -28,10 +28,10 @@
     </parent>
 
     <artifactId>developer-portal</artifactId>
-    <name>WSO2 Identity Server Apps - Admin Portal</name>
+    <name>WSO2 Identity Server Apps - Developer Portal</name>
     <modelVersion>4.0.0</modelVersion>
     <packaging>war</packaging>
-    <description>WSO2 Identity Server Admin Portal App</description>
+    <description>WSO2 Identity Server Developer Portal App</description>
     <url>http://wso2.org</url>
 
     <dependencies />
