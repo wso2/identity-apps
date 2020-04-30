@@ -630,6 +630,7 @@ export interface DevPortalNS {
                     updateUsernameRecoveryReCaptcha: Notification;
                     updateEnableNotificationPasswordRecovery: Notification;
                     updateNotificationPasswordRecoveryReCaptcha: Notification;
+                    updateSecurityQuestionPasswordRecoveryReCaptcha: Notification;
                 };
                 usernameRecovery: {
                     heading: string;
@@ -731,8 +732,9 @@ export interface DevPortalNS {
                 };
                 notifications: {
                     updateConfigurations: Notification;
-                    accountLockEnable: Notification;
-                    accountDisablingEnable: Notification;
+                    updateAccountLockEnable: Notification;
+                    updateAccountDisablingEnable: Notification;
+                    updateAccountDisableInternalNotificationManagement: Notification;
                 };
                 accountLock: {
                     heading: string;
