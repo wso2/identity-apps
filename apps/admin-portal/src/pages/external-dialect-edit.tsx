@@ -206,7 +206,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
             <Divider />
             <Grid columns={ 1 }>
                 <Grid.Column width={ 16 }>
-                    <Header as="h5">Update External Claims</Header>
+                    <Header as="h5">Update External Attributes</Header>
                 </Grid.Column>
             </Grid>
 

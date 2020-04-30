@@ -126,12 +126,12 @@ export const LocalClaimsEditPage = (props): ReactElement => {
                 </Image>
             }
             title={ claim?.displayName }
-            description={ "Edit local claim" }
+            description={ "Edit local attribute" }
             backButton={ {
                 onClick: () => {
                     history.push(LOCAL_CLAIMS_PATH);
                 },
-                text: "Go back to Local Claims"
+                text: "Go back to Local Attributes"
             } }
             titleTextAlign="left"
             bottomMargin={ false }

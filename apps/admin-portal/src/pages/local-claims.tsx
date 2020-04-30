@@ -225,46 +225,50 @@ export const LocalClaimsPage = (): ReactElement => {
                     text: "Go back to attribute dialects"
                 } }
             >
-                <ListLayout
-                    advancedSearch={ (
-                        <AdvancedSearchWithBasicFilters
-                            onFilter={ handleLocalClaimsFilter  }
-                            filterAttributeOptions={ [
-                                {
-                                    key: 0,
-                                    text: "Attribute URI",
-                                    value: "claimURI"
-                                },
-                                {
-                                    key: 1,
-                                    text: "Mapped Local Attribute URI",
-                                    value: "mappedLocalClaimURI"
-                                }
-                            ] }
-                            filterAttributePlaceholder={
-                                t("devPortal:components.claims.local.advancedSearch.form.inputs.filterAttribute" +
-                                    ".placeholder")
+                { filteredClaims && filteredClaims.length > 0 ?
+                    (
+                        <ListLayout
+                            advancedSearch={
+                                <AdvancedSearchWithBasicFilters
+                                    onFilter={ handleLocalClaimsFilter }
+                                    filterAttributeOptions={ [
+                                        {
+                                            key: 0,
+                                            text: t("common:name"),
+                                            value: "name"
+                                        },
+                                        {
+                                            key: 1,
+                                            text: t("common:description"),
+                                            value: "description"
+                                        }
+                                    ] }
+                                    filterAttributePlaceholder={
+                                        t("devPortal:components.userstores.advancedSearch.form.inputs" +
+                                            ".filterAttribute.placeholder")
+                                    }
+                                    filterConditionsPlaceholder={
+                                        t("devPortal:components.userstores.advancedSearch.form.inputs" +
+                                            ".filterCondition.placeholder")
+                                    }
+                                    filterValuePlaceholder={
+                                        t("devPortal:components.userstores.advancedSearch.form.inputs" +
+                                            ".filterValue.placeholder")
+                                    }
+                                    placeholder={
+                                        t("devPortal:components.userstores.advancedSearch.placeholder")
+                                    }
+                                    defaultSearchAttribute="name"
+                                    defaultSearchOperator="co"
+                                />
                             }
-                            filterConditionsPlaceholder={
-                                t("devPortal:components.claims.local.advancedSearch.form.inputs.filterCondition" +
-                                    ".placeholder")
-                            }
-                            filterValuePlaceholder={
-                                t("devPortal:components.claims.local.advancedSearch.form.inputs.filterValue" +
-                                    ".placeholder")
-                            }
-                            placeholder={ t("devPortal:components.claims.local.advancedSearch.placeholder") }
-                            defaultSearchAttribute="claimURI"
-                            defaultSearchOperator="co"
-                        />
-                    ) }
-                    currentListSize={ listItemLimit }
-                    listItemLimit={ listItemLimit }
-                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                    onPageChange={ handlePaginationChange }
-                    onSortStrategyChange={ handleSortStrategyChange }
-                    rightActionPanel={
-                        hasRequiredScopes(
+                            currentListSize={ listItemLimit }
+                            listItemLimit={ listItemLimit }
+                            onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                            onPageChange={ handlePaginationChange }
+                            onSortStrategyChange={ handleSortStrategyChange }
+                            rightActionPanel={
+                                 hasRequiredScopes(
                             featureConfig?.attributeDialects,
                             featureConfig?.attributeDialects?.scopes?.create) && (
                                     <PrimaryButton

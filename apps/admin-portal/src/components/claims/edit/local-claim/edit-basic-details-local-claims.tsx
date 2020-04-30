@@ -329,8 +329,8 @@ export const EditBasicDetailsLocalClaims = (
                         <Grid.Column width={ 16 }>
                             <DangerZoneGroup sectionHeader="Danger Zone">
                                 <DangerZone
-                                    actionTitle="Delete Local Claim"
-                                    header="Delete Local Claim"
+                                    actionTitle="Delete Local Attribute"
+                                    header="Delete Local Attribute"
                                     subheader={ "Once you delete a local attribute, there is no going back. " +
                                         "Please be certain." }
                                     onActionClick={ () => setConfirmDelete(true) }
