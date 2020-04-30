@@ -83,7 +83,8 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                 saml: {
                     manualConfiguration: {
                         issuer: values.get("issuer") as string,
-                        assertionConsumerUrls: (assertionConsumerUrls.split(","))
+                        assertionConsumerUrls: (assertionConsumerUrls.split(",")),
+                        serviceProviderQualifier: values.get("applicationQualifier"),
                     }
                 }
             }
@@ -105,7 +106,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
             >
                 <Grid>
                     <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Field
                                 name="issuer"
                                 label="Issuer"
@@ -114,12 +115,33 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                 type="text"
                                 placeholder={ "Enter the issuer name" }
                                 value={ initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration?.issuer }
-                                readOnly={ initialValues?.saml?.issuer }
                             />
                             <Hint>
                                 { `This specifies the issuer. This is the "saml:Issuer" element that contains
                             the unique identifier of the Application. This is also the issuer value
                             specified in the SAML Authentication Request issued by the Application. ` }
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Field
+                                name="applicationQualifier"
+                                label="Application qualifier"
+                                required={ false }
+                                requiredErrorMessage="This is needed"
+                                type="text"
+                                placeholder={ "Enter the application qualifier" }
+                                value={
+                                    initialValues?.inboundProtocolConfiguration
+                                        .saml?.manualConfiguration?.serviceProviderQualifier
+                                }
+                            />
+                            <Hint>
+                                This value is needed only if you have to configure multiple SAML SSO
+                                inbound authentication configurations for the same Issuer value. Qualifier
+                                that is defined here will be appended to the issuer internally to
+                                identify a application uniquely at runtime.
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>
@@ -132,6 +154,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                         validation={ (value: string): boolean => {
                             return FormValidation.url(value);
                         } }
+                        computerWidth={ 10 }
                         required={ true }
                         showError={ showAssertionConsumerUrlError }
                         setShowError={ setAssertionConsumerUrlError }
