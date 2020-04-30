@@ -132,9 +132,12 @@ export interface PropertyAttribute {
 /**
  *  Model to split the property into required and optional.
  */
-export interface RequiredBinary{
+export interface RequiredBinary {
     required: TypeProperty[];
-    optional: TypeProperty[];
+    optional: {
+        sql: TypeProperty[];
+        nonSql: TypeProperty[];
+    };
 }
 
 /**
@@ -144,10 +147,12 @@ export interface CategorizedProperties {
     user: RequiredBinary;
     connection: RequiredBinary;
     group: RequiredBinary;
+    basic: RequiredBinary;
 }
 
 export enum UserstorePropertiesCategories {
     CONNECTION = "connection",
     USER = "user",
-    GROUP = "group"
+    GROUP = "group",
+    BASIC = "basic"
 }
