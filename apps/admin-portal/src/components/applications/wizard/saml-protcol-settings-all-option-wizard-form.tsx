@@ -201,7 +201,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                         </Grid.Column>
                     </Grid.Row>
                     {
-                        (configureMode === SAMLConfigModes.MANUAL) &&
+                        (SAMLConfigModes.MANUAL === configureMode) &&
                         (
                             <>
                                 <Grid.Row columns={ 1 }>
@@ -215,7 +215,6 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                             placeholder={ "Enter the issuer name" }
                                             value={ initialValues?.inboundProtocolConfiguration
                                                 .saml?.manualConfiguration?.issuer }
-                                            // readOnly={ initialValues?.saml?.issuer }
                                         />
                                         <Hint>
                                             { `This specifies the issuer. This is the "saml:Issuer" element 
@@ -272,45 +271,49 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                         )
                     }
                     {
-                        (configureMode === SAMLConfigModes.META_URL) &&
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    name="url"
-                                    label="Meta URL"
-                                    required={ true }
-                                    requiredErrorMessage="Please provide the meta file url"
-                                    type="text"
-                                    placeholder={ "Enter the meta file url" }
-                                    validation={ (value: string, validation: Validation) => {
-                                        if (!FormValidation.url(value)) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push("This is not a valid URL");
-                                        }
-                                    } }
-                                    value={ initialValues?.inboundProtocolConfiguration?.saml?.metadataURL }
-                                />
-                                <Hint>
-                                    { "URL for the meta file" }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
+                        (SAMLConfigModes.META_URL === configureMode) &&
+                        (
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Field
+                                        name="url"
+                                        label="Meta URL"
+                                        required={ true }
+                                        requiredErrorMessage="Please provide the meta file url"
+                                        type="text"
+                                        placeholder={ "Enter the meta file url" }
+                                        validation={ (value: string, validation: Validation) => {
+                                            if (!FormValidation.url(value)) {
+                                                validation.isValid = false;
+                                                validation.errorMessages.push("This is not a valid URL");
+                                            }
+                                        } }
+                                        value={ initialValues?.inboundProtocolConfiguration?.saml?.metadataURL }
+                                    />
+                                    <Hint>
+                                        { "URL for the meta file" }
+                                    </Hint>
+                                </Grid.Column>
+                            </Grid.Row>
+                        )
                     }
                 </Grid>
                 {
-                    (configureMode === SAMLConfigModes.META_FILE) &&
-                    <UploadFile
-                        encode={ true }
-                        updateFile={ setFile }
-                        updateContent={ setFileContent }
-                        updatePasteContent={ setFilePasteContent }
-                        updateFileName={ setFileName }
-                        initialName={ fileName }
-                        initialFile={ file }
-                        initialPasteValue={ filePasteContent }
-                        initialContent={ fileContent }
-                        triggerEmptyFileError={ emptyFileError }
-                    />
+                    (SAMLConfigModes.META_FILE === configureMode) &&
+                    (
+                        <UploadFile
+                            encode={ true }
+                            updateFile={ setFile }
+                            updateContent={ setFileContent }
+                            updatePasteContent={ setFilePasteContent }
+                            updateFileName={ setFileName }
+                            initialName={ fileName }
+                            initialFile={ file }
+                            initialPasteValue={ filePasteContent }
+                            initialContent={ fileContent }
+                            triggerEmptyFileError={ emptyFileError }
+                        />
+                    )
                 }
             </Forms>
             : <ContentLoader/>

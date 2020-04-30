@@ -588,7 +588,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     useEffect(() => {
         if (selectedTemplate) {
             if (selectedTemplate.id === "custom-application") {
-                const NEW_STEPS: WizardStepInterface[] = [...STEPS];
+                const NEW_STEPS: WizardStepInterface[] = [ ...STEPS ];
                 setWizardSteps(NEW_STEPS.splice(1, 1));
             } else {
                 setWizardState(_.merge(wizardState,
