@@ -17,17 +17,20 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { ProvisioningConfigurationsForm } from "./forms";
+import { Divider } from "semantic-ui-react";
 import { getUserStoreList, updateApplicationConfigurations } from "../../api";
 import {
     FeatureConfigInterface,
     ProvisioningConfigurationInterface,
     SimpleUserStoreListItemInterface
 } from "../../models";
+import { OutboundProvisioningConfigurations } from "./outbound-provisioning-configuration";
+import { InboundProvisioningConfigurations } from "./inbound-provisioning-configuration";
+import { SBACInterface } from "@wso2is/core/models";
 
 /**
  * Proptypes for the provision settings component.
@@ -110,17 +113,22 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
 
     return (
         <>
-            {
-                userStore &&
-                <ProvisioningConfigurationsForm
-                    config={ provisioningConfigurations }
-                    onSubmit={ handleProvisioningConfigFormSubmit }
-                    useStoreList={ userStore }
-                    readOnly={
-                        !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
-                    }
-                />
-            }
+            <InboundProvisioningConfigurations
+                appId={ appId }
+                provisioningConfigurations={ provisioningConfigurations }
+                onUpdate={ onUpdate }
+                readOnly={
+                    !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                }
+            />
+            <Divider hidden/>
+            <Divider/>
+            <Divider hidden/>
+            <OutboundProvisioningConfigurations
+                appId={ appId }
+                provisioningConfigurations={ provisioningConfigurations }
+                onUpdate={ onUpdate }
+            />
         </>
     );
 };
