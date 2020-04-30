@@ -26,70 +26,70 @@ export const FederatedAuthenticators: FederatedAuthenticatorMetaDataInterface[] 
         icon: IdPIcons.office365,
         name: "Office365Authenticator"
     },
-	{
-		authenticatorId: "VHdpdHRlckF1dGhlbnRpY2F0b3I",
-		displayName: "Twitter",
-		icon: IdPIcons.twitter,
-		name: "TwitterAuthenticator"
-	},
-	{
-		authenticatorId: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
-		displayName: "Facebook",
-		icon: IdPIcons.facebook,
-		name: "FacebookAuthenticator"
-	},
-	{
-		authenticatorId: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
-		displayName: "Google OIDC",
-		icon: IdPIcons.google,
-		name: "GoogleOIDCAuthenticator"
-	},
-	{
-		authenticatorId: "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y",
-		displayName: "Microsoft Windows Live",
-		icon: IdPIcons.microsoft,
-		name: "MicrosoftWindowsLiveAuthenticator"
-	},
-	{
-		authenticatorId: "UGFzc2l2ZVNUU0F1dGhlbnRpY2F0b3I",
-		displayName: "Passive STS",
-		icon: IdPIcons.wsFed,
-		name: "PassiveSTSAuthenticator"
-	},
-	{
-		authenticatorId: "WWFob29PQXV0aDJBdXRoZW50aWNhdG9y",
-		displayName: "Yahoo OAuth 2",
-		icon: IdPIcons.yahoo,
-		name: "YahooOAuth2Authenticator"
-	},
-	{
-		authenticatorId: "SVdBS2VyYmVyb3NBdXRoZW50aWNhdG9y",
-		displayName: "IWA Kerberos",
-		icon: IdPIcons.iwaKerberos,
-		name: "IWAKerberosAuthenticator"
-	},
-	{
-		authenticatorId: "U0FNTFNTT0F1dGhlbnRpY2F0b3I",
-		displayName: "SAML SSO",
-		icon: IdPIcons.saml,
-		name: "SAMLSSOAuthenticator"
-	},
-	{
-		authenticatorId: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
-		displayName: "OpenID Connect",
-		icon: IdPIcons.oidc,
-		name: "OpenIDConnectAuthenticator"
-	},
-	{
-		authenticatorId: "RW1haWxPVFA",
-		displayName: "Email OTP",
-		icon: IdPIcons.emailOTP,
-		name: "EmailOTP"
-	},
-	{
-		authenticatorId: "U01TT1RQ",
-		displayName: "SMS OTP",
-		icon: IdPIcons.smsOTP,
-		name: "SMSOTP"
-	}
+    {
+        authenticatorId: "VHdpdHRlckF1dGhlbnRpY2F0b3I",
+        displayName: "Twitter",
+        icon: IdPIcons.twitter,
+        name: "TwitterAuthenticator"
+    },
+    {
+        authenticatorId: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
+        displayName: "Facebook",
+        icon: IdPIcons.facebook,
+        name: "FacebookAuthenticator"
+    },
+    {
+        authenticatorId: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
+        displayName: "Google OIDC",
+        icon: IdPIcons.google,
+        name: "GoogleOIDCAuthenticator"
+    },
+    {
+        authenticatorId: "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y",
+        displayName: "Microsoft Windows Live",
+        icon: IdPIcons.microsoft,
+        name: "MicrosoftWindowsLiveAuthenticator"
+    },
+    {
+        authenticatorId: "UGFzc2l2ZVNUU0F1dGhlbnRpY2F0b3I",
+        displayName: "Passive STS",
+        icon: IdPIcons.wsFed,
+        name: "PassiveSTSAuthenticator"
+    },
+    {
+        authenticatorId: "WWFob29PQXV0aDJBdXRoZW50aWNhdG9y",
+        displayName: "Yahoo OAuth 2",
+        icon: IdPIcons.yahoo,
+        name: "YahooOAuth2Authenticator"
+    },
+    {
+        authenticatorId: "SVdBS2VyYmVyb3NBdXRoZW50aWNhdG9y",
+        displayName: "IWA Kerberos",
+        icon: IdPIcons.iwaKerberos,
+        name: "IWAKerberosAuthenticator"
+    },
+    {
+        authenticatorId: "U0FNTFNTT0F1dGhlbnRpY2F0b3I",
+        displayName: "SAML SSO",
+        icon: IdPIcons.saml,
+        name: "SAMLSSOAuthenticator"
+    },
+    {
+        authenticatorId: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
+        displayName: "OpenID Connect",
+        icon: IdPIcons.oidc,
+        name: "OpenIDConnectAuthenticator"
+    },
+    {
+        authenticatorId: "RW1haWxPVFA",
+        displayName: "Email OTP",
+        icon: IdPIcons.emailOTP,
+        name: "EmailOTP"
+    },
+    {
+        authenticatorId: "U01TT1RQ",
+        displayName: "SMS OTP",
+        icon: IdPIcons.smsOTP,
+        name: "SMSOTP"
+    }
 ];
