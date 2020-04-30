@@ -128,7 +128,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             label="Attribute ID"
                             required={ true }
                             requiredErrorMessage="Attribute ID is required"
-                            placeholder="Enter a attribute ID"
+                            placeholder="Enter an attribute ID"
                             value={ values?.get("claimURI")?.toString() }
                             listen={ (values: Map<string, FormValue>) => {
                                 setClaimID(values.get("claimURI").toString())
