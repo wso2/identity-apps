@@ -35,7 +35,7 @@ import { filterList, sortList } from "../utils";
  *
  * @return {ReactElement}
  */
-export const CertificatesTruststore: FunctionComponent< {} > = (): ReactElement => {
+export const CertificatesTruststore: FunctionComponent<{}> = (): ReactElement => {
 
     /**
      * Sets the attributes by which the list can be sorted.
@@ -162,18 +162,6 @@ export const CertificatesTruststore: FunctionComponent< {} > = (): ReactElement 
     };
 
     return (
-        <>
-            {
-                openModal
-                && (
-                    <AddUserStore
-                        open={ openModal }
-                        onClose={ () => {
-                            setOpenModal(false)
-                        } }
-                    />
-                )
-            }
             <PageLayout
                 title="Certificates in the Truststore"
                 description="Create and manage certificates in the truststore"
@@ -210,37 +198,37 @@ export const CertificatesTruststore: FunctionComponent< {} > = (): ReactElement 
                                     defaultSearchAttribute="alias"
                                     defaultSearchOperator="co"
                                 />
-                            }
-                            currentListSize={ listItemLimit }
-                            listItemLimit={ listItemLimit }
-                            onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                            onPageChange={ handlePaginationChange }
-                            onSortStrategyChange={ handleSortStrategyChange }
-                            onSortOrderChange={ handleSortOrderChange }
-                            leftActionPanel={ null }
-                            showPagination={ true }
-                            sortOptions={ SORT_BY }
-                            sortStrategy={ sortBy }
-                            totalPages={ Math.ceil(filteredCertificatesTruststore?.length / listItemLimit) }
-                            totalListSize={ filteredCertificatesTruststore?.length }
-                        >
-                            <CertificatesList
-                                list={ paginate(filteredCertificatesTruststore, listItemLimit, offset) }
-                                update={ fetchCertificatesTruststore }
-                                type="truststore"
                             />
-                        </ListLayout>
-                        )
-                        : !isLoading && (
-                            <EmptyPlaceholder
-                                title="No Certificate"
-                                subtitle={ [ "Currently, there are no certificates available." ] }
-                                image={ EmptyPlaceholderIllustrations.emptyList }
-                                imageSize="tiny"
-                            />
-                        )
-                }
-            </PageLayout>
-        </>
+                        }
+                        currentListSize={ listItemLimit }
+                        listItemLimit={ listItemLimit }
+                        onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                        onPageChange={ handlePaginationChange }
+                        onSortStrategyChange={ handleSortStrategyChange }
+                        onSortOrderChange={ handleSortOrderChange }
+                        leftActionPanel={ null }
+                        showPagination={ true }
+                        sortOptions={ SORT_BY }
+                        sortStrategy={ sortBy }
+                        totalPages={ Math.ceil(filteredCertificatesTruststore?.length / listItemLimit) }
+                        totalListSize={ filteredCertificatesTruststore?.length }
+                    >
+                        <CertificatesList
+                            list={ paginate(filteredCertificatesTruststore, listItemLimit, offset) }
+                            update={ fetchCertificatesTruststore }
+                            type="truststore"
+                        />
+                    </ListLayout>
+                    )
+                    : !isLoading && (
+                        <EmptyPlaceholder
+                            title="No Certificate"
+                            subtitle={ [ "Currently, there are no certificates available." ] }
+                            image={ EmptyPlaceholderIllustrations.emptyList }
+                            imageSize="tiny"
+                        />
+                    )
+            }
+        </PageLayout>
     );
 };
