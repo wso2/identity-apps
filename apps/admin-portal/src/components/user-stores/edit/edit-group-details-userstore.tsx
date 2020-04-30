@@ -18,12 +18,11 @@
 
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import { EditSection, LinkButton, PrimaryButton, Section } from "@wso2is/react-components";
-import React, { ReactElement, useState } from "react";
+import { LinkButton, PrimaryButton } from "@wso2is/react-components";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Grid, List } from "semantic-ui-react";
+import { Grid, Icon } from "semantic-ui-react";
 import { patchUserStore } from "../../../api";
-import { SettingsSectionIcons } from "../../../configs";
 import { AlertLevels, RequiredBinary, TypeProperty, UserstoreType } from "../../../models";
 
 /**
@@ -58,7 +57,16 @@ export const EditGroupDetails = (
 
     const dispatch = useDispatch();
 
-    const requiredProperties = (): ReactElement => (
+    useEffect(() => {
+        // eslint-disable-next-line no-debugger
+        debugger
+        if (properties) {
+            const master = properties.required.find(property => property.name === "ReadGroups");
+            setDisabled(!(master?.value === "true"));
+        }
+    }, [ properties ]);
+
+    return (
         <Forms
             onSubmit={ (values: Map<string, FormValue>) => {
                 const data = properties.required.map((property: TypeProperty) => {
@@ -86,9 +94,9 @@ export const EditGroupDetails = (
                 });
             } }
         >
-            <Grid padded={ true }>
+            <Grid>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 16 }>
+                    <Grid.Column width={ 8 }>
                         {
                             properties?.required?.map((property: TypeProperty, index: number) => {
                                 const name = property.description.split("#")[ 0 ];
@@ -140,7 +148,7 @@ export const EditGroupDetails = (
                                                         value={ property.value ?? property.defaultValue }
                                                         type="toggle"
                                                         key={ index }
-                                                        required={ true }
+                                                        required={ !disabled }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
                                                             `${property.description.split("#")[ 0 ]} is  required`
@@ -155,7 +163,7 @@ export const EditGroupDetails = (
                                                     value={ property.value ?? property.defaultValue }
                                                     type="text"
                                                     key={ index }
-                                                    required={ true }
+                                                    required={ !disabled }
                                                     label={ property.description.split("#")[ 0 ] }
                                                     requiredErrorMessage={
                                                         `${property.description.split("#")[ 0 ]} is  required`
@@ -169,52 +177,28 @@ export const EditGroupDetails = (
 
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 16 }>
-                        <PrimaryButton type="submit">
-                            Update
-                    </PrimaryButton>
-                    </Grid.Column>
-                </Grid.Row>
             </Grid>
-        </Forms>
-    );
 
-    const optionalProperties = (): ReactElement => (
-        <EditSection>
-            <Forms
-                onSubmit={ (values: Map<string, FormValue>) => {
+            { !disabled && (
+                <Grid columns={ 1 }>
+                    <Grid.Column width={ 8 } textAlign="center">
+                        <LinkButton
+                            type="button"
+                            onClick={ () => { setShowMore(!showMore) } }
+                        >
+                            <Icon name={ showMore ? "chevron up" : "chevron down" } />
+                            { `Show ${showMore ? "Less" : "More"}` }
+                        </LinkButton>
+                    </Grid.Column>
+                </Grid>
+            ) }
 
-                    const data = properties.optional.map((property: TypeProperty) => {
-                        return {
-                            operation: "REPLACE",
-                            path: `/properties/${property.name}`,
-                            value: values.get(property.name).toString()
-                        }
-                    });
-
-                    patchUserStore(id, data).then(() => {
-                        dispatch(addAlert({
-                            description: "This userstore has been updated successfully!",
-                            level: AlertLevels.SUCCESS,
-                            message: "Userstore updated successfully!"
-                        }));
-                        update();
-                    }).catch(error => {
-                        dispatch(addAlert({
-                            description: error?.description
-                                || "An error occurred while updating the userstore.",
-                            level: AlertLevels.ERROR,
-                            message: error?.message || "Something went wrong"
-                        }));
-                    });
-                } }
-            >
+            { showMore && properties.optional.nonSql.length > 0 && (
                 <Grid>
                     <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 16 }>
+                        <Grid.Column width={ 8 }>
                             {
-                                properties?.optional?.map((property: TypeProperty, index: number) => {
+                                properties?.optional?.nonSql.map((property: TypeProperty, index: number) => {
                                     const name = property.description.split("#")[ 0 ];
                                     const isPassword = property.attributes
                                         .find(attribute => attribute.name === "type").value === "password";
@@ -272,45 +256,16 @@ export const EditGroupDetails = (
                             }
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 16 }>
-                            <PrimaryButton type="submit">
-                                Update
-                            </PrimaryButton>
-                            <LinkButton type="button" onClick={ () => setShowMore(false) }>
-                                Close
-                            </LinkButton>
-                        </Grid.Column>
-                    </Grid.Row>
                 </Grid>
-            </Forms>
-
-        </EditSection>
+            )
+            }
+            <Grid columns={ 1 }>
+                <Grid.Column width={ 8 }>
+                    <PrimaryButton type="submit">
+                        Update
+                    </PrimaryButton>
+                </Grid.Column>
+            </Grid>
+        </Forms>
     );
-
-    return (
-        <Grid columns={ 1 }>
-            <Grid.Column width={ 10 }>
-                <Section
-                    description={ "Edit the group details of the userstore." }
-                    header={ "Group Details" }
-                    iconMini={ SettingsSectionIcons.profileExportMini }
-                    iconSize="auto"
-                    iconStyle="colored"
-                    iconFloated="right"
-                    onPrimaryActionClick={ () => setShowMore(true) }
-                    primaryAction={ "More" }
-                    primaryActionIcon="key"
-                    showActionBar={ !showMore && !disabled }
-                >
-                    <List verticalAlign="middle" className="main-content-inner">
-                        <List.Item className="inner-list-item">
-                            { requiredProperties() }
-                            { showMore && properties.optional.length > 0 && optionalProperties() }
-                        </List.Item>
-                    </List>
-                </Section>
-            </Grid.Column>
-        </Grid>
-    )
 };

@@ -18,12 +18,11 @@
 
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import { EditSection, LinkButton, PrimaryButton, Section } from "@wso2is/react-components";
+import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Grid, List } from "semantic-ui-react";
+import { Button, Divider, Grid, Icon } from "semantic-ui-react";
 import { patchUserStore, testConnection } from "../../../api";
-import { SettingsSectionIcons } from "../../../configs";
 import { JDBC } from "../../../constants";
 import { AlertLevels, RequiredBinary, TestConnection, TypeProperty, UserstoreType } from "../../../models";
 
@@ -56,10 +55,67 @@ export const EditConnectionDetails = (
 
     const [ formValue, setFormValue ] = useState<Map<string, FormValue>>(null);
     const [ showMore, setShowMore ] = useState(false);
+    const [ connectionFailed, setConnectionFailed ] = useState(false);
+    const [ connectionSuccessful, setConnectionSuccessful ] = useState(false);
+    const [ isTesting, setIsTesting ] = useState(false);
 
     const dispatch = useDispatch();
 
-    const requiredProperties = (): ReactElement => (
+    /**
+     * Enum containing the icons a test connection button can have 
+     */
+    enum TestButtonIcon {
+        TESTING = "spinner",
+        FAILED = "remove",
+        SUCCESSFUL = "check",
+        INITIAL = "bolt"
+    }
+
+    /**
+     * This returns of the icon for the test button.
+     * 
+     * @returns {TestButtonIcon} The icon of the test button.
+     */
+    const findTestButtonIcon = (): TestButtonIcon => {
+        if (isTesting) {
+            return TestButtonIcon.TESTING
+        } else if (connectionSuccessful) {
+            return TestButtonIcon.SUCCESSFUL
+        } else if (connectionFailed) {
+            return TestButtonIcon.FAILED
+        } else {
+            return TestButtonIcon.INITIAL
+        }
+    };
+
+    /**
+     * Enum containing the colors the test button can have
+     */
+    enum TestButtonColor {
+        TESTING,
+        INITIAL,
+        SUCCESSFUL,
+        FAILED
+    }
+
+    /**
+     * This finds the right color for the test button
+     * 
+     * @return {TestButtonColor} The color of the test button.
+     */
+    const findTestButtonColor = (): TestButtonColor => {
+        if (isTesting) {
+            return TestButtonColor.TESTING
+        } else if (connectionSuccessful) {
+            return TestButtonColor.SUCCESSFUL
+        } else if (connectionFailed) {
+            return TestButtonColor.FAILED
+        } else {
+            return TestButtonColor.INITIAL
+        }
+    }
+
+    return (
         <Forms
             onChange={ (isPure: boolean, values: Map<string, FormValue>) => {
                 setFormValue(values);
@@ -91,9 +147,9 @@ export const EditConnectionDetails = (
                 });
             } }
         >
-            <Grid padded={ true }>
+            <Grid>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 16 }>
+                    <Grid.Column width={ 8 }>
                         {
                             properties?.required?.map((property: TypeProperty, index: number) => {
                                 const name = property.description.split("#")[ 0 ];
@@ -101,7 +157,7 @@ export const EditConnectionDetails = (
                                     .find(attribute => attribute.name === "type").value === "password";
                                 const toggle = property.attributes
                                     .find(attribute => attribute.name === "type")?.value === "boolean";
-                                
+
                                 return (
                                     isPassword
                                         ? (
@@ -153,14 +209,21 @@ export const EditConnectionDetails = (
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 16 }>
-                        <PrimaryButton type="submit">
-                            Update
-                    </PrimaryButton>
-                        <LinkButton
+                    <Grid.Column width={ 8 }>
+                        <Button
+                            className="test-button"
+                            basic
                             type="button"
+                            color={
+                                findTestButtonColor() === TestButtonColor.SUCCESSFUL
+                                    ? "green"
+                                    : findTestButtonColor() === TestButtonColor.FAILED
+                                        ? "red"
+                                        : null
+                            }
                             onClick={
                                 () => {
+                                    setIsTesting(true);
                                     if (type.typeName.includes(JDBC)) {
                                         const testData: TestConnection = {
                                             connectionPassword: formValue?.get("password").toString()
@@ -182,6 +245,9 @@ export const EditConnectionDetails = (
                                                 level: AlertLevels.SUCCESS,
                                                 message: "Connection successful!"
                                             }));
+                                            setIsTesting(false);
+                                            setConnectionFailed(false);
+                                            setConnectionSuccessful(true);
                                         }).catch((error) => {
                                             dispatch(addAlert({
                                                 description: error?.description
@@ -190,59 +256,56 @@ export const EditConnectionDetails = (
                                                 level: AlertLevels.ERROR,
                                                 message: error?.message || "Something went wrong"
                                             }));
+                                            setIsTesting(false);
+                                            setConnectionSuccessful(false);
+                                            setConnectionFailed(true);
                                         })
                                     }
                                 }
                             }
                         >
+                            <Icon
+                                size="small"
+                                loading={ isTesting }
+                                name={ findTestButtonIcon() }
+                                color={
+                                    findTestButtonColor() === TestButtonColor.SUCCESSFUL
+                                        ? "green"
+                                        : findTestButtonColor() === TestButtonColor.FAILED
+                                            ? "red"
+                                            : null
+                                }
+                            />
                             Test Connection
-                    </LinkButton>
+                    </Button>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </Forms>
-    );
 
-    const optionalProperties = (): ReactElement => (
-        <EditSection>
-            <Forms
-                onSubmit={ (values: Map<string, FormValue>) => {
-                    const data = properties.optional.map((property: TypeProperty) => {
-                        return {
-                            operation: "REPLACE",
-                            path: `/properties/${property.name}`,
-                            value: values.get(property.name).toString()
-                        }
-                    });
-
-                    patchUserStore(id, data).then(() => {
-                        dispatch(addAlert({
-                            description: "This userstore has been updated successfully!",
-                            level: AlertLevels.SUCCESS,
-                            message: "Userstore updated successfully!"
-                        }));
-                        update();
-                    }).catch(error => {
-                        dispatch(addAlert({
-                            description: error?.description
-                                || "An error occurred while updating the userstore.",
-                            level: AlertLevels.ERROR,
-                            message: error?.message || "Something went wrong"
-                        }));
-                    });
-                } }
-            >
+            <Grid columns={ 1 }>
+                <Grid.Column width={ 8 } textAlign="center">
+                    <LinkButton
+                        type="button"
+                        onClick={ () => { setShowMore(!showMore) } }
+                    >
+                        <Icon name={ showMore ? "chevron up" : "chevron down" } />
+                        { `Show ${showMore ? "Less" : "More"}` }
+                    </LinkButton>
+                </Grid.Column>
+            </Grid>
+                        
+            { showMore && properties.optional.nonSql.length > 0 && (
                 <Grid>
                     <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 16 }>
+                        <Grid.Column width={ 8 }>
                             {
-                                properties?.optional?.map((property: TypeProperty, index: number) => {
+                                properties?.optional.nonSql?.map((property: TypeProperty, index: number) => {
                                     const name = property.description.split("#")[ 0 ];
                                     const isPassword = property.attributes
                                         .find(attribute => attribute.name === "type").value === "password";
                                     const toggle = property.attributes
                                         .find(attribute => attribute.name === "type")?.value === "boolean";
-                                    
+
                                     return (
                                         isPassword
                                             ? (
@@ -292,45 +355,15 @@ export const EditConnectionDetails = (
                             }
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 16 }>
-                            <PrimaryButton type="submit">
-                                Update
-                            </PrimaryButton>
-                            <LinkButton type="button" onClick={ () => setShowMore(false) }>
-                                Close
-                            </LinkButton>
-                        </Grid.Column>
-                    </Grid.Row>
                 </Grid>
-            </Forms>
-
-        </EditSection>
+            ) }
+            <Grid columns={ 1 }>
+                <Grid.Column width={ 8 }>
+                    <PrimaryButton type="submit">
+                        Update
+                            </PrimaryButton>
+                </Grid.Column>
+            </Grid>
+        </Forms>
     );
-
-    return (
-        <Grid columns={ 1 }>
-            <Grid.Column width={ 10 }>
-                <Section
-                    description={ "Edit the connection details of the userstore." }
-                    header={ "Connection Details" }
-                    iconMini={ SettingsSectionIcons.profileExportMini }
-                    iconSize="auto"
-                    iconStyle="colored"
-                    iconFloated="right"
-                    onPrimaryActionClick={ () => setShowMore(true) }
-                    primaryAction={ "More" }
-                    primaryActionIcon="key"
-                    showActionBar={ !showMore }
-                >
-                    <List verticalAlign="middle" className="main-content-inner">
-                        <List.Item className="inner-list-item">
-                            { requiredProperties() }
-                            { showMore && properties.optional.length > 0 && optionalProperties() }
-                        </List.Item>
-                    </List>
-                </Section>
-            </Grid.Column>
-        </Grid>
-    )
 };
