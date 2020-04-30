@@ -100,6 +100,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                                         setPropertyName(property.name);
                                                         setPropertyValue(property.value ?? property.defaultValue);
                                                     } }
+                                                    active={ property.name === propertyName }
                                                 >
                                                     <Popup
                                                         trigger={ (
@@ -140,6 +141,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                                     setPropertyName(property.name);
                                                     setPropertyValue(property.value ?? property.defaultValue);
                                                 } }
+                                                active={ property.name === propertyName }
                                             >
                                                 <Popup
                                                     trigger={ (
@@ -179,6 +181,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                                     setPropertyName(property.name);
                                                     setPropertyValue(property.value ?? property.defaultValue);
                                                 } }
+                                                active={ property.name === propertyName }
                                             >
                                                 <Popup
                                                     trigger={ (
@@ -218,6 +221,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                                     setPropertyName(property.name);
                                                     setPropertyValue(property.value ?? property.defaultValue);
                                                 } }
+                                                active={ property.name === propertyName }
                                             >
                                                 <Popup
                                                     trigger={ (
@@ -242,46 +246,51 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
     );
 
     return (
-        <div className="adaptive-scripts-section">
-            <Sidebar.Pushable className="script-editor-section" >
-                <EditorSideBar />
-                <Sidebar.Pusher>
-                    <div className="script-editor-container" ref={ editor }>
-                        <Menu attached="top" className="action-panel" secondary>
-                            <Menu.Item>
-                                <Checkbox
-                                    label="Dark mode"
-                                    checked={ isEditorDarkMode }
-                                    onChange={ () => { setIsEditorDarkMode(!isEditorDarkMode) } }
-                                    slider
-                                />
-                            </Menu.Item>
-                            <Menu.Menu position="right">
-                                <Menu.Item onClick={ () => setSideBarVisible(!sideBarVisible) } className="action">
-                                    <Icon name="bars" />
+        <div className="sign-on-methods-tab-content">
+            <div className="adaptive-scripts-section">
+                <Sidebar.Pushable className="script-editor-section" >
+                    <EditorSideBar />
+                    <Sidebar.Pusher>
+                        <div className="script-editor-container" ref={ editor }>
+                            <Menu attached="top" className="action-panel" secondary>
+                                <Menu.Item>
+                                    <Checkbox
+                                        label="Dark mode"
+                                        checked={ isEditorDarkMode }
+                                        onChange={ () => { setIsEditorDarkMode(!isEditorDarkMode) } }
+                                        slider
+                                    />
                                 </Menu.Item>
-                            </Menu.Menu>
-                        </Menu>
+                                <Menu.Menu position="right">
+                                    <Menu.Item
+                                        onClick={
+                                            () => setSideBarVisible(!sideBarVisible)
+                                        }
+                                        className="action"
+                                    >
+                                        <Icon name="bars" />
+                                    </Menu.Item>
+                                </Menu.Menu>
+                            </Menu>
 
-                        <div
-                            className="code-editor-wrapper"
-                        >
-                            <CodeEditor
-                                lint
-                                language="javascript"
-                                sourceCode={ propertyValue }
-                                options={ {
-                                    lineWrapping: true
-                                } }
-                                onChange={ (editor, data, value) => {
-                                    onChange(propertyName, value);
-                                } }
-                                theme={ isEditorDarkMode ? "dark" : "light" }
-                            />
+                            <div className="code-editor-wrapper">
+                                <CodeEditor
+                                    lint
+                                    sourceCode={ propertyValue }
+                                    options={ {
+                                        lineWrapping: true,
+                                        mode: "x-sql"
+                                    } }
+                                    onChange={ (editor, data, value) => {
+                                        onChange(propertyName, value);
+                                    } }
+                                    theme={ isEditorDarkMode ? "dark" : "light" }
+                                />
+                            </div>
                         </div>
-                    </div>
-                </Sidebar.Pusher>
-            </Sidebar.Pushable >
+                    </Sidebar.Pusher>
+                </Sidebar.Pushable >
+            </div>
         </div>
     )
 }
