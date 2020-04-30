@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { FunctionComponent, PropsWithChildren, ReactElement} from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Button, Grid, Icon, Segment } from "semantic-ui-react";
 import { TransferListSearch } from "./transfer-list-search";
 
@@ -24,8 +24,8 @@ import { TransferListSearch } from "./transfer-list-search";
  * Proptypes transfer component.
  */
 export interface TransferComponentPropsInterface {
-    handleUnelectedListSearch: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string; }) => void;
-    handleSelectedListSearch: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string; }) => void;
+    handleUnelectedListSearch: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => void;
+    handleSelectedListSearch: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => void;
     addItems: () => void;
     removeItems: () => void;
     searchPlaceholder: string;
@@ -48,7 +48,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
         children,
         searchPlaceholder,
         handleUnelectedListSearch,
-        handleSelectedListSearch,
+        handleSelectedListSearch
     } = props;
 
     return (
@@ -64,11 +64,11 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                             list.props.listType === "unselected" && (
                                             <Grid.Column width={ 7 }>
                                                 <Segment
-                                                    data-testid={ `${ props[ `data-testid` ] }_unselected_groups` }
+                                                    data-testid={ `${ props[ "data-testid" ] }_unselected_groups` }
                                                     className="transfer-segment"
                                                 >
                                                     <TransferListSearch
-                                                        searchFieldTestId={ `${ props[ `data-testid` ] }_unselected_groups_search_input` }
+                                                        searchFieldTestId={ `${ props[ "data-testid" ] }_unselected_groups_search_input` }
                                                         handleListSearch={ handleUnelectedListSearch }
                                                         placeholder={ searchPlaceholder }
                                                     />
@@ -88,7 +88,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                 >
                                                     <Grid.Row>
                                                         <Button
-                                                            data-testid={ `${  props[ `data-testid` ] }_unselected_groups_add_button` }
+                                                            data-testid={ `${  props[ "data-testid" ] }_unselected_groups_add_button` }
                                                             type="button"
                                                             basic
                                                             size="mini"
@@ -99,7 +99,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                     </Grid.Row>
                                                     <Grid.Row>
                                                         <Button
-                                                            data-testid={ `${  props[ `data-testid` ] }_unselected_groups_remove_button` }
+                                                            data-testid={ `${  props[ "data-testid" ] }_unselected_groups_remove_button` }
                                                             type="button"
                                                             basic
                                                             size="mini"
@@ -115,11 +115,11 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                             list.props.listType === "selected" && (
                                                 <Grid.Column width={ 7 } className="transfer-list-assigned-column">
                                                     <Segment
-                                                        data-testid={ `${ props[ `data-testid` ] }_selected_groups` }
+                                                        data-testid={ `${ props[ "data-testid" ] }_selected_groups` }
                                                         className="transfer-segment"
                                                     >
                                                         <TransferListSearch
-                                                            searchFieldTestId={ `${ props[ `data-testid` ] }_selected_groups_search_input` }
+                                                            searchFieldTestId={ `${ props[ "data-testid" ] }_selected_groups_search_input` }
                                                             handleListSearch={ handleSelectedListSearch }
                                                             placeholder={ searchPlaceholder }
                                                         />

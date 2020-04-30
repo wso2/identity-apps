@@ -26,7 +26,7 @@ import { Grid, Icon, Input } from "semantic-ui-react";
 export interface TransferListSearchProps {
     searchFieldTestId?: string;
     placeholder: string;
-    handleListSearch?: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string; }) => void;
+    handleListSearch?: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => void;
 }
 
 /**
