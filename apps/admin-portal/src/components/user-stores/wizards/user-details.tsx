@@ -57,7 +57,7 @@ export const UserDetails = (
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
-                <Grid.Column>
+                <Grid.Column width={ 8 }>
                     <Forms
                         onSubmit={ (values: Map<string, FormValue>) => {
                             onSubmit(values);
