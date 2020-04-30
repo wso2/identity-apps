@@ -135,7 +135,12 @@ export interface PropertyAttribute {
 export interface RequiredBinary {
     required: TypeProperty[];
     optional: {
-        sql: TypeProperty[];
+        sql: {
+            insert: TypeProperty[];
+            update: TypeProperty[];
+            delete: TypeProperty[];
+            select: TypeProperty[];
+        };
         nonSql: TypeProperty[];
     };
 }

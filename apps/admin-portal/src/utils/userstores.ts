@@ -30,19 +30,31 @@ export const reOrganizeProperties = (
 
     const connectionRequiredProperties: TypeProperty[] = [];
     const connectionOptionalProperties: TypeProperty[] = [];
-    const connectionOptionalSqlProperties: TypeProperty[] = [];
+    const connectionOptionalSqlInsertProperties: TypeProperty[] = [];
+    const connectionOptionalSqlDeleteProperties: TypeProperty[] = [];
+    const connectionOptionalSqlUpdateProperties: TypeProperty[] = [];
+    const connectionOptionalSqlSelectProperties: TypeProperty[] = [];
 
     const userRequiredProperties: TypeProperty[] = [];
     const userOptionalProperties: TypeProperty[] = [];
-    const userOptionalSqlProperties: TypeProperty[] = [];
+    const userOptionalSqlInsertProperties: TypeProperty[] = [];
+    const userOptionalSqlDeleteProperties: TypeProperty[] = [];
+    const userOptionalSqlUpdateProperties: TypeProperty[] = [];
+    const userOptionalSqlSelectProperties: TypeProperty[] = [];
 
     const groupRequiredProperties: TypeProperty[] = [];
     const groupOptionalProperties: TypeProperty[] = [];
-    const groupOptionalSqlProperties: TypeProperty[] = [];
+    const groupOptionalSqlInsertProperties: TypeProperty[] = [];
+    const groupOptionalSqlDeleteProperties: TypeProperty[] = [];
+    const groupOptionalSqlUpdateProperties: TypeProperty[] = [];
+    const groupOptionalSqlSelectProperties: TypeProperty[] = [];
 
     const basicRequiredProperties: TypeProperty[] = [];
     const basicOptionalProperties: TypeProperty[] = [];
-    const basicOptionalSqlProperties: TypeProperty[] = [];
+    const basicOptionalSqlInsertProperties: TypeProperty[] = [];
+    const basicOptionalSqlDeleteProperties: TypeProperty[] = [];
+    const basicOptionalSqlUpdateProperties: TypeProperty[] = [];
+    const basicOptionalSqlSelectProperties: TypeProperty[] = [];
 
     flattenedProperties.forEach((property: TypeProperty) => {
         const category = property.attributes?.find((attribute) => attribute.name === "category")?.value;
@@ -50,6 +62,7 @@ export const reOrganizeProperties = (
         const sql = property.attributes?.find((attribute) => attribute.name === "type")?.value === "sql";
         const INSERT = property.description.toLowerCase().includes("add");
         const DELETE = property.description.toLowerCase().includes("delete");
+        const UPDATE = property.description.toLowerCase().includes("update");
 
         if (valueProperties) {
             property.value = valueProperties.find((valueProperty) => valueProperty.name === property.name)?.value ?? "";
@@ -60,29 +73,54 @@ export const reOrganizeProperties = (
                 required
                     ? connectionRequiredProperties.push(property)
                     : sql
-                    ? connectionOptionalSqlProperties.push(property)
+                    ? INSERT
+                        ? connectionOptionalSqlInsertProperties.push(property)
+                        : DELETE
+                        ? connectionOptionalSqlDeleteProperties.push(property)
+                        : UPDATE
+                        ? connectionOptionalSqlUpdateProperties.push(property)
+                        : connectionOptionalSqlSelectProperties.push(property)
                     : connectionOptionalProperties.push(property);
                 break;
             case UserstorePropertiesCategories.GROUP:
                 required
                     ? groupRequiredProperties.push(property)
                     : sql
-                    ? groupOptionalSqlProperties.push(property)
+                    ? INSERT
+                        ? groupOptionalSqlInsertProperties.push(property)
+                        : DELETE
+                        ? groupOptionalSqlDeleteProperties.push(property)
+                        : UPDATE
+                        ? groupOptionalSqlUpdateProperties.push(property)
+                        : groupOptionalSqlSelectProperties.push(property)
                     : groupOptionalProperties.push(property);
                 break;
             case UserstorePropertiesCategories.USER:
                 required
                     ? userRequiredProperties.push(property)
                     : sql
-                    ? userOptionalSqlProperties.push(property)
+                    ? INSERT
+                        ? userOptionalSqlInsertProperties.push(property)
+                        : DELETE
+                        ? userOptionalSqlDeleteProperties.push(property)
+                        : UPDATE
+                        ? userOptionalSqlUpdateProperties.push(property)
+                        : userOptionalSqlSelectProperties.push(property)
                     : userOptionalProperties.push(property);
                 break;
             case UserstorePropertiesCategories.BASIC:
                 required
                     ? basicRequiredProperties.push(property)
                     : sql
-                    ? basicOptionalSqlProperties.push(property)
+                    ? INSERT
+                        ? basicOptionalSqlInsertProperties.push(property)
+                        : DELETE
+                        ? basicOptionalSqlDeleteProperties.push(property)
+                        : UPDATE
+                        ? basicOptionalSqlUpdateProperties.push(property)
+                        : basicOptionalSqlSelectProperties.push(property)
                     : basicOptionalProperties.push(property);
+                break;
         }
     });
 
@@ -90,28 +128,48 @@ export const reOrganizeProperties = (
         basic: {
             optional: {
                 nonSql: basicOptionalProperties,
-                sql: basicOptionalSqlProperties
+                sql: {
+                    select: basicOptionalSqlSelectProperties,
+                    insert: basicOptionalSqlInsertProperties,
+                    delete: basicOptionalSqlDeleteProperties,
+                    update: basicOptionalSqlUpdateProperties
+                }
             },
             required: basicRequiredProperties
         },
         connection: {
             optional: {
                 nonSql: connectionOptionalProperties,
-                sql: connectionOptionalSqlProperties
+                sql: {
+                    select: connectionOptionalSqlSelectProperties,
+                    insert: connectionOptionalSqlInsertProperties,
+                    delete: connectionOptionalSqlDeleteProperties,
+                    update: connectionOptionalSqlUpdateProperties
+                }
             },
             required: connectionRequiredProperties
         },
         group: {
             optional: {
                 nonSql: groupOptionalProperties,
-                sql: groupOptionalSqlProperties
+                sql: {
+                    select: groupOptionalSqlSelectProperties,
+                    insert: groupOptionalSqlInsertProperties,
+                    delete: groupOptionalSqlDeleteProperties,
+                    update: groupOptionalSqlUpdateProperties
+                }
             },
             required: groupRequiredProperties
         },
         user: {
             optional: {
                 nonSql: userOptionalProperties,
-                sql: userOptionalSqlProperties
+                sql: {
+                    select: userOptionalSqlSelectProperties,
+                    insert: userOptionalSqlInsertProperties,
+                    delete: userOptionalSqlDeleteProperties,
+                    update: userOptionalSqlUpdateProperties
+                }
             },
             required: userRequiredProperties
         }

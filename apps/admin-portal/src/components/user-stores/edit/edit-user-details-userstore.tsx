@@ -19,11 +19,12 @@
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Grid, Icon } from "semantic-ui-react";
 import { patchUserStore } from "../../../api";
 import { AlertLevels, RequiredBinary, TypeProperty, UserstoreType } from "../../../models";
+import { SqlEditor } from "..";
 
 /**
  * Prop types of `EditUserDetails` component
@@ -53,19 +54,93 @@ export const EditUserDetails = (
     const { update, id, properties } = props;
 
     const [ showMore, setShowMore ] = useState(false);
+    const [ sql, setSql ] = useState<Map<string, string>>(null);
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (properties) {
+            const tempSql = new Map<string, string>();
+
+            properties.optional.sql.delete.forEach(property => {
+                tempSql.set(property.name, property.value);
+            });
+
+            properties.optional.sql.insert.forEach(property => {
+                tempSql.set(property.name, property.value);
+            });
+
+            properties.optional.sql.select.forEach(property => {
+                tempSql.set(property.name, property.value);
+            });
+
+            properties.optional.sql.update.forEach(property => {
+                tempSql.set(property.name, property.value);
+            });
+
+            setSql(tempSql);
+        }
+    }, [ properties ]);
 
     return (
         <Forms
             onSubmit={ (values: Map<string, FormValue>) => {
-                const data = properties.required.map((property: TypeProperty) => {
+                const requiredData = properties.required.map((property: TypeProperty) => {
                     return {
                         operation: "REPLACE",
                         path: `/properties/${property.name}`,
                         value: values.get(property.name).toString()
                     }
                 });
+
+                const optionalNonSqlData = properties.optional.nonSql.map((property: TypeProperty) => {
+                    return {
+                        operation: "REPLACE",
+                        path: `/properties/${property.name}`,
+                        value: values.get(property.name).toString()
+                    }
+                });
+
+                const optionalSqlInsertData = properties.optional.sql.insert.map((property: TypeProperty) => {
+                    return {
+                        operation: "REPLACE",
+                        path: `/properties/${property.name}`,
+                        value: sql.get(property.name).toString()
+                    }
+                });
+
+                const optionalSqlUpdateData = properties.optional.sql.update.map((property: TypeProperty) => {
+                    return {
+                        operation: "REPLACE",
+                        path: `/properties/${property.name}`,
+                        value: sql.get(property.name).toString()
+                    }
+                });
+
+                const optionalSqlDeleteData = properties.optional.sql.delete.map((property: TypeProperty) => {
+                    return {
+                        operation: "REPLACE",
+                        path: `/properties/${property.name}`,
+                        value: sql.get(property.name).toString()
+                    }
+                });
+
+                const optionalSqlSelectData = properties.optional.sql.select.map((property: TypeProperty) => {
+                    return {
+                        operation: "REPLACE",
+                        path: `/properties/${property.name}`,
+                        value: sql.get(property.name).toString()
+                    }
+                });
+
+                const data = [
+                    ...requiredData,
+                    ...optionalNonSqlData,
+                    ...optionalSqlDeleteData,
+                    ...optionalSqlInsertData,
+                    ...optionalSqlUpdateData,
+                    ...optionalSqlSelectData
+                ];
 
                 patchUserStore(id, data).then(() => {
                     dispatch(addAlert({
@@ -158,14 +233,14 @@ export const EditUserDetails = (
                     </LinkButton>
                 </Grid.Column>
             </Grid>
-            
-            { showMore && properties.optional.sql.length > 0 &&
+
+            { showMore && properties.optional.nonSql.length > 0 &&
                 (
                     <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 8 }>
                                 {
-                                    properties?.optional?.sql.map((property: TypeProperty, index: number) => {
+                                    properties?.optional?.nonSql.map((property: TypeProperty, index: number) => {
                                         const name = property.description.split("#")[ 0 ];
                                         const isPassword = property.attributes
                                             .find(attribute => attribute.name === "type").value === "password";
@@ -202,8 +277,8 @@ export const EditUserDetails = (
                                                             }
                                                             toggle
                                                         />
-                                                    ) :
-                                                    (
+                                                    )
+                                                    : (
                                                         <Field
                                                             name={ property.name }
                                                             value={ property.value ?? property.defaultValue }
@@ -221,6 +296,25 @@ export const EditUserDetails = (
                                 }
                             </Grid.Column>
                         </Grid.Row>
+                    </Grid>
+                )
+            }
+            { showMore
+                && (properties.optional.sql.delete.length > 0
+                    || properties.optional.sql.insert.length > 0
+                    || properties.optional.sql.select.length > 0
+                    || properties.optional.sql.update.length > 0)
+                && (
+                    <Grid columns={ 1 }>
+                        <Grid.Column width={ 8 }>
+                            <SqlEditor
+                                onChange={ (name: string, value: string) => {
+                                    const tempSql = new Map(sql);
+                                    tempSql.set(name, value);
+                                } }
+                                properties={ properties.optional.sql }
+                            />
+                        </Grid.Column>
                     </Grid>
                 )
             }
