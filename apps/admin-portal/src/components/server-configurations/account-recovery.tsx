@@ -20,7 +20,7 @@ import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import { EditSection, GenericIcon, Hint, LinkButton, Section } from "@wso2is/react-components";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Accordion, Divider, Form, Grid, Icon } from "semantic-ui-react";
@@ -277,7 +277,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		return response.properties.find(prop => prop.name === key).value === "true" ? [key] : [];
 	};
 
-	const showReCaptchaForUsernameRecovery = (
+	const showReCaptchaForUsernameRecovery: ReactElement = (
 		<Grid className="middle aligned mt-1">
 			<Grid.Row columns={ 2 } className="inner-list-item mt-3 mb-3">
 				<Grid.Column className="first-column" mobile={ 1 } tablet={ 1 } computer={ 1 }>
@@ -311,7 +311,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		</Grid>
 	);
 
-	const showReCaptchaForNotificationPasswordRecovery = (
+	const showReCaptchaForNotificationPasswordRecovery: ReactElement = (
 		<Grid className="middle aligned mt-1">
 			<Grid.Row columns={ 2 } className="inner-list-item mt-3 mb-3">
 			<Grid.Column className="first-column" mobile={ 1 } tablet={ 1 } computer={ 1 }>
@@ -376,7 +376,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		makeAccountRecoveryPatchCall(data, successNotification);
 	};
 
-	const showQuestionPasswordRecoverySettings = (
+	const showQuestionPasswordRecoverySettings: ReactElement = (
 		<Grid className="middle aligned mt-1">
 			<Grid.Row columns={ 2 } className="inner-list-item mt-3 mb-3">
 				<Grid.Column className="first-column" mobile={ 1 } tablet={ 1 } computer={ 1 }>
@@ -446,7 +446,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		}
 	};
 
-	const usernameRecoveryAccordion = (
+	const usernameRecoveryAccordion: ReactElement = (
 		<Accordion>
 			<Accordion.Title
 				active={ subAccordionActiveIndex === 1 }
@@ -489,7 +489,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		</Accordion>
 	);
 
-	const notificationBasedPasswordRecoveryAccordion = (
+	const notificationBasedPasswordRecoveryAccordion: ReactElement = (
 		<Accordion>
 			<Accordion.Title
 				active={ subAccordionActiveIndex === 2 }
@@ -532,7 +532,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		</Accordion>
 	);
 
-	const securityBasedPasswordRecoveryAccordion = (
+	const securityBasedPasswordRecoveryAccordion: ReactElement = (
 		<Accordion>
 			<Accordion.Title
 				active={ subAccordionActiveIndex === 3 }
@@ -579,7 +579,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		</Accordion>
 	);
 
-	const showAccountRecoverySummary = (
+	const showAccountRecoverySummary: ReactElement = (
 		<Forms
 			onSubmit={ (values) => {
 				saveQuestionPasswordRecoverySettings(values);
@@ -701,7 +701,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		</Forms>
 	);
 
-	const showUserAccountRecoveryView = (
+	const showUserAccountRecoveryView: ReactElement = (
 		<EditSection>
 			<Forms
 				onSubmit={ (values) => {
@@ -889,7 +889,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		setMainAccordionActiveState(!mainAccordionActiveState)
 	};
 
-	const accordion = (
+	const mainAccordion: ReactElement = (
 		<Accordion fluid styled>
 			<Accordion.Title
 				active={ mainAccordionActiveState }
@@ -931,7 +931,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 			iconSize="auto"
 			iconStyle="colored"
 			iconFloated="right"
-			accordion={ accordion }
+			accordion={ mainAccordion }
 		>
 			<Divider className="m-0 mb-2"/>
 			<div className="main-content-inner">

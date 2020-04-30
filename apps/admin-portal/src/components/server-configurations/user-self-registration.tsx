@@ -20,7 +20,7 @@ import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import { EditSection, GenericIcon, Hint, LinkButton, Section } from "@wso2is/react-components";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Accordion, Divider, Form, Grid, Icon } from "semantic-ui-react";
@@ -201,7 +201,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		}
 	};
 
-	const userSelfRegistrationSummary = (
+	const userSelfRegistrationSummary: ReactElement = (
 		<Forms>
 			<Grid padded={ true } className="middle aligned">
 				<Grid.Row columns={ 2 } className="inner-list-item">
@@ -337,7 +337,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		</Forms>
 	);
 
-	const showUserSelfRegistrationView = (
+	const showUserSelfRegistrationView: ReactElement = (
 		<EditSection>
 			<Forms
 				onSubmit={ (values) => {
@@ -433,7 +433,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		setAccordionState(!accordionState)
 	};
 
-	const accordion = (
+	const accordion: ReactElement = (
 		<Accordion fluid styled>
 			<Accordion.Title
 				active={ accordionState }
