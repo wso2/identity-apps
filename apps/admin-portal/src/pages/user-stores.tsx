@@ -22,7 +22,7 @@ import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getUserStores } from "../api";
-import { AddUserStore, AdvancedSearchWithBasicFilters, UserStoresList } from "../components";
+import { AddUserStore, UserStoresList } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
@@ -30,6 +30,8 @@ import { AlertLevels, FeatureConfigInterface, QueryParams, UserStoreListItem } f
 import { AppState } from "../store";
 import { filterList, sortList } from "../utils";
 import { useTranslation } from "react-i18next";
+import { AdvancedSearchWithBasicFilters } from "../components/shared/advanced-search-with-basic-filters";
+import { addAlert } from "@wso2is/core/store";
 
 /**
  * This renders the Userstores page.

@@ -22,14 +22,16 @@ import React, { FunctionComponent, ReactElement, useContext, useEffect, useState
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { listCertificateAliases } from "../api";
-import { AdvancedSearchWithBasicFilters, CertificatesList, ImportCertificate } from "../components";
+import { CertificatesList, ImportCertificate } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertLevels, Certificate, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
-import { filterList, sortList } from "../utils";
+import { filterList, sortList, hasScope } from "../utils";
 import { useTranslation } from "react-i18next";
+import { addAlert } from "@wso2is/core/dist/src/store";
+import { AdvancedSearchWithBasicFilters } from "../components/shared/advanced-search-with-basic-filters";
 
 /**
  * This renders the Userstores page.
@@ -264,7 +266,8 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                             ? (
                                 <EmptyPlaceholder
                                     action={
-                                        (appConfig?.certificates?.features?.keystore?.permissions?.create
+                                        (hasRequiredScopes(featureConfig?.certificates,
+                                            featureConfig?.certificates?.scopes?.create)
                                             && !isSuper) && (
                                             <PrimaryButton
                                                 onClick={ () => {

@@ -38,8 +38,6 @@ import { CertificateIllustrations } from "../../configs";
 import { CERTIFICATE_BEGIN, CERTIFICATE_END, END_LINE } from "../../constants";
 import { AlertLevels, Certificate, DisplayCertificate, FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
-import { ResourceList } from "@wso2is/react-components";
-
 
 /**
  * @constant
@@ -363,11 +361,13 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 {
                     (
                         type === KEYSTORE
-                        && appConfig?.certificates?.features?.keystore?.permissions?.read
+                        && hasRequiredScopes(featureConfig?.certificates,
+                            featureConfig?.certificates?.scopes?.read)
                     )
                         || (
                             type === TRUSTSTORE
-                            && appConfig?.certificates?.features?.truststore?.permissions?.read
+                            && hasRequiredScopes(featureConfig?.certificates,
+                                featureConfig?.certificates?.scopes?.read)
                         )
                         ? list?.map((certificate: Certificate, index: number) => {
                             return (
@@ -454,8 +454,8 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                                         {
                                             hidden: !(
                                                 type === KEYSTORE
-                                        		&& hasRequiredScopes(featureConfig?.certificates,
-                                            		featureConfig?.certificates?.scopes?.delete)
+                                                && hasRequiredScopes(featureConfig?.certificates,
+                                                    featureConfig?.certificates?.scopes?.delete)
                                             )
                                                 || isSuper,
                                             icon: "trash alternate",

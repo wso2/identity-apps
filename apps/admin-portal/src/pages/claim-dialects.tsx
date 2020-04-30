@@ -23,7 +23,7 @@ import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
 import { getDialects } from "../api";
-import { AddDialect, AdvancedSearchWithBasicFilters, AvatarBackground, DialectSearch } from "../components";
+import { AddDialect, AvatarBackground } from "../components";
 import { ClaimsList, ListType } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { LOCAL_CLAIMS_PATH, UserConstants } from "../constants";
@@ -34,6 +34,7 @@ import { AlertLevels, ClaimDialect, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { filterList, sortList } from "../utils";
 import { useTranslation } from "react-i18next";
+import { AdvancedSearchWithBasicFilters } from "../components/shared/advanced-search-with-basic-filters";
 
 /**
  * This displays a list fo claim dialects.
@@ -295,7 +296,7 @@ export const ClaimDialectsPage = (): ReactElement => {
                                 onSortStrategyChange={ handleSortStrategyChange }
                                 onSortOrderChange={ handleSortOrderChange }
                                 rightActionPanel={
-                                    appConfig?.claimDialects?.permissions?.create && (
+                                    (
                                         <PrimaryButton
                                             onClick={ () => {
                                                 setAddEditClaim(true);

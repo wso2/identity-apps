@@ -23,13 +23,14 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Modal, PaginationProps } from "semantic-ui-react";
-import { AddExternalClaims, ClaimsList, ExternalClaimsSearch, ListType } from "../../..";
+import { AddExternalClaims, ClaimsList, ListType } from "../../..";
 import { EmptyPlaceholderIllustrations } from "../../../../configs";
 import { UserConstants } from "../../../../constants";
 import { ListLayout } from "../../../../layouts";
 import { AlertLevels, ExternalClaim } from "../../../../models";
 import { filterList, sortList } from "../../../../utils";
 import { EmptyPlaceholder } from "../../../shared";
+import { AdvancedSearchWithBasicFilters } from "../../../shared/advanced-search-with-basic-filters";
 
 interface EditExternalClaimsPropsInterface {
     /**
