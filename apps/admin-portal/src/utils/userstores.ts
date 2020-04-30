@@ -30,46 +30,87 @@ export const reOrganizeProperties = (
 
     const connectionRequiredProperties: TypeProperty[] = [];
     const connectionOptionalProperties: TypeProperty[] = [];
+    const connectionOptionalSqlProperties: TypeProperty[] = [];
 
     const userRequiredProperties: TypeProperty[] = [];
     const userOptionalProperties: TypeProperty[] = [];
+    const userOptionalSqlProperties: TypeProperty[] = [];
 
     const groupRequiredProperties: TypeProperty[] = [];
     const groupOptionalProperties: TypeProperty[] = [];
+    const groupOptionalSqlProperties: TypeProperty[] = [];
+
+    const basicRequiredProperties: TypeProperty[] = [];
+    const basicOptionalProperties: TypeProperty[] = [];
+    const basicOptionalSqlProperties: TypeProperty[] = [];
 
     flattenedProperties.forEach((property: TypeProperty) => {
         const category = property.attributes?.find((attribute) => attribute.name === "category")?.value;
         const required = property.attributes?.find((attribute) => attribute.name === "required")?.value === "true";
+        const sql = property.attributes?.find((attribute) => attribute.name === "type")?.value === "sql";
 
         if (valueProperties) {
-            property.value = valueProperties
-                .find((valueProperty) => valueProperty.name === property.name)?.value ?? "";
+            property.value = valueProperties.find((valueProperty) => valueProperty.name === property.name)?.value ?? "";
         }
-        
+
         switch (category) {
             case UserstorePropertiesCategories.CONNECTION:
-                required ? connectionRequiredProperties.push(property) : connectionOptionalProperties.push(property);
+                required
+                    ? connectionRequiredProperties.push(property)
+                    : sql
+                    ? connectionOptionalSqlProperties.push(property)
+                    : connectionOptionalProperties.push(property);
                 break;
             case UserstorePropertiesCategories.GROUP:
-                required ? groupRequiredProperties.push(property) : groupOptionalProperties.push(property);
+                required
+                    ? groupRequiredProperties.push(property)
+                    : sql
+                    ? groupOptionalSqlProperties.push(property)
+                    : groupOptionalProperties.push(property);
                 break;
             case UserstorePropertiesCategories.USER:
-                required ? userRequiredProperties.push(property) : userOptionalProperties.push(property);
+                required
+                    ? userRequiredProperties.push(property)
+                    : sql
+                    ? userOptionalSqlProperties.push(property)
+                    : userOptionalProperties.push(property);
                 break;
+            case UserstorePropertiesCategories.BASIC:
+                required
+                    ? basicRequiredProperties.push(property)
+                    : sql
+                    ? basicOptionalSqlProperties.push(property)
+                    : basicOptionalProperties.push(property);
         }
     });
 
     return {
+        basic: {
+            optional: {
+                nonSql: basicOptionalProperties,
+                sql: basicOptionalSqlProperties
+            },
+            required: basicRequiredProperties
+        },
         connection: {
-            optional: connectionOptionalProperties,
+            optional: {
+                nonSql: connectionOptionalProperties,
+                sql: connectionOptionalSqlProperties
+            },
             required: connectionRequiredProperties
         },
         group: {
-            optional: groupOptionalProperties,
+            optional: {
+                nonSql: groupOptionalProperties,
+                sql: groupOptionalSqlProperties
+            },
             required: groupRequiredProperties
         },
         user: {
-            optional: userOptionalProperties,
+            optional: {
+                nonSql: userOptionalProperties,
+                sql: userOptionalSqlProperties
+            },
             required: userRequiredProperties
         }
     };
