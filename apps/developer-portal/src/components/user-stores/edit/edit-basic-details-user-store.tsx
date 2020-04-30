@@ -21,7 +21,7 @@ import { ConfirmationModal, DangerZone, LinkButton, PrimaryButton } from "@wso2i
 import { DangerZoneGroup } from "@wso2is/react-components/src";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Grid, Icon } from "semantic-ui-react";
+import { Divider, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
 import { deleteUserStore, patchUserStore, updateUserStore } from "../../../api";
 import { AlertLevels, RequiredBinary, TypeProperty, UserStore } from "../../../models";
@@ -454,11 +454,14 @@ export const EditBasicDetailsUserStore = (
                     </Grid.Row>
                 </Grid>
             </Forms>
+
+            <Divider hidden />
+            
             <Grid columns={ 1 }>
                 <Grid.Column width={ 16 }>
                     <DangerZoneGroup sectionHeader="Danger Zone">
                         <DangerZone
-                            actionTitle="Delete Local Attribute"
+                            actionTitle="Delete Userstore"
                             header="Delete Local Attribute"
                             subheader={ "Once you delete a local attribute, there is no going back. " +
                                 "Please be certain." }
