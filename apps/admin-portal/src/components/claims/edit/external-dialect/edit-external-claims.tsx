@@ -52,12 +52,12 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
     const SORT_BY = [
         {
             key: 0,
-            text: "Claim URI",
+            text: "Attribute URI",
             value: "claimURI"
         },
         {
             key: 1,
-            text: "Mapped Local Claim URI",
+            text: "Mapped Local Attribute URI",
             value: "mappedLocalClaimURI"
         }
     ];
@@ -115,7 +115,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while fetching the external claims",
+                    description: error?.description || "There was an error while fetching the external attributes",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -227,8 +227,8 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                     )
                     : !isLoading && (
                         <EmptyPlaceholder
-                            title="No External Claim"
-                            subtitle={ [ "Currently, there is no external claim available for this dialect." ] }
+                            title="No External Attribute"
+                            subtitle={ [ "Currently, there is no external attribute available for this dialect." ] }
                             image={ EmptyPlaceholderIllustrations.emptyList }
                             imageSize="tiny"
                         />

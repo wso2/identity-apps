@@ -77,7 +77,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
             )
         },
         {
-            menuItem: "External Claims",
+            menuItem: "External Attributes",
             render: () => (
                 <EditExternalClaims dialectID={ dialect.id }/>
             )
@@ -87,12 +87,12 @@ export const ExternalDialectEditPage = (props): ReactElement => {
     return (
         <PageLayout
             title={ dialect?.dialectURI }
-            description={ "Edit external dialect and its claims" }
+            description={ "Edit external dialect and its attributes" }
             backButton={ {
                 onClick: () => {
                     history.push(CLAIM_DIALECTS_PATH);
                 },
-                text: "Go back to claim dialects"
+                text: "Go back to attribute dialects"
             } }
             titleTextAlign="left"
             bottomMargin={ false }

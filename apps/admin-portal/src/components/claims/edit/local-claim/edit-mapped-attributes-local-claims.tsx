@@ -77,7 +77,7 @@ export const EditMappedAttributesLocalClaims = (
             <Grid.Row columns={ 1 }>
                 <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                     <p>
-                        Enter the attribute from each userstore that you want to map to this claim.
+                        Enter the attribute from each userstore that you want to map to this attribute.
                     </p>
                     <Divider hidden />
                     <Forms
@@ -99,7 +99,7 @@ export const EditMappedAttributesLocalClaims = (
                             updateAClaim(claim.id, submitData).then(() => {
                                 dispatch(addAlert(
                                     {
-                                        description: "The Attributes Mapping of this local claim has been" +
+                                        description: "The Attributes Mapping of this local attribute has been" +
                                             " updated successfully!",
                                         level: AlertLevels.SUCCESS,
                                         message: "Attributes Mapping updated successfully"
@@ -110,7 +110,7 @@ export const EditMappedAttributesLocalClaims = (
                                 dispatch(addAlert(
                                     {
                                         description: error?.description || "There was an error while updating" +
-                                            " the local claim",
+                                            " the local attribute",
                                         level: AlertLevels.ERROR,
                                         message: error?.message || "Something went wrong"
                                     }

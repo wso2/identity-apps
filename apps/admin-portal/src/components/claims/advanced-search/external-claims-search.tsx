@@ -83,11 +83,11 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
      */
     const filterAttributeOptions = [
         {
-            text: "Claim URI",
+            text: "Attribute URI",
             value: "claimURI"
         },
         {
-            text: "Mapped Local Claim URI",
+            text: "Mapped Local Attribute URI",
             value: "mappedLocalClaimURI"
         }
     ];
@@ -173,7 +173,7 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
             hintLabel={ t("devPortal:components.applications.search.hints.querySearch.label") }
             onExternalSearchQueryClear={ handleExternalSearchQueryClear }
             onSearchQuerySubmit={ handleSearchQuerySubmit }
-            placeholder="Search by claim URI"
+            placeholder="Search by attribute URI"
             resetSubmittedState={ handleResetSubmittedState }
             searchOptionsHeader={ t("devPortal:components.applications.search.options.header") }
             externalSearchQuery={ externalSearchQuery }

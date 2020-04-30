@@ -263,7 +263,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         icon: "claims",
         id: "attributeDialects",
         level: 2,
-        name: "Claim Dialects",
+        name: "Attribute Dialects",
         path: CLAIM_DIALECTS_PATH,
         protected: true,
         showOnSidePanel: true

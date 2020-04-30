@@ -104,12 +104,12 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             label="Name"
                             required={ true }
                             requiredErrorMessage="Name is required"
-                            placeholder="Enter a name for the claim"
+                            placeholder="Enter a name for the attribute"
                             value={ values?.get("name")?.toString() }
                             ref={ nameField }
                         />
                         <Popup
-                            content={ "Name of the claim that will be shown on the user profile " +
+                            content={ "Name of the attribute that will be shown on the user profile " +
                                 "and user registration page" }
                             inverted
                             open={ isShowNameHint }
@@ -125,10 +125,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         <Field
                             type="text"
                             name="claimURI"
-                            label="Claim ID"
+                            label="Attribute ID"
                             required={ true }
-                            requiredErrorMessage="Claim ID is required"
-                            placeholder="Enter a claim ID"
+                            requiredErrorMessage="Attribute ID is required"
+                            placeholder="Enter a attribute ID"
                             value={ values?.get("claimURI")?.toString() }
                             listen={ (values: Map<string, FormValue>) => {
                                 setClaimID(values.get("claimURI").toString())
@@ -142,8 +142,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             ref={ claimField }
                         />
                         <Popup
-                            content={ "A unique ID for the claim." +
-                                " The ID will be appended to the dialect URI to create a claim URI" }
+                            content={ "A unique ID for the attribute." +
+                                " The ID will be appended to the dialect URI to create a attribute URI" }
                             inverted
                             open={ isShowClaimIDHint }
                             trigger={ <p></p> }
@@ -156,7 +156,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         {
                             claimID
                                 ? <Label>
-                                    <em>Claim URI</em>:&nbsp;
+                                    <em>Attribute URI</em>:&nbsp;
                                         { claimURIBase + "/" + claimID }
                                 </Label>
                                 : null
@@ -166,7 +166,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 8 }>
                         <Field
-                            type="textarea"
+                            type="text"
                             name="description"
                             label="Description"
                             required={ true }
@@ -193,7 +193,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             ref={ regExField }
                         />
                         <Popup
-                            content="This regular expression is used to validate the value this claim can take"
+                            content="This regular expression is used to validate the value this attribute can take"
                             inverted
                             open={ isShowRegExHint }
                             trigger={ <span></span> }
@@ -214,7 +214,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             requiredErrorMessage=""
                             children={ [
                                 {
-                                    label: "Show this claim on user profile and user registration page",
+                                    label: "Show this attribute on user profile and user registration page",
                                     value: "Support"
                                 } ] }
                             value={ values?.get("supportedByDefault") as string[] }
@@ -247,7 +247,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                 />
                                 <Popup
                                     content={
-                                        "This determines the position at which this claim is displayed" +
+                                        "This determines the position at which this attribute is displayed" +
                                         " in the user profile and the user registration page"
                                     }
                                     inverted
@@ -271,7 +271,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             required={ false }
                             requiredErrorMessage=""
                             children={ [ {
-                                label: "Make this claim required during user registration",
+                                label: "Make this attribute required during user registration",
                                 value: "Required"
                             } ] }
                             value={ values?.get("required") as string[] }
@@ -286,7 +286,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             required={ false }
                             requiredErrorMessage=""
                             children={ [ {
-                                label: "Make this claim read-only",
+                                label: "Make this attribute read-only",
                                 value: "ReadOnly"
                             } ] }
                             value={ values?.get("readOnly") as string[] }

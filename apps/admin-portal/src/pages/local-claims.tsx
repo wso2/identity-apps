@@ -51,7 +51,7 @@ export const LocalClaimsPage = (): ReactElement => {
         },
         {
             key: 1,
-            text: "Claim URI",
+            text: "Attribute URI",
             value: "claimURI"
         }
     ];
@@ -184,12 +184,12 @@ export const LocalClaimsPage = (): ReactElement => {
                     : null
             }
             <PageLayout
-                title="Local Claims"
-                description="View, edit and add local claims"
+                title="Local Attributes"
+                description="View, edit and add local attributes"
                 showBottomDivider={ true }
                 backButton={ {
                     onClick: () => { history.push(CLAIM_DIALECTS_PATH) },
-                    text: "Go back to claim dialects"
+                    text: "Go back to attribute dialects"
                 } }
             >
                 <ListLayout
@@ -227,7 +227,7 @@ export const LocalClaimsPage = (): ReactElement => {
                                     setOpenModal(true);
                                 } }
                             >
-                                <Icon name="add" />Add Local Claim
+                                <Icon name="add" />Add Local Attribute
                             </PrimaryButton>
                         )
                     }

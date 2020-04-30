@@ -230,15 +230,15 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
             closeDeleteConfirm();
             dispatch(addAlert(
                 {
-                    description: "The local claim has been deleted successfully!",
+                    description: "The local attribute has been deleted successfully!",
                     level: AlertLevels.SUCCESS,
-                    message: "Local claim deleted successfully"
+                    message: "Local attribute deleted successfully"
                 }
             ));
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while deleting the local claim",
+                    description: error?.description || "There was an error while deleting the local attribute",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -257,15 +257,15 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
             closeDeleteConfirm();
             dispatch(addAlert(
                 {
-                    description: "The external claim has been deleted successfully!",
+                    description: "The external atribute has been deleted successfully!",
                     level: AlertLevels.SUCCESS,
-                    message: "External claim deleted successfully"
+                    message: "External attribute deleted successfully"
                 }
             ));
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while deleting the external claim",
+                    description: error?.description || "There was an error while deleting the external attribute",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -318,10 +318,10 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                     This will completely delete the
                     {
                         deleteType === ListType.DIALECT
-                            ? " Claim Dialect. "
+                            ? " Attribute Dialect. "
                             : deleteType === ListType.EXTERNAL
-                                ? " External Claim. "
-                                : " Local Claim. "
+                                ? " External Attribute. "
+                                : " Local Attribute. "
                     }
                     Do you want to continue deleting it?
                 </Modal.Content>

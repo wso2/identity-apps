@@ -69,7 +69,7 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while fetching local claims",
+                    description: error?.description || "There was an error while fetching local attributes",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -89,9 +89,9 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                     }).then(() => {
                         dispatch(addAlert(
                             {
-                                description: "The external claim has been added to the dialect successfully!",
+                                description: "The external attribute has been added to the dialect successfully!",
                                 level: AlertLevels.SUCCESS,
-                                message: "External claim added successfully"
+                                message: "External attribute added successfully"
                             }
                         ));
                         setReset();
@@ -114,10 +114,10 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                     <Grid.Column width={ wizard ? 8 : 6 }>
                         <Field
                             name="claimURI"
-                            label="Claim URI"
+                            label="Attribute URI"
                             required={ true }
-                            requiredErrorMessage="Claim URI is required"
-                            placeholder="Enter a claim URI"
+                            requiredErrorMessage="Attribute URI is required"
+                            placeholder="Enter a attribute URI"
                             type="text"
                         />
                     </Grid.Column>
@@ -125,10 +125,10 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                         <Field
                             type="dropdown"
                             name="localClaim"
-                            label="Local claim URI to map to"
+                            label="Local attribute URI to map to"
                             required={ true }
-                            requiredErrorMessage="Select a local claim to map to"
-                            placeholder="Select a Local Claim"
+                            requiredErrorMessage="Select a local attribute to map to"
+                            placeholder="Select a Local Attribute"
                             search
                             children={
                                 localClaims?.map((claim: Claim, index) => {
@@ -144,7 +144,7 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                     { !wizard &&
                         (
                             <Grid.Column width={ 4 } textAlign="right">
-                                <Field className="grid-button" type="submit" value="Add External Claim" />
+                                <Field className="grid-button" type="submit" value="Add External Attribute" />
                             </Grid.Column>
                         )
                     }
@@ -153,7 +153,7 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                     (
                     <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 } textAlign="right" verticalAlign="top">
-                                <Field className="wizard grid-button" type="submit" value="Add External Claim" />
+                                <Field className="wizard grid-button" type="submit" value="Add External Attribute" />
                             </Grid.Column>
                         </Grid.Row>
                     )

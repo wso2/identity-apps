@@ -85,9 +85,9 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
             }).catch(() => {
                 dispatch(addAlert({
                     description: "The external dialect has been added but not all external " +
-                        "claims were added successfully",
+                        "attributes were added successfully",
                     level: AlertLevels.WARNING,
-                    message: "External claims couldn't be added"
+                    message: "External attributes couldn't be added"
                 }))
             }).finally(() => {
                 onClose();
@@ -146,7 +146,7 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "External claims"
+            title: "External attributes"
         },
         {
             content: (
@@ -198,7 +198,6 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group
-                    header="Fill in the following details to create an external dialect."
                     current={ currentWizardStep }
                 >
                     { STEPS.map((step, index) => (

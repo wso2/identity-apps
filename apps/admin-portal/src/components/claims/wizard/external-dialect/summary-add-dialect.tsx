@@ -60,10 +60,10 @@ export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): React
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell>
-                                    External Claim URI
+                                    External Attribute URI
                                     </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    Mapped Local Claim URI
+                                    Mapped Local Attribute URI
                                     </Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
