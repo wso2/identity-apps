@@ -31,7 +31,7 @@
     <packaging>pom</packaging>
     <name>WSO2 Identity Server Apps - Admin Portal Server Feature</name>
     <url>http://wso2.org</url>
-    <description>This feature contains the admin portal application</description>
+    <description>This feature contains the developer portal application</description>
 
     <dependencies>
         <dependency>
