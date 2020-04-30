@@ -18,31 +18,31 @@
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
 import { CommonHelpers } from "@wso2is/core/helpers";
+import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Button, EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dropdown, DropdownProps, Grid, Icon, PaginationProps, Popup } from "semantic-ui-react";
 import { deleteUser, getUserStoreList, getUsersList } from "../api";
-import { UserSearch, UsersList } from "../components/users";
+import { AdvancedSearchWithBasicFilters } from "../components";
+import { UsersList } from "../components/users";
 import { UsersListOptionsComponent } from "../components/users";
 import { AddUserWizard } from "../components/users/wizard";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
-import { AlertInterface, AlertLevels } from "../models";
-import { UserListInterface } from "../models/user";
+import { AlertInterface, AlertLevels, UserListInterface } from "../models";
 import { store } from "../store";
-import { addAlert } from "../store/actions";
-
 
 /**
  * Users info page.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
+export const UsersPage: FunctionComponent<any> = (): ReactElement => {
+
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -326,7 +326,37 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
         >
             <ListLayout
                 // TODO add sorting functionality.
-                advancedSearch={ <UserSearch onFilter={ handleUserFilter }/> }
+                advancedSearch={ (
+                    <AdvancedSearchWithBasicFilters
+                        onFilter={ handleUserFilter  }
+                        filterAttributeOptions={ [
+                            {
+                                key: 0,
+                                text: "Username",
+                                value: "userName"
+                            },
+                            {
+                                key: 1,
+                                text: "Email",
+                                value: "emails"
+                            }
+                        ] }
+                        filterAttributePlaceholder={
+                            t("devPortal:components.users.advancedSearch.form.inputs.filterAttribute.placeholder")
+                        }
+                        filterConditionsPlaceholder={
+                            t("devPortal:components.users.advancedSearch.form.inputs.filterCondition" +
+                                ".placeholder")
+                        }
+                        filterValuePlaceholder={
+                            t("devPortal:components.users.advancedSearch.form.inputs.filterValue" +
+                                ".placeholder")
+                        }
+                        placeholder={ t("devPortal:components.users.advancedSearch.placeholder") }
+                        defaultSearchAttribute="userName"
+                        defaultSearchOperator="co"
+                    />
+                ) }
                 currentListSize={ usersList.itemsPerPage }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }

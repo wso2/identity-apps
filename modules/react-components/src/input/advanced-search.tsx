@@ -16,45 +16,110 @@
  * under the License.
  */
 
-import { useClickOutside } from "@wso2is/core/hooks";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { CrossIcon } from "@wso2is/theme";
 import classNames from "classnames";
-import React, { ChangeEvent, FunctionComponent, useEffect, useState } from "react";
-import { Button, Icon, Input, Popup } from "semantic-ui-react";
+import React, {
+    ChangeEvent,
+    FunctionComponent,
+    MutableRefObject,
+    PropsWithChildren,
+    ReactElement,
+    useEffect,
+    useRef,
+    useState
+} from "react";
+import { Button, Divider, Icon, Input, InputProps, Popup, PopupProps } from "semantic-ui-react";
 import { GenericIcon } from "../icon";
+import { Heading } from "../typography";
 
 /**
  *
- * Proptypes for the advanced search component
+ * Proptypes for the advanced search component.
  */
-interface AdvancedSearchProps {
+export interface AdvancedSearchPropsInterface extends TestableComponentInterface {
+    /**
+     * Text alignment.
+     */
     aligned?: "left" | "right" | "center";
+    /**
+     * Additional CSS classes.
+     */
     className?: string;
+    /**
+     * Clear button tooltip label.
+     */
     clearButtonPopupLabel?: string;
+    /**
+     * Clear icon override.
+     */
     clearIcon?: any;
+    /**
+     * Search strategy ex: name sw.
+     */
     defaultSearchStrategy: string;
+    /**
+     * Dropdown appearing position.
+     */
+    dropdownPosition?: PopupProps["position"];
+    /**
+     * Dropdown trigger icon label.
+     */
     dropdownTriggerPopupLabel?: string;
+    /**
+     * Search query from outside.
+     */
     externalSearchQuery?: string;
+    /**
+     * Hint action keyboard keys.
+     */
     hintActionKeys?: string;
+    /**
+     * Hint label.
+     */
     hintLabel?: string;
-    inputSize?: "mini" | "small" | "large" | "big" | "huge" | "massive";
+    /**
+     * Search input size.
+     */
+    inputSize?: InputProps["size"];
+    /**
+     * Callback for external search query clear.
+     */
     onExternalSearchQueryClear?: () => void;
+    /**
+     * Callback for search query submit.
+     * @param {boolean} processQuery - process flag.
+     * @param {string} query - Search query.
+     */
     onSearchQuerySubmit: (processQuery: boolean, query: string) => void;
+    /**
+     * input placeholder.
+     */
     placeholder?: string;
+    /**
+     * Reset trigger.
+     */
     resetSubmittedState?: () => void;
+    /**
+     * Dropdown heading.
+     */
     searchOptionsHeader?: string;
+    /**
+     * Is form submitted.
+     */
     submitted?: boolean;
-    [ "data-testid" ]?: string;
 }
 
 /**
  * Advanced search component.
  *
- * @param {React.PropsWithChildren<AdvancedSearchProps>} props - Props injected to the component.
- * @return {JSX.Element}
+ * @param {React.PropsWithChildren<AdvancedSearchPropsInterface>} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedSearchProps>> = (
-    props: React.PropsWithChildren<AdvancedSearchProps>
-): JSX.Element => {
+export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchPropsInterface>> = (
+    props: PropsWithChildren<AdvancedSearchPropsInterface>
+): ReactElement => {
 
     const {
         aligned,
@@ -62,6 +127,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
         children,
         clearButtonPopupLabel,
         defaultSearchStrategy,
+        dropdownPosition,
         dropdownTriggerPopupLabel,
         externalSearchQuery,
         hintActionKeys,
@@ -73,12 +139,15 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
         placeholder,
         resetSubmittedState,
         searchOptionsHeader,
-        submitted
+        submitted,
+        [ "data-testid" ]: testId
     } = props;
 
-    const [ internalSearchQuery, setInternalSearchQuery ] = useState("");
-    const [ showSearchFieldHint, setShowSearchFieldHint ] = useState(false);
-    const { ref, isComponentVisible, setIsComponentVisible } = useClickOutside(false);
+    const searchInputRef: MutableRefObject<HTMLDivElement> = useRef();
+
+    const [ internalSearchQuery, setInternalSearchQuery ] = useState<string>("");
+    const [ showSearchFieldHint, setShowSearchFieldHint ] = useState<boolean>(false);
+    const [ isDropdownVisible, setIsDropdownVisible ] = useState<boolean>(false);
 
     /**
      * useEffect hook to handle `internalSearchQuery` change.
@@ -87,7 +156,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
         if (!internalSearchQuery) {
             setShowSearchFieldHint(false);
         }
-        if (internalSearchQuery && !isComponentVisible && (externalSearchQuery !== internalSearchQuery)) {
+        if (internalSearchQuery && !isDropdownVisible && (externalSearchQuery !== internalSearchQuery)) {
             setShowSearchFieldHint(true);
         }
     }, [ internalSearchQuery ]);
@@ -104,7 +173,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
      */
     useEffect(() => {
         if (submitted) {
-            setIsComponentVisible(false);
+            setIsDropdownVisible(false);
             resetSubmittedState();
         }
     }, [ submitted ]);
@@ -145,7 +214,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
      * Handles the show options dropdown `onClick` event.
      */
     const handleShowOptionsClick = (): void => {
-        setIsComponentVisible(!isComponentVisible);
+        setIsDropdownVisible(!isDropdownVisible);
     };
 
     /**
@@ -188,90 +257,105 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
         setShowSearchFieldHint(false);
     };
 
+    /**
+     * Handles the dropdown close event.
+     */
+    const handleSearchDropdownClose = (): void => {
+        setIsDropdownVisible(false);
+    };
+
     return (
         <div className={ `advanced-search-wrapper ${ wrapperClasses }` }>
-            <Input
-                data-testid={ `${ props[ `data-testid` ] }_input` }
-                action={ (
-                    <>
-                        {
-                            internalSearchQuery
-                                ? (
-                                    <Popup
-                                        disabled={ !clearButtonPopupLabel }
-                                        trigger={
-                                            (
-                                                <Button
-                                                    data-testid={ `${ props[ `data-testid` ] }_clear_button` }
-                                                    basic
-                                                    compact
-                                                    className="input-add-on"
-                                                    onClick={ handleQueryClearClick }
-                                                >
-                                                    <GenericIcon
-                                                        size="nano"
-                                                        defaultIcon
-                                                        transparent
-                                                        icon={ clearIcon ? clearIcon : <Icon name="cancel" /> }
-                                                    />
-                                                </Button>
-                                            )
-                                        }
-                                        position="top center"
-                                        content={ clearButtonPopupLabel }
-                                        inverted={ true }
-                                    />
-                                )
-                                : null
-                        }
-                        <Popup
-                            disabled={ !dropdownTriggerPopupLabel }
-                            trigger={
-                                (
-                                    <Button
-                                        data-testid={ `${ props[ `data-testid` ] }_options_button` }
-                                        basic
-                                        compact className="input-add-on"
-                                        onClick={ handleShowOptionsClick }
-                                    >
-                                        <Icon name="caret down"/>
-                                    </Button>
-                                )
+            <div ref={ searchInputRef }>
+                <Input
+                    data-testid={ `${ testId }_input` }
+                    action={ (
+                        <>
+                            {
+                                internalSearchQuery
+                                    ? (
+                                        <Popup
+                                            disabled={ !clearButtonPopupLabel }
+                                            trigger={
+                                                (
+                                                    <Button
+                                                        data-testid={ `${ testId }_clear_button` }
+                                                        basic
+                                                        compact
+                                                        className="input-add-on"
+                                                        onClick={ handleQueryClearClick }
+                                                    >
+                                                        <GenericIcon
+                                                            size="nano"
+                                                            defaultIcon
+                                                            transparent
+                                                            icon={ clearIcon ? clearIcon : CrossIcon }
+                                                        />
+                                                    </Button>
+                                                )
+                                            }
+                                            position="top center"
+                                            content={ clearButtonPopupLabel }
+                                            inverted={ true }
+                                        />
+                                    )
+                                    : null
                             }
-                            position="top center"
-                            content={ dropdownTriggerPopupLabel }
-                            inverted={ true }
-                        />
-                    </>
-                ) }
-                className={ `advanced-search with-add-on ${ searchFieldClasses }` }
-                size={ inputSize }
-                icon="search"
-                iconPosition="left"
-                placeholder={ placeholder }
-                value={ internalSearchQuery }
-                onBlur={ handleSearchFieldBlur }
-                onChange={ handleSearchQueryChange }
-                onKeyDown={ handleSearchQuerySubmit }
-            />
+                            <Popup
+                                disabled={ !dropdownTriggerPopupLabel || isDropdownVisible }
+                                trigger={
+                                    (
+                                        <Button
+                                            data-testid={ `${ testId }_options_button` }
+                                            basic
+                                            compact className="input-add-on"
+                                            onClick={ handleShowOptionsClick }
+                                        >
+                                            <Icon name="caret down"/>
+                                        </Button>
+                                    )
+                                }
+                                position="top center"
+                                content={ dropdownTriggerPopupLabel }
+                                inverted={ true }
+                            />
+                        </>
+                    ) }
+                    className={ `advanced-search with-add-on ${ searchFieldClasses }` }
+                    size={ inputSize }
+                    icon="search"
+                    iconPosition="left"
+                    placeholder={ placeholder }
+                    value={ internalSearchQuery }
+                    onBlur={ handleSearchFieldBlur }
+                    onChange={ handleSearchQueryChange }
+                    onKeyDown={ handleSearchQuerySubmit }
+                />
+            </div>
             <div className={ `search-query-hint ${ searchFieldHintClasses }` }>
                 <div className="query">{ hintLabel }</div>
                 <div className="short-cut"><Icon name="keyboard outline"/>{ " " }{ hintActionKeys }</div>
             </div>
-            <div ref={ ref }>
-                {
-                    isComponentVisible
-                        ? (
-                            <div className="advanced-search-options">
-                                <div className="header">{ searchOptionsHeader }</div>
-                                <div className="form-wrapper">
-                                    { children }
-                                </div>
-                            </div>
-                        )
-                        : null
-                }
-            </div>
+            <Popup
+                context={ searchInputRef }
+                content={ (
+                    <div className="search-filters-dropdown">
+                        <Heading as="h6" bold="500" compact>{ searchOptionsHeader }</Heading>
+                        <Divider className="compact" />
+                        <div className="form-wrapper">
+                            { children }
+                        </div>
+                    </div>
+                ) }
+                on="click"
+                position={ dropdownPosition }
+                eventsEnabled={ true }
+                open={ isDropdownVisible }
+                onClose={ handleSearchDropdownClose }
+                closeOnPortalMouseLeave={ false }
+                hoverable
+                pinned
+            />
         </div>
     );
 };
@@ -283,6 +367,7 @@ AdvancedSearch.defaultProps = {
     aligned: "left",
     className: null,
     clearButtonPopupLabel: null,
+    dropdownPosition: "bottom left",
     dropdownTriggerPopupLabel: null,
     externalSearchQuery: "",
     hintActionKeys: "Enter",

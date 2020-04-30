@@ -17,18 +17,20 @@
  */
 
 import { addAlert } from "@wso2is/core/store";
+import { EmptyPlaceholder } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, DropdownProps, PaginationProps } from "semantic-ui-react";
-import { ClaimsList, ExternalClaimsSearch, ListType } from "../../..";
 import { getADialect, getAllExternalClaims } from "../../../../api";
 import { EmptyPlaceholderIllustrations } from "../../../../configs";
 import { UserConstants } from "../../../../constants";
 import { ListLayout } from "../../../../layouts";
 import { AlertLevels, ClaimDialect, ExternalClaim } from "../../../../models";
 import { filterList, sortList } from "../../../../utils";
-import { EmptyPlaceholder } from "../../../shared";
+import { AdvancedSearchWithBasicFilters } from "../../../shared";
 import { AddExternalClaims } from "../../add";
+import { ClaimsList, ListType } from "../../claims-list";
 
 interface EditExternalClaimsPropsInterface {
     /**
@@ -70,6 +72,8 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
     const [ isLoading, setIsLoading ] = useState(true);
+
+    const { t } = useTranslation();
 
     const dispatch = useDispatch();
 
@@ -182,6 +186,27 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
         setSortOrder(isAscending);
     };
 
+    /**
+     * Handles the `onFilter` callback action from the
+     * advanced search component.
+     *
+     * @param {string} query - Search query.
+     */
+    const handleExternalClaimFilter = (query: string): void => {
+        try {
+            const filteredList: ExternalClaim[] = filterList(
+                claims, query, sortBy.value, sortOrder
+            );
+            setFilteredClaims(filteredList);
+        } catch (error) {
+            dispatch(addAlert({
+                description: error?.message,
+                level: AlertLevels.ERROR,
+                message: "Filter query format incorrect"
+            }));
+        }
+    };
+
     return (
         <>
             <AddExternalClaims dialect={ dialect } update={ () => { getExternalClaims(null) } } />
@@ -190,21 +215,38 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                 claims?.length > 0
                     ? (
                         <ListLayout
-                            advancedSearch={ <ExternalClaimsSearch onFilter={ (query) => {
-                                //TODO: getExternalClaims(null, null, null, query);
-                                try {
-                                    const filteredList: ExternalClaim[] = filterList(
-                                        claims, query, sortBy.value, sortOrder
-                                    );
-                                    setFilteredClaims(filteredList);
-                                } catch (error) {
-                                    dispatch(addAlert({
-                                        description: error?.message,
-                                        level: AlertLevels.ERROR,
-                                        message: "Filter query format incorrect"
-                                    }));
-                                }
-                            } } /> }
+                            advancedSearch={ (
+                                <AdvancedSearchWithBasicFilters
+                                    onFilter={ handleExternalClaimFilter  }
+                                    filterAttributeOptions={ [
+                                        {
+                                            key: 0,
+                                            text: "Claim URI",
+                                            value: "claimURI"
+                                        },
+                                        {
+                                            key: 1,
+                                            text: "Mapped Local Claim URI",
+                                            value: "mappedLocalClaimURI"
+                                        }
+                                    ] }
+                                    filterAttributePlaceholder={
+                                        t("devPortal:components.claims.external.advancedSearch.form.inputs" +
+                                            ".filterAttribute.placeholder")
+                                    }
+                                    filterConditionsPlaceholder={
+                                        t("devPortal:components.claims.external.advancedSearch.form.inputs" +
+                                            ".filterCondition.placeholder")
+                                    }
+                                    filterValuePlaceholder={
+                                        t("devPortal:components.claims.external.advancedSearch.form.inputs" +
+                                            ".filterValue.placeholder")
+                                    }
+                                    placeholder={ t("devPortal:components.claims.external.advancedSearch.placeholder") }
+                                    defaultSearchAttribute="claimURI"
+                                    defaultSearchOperator="co"
+                                />
+                            ) }
                             currentListSize={ listItemLimit }
                             listItemLimit={ listItemLimit }
                             onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }

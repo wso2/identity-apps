@@ -20,10 +20,11 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
 import { getDialects } from "../api";
-import { AddDialect, AvatarBackground, DialectSearch } from "../components";
+import { AddDialect, AdvancedSearchWithBasicFilters, AvatarBackground } from "../components";
 import { ClaimsList, ListType } from "../components";
 import { LOCAL_CLAIMS_PATH, UserConstants } from "../constants";
 import { history } from "../helpers";
@@ -63,6 +64,8 @@ export const ClaimDialectsPage = (): ReactElement => {
     const [ localURI, setLocalURI ] = useState("");
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     /**
      * Fetches all the dialects.
@@ -162,6 +165,25 @@ export const ClaimDialectsPage = (): ReactElement => {
         setSortOrder(isAscending);
     };
 
+    /**
+     * Handles the `onFilter` callback action from the
+     * dialect search component.
+     *
+     * @param {string} query - Search query.
+     */
+    const handleDialectFilter = (query: string): void => {
+        try {
+            const filteredDialects = filterList(dialects, query, sortBy.value, sortOrder);
+            setFilteredDialects(filteredDialects);
+        } catch (error) {
+            dispatch(addAlert({
+                description: error.message,
+                level: AlertLevels.ERROR,
+                message: "Filter query format incorrect"
+            }));
+        }
+    };
+
     return (
         <>
             <AddDialect
@@ -230,21 +252,33 @@ export const ClaimDialectsPage = (): ReactElement => {
                 }
                 <Divider hidden />
                 <ListLayout
-                    advancedSearch={
-                        <DialectSearch onFilter={ (query) => {
-                            // TODO: getDialect(null, null, null, query);
-                            try {
-                                const filteredDialects = filterList(dialects, query, sortBy.value, sortOrder);
-                                setFilteredDialects(filteredDialects);
-                            } catch (error) {
-                                dispatch(addAlert({
-                                    description: error.message,
-                                    level: AlertLevels.ERROR,
-                                    message: "Filter query format incorrect"
-                                }));
+                    advancedSearch={ (
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleDialectFilter  }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: "Dialect URI",
+                                    value: "dialectURI"
+                                }
+                            ] }
+                            filterAttributePlaceholder={
+                                t("devPortal:components.claims.dialects.advancedSearch.form.inputs.filterAttribute" +
+                                    ".placeholder")
                             }
-                        } } />
-                    }
+                            filterConditionsPlaceholder={
+                                t("devPortal:components.claims.dialects.advancedSearch.form.inputs.filterCondition" +
+                                    ".placeholder")
+                            }
+                            filterValuePlaceholder={
+                                t("devPortal:components.claims.dialects.advancedSearch.form.inputs.filterValue" +
+                                    ".placeholder")
+                            }
+                            placeholder={ t("devPortal:components.claims.dialects.advancedSearch.placeholder") }
+                            defaultSearchAttribute="dialectURI"
+                            defaultSearchOperator="co"
+                        />
+                    ) }
                     currentListSize={ listItemLimit }
                     listItemLimit={ listItemLimit }
                     onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }

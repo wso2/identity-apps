@@ -21,10 +21,11 @@ import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getIdentityProviderList } from "../api";
-import { ApplicationSearch, IdentityProviderList } from "../components";
+import { AdvancedSearchWithBasicFilters, IdentityProviderList } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { IdentityProviderConstants } from "../constants";
 import { history } from "../helpers";
@@ -63,6 +64,8 @@ const DEFAULT_IDP_LIST_ITEM_LIMIT = 10;
  * @return {React.ReactElement}
  */
 export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => {
+
+    const { t } = useTranslation();
 
     const dispatch = useDispatch();
 
@@ -232,7 +235,32 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
             showBottomDivider={ true }
         >
             <ListLayout
-                advancedSearch={ <ApplicationSearch onFilter={ handleIdentityProviderFilter }/> }
+                advancedSearch={
+                    <AdvancedSearchWithBasicFilters
+                        onFilter={ handleIdentityProviderFilter  }
+                        filterAttributeOptions={ [
+                            {
+                                key: 0,
+                                text: t("common:name"),
+                                value: "name"
+                            }
+                        ] }
+                        filterAttributePlaceholder={
+                            t("devPortal:components.idp.advancedSearch.form.inputs.filterAttribute.placeholder")
+                        }
+                        filterConditionsPlaceholder={
+                            t("devPortal:components.idp.advancedSearch.form.inputs.filterCondition" +
+                                ".placeholder")
+                        }
+                        filterValuePlaceholder={
+                            t("devPortal:components.idp.advancedSearch.form.inputs.filterValue" +
+                                ".placeholder")
+                        }
+                        placeholder={ t("devPortal:components.idp.advancedSearch.placeholder") }
+                        defaultSearchAttribute="name"
+                        defaultSearchOperator="co"
+                    />
+                }
                 currentListSize={ idpList.count }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }

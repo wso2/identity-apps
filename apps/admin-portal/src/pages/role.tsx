@@ -16,21 +16,21 @@
  * under the License.
  */
 
-import { PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
+import { addAlert } from "@wso2is/core/store";
+import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { DropdownItemProps, DropdownProps, Icon, PaginationProps, Popup, Button, Dropdown, Grid } from "semantic-ui-react";
+import { Button, Dropdown, DropdownItemProps, DropdownProps, Grid, Icon, PaginationProps } from "semantic-ui-react";
 import { deleteRoleById, getRolesList, getUserStoreList, searchRoleList } from "../api";
-
-import { RoleList, RoleSearch } from "../components/roles";
+import { AdvancedSearchWithBasicFilters } from "../components";
+import { RoleList } from "../components/roles";
 import { CreateRoleWizard } from "../components/roles/create-role-wizard";
+import { EmptyPlaceholderIllustrations } from "../configs";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertInterface, AlertLevels, RolesInterface, SearchRoleInterface } from "../models"
-import { addAlert } from "../store/actions";
-import { EmptyPlaceholderIllustrations } from "../configs";
 
 const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -295,7 +295,32 @@ export const RolesPage = (): ReactElement => {
             {
                 !isEmptyResults &&
                 <ListLayout
-                    advancedSearch={ <RoleSearch isGroup={ false } onFilter={ handleUserFilter }/> }
+                    advancedSearch={ (
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleUserFilter  }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: "Name",
+                                    value: "displayName"
+                                }
+                            ] }
+                            filterAttributePlaceholder={
+                                t("devPortal:components.roles.advancedSearch.form.inputs.filterAttribute.placeholder")
+                            }
+                            filterConditionsPlaceholder={
+                                t("devPortal:components.roles.advancedSearch.form.inputs.filterCondition" +
+                                    ".placeholder")
+                            }
+                            filterValuePlaceholder={
+                                t("devPortal:components.roles.advancedSearch.form.inputs.filterValue" +
+                                    ".placeholder")
+                            }
+                            placeholder={ t("devPortal:components.roles.advancedSearch.placeholder") }
+                            defaultSearchAttribute="displayName"
+                            defaultSearchOperator="sw"
+                        />
+                    ) }
                     currentListSize={ listItemLimit }
                     listItemLimit={ listItemLimit }
                     onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
@@ -386,4 +411,4 @@ export const RolesPage = (): ReactElement => {
             }
         </PageLayout>
     );
-}
+};
