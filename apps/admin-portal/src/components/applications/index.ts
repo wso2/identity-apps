@@ -18,7 +18,6 @@
 
 export * from "./application-list";
 export * from "./application-edit";
-export * from "./application-search";
 export * from "./dropdown-details";
 export * from "./dropdown-details-general";
 export * from "./forms";
@@ -29,3 +28,5 @@ export * from "./application-edit";
 export * from "./wizard";
 export * from "./components";
 export * from "./provisioning";
+export * from "./inbound-provisioning-configuration";
+export * from "./outbound-provisioning-configuration";

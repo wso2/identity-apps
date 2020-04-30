@@ -17,14 +17,15 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { addAlert } from "@wso2is/core/store";
-import { PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import React, { ReactElement, useContext, useEffect, useRef, useState } from "react";
+import { useDispatch,useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getADialect, getAllLocalClaims } from "../api";
-import { ClaimsList, ListType, LocalClaimsSearch } from "../components";
+import { addAlert } from "@wso2is/core/store";
+import { AdvancedSearchWithBasicFilters, ClaimsList, ListType } from "../components";
 import { AddLocalClaims } from "../components";
+import { EmptyPlaceholderIllustrations } from "../configs";
 import { CLAIM_DIALECTS_PATH, UserConstants } from "../constants";
 import { history } from "../helpers";
 import { ListLayout } from "../layouts";
@@ -32,6 +33,7 @@ import { PageLayout } from "../layouts";
 import { AlertLevels, Claim, ClaimsGetParams, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { filterList, sortList } from "../utils";
+import { useTranslation } from "react-i18next";
 
 /**
  * This returns the list of local claims.
@@ -58,33 +60,39 @@ export const LocalClaimsPage = (): ReactElement => {
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
 
-    const [claims, setClaims] = useState<Claim[]>(null);
-    const [offset, setOffset] = useState(0);
-    const [listItemLimit, setListItemLimit] = useState<number>(0);
-    const [openModal, setOpenModal] = useState(false);
-    const [claimURIBase, setClaimURIBase] = useState("");
-    const [filteredClaims, setFilteredClaims] = useState<Claim[]>(null);
-    const [sortBy, setSortBy] = useState<DropdownItemProps>(SORT_BY[0]);
-    const [sortOrder, setSortOrder] = useState(true);
+    const [ claims, setClaims ] = useState<Claim[]>(null);
+    const [ offset, setOffset ] = useState(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ openModal, setOpenModal ] = useState(false);
+    const [ claimURIBase, setClaimURIBase ] = useState("");
+    const [ filteredClaims, setFilteredClaims ] = useState<Claim[]>(null);
+    const [ sortBy, setSortBy ] = useState<DropdownItemProps>(SORT_BY[ 0 ]);
+    const [ sortOrder, setSortOrder ] = useState(true);
+    const [ query, setQuery ] = useState("");
+    const [ isLoading, setIsLoading ] = useState(true);
 
     const dispatch = useDispatch();
 
+    const initialRender = useRef(true);
+
+    const { t } = useTranslation();
+
     /**
     * Fetches all the local claims.
-     *
+    *
     * @param {number} limit.
     * @param {number} offset.
     * @param {string} sort.
     * @param {string} filter.
     */
     const getLocalClaims = (limit?: number, sort?: string, offset?: number, filter?: string) => {
+        setIsLoading(true);
         const params: ClaimsGetParams = {
             filter: filter || null,
             limit: limit || null,
             offset: offset || null,
             sort: sort || null
         };
-
         getAllLocalClaims(params).then(response => {
             setClaims(response);
             setFilteredClaims(response);
@@ -96,12 +104,18 @@ export const LocalClaimsPage = (): ReactElement => {
                     message: error?.message || "Something went wrong"
                 }
             ));
+        }).finally(() => {
+            setIsLoading(false);
         });
     };
 
     useEffect(() => {
-        setFilteredClaims(sortList(filteredClaims, sortBy.value as string, sortOrder));
-    }, [sortBy, sortOrder]);
+        if (initialRender.current) {
+            initialRender.current = false;
+        } else {
+            setFilteredClaims(sortList(filteredClaims, sortBy.value as string, sortOrder));
+        }
+    }, [ sortBy, sortOrder ]);
 
     useEffect(() => {
         setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
@@ -144,7 +158,7 @@ export const LocalClaimsPage = (): ReactElement => {
 
     /**
     * Paginates.
-     *
+    *
     * @param {React.MouseEvent<HTMLAnchorElement>} event.
     * @param {PaginationProps} data.
     */
@@ -159,16 +173,35 @@ export const LocalClaimsPage = (): ReactElement => {
     * @param {DropdownProps} data.
     */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-        setSortBy(SORT_BY.filter(option => option.value === data.value)[0]);
+        setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
     };
 
     /**
     * Handles sort order change.
-     *
+    *
     * @param {boolean} isAscending.
     */
     const handleSortOrderChange = (isAscending: boolean) => {
         setSortOrder(isAscending);
+    };
+
+    /**
+     * Handles the `onFilter` callback action from the
+     * advanced search component.
+     *
+     * @param {string} query - Search query.
+     */
+    const handleLocalClaimsFilter = (query: string): void => {
+        try {
+            const filteredClaims = filterList(claims, query, sortBy.value as string, sortOrder);
+            setFilteredClaims(filteredClaims);
+        } catch (error) {
+            dispatch(addAlert({
+                description: error?.message,
+                level: AlertLevels.ERROR,
+                message: "Filter query format incorrect"
+            }));
+        }
     };
 
     return (
@@ -193,26 +226,38 @@ export const LocalClaimsPage = (): ReactElement => {
                 } }
             >
                 <ListLayout
-                    advancedSearch={
-                        <LocalClaimsSearch
-                            onFilter={ (query) => {
-                                //TODO: getLocalClaims(null, null, null, query);
-                                try {
-                                    const filteredClaims = filterList(
-                                        claims, query, sortBy.value as string, sortOrder
-                                    );
-                                    setFilteredClaims(filteredClaims);
-                                } catch (error) {
-                                    dispatch(addAlert({
-                                        description: error?.message,
-                                        level: AlertLevels.ERROR,
-                                        message: "Filter query format incorrect"
-                                    }));
+                    advancedSearch={ (
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleLocalClaimsFilter  }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: "Claim URI",
+                                    value: "claimURI"
+                                },
+                                {
+                                    key: 1,
+                                    text: "Mapped Local Claim URI",
+                                    value: "mappedLocalClaimURI"
                                 }
-                            } }
-                            claimURIBase={ claimURIBase }
+                            ] }
+                            filterAttributePlaceholder={
+                                t("devPortal:components.claims.local.advancedSearch.form.inputs.filterAttribute" +
+                                    ".placeholder")
+                            }
+                            filterConditionsPlaceholder={
+                                t("devPortal:components.claims.local.advancedSearch.form.inputs.filterCondition" +
+                                    ".placeholder")
+                            }
+                            filterValuePlaceholder={
+                                t("devPortal:components.claims.local.advancedSearch.form.inputs.filterValue" +
+                                    ".placeholder")
+                            }
+                            placeholder={ t("devPortal:components.claims.local.advancedSearch.placeholder") }
+                            defaultSearchAttribute="claimURI"
+                            defaultSearchOperator="co"
                         />
-                    }
+                    ) }
                     currentListSize={ listItemLimit }
                     listItemLimit={ listItemLimit }
                     onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
@@ -222,29 +267,50 @@ export const LocalClaimsPage = (): ReactElement => {
                         hasRequiredScopes(
                             featureConfig?.attributeDialects,
                             featureConfig?.attributeDialects?.scopes?.create) && (
-                            <PrimaryButton
-                                onClick={ () => {
-                                    setOpenModal(true);
+                                    <PrimaryButton
+                                        onClick={ () => {
+                                            setOpenModal(true);
+                                        } }
+                                    >
+                                        <Icon name="add" />New Local Claim
+                                    </PrimaryButton>
+                                )
+                            }
+                            leftActionPanel={ null }
+                            showPagination={ true }
+                            sortOptions={ SORT_BY }
+                            sortStrategy={ sortBy }
+                            totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
+                            totalListSize={ filteredClaims?.length }
+                            onSortOrderChange={ handleSortOrderChange }
+                        >
+                            <ClaimsList
+                                list={ paginate(filteredClaims, listItemLimit, offset) }
+                                localClaim={ ListType.LOCAL }
+                                update={ getLocalClaims }
+                            />
+                        </ListLayout>
+                    )
+                    : !isLoading && (
+                        <EmptyPlaceholder
+                            action={ (
+                                <LinkButton onClick={ () => {
+                                    setFilteredClaims(claims);
                                 } }
-                            >
-                                <Icon name="add" />Add Local Claim
-                            </PrimaryButton>
-                        )
-                    }
-                    leftActionPanel={ null }
-                    showPagination={ true }
-                    sortOptions={ SORT_BY }
-                    sortStrategy={ sortBy }
-                    totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
-                    totalListSize={ filteredClaims?.length }
-                    onSortOrderChange={ handleSortOrderChange }
-                >
-                    <ClaimsList
-                        list={ paginate(filteredClaims, listItemLimit, offset) }
-                        localClaim={ ListType.LOCAL }
-                        update={ getLocalClaims }
-                    />
-                </ListLayout>
+                                >
+                                    Clear search query
+                                </LinkButton>
+                            ) }
+                            image={ EmptyPlaceholderIllustrations.emptySearch }
+                            imageSize="tiny"
+                            title={ "No results found" }
+                            subtitle={ [
+                                `We couldn't find any results for "${query}"`,
+                                "Please try a different search term."
+                            ] }
+                        />
+                    )
+                }
             </PageLayout>
         </>
     );

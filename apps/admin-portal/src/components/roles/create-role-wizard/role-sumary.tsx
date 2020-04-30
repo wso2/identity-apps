@@ -23,6 +23,7 @@ import { Grid, Label } from "semantic-ui-react";
 interface AddUserWizardSummaryProps {
     summary: any;
     triggerSubmit: boolean;
+    isAddGroup: boolean;
     onSubmit: (application: any) => void;
 }
 
@@ -38,7 +39,8 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
     const {
         summary,
         triggerSubmit,
-        onSubmit
+        onSubmit,
+        isAddGroup
     } = props;
 
     /**
@@ -58,7 +60,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                 <>
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Domain</div>
+                            <div className="label">{ isAddGroup ? "Userstore" : "Role Type"}</div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             <div className="value url">{ summary.BasicDetails.domain }</div>
@@ -66,7 +68,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                     </Grid.Row>
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Role Name</div>
+                            <div className="label">{ isAddGroup ? "Group Name" : "Role Name"}</div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             <div className="value url">{ summary.BasicDetails.roleName }</div>

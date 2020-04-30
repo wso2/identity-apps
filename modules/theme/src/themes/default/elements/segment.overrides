@@ -259,6 +259,45 @@
     }
 }
 
+/*******************************
+     Roles Variation
+*******************************/
+
+.roles-list{
+    .ui.label {
+        color: white;
+    
+        &.application-label {
+            background-color: @TransferComponentSegmentApplicationLabelBackgroundColor;
+            border-color: @TransferComponentSegmentApplicationLabelBorderColor;
+            margin-right: @rolesListingLabelMargin;
+        }
+    
+        &.internal-label {
+            background-color: @TransferComponentSegmentInternalLabelBackgroundColor;
+            border-color: @TransferComponentSegmentInternalLabelBorderColor;
+            margin-right: @rolesListingLabelMargin;
+        }
+
+        &.group-label {
+            margin-right: @rolesListingLabelMargin;
+        }
+
+        &.primary-label {
+            margin-right: @rolesListingLabelMargin;
+        }
+    }
+}
+
+.create-role-wizard {
+    .step-icon {
+        i {
+            margin: 0 !important;
+        }
+    }
+}
+
+
 /***********************************
      User Edit Section Variation
 ************************************/

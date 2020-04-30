@@ -207,10 +207,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onDelete={ onDelete }
                 onUpdate={ onUpdate }
                 featureConfig={ featureConfig }
-                // TODO we need check whether application is active or not as well.
-                showRevoke={
-                    inboundProtocolList.some((protocol) => protocol === SupportedAuthProtocolTypes.OIDC)
-                }
                 template={ template }
             />
         </ResourceTab.Pane>

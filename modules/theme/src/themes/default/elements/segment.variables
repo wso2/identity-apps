@@ -70,6 +70,12 @@
 @EditRoleSegmentFooterHeight: 60px !important;
 
 /*************************************
+    Roles listing variation
+*************************************/
+
+@rolesListingLabelMargin: 1em;
+
+/*************************************
              Variation
 *************************************/
 

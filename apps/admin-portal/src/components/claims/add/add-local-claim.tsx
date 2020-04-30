@@ -186,7 +186,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
             onClose={ onClose }
         >
             <Modal.Header className="wizard-header">
-                Add local claim
+                Add Local Claim
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group

@@ -24,7 +24,7 @@ import {
     EmptyPlaceholderIllustrations,
     InboundProtocolLogos
 } from "../../../configs";
-import { ApplicationTemplateListItemInterface } from "../../../models";
+import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../../../models";
 import { AppState } from "../../../store";
 import { ApplicationManagementUtils } from "../../../utils";
 import { EmptyPlaceholder } from "../../shared";
@@ -224,7 +224,10 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
             { !isApplicationTemplateRequestLoading && (
                 <TemplateGrid<ApplicationTemplateListItemInterface>
                     type="application"
-                    templates={ availableTemplates }
+                    templates={
+                        availableTemplates.filter((template) =>
+                            template.category === ApplicationTemplateCategories.DEFAULT)
+                    }
                     templateIcons={ ApplicationTemplateIllustrations }
                     heading="Quick Setup"
                     subHeading={ "Get protocol configuration from a template" }

@@ -16,20 +16,21 @@
  * under the License.
  */
 
-import { PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
+import { addAlert } from "@wso2is/core/store";
+import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps, Grid, Button } from "semantic-ui-react";
+import { Button, Dropdown, DropdownItemProps, DropdownProps, Grid, Icon, PaginationProps } from "semantic-ui-react";
 import { deleteRoleById, getRolesList, getUserStoreList, searchRoleList } from "../api";
-import { RoleList, RoleSearch } from "../components/roles";
+import { AdvancedSearchWithBasicFilters } from "../components";
+import { RoleList } from "../components/roles";
 import { CreateRoleWizard } from "../components/roles/create-role-wizard";
+import { EmptyPlaceholderIllustrations } from "../configs";
 import { UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertInterface, AlertLevels, RoleListInterface, RolesInterface, SearchRoleInterface } from "../models"
-import { addAlert } from "../store/actions";
-import { EmptyPlaceholderIllustrations } from "../configs";
 
 const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -108,6 +109,7 @@ export const GroupsPage = (): ReactElement => {
                     setGroupsList(updatedResources);
                     setGroupsPage(0, listItemLimit, updatedResources);
                 } else {
+                    setPaginatedGroups([]);
                     setIsEmptyResults(true);
                 }
                 setRoleList(response.data);
@@ -240,14 +242,24 @@ export const GroupsPage = (): ReactElement => {
         deleteRoleById(role.id).then(() => {
             handleAlerts({
                 description: t(
-                    "devPortal:components.roles.notifications.deleteRole.success.description"
+                    "devPortal:components.groups.notifications.deleteGroup.success.description"
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "devPortal:components.roles.notifications.deleteRole.success.message"
+                    "devPortal:components.groups.notifications.deleteGroup.success.message"
                 )
             });
             setListUpdated(true);
+        }).catch(error => {
+            handleAlerts({
+                description: t(
+                    "devPortal:components.groups.notifications.deleteGroup.genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "devPortal:components.groups.notifications.deleteGroup.error.message"
+                )
+            });
         });
     };
 
@@ -272,48 +284,72 @@ export const GroupsPage = (): ReactElement => {
             description="Create and manage user groups, assign permissions for groups."
             showBottomDivider={ true } 
         >
-            {
-                !isEmptyResults &&
-                <ListLayout
-                    advancedSearch={ <RoleSearch isGroup onFilter={ handleUserFilter }/> }
-                    currentListSize={ listItemLimit }
-                    listItemLimit={ listItemLimit }
-                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                    onPageChange={ handlePaginationChange }
-                    onSortStrategyChange={ handleListSortingStrategyOnChange }
-                    sortStrategy={ listSortingStrategy }
-                    rightActionPanel={
-                        (
-                            <PrimaryButton onClick={ () => setShowWizard(true) }>
-                                <Icon name="add"/>
-                                New Group
-                            </PrimaryButton>
-                        )
-                    }
-                    leftActionPanel={
-                        <Dropdown
-                            selection
-                            options={ userStoreOptions && userStoreOptions }
-                            placeholder="Select User Store"
-                            value={ userStore && userStore }
-                            onChange={ handleDomainChange }
+            <ListLayout
+                advancedSearch={ (
+                    <AdvancedSearchWithBasicFilters
+                        onFilter={ handleUserFilter  }
+                        filterAttributeOptions={ [
+                            {
+                                key: 0,
+                                text: "Name",
+                                value: "displayName"
+                            }
+                        ] }
+                        filterAttributePlaceholder={
+                            t("devPortal:components.groups.advancedSearch.form.inputs.filterAttribute.placeholder")
+                        }
+                        filterConditionsPlaceholder={
+                            t("devPortal:components.groups.advancedSearch.form.inputs.filterCondition" +
+                                ".placeholder")
+                        }
+                        filterValuePlaceholder={
+                            t("devPortal:components.groups.advancedSearch.form.inputs.filterValue" +
+                                ".placeholder")
+                        }
+                        placeholder={ t("devPortal:components.groups.advancedSearch.placeholder") }
+                        defaultSearchAttribute="displayName"
+                        defaultSearchOperator="sw"
+                    />
+                ) }
+                currentListSize={ listItemLimit }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                onPageChange={ handlePaginationChange }
+                onSortStrategyChange={ handleListSortingStrategyOnChange }
+                sortStrategy={ listSortingStrategy }
+                rightActionPanel={
+                    paginatedGroups.length > 0 &&
+                    (
+                        <PrimaryButton onClick={ () => setShowWizard(true) }>
+                            <Icon name="add"/>
+                            New Group
+                        </PrimaryButton>
+                    )
+                }
+                leftActionPanel={
+                    <Dropdown
+                        selection
+                        options={ userStoreOptions && userStoreOptions }
+                        placeholder="Select User Store"
+                        value={ userStore && userStore }
+                        onChange={ handleDomainChange }
+                    />
+                }
+                showPagination={ paginatedGroups.length > 0  }
+                totalPages={ Math.ceil(groupList?.length / listItemLimit) }
+                totalListSize={ groupList?.length }
+            >
+                {
+                    paginatedGroups.length > 0 ?
+                        <RoleList
+                            isGroup
+                            roleList={ paginatedGroups }
+                            handleRoleDelete={ handleOnDelete }
                         />
-                    }
-                    showPagination={ true }
-                    totalPages={ Math.ceil(groupList?.length / listItemLimit) }
-                    totalListSize={ groupList?.length }
-                >
-                    {
-                        paginatedGroups.length > 0 ?
-                            <RoleList 
-                                isGroup
-                                roleList={ paginatedGroups }
-                                handleRoleDelete={ handleOnDelete }
-                            />
                         :
                         <Grid.Column width={ 16 }>
                             {
-                                searchQuery !== '' &&
+                                searchQuery !== '' ?
                                     <EmptyPlaceholder
                                         action={ (
                                             <Button
@@ -331,29 +367,26 @@ export const GroupsPage = (): ReactElement => {
                                             t("devPortal:placeholders.emptySearchResult.subtitles.1")
                                         ] }
                                     />
+                                    :
+                                    <EmptyPlaceholder
+                                        action={
+                                            <PrimaryButton
+                                                onClick={ () => {
+                                                    setShowWizard(true);
+                                                } }
+                                            >
+                                                <Icon name="add"/> New Group
+                                            </PrimaryButton>
+                                        }
+                                        title="Add Group"
+                                        subtitle={ ["Currently, there are no groups available."] }
+                                        image={ EmptyPlaceholderIllustrations.emptyList }
+                                        imageSize="tiny"
+                                    />
                             }
                         </Grid.Column>
-                    }
-                </ListLayout>
-            }
-            {
-                isEmptyResults &&
-                <EmptyPlaceholder
-                    action={
-                        <PrimaryButton
-                            onClick={ () => {
-                                setShowWizard(true);
-                            } }
-                        >
-                            <Icon name="add"/> New Group
-                        </PrimaryButton>
-                    }
-                    title="Add Group"
-                    subtitle={ ["Currently, there are no groups available."] }
-                    image={ EmptyPlaceholderIllustrations.emptyList }
-                    imageSize="tiny"
-                />
-            }
+                }
+            </ListLayout>
             {
                 showWizard && (
                     <CreateRoleWizard
@@ -361,8 +394,8 @@ export const GroupsPage = (): ReactElement => {
                         closeWizard={ () => setShowWizard(false) }
                         updateList={ () => setListUpdated(true) }
                     />
-                ) 
+                )
             }
         </PageLayout>
     );
-}
+};

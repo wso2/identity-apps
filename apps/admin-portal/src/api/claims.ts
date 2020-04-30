@@ -414,6 +414,8 @@ export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams)
         .catch((error) => {
             if (error?.response?.data?.code !== RESOURCE_NOT_FOUND_ERROR_CODE) {
                 return Promise.reject(error?.response?.data);
+            } else{
+                return Promise.resolve([])
             }
         });
 };

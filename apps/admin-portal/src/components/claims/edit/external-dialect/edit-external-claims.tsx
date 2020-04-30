@@ -17,24 +17,38 @@
  */
 
 import { addAlert } from "@wso2is/core/store";
+import { useTrigger } from "@wso2is/forms";
+import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, DropdownProps, PaginationProps } from "semantic-ui-react";
-import { ClaimsList, ExternalClaimsSearch, ListType } from "../../..";
-import { getADialect, getAllExternalClaims } from "../../../../api";
+import { Divider, DropdownProps, Grid, Icon, Modal, PaginationProps } from "semantic-ui-react";
+import { AddExternalClaims, ClaimsList, ListType } from "../../..";
 import { EmptyPlaceholderIllustrations } from "../../../../configs";
 import { UserConstants } from "../../../../constants";
 import { ListLayout } from "../../../../layouts";
-import { AlertLevels, ClaimDialect, ExternalClaim } from "../../../../models";
+import { AlertLevels, ExternalClaim } from "../../../../models";
 import { filterList, sortList } from "../../../../utils";
 import { EmptyPlaceholder } from "../../../shared";
-import { AddExternalClaims } from "../../add";
+import { AdvancedSearchWithBasicFilters } from "../../../shared/advanced-search-with-basic-filters";
 
 interface EditExternalClaimsPropsInterface {
     /**
      * Dialect ID
      */
     dialectID: string;
+    /**
+     * The list of external claims.
+     */
+    claims: ExternalClaim[];
+    /**
+     * Triggers an update.
+     */
+    update: () => void;
+    /**
+     * Sets to true if the list is being loaded.
+     */
+    isLoading: boolean;
 }
 
 /**
@@ -62,70 +76,31 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
         }
     ];
 
-    const [ claims, setClaims ] = useState<ExternalClaim[]>(null);
     const [ offset, setOffset ] = useState(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
-    const [ dialect, setDialect ] = useState<ClaimDialect>(null);
-    const [ filteredClaims, setFilteredClaims ] = useState<ExternalClaim[]>(null);
+    const [ filteredClaims, setFilteredClaims ] = useState<ExternalClaim[]>([]);
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
-    const [ isLoading, setIsLoading ] = useState(true);
+    const [ showAddExternalClaim, setShowAddExternalClaim ] = useState(false);
+    const [ query, setQuery ] = useState("");
+
+    const [ triggerAddExternalClaim, setTriggerAddExternalClaim ] = useTrigger();
+
+    const { t } = useTranslation();
 
     const dispatch = useDispatch();
 
-    const { dialectID } = props;
+    const { dialectID, claims, update, isLoading } = props;
 
     useEffect(() => {
         setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
-        setIsLoading(true);
-
-        getADialect(dialectID).then(response => {
-            setDialect(response);
-            setIsLoading(false);
-        }).catch(error => {
-            setIsLoading(false);
-            dispatch(addAlert(
-                {
-                    description: error?.description || "There was an error while fetching local dialect",
-                    level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
-                }
-            ));
-        });
-
     }, []);
 
-    /**
-     * Fetch external claims.
-     *
-     * @param {number} limit.
-     * @param {number} offset.
-     * @param {string} sort.
-     * @param {string} filter.
-     */
-    const getExternalClaims = (limit?: number, offset?: number, sort?: string, filter?: string) => {
-        dialectID && getAllExternalClaims(dialectID, {
-            filter,
-            limit,
-            offset,
-            sort
-        }).then(response => {
-            setClaims(response);
-            setFilteredClaims(response);
-        }).catch(error => {
-            dispatch(addAlert(
-                {
-                    description: error?.description || "There was an error while fetching the external claims",
-                    level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
-                }
-            ));
-        });
-    }
-
     useEffect(() => {
-        getExternalClaims();
-    }, [ dialectID ]);
+        if (claims) {
+            setFilteredClaims(claims);
+        }
+    }, [ claims ]);
 
     useEffect(() => {
         setFilteredClaims(sortList(filteredClaims, sortBy.value, sortOrder));
@@ -182,58 +157,167 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
         setSortOrder(isAscending);
     };
 
+    /**
+     * Handles the `onFilter` callback action from the
+     * advanced search component.
+     *
+     * @param {string} query - Search query.
+     */
+    const handleExternalClaimFilter = (query: string): void => {
+        try {
+            const filteredList: ExternalClaim[] = filterList(
+                claims, query, sortBy.value, sortOrder
+            );
+            setFilteredClaims(filteredList);
+        } catch (error) {
+            dispatch(addAlert({
+                description: error?.message,
+                level: AlertLevels.ERROR,
+                message: "Filter query format incorrect"
+            }));
+        }
+    };
+
     return (
-        <>
-            <AddExternalClaims dialect={ dialect } update={ () => { getExternalClaims(null) } } />
-            <Divider hidden/>
-            {
-                claims?.length > 0
-                    ? (
-                        <ListLayout
-                            advancedSearch={ <ExternalClaimsSearch onFilter={ (query) => {
-                                //TODO: getExternalClaims(null, null, null, query);
-                                try {
-                                    const filteredList: ExternalClaim[] = filterList(
-                                        claims, query, sortBy.value, sortOrder
-                                    );
-                                    setFilteredClaims(filteredList);
-                                } catch (error) {
-                                    dispatch(addAlert({
-                                        description: error?.message,
-                                        level: AlertLevels.ERROR,
-                                        message: "Filter query format incorrect"
-                                    }));
-                                }
-                            } } /> }
-                            currentListSize={ listItemLimit }
-                            listItemLimit={ listItemLimit }
-                            onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                            onPageChange={ handlePaginationChange }
-                            onSortStrategyChange={ handleSortStrategyChange }
-                            onSortOrderChange={ handleSortOrderChange }
-                            showPagination={ true }
-                            sortOptions={ SORT_BY }
-                            sortStrategy={ sortBy }
-                            totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
-                            totalListSize={ filteredClaims?.length }
-                        >
-                            <ClaimsList
-                                list={ paginate(filteredClaims, listItemLimit, offset) }
-                                localClaim={ ListType.EXTERNAL }
-                                update={ getExternalClaims }
-                                dialectID={ dialectID }
-                            />
-                        </ListLayout>
-                    )
-                    : !isLoading && (
-                        <EmptyPlaceholder
-                            title="No External Claim"
-                            subtitle={ [ "Currently, there is no external claim available for this dialect." ] }
-                            image={ EmptyPlaceholderIllustrations.emptyList }
-                            imageSize="tiny"
-                        />
-                    )
+        <ListLayout
+            advancedSearch={ <AdvancedSearchWithBasicFilters
+                                    onFilter={ handleExternalClaimFilter  }
+                                    filterAttributeOptions={ [
+                                        {
+                                            key: 0,
+                                            text: "Claim URI",
+                                            value: "claimURI"
+                                        },
+                                        {
+                                            key: 1,
+                                            text: "Mapped Local Claim URI",
+                                            value: "mappedLocalClaimURI"
+                                        }
+                                    ] }
+                                    filterAttributePlaceholder={
+                                        t("devPortal:components.claims.external.advancedSearch.form.inputs" +
+                                            ".filterAttribute.placeholder")
+                                    }
+                                    filterConditionsPlaceholder={
+                                        t("devPortal:components.claims.external.advancedSearch.form.inputs" +
+                                            ".filterCondition.placeholder")
+                                    }
+                                    filterValuePlaceholder={
+                                        t("devPortal:components.claims.external.advancedSearch.form.inputs" +
+                                            ".filterValue.placeholder")
+                                    }
+                                    placeholder={ t("devPortal:components.claims.external.advancedSearch.placeholder") }
+                                    defaultSearchAttribute="claimURI"
+                                    defaultSearchOperator="co"
+                                /> }
+            currentListSize={ listItemLimit }
+            listItemLimit={ listItemLimit }
+            onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+            onPageChange={ handlePaginationChange }
+            onSortStrategyChange={ handleSortStrategyChange }
+            onSortOrderChange={ handleSortOrderChange }
+            showPagination={ true }
+            sortOptions={ SORT_BY }
+            sortStrategy={ sortBy }
+            totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
+            totalListSize={ filteredClaims?.length }
+            rightActionPanel={
+                <PrimaryButton
+                    onClick={ (): void => {
+                        setShowAddExternalClaim(true);
+                    } }
+                    disabled={ showAddExternalClaim }
+                >
+                    <Icon name="add" />
+                            New External Claim
+                        </PrimaryButton>
             }
-        </>
-    );
+        >
+            {
+                showAddExternalClaim && (
+                    <Modal
+                        open={ showAddExternalClaim }
+                        onClose={ () => { setShowAddExternalClaim(false) } }
+                        dimmer="blurring"
+                        size="small"
+                    >
+                        <Modal.Header>
+                            Add External Claim
+                        </Modal.Header>
+                        <Modal.Content>
+                            <AddExternalClaims
+                                dialectId={ dialectID }
+                                update={ update }
+                                externalClaims={ claims }
+                                triggerSubmit={ triggerAddExternalClaim }
+                                cancel={ () => { setShowAddExternalClaim(false) } }
+                            />
+                        </Modal.Content>
+                        <Modal.Actions>
+                            <LinkButton onClick={ () => { setShowAddExternalClaim(false) } }>
+                                Cancel
+                                    </LinkButton>
+                            <PrimaryButton
+                                onClick={ () => {
+                                    setTriggerAddExternalClaim();
+                                }
+                                }
+                            >
+                                Save
+                                    </PrimaryButton>
+                        </Modal.Actions>
+                    </Modal>
+                )
+            }
+            <Grid columns={ 1 }>
+                <Grid.Column width={ 16 }>
+                    <Divider hidden />
+                    {
+                        filteredClaims?.length > 0
+                            ? (
+                                <ClaimsList
+                                    list={ paginate(filteredClaims, listItemLimit, offset) }
+                                    localClaim={ ListType.EXTERNAL }
+                                    update={ () => update() }
+                                    dialectID={ dialectID }
+                                />
+                            ) : !isLoading &&
+                                (claims && claims?.length !== 0 && filteredClaims?.length === 0)
+                                ? (
+                                    <EmptyPlaceholder
+                                        action={ (
+                                            <LinkButton onClick={ () => {
+                                                setFilteredClaims(claims);
+                                            } }
+                                            >
+                                                Clear search query
+                                            </LinkButton>
+                                        ) }
+                                        image={ EmptyPlaceholderIllustrations.emptySearch }
+                                        imageSize="tiny"
+                                        title={ "No results found" }
+                                        subtitle={ [
+                                            `We couldn't find any results for "${query}"`,
+                                            "Please try a different search term."
+                                        ] }
+                                    />
+                                )
+                                : !isLoading && (
+                                    <EmptyPlaceholder
+                                        title="No External Claim"
+                                        subtitle={ [ "Currently, there is no external claim " +
+                                            "available for this dialect." ] }
+                                        image={ EmptyPlaceholderIllustrations.emptyList }
+                                        imageSize="tiny"
+                                    />
+                                )
+                    }
+                </Grid.Column>
+            </Grid>
+        </ListLayout>
+    )
+};
+
+EditExternalClaims.defaultProps = {
+    isLoading: true
 };

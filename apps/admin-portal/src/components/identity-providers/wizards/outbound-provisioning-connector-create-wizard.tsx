@@ -315,6 +315,7 @@ export const OutboundProvisioningConnectorCreateWizard: FunctionComponent<Outbou
         },
         {
             content: (
+                connectorMetaData && defaultConnector &&
                 <OutboundProvisioningSettings
                     metadata={ connectorMetaData }
                     initialValues={ identityProvider }

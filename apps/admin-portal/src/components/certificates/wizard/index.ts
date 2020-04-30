@@ -16,7 +16,5 @@
 * under the License.
 */
 
-
-export * from "./local-claims-search";
-export * from "./dialect-search";
-export * from "./external-claims-search";
+export * from "./certificate-summary";
+export * from "./upload-certificate";

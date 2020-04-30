@@ -18,12 +18,29 @@
 
 import React, { FunctionComponent, ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
-import { DisplayCertificate, DistinguishedName } from "../../models";
+import { DisplayCertificate, DistinguishedName } from "../../../models";
 
+/**
+ * Prop types of the of the `CertificateSummary` component 
+ */
 interface CertificateSummaryPropsInterface {
+    /**
+     * The alias of the certificate.
+     */
     name: string;
+    /**
+     * The decoded certificate details. 
+     */
     certificate: DisplayCertificate;
 }
+
+/**
+ * This is the summary view of the certificate import wizard.
+ * 
+ * @param {CertificateSummaryPropsInterface} props
+ * 
+ * @returns {ReactElement}
+ */
 export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterface> = (
     props: CertificateSummaryPropsInterface
 ): ReactElement => {

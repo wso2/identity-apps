@@ -20,11 +20,11 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
-import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components"
+import { ConfirmationModal, ResourceList } from "@wso2is/react-components"
 import { CopyInputField } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Icon, List, Modal, Popup } from "semantic-ui-react";
+import { Icon, List, Popup } from "semantic-ui-react";
 import { Image } from "semantic-ui-react";
 import { EditExternalClaim } from "./edit";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim, getUserStores } from "../../api";
@@ -40,6 +40,16 @@ import {
     UserStoreListItem
 } from "../../models";
 import { AvatarBackground } from "../shared";
+
+/**
+ * The model of the object containing info specific to the list type.
+ */
+interface ListItem {
+    assertion: string;
+    message: string;
+    name: string;
+    delete: (id: string, claimId?: string) => void;
+}
 
 /**
  * Enum containing the list types.
@@ -100,7 +110,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
 
     const [ deleteConfirm, setDeleteConfirm ] = useState(false);
     const [ deleteType, setDeleteType ] = useState<ListType>(null);
-    const [ deleteID, setDeleteID ] = useState<string>(null);
+    const [ deleteItem, setDeleteItem ] = useState<Claim | ExternalClaim | ClaimDialect>(null);
     const [ userStores, setUserStores ] = useState<UserStoreListItem[]>([]);
     const [ editClaim, setEditClaim ] = useState("");
     const [ editExternalClaim, setEditExternalClaim ] = useState(-1);
@@ -129,7 +139,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                 }))
             })
         }
-    }, [ list ]);
+    }, [ JSON.stringify(list) ]);
 
     /**
      * This check if the input claim is mapped to attribute from every userstore.
@@ -141,13 +151,13 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
     const checkUserStoreMapping = (claim: Claim): string[] => {
         const userStoresNotSet = [];
 
-        userStores.forEach(userStore => {
-            claim.attributeMapping.find(attribute => {
+        userStores?.forEach(userStore => {
+            claim?.attributeMapping?.find(attribute => {
                 return attribute.userstore.toLowerCase() === userStore.name.toLowerCase();
             }) ?? userStoresNotSet.push(userStore.name);
         });
 
-        claim.attributeMapping.find(attribute => {
+        claim?.attributeMapping?.find(attribute => {
             return attribute.userstore === "PRIMARY";
         }) ?? userStoresNotSet.push("Primary");
 
@@ -164,7 +174,8 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
     const isLocalClaim = (
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]
-    ): toBeDetermined is Claim[] => {
+            | Claim | ExternalClaim | ClaimDialect
+    ): toBeDetermined is Claim[] | Claim => {
         return localClaim === ListType.LOCAL;
     }
 
@@ -178,7 +189,8 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
     const isDialect = (
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]
-    ): toBeDetermined is ClaimDialect[] => {
+            | Claim | ExternalClaim | ClaimDialect
+    ): toBeDetermined is ClaimDialect[] | ClaimDialect => {
         return localClaim === ListType.DIALECT
     }
 
@@ -192,7 +204,8 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
     const isExternalClaim = (
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]
-    ): toBeDetermined is ExternalClaim[] => {
+            | Claim | ExternalClaim | ClaimDialect
+    ): toBeDetermined is ExternalClaim[] | ExternalClaim => {
         return localClaim === ListType.EXTERNAL
     }
 
@@ -216,7 +229,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
      */
     const closeDeleteConfirm = () => {
         setDeleteConfirm(false);
-        setDeleteID(null);
+        setDeleteItem(null);
         setDeleteType(null);
     }
 
@@ -304,59 +317,68 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
      * @return {ReactElement} Modal
      */
     const showDeleteConfirm = (): ReactElement => {
+        let listItem: ListItem;
+        if (isLocalClaim(deleteItem)) {
+            listItem = {
+                assertion: deleteItem.displayName,
+                delete: deleteLocalClaim,
+                message: "If you delete this local claim, the user data belonging " +
+                    "to this claim will also be deleted.",
+                name: "local claim"
+            }
+        } else if (isDialect(deleteItem)) {
+            listItem = {
+                assertion: deleteItem.dialectURI,
+                delete: deleteDialect,
+                message: "If you delete this external dialect, all the" +
+                    " associated external claims will also be deleted.",
+                name: "external dialect"
+            }
+        } else {
+            listItem = {
+                assertion: deleteItem.claimURI,
+                delete: deleteExternalClaim,
+                message: "This will permanently delete the external claim.",
+                name: "external claim"
+            }
+        }
+
         return (
-            <Modal
-                open={ deleteConfirm }
+            <ConfirmationModal
                 onClose={ closeDeleteConfirm }
-                size="mini"
-                dimmer="blurring"
+                type="warning"
+                open={ deleteConfirm }
+                assertion={ listItem.assertion }
+                assertionHint={ <p>Please type <strong>{ listItem.assertion }</strong> to confirm.</p> }
+                assertionType="input"
+                primaryAction="Confirm"
+                secondaryAction="Cancel"
+                onSecondaryActionClick={ (): void => setDeleteConfirm(false) }
+                onPrimaryActionClick={ () => {
+                    deleteType === ListType.EXTERNAL
+                        ? listItem.delete(dialectID, deleteItem.id)
+                        : listItem.delete(deleteItem.id)
+                } }
             >
-                <Modal.Header>
-                    Confirm Delete
-                </Modal.Header>
-                <Modal.Content>
-                    This will completely delete the
-                    {
-                        deleteType === ListType.DIALECT
-                            ? " Claim Dialect. "
-                            : deleteType === ListType.EXTERNAL
-                                ? " External Claim. "
-                                : " Local Claim. "
-                    }
-                    Do you want to continue deleting it?
-                </Modal.Content>
-                <Modal.Actions>
-                    <LinkButton onClick={ closeDeleteConfirm }>
-                        Cancel
-                    </LinkButton>
-                    <PrimaryButton onClick={ () => {
-                        switch (deleteType) {
-                            case ListType.DIALECT:
-                                deleteDialect(deleteID);
-                                break;
-                            case ListType.EXTERNAL:
-                                deleteExternalClaim(dialectID, deleteID);
-                                break;
-                            case ListType.LOCAL:
-                                deleteLocalClaim(deleteID);
-                                break;
-                        }
-                    } }>
-                        Delete
-                    </PrimaryButton>
-                </Modal.Actions>
-            </Modal>
-        )
+                <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+                <ConfirmationModal.Message attached warning>
+                    { `This action is irreversible and will permanently delete the selected ${listItem.name}.` }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content>
+                    { `${listItem.message} Please proceed with caution.`}
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        );
     };
 
     /**
      * This initiates the delete process
-     * @param {ListType} type 
-     * @param {string} id 
+     * @param {ListType} type The type of the list item.
+     * @param {Claim | ExternalClaim | ClaimDialect} item The list item to be deleted.
      */
-    const initDelete = (type: ListType, id: string) => {
+    const initDelete = (type: ListType, item: Claim | ExternalClaim | ClaimDialect) => {
         setDeleteType(type);
-        setDeleteID(id);
+        setDeleteItem(item);
         setDeleteConfirm(true);
     };
 
@@ -406,7 +428,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                 featureConfig?.attributeDialects,
                                                 featureConfig?.attributeDialects?.scopes?.delete),
                                             icon: "trash alternate",
-                                            onClick: () => { initDelete(ListType.LOCAL, claim?.id) },
+                                            onClick: () => { initDelete(ListType.LOCAL, claim) },
                                             popupText: "Delete",
                                             type: "dropdown"
                                         }
@@ -506,7 +528,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                     featureConfig?.attributeDialects,
                                                     featureConfig?.attributeDialects?.scopes?.delete),
                                                 icon: "trash alternate",
-                                                onClick: () => { initDelete(ListType.DIALECT, dialect?.id) },
+                                                onClick: () => { initDelete(ListType.DIALECT, dialect) },
                                                 popupText: "Delete",
                                                 type: "dropdown"
                                             }
@@ -544,7 +566,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                         featureConfig?.attributeDialects,
                                                         featureConfig?.attributeDialects?.scopes?.delete),
                                                     icon: "trash alternate",
-                                                    onClick: () => { initDelete(ListType.EXTERNAL, claim?.id) },
+                                                    onClick: () => { initDelete(ListType.EXTERNAL, claim) },
                                                     popupText: "Delete",
                                                     type: "dropdown"
                                                 }
@@ -565,20 +587,23 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                             }
                                             actionsFloated="right"
                                             itemHeader={ claim.claimURI }
-                                            itemDescription={ claim.mappedLocalClaimURI }
                                             metaContent={ [
+                                                editClaim !== claim?.id
+                                                    ? claim.mappedLocalClaimURI
+                                                    : null,
                                                 editClaim === claim?.id
-                                                && <EditExternalClaim
-                                                    claimID={ claim.id }
-                                                    dialectID={ dialectID }
-                                                    update={ () => {
-                                                        setEditClaim("");
-                                                        update();
-                                                    } }
-                                                    submit={ submitExternalClaim }
-                                                    claimURI={ claim.claimURI }
-                                                />
-                                            ] }
+                                                    ? <EditExternalClaim
+                                                        claimID={ claim.id }
+                                                        dialectID={ dialectID }
+                                                        update={ () => {
+                                                            setEditClaim("");
+                                                            update();
+                                                        } }
+                                                        submit={ submitExternalClaim }
+                                                        claimURI={ claim.claimURI }
+                                                    />
+                                                    : null
+                                            ].filter(meta => meta !== null) }
                                         />
                                     )
                                 })

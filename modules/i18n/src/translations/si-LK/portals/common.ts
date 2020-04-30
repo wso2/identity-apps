@@ -68,6 +68,8 @@ export const common: CommonNS = {
     operations: "මෙහෙයුම්",
     overview: "දළ විශ්ලේෂණය",
     personalInfo: "පෞද්ගලික තොරතුරු",
+    pin: "තබා ගන්න",
+    pinned: "තබා ඇත",
     priority: "ප්\u200Dරමුඛතාවය",
     privacy: "රහස්\u200Dයතාවය",
     properties: "ගුණාංග",
@@ -99,6 +101,8 @@ export const common: CommonNS = {
     terminateAll: "සියල්ල අවසන් කරන්න",
     terminateSession: "සැසිය අවසන් කරන්න",
     type: "වර්ගය",
+    unpin: "ඉවත් කරන්න",
+    unpinned: "ඉවත් කරන ලදි",
     update: "යාවත්කාලීන කරන්න",
     user: "පරිශීලක",
     verify: "සත්‍යාපනය කරන්න"

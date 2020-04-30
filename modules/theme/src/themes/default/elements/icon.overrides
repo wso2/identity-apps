@@ -41,4 +41,8 @@ i.icon {
         top: -1px;
         left: 43px;
     }
+
+    &.map-icon {
+        margin: 18px 0 0 0;
+    }
 }

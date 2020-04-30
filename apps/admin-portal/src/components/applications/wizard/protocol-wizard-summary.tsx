@@ -20,13 +20,9 @@ import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import { AppAvatar, UserAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Grid, Label } from "semantic-ui-react";
-import {
-    MainApplicationInterface,
-    SubmitFormCustomPropertiesInterface,
-    SupportedAuthProtocolTypes
-} from "../../../models";
-import { ApplicationManagementUtils } from "../../../utils/application-management-utils";
 import { InboundProtocolLogos } from "../../../configs/ui";
+import { SubmitFormCustomPropertiesInterface, SupportedAuthProtocolTypes } from "../../../models";
+import { ApplicationManagementUtils } from "../../../utils/application-management-utils";
 
 
 /**
@@ -35,9 +31,10 @@ import { InboundProtocolLogos } from "../../../configs/ui";
 interface ProtocolWizardSummaryPropsInterface {
     summary: any;
     triggerSubmit: boolean;
-    onSubmit: (application: MainApplicationInterface) => void;
+    onSubmit: (values: any) => void;
     customProtocol: boolean;
     image: string;
+    samlMetaFileSelected: boolean;
 }
 
 /**
@@ -55,7 +52,8 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
         triggerSubmit,
         onSubmit,
         image,
-        customProtocol
+        customProtocol,
+        samlMetaFileSelected
     } = props;
 
     const [protocolImage, setProtocolImage] = useState<string>("");
@@ -65,6 +63,14 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
      */
     useEffect(() => {
         if (!triggerSubmit) {
+            return;
+        }
+
+        if (samlMetaFileSelected) {
+            const newSummary = {
+                metadataFile: summary?.metadataFile
+            };
+            onSubmit(newSummary);
             return;
         }
 
@@ -165,6 +171,18 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 )
             }
             {
+                summary?.metadataFile && (
+                    <Grid.Row className="summary-field" columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                            <div className="label">Meta File(Base64Encoded)</div>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                            <div className="value constrain">{ summary?.metadataFile }</div>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
+            {
                 summary?.callbackURLs && (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
@@ -249,4 +267,8 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
             }
         </Grid>
     );
+};
+
+ProtocolWizardSummary.defaultProps = {
+    samlMetaFileSelected: false
 };

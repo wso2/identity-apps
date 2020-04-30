@@ -18,13 +18,14 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
-import { PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
+import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
 import { getDialects } from "../api";
-import { AddDialect, AvatarBackground, DialectSearch } from "../components";
+import { AddDialect, AvatarBackground } from "../components";
 import { ClaimsList, ListType } from "../components";
+import { EmptyPlaceholderIllustrations } from "../configs";
 import { LOCAL_CLAIMS_PATH, UserConstants } from "../constants";
 import { history } from "../helpers";
 import { ListLayout } from "../layouts";
@@ -32,6 +33,8 @@ import { PageLayout } from "../layouts";
 import { AlertLevels, ClaimDialect, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { filterList, sortList } from "../utils";
+import { useTranslation } from "react-i18next";
+import { AdvancedSearchWithBasicFilters } from "../components/shared/advanced-search-with-basic-filters";
 
 /**
  * This displays a list fo claim dialects.
@@ -61,8 +64,12 @@ export const ClaimDialectsPage = (): ReactElement => {
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
     const [ localURI, setLocalURI ] = useState("");
+    const [ query, setQuery ] = useState("");
+    const [ isLoading, setIsLoading ] = useState(true);
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     /**
      * Fetches all the dialects.
@@ -73,6 +80,7 @@ export const ClaimDialectsPage = (): ReactElement => {
      * @param {string} filter.
      */
     const getDialect = (limit?: number, offset?: number, sort?: string, filter?: string): void => {
+        setIsLoading(true);
         getDialects({
             filter,
             limit,
@@ -96,6 +104,8 @@ export const ClaimDialectsPage = (): ReactElement => {
                     message: error?.message || "Something went wrong"
                 }
             ));
+        }).finally(() => {
+            setIsLoading(false);
         })
     };
 
@@ -160,6 +170,25 @@ export const ClaimDialectsPage = (): ReactElement => {
      */
     const handleSortOrderChange = (isAscending: boolean) => {
         setSortOrder(isAscending);
+    };
+
+    /**
+     * Handles the `onFilter` callback action from the
+     * dialect search component.
+     *
+     * @param {string} query - Search query.
+     */
+    const handleDialectFilter = (query: string): void => {
+        try {
+            const filteredDialects = filterList(dialects, query, sortBy.value, sortOrder);
+            setFilteredDialects(filteredDialects);
+        } catch (error) {
+            dispatch(addAlert({
+                description: error.message,
+                level: AlertLevels.ERROR,
+                message: "Filter query format incorrect"
+            }));
+        }
     };
 
     return (
@@ -229,54 +258,87 @@ export const ClaimDialectsPage = (): ReactElement => {
                     )
                 }
                 <Divider hidden />
-                <ListLayout
-                    advancedSearch={
-                        <DialectSearch onFilter={ (query) => {
-                            // TODO: getDialect(null, null, null, query);
-                            try {
-                                const filteredDialects = filterList(dialects, query, sortBy.value, sortOrder);
-                                setFilteredDialects(filteredDialects);
-                            } catch (error) {
-                                dispatch(addAlert({
-                                    description: error.message,
-                                    level: AlertLevels.ERROR,
-                                    message: "Filter query format incorrect"
-                                }));
+                {
+                    filteredDialects && filteredDialects.length > 0
+                        ? (
+                            <ListLayout
+                                advancedSearch={
+                                     <AdvancedSearchWithBasicFilters
+                            onFilter={ handleDialectFilter  }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: "Dialect URI",
+                                    value: "dialectURI"
+                                }
+                            ] }
+                            filterAttributePlaceholder={
+                                t("devPortal:components.claims.dialects.advancedSearch.form.inputs.filterAttribute" +
+                                    ".placeholder")
                             }
-                        } } />
-                    }
-                    currentListSize={ listItemLimit }
-                    listItemLimit={ listItemLimit }
-                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                    onPageChange={ handlePaginationChange }
-                    onSortStrategyChange={ handleSortStrategyChange }
-                    onSortOrderChange={ handleSortOrderChange }
-                    rightActionPanel={
-                        hasRequiredScopes(
-                            featureConfig?.attributeDialects,
-                            featureConfig?.attributeDialects?.scopes?.create) && (
-                            <PrimaryButton
-                                onClick={ () => {
-                                    setAddEditClaim(true);
-                                } }
+                            filterConditionsPlaceholder={
+                                t("devPortal:components.claims.dialects.advancedSearch.form.inputs.filterCondition" +
+                                    ".placeholder")
+                            }
+                            filterValuePlaceholder={
+                                t("devPortal:components.claims.dialects.advancedSearch.form.inputs.filterValue" +
+                                    ".placeholder")
+                            }
+                            placeholder={ t("devPortal:components.claims.dialects.advancedSearch.placeholder") }
+                            defaultSearchAttribute="dialectURI"
+                            defaultSearchOperator="co"
+                        />
+                                }
+                                currentListSize={ listItemLimit }
+                                listItemLimit={ listItemLimit }
+                                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                                onPageChange={ handlePaginationChange }
+                                onSortStrategyChange={ handleSortStrategyChange }
+                                onSortOrderChange={ handleSortOrderChange }
+                                rightActionPanel={
+                                    (
+                                        <PrimaryButton
+                                            onClick={ () => {
+                                                setAddEditClaim(true);
+                                            } }
+                                        >
+                                            <Icon name="add" />New External Dialect
+                                        </PrimaryButton>
+                                    )
+                                }
+                                showPagination={ true }
+                                sortOptions={ SORT_BY }
+                                sortStrategy={ sortBy }
+                                totalPages={ Math.ceil(filteredDialects?.length / listItemLimit) }
+                                totalListSize={ filteredDialects?.length }
                             >
-                                <Icon name="add" />New External Dialect
-                            </PrimaryButton>
+                                <ClaimsList
+                                    list={ paginate(filteredDialects, listItemLimit, offset) }
+                                    localClaim={ ListType.DIALECT }
+                                    update={ getDialect }
+                                />
+                            </ListLayout>
                         )
-                    }
-                    showPagination={ true }
-                    sortOptions={ SORT_BY }
-                    sortStrategy={ sortBy }
-                    totalPages={ Math.ceil(filteredDialects?.length / listItemLimit) }
-                    totalListSize={ filteredDialects?.length }
-                >
-                    <ClaimsList
-                        list={ paginate(filteredDialects, listItemLimit, offset) }
-                        localClaim={ ListType.DIALECT }
-                        update={ getDialect }
-                        featureConfig={ featureConfig }
-                    />
-                </ListLayout>
+                        : !isLoading && (
+                            <EmptyPlaceholder
+                                action={ (
+                                    <LinkButton onClick={ () => {
+                                        setFilteredDialects(dialects);
+                                    } }
+                                    >
+                                        Clear search query
+                                    </LinkButton>
+                                ) }
+                                image={ EmptyPlaceholderIllustrations.emptySearch }
+                                imageSize="tiny"
+                                title={ "No results found" }
+                                subtitle={ [
+                                    `We couldn't find any results for "${query}"`,
+                                    "Please try a different search term."
+                                ] }
+                            />
+                        )
+                }
             </PageLayout>
         </>
     );

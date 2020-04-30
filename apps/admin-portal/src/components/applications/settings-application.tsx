@@ -33,7 +33,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
 import { InboundFormFactory } from "./forms";
 import { ApplicationCreateWizard } from "./wizard";
-import { deleteProtocol, getAuthProtocolMetadata, regenerateClientSecret, updateAuthProtocolConfig } from "../../api";
+import {
+    deleteProtocol,
+    getAuthProtocolMetadata,
+    regenerateClientSecret,
+    revokeClientSecret,
+    updateAuthProtocolConfig
+} from "../../api";
 import { EmptyPlaceholderIllustrations, InboundProtocolLogos } from "../../configs";
 import { FeatureConfigInterface, SupportedAuthProtocolMetaTypes, SupportedAuthProtocolTypes } from "../../models";
 import { AppState } from "../../store";
@@ -205,6 +211,38 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
     };
 
     /**
+     * Revokes application.
+     */
+    const handleApplicationRevoke = (): void => {
+        revokeClientSecret(appId)
+            .then(() => {
+                dispatch(addAlert({
+                    description: "Successfully revoked the application",
+                    level: AlertLevels.SUCCESS,
+                    message: "Revoke successful"
+                }));
+                onUpdate(appId);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Application revoke Error"
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: "An error occurred while revoking the application",
+                    level: AlertLevels.ERROR,
+                    message: "Application Revoke Error"
+                }));
+            });
+    };
+
+    /**
      * Handles Authenticator delete button on click action.
      *
      * @param {React.MouseEvent<HTMLDivElement>} e - Click event.
@@ -259,7 +297,8 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                                 protocol)
                                         }
                                         type={ protocol as SupportedAuthProtocolTypes }
-                                        handleApplicationRegenerate={ handleApplicationRegenerate }
+                                        onApplicationRegenerate={ handleApplicationRegenerate }
+                                        onApplicationRevoke={ handleApplicationRevoke }
                                         readOnly={
                                             !hasRequiredScopes(
                                                 featureConfig?.applications,
@@ -295,7 +334,6 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                                 protocol)
                                         }
                                         type={ SupportedAuthProtocolTypes.CUSTOM }
-                                        handleApplicationRegenerate={ handleApplicationRegenerate }
                                         readOnly={
                                             !hasRequiredScopes(
                                                 featureConfig?.applications,

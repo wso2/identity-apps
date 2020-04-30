@@ -33,35 +33,35 @@ import { PageLayout } from "../layouts";
  */
 export const ServerConfigurationsPage: FunctionComponent<{}> = (): ReactElement => {
 
-	const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-	/**
-	 * Dispatches the alert object to the redux store.
-	 * @param {AlertInterface} alert - Alert object.
-	 */
-	const handleAlerts = (alert: AlertInterface) => {
-		dispatch(addAlert(alert));
-	};
+    /**
+     * Dispatches the alert object to the redux store.
+     * @param {AlertInterface} alert - Alert object.
+     */
+    const handleAlerts = (alert: AlertInterface) => {
+        dispatch(addAlert(alert));
+    };
 
-	return (
-		<PageLayout
-			title="General Configurations"
-			description="Manage general configurations of the server."
-			showBottomDivider={ true }
-		>
-			<Grid>
-				<Grid.Row>
-					<Grid.Column width={ 10 }>
-						<UserSelfRegistration onAlertFired={ handleAlerts }/>
-						<Divider hidden={ true } />
-						<AccountRecovery onAlertFired={ handleAlerts }/>
-						<Divider hidden={ true } />
-						<LoginPolicies onAlertFired={ handleAlerts }/>
-						<Divider hidden={ true } />
-						<PasswordPolicies onAlertFired={ handleAlerts }/>
-					</Grid.Column>
-				</Grid.Row>
-			</Grid>
-		</PageLayout>
-	);
+    return (
+        <PageLayout
+            title="General Configurations"
+            description="Manage general configurations of the server."
+            showBottomDivider={ true }
+        >
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column width={ 10 }>
+                        <UserSelfRegistration onAlertFired={ handleAlerts }/>
+                        <Divider hidden={ true } />
+                        <AccountRecovery onAlertFired={ handleAlerts }/>
+                        <Divider hidden={ true } />
+                        <LoginPolicies onAlertFired={ handleAlerts }/>
+                        <Divider hidden={ true } />
+                        <PasswordPolicies onAlertFired={ handleAlerts }/>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </PageLayout>
+    );
 };

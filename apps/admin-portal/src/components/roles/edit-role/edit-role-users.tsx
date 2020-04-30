@@ -81,24 +81,24 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         
         updateRoleDetails(roleObject.id, roleData).then(response => {
             handleAlerts({
-                description: t(
-                    "devPortal:components.roles.notifications.updateRole.success.description"
-                ),
+                description: isGroup ? 
+                    t("devPortal:components.groups.notifications.updateGroup.success.description") : 
+                    t("devPortal:components.roles.notifications.updateRole.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t(
-                    "devPortal:components.roles.notifications.updateRole.success.message"
-                )
+                message: isGroup ? 
+                    t("devPortal:components.groups.notifications.updateGroup.success.message") : 
+                    t("devPortal:components.roles.notifications.updateRole.success.message")
             });
             onRoleUpdate();
         }).catch(error => {
             handleAlerts({
-                description: t(
-                    "devPortal:components.roles.notifications.updateRole.error.description"
-                ),
+                description: isGroup ? 
+                    t("devPortal:components.groups.notifications.updateGroup.error.description") : 
+                    t("devPortal:components.roles.notifications.updateRole.error.description"),
                 level: AlertLevels.ERROR,
-                message: t(
-                    "devPortal:components.roles.notifications.updateRole.error.message"
-                )
+                message: isGroup ? 
+                    t("devPortal:components.groups.notifications.updateGroup.error.message") : 
+                    t("devPortal:components.roles.notifications.updateRole.error.message")
             });
         })
     };
