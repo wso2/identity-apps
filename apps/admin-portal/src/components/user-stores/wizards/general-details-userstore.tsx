@@ -26,7 +26,7 @@ import { TestConnection, TypeProperty, UserstoreType } from "../../../models";
 /**
  * Prop types of the `GeneralDetails` component 
  */
-interface ConnectionDetailsPropsInterface {
+interface GeneralDetailsUserstorePropsInterface {
     /**
      * Trigger submit
      */
@@ -55,11 +55,11 @@ interface ConnectionDetailsPropsInterface {
 
 /**
  * This component renders the General Details step of the wizard
- * @param {ConnectionDetailsPropsInterface} props
+ * @param {GeneralDetailsUserstorePropsInterface} props
  * @returns {Promise<any>}
  */
-export const GeneralDetails = (
-    props: ConnectionDetailsPropsInterface
+export const GeneralDetailsUserstore = (
+    props: GeneralDetailsUserstorePropsInterface
 ): ReactElement => {
 
     const { submitState, onSubmit, values, type, connectionProperties, basicProperties } = props;

@@ -21,7 +21,7 @@ import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { GeneralDetails, GroupDetails, SummaryUserStores, UserDetails } from "./wizards";
+import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails } from "./wizards";
 import { addUserStore } from "../../api";
 import { ApplicationWizardStepIcons } from "../../configs";
 import { USER_STORES_PATH } from "../../constants";
@@ -182,7 +182,7 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
     const STEPS = [
         {
             content: (
-                <GeneralDetails
+                <GeneralDetailsUserstore
                     submitState={ firstStep }
                     onSubmit={ onSubmitGeneralDetails }
                     values={ generalDetailsData }
