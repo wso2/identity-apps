@@ -83,6 +83,7 @@ export const ExternalClaims = (props: ExternalClaimsPropsInterface): ReactElemen
                             });
                             setClaims(tempClaims);
                         } }
+                        externalClaims={ claims }
                     />
                     <Divider hidden />
                     {

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Button, Checkbox, Icon, Input, Modal, ModalProps } from "semantic-ui-react";
+import classNames from "classnames";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -26,7 +26,7 @@ import React, {
     useEffect,
     useState
 } from "react";
-import classNames from "classnames";
+import { Button, Checkbox, Icon, Input, Modal, ModalProps } from "semantic-ui-react";
 import { ConfirmationModalContent } from "./confirmation-modal-content";
 import { ConfirmationModalDescription } from "./confirmation-modal-description";
 import { ConfirmationModalHeader } from "./confirmation-modal-header";
@@ -329,7 +329,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                                 <Button
                                     data-testid={ primaryActionButtonTestId }
                                     className={ `${ type } ${ primaryActionFluid ? "fluid" : "" }` }
-                                    disabled={ !confirmed }
+                                    disabled={ !(!assertionType || confirmed) }
                                     onClick={ onPrimaryActionClick }
                                     fluid={ primaryActionFluid }
                                 >

@@ -194,7 +194,7 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
             onClose={ onClose }
         >
             <Modal.Header className="wizard-header">
-                Add external dialect
+                Add External Dialect
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group

@@ -19,16 +19,31 @@
 import * as forge from "node-forge";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Divider, Form, Icon, Message, Segment, Tab, TextArea } from "semantic-ui-react";
-import { CertificateIllustrations } from "../../configs";
-import { CERTIFICATE_BEGIN, CERTIFICATE_END, END_LINE } from "../../constants";
-import { Certificate } from "../../models";
+import { CertificateIllustrations } from "../../../configs";
+import { CERTIFICATE_BEGIN, CERTIFICATE_END, END_LINE } from "../../../constants";
+import { Certificate } from "../../../models";
 
+/**
+ * The model of the object returned by the `convertFromPem()` function.
+ */
 interface PemCertificate{
+    /**
+     * The PEM string.
+     */
     value: string;
+    /**
+     * The forge certificate object.
+     */
     certificate: forge.pki.Certificate;
 }
 
+/**
+ * Prop types of the `UploadCertificate` component.
+ */
 interface UploadCertificatePropsInterface {
+    /**
+     * Submits this step.
+     */
     submit: (
         data: Certificate,
         name: string,
@@ -37,14 +52,39 @@ interface UploadCertificatePropsInterface {
         file: File,
         forgeCertificate: forge.pki.Certificate
     ) => void;
+    /**
+     * Triggers submit.
+     */
     triggerSubmit: boolean;
+    /**
+     * The certificate alias.
+     */
     nameData: string;
+    /**
+     * The textarea content.
+     */
     pemData: string;
+    /**
+     * The decoded file content.
+     */
     fileDecodedData: string;
+    /**
+     * The uploaded file.
+     */
     fileData: File;
+    /**
+     * The forge certificate object.
+     */
     forgeCertificateData: forge.pki.Certificate;
 }
 
+/**
+ * This is teh first step of the import certificate wizard.
+ * 
+ * @param {UploadCertificatePropsInterface} props
+ * 
+ * @returns {ReactElement}
+ */
 export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterface> = (
     props: UploadCertificatePropsInterface
 ): ReactElement => {
@@ -66,6 +106,10 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
     const fileUpload = useRef(null);
     const init = useRef(true);
 
+
+    /**
+     * This checks if this isn't and the initial call and then submits.
+     */
     useEffect(() => {
         if (init.current) {
             init.current = false;
@@ -74,48 +118,72 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         }
     }, [ triggerSubmit ]);
 
+    /**
+     * Gets the alias from the wizard on coming back from the following step.
+     */
     useEffect(() => {
         if (nameData) {
             setName(nameData);
         }
     }, [ nameData ]);
 
+    /**
+     * Gets the file from the wizard on coming back from the following step.
+     */
     useEffect(() => {
         if (fileData) {
             setFile(fileData);
         }
     }, [ fileData ]);
 
+    /**
+     * Gets the decoded file data from the wizard on coming back from the following step.
+     */
     useEffect(() => {
         if (fileDecoded) {
             setFileDecoded(fileDecodedData);
         }
     }, [ fileDecodedData ]);
 
+    /**
+     * The textarea content from the wizard on coming back from the following step.
+     */
     useEffect(() => {
         if (pemData) {
             setPem(pemData);
         }
     }, [ pemData ]);
 
+    /**
+     * Sets no name error to false when a value for name is entered.
+     */
     useEffect(() => {
         if (name) {
             setNameError(false);
         }
     }, [ name ]);
 
+    /**
+     * Sets file error to false when a new file is added.
+     */
     useEffect(() => {
         if (file) {
             setFileError(false);
         }
     }, [ file ]);
 
+    /**
+     * Gets the forge certificate data from the wizard on coming back from the following step.
+     */
     useEffect(() => {
         if (forgeCertificateData) {
             setForgeCertificate(forgeCertificateData);
         }
     }, [forgeCertificateData]);
 
+    /**
+     * Gets the browser color scheme so that the color scheme of the textarea can be decided.
+     */
     useEffect(() => {
         if (window.matchMedia("(prefers-color-scheme:dark)").matches) {
             setDark(true);
@@ -156,6 +224,14 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         });
     };
 
+    /**
+     * This strips **BEGIN CERTIFICATE** and **END CERTIFICATE** parts from 
+     * the PEM encoded string.
+     * 
+     * @param {string} pemString The PEM-encoded content of a certificate.
+     * 
+     * @returns {string} The PEM string without the **BEGIN CERTIFICATE** and **END CERTIFICATE** parts. 
+     */
     const stripPem = (pemString: string): string => {
         const pemValue = pemString.split("\n");
 
@@ -173,6 +249,13 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         return pemValue.join("\n");
     };
 
+    /**
+     * This encloses a stripped PEM string with **BEGIN CERTIFICATE** and **END CERTIFICATE**.
+     * 
+     * @param {string} pemString The stripped PEM string (usually received as from an API call)
+     * 
+     * @returns {string} A full PEM string.
+     */
     const enclosePem = (pemString: string): string => {
         const pemValue = pemString.split("\n");
 
@@ -190,6 +273,13 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         return pemValue.join("\n");
     }
 
+    /**
+     * Convert PEM string to forge certificate object.
+     * 
+     * @param {string} pem The PEM string.
+     * 
+     * @returns {PemCertificate} Object containing the stripped PEM string and the forge certificate.
+     */
     const convertFromPem = (pem: string): PemCertificate => {
         const pemValue = enclosePem(pem);
         try {
@@ -207,6 +297,13 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         }
     }
 
+    /**
+     * Checks the certificate type and decodes appropriately.
+     * 
+     * @param {File} file The File object.
+     * 
+     * @returns {Promise<string>} A promise that resolves to teh content of the file.
+     */
     const checkCertType = (file: File): Promise<string> => {
         const extension = file.name.split(".").pop();
         if (extension === "cer") {
@@ -215,12 +312,16 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             return file.text().then((value: string) => {
                 return convertFromPem(value).value;
             }).catch(() => {
-                setFileError(true);
-                return "";
+                throw Error();
             })
         }
+
+        return Promise.reject();
     };
 
+    /**
+     * Submits the data to the wizard.
+     */
     const onSubmit = (): void => {
         !name && setNameError(true);
         (!file && !pem) && setCertEmpty(true);
@@ -249,6 +350,12 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         submit(data, name, pem, fileDecoded, file, certificateObject);
     };
 
+    /**
+     * Decides which certificate to import when 
+     * both a file has been uploaded and text has been inserted.
+     * 
+     * @returns {string | PemCertificate} The decoded string or an object containing it.
+     */
     const resolveCertificate = (): string | PemCertificate => {
         if (fileDecoded && pem) {
             if (activeIndex === 0) {
@@ -261,6 +368,9 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         }
     }
 
+    /**
+     * The tab panes that display the drop zone and the textarea.
+     */
     const panes = [
         {
             menuItem: "Upload",
@@ -337,8 +447,14 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         }
     ];
 
+    /**
+     * Called when a file is added.
+     * The file is decoded and saved to the state.
+     * 
+     * @param {File} file The file to be added.
+     */
     const addFile = (file: File): void => {
-        checkCertType(file).then((value: string) => {
+        checkCertType(file)?.then((value: string) => {
             setFile(file);
             setCertEmpty(false);
             setFileError(false);
@@ -348,6 +464,8 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             fileName.pop();
             !name && setName(fileName.join("."));
             setFileDecoded(value);
+        }).catch(() => {
+            setFileError(true);
         })
     };
 

@@ -18,11 +18,13 @@
 
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import { CopyInputField } from "@wso2is/react-components";
+import { ConfirmationModal, CopyInputField, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { ReactElement, useRef, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Divider, Form, Grid, Popup } from "semantic-ui-react";
-import { updateAClaim } from "../../../../api";
+import { deleteAClaim, updateAClaim } from "../../../../api";
+import { LOCAL_CLAIMS_PATH } from "../../../../constants";
+import { history } from "../../../../helpers";
 import { AlertLevels, Claim } from "../../../../models";
 
 /**
@@ -56,6 +58,7 @@ export const EditBasicDetailsLocalClaims = (
     const [ isShowRegExHint, setIsShowRegExHint ] = useState(false);
     const [ isShowDisplayOrderHint, setIsShowDisplayOrderHint ] = useState(false);
     const [ isShowDisplayOrder, setIsShowDisplayOrder ] = useState(false);
+    const [ confirmDelete, setConfirmDelete ] = useState(false);
 
     const nameField = useRef<HTMLElement>(null);
     const regExField = useRef<HTMLElement>(null);
@@ -67,8 +70,58 @@ export const EditBasicDetailsLocalClaims = (
         }
     }, [claim])
 
+    const deleteConfirmation = (): ReactElement => (
+        <ConfirmationModal
+            onClose={ (): void => setConfirmDelete(false) }
+            type="warning"
+            open={ confirmDelete }
+            assertion={ claim.displayName }
+            assertionHint={ <p>Please type <strong>{ claim.displayName }</strong> to confirm.</p> }
+            assertionType="input"
+            primaryAction="Confirm"
+            secondaryAction="Cancel"
+            onSecondaryActionClick={ (): void => setConfirmDelete(false) }
+            onPrimaryActionClick={ (): void => deleteLocalClaim(claim.id) }
+        >
+            <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+            <ConfirmationModal.Message attached warning>
+                This action is irreversible and will permanently delete the selected local attribute.
+                        </ConfirmationModal.Message>
+            <ConfirmationModal.Content>
+                If you delete this local attribute, the user data belonging to this attribute will also be deleted.
+                Please proceed with caution.
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
+    );
+
+    /**
+     * This deletes a local claim
+     * @param {string} id 
+     */
+    const deleteLocalClaim = (id: string) => {
+        deleteAClaim(id).then(() => {
+            history.push(LOCAL_CLAIMS_PATH);
+            dispatch(addAlert(
+                {
+                    description: "The local claim has been deleted successfully!",
+                    level: AlertLevels.SUCCESS,
+                    message: "Local attribute deleted successfully"
+                }
+            ));
+        }).catch(error => {
+            dispatch(addAlert(
+                {
+                    description: error?.description || "There was an error while deleting the local attribute",
+                    level: AlertLevels.ERROR,
+                    message: error?.message || "Something went wrong"
+                }
+            ));
+        })
+    };
+
     return (
         <>
+            { confirmDelete && deleteConfirmation() }
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
@@ -270,6 +323,19 @@ export const EditBasicDetailsLocalClaims = (
                                 type="submit"
                                 value="Update"
                             />
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 16 }>
+                            <DangerZoneGroup sectionHeader="Danger Zone">
+                                <DangerZone
+                                    actionTitle="Delete Local Claim"
+                                    header="Delete Local Claim"
+                                    subheader={ "Once you delete a local attribute, there is no going back. " +
+                                        "Please be certain." }
+                                    onActionClick={ () => setConfirmDelete(true) }
+                                />
+                            </DangerZoneGroup>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

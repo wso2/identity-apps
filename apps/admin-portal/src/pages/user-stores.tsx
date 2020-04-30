@@ -17,20 +17,21 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getUserStores } from "../api";
-import { AddUserStore, AdvancedSearchWithBasicFilters, UserStoresList } from "../components";
+import { AddUserStore, UserStoresList } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertLevels, FeatureConfigInterface, QueryParams, UserStoreListItem } from "../models";
 import { AppState } from "../store";
 import { filterList, sortList } from "../utils";
+import { useTranslation } from "react-i18next";
+import { AdvancedSearchWithBasicFilters } from "../components/shared/advanced-search-with-basic-filters";
+import { addAlert } from "@wso2is/core/store";
 
 /**
  * This renders the Userstores page.
@@ -57,14 +58,15 @@ export const UserStores = (): ReactElement => {
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
 
-    const [userStores, setUserStores] = useState<UserStoreListItem[]>(null);
-    const [offset, setOffset] = useState(0);
-    const [listItemLimit, setListItemLimit] = useState<number>(0);
-    const [openModal, setOpenModal] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-    const [filteredUserStores, setFilteredUserStores] = useState<UserStoreListItem[]>(null);
-    const [sortBy, setSortBy] = useState(SORT_BY[0]);
-    const [sortOrder, setSortOrder] = useState(true);
+    const [ userStores, setUserStores ] = useState<UserStoreListItem[]>([]);
+    const [ offset, setOffset ] = useState(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ openModal, setOpenModal ] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(true);
+    const [ filteredUserStores, setFilteredUserStores ] = useState<UserStoreListItem[]>([]);
+    const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
+    const [ sortOrder, setSortOrder ] = useState(true);
+    const [ query, setQuery ] = useState("");
 
     const dispatch = useDispatch();
 
@@ -109,7 +111,7 @@ export const UserStores = (): ReactElement => {
 
     useEffect(() => {
         setFilteredUserStores((sortList(filteredUserStores, sortBy.value, sortOrder)));
-    }, [sortBy, sortOrder]);
+    }, [ sortBy, sortOrder ]);
 
     /**
      * This slices and returns a portion of the list.
@@ -160,7 +162,7 @@ export const UserStores = (): ReactElement => {
      * @param {DropdownProps} data.
      */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-        setSortBy(SORT_BY.filter(option => option.value === data.value)[0]);
+        setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
     };
 
     /**
@@ -180,14 +182,14 @@ export const UserStores = (): ReactElement => {
         <>
             {
                 openModal
-                    && (
-                        <AddUserStore
-                            open={ openModal }
-                            onClose={ () => {
-                                setOpenModal(false)
-                            } }
-                        />
-                    )
+                && (
+                    <AddUserStore
+                        open={ openModal }
+                        onClose={ () => {
+                            setOpenModal(false)
+                        } }
+                    />
+                )
             }
             <PageLayout
                 title="Userstores"
@@ -196,7 +198,8 @@ export const UserStores = (): ReactElement => {
             >
                 {
                     filteredUserStores?.length > 0
-                        ? (<ListLayout
+                        ? (
+                            <ListLayout
                                 advancedSearch={
                                     <AdvancedSearchWithBasicFilters
                                         onFilter={ handleUserstoreFilter }
@@ -246,7 +249,7 @@ export const UserStores = (): ReactElement => {
                                                 setOpenModal(true);
                                             } }
                                         >
-                                            <Icon name="add"/>New Userstore
+                                            <Icon name="add" />New Userstore
                                         </PrimaryButton>
                                     )
                                 }
@@ -264,23 +267,44 @@ export const UserStores = (): ReactElement => {
                                 />
                             </ListLayout>
                         )
-                        : !isLoading && (
-                        <EmptyPlaceholder
-                            action={
-                                <PrimaryButton
-                                    onClick={ () => {
-                                        setOpenModal(true);
-                                    } }
-                                >
-                                    <Icon name="add"/> New Userstore
+                        : !isLoading &&
+                            (!userStores || (userStores?.length === 0 && filteredUserStores?.length === 0))
+                            ? (
+                                <EmptyPlaceholder
+                                    action={
+                                        <PrimaryButton
+                                            onClick={ () => {
+                                                setOpenModal(true);
+                                            } }
+                                        >
+                                            <Icon name="add" /> New Userstore
                                 </PrimaryButton>
-                            }
-                            title="Add Userstore"
-                            subtitle={ ["Currently, there are no userstores available."] }
-                            image={ EmptyPlaceholderIllustrations.emptyList }
-                            imageSize="tiny"
-                        />
-                    )
+                                    }
+                                    title="Add Userstore"
+                                    subtitle={ [ "Currently, there are no userstores available." ] }
+                                    image={ EmptyPlaceholderIllustrations.emptyList }
+                                    imageSize="tiny"
+                                />
+                            )
+                            : !isLoading && (
+                                <EmptyPlaceholder
+                                    action={ (
+                                        <LinkButton onClick={ () => {
+                                            setFilteredUserStores(userStores);
+                                        } }
+                                        >
+                                            Clear search query
+                                        </LinkButton>
+                                    ) }
+                                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                                    imageSize="tiny"
+                                    title={ "No results found" }
+                                    subtitle={ [
+                                        `We couldn't find any results for "${query}"`,
+                                        "Please try a different search term."
+                                    ] }
+                                />
+                            )
                 }
             </PageLayout>
         </>

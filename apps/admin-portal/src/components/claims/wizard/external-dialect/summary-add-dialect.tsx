@@ -17,7 +17,8 @@
 */
 
 import React, { ReactElement } from "react";
-import { Grid, Table } from "semantic-ui-react";
+import { Grid, Image, Message, Table } from "semantic-ui-react";
+import { AvatarBackground } from "../../..";
 import { AddExternalClaim } from "../../../../models";
 
 /**
@@ -32,6 +33,16 @@ interface SummaryAddDialectPropsInterface {
      * The external claims added.
      */
     claims: AddExternalClaim[];
+}
+
+/**
+ * This generates the first letter of a claim
+ * @param {string} name 
+ * @return {string} The first letter of a claim
+ */
+const generateClaimLetter = (name: string): string => {
+    const stringArray = name.replace("http://", "").split("/");
+    return stringArray[ stringArray.length - 1 ][ 0 ].toLocaleUpperCase();
 }
 
 /**
@@ -60,6 +71,9 @@ export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): React
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell>
+
+                                </Table.HeaderCell>
+                                <Table.HeaderCell>
                                     External Attribute URI
                                     </Table.HeaderCell>
                                 <Table.HeaderCell>
@@ -72,6 +86,20 @@ export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): React
                                 return (
                                     <Table.Row key={ index } columns={ 2 }>
                                         <Table.Cell>
+                                            <Image
+                                                floated="left"
+                                                verticalAlign="middle"
+                                                rounded
+                                                centered
+                                                size="mini"
+                                            >
+                                                <AvatarBackground />
+                                                <span className="claims-letter">
+                                                    { generateClaimLetter(claim.claimURI) }
+                                                </span>
+                                            </Image>
+                                        </Table.Cell>
+                                        <Table.Cell>
                                             { claim.claimURI }
                                         </Table.Cell>
                                         <Table.Cell>
@@ -80,12 +108,19 @@ export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): React
                                     </Table.Row>
                                 )
                             }) }
+                            {
+                                claims.length === 0 && (
+                                    <Table.Row>
+                                        <Table.Cell colSpan={ 3 } textAlign='center'>
+                                            <Message warning>No external attribute was added.</Message>
+                                        </Table.Cell>
+                                    </Table.Row>
+                                )
+                            }
                         </Table.Body>
                     </Table>
                 </Grid.Column>
             </Grid.Row>
         </Grid>
     )
-}
-
-
+};
