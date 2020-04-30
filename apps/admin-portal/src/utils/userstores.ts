@@ -48,6 +48,8 @@ export const reOrganizeProperties = (
         const category = property.attributes?.find((attribute) => attribute.name === "category")?.value;
         const required = property.attributes?.find((attribute) => attribute.name === "required")?.value === "true";
         const sql = property.attributes?.find((attribute) => attribute.name === "type")?.value === "sql";
+        const INSERT = property.description.toLowerCase().includes("add");
+        const DELETE = property.description.toLowerCase().includes("delete");
 
         if (valueProperties) {
             property.value = valueProperties.find((valueProperty) => valueProperty.name === property.name)?.value ?? "";
