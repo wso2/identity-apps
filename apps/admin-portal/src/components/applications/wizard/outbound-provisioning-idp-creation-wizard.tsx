@@ -155,6 +155,18 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
      * Handles the final wizard submission.
      */
     const handleWizardFormFinish = (values: any): void => {
+        // Validate whether an IDP with the same connector already exists.
+        if (application?.provisioningConfigurations?.outboundProvisioningIdps.find(idp =>
+            (idp.connector === values.connector) && (idp.idp === values.idp))) {
+            dispatch(addAlert({
+                description: "The outbound provisioning IDP already exists.",
+                level: AlertLevels.ERROR,
+                message: "Update Error"
+            }));
+            closeWizard();
+            return;
+        }
+
         addIdentityProvider(application.id, updateConfiguration(values));
     };
 
