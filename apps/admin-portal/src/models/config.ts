@@ -109,6 +109,10 @@ export interface UIConfigInterface {
      */
     doNotDeleteIdentityProviders?: string[];
     /**
+     * Path for the user portal personal info page.
+     */
+    myAccountPath?: string;
+    /**
      * Title text.
      * ex: `WSO2 Identity Server`
      */
