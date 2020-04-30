@@ -17,12 +17,13 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useContext, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch,useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getADialect, getAllLocalClaims } from "../api";
-import { addAlert } from "@wso2is/core/store";
 import { AdvancedSearchWithBasicFilters, ClaimsList, ListType } from "../components";
 import { AddLocalClaims } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
@@ -33,7 +34,6 @@ import { PageLayout } from "../layouts";
 import { AlertLevels, Claim, ClaimsGetParams, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { filterList, sortList } from "../utils";
-import { useTranslation } from "react-i18next";
 
 /**
  * This returns the list of local claims.
@@ -235,30 +235,28 @@ export const LocalClaimsPage = (): ReactElement => {
                                         {
                                             key: 0,
                                             text: t("common:name"),
-                                            value: "name"
+                                            value: "displayName"
                                         },
                                         {
                                             key: 1,
-                                            text: t("common:description"),
-                                            value: "description"
+                                            text: "Attribute URI",
+                                            value: "claimURI"
                                         }
                                     ] }
                                     filterAttributePlaceholder={
-                                        t("devPortal:components.userstores.advancedSearch.form.inputs" +
-                                            ".filterAttribute.placeholder")
+                                        "E.g. Name, Attribute URI etc."
                                     }
                                     filterConditionsPlaceholder={
                                         t("devPortal:components.userstores.advancedSearch.form.inputs" +
                                             ".filterCondition.placeholder")
                                     }
                                     filterValuePlaceholder={
-                                        t("devPortal:components.userstores.advancedSearch.form.inputs" +
-                                            ".filterValue.placeholder")
+                                        "E.g. Name, Mobile etc."
                                     }
                                     placeholder={
-                                        t("devPortal:components.userstores.advancedSearch.placeholder")
+                                        "Search by name"
                                     }
-                                    defaultSearchAttribute="name"
+                                    defaultSearchAttribute="displayName"
                                     defaultSearchOperator="co"
                                 />
                             }
