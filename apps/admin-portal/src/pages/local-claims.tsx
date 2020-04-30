@@ -23,7 +23,6 @@ import { useDispatch,useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getADialect, getAllLocalClaims } from "../api";
 import { addAlert } from "@wso2is/core/store";
-import { PrimaryButton } from "@wso2is/react-components";
 import { AdvancedSearchWithBasicFilters, ClaimsList, ListType } from "../components";
 import { AddLocalClaims } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
