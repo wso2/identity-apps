@@ -16,8 +16,10 @@
  * under the License.
  */
 
+import JSBeautify from "js-beautify";
+import { JSHINT } from "jshint/dist/jshint";
 import React, { ReactElement } from "react";
-import { IUnControlledCodeMirror, UnControlled as CodeMirror } from "react-codemirror2";
+import { UnControlled as CodeMirror, IUnControlledCodeMirror } from "react-codemirror2";
 import "codemirror/addon/lint/lint";
 import "codemirror/addon/lint/javascript-lint";
 import "codemirror/mode/javascript/javascript";
@@ -27,17 +29,18 @@ import "codemirror/addon/edit/closebrackets";
 import "codemirror/addon/edit/matchbrackets";
 import "codemirror/addon/hint/show-hint";
 import "codemirror/addon/hint/javascript-hint";
-import { JSHINT } from "jshint/dist/jshint";
-import JSBeautify from "js-beautify";
-
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
 import "codemirror/addon/lint/lint.css";
 import "codemirror/addon/hint/show-hint.css";
 
-// Putting the `JSHINT` in the window object.
+// Putting the `JSHINT` in the window object. To handle,
+// Property 'JSHINT' does not exist on type 'Window & typeof globalThis'.
 // See, https://github.com/scniro/react-codemirror2/issues/21
-window.JSHINT = JSHINT;
+interface CustomWindow extends Window {
+    JSHINT: any;
+}
+(window as CustomWindow & typeof globalThis).JSHINT = JSHINT;
 
 /**
  * Code editor component Prop types.
