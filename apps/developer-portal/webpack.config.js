@@ -42,7 +42,7 @@ module.exports = (env) => {
     const serverOriginDefault = serverHostDefault;
     const clientHostDefault = isProd ? serverHostDefault : `https://localhost:${devServerPort}`;
     const clientOriginDefault = clientHostDefault;
-    const clientIdDefault = "ADMIN_PORTAL";
+    const clientIdDefault = "DEVELOPER_PORTAL";
     const applicationName = "Developer Portal";
     const tenantDefault = "carbon.super";
     const tenantPathDefault = "";

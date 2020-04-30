@@ -81,7 +81,7 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
 regexp=(https://localhost:9443/user-portal/login|https://localhost:9443/user-portal/logout|https://localhost:9000/user-portal/login|https://localhost:9000/user-portal/logout)
 ```
 
-7. Similarly, update the callback url of the `ADMIN_PORTAL` application to the following.
+7. Similarly, update the callback url of the `DEVELOPER_PORTAL` application to the following.
 
 ```
 regexp=(https://localhost:9443/admin-portal/login|https://localhost:9443/admin-portal/logout|https://localhost:9001/admin-portal/login|https://localhost:9001/admin-portal/logout)

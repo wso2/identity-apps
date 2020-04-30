@@ -81,7 +81,7 @@
             var clientOriginAddress = "<%= htmlWebpackPlugin.options.serverUrl %>";
 
             var tenantName = getTenantName();
-            var defaultAdminPortalClientID = "ADMIN_PORTAL";
+            var defaultAdminPortalClientID = "DEVELOPER_PORTAL";
             var tenantAdminPortalClientID = defaultAdminPortalClientID + "_" + tenantName;
 
             var defaultUserPortalClientHost = serverOriginAddress + getTenantPath(tenantName);
