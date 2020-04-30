@@ -17,12 +17,15 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useContext, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getUserStores } from "../api";
-import { AddUserStore, UserStoresList } from "../components";
+import { UserStoresList } from "../components";
+import { AdvancedSearchWithBasicFilters } from "../components/shared/advanced-search-with-basic-filters";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { USERSTORE_TEMPLATES_PATH, UserConstants } from "../constants";
 import { history } from "../helpers";
@@ -30,9 +33,6 @@ import { ListLayout, PageLayout } from "../layouts";
 import { AlertLevels, FeatureConfigInterface, QueryParams, UserStoreListItem } from "../models";
 import { AppState } from "../store";
 import { filterList, sortList } from "../utils";
-import { useTranslation } from "react-i18next";
-import { AdvancedSearchWithBasicFilters } from "../components/shared/advanced-search-with-basic-filters";
-import { addAlert } from "@wso2is/core/store";
 
 /**
  * This renders the Userstores page.
@@ -176,6 +176,7 @@ export const UserStores = (): ReactElement => {
         setFilteredUserStores(
             filterList(userStores, query, "name", true)
         );
+        setQuery(query);
     };
 
     return (
@@ -295,6 +296,5 @@ export const UserStores = (): ReactElement => {
                             )
                 }
             </PageLayout>
-        </>
     );
 };

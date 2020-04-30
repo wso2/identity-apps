@@ -197,8 +197,8 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                         ))
                                     }
                                 </Accordion.Content>
-                            </Menu.Item>
-                            ) }
+                            </Menu.Item>)
+                        }
                         { properties.delete.length > 0 &&
                             (<Menu.Item>
                                 <Accordion.Title

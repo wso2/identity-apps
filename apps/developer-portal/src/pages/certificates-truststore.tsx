@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownProps, PaginationProps } from "semantic-ui-react";
 import { listClientCertificates } from "../api";
-import { AddUserStore, AdvancedSearchWithBasicFilters, CertificatesList } from "../components";
+import { AdvancedSearchWithBasicFilters, CertificatesList } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
@@ -51,7 +51,6 @@ export const CertificatesTruststore: FunctionComponent<{}> = (): ReactElement =>
     const [ certificatesTruststore, setCertificatesTruststore ] = useState<Certificate[]>(null);
     const [ offset, setOffset ] = useState(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
-    const [ openModal, setOpenModal ] = useState(false);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ filteredCertificatesTruststore, setFilteredCertificatesTruststore ] = useState<Certificate[]>(null);
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
@@ -162,42 +161,41 @@ export const CertificatesTruststore: FunctionComponent<{}> = (): ReactElement =>
     };
 
     return (
-            <PageLayout
-                title="Certificates in the Truststore"
-                description="Create and manage certificates in the truststore"
-                showBottomDivider={ true }
-            >
-                {
-                    filteredCertificatesTruststore?.length > 0
-                        ? (<ListLayout
-                            advancedSearch={
-                                <AdvancedSearchWithBasicFilters
-                                    onFilter={ handleTruststoreFilter }
-                                    filterAttributeOptions={ [
-                                        {
-                                            key: 0,
-                                            text: "Alias",
-                                            value: "alias"
-                                        }
-                                    ] }
-                                    filterAttributePlaceholder={
-                                        t("devPortal:components.certificates.truststore.advancedSearch.form.inputs" +
-                                            ".filterAttribute.placeholder")
+        <PageLayout
+            title="Certificates in the Truststore"
+            description="Create and manage certificates in the truststore"
+            showBottomDivider={ true }
+        >
+            {
+                filteredCertificatesTruststore?.length > 0
+                    ? (<ListLayout
+                        advancedSearch={
+                            <AdvancedSearchWithBasicFilters
+                                onFilter={ handleTruststoreFilter }
+                                filterAttributeOptions={ [
+                                    {
+                                        key: 0,
+                                        text: "Alias",
+                                        value: "alias"
                                     }
-                                    filterConditionsPlaceholder={
-                                        t("devPortal:components.certificates.truststore.advancedSearch.form.inputs" +
-                                            ".filterCondition.placeholder")
-                                    }
-                                    filterValuePlaceholder={
-                                        t("devPortal:components.certificates.truststore.advancedSearch.form.inputs" +
-                                            ".filterValue.placeholder")
-                                    }
-                                    placeholder={
-                                        t("devPortal:components.certificates.truststore.advancedSearch.placeholder")
-                                    }
-                                    defaultSearchAttribute="alias"
-                                    defaultSearchOperator="co"
-                                />
+                                ] }
+                                filterAttributePlaceholder={
+                                    t("devPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                                        ".filterAttribute.placeholder")
+                                }
+                                filterConditionsPlaceholder={
+                                    t("devPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                                        ".filterCondition.placeholder")
+                                }
+                                filterValuePlaceholder={
+                                    t("devPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                                        ".filterValue.placeholder")
+                                }
+                                placeholder={
+                                    t("devPortal:components.certificates.truststore.advancedSearch.placeholder")
+                                }
+                                defaultSearchAttribute="alias"
+                                defaultSearchOperator="co"
                             />
                         }
                         currentListSize={ listItemLimit }

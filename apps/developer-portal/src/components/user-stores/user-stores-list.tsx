@@ -19,10 +19,9 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components";
+import { ConfirmationModal, ResourceList } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Modal } from "semantic-ui-react";
 import { deleteUserStore } from "../../api";
 import { EDIT_USER_STORE_PATH } from "../../constants";
 import { history } from "../../helpers";
@@ -56,16 +55,20 @@ export const UserStoresList = (props: UserStoresListPropsInterface): ReactElemen
     } = props;
 
     const [deleteConfirm, setDeleteConfirm] = useState(false);
-    const [deleteID, setDeleteID] = useState<string>(null);
+    const [ deleteID, setDeleteID ] = useState<string>(null);
+    const [ deleteName, setDeleteName ] = useState<string>("");
 
     const dispatch = useDispatch();
 
     /**
-     * Delete a userstore
-     * @param {string} id userstore id
+     * Delete a userstore.
+     * 
+     * @param {string} id userstore id.
+     * @param {string} name userstore name.
      */
-    const initDelete = (id: string) => {
+    const initDelete = (id: string, name: string) => {
         setDeleteID(id);
+        setDeleteName(name);
         setDeleteConfirm(true);
     };
 
@@ -74,6 +77,7 @@ export const UserStoresList = (props: UserStoresListPropsInterface): ReactElemen
      */
     const closeDeleteConfirm = () => {
         setDeleteConfirm(false);
+        setDeleteName("");
         setDeleteID(null);
     };
 
@@ -81,65 +85,60 @@ export const UserStoresList = (props: UserStoresListPropsInterface): ReactElemen
      * Shows the delete confirmation modal
      * @return {ReactElement}
      */
-    const showDeleteConfirm = (): ReactElement => {
-        return (
-            <Modal
-                open={ deleteConfirm }
-                onClose={ closeDeleteConfirm }
-                size="mini"
-                dimmer="blurring"
-            >
-                <Modal.Header>
-                    Confirm Delete
-                </Modal.Header>
-                <Modal.Content>
-                    This will completely remove the userstore and the data in it.
-                    Do you want to continue deleting it?
-                </Modal.Content>
-                <Modal.Actions>
-                    <LinkButton onClick={ closeDeleteConfirm }>
-                        Cancel
-                    </LinkButton>
-                    <PrimaryButton onClick={ () => {
+    const showDeleteConfirm = (): ReactElement => (
+        <ConfirmationModal
+            onClose={ closeDeleteConfirm }
+            type="warning"
+            open={ deleteConfirm }
+            assertion={ deleteName }
+            assertionHint={ <p>Please type <strong>{ deleteName }</strong> to confirm.</p> }
+            assertionType="input"
+            primaryAction="Confirm"
+            secondaryAction="Cancel"
+            onSecondaryActionClick={ closeDeleteConfirm }
+            onPrimaryActionClick={ (): void => {
+                deleteUserStore(deleteID)
+                    .then(() => {
+                        dispatch(addAlert({
+                            description: "The userstore has been deleted successfully!",
+                            level: AlertLevels.SUCCESS,
+                            message: "Userstore deleted successfully!"
 
-                        deleteUserStore(deleteID)
-                            .then(() => {
-                                dispatch(addAlert({
-                                    description: "The userstore has been deleted successfully!",
-                                    level: AlertLevels.SUCCESS,
-                                    message: "Userstore deleted successfully!"
-                                    
-                                }));
-                                dispatch(addAlert({
-                                    description: "It may take a while for the userstore list to be updated. " +
-                                        "Refresh in a few seconds to get the updated userstore list.",
-                                    level: AlertLevels.WARNING,
-                                    message: "Updating Userstore list takes time"
-                                }));
-                                update();
-                                closeDeleteConfirm();
-                            })
-                            .catch(error => {
-                                dispatch(addAlert({
-                                    description: error?.description
-                                        ?? "There was an error while deleting the userstore",
-                                    level: AlertLevels.ERROR,
-                                    message: error?.message ?? "Something went wrong!"
-                                }));
-                                closeDeleteConfirm();
-                            });
-
-                    } }>
-                        Delete
-                    </PrimaryButton>
-                </Modal.Actions>
-            </Modal>
-        )
-    };
+                        }));
+                        dispatch(addAlert({
+                            description: "It may take a while for the userstore list to be updated. " +
+                                "Refresh in a few seconds to get the updated userstore list.",
+                            level: AlertLevels.WARNING,
+                            message: "Updating Userstore list takes time"
+                        }));
+                        update();
+                    })
+                    .catch(error => {
+                        dispatch(addAlert({
+                            description: error?.description
+                                ?? "There was an error while deleting the userstore",
+                            level: AlertLevels.ERROR,
+                            message: error?.message ?? "Something went wrong!"
+                        }));
+                    }).finally(() => {
+                        closeDeleteConfirm();
+                    });
+            } }
+        >
+            <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+            <ConfirmationModal.Message attached warning>
+                This action is irreversible and will permanently delete the selected userstore and the data in it.
+                        </ConfirmationModal.Message>
+            <ConfirmationModal.Content>
+                If you delete this userstore, the user data in this userstore will also be deleted.
+                Please proceed with caution.
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
+    );
 
     return (
         <>
-            {showDeleteConfirm()}
+            {deleteConfirm && showDeleteConfirm()}
             <ResourceList>
                 {
                     list?.map((userStore: UserStoreListItem, index: number) => (
@@ -160,7 +159,7 @@ export const UserStoresList = (props: UserStoresListPropsInterface): ReactElemen
                                         featureConfig?.userStores?.scopes?.delete),
                                     icon: "trash alternate",
                                     onClick: () => {
-                                        initDelete(userStore?.id)
+                                        initDelete(userStore?.id, userStore?.name)
                                     },
                                     popupText: "Delete",
                                     type: "dropdown"
