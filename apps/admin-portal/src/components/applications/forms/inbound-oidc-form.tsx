@@ -747,6 +747,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     requiredErrorMessage="Please fill the Back Channel Logout URL"
                                     placeholder="Enter the Back Channel Logout URL"
                                     type="text"
+                                    validationErrorMsg={ "Please add valid URL" }
+                                    validation={ (value: string) => {
+                                        if (FormValidation.url(value)) {
+                                            return true;
+                                        }
+                                        return false;
+                                    } }
                                     value={ initialValues.logout?.backChannelLogoutUrl }
                                     readOnly={ readOnly }
                                 />
@@ -761,6 +768,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     requiredErrorMessage="Please fill the Front Channel Logout URL"
                                     placeholder="Enter the Front Channel Logout URL"
                                     type="text"
+                                    validationErrorMsg={ "Please add valid URL" }
+                                    validation={ (value: string) => {
+                                        if (FormValidation.url(value)) {
+                                            return true;
+                                        }
+                                        return false;
+                                    } }
                                     value={ initialValues.logout?.frontChannelLogoutUrl }
                                     readOnly={ readOnly }
                                 />
