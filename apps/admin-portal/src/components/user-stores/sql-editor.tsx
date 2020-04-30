@@ -16,10 +16,10 @@
 * under the License.
 */
 
-import React, { FunctionComponent, ReactElement, useState, useRef, useEffect } from "react";
-import { RequiredBinary } from "../../models";
 import { CodeEditor, Heading } from "@wso2is/react-components";
-import { Sidebar, Segment, Accordion, Menu, Icon, Popup, Checkbox } from "semantic-ui-react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import { Accordion, Checkbox, Icon, Menu, Popup, Segment, Sidebar } from "semantic-ui-react";
+import { RequiredBinary } from "../../models";
 
 interface SqlEditorPropsInterface {
     onChange: (name: string, value: string) => void;
@@ -77,154 +77,164 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                         secondary
                         vertical
                     >
-                        <Menu.Item>
-                            <Accordion.Title
-                                active={ accordionIndex === 0 }
-                                className="category-name"
-                                content="Create"
-                                index={ accordionIndex }
-                                icon={ <Icon className="angle right caret-icon" /> }
-                                onClick={ () => setAccordionIndex(accordionIndex === 0 ? -1 : 0) }
-                            />
-                            <Accordion.Content
-                                className="template-list"
-                                active={ accordionIndex === 0 }
-                            >
-                                {
-                                    properties.insert.map((property, index) => (
-                                        <Menu.Item
-                                            key={ index }
-                                            onClick={ () => {
-                                                setPropertyName(property.name);
-                                                setPropertyValue(property.value ?? property.defaultValue);
-                                            } }
-                                        >
-                                            <Popup
-                                                trigger={ (
-                                                    <div className="template-name">
-                                                        { property.name }
-                                                    </div>
-                                                ) }
-                                                position="top center"
-                                                content={ property.name }
-                                                inverted
-                                            />
-                                        </Menu.Item>
-                                    ))
-                                }
-                            </Accordion.Content>
-                        </Menu.Item>
-                        <Menu.Item>
-                            <Accordion.Title
-                                active={ accordionIndex === 1 }
-                                className="category-name"
-                                content="Read"
-                                index={ accordionIndex }
-                                icon={ <Icon className="angle right caret-icon" /> }
-                                onClick={ () => setAccordionIndex(accordionIndex === 1 ? -1 : 1) }
-                            />
-                            <Accordion.Content
-                                className="template-list"
-                                active={ accordionIndex === 1 }
-                            >
-                                {
-                                    properties.select.map((property, index) => (
-                                        <Menu.Item
-                                            key={ index }
-                                            onClick={ () => {
-                                                setPropertyName(property.name);
-                                                setPropertyValue(property.value ?? property.defaultValue);
-                                            } }
-                                        >
-                                            <Popup
-                                                trigger={ (
-                                                    <div className="template-name">
-                                                        { property.name }
-                                                    </div>
-                                                ) }
-                                                position="top center"
-                                                content={ property.name }
-                                                inverted
-                                            />
-                                        </Menu.Item>
-                                    ))
-                                }
-                            </Accordion.Content>
-                        </Menu.Item>
-                        <Menu.Item>
-                            <Accordion.Title
-                                active={ accordionIndex === 2 }
-                                className="category-name"
-                                content="Update"
-                                index={ accordionIndex }
-                                icon={ <Icon className="angle right caret-icon" /> }
-                                onClick={ () => setAccordionIndex(accordionIndex === 2 ? -1 : 2) }
-                            />
-                            <Accordion.Content
-                                className="template-list"
-                                active={ accordionIndex === 2 }
-                            >
-                                {
-                                    properties.update.map((property, index) => (
-                                        <Menu.Item
-                                            key={ index }
-                                            onClick={ () => {
-                                                setPropertyName(property.name);
-                                                setPropertyValue(property.value ?? property.defaultValue);
-                                            } }
-                                        >
-                                            <Popup
-                                                trigger={ (
-                                                    <div className="template-name">
-                                                        { property.name }
-                                                    </div>
-                                                ) }
-                                                position="top center"
-                                                content={ property.name }
-                                                inverted
-                                            />
-                                        </Menu.Item>
-                                    ))
-                                }
-                            </Accordion.Content>
-                        </Menu.Item>
-                        <Menu.Item>
-                            <Accordion.Title
-                                active={ accordionIndex === 3 }
-                                className="category-name"
-                                content="Delete"
-                                index={ accordionIndex }
-                                icon={ <Icon className="angle right caret-icon" /> }
-                                onClick={ () => setAccordionIndex(accordionIndex === 3 ? -1 : 3) }
-                            />
-                            <Accordion.Content
-                                className="template-list"
-                                active={ accordionIndex === 3 }
-                            >
-                                {
-                                    properties.delete.map((property, index) => (
-                                        <Menu.Item
-                                            key={ index }
-                                            onClick={ () => {
-                                                setPropertyName(property.name);
-                                                setPropertyValue(property.value ?? property.defaultValue);
-                                            } }
-                                        >
-                                            <Popup
-                                                trigger={ (
-                                                    <div className="template-name">
-                                                        { property.name }
-                                                    </div>
-                                                ) }
-                                                position="top center"
-                                                content={ property.name }
-                                                inverted
-                                            />
-                                        </Menu.Item>
-                                    ))
-                                }
-                            </Accordion.Content>
-                        </Menu.Item>
+                        {
+                            properties.insert.length > 0 && (
+                                <Menu.Item>
+                                    <Accordion.Title
+                                        active={ accordionIndex === 0 }
+                                        className="category-name"
+                                        content="Create"
+                                        index={ accordionIndex }
+                                        icon={ <Icon className="angle right caret-icon" /> }
+                                        onClick={ () => setAccordionIndex(accordionIndex === 0 ? -1 : 0) }
+                                    />
+                                    <Accordion.Content
+                                        className="template-list"
+                                        active={ accordionIndex === 0 }
+                                    >
+                                        {
+                                            properties.insert.map((property, index) => (
+                                                <Menu.Item
+                                                    key={ index }
+                                                    onClick={ () => {
+                                                        setPropertyName(property.name);
+                                                        setPropertyValue(property.value ?? property.defaultValue);
+                                                    } }
+                                                >
+                                                    <Popup
+                                                        trigger={ (
+                                                            <div className="template-name">
+                                                                { property.name }
+                                                            </div>
+                                                        ) }
+                                                        position="top center"
+                                                        content={ property.name }
+                                                        inverted
+                                                    />
+                                                </Menu.Item>
+                                            ))
+                                        }
+                                    </Accordion.Content>
+                                </Menu.Item>
+                            )
+                        }
+                        { properties.select.length > 0 &&
+                            (<Menu.Item>
+                                <Accordion.Title
+                                    active={ accordionIndex === 1 }
+                                    className="category-name"
+                                    content="Read"
+                                    index={ accordionIndex }
+                                    icon={ <Icon className="angle right caret-icon" /> }
+                                    onClick={ () => setAccordionIndex(accordionIndex === 1 ? -1 : 1) }
+                                />
+                                <Accordion.Content
+                                    className="template-list"
+                                    active={ accordionIndex === 1 }
+                                >
+                                    {
+                                        properties.select.map((property, index) => (
+                                            <Menu.Item
+                                                key={ index }
+                                                onClick={ () => {
+                                                    setPropertyName(property.name);
+                                                    setPropertyValue(property.value ?? property.defaultValue);
+                                                } }
+                                            >
+                                                <Popup
+                                                    trigger={ (
+                                                        <div className="template-name">
+                                                            { property.name }
+                                                        </div>
+                                                    ) }
+                                                    position="top center"
+                                                    content={ property.name }
+                                                    inverted
+                                                />
+                                            </Menu.Item>
+                                        ))
+                                    }
+                                </Accordion.Content>
+                            </Menu.Item>
+                            ) }
+                        { properties.update.length > 0 &&
+                            (<Menu.Item>
+                                <Accordion.Title
+                                    active={ accordionIndex === 2 }
+                                    className="category-name"
+                                    content="Update"
+                                    index={ accordionIndex }
+                                    icon={ <Icon className="angle right caret-icon" /> }
+                                    onClick={ () => setAccordionIndex(accordionIndex === 2 ? -1 : 2) }
+                                />
+                                <Accordion.Content
+                                    className="template-list"
+                                    active={ accordionIndex === 2 }
+                                >
+                                    {
+                                        properties.update.map((property, index) => (
+                                            <Menu.Item
+                                                key={ index }
+                                                onClick={ () => {
+                                                    setPropertyName(property.name);
+                                                    setPropertyValue(property.value ?? property.defaultValue);
+                                                } }
+                                            >
+                                                <Popup
+                                                    trigger={ (
+                                                        <div className="template-name">
+                                                            { property.name }
+                                                        </div>
+                                                    ) }
+                                                    position="top center"
+                                                    content={ property.name }
+                                                    inverted
+                                                />
+                                            </Menu.Item>
+                                        ))
+                                    }
+                                </Accordion.Content>
+                            </Menu.Item>
+                            ) }
+                        { properties.delete.length > 0 &&
+                            (<Menu.Item>
+                                <Accordion.Title
+                                    active={ accordionIndex === 3 }
+                                    className="category-name"
+                                    content="Delete"
+                                    index={ accordionIndex }
+                                    icon={ <Icon className="angle right caret-icon" /> }
+                                    onClick={ () => setAccordionIndex(accordionIndex === 3 ? -1 : 3) }
+                                />
+                                <Accordion.Content
+                                    className="template-list"
+                                    active={ accordionIndex === 3 }
+                                >
+                                    {
+                                        properties.delete.map((property, index) => (
+                                            <Menu.Item
+                                                key={ index }
+                                                onClick={ () => {
+                                                    setPropertyName(property.name);
+                                                    setPropertyValue(property.value ?? property.defaultValue);
+                                                } }
+                                            >
+                                                <Popup
+                                                    trigger={ (
+                                                        <div className="template-name">
+                                                            { property.name }
+                                                        </div>
+                                                    ) }
+                                                    position="top center"
+                                                    content={ property.name }
+                                                    inverted
+                                                />
+                                            </Menu.Item>
+                                        ))
+                                    }
+                                </Accordion.Content>
+                            </Menu.Item>
+                            ) }
                     </Accordion>
                 )
             }
