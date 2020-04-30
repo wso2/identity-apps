@@ -29,7 +29,7 @@ import React, {
     useRef,
     useState
 } from "react";
-import { Button, Divider, Icon, Input, Popup } from "semantic-ui-react";
+import { Button, Divider, Icon, Input, InputProps, Popup, PopupProps } from "semantic-ui-react";
 import { GenericIcon } from "../icon";
 import { Heading } from "../typography";
 
@@ -59,6 +59,10 @@ export interface AdvancedSearchPropsInterface extends TestableComponentInterface
      */
     defaultSearchStrategy: string;
     /**
+     * Dropdown appearing position.
+     */
+    dropdownPosition?: PopupProps["position"];
+    /**
      * Dropdown trigger icon label.
      */
     dropdownTriggerPopupLabel?: string;
@@ -77,7 +81,7 @@ export interface AdvancedSearchPropsInterface extends TestableComponentInterface
     /**
      * Search input size.
      */
-    inputSize?: "mini" | "small" | "large" | "big" | "huge" | "massive";
+    inputSize?: InputProps["size"];
     /**
      * Callback for external search query clear.
      */
@@ -123,6 +127,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
         children,
         clearButtonPopupLabel,
         defaultSearchStrategy,
+        dropdownPosition,
         dropdownTriggerPopupLabel,
         externalSearchQuery,
         hintActionKeys,
@@ -343,12 +348,11 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                     </div>
                 ) }
                 on="click"
-                position="bottom right"
+                position={ dropdownPosition }
                 eventsEnabled={ true }
                 open={ isDropdownVisible }
                 onClose={ handleSearchDropdownClose }
                 closeOnPortalMouseLeave={ false }
-                flowing
                 hoverable
                 pinned
             />
@@ -363,6 +367,7 @@ AdvancedSearch.defaultProps = {
     aligned: "left",
     className: null,
     clearButtonPopupLabel: null,
+    dropdownPosition: "bottom left",
     dropdownTriggerPopupLabel: null,
     externalSearchQuery: "",
     hintActionKeys: "Enter",
