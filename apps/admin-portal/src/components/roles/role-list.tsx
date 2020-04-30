@@ -81,7 +81,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         <Label
                             content={ "Primary" }
                             size="mini"
-                            color="olive"
+                            color="teal"
                             className={ "primary-label" }
                         />
                         { "/ " + displayName }
