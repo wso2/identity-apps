@@ -27,11 +27,11 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>admin-portal</artifactId>
-    <name>WSO2 Identity Server Apps - Admin Portal</name>
+    <artifactId>developer-portal</artifactId>
+    <name>WSO2 Identity Server Apps - Developer Portal</name>
     <modelVersion>4.0.0</modelVersion>
     <packaging>war</packaging>
-    <description>WSO2 Identity Server Admin Portal App</description>
+    <description>WSO2 Identity Server Developer Portal App</description>
     <url>http://wso2.org</url>
 
     <dependencies />
@@ -68,7 +68,7 @@
                         <configuration>
                             <tasks>
                                 <copy todir="${basedir}/src/main/webapp/">
-                                    <fileset dir="${basedir}/build/admin-portal/" includes="**/*" />
+                                    <fileset dir="${basedir}/build/developer-portal/" includes="**/*" />
                                 </copy>
                             </tasks>
                         </configuration>
@@ -83,7 +83,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.2.3</version>
                 <configuration>
-                    <warName>identity-admin-portal-v${project.version}</warName>
+                    <warName>identity-developer-portal-v${project.version}</warName>
                 </configuration>
             </plugin>
         </plugins>

@@ -27,7 +27,7 @@ export interface PortalDocumentationStructureInterface extends StrictPortalDocum
  * Strict interface for the portal documentation structure.
  */
 interface StrictPortalDocumentationStructureInterface {
-    "Admin Portal": {
+    "Developer Portal": {
         "Applications": {
             Overview: string;
             "Create New Application": {

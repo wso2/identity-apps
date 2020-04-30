@@ -68,7 +68,7 @@
             */
 
             // Add applications which are not to be deleted in to this array.
-            var doNotDeleteApplications = ["Admin Portal", "User Portal"];
+            var doNotDeleteApplications = ["Developer Portal", "User Portal"];
 
             /**
              * =====================================================
@@ -76,13 +76,13 @@
              * =====================================================
              */
 
-            // Update below with tenant admin-portal application/service-provider details
+            // Update below with tenant developer-portal application/service-provider details
             var serverOriginAddress = "<%= htmlWebpackPlugin.options.serverUrl %>";
             var clientOriginAddress = "<%= htmlWebpackPlugin.options.serverUrl %>";
 
             var tenantName = getTenantName();
-            var defaultAdminPortalClientID = "ADMIN_PORTAL";
-            var tenantAdminPortalClientID = defaultAdminPortalClientID + "_" + tenantName;
+            var defaultDeveloperPortalClientID = "DEVELOPER_PORTAL";
+            var tenantDeveloperPortalClientID = defaultDeveloperPortalClientID + "_" + tenantName;
 
             var defaultUserPortalClientHost = serverOriginAddress + getTenantPath(tenantName);
             var defaultUserPortalBaseName = "user-portal";
@@ -103,7 +103,7 @@
                 clientOrigin: window.userConfig.clientOrigin || clientOriginAddress,
                 clientID: window.userConfig.clientID ||
                     (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ?
-                    tenantAdminPortalClientID : defaultAdminPortalClientID,
+                    tenantDeveloperPortalClientID : defaultDeveloperPortalClientID,
                 doNotDeleteApplications: doNotDeleteApplications || [],
                 myAccountPath: window.userConfig.myAccountPath || defaultMyAccountPath,
                 serverHost: window.userConfig.serverHost || serverOriginAddress + getTenantPath(tenantName),

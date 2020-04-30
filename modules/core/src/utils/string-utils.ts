@@ -99,8 +99,8 @@ export class StringUtils {
      * Removes leading and trailing slashes from a path.
      *
      * @example
-     * // returns "admin-portal"
-     * removeSlashesFromPath("/admin-portal/");
+     * // returns "developer-portal"
+     * removeSlashesFromPath("/developer-portal/");
      *
      * @param {string} path - Raw path.
      * @param {boolean} leading - Leading slashes should be removed or not.

@@ -25,7 +25,7 @@ const WriteFilePlugin = require("write-file-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = (env) => {
-    const basename = "admin-portal";
+    const basename = "developer-portal";
     const devServerPort = 9001;
     const publicPath = `/${basename}`;
     const isProd = env.NODE_ENV === "prod";
@@ -42,7 +42,7 @@ module.exports = (env) => {
     const serverOriginDefault = serverHostDefault;
     const clientHostDefault = isProd ? serverHostDefault : `https://localhost:${devServerPort}`;
     const clientOriginDefault = clientHostDefault;
-    const clientIdDefault = "ADMIN_PORTAL";
+    const clientIdDefault = "DEVELOPER_PORTAL";
     const applicationName = "Developer Portal";
     const tenantDefault = "carbon.super";
     const tenantPathDefault = "";
