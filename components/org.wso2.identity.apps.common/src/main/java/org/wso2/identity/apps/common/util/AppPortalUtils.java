@@ -204,7 +204,7 @@ public class AppPortalUtils {
         String adminUsername = userRealm.getRealmConfiguration().getAdminUserName();
 
         for (AppPortalConstants.AppPortal appPortal : AppPortalConstants.AppPortal.values()) {
-            if (appPortal.equals(AppPortalConstants.AppPortal.ADMIN_PORTAL)) {
+            if (appPortal.equals(AppPortalConstants.AppPortal.DEVELOPER_PORTAL)) {
                 String productVersion = CarbonUtils.getServerConfiguration().getFirstProperty("Version");
                 if (StringUtils.isBlank(productVersion) || !productVersion.startsWith("5.11.0")) {
                     continue;
