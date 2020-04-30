@@ -106,18 +106,36 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                     </div>
                 </Grid.Column>
             </Grid.Row>
-            { summary?.manualConfiguration?.issuer && (
-                <Grid.Row className="summary-field" columns={ 2 }>
-                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                        <div className="label">Issuer</div>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                        <div className="value url">
-                            { summary.manualConfiguration?.issuer }
-                        </div>
-                    </Grid.Column>
-                </Grid.Row>
-            ) }
+            {
+                summary?.manualConfiguration?.issuer &&
+                (
+                    <Grid.Row className="summary-field" columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                            <div className="label">Issuer</div>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                            <div className="value">
+                                { summary.manualConfiguration?.issuer }
+                            </div>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
+            {
+                summary?.manualConfiguration?.serviceProviderQualifier &&
+                (
+                    <Grid.Row className="summary-field" columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                            <div className="label">Application qualifier</div>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                            <div className="value">
+                                { summary.manualConfiguration.serviceProviderQualifier }
+                            </div>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
             {
                 summary?.grantTypes
                 && summary.grantTypes instanceof Array
@@ -142,7 +160,8 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                     : null
             }
             {
-                summary?.manualConfiguration?.assertionConsumerUrls && (
+                summary?.manualConfiguration?.assertionConsumerUrls &&
+                (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">Assertion consumer URL(s)</div>
@@ -159,7 +178,8 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 )
             }
             {
-                summary?.metadataURL && (
+                summary?.metadataURL &&
+                (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">Metadata URL</div>
@@ -171,7 +191,8 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 )
             }
             {
-                summary?.metadataFile && (
+                summary?.metadataFile &&
+                (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">Meta File(Base64Encoded)</div>
@@ -183,7 +204,8 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 )
             }
             {
-                summary?.callbackURLs && (
+                summary?.callbackURLs &&
+                (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">Callback URL(s)</div>
@@ -204,7 +226,8 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 )
             }
             {
-                summary?.audience && (
+                summary?.audience &&
+                (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">Audience</div>
@@ -217,7 +240,8 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 )
             }
             {
-                summary?.certificateAlias && (
+                summary?.certificateAlias &&
+                (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">Certificate alias</div>
@@ -229,7 +253,8 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 )
             }
             {
-                summary?.realm && (
+                summary?.realm &&
+                (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">Realm</div>
@@ -241,7 +266,8 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 )
             }
             {
-                summary?.replyTo && (
+                summary?.replyTo &&
+                (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">Audience</div>

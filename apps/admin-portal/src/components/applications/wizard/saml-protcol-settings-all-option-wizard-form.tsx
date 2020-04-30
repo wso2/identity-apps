@@ -73,9 +73,6 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
             setConfigureMode(SAMLConfigModes.MANUAL);
         } else {
             if (!_.isEmpty(initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration)) {
-                const initialAssertionConsumerUrls =
-                    initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration.assertionConsumerUrls;
-                setAssertionConsumerUrls(initialAssertionConsumerUrls.toString());
                 setConfigureMode(SAMLConfigModes.MANUAL);
             } else if (!_.isEmpty(initialValues?.inboundProtocolConfiguration?.saml?.metadataURL)) {
                 setConfigureMode(SAMLConfigModes.META_URL);
@@ -124,7 +121,8 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                     saml: {
                         manualConfiguration: {
                             issuer: values.get("issuer") as string,
-                            assertionConsumerUrls: (assertionConsumerUrls.split(","))
+                            assertionConsumerUrls: (assertionConsumerUrls.split(",")),
+                            serviceProviderQualifier: values.get("applicationQualifier")
                         }
                     }
                 }
@@ -169,7 +167,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
             >
                 <Grid>
                     <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Field
                                 label="Mode"
                                 name="mode"
@@ -202,44 +200,76 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>
-                    { (configureMode === SAMLConfigModes.MANUAL) &&
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                name="issuer"
-                                label="Issuer"
-                                required={ true }
-                                requiredErrorMessage="Please provide the issuer"
-                                type="text"
-                                placeholder={ "Enter the issuer name" }
-                                value={ initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration?.issuer }
-                                readOnly={ initialValues?.saml?.issuer }
-                            />
-                            <Hint>
-                                { `This specifies the issuer. This is the "saml:Issuer" element that contains
-                            the unique identifier of the Application. This is also the issuer value
-                            specified in the SAML Authentication Request issued by the Application. ` }
-                            </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
-                    }
-                    { (configureMode === SAMLConfigModes.MANUAL) &&
-                    < URLInputComponent
-                        urlState={ assertionConsumerUrls }
-                        setURLState={ setAssertionConsumerUrls }
-                        labelName={ "Assertion consumer URLs" }
-                        placeholder={ "Enter url " }
-                        validationErrorMsg={ "Please add valid URL" }
-                        validation={ (value: string): boolean => {
-                            return FormValidation.url(value);
-                        } }
-                        required={ true }
-                        showError={ showAssertionConsumerUrlError }
-                        setShowError={ setAssertionConsumerUrlError }
-                        hint={ "This specifies the assertion Consumer URLs that the browser " +
-                        "should be redirected to after the authentication is successful. " +
-                        "This is the Assertion Consumer Service (ACS) URL of the Application" }
-                    />
+                    {
+                        (configureMode === SAMLConfigModes.MANUAL) &&
+                        (
+                            <>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                        <Field
+                                            name="issuer"
+                                            label="Issuer"
+                                            required={ true }
+                                            requiredErrorMessage="Please provide the issuer"
+                                            type="text"
+                                            placeholder={ "Enter the issuer name" }
+                                            value={ initialValues?.inboundProtocolConfiguration
+                                                .saml?.manualConfiguration?.issuer }
+                                            // readOnly={ initialValues?.saml?.issuer }
+                                        />
+                                        <Hint>
+                                            { `This specifies the issuer. This is the "saml:Issuer" element 
+                                            that contains the unique identifier of the Application. 
+                                            This is also the issuer value specified in the SAML Authentication Request 
+                                            issued by the Application. ` }
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                        <Field
+                                            name="applicationQualifier"
+                                            label="Application qualifier"
+                                            required={ false }
+                                            requiredErrorMessage="This is needed"
+                                            type="text"
+                                            placeholder={ "Enter the application qualifier" }
+                                            value={
+                                                initialValues?.inboundProtocolConfiguration
+                                                    .saml?.manualConfiguration?.serviceProviderQualifier
+                                            }
+                                        />
+                                        <Hint>
+                                            This value is needed only if you have to configure multiple SAML SSO
+                                            inbound authentication configurations for the same Issuer value. Qualifier
+                                            that is defined here will be appended to the issuer internally to
+                                            identify a application uniquely at runtime.
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                                < URLInputComponent
+                                    urlState={ assertionConsumerUrls }
+                                    setURLState={ setAssertionConsumerUrls }
+                                    value={
+                                        initialValues?.inboundProtocolConfiguration
+                                            .saml?.manualConfiguration?.assertionConsumerUrls.toString()
+                                    }
+                                    labelName={ "Assertion consumer URLs" }
+                                    placeholder={ "Enter url " }
+                                    validationErrorMsg={ "Please add valid URL" }
+                                    validation={ (value: string): boolean => {
+                                        return FormValidation.url(value);
+                                    } }
+                                    required={ true }
+                                    computerWidth={ 10 }
+                                    showError={ showAssertionConsumerUrlError }
+                                    setShowError={ setAssertionConsumerUrlError }
+                                    hint={ "This specifies the assertion Consumer URLs that the browser " +
+                                    "should be redirected to after the authentication is successful. " +
+                                    "This is the Assertion Consumer Service (ACS) URL of the Application" }
+                                />
+                            </>
+                        )
                     }
                     {
                         (configureMode === SAMLConfigModes.META_URL) &&

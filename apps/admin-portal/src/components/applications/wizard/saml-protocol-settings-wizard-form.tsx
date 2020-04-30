@@ -84,7 +84,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                     manualConfiguration: {
                         issuer: values.get("issuer") as string,
                         assertionConsumerUrls: (assertionConsumerUrls.split(",")),
-                        serviceProviderQualifier: values.get("applicationQualifier"),
+                        serviceProviderQualifier: values.get("applicationQualifier")
                     }
                 }
             }
@@ -114,7 +114,9 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                 requiredErrorMessage="Please provide the issuer"
                                 type="text"
                                 placeholder={ "Enter the issuer name" }
-                                value={ initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration?.issuer }
+                                value={
+                                    initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration?.issuer
+                                }
                             />
                             <Hint>
                                 { `This specifies the issuer. This is the "saml:Issuer" element that contains
