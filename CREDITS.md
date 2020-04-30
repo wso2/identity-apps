@@ -20,6 +20,8 @@
 ![plug](modules/theme/src/themes/default/assets/images/icons/plug-icon.svg) | Icon made by prettycons from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/plug_978016?term=plug&page=1&position=20)
 ![drag](modules/theme/src/themes/default/assets/images/icons/drag-icon.svg) | Icon made by Pixel Perfect from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/drag_624828?term=drag&page=1&position=2)
 ![database](modules/theme/src/themes/default/assets/images/icons/database-icon.svg) | Icon made by catkuro from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/database_1980250?term=database&page=1&position=4)
+|![CertificateUpload](modules/theme/src/themes/default/assets/images/icons/upload.svg)|itim2101 from www.flaticon.com|[Link](https://www.flaticon.com/free-icon/cloud-computing_1103496?term=upload&page=1&position=1)|
+|![CertificateAvatar](modules/theme/src/themes/default/assets/images/icons/certificate-avatar.svg)|Freepik from www.flaticon.com|[Link](https://www.flaticon.com/free-icon/diploma_2302847?term=certificate&page=3&position=48)|
 
 # Illustration Owners
 
@@ -27,3 +29,6 @@
 :-:|:-:|:-:|
 |![QRCodeScan](modules/theme/src/themes/default/assets/images/illustrations/qrcode-scan.svg)|Invitation Vectors by Vecteezy|[Link](https://www.vecteezy.com/free-vector/invitation)|
 |![EnterVerificationCode](modules/theme/src/themes/default/assets/images/illustrations/enter-verification-code.svg)|From [Wikimedia Commons](https://commons.wikimedia.org/wiki/Main_Page) by [Videoplasty.com](https://videoplasty.com/)|[Link](https://commons.wikimedia.org/wiki/File:Laptop_Typing_Scene_Vector.svg)|
+|![CertificateFile](modules/theme/src/themes/default/assets/images/illustrations/certificate.svg)|Smashicons from www.flaticon.com|[Link](https://www.flaticon.com/free-icon/file_2580914?term=certificate%20file&page=1&position=46)|
+|![CertificateBadge](modules/theme/src/themes/default/assets/images/illustrations/badge.svg)|Vectors Market from www.flaticon.com|[Link](https://www.flaticon.com/free-icon/medal_744929?term=badge&page=1&position=96)|
+|![CertificateRibbon](modules/theme/src/themes/default/assets/images/illustrations/ribbon.svg)|Freepik from www.flaticon.com|[Link](https://www.flaticon.com/free-icon/bookmark_786352?term=bookmark&page=1&position=15)|
