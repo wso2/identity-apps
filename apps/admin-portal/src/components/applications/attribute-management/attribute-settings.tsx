@@ -217,7 +217,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 },
                 addMapping: false
             };
-            if (!(claimMappingList.filter((claimMap) => claimMap.localClaim.uri === claim.claimURI).length > 0)) {
+            if (!(claimMappingList.some((claimMap) => claimMap.localClaim.uri === claim.claimURI))) {
                 claimMappingList.push(newClaimMapping);
             }
             setClaimMapping(claimMappingList);

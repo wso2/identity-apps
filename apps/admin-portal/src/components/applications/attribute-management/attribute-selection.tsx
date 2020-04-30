@@ -401,7 +401,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     {
                         (selectedClaims.length > 0 || selectedExternalClaims.length > 0) ? (
                             <Segment.Group fluid>
-                                <Segment className="user-role-edit-header-segment clearing">
+                                <Segment className="user-role-edit-header-segment clearing attributes">
                                     <Grid.Row>
                                         <Table basic="very" compact>
                                             <Table.Body>
