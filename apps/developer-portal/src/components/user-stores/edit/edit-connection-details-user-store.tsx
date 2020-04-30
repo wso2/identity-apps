@@ -19,9 +19,10 @@
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Button, Divider, Grid, Icon } from "semantic-ui-react";
+import { Button, Grid, Icon } from "semantic-ui-react";
+import { SqlEditor } from "..";
 import { patchUserStore, testConnection } from "../../../api";
 import { JDBC } from "../../../constants";
 import { AlertLevels, RequiredBinary, TestConnection, TypeProperty, UserstoreType } from "../../../models";
@@ -58,6 +59,7 @@ export const EditConnectionDetails = (
     const [ connectionFailed, setConnectionFailed ] = useState(false);
     const [ connectionSuccessful, setConnectionSuccessful ] = useState(false);
     const [ isTesting, setIsTesting ] = useState(false);
+    const [ sql, setSql ] = useState<Map<string, string>>(null);
 
     const dispatch = useDispatch();
 
@@ -115,20 +117,104 @@ export const EditConnectionDetails = (
         }
     }
 
+    useEffect(() => {
+        if (properties) {
+            const tempSql = new Map<string, string>();
+
+            properties.optional.sql.delete.forEach(property => {
+                tempSql.set(property.name, property.value);
+            });
+
+            properties.optional.sql.insert.forEach(property => {
+                tempSql.set(property.name, property.value);
+            });
+
+            properties.optional.sql.select.forEach(property => {
+                tempSql.set(property.name, property.value);
+            });
+
+            properties.optional.sql.update.forEach(property => {
+                tempSql.set(property.name, property.value);
+            });
+
+            setSql(tempSql);
+        }
+    }, [ properties ]);
+
     return (
         <Forms
             onChange={ (isPure: boolean, values: Map<string, FormValue>) => {
                 setFormValue(values);
             } }
             onSubmit={ (values: Map<string, FormValue>) => {
-
-                const data = properties.required.map((property: TypeProperty) => {
+                const requiredData = properties.required.map((property: TypeProperty) => {
                     return {
                         operation: "REPLACE",
                         path: `/properties/${property.name}`,
                         value: values.get(property.name).toString()
                     }
                 });
+
+                const optionalNonSqlData = showMore
+                    ? properties.optional.nonSql.map((property: TypeProperty) => {
+                        return {
+                            operation: "REPLACE",
+                            path: `/properties/${property.name}`,
+                            value: values.get(property.name).toString()
+                        }
+                    })
+                    : null;
+
+                const optionalSqlInsertData = showMore
+                    ? properties.optional.sql.insert.map((property: TypeProperty) => {
+                        return {
+                            operation: "REPLACE",
+                            path: `/properties/${property.name}`,
+                            value: sql.get(property.name).toString()
+                        }
+                    })
+                    : null;
+
+                const optionalSqlUpdateData = showMore
+                    ? properties.optional.sql.update.map((property: TypeProperty) => {
+                        return {
+                            operation: "REPLACE",
+                            path: `/properties/${property.name}`,
+                            value: sql.get(property.name).toString()
+                        }
+                    })
+                    : null;
+
+                const optionalSqlDeleteData = showMore
+                    ? properties.optional.sql.delete.map((property: TypeProperty) => {
+                        return {
+                            operation: "REPLACE",
+                            path: `/properties/${property.name}`,
+                            value: sql.get(property.name).toString()
+                        }
+                    })
+                    : null;
+
+                const optionalSqlSelectData = showMore
+                    ? properties.optional.sql.select.map((property: TypeProperty) => {
+                        return {
+                            operation: "REPLACE",
+                            path: `/properties/${property.name}`,
+                            value: sql.get(property.name).toString()
+                        }
+                    })
+                    : null;
+
+                const data = showMore
+                    ? [
+                        ...requiredData,
+                        ...optionalNonSqlData,
+                        ...optionalSqlDeleteData,
+                        ...optionalSqlInsertData,
+                        ...optionalSqlUpdateData,
+                        ...optionalSqlSelectData
+                    ]
+                    : requiredData;
 
                 patchUserStore(id, data).then(() => {
                     dispatch(addAlert({
@@ -282,18 +368,28 @@ export const EditConnectionDetails = (
                 </Grid.Row>
             </Grid>
 
-            <Grid columns={ 1 }>
-                <Grid.Column width={ 8 } textAlign="center">
-                    <LinkButton
-                        type="button"
-                        onClick={ () => { setShowMore(!showMore) } }
-                    >
-                        <Icon name={ showMore ? "chevron up" : "chevron down" } />
-                        { `Show ${showMore ? "Less" : "More"}` }
-                    </LinkButton>
-                </Grid.Column>
-            </Grid>
-                        
+            {
+                (properties?.optional.nonSql.length > 0
+                    || properties?.optional.sql.delete.length > 0
+                    || properties?.optional.sql.insert.length > 0
+                    || properties?.optional.sql.select.length > 0
+                    || properties?.optional.sql.update.length > 0)
+                && (
+                    <Grid columns={ 1 }>
+                        <Grid.Column width={ 8 } textAlign="center">
+                            <LinkButton
+                                type="button"
+                                onClick={ () => { setShowMore(!showMore) } }
+                            >
+                                <Icon name={ showMore ? "chevron up" : "chevron down" } />
+                                { `Show ${showMore ? "Less" : "More"}` }
+                            </LinkButton>
+                        </Grid.Column>
+                    </Grid>
+
+                )
+            }
+
             { showMore && properties.optional.nonSql.length > 0 && (
                 <Grid>
                     <Grid.Row columns={ 1 }>
@@ -357,6 +453,25 @@ export const EditConnectionDetails = (
                     </Grid.Row>
                 </Grid>
             ) }
+            { showMore
+                && (properties.optional.sql.delete.length > 0
+                    || properties.optional.sql.insert.length > 0
+                    || properties.optional.sql.select.length > 0
+                    || properties.optional.sql.update.length > 0)
+                && (
+                    <Grid columns={ 1 }>
+                        <Grid.Column width={ 16 }>
+                            <SqlEditor
+                                onChange={ (name: string, value: string) => {
+                                    const tempSql = new Map(sql);
+                                    tempSql.set(name, value);
+                                } }
+                                properties={ properties.optional.sql }
+                            />
+                        </Grid.Column>
+                    </Grid>
+                )
+            }
             <Grid columns={ 1 }>
                 <Grid.Column width={ 8 }>
                     <PrimaryButton type="submit">

@@ -19,12 +19,12 @@
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useState, useEffect } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Grid, Icon } from "semantic-ui-react";
+import { SqlEditor } from "..";
 import { patchUserStore } from "../../../api";
 import { AlertLevels, RequiredBinary, TypeProperty, UserstoreType } from "../../../models";
-import { SqlEditor } from "..";
 
 /**
  * Prop types of `EditUserDetails` component
@@ -93,54 +93,66 @@ export const EditUserDetails = (
                     }
                 });
 
-                const optionalNonSqlData = properties.optional.nonSql.map((property: TypeProperty) => {
-                    return {
-                        operation: "REPLACE",
-                        path: `/properties/${property.name}`,
-                        value: values.get(property.name).toString()
-                    }
-                });
+                const optionalNonSqlData = showMore
+                    ? properties.optional.nonSql.map((property: TypeProperty) => {
+                        return {
+                            operation: "REPLACE",
+                            path: `/properties/${property.name}`,
+                            value: values.get(property.name).toString()
+                        }
+                    })
+                    : null;
 
-                const optionalSqlInsertData = properties.optional.sql.insert.map((property: TypeProperty) => {
-                    return {
-                        operation: "REPLACE",
-                        path: `/properties/${property.name}`,
-                        value: sql.get(property.name).toString()
-                    }
-                });
+                const optionalSqlInsertData = showMore
+                    ? properties.optional.sql.insert.map((property: TypeProperty) => {
+                        return {
+                            operation: "REPLACE",
+                            path: `/properties/${property.name}`,
+                            value: sql.get(property.name).toString()
+                        }
+                    })
+                    : null;
 
-                const optionalSqlUpdateData = properties.optional.sql.update.map((property: TypeProperty) => {
-                    return {
-                        operation: "REPLACE",
-                        path: `/properties/${property.name}`,
-                        value: sql.get(property.name).toString()
-                    }
-                });
+                const optionalSqlUpdateData = showMore
+                    ? properties.optional.sql.update.map((property: TypeProperty) => {
+                        return {
+                            operation: "REPLACE",
+                            path: `/properties/${property.name}`,
+                            value: sql.get(property.name).toString()
+                        }
+                    })
+                    : null;
 
-                const optionalSqlDeleteData = properties.optional.sql.delete.map((property: TypeProperty) => {
-                    return {
-                        operation: "REPLACE",
-                        path: `/properties/${property.name}`,
-                        value: sql.get(property.name).toString()
-                    }
-                });
+                const optionalSqlDeleteData = showMore
+                    ? properties.optional.sql.delete.map((property: TypeProperty) => {
+                        return {
+                            operation: "REPLACE",
+                            path: `/properties/${property.name}`,
+                            value: sql.get(property.name).toString()
+                        }
+                    })
+                    : null;
 
-                const optionalSqlSelectData = properties.optional.sql.select.map((property: TypeProperty) => {
-                    return {
-                        operation: "REPLACE",
-                        path: `/properties/${property.name}`,
-                        value: sql.get(property.name).toString()
-                    }
-                });
+                const optionalSqlSelectData = showMore
+                    ? properties.optional.sql.select.map((property: TypeProperty) => {
+                        return {
+                            operation: "REPLACE",
+                            path: `/properties/${property.name}`,
+                            value: sql.get(property.name).toString()
+                        }
+                    })
+                    : null;
 
-                const data = [
-                    ...requiredData,
-                    ...optionalNonSqlData,
-                    ...optionalSqlDeleteData,
-                    ...optionalSqlInsertData,
-                    ...optionalSqlUpdateData,
-                    ...optionalSqlSelectData
-                ];
+                const data = showMore
+                    ? [
+                        ...requiredData,
+                        ...optionalNonSqlData,
+                        ...optionalSqlDeleteData,
+                        ...optionalSqlInsertData,
+                        ...optionalSqlUpdateData,
+                        ...optionalSqlSelectData
+                    ]
+                    : requiredData;
 
                 patchUserStore(id, data).then(() => {
                     dispatch(addAlert({
@@ -222,17 +234,23 @@ export const EditUserDetails = (
                 </Grid.Row>
             </Grid>
 
-            <Grid columns={ 1 }>
-                <Grid.Column width={ 8 } textAlign="center">
-                    <LinkButton
-                        type="button"
-                        onClick={ () => { setShowMore(!showMore) } }
-                    >
-                        <Icon name={ showMore ? "chevron up" : "chevron down" } />
-                        { `Show ${showMore ? "Less" : "More"}` }
-                    </LinkButton>
-                </Grid.Column>
-            </Grid>
+            { (properties.optional.sql.delete.length > 0
+                || properties.optional.sql.insert.length > 0
+                || properties.optional.sql.select.length > 0
+                || properties.optional.sql.update.length > 0)
+                && (
+                    <Grid columns={ 1 }>
+                        <Grid.Column width={ 8 } textAlign="center">
+                            <LinkButton
+                                type="button"
+                                onClick={ () => { setShowMore(!showMore) } }
+                            >
+                                <Icon name={ showMore ? "chevron up" : "chevron down" } />
+                                { `Show ${showMore ? "Less" : "More"}` }
+                            </LinkButton>
+                        </Grid.Column>
+                    </Grid>
+                ) }
 
             { showMore && properties.optional.nonSql.length > 0 &&
                 (
@@ -306,7 +324,7 @@ export const EditUserDetails = (
                     || properties.optional.sql.update.length > 0)
                 && (
                     <Grid columns={ 1 }>
-                        <Grid.Column width={ 8 }>
+                        <Grid.Column width={ 16 }>
                             <SqlEditor
                                 onChange={ (name: string, value: string) => {
                                     const tempSql = new Map(sql);

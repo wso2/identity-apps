@@ -16,13 +16,14 @@
 * under the License.
 */
 
-import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
-import { PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement } from "react";
+import { Field, FormValue, Forms } from "@wso2is/forms";
+import { LinkButton, PrimaryButton } from "@wso2is/react-components";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Grid } from "semantic-ui-react";
-import { updateUserStore } from "../../../api";
-import { AlertLevels, UserStore } from "../../../models";
+import { Grid, Icon } from "semantic-ui-react";
+import { SqlEditor } from "..";
+import { patchUserStore, updateUserStore } from "../../../api";
+import { AlertLevels, RequiredBinary, TypeProperty, UserStore } from "../../../models";
 import { addAlert } from "../../../store/actions";
 
 /**
@@ -41,6 +42,10 @@ interface EditBasicDetailsUserStorePropsInterface {
      * userstore id
      */
     id: string;
+    /**
+     * The connection properties.
+     */
+    properties: RequiredBinary;
 }
 
 /**
@@ -52,41 +57,143 @@ export const EditBasicDetailsUserStore = (
     props: EditBasicDetailsUserStorePropsInterface
 ): ReactElement => {
 
-    const { userStore, update, id } = props;
+    const { userStore, update, id, properties } = props;
 
-    const [submit, setSubmit] = useTrigger();
+    const [ sql, setSql ] = useState<Map<string, string>>(null);
+    const [ showMore, setShowMore ] = useState(false);
 
     const dispatch = useDispatch();
 
-    return (
-        <Grid>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column width={ 8 }>
-                    <Forms
-                        onSubmit={ (values: Map<string, FormValue>) => {
-                            const data = { ...userStore };
-                            data.description = values.get("description").toString();
-                            data.name = values.get("name").toString();
-                            delete data.typeName;
-                            delete data.className;
+    useEffect(() => {
+        if (properties) {
+            const tempSql = new Map<string, string>();
 
-                            updateUserStore(id, data).then(() => {
-                                dispatch(addAlert({
-                                    description: "The Userstore has been updated successfully.",
-                                    level: AlertLevels.SUCCESS,
-                                    message: "Userstore updated successfully!"
-                                }));
-                                update();
-                            }).catch((error) => {
-                                dispatch(addAlert({
-                                    description: error?.description ?? "An error occurred while updating the Userstore",
-                                    level: AlertLevels.ERROR,
-                                    message: error?.message ?? "Something went wrong"
-                                }));
-                            });
-                        } }
-                        submitState={ submit }
-                    >
+            properties.optional.sql.delete.forEach(property => {
+                tempSql.set(property.name, property.value);
+            });
+
+            properties.optional.sql.insert.forEach(property => {
+                tempSql.set(property.name, property.value);
+            });
+
+            properties.optional.sql.select.forEach(property => {
+                tempSql.set(property.name, property.value);
+            });
+
+            properties.optional.sql.update.forEach(property => {
+                tempSql.set(property.name, property.value);
+            });
+
+            setSql(tempSql);
+        }
+    }, [ properties ]);
+
+    return (
+        <Forms
+            onSubmit={ (values: Map<string, FormValue>) => {
+                const data = { ...userStore };
+                data.description = values.get("description").toString();
+                data.name = values.get("name").toString();
+                delete data.typeName;
+                delete data.className;
+
+                const requiredData = properties.required.map((property: TypeProperty) => {
+                    return {
+                        operation: "REPLACE",
+                        path: `/properties/${property.name}`,
+                        value: values.get(property.name).toString()
+                    }
+                });
+
+                const optionalNonSqlData = showMore
+                    ? properties.optional.nonSql.map((property: TypeProperty) => {
+                        return {
+                            operation: "REPLACE",
+                            path: `/properties/${property.name}`,
+                            value: values.get(property.name).toString()
+                        }
+                    })
+                    : null;
+
+                const optionalSqlInsertData = showMore
+                    ? properties.optional.sql.insert.map((property: TypeProperty) => {
+                        return {
+                            operation: "REPLACE",
+                            path: `/properties/${property.name}`,
+                            value: sql.get(property.name).toString()
+                        }
+                    })
+                    : null;
+
+                const optionalSqlUpdateData = showMore
+                    ? properties.optional.sql.update.map((property: TypeProperty) => {
+                        return {
+                            operation: "REPLACE",
+                            path: `/properties/${property.name}`,
+                            value: sql.get(property.name).toString()
+                        }
+                    })
+                    : null;
+
+                const optionalSqlDeleteData = showMore
+                    ? properties.optional.sql.delete.map((property: TypeProperty) => {
+                        return {
+                            operation: "REPLACE",
+                            path: `/properties/${property.name}`,
+                            value: sql.get(property.name).toString()
+                        }
+                    })
+                    : null;
+
+                const optionalSqlSelectData = showMore
+                    ? properties.optional.sql.select.map((property: TypeProperty) => {
+                        return {
+                            operation: "REPLACE",
+                            path: `/properties/${property.name}`,
+                            value: sql.get(property.name).toString()
+                        }
+                    })
+                    : null;
+
+                const patchData = showMore
+                    ? [
+                        ...requiredData,
+                        ...optionalNonSqlData,
+                        ...optionalSqlDeleteData,
+                        ...optionalSqlInsertData,
+                        ...optionalSqlUpdateData,
+                        ...optionalSqlSelectData
+                    ]
+                    : requiredData;
+
+                updateUserStore(id, data).then(() => {
+                    patchUserStore(id, patchData).then(() => {
+                        dispatch(addAlert({
+                            description: "This userstore has been updated successfully!",
+                            level: AlertLevels.SUCCESS,
+                            message: "Userstore updated successfully!"
+                        }));
+                        update();
+                    }).catch(error => {
+                        dispatch(addAlert({
+                            description: error?.description
+                                || "An error occurred while updating the userstore.",
+                            level: AlertLevels.ERROR,
+                            message: error?.message || "Something went wrong"
+                        }));
+                    });
+                }).catch((error) => {
+                    dispatch(addAlert({
+                        description: error?.description ?? "An error occurred while updating the Userstore",
+                        level: AlertLevels.ERROR,
+                        message: error?.message ?? "Something went wrong"
+                    }));
+                });
+            } }
+        >
+            <Grid>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 8 }>
                         <Field
                             label="Name"
                             name="name"
@@ -115,16 +222,179 @@ export const EditBasicDetailsUserStore = (
                             placeholder="Enter a description"
                             value={ userStore?.description }
                         />
-                    </Forms>
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column width={ 8 }>
-                    <PrimaryButton onClick={ () => { setSubmit() } }>
-                        Update
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 8 }>
+                        {
+                            properties?.required?.map((property: TypeProperty, index: number) => {
+                                const name = property.description.split("#")[ 0 ];
+                                const isPassword = property.attributes
+                                    .find(attribute => attribute.name === "type").value === "password";
+                                const toggle = property.attributes
+                                    .find(attribute => attribute.name === "type")?.value === "boolean";
+
+                                return (
+                                    isPassword
+                                        ? (
+                                            <Field
+                                                name={ property.name }
+                                                type="password"
+                                                key={ index }
+                                                required={ true }
+                                                label={ name }
+                                                requiredErrorMessage={
+                                                    `${property.description.split("#")[ 0 ]} is  required`
+                                                }
+                                                showPassword="Show Password"
+                                                hidePassword="Hide Password"
+                                            />
+                                        )
+                                        : toggle
+                                            ? (
+                                                <Field
+                                                    name={ property.name }
+                                                    value={ property.value ?? property.defaultValue }
+                                                    type="toggle"
+                                                    key={ index }
+                                                    required={ true }
+                                                    label={ property.description.split("#")[ 0 ] }
+                                                    requiredErrorMessage={
+                                                        `${property.description.split("#")[ 0 ]} is  required`
+                                                    }
+                                                    toggle
+                                                />
+                                            ) :
+                                            (
+                                                <Field
+                                                    name={ property.name }
+                                                    value={ property.value ?? property.defaultValue }
+                                                    type="text"
+                                                    key={ index }
+                                                    required={ true }
+                                                    label={ property.description.split("#")[ 0 ] }
+                                                    requiredErrorMessage={
+                                                        `${property.description.split("#")[ 0 ]} is  required`
+                                                    }
+                                                />
+                                            )
+                                );
+                            })
+                        }
+                    </Grid.Column>
+                </Grid.Row>
+                {
+                    properties?.optional.nonSql.length > 0
+                    || properties?.optional.sql.delete.length > 0
+                    || properties?.optional.sql.insert.length > 0
+                    || properties?.optional.sql.select.length > 0
+                    || properties?.optional.sql.update.length > 0
+                    &&
+                    (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 8 } textAlign="center">
+                                <LinkButton
+                                    type="button"
+                                    onClick={ () => { setShowMore(!showMore) } }
+                                >
+                                    <Icon name={ showMore ? "chevron up" : "chevron down" } />
+                                    { `Show ${showMore ? "Less" : "More"}` }
+                                </LinkButton>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                { showMore && properties.optional.nonSql.length > 0 && (
+                    <Grid>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 8 }>
+                                {
+                                    properties?.optional?.nonSql.map((property: TypeProperty, index: number) => {
+                                        const name = property.description.split("#")[ 0 ];
+                                        const isPassword = property.attributes
+                                            .find(attribute => attribute.name === "type").value === "password";
+                                        const toggle = property.attributes
+                                            .find(attribute => attribute.name === "type")?.value === "boolean";
+
+                                        return (
+                                            isPassword
+                                                ? (
+                                                    <Field
+                                                        name={ property.name }
+                                                        type="password"
+                                                        key={ index }
+                                                        required={ false }
+                                                        label={ name }
+                                                        requiredErrorMessage={
+                                                            `${property.description.split("#")[ 0 ]} is  required`
+                                                        }
+                                                        showPassword="Show Password"
+                                                        hidePassword="Hide Password"
+                                                    />
+                                                )
+                                                : toggle
+                                                    ? (
+                                                        <Field
+                                                            name={ property.name }
+                                                            value={ property.value ?? property.defaultValue }
+                                                            type="toggle"
+                                                            key={ index }
+                                                            required={ false }
+                                                            label={ property.description.split("#")[ 0 ] }
+                                                            requiredErrorMessage={
+                                                                `${property.description.split("#")[ 0 ]} is  required`
+                                                            }
+                                                            toggle
+                                                        />
+                                                    )
+                                                    : (
+                                                        <Field
+                                                            name={ property.name }
+                                                            value={ property.value ?? property.defaultValue }
+                                                            type="text"
+                                                            key={ index }
+                                                            required={ false }
+                                                            label={ property.description.split("#")[ 0 ] }
+                                                            requiredErrorMessage={
+                                                                `${property.description.split("#")[ 0 ]} is  required`
+                                                            }
+                                                        />
+                                                    )
+                                        );
+                                    })
+                                }
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                )
+                }
+                {
+                    properties?.optional.sql.delete.length > 0
+                    || properties?.optional.sql.insert.length > 0
+                    || properties?.optional.sql.select.length > 0
+                    || properties?.optional.sql.update.length > 0
+                    && (
+                        <Grid columns={ 1 }>
+                            <Grid.Column width={ 16 }>
+                                <SqlEditor
+                                    onChange={ (name: string, value: string) => {
+                                        const tempSql = new Map(sql);
+                                        tempSql.set(name, value);
+                                    } }
+                                    properties={ properties.optional.sql }
+                                />
+                            </Grid.Column>
+                        </Grid>
+                    )
+                }
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 8 }>
+                        <PrimaryButton>
+                            Update
                         </PrimaryButton>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </Forms>
     )
 };
