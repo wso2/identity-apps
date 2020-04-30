@@ -20,10 +20,11 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getADialect, getAllLocalClaims } from "../api";
-import { ClaimsList, ListType, LocalClaimsSearch } from "../components";
+import { AdvancedSearchWithBasicFilters, ClaimsList, ListType } from "../components";
 import { AddLocalClaims } from "../components";
 import { CLAIM_DIALECTS_PATH, UserConstants } from "../constants";
 import { history } from "../helpers";
@@ -68,6 +69,8 @@ export const LocalClaimsPage = (): ReactElement => {
     const [sortOrder, setSortOrder] = useState(true);
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     /**
     * Fetches all the local claims.
@@ -171,6 +174,25 @@ export const LocalClaimsPage = (): ReactElement => {
         setSortOrder(isAscending);
     };
 
+    /**
+     * Handles the `onFilter` callback action from the
+     * advanced search component.
+     *
+     * @param {string} query - Search query.
+     */
+    const handleLocalClaimsFilter = (query: string): void => {
+        try {
+            const filteredClaims = filterList(claims, query, sortBy.value as string, sortOrder);
+            setFilteredClaims(filteredClaims);
+        } catch (error) {
+            dispatch(addAlert({
+                description: error?.message,
+                level: AlertLevels.ERROR,
+                message: "Filter query format incorrect"
+            }));
+        }
+    };
+
     return (
         <>
             {
@@ -193,26 +215,38 @@ export const LocalClaimsPage = (): ReactElement => {
                 } }
             >
                 <ListLayout
-                    advancedSearch={
-                        <LocalClaimsSearch
-                            onFilter={ (query) => {
-                                //TODO: getLocalClaims(null, null, null, query);
-                                try {
-                                    const filteredClaims = filterList(
-                                        claims, query, sortBy.value as string, sortOrder
-                                    );
-                                    setFilteredClaims(filteredClaims);
-                                } catch (error) {
-                                    dispatch(addAlert({
-                                        description: error?.message,
-                                        level: AlertLevels.ERROR,
-                                        message: "Filter query format incorrect"
-                                    }));
+                    advancedSearch={ (
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleLocalClaimsFilter  }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: "Claim URI",
+                                    value: "claimURI"
+                                },
+                                {
+                                    key: 1,
+                                    text: "Mapped Local Claim URI",
+                                    value: "mappedLocalClaimURI"
                                 }
-                            } }
-                            claimURIBase={ claimURIBase }
+                            ] }
+                            filterAttributePlaceholder={
+                                t("devPortal:components.claims.local.advancedSearch.form.inputs.filterAttribute" +
+                                    ".placeholder")
+                            }
+                            filterConditionsPlaceholder={
+                                t("devPortal:components.claims.local.advancedSearch.form.inputs.filterCondition" +
+                                    ".placeholder")
+                            }
+                            filterValuePlaceholder={
+                                t("devPortal:components.claims.local.advancedSearch.form.inputs.filterValue" +
+                                    ".placeholder")
+                            }
+                            placeholder={ t("devPortal:components.claims.local.advancedSearch.placeholder") }
+                            defaultSearchAttribute="claimURI"
+                            defaultSearchOperator="co"
                         />
-                    }
+                    ) }
                     currentListSize={ listItemLimit }
                     listItemLimit={ listItemLimit }
                     onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }

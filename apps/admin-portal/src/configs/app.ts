@@ -17,7 +17,7 @@
  */
 
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { HelpPanelConstants, I18nConstants } from "../constants";
+import { ApplicationConstants, HelpPanelConstants, I18nConstants } from "../constants";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 
@@ -199,6 +199,9 @@ export class Config {
             doNotDeleteIdentityProviders: (this.RUNTIME_CONFIG)
                 ? (this.RUNTIME_CONFIG.doNotDeleteIdentityProviders || [])
                 : [],
+            myAccountPath: (this.RUNTIME_CONFIG)
+                ? (this.RUNTIME_CONFIG.myAccountPath || ApplicationConstants.MY_ACCOUNT_PATH)
+                : ApplicationConstants.MY_ACCOUNT_PATH,
             titleText: (this.RUNTIME_CONFIG)
                 ? (this.RUNTIME_CONFIG.copyrightText || TITLE_TEXT_DEFAULT)
                 : TITLE_TEXT_DEFAULT
