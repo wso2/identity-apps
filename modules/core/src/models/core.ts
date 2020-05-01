@@ -106,3 +106,13 @@ export interface TestableComponentInterface {
      */
     "data-testid"?: string;
 }
+
+/**
+ * Common interface to be extended to for components having loading capability.
+ */
+export interface LoadableComponentInterface {
+    /**
+     * Flag for loading state.
+     */
+    isLoading?: boolean;
+}
