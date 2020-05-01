@@ -25,7 +25,7 @@
  */
 export const JDBC = "JDBC";
 
-export const UserstoreTypeDescriptions = {
+export const USER_STORE_TYPE_DESCRIPTIONS = {
     ActiveDirectoryUserStoreManager: "Active Directory based userstore.",
     CarbonRemoteUserStoreManger: "Userstore on another Identity Server instance.",
     JDBCUserStoreManager: "Java Database Connectivity based userstore.",
@@ -39,7 +39,7 @@ export const UserstoreTypeDescriptions = {
         "Lightweight Directory Access Protocol based userstore " + "which can both be read and written to"
 };
 
-export const UserstoreTypeDisplayNames = {
+export const USERSTORE_TYPE_DISPLAY_NAMES = {
     ActiveDirectoryUserStoreManager: "Active Directory",
     CarbonRemoteUserStoreManger: "Carbon Remote",
     JDBCUserStoreManager: "JDBC",

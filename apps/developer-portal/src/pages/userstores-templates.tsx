@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import { getAType, getUserstoreTypes } from "../api";
 import { AddUserStore } from "../components";
 import { ApplicationTemplateIllustrations, EmptyPlaceholderIllustrations } from "../configs";
-import { USER_STORES_PATH, UserstoreTypeDescriptions, UserstoreTypeDisplayNames } from "../constants";
+import { USERSTORE_TYPE_DISPLAY_NAMES, USER_STORES_PATH, USER_STORE_TYPE_DESCRIPTIONS } from "../constants";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import { AlertLevels, TypeResponse, UserstoreType } from "../models";
@@ -95,20 +95,20 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
                         uniqueUserstoreTypes.push(
                             {
                                 description: type.description
-                                    ?? UserstoreTypeDescriptions[ type.typeName ],
+                                    ?? USER_STORE_TYPE_DESCRIPTIONS[ type.typeName ],
                                 id: type.typeId,
                                 image: "customApp",
-                                name: UserstoreTypeDisplayNames[ type.typeName ]
+                                name: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ]
                             }
                         )
                     } else {
                         userstoreTypes.push(
                             {
                                 description: type.description
-                                    ?? UserstoreTypeDescriptions[ type.typeName ],
+                                    ?? USER_STORE_TYPE_DESCRIPTIONS[ type.typeName ],
                                 id: type.typeId,
                                 image: "customApp",
-                                name: UserstoreTypeDisplayNames[ type.typeName ]
+                                name: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ]
                             }
                         )
                     }

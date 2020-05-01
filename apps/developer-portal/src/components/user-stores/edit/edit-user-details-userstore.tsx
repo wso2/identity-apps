@@ -47,6 +47,7 @@ interface EditUserDetailsPropsInterface {
      */
     properties: RequiredBinary;
 }
+
 export const EditUserDetails = (
     props: EditUserDetailsPropsInterface
 ): ReactElement => {
