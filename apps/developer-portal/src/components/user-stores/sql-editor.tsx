@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import { CodeEditor, Heading } from "@wso2is/react-components";
+import { CodeEditor, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Accordion, Checkbox, Icon, Menu, Popup, Segment, Sidebar } from "semantic-ui-react";
 import { RequiredBinary } from "../../models";
@@ -24,17 +24,19 @@ import { RequiredBinary } from "../../models";
 interface SqlEditorPropsInterface {
     onChange: (name: string, value: string) => void;
     properties: RequiredBinary[ "optional" ][ "sql" ];
+    values: Map<string, string>;
 }
 
 export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
     props: SqlEditorPropsInterface
 ): ReactElement => {
 
-    const { onChange, properties } = props;
+    const { onChange, properties, values } = props;
 
     const [ sideBarVisible, setSideBarVisible ] = useState(true);
     const [ accordionIndex, setAccordionIndex ] = useState(-1);
     const [ propertyName, setPropertyName ] = useState("");
+    const [ propertyDefaultValue, setPropertyDefaultValue ] = useState("");
     const [ propertyValue, setPropertyValue ] = useState("");
     const [ isEditorDarkMode, setIsEditorDarkMode ] = useState(true);
 
@@ -98,7 +100,8 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                                     key={ index }
                                                     onClick={ () => {
                                                         setPropertyName(property.name);
-                                                        setPropertyValue(property.value ?? property.defaultValue);
+                                                        setPropertyValue(values.get(property.name));
+                                                        setPropertyDefaultValue(values.get(property.name));
                                                     } }
                                                     active={ property.name === propertyName }
                                                 >
@@ -139,7 +142,8 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                                 key={ index }
                                                 onClick={ () => {
                                                     setPropertyName(property.name);
-                                                    setPropertyValue(property.value ?? property.defaultValue);
+                                                    setPropertyValue(values.get(property.name));
+                                                    setPropertyDefaultValue(values.get(property.name));
                                                 } }
                                                 active={ property.name === propertyName }
                                             >
@@ -179,7 +183,8 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                                 key={ index }
                                                 onClick={ () => {
                                                     setPropertyName(property.name);
-                                                    setPropertyValue(property.value ?? property.defaultValue);
+                                                    setPropertyValue(values.get(property.name));
+                                                    setPropertyDefaultValue(values.get(property.name));
                                                 } }
                                                 active={ property.name === propertyName }
                                             >
@@ -219,7 +224,8 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                                 key={ index }
                                                 onClick={ () => {
                                                     setPropertyName(property.name);
-                                                    setPropertyValue(property.value ?? property.defaultValue);
+                                                    setPropertyValue(values.get(property.name));
+                                                    setPropertyDefaultValue(values.get(property.name));
                                                 } }
                                                 active={ property.name === propertyName }
                                             >
@@ -276,17 +282,43 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                             <div className="code-editor-wrapper">
                                 <CodeEditor
                                     lint
-                                    sourceCode={ propertyValue }
+                                    sourceCode={ propertyDefaultValue }
                                     options={ {
                                         lineWrapping: true,
                                         mode: "x-sql"
                                     } }
                                     onChange={ (editor, data, value) => {
-                                        onChange(propertyName, value);
+                                        setPropertyValue(value);
                                     } }
                                     theme={ isEditorDarkMode ? "dark" : "light" }
                                 />
                             </div>
+                            <Menu attached="bottom" className="action-panel" secondary>
+                                <Menu.Item position="right">
+                                    <LinkButton
+                                        type="button"
+                                        onClick={ () => {
+                                            setPropertyValue(propertyDefaultValue);
+                                            const defaultValue = propertyDefaultValue;
+                                            setPropertyDefaultValue("");
+                                            setTimeout(() => {
+                                                setPropertyDefaultValue(defaultValue);
+                                            }, 1);
+                                            
+                                        } }
+                                    >
+                                        Reset
+                                    </LinkButton>
+                                    <PrimaryButton
+                                        type="button"
+                                        onClick={ () => {
+                                            onChange(propertyName, propertyValue);
+                                        } }
+                                    >
+                                        Save
+                                    </PrimaryButton>
+                                </Menu.Item>
+                            </Menu>
                         </div>
                     </Sidebar.Pusher>
                 </Sidebar.Pushable >

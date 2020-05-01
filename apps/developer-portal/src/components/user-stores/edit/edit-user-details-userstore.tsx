@@ -63,19 +63,19 @@ export const EditUserDetails = (
             const tempSql = new Map<string, string>();
 
             properties.optional.sql.delete.forEach(property => {
-                tempSql.set(property.name, property.value);
+                tempSql.set(property.name, property.value ?? property.defaultValue);
             });
 
             properties.optional.sql.insert.forEach(property => {
-                tempSql.set(property.name, property.value);
+                tempSql.set(property.name, property.value ?? property.defaultValue);
             });
 
             properties.optional.sql.select.forEach(property => {
-                tempSql.set(property.name, property.value);
+                tempSql.set(property.name, property.value ?? property.defaultValue);
             });
 
             properties.optional.sql.update.forEach(property => {
-                tempSql.set(property.name, property.value);
+                tempSql.set(property.name, property.value ?? property.defaultValue);
             });
 
             setSql(tempSql);
@@ -332,6 +332,7 @@ export const EditUserDetails = (
                                     setSql(tempSql);
                                 } }
                                 properties={ properties.optional.sql }
+                                values={ sql }
                             />
                         </Grid.Column>
                     </Grid>
