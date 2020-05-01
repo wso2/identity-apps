@@ -47,6 +47,7 @@ interface EditGroupDetailsPropsInterface {
      */
     properties: RequiredBinary;
 }
+
 export const EditGroupDetails = (
     props: EditGroupDetailsPropsInterface
 ): ReactElement => {

@@ -86,8 +86,8 @@ export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): React
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details">
-                        <h3>{data.name}</h3>
-                        <div className="description">{data.description}</div>
+                        <h3>{data?.name}</h3>
+                        <div className="description">{data?.description}</div>
                     </div>
                 </Grid.Column>
             </Grid.Row>

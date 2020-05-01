@@ -116,7 +116,7 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
     };
 
     /**
-     * This saves the General Details values along with the te Type
+     * This saves the General Details values along with the Type
      * @param {Map<string, FormValue>} values Connection Details Values
      */
     const onSubmitGeneralDetails = (values: Map<string, FormValue>) => {

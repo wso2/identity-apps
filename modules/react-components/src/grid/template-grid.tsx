@@ -383,14 +383,14 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                                 ? template.types
                                                 : type === "idp"
                                                     ? template.services
-                                                    :null
+                                                    : null
                                         }
                                         tagsAs={
                                             type === "application"
                                                 ? "icon"
                                                 : type === "idp"
                                                     ? "label"
-                                                    :null
+                                                    : null
                                         }
                                         name={ template.name }
                                         id={ template.id }

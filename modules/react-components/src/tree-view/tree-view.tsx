@@ -17,7 +17,7 @@
  */
 
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 /**

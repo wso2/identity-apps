@@ -449,7 +449,7 @@ export const EditBasicDetailsUserStore = (
                         <Grid.Column width={ 8 }>
                             <PrimaryButton>
                                 Update
-                        </PrimaryButton>
+                            </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
@@ -462,8 +462,8 @@ export const EditBasicDetailsUserStore = (
                     <DangerZoneGroup sectionHeader="Danger Zone">
                         <DangerZone
                             actionTitle="Delete Userstore"
-                            header="Delete Local Attribute"
-                            subheader={ "Once you delete a local attribute, there is no going back. " +
+                            header="Delete Userstore"
+                            subheader={ "Once you delete a userstore, there is no going back. " +
                                 "Please be certain." }
                             onActionClick={ () => setConfirmDelete(true) }
                         />
