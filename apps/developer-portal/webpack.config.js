@@ -20,9 +20,7 @@ const webpack = require("webpack");
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const TaserJSPlugin = require("terser-webpack-plugin");
 const WriteFilePlugin = require("write-file-webpack-plugin");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = (env) => {
     const basename = "developer-portal";
@@ -140,42 +138,17 @@ module.exports = (env) => {
                     ]
                 },
                 {
-                    test: /\.tsx?$/,
-                    use: [
-                        {
-                            loader: "thread-loader",
-                            options: {
-                                // there should be 1 cpu for the fork-ts-checker-webpack-plugin
-                                workers: require("os").cpus().length - 1
-                            }
-                        },
-                        {
-                            loader: "ts-loader",
-                            options: {
-                                happyPackMode: true,
-                                transpileOnly: false
-                            }
-                        }
-                    ],
-                    exclude: /(node_modules)/
-                },
-                {
                     test: /\.(ts|tsx|js|jsx)$/,
                     enforce: "pre",
                     exclude: /(node_modules|dist|build|target|plugins)/,
                     use: [
                         {
-                            loader: "thread-loader",
-                            options: {
-                                // there should be 1 cpu for the fork-ts-checker-webpack-plugin
-                                workers: require("os").cpus().length - 1
-                            }
+                            loader: "ts-loader"
                         },
                         {
                             loader: "eslint-loader",
                             options: {
-                                happyPackMode: true,
-                                transpileOnly: false
+                                transpileOnly: true
                             }
                         }
                     ]
@@ -202,7 +175,6 @@ module.exports = (env) => {
             fs: "empty"
         },
         plugins: [
-            new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
             new WriteFilePlugin({
                 // Exclude hot-update files
                 test: /^(?!.*(hot-update)).*/
@@ -261,18 +233,6 @@ module.exports = (env) => {
                     NODE_ENV: JSON.stringify(process.env.NODE_ENV)
                 }
             })
-        ],
-        devtool: "source-map",
-        optimization: {
-            minimize: true,
-            minimizer: [
-                isProd &&
-                    new TaserJSPlugin({
-                        terserOptions: {
-                            keep_fnames: true
-                        }
-                    })
-            ].filter(Boolean)
-        }
+        ]
     };
 };
