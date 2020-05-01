@@ -64,7 +64,7 @@
         "js-yaml": "^3.13.1",
         "jshint": "^2.11.0",
         "lodash": "^4.17.15",
-        "moment": "^2.24.0",
+        "moment": "2.24.0",
         "node-forge": "^0.9.1",
         "react": "^16.9.0",
         "react-app-polyfill": "^1.0.4",

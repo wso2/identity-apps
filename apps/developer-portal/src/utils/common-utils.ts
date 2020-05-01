@@ -23,7 +23,7 @@
  * @param modifiedDate - Data string that needs to be calculated.
  */
 
-import moment from "moment"
+import moment from "moment";
 import * as forge from "node-forge";
 import { CERTIFICATE_BEGIN, CERTIFICATE_END, END_LINE } from "../constants";
 import { DisplayCertificate } from "../models";

@@ -142,7 +142,7 @@ module.exports = (env) => {
                             loader: "thread-loader",
                             options: {
                                 // there should be 1 cpu for the fork-ts-checker-webpack-plugin
-                                workers: require("os").cpus().length - 1
+                                workers: 1
                             }
                         },
                         {
@@ -164,7 +164,7 @@ module.exports = (env) => {
                             loader: "thread-loader",
                             options: {
                                 // there should be 1 cpu for the fork-ts-checker-webpack-plugin
-                                workers: require("os").cpus().length - 1
+                                workers: 1
                             }
                         },
                         {
@@ -244,17 +244,20 @@ module.exports = (env) => {
                 }
             })
         ],
-        devtool: "source-map",
+        devtool: "eval",
         optimization: {
-            minimize: true,
-            minimizer: [
-                isProd &&
-                    new TaserJSPlugin({
-                        terserOptions: {
-                            keep_fnames: true
-                        }
-                    })
-            ].filter(Boolean)
+            minimize: false,
+            // minimizer: [
+            //     isProd &&
+            //         new TaserJSPlugin({
+            //             terserOptions: {
+            //                 keep_fnames: true
+            //             }
+            //         })
+            // ].filter(Boolean),
+            splitChunks: {
+                chunks: "all"
+            }
         }
     };
 };
