@@ -287,7 +287,8 @@ export const EditGroupDetails = (
                     </Grid>
                 ) }
 
-            { showMore && properties.optional.nonSql.length > 0 && (
+            { !disabled
+                && showMore && properties.optional.nonSql.length > 0 && (
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 8 }>
@@ -353,7 +354,8 @@ export const EditGroupDetails = (
                 </Grid>
             )
             }
-            { showMore
+            { !disabled
+                && showMore
                 && (properties.optional.sql.delete.length > 0
                     || properties.optional.sql.insert.length > 0
                     || properties.optional.sql.select.length > 0
