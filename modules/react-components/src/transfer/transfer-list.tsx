@@ -50,9 +50,6 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
 
     const {
         children,
-        className,
-        rest,
-        listValues,
         listHeaders,
         isListEmpty,
         handleHeaderCheckboxChange,
@@ -70,7 +67,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                                 <Table.Row>
                                     <Table.HeaderCell>
                                         <Checkbox
-                                            data-testid={ props[ `data-testid` ] }
+                                            data-testid={ props[ "data-testid" ] }
                                             checked={ isHeaderCheckboxChecked }
                                             onChange={ handleHeaderCheckboxChange }
                                         />

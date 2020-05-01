@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export * from "./tranfer";
-export * from "./tansfer-list";
+export * from "./transfer";
+export * from "./transfer-list";
 export * from "./transfer-list-search";
 export * from "./transfer-list-item";
