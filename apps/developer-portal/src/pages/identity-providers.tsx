@@ -27,7 +27,7 @@ import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semanti
 import { getIdentityProviderList } from "../api";
 import { AdvancedSearchWithBasicFilters, IdentityProviderList } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
-import { IdentityProviderConstants } from "../constants";
+import { IdentityProviderConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
 import { IdentityProviderListResponseInterface } from "../models";
@@ -55,9 +55,6 @@ const IDENTITY_PROVIDER_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     }
 ];
 
-// TODO: Calculate based on the screen dimensions.
-const DEFAULT_IDP_LIST_ITEM_LIMIT = 10;
-
 /**
  * Overview page.
  *
@@ -75,7 +72,7 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
     );
     const [ idpList, setIdPList ] = useState<IdentityProviderListResponseInterface>({});
     const [ listOffset, setListOffset ] = useState<number>(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(DEFAULT_IDP_LIST_ITEM_LIMIT);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
 
@@ -304,6 +301,7 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
                             <IdentityProviderList
                                 list={ idpList }
                                 onIdentityProviderDelete={ handleIdentityProviderDelete }
+                                isLoading={ isIdPListRequestLoading }
                             />
                         )
                         : showPlaceholders()

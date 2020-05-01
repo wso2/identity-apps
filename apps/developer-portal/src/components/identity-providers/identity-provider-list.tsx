@@ -16,12 +16,13 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, LoadableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AppAvatar, ConfirmationModal, ResourceList } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteIdentityProvider } from "../../api";
+import { UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import {
     ConfigReducerStateInterface,
@@ -33,7 +34,7 @@ import { AppState } from "../../store";
 /**
  * Proptypes for the identity provider list component.
  */
-interface IdentityProviderListPropsInterface {
+interface IdentityProviderListPropsInterface extends LoadableComponentInterface {
     list: IdentityProviderListResponseInterface;
     onIdentityProviderDelete: () => void;
 }
@@ -50,7 +51,8 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
 
     const {
         list,
-        onIdentityProviderDelete
+        onIdentityProviderDelete,
+        isLoading
     } = props;
 
     const dispatch = useDispatch();
@@ -116,7 +118,14 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
 
 
     return (
-        <ResourceList className="identity-providers-list">
+        <ResourceList
+            className="identity-providers-list"
+            isLoading={ isLoading }
+            loadingStateOptions={ {
+                count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                imageType: "square"
+            } }
+        >
             {
                 list.identityProviders.map((idp, index) => {
                     // TODO Remove this check and move the logic to backend.

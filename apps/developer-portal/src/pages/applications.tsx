@@ -35,7 +35,7 @@ import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semanti
 import { getApplicationList } from "../api";
 import { AdvancedSearchWithBasicFilters, ApplicationList } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
-import { ApplicationConstants } from "../constants";
+import { ApplicationConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
 import { ApplicationListInterface, FeatureConfigInterface } from "../models";
@@ -64,9 +64,6 @@ const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     }
 ];
 
-// TODO: Calculate based on the screen dimensions.
-const DEFAULT_APP_LIST_ITEM_LIMIT = 10;
-
 /**
  * Overview page.
  *
@@ -86,7 +83,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
     );
     const [ appList, setAppList ] = useState<ApplicationListInterface>({});
     const [ listOffset, setListOffset ] = useState<number>(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(DEFAULT_APP_LIST_ITEM_LIMIT);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
 
@@ -319,6 +316,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                                 featureConfig={ featureConfig }
                                 list={ appList }
                                 onApplicationDelete={ handleApplicationDelete }
+                                isLoading={ isApplicationListRequestLoading }
                             />
                         )
                         : showPlaceholders()

@@ -17,14 +17,14 @@
  */
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, LoadableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AppAvatar, ConfirmationModal, ResourceList, ResourceListActionInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Label } from "semantic-ui-react";
 import { deleteApplication } from "../../api";
-import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationManagementConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import {
     ApplicationListInterface,
@@ -40,7 +40,7 @@ import { ApplicationManagementUtils } from "../../utils";
  *
  * Proptypes for the applications list component.
  */
-interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInterface> {
+interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface {
     /**
      * Application list.
      */
@@ -64,7 +64,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     const {
         featureConfig,
         list,
-        onApplicationDelete
+        onApplicationDelete,
+        isLoading
     } = props;
 
     const dispatch = useDispatch();
@@ -179,7 +180,14 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
     return (
         <>
-            <ResourceList className="applications-list">
+            <ResourceList
+                className="applications-list"
+                isLoading={ isLoading || isApplicationTemplateRequestLoading }
+                loadingStateOptions={ {
+                    count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                    imageType: "square"
+                } }
+            >
                 {
                     list.applications.map((app: ApplicationListItemInterface, index: number) => {
 
