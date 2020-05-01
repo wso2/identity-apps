@@ -22,6 +22,7 @@
 ![database](modules/theme/src/themes/default/assets/images/icons/database-icon.svg) | Icon made by catkuro from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/database_1980250?term=database&page=1&position=4)
 |![CertificateUpload](modules/theme/src/themes/default/assets/images/icons/upload.svg)|itim2101 from www.flaticon.com|[Link](https://www.flaticon.com/free-icon/cloud-computing_1103496?term=upload&page=1&position=1)|
 |![CertificateAvatar](modules/theme/src/themes/default/assets/images/icons/certificate-avatar.svg)|Freepik from www.flaticon.com|[Link](https://www.flaticon.com/free-icon/diploma_2302847?term=certificate&page=3&position=48)|
+|![DatabaseAvatar](modules/theme/src/themes/default/assets/images/icons/database-avatar.svg)|Smashicons from www.flaticon.com|[Link](https://www.flaticon.com/free-icon/database_149208?term=database&page=23&position=38)|
 
 # Illustration Owners
 
