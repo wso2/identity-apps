@@ -31,7 +31,7 @@ import { DatabaseAvatarGraphic } from "../configs";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts"
 import { AlertLevels, CategorizedProperties, UserStore, UserstoreType } from "../models";
-import { addAlert } from "../store/actions";
+import { addAlert } from "@wso2is/core/store";
 import { reOrganizeProperties } from "../utils";
 
 /**
