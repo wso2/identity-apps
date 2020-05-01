@@ -1,4 +1,3 @@
-import { UserStoreProperty } from "./../models/user-stores";
 /**
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -17,7 +16,13 @@ import { UserStoreProperty } from "./../models/user-stores";
  * under the License.
  */
 
-import { CategorizedProperties, TypeProperty, UserstorePropertiesCategories, UserstoreType } from "../models";
+import {
+    CategorizedProperties,
+    TypeProperty,
+    UserStoreProperty,
+    UserstorePropertiesCategories,
+    UserstoreType
+} from "../models";
 
 export const reOrganizeProperties = (
     properties: UserstoreType["properties"],
