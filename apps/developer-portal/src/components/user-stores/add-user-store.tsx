@@ -124,7 +124,7 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
         setCurrentWizardStep(1);
     }
 
-    const onSubmitUserDetails = (values: Map<string, FormValue>) => {
+    const onSubmitUserDetails = (values: Map<string, FormValue>): void => {
         setUserDetailsData(values);
         setCurrentWizardStep(2);
     }
