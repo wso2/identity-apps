@@ -296,66 +296,13 @@ export const EditConnectionDetails = (
 
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 8 }>
-                        <Button
-                            className="test-button"
-                            basic
-                            type="button"
-                            color={
-                                findTestButtonColor() === TestButtonColor.SUCCESSFUL
-                                    ? "green"
-                                    : findTestButtonColor() === TestButtonColor.FAILED
-                                        ? "red"
-                                        : null
-                            }
-                            onClick={
-                                () => {
-                                    setIsTesting(true);
-                                    if (type.typeName.includes(JDBC)) {
-                                        const testData: TestConnection = {
-                                            connectionPassword: formValue?.get("password").toString()
-                                                ?? properties.required
-                                                    .find(property => property.name === "password")?.value,
-                                            connectionURL: formValue?.get("url").toString()
-                                                ?? properties.required
-                                                    .find(property => property.name === "url")?.value,
-                                            driverName: formValue?.get("driverName").toString()
-                                                ?? properties.required
-                                                    .find(property => property.name === "driverName")?.value,
-                                            username: formValue?.get("userName").toString()
-                                                ?? properties.required
-                                                    .find(property => property.name === "userName")?.value
-                                        };
-                                        testConnection(testData).then(() => {
-                                            dispatch(addAlert({
-                                                description: "The connection is healthy",
-                                                level: AlertLevels.SUCCESS,
-                                                message: "Connection successful!"
-                                            }));
-                                            setIsTesting(false);
-                                            setConnectionFailed(false);
-                                            setConnectionSuccessful(true);
-                                        }).catch((error) => {
-                                            dispatch(addAlert({
-                                                description: error?.description
-                                                    || "An error occurred while testing the " +
-                                                    "connection to the userstore",
-                                                level: AlertLevels.ERROR,
-                                                message: error?.message || "Something went wrong"
-                                            }));
-                                            setIsTesting(false);
-                                            setConnectionSuccessful(false);
-                                            setConnectionFailed(true);
-                                        })
-                                    }
-                                }
-                            }
-                        >
-                            <Icon
-                                size="small"
-                                loading={ isTesting }
-                                name={ findTestButtonIcon() }
+                { type.typeName.includes(JDBC) && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 8 }>
+                            <Button
+                                className="test-button"
+                                basic
+                                type="button"
                                 color={
                                     findTestButtonColor() === TestButtonColor.SUCCESSFUL
                                         ? "green"
@@ -363,11 +310,66 @@ export const EditConnectionDetails = (
                                             ? "red"
                                             : null
                                 }
-                            />
+                                onClick={
+                                    () => {
+                                        setIsTesting(true);
+                                        if (type.typeName.includes(JDBC)) {
+                                            const testData: TestConnection = {
+                                                connectionPassword: formValue?.get("password").toString()
+                                                    ?? properties.required
+                                                        .find(property => property.name === "password")?.value,
+                                                connectionURL: formValue?.get("url").toString()
+                                                    ?? properties.required
+                                                        .find(property => property.name === "url")?.value,
+                                                driverName: formValue?.get("driverName").toString()
+                                                    ?? properties.required
+                                                        .find(property => property.name === "driverName")?.value,
+                                                username: formValue?.get("userName").toString()
+                                                    ?? properties.required
+                                                        .find(property => property.name === "userName")?.value
+                                            };
+                                            testConnection(testData).then(() => {
+                                                dispatch(addAlert({
+                                                    description: "The connection is healthy",
+                                                    level: AlertLevels.SUCCESS,
+                                                    message: "Connection successful!"
+                                                }));
+                                                setIsTesting(false);
+                                                setConnectionFailed(false);
+                                                setConnectionSuccessful(true);
+                                            }).catch((error) => {
+                                                dispatch(addAlert({
+                                                    description: error?.description
+                                                        || "An error occurred while testing the " +
+                                                        "connection to the userstore",
+                                                    level: AlertLevels.ERROR,
+                                                    message: error?.message || "Something went wrong"
+                                                }));
+                                                setIsTesting(false);
+                                                setConnectionSuccessful(false);
+                                                setConnectionFailed(true);
+                                            })
+                                        }
+                                    }
+                                }
+                            >
+                                <Icon
+                                    size="small"
+                                    loading={ isTesting }
+                                    name={ findTestButtonIcon() }
+                                    color={
+                                        findTestButtonColor() === TestButtonColor.SUCCESSFUL
+                                            ? "green"
+                                            : findTestButtonColor() === TestButtonColor.FAILED
+                                                ? "red"
+                                                : null
+                                    }
+                                />
                             Test Connection
                     </Button>
-                    </Grid.Column>
-                </Grid.Row>
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
             </Grid>
 
             {

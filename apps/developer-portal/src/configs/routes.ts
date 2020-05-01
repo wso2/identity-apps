@@ -272,6 +272,26 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        children: [
+            {
+                component: UserStoresEditPage,
+                icon: "userStore",
+                id: "edit-user-store",
+                name: "Edit Userstore",
+                path: `${EDIT_USER_STORE_PATH}/:id`,
+                protected: true,
+                showOnSidePanel: false
+            },
+            {
+                component: UserstoresTemplates,
+                icon: "userStore",
+                id: "userstore-templates",
+                name: "Userstore Templates",
+                path: USERSTORE_TEMPLATES_PATH,
+                protected: true,
+                showOnSidePanel: false
+            }
+        ],
         component: UserStores,
         icon: "userStore",
         id: "userStores",
@@ -279,24 +299,6 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         path: USER_STORES_PATH,
         protected: true,
         showOnSidePanel: true
-    },
-    {
-        component: UserStoresEditPage,
-        icon: "userStore",
-        id: "edit-user-store",
-        name: "Edit Userstore",
-        path: `${EDIT_USER_STORE_PATH}/:id`,
-        protected: true,
-        showOnSidePanel: false
-    },
-    {
-        component: UserstoresTemplates,
-        icon: "userStore",
-        id: "userstore-templates",
-        name: "Userstore Templates",
-        path: USERSTORE_TEMPLATES_PATH,
-        protected: true,
-        showOnSidePanel: false
     },
     {
         component: CertificatesKeystore,
