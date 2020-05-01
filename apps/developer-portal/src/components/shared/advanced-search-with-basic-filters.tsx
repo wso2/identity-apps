@@ -99,6 +99,10 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface {
      * Show reset button flag.
      */
     showResetButton?: boolean;
+    /**
+     * Manually trigger query clear action from outside.
+     */
+    triggerClearQuery?: boolean;
 }
 
 /**
@@ -124,7 +128,8 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         placeholder,
         resetButtonLabel,
         showResetButton,
-        submitButtonLabel
+        submitButtonLabel,
+        triggerClearQuery
     } = props;
 
     const { t } = useTranslation();
@@ -219,6 +224,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             externalSearchQuery={ externalSearchQuery }
             submitted={ isFormSubmitted }
             dropdownPosition={ dropdownPosition }
+            triggerClearQuery={ triggerClearQuery }
         >
             <Grid>
                 <Grid.Row columns={ 1 }>
