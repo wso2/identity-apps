@@ -88,6 +88,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(DEFAULT_APP_LIST_ITEM_LIMIT);
     const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
 
     /**
      * Called on every `listOffset` & `listItemLimit` change.
@@ -190,6 +191,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
     const handleSearchQueryClear = (): void => {
         setSearchQuery("");
         getAppLists(listItemLimit, listOffset, null);
+        setTriggerClearQuery(!triggerClearQuery);
     };
 
     /**
@@ -198,6 +200,11 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
      * @return {React.ReactElement}
      */
     const showPlaceholders = (): ReactElement => {
+
+        if (isApplicationListRequestLoading) {
+            return null;
+        }
+
         // When the search returns empty.
         if (searchQuery) {
             return (
@@ -216,27 +223,31 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
             );
         }
 
-        return (
-            <EmptyPlaceholder
-                action={ (
-                    <PrimaryButton
-                        onClick={ (): void => {
-                            history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
-                        } }
-                    >
-                        <Icon name="add"/>New Application
-                    </PrimaryButton>
-                ) }
-                image={ EmptyPlaceholderIllustrations.newList }
-                imageSize="tiny"
-                title={ "Create an Application" }
-                subtitle={ [
-                    "There are currently no applications available.",
-                    "You can create a new application easily by using the",
-                    "predefined templates."
-                ] }
-            />
-        );
+        if (appList?.totalResults === 0) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <PrimaryButton
+                            onClick={ (): void => {
+                                history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
+                            } }
+                        >
+                            <Icon name="add"/>New Application
+                        </PrimaryButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.newList }
+                    imageSize="tiny"
+                    title={ "Add a new Application" }
+                    subtitle={ [
+                        "There are currently no applications available.",
+                        "You can add a new application easily by using the",
+                        "predefined templates."
+                    ] }
+                />
+            );
+        }
+
+        return null;
     };
 
     return (
@@ -271,6 +282,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                         placeholder={ t("devPortal:components.applications.advancedSearch.placeholder") }
                         defaultSearchAttribute="name"
                         defaultSearchOperator="co"
+                        triggerClearQuery={ triggerClearQuery }
                     />
                 }
                 currentListSize={ appList.count }
@@ -299,8 +311,9 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                 totalListSize={ appList.totalResults }
             >
                 {
-                    (appList?.totalResults > 0 ||
-                        appList?.applications instanceof Array && appList.applications.length > 0)
+                    (appList?.totalResults > 0
+                        && appList?.applications instanceof Array
+                        && appList.applications.length > 0)
                         ? (
                             <ApplicationList
                                 featureConfig={ featureConfig }
@@ -308,7 +321,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                                 onApplicationDelete={ handleApplicationDelete }
                             />
                         )
-                        : !isApplicationListRequestLoading && showPlaceholders()
+                        : showPlaceholders()
                 }
             </ListLayout>
         </PageLayout>

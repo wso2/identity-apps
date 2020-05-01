@@ -68,8 +68,9 @@ export const LocalClaimsPage = (): ReactElement => {
     const [ filteredClaims, setFilteredClaims ] = useState<Claim[]>(null);
     const [ sortBy, setSortBy ] = useState<DropdownItemProps>(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
-    const [ query, setQuery ] = useState("");
+    const [ searchQuery, setSearchQuery ] = useState("");
     const [ isLoading, setIsLoading ] = useState(true);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -195,7 +196,7 @@ export const LocalClaimsPage = (): ReactElement => {
         try {
             const filteredClaims = filterList(claims, query, sortBy.value as string, sortOrder);
             setFilteredClaims(filteredClaims);
-            setQuery(query);
+            setSearchQuery(query);
         } catch (error) {
             dispatch(addAlert({
                 description: error?.message,
@@ -203,6 +204,72 @@ export const LocalClaimsPage = (): ReactElement => {
                 message: "Filter query format incorrect"
             }));
         }
+    };
+
+    /**
+     * Handles the `onSearchQueryClear` callback action.
+     */
+    const handleSearchQueryClear = (): void => {
+        setTriggerClearQuery(!triggerClearQuery);
+        setSearchQuery("");
+        setFilteredClaims(claims);
+    };
+
+    /**
+     * Shows list placeholders.
+     *
+     * @return {React.ReactElement}
+     */
+    const showPlaceholders = (): ReactElement => {
+
+        if (isLoading) {
+            return null;
+        }
+
+        // When the search returns empty.
+        if (searchQuery) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ handleSearchQueryClear }>Clear search query</LinkButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    imageSize="tiny"
+                    title={ "No results found" }
+                    subtitle={ [
+                        `We couldn't find any results for ${ searchQuery }`,
+                        "Please try a different search term."
+                    ] }
+                />
+            );
+        }
+
+        if (filteredClaims.length === 0) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <PrimaryButton
+                            onClick={ () => {
+                                setOpenModal(true);
+                            } }
+                        >
+                            <Icon name="add" />
+                            New Local Attribute
+                        </PrimaryButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.newList }
+                    imageSize="tiny"
+                    title={ "Add a local attribute" }
+                    subtitle={ [
+                        "There are currently no local attributes available.",
+                        "You can add a new local attribute easily by following the",
+                        "steps in the creation wizard."
+                    ] }
+                />
+            );
+        }
+
+        return null;
     };
 
     return (
@@ -226,94 +293,81 @@ export const LocalClaimsPage = (): ReactElement => {
                     text: "Go back to attribute dialects"
                 } }
             >
-                { filteredClaims && filteredClaims.length > 0 ?
-                    (
-                        <ListLayout
-                            advancedSearch={
-                                <AdvancedSearchWithBasicFilters
-                                    onFilter={ handleLocalClaimsFilter }
-                                    filterAttributeOptions={ [
-                                        {
-                                            key: 0,
-                                            text: t("common:name"),
-                                            value: "displayName"
-                                        },
-                                        {
-                                            key: 1,
-                                            text: "Attribute URI",
-                                            value: "claimURI"
-                                        }
-                                    ] }
-                                    filterAttributePlaceholder={
-                                        t("devPortal:components.claims.local.advancedSearch.form." +
-                                            "inputs.filterAttribute.placeholder")
-                                    }
-                                    filterConditionsPlaceholder={
-                                        t("devPortal:components.claims.local.advancedSearch.form." +
-                                            "inputs.filterCondition.placeholder")
-                                    }
-                                    filterValuePlaceholder={
-                                        t("devPortal:components.claims.local.advancedSearch.form.inputs." +
-                                            "filterValue.placeholder")
-                                    }
-                                    placeholder={ t("devPortal:components.claims.local.advancedSearch.placeholder") }
-                                    defaultSearchAttribute="displayName"
-                                    defaultSearchOperator="co"
-                                />
-                            }
-                            currentListSize={ listItemLimit }
-                            listItemLimit={ listItemLimit }
-                            onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                            onPageChange={ handlePaginationChange }
-                            onSortStrategyChange={ handleSortStrategyChange }
-                            rightActionPanel={
-                                hasRequiredScopes(
-                                    featureConfig?.attributeDialects,
-                                    featureConfig?.attributeDialects?.scopes?.create) && (
-                                    <PrimaryButton
-                                        onClick={ () => {
-                                            setOpenModal(true);
-                                        } }
-                                    >
-                                        <Icon name="add" />New Local Attribute
-                                    </PrimaryButton>
-                                )
-                            }
-                            leftActionPanel={ null }
-                            showPagination={ true }
-                            sortOptions={ SORT_BY }
-                            sortStrategy={ sortBy }
-                            totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
-                            totalListSize={ filteredClaims?.length }
-                            onSortOrderChange={ handleSortOrderChange }
-                        >
-                            <ClaimsList
-                                list={ paginate(filteredClaims, listItemLimit, offset) }
-                                localClaim={ ListType.LOCAL }
-                                update={ getLocalClaims }
-                            />
-                        </ListLayout>
-                    )
-                    : !isLoading && (
-                        <EmptyPlaceholder
-                            action={ (
-                                <LinkButton onClick={ () => {
-                                    setFilteredClaims(claims);
-                                } }
-                                >
-                                    Clear search query
-                                </LinkButton>
-                            ) }
-                            image={ EmptyPlaceholderIllustrations.emptySearch }
-                            imageSize="tiny"
-                            title={ "No results found" }
-                            subtitle={ [
-                                `We couldn't find any results for "${query}"`,
-                                "Please try a different search term."
+                <ListLayout
+                    advancedSearch={
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleLocalClaimsFilter }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: t("common:name"),
+                                    value: "displayName"
+                                },
+                                {
+                                    key: 1,
+                                    text: "Attribute URI",
+                                    value: "claimURI"
+                                }
                             ] }
+                            filterAttributePlaceholder={
+                                t("devPortal:components.claims.local.advancedSearch.form." +
+                                    "inputs.filterAttribute.placeholder")
+                            }
+                            filterConditionsPlaceholder={
+                                t("devPortal:components.claims.local.advancedSearch.form." +
+                                    "inputs.filterCondition.placeholder")
+                            }
+                            filterValuePlaceholder={
+                                t("devPortal:components.claims.local.advancedSearch.form.inputs." +
+                                    "filterValue.placeholder")
+                            }
+                            placeholder={ t("devPortal:components.claims.local.advancedSearch.placeholder") }
+                            defaultSearchAttribute="displayName"
+                            defaultSearchOperator="co"
+                            triggerClearQuery={ triggerClearQuery }
                         />
-                    )
-                }
+                    }
+                    currentListSize={ listItemLimit }
+                    listItemLimit={ listItemLimit }
+                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                    onPageChange={ handlePaginationChange }
+                    onSortStrategyChange={ handleSortStrategyChange }
+                    rightActionPanel={
+                        hasRequiredScopes(
+                            featureConfig?.attributeDialects,
+                            featureConfig?.attributeDialects?.scopes?.create) && (
+                            <PrimaryButton
+                                onClick={ () => {
+                                    setOpenModal(true);
+                                } }
+                            >
+                                <Icon name="add"/>New Local Attribute
+                            </PrimaryButton>
+                        )
+                    }
+                    leftActionPanel={ null }
+                    showPagination={ true }
+                    sortOptions={ SORT_BY }
+                    sortStrategy={ sortBy }
+                    showTopActionPanel={ !(!searchQuery && filteredClaims?.length <= 0) }
+                    totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
+                    totalListSize={ filteredClaims?.length }
+                    onSortOrderChange={ handleSortOrderChange }
+                >
+                    {
+                        filteredClaims
+                        && filteredClaims instanceof Array
+                        && filteredClaims.length > 0 ?
+                            (
+                                <ClaimsList
+                                    list={ paginate(filteredClaims, listItemLimit, offset) }
+                                    localClaim={ ListType.LOCAL }
+                                    update={ getLocalClaims }
+                                />
+                            )
+                            : showPlaceholders()
+                    }
+                </ListLayout>
             </PageLayout>
         </>
     );

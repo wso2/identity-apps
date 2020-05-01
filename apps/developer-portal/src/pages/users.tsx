@@ -20,11 +20,11 @@ import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentic
 import { CommonHelpers } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
-import { Button, EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
+import { Button, EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Dropdown, DropdownProps, Grid, Icon, PaginationProps, Popup } from "semantic-ui-react";
+import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-ui-react";
 import { deleteUser, getUserStoreList, getUsersList } from "../api";
 import { AdvancedSearchWithBasicFilters } from "../components";
 import { UsersList } from "../components/users";
@@ -56,15 +56,22 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ userStore, setUserStore ] = useState(undefined);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
+    const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
 
     const username = AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME);
     const tenantName = store.getState().config.deployment.tenant;
     const tenantSettings = JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenantName));
 
     const getList = (limit: number, offset: number, filter: string, attribute: string, domain: string) => {
+        setUserListRequestLoading(true);
+
         getUsersList(limit, offset, filter, attribute, domain)
             .then((response) => {
                 setUsersList(response);
+            })
+            .finally(() => {
+                setUserListRequestLoading(false);
             });
     };
 
@@ -214,32 +221,68 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
     };
 
     /**
-     * Shows list placeholders.
-     * @return {JSX.Element}
+     * Handles the `onSearchQueryClear` callback action.
      */
-    const showPlaceholders = (): JSX.Element => {
+    const handleSearchQueryClear = (): void => {
+        setTriggerClearQuery(!triggerClearQuery);
+        setSearchQuery("");
+        getList(listItemLimit, listOffset, null, null, null);
+    };
+
+    /**
+     * Shows list placeholders.
+     *
+     * @return {React.ReactElement}
+     */
+    const showPlaceholders = (): ReactElement => {
+
+        if (isUserListRequestLoading) {
+            return null;
+        }
+
         // When the search returns empty.
         if (searchQuery) {
             return (
                 <EmptyPlaceholder
                     action={ (
-                        <Button
-                            className="link-button"
-                            onClick={ () => getList(listItemLimit, listOffset, null, null, null) }
-                        >
-                            { t("devPortal:placeholders.emptySearchResult.action") }
-                        </Button>
+                        <LinkButton onClick={ handleSearchQueryClear }>Clear search query</LinkButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.search }
-                    title={ t("devPortal:placeholders.emptySearchResult.title") }
+                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    imageSize="tiny"
+                    title={ "No results found" }
                     subtitle={ [
-                        t("devPortal:placeholders.emptySearchResult.subtitles.0",
-                            { query: searchQuery }),
-                        t("devPortal:placeholders.emptySearchResult.subtitles.1")
+                        `We couldn't find any results for ${ searchQuery }`,
+                        "Please try a different search term."
                     ] }
                 />
             );
         }
+
+        if (usersList.totalResults === 0 && usersList.Resources) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <PrimaryButton
+                            data-testid="user_mgt_user_list_add_user_button"
+                            onClick={ () => setShowWizard(true) }
+                        >
+                            <Icon name="add"/>
+                            New User
+                        </PrimaryButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.newList }
+                    imageSize="tiny"
+                    title={ "Add a new User" }
+                    subtitle={ [
+                        "There are currently no users available.",
+                        "You can add a new user easily by following the",
+                        "steps in the creation wizard."
+                    ] }
+                />
+            );
+        }
+
+        return null;
     };
 
     /**
@@ -328,7 +371,7 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
                 // TODO add sorting functionality.
                 advancedSearch={ (
                     <AdvancedSearchWithBasicFilters
-                        onFilter={ handleUserFilter  }
+                        onFilter={ handleUserFilter }
                         filterAttributeOptions={ [
                             {
                                 key: 0,
@@ -355,6 +398,7 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
                         placeholder={ t("devPortal:components.users.advancedSearch.placeholder") }
                         defaultSearchAttribute="userName"
                         defaultSearchOperator="co"
+                        triggerClearQuery={ triggerClearQuery }
                     />
                 ) }
                 currentListSize={ usersList.itemsPerPage }
@@ -409,23 +453,22 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
                     )
                 }
                 showPagination={ true }
+                showTopActionPanel={ !(!searchQuery && usersList?.totalResults <= 0) }
                 totalPages={ Math.ceil(usersList.totalResults / listItemLimit) }
                 totalListSize={ usersList.totalResults }
             >
                 {
-                    (usersList.Resources && usersList.Resources.length > 0) ?
-                        (
+                    (usersList?.totalResults > 0
+                        && usersList?.Resources instanceof Array
+                        && usersList.Resources.length > 0)
+                        ? (
                             <UsersList
                                 usersList={ usersList }
                                 handleUserDelete={ handleUserDelete }
                                 userMetaListContent={ userListMetaContent }
                             />
-                        ) :
-                        (
-                            <Grid.Column width={ 16 }>
-                                { showPlaceholders() }
-                            </Grid.Column>
                         )
+                        : showPlaceholders()
                 }
                 {
                     showWizard && (

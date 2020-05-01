@@ -77,6 +77,7 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(DEFAULT_IDP_LIST_ITEM_LIMIT);
     const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(false);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
 
     /**
      * Retrieves the list of identity providers.
@@ -179,6 +180,7 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
     const handleSearchQueryClear = (): void => {
         setSearchQuery("");
         getIdPList(listItemLimit, listOffset, null);
+        setTriggerClearQuery(!triggerClearQuery);
     };
 
     /**
@@ -187,6 +189,11 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
      * @return {React.ReactElement}
      */
     const showPlaceholders = (): ReactElement => {
+
+        if (isIdPListRequestLoading) {
+            return null;
+        }
+
         // When the search returns empty.
         if (searchQuery) {
             return (
@@ -205,27 +212,31 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
             );
         }
 
-        return (
-            <EmptyPlaceholder
-                action={ (
-                    <PrimaryButton
-                        onClick={ (): void => {
-                            history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDER_TEMPLATES"));
-                        } }
-                    >
-                        <Icon name="add"/>New Identity Provider
-                    </PrimaryButton>
-                ) }
-                image={ EmptyPlaceholderIllustrations.newList }
-                imageSize="tiny"
-                title={ "Create an Identity Provider" }
-                subtitle={ [
-                    "There are currently no identity providers available.",
-                    "You can create a new identity provider easily by using the",
-                    "predefined templates."
-                ] }
-            />
-        );
+        if (idpList?.totalResults === 0) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <PrimaryButton
+                            onClick={ (): void => {
+                                history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDER_TEMPLATES"));
+                            } }
+                        >
+                            <Icon name="add"/>New Identity Provider
+                        </PrimaryButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.newList }
+                    imageSize="tiny"
+                    title={ "Add a new Identity Provider" }
+                    subtitle={ [
+                        "There are currently no identity providers available.",
+                        "You can add a new identity provider easily by following the",
+                        "steps in the identity providers creation wizard."
+                    ] }
+                />
+            );
+        }
+
+        return null;
     };
 
     return (
@@ -259,6 +270,7 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
                         placeholder={ t("devPortal:components.idp.advancedSearch.placeholder") }
                         defaultSearchAttribute="name"
                         defaultSearchOperator="co"
+                        triggerClearQuery={ triggerClearQuery }
                     />
                 }
                 currentListSize={ idpList.count }
@@ -285,13 +297,16 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
                 totalListSize={ idpList.totalResults }
             >
                 {
-                    (idpList?.totalResults > 0 ||
-                        idpList?.identityProviders instanceof Array && idpList.identityProviders.length > 0) ?
-                        <IdentityProviderList
-                            list={ idpList }
-                            onIdentityProviderDelete={ handleIdentityProviderDelete }
-                        />
-                        : !isIdPListRequestLoading && showPlaceholders()
+                    (idpList?.totalResults > 0
+                        && idpList?.identityProviders instanceof Array
+                        && idpList.identityProviders.length > 0)
+                        ? (
+                            <IdentityProviderList
+                                list={ idpList }
+                                onIdentityProviderDelete={ handleIdentityProviderDelete }
+                            />
+                        )
+                        : showPlaceholders()
                 }
             </ListLayout>
         </PageLayout>

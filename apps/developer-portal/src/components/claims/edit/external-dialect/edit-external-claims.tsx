@@ -18,7 +18,7 @@
 
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -29,8 +29,7 @@ import { UserConstants } from "../../../../constants";
 import { ListLayout } from "../../../../layouts";
 import { AlertLevels, ExternalClaim } from "../../../../models";
 import { filterList, sortList } from "../../../../utils";
-import { EmptyPlaceholder } from "../../../shared";
-import { AdvancedSearchWithBasicFilters } from "../../../shared/advanced-search-with-basic-filters";
+import { AdvancedSearchWithBasicFilters } from "../../../shared";
 
 interface EditExternalClaimsPropsInterface {
     /**
@@ -82,7 +81,8 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
     const [ showAddExternalClaim, setShowAddExternalClaim ] = useState(false);
-    const [ query, setQuery ] = useState("");
+    const [ searchQuery, setSearchQuery ] = useState("");
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
 
     const [ triggerAddExternalClaim, setTriggerAddExternalClaim ] = useTrigger();
 
@@ -169,6 +169,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                 claims, query, sortBy.value, sortOrder
             );
             setFilteredClaims(filteredList);
+            setSearchQuery(query);
         } catch (error) {
             dispatch(addAlert({
                 description: error?.message,
@@ -178,38 +179,108 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
         }
     };
 
+    /**
+     * Handles the `onSearchQueryClear` callback action.
+     */
+    const handleSearchQueryClear = (): void => {
+        setTriggerClearQuery(!triggerClearQuery);
+        setSearchQuery("");
+        setFilteredClaims(claims);
+    };
+
+    /**
+     * Shows list placeholders.
+     *
+     * @return {React.ReactElement}
+     */
+    const showPlaceholders = (): ReactElement => {
+
+        if (isLoading) {
+            return null;
+        }
+
+        // When the search returns empty.
+        if (searchQuery) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ handleSearchQueryClear }>Clear search query</LinkButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    imageSize="tiny"
+                    title={ "No results found" }
+                    subtitle={ [
+                        `We couldn't find any results for ${ searchQuery }`,
+                        "Please try a different search term."
+                    ] }
+                />
+            );
+        }
+
+        if (filteredClaims.length === 0) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <PrimaryButton
+                            onClick={ (): void => {
+                                setShowAddExternalClaim(true);
+                            } }
+                            disabled={ showAddExternalClaim }
+                        >
+                            <Icon name="add"/>
+                            New External Attribute
+                        </PrimaryButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.newList }
+                    imageSize="tiny"
+                    title={ "Add a new external attribute" }
+                    subtitle={ [
+                        "There are currently no external attributes available.",
+                        "You can add a new external attribute by clicking",
+                        "on the button below."
+                    ] }
+                />
+            );
+        }
+
+        return null;
+    };
+
     return (
         <ListLayout
-            advancedSearch={ <AdvancedSearchWithBasicFilters
-                                    onFilter={ handleExternalClaimFilter  }
-                                    filterAttributeOptions={ [
-                                        {
-                                            key: 0,
-                                            text: "Attribute URI",
-                                            value: "claimURI"
-                                        },
-                                        {
-                                            key: 1,
-                                            text: "Mapped Local Attribute URI",
-                                            value: "mappedLocalClaimURI"
-                                        }
-                                    ] }
-                                    filterAttributePlaceholder={
-                                        t("devPortal:components.claims.external.advancedSearch.form.inputs" +
-                                            ".filterAttribute.placeholder")
-                                    }
-                                    filterConditionsPlaceholder={
-                                        t("devPortal:components.claims.external.advancedSearch.form.inputs" +
-                                            ".filterCondition.placeholder")
-                                    }
-                                    filterValuePlaceholder={
-                                        t("devPortal:components.claims.external.advancedSearch.form.inputs" +
-                                            ".filterValue.placeholder")
-                                    }
-                                    placeholder={ t("devPortal:components.claims.external.advancedSearch.placeholder") }
-                                    defaultSearchAttribute="claimURI"
-                                    defaultSearchOperator="co"
-                                /> }
+            advancedSearch={ (
+                <AdvancedSearchWithBasicFilters
+                    onFilter={ handleExternalClaimFilter }
+                    filterAttributeOptions={ [
+                        {
+                            key: 0,
+                            text: "Attribute URI",
+                            value: "claimURI"
+                        },
+                        {
+                            key: 1,
+                            text: "Mapped Local Attribute URI",
+                            value: "mappedLocalClaimURI"
+                        }
+                    ] }
+                    filterAttributePlaceholder={
+                        t("devPortal:components.claims.external.advancedSearch.form.inputs" +
+                            ".filterAttribute.placeholder")
+                    }
+                    filterConditionsPlaceholder={
+                        t("devPortal:components.claims.external.advancedSearch.form.inputs" +
+                            ".filterCondition.placeholder")
+                    }
+                    filterValuePlaceholder={
+                        t("devPortal:components.claims.external.advancedSearch.form.inputs" +
+                            ".filterValue.placeholder")
+                    }
+                    placeholder={ t("devPortal:components.claims.external.advancedSearch.placeholder") }
+                    defaultSearchAttribute="claimURI"
+                    defaultSearchOperator="co"
+                    triggerClearQuery={ triggerClearQuery }
+                />
+            ) }
             currentListSize={ listItemLimit }
             listItemLimit={ listItemLimit }
             onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
@@ -219,6 +290,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
             showPagination={ true }
             sortOptions={ SORT_BY }
             sortStrategy={ sortBy }
+            showTopActionPanel={ !(!searchQuery && filteredClaims?.length <= 0) }
             totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
             totalListSize={ filteredClaims?.length }
             rightActionPanel={
@@ -228,9 +300,9 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                     } }
                     disabled={ showAddExternalClaim }
                 >
-                    <Icon name="add" />
-                            New External Attribute
-                        </PrimaryButton>
+                    <Icon name="add"/>
+                    New External Attribute
+                </PrimaryButton>
             }
         >
             {
@@ -281,36 +353,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                                     update={ () => update() }
                                     dialectID={ dialectID }
                                 />
-                            ) : !isLoading &&
-                                (claims && claims?.length !== 0 && filteredClaims?.length === 0)
-                                ? (
-                                    <EmptyPlaceholder
-                                        action={ (
-                                            <LinkButton onClick={ () => {
-                                                setFilteredClaims(claims);
-                                            } }
-                                            >
-                                                Clear search query
-                                            </LinkButton>
-                                        ) }
-                                        image={ EmptyPlaceholderIllustrations.emptySearch }
-                                        imageSize="tiny"
-                                        title={ "No results found" }
-                                        subtitle={ [
-                                            `We couldn't find any results for "${query}"`,
-                                            "Please try a different search term."
-                                        ] }
-                                    />
-                                )
-                                : !isLoading && (
-                                    <EmptyPlaceholder
-                                        title="No External Claim"
-                                        subtitle={ [ "Currently, there is no external attribute " +
-                                            "available for this dialect." ] }
-                                        image={ EmptyPlaceholderIllustrations.emptyList }
-                                        imageSize="tiny"
-                                    />
-                                )
+                            ) : showPlaceholders()
                     }
                 </Grid.Column>
             </Grid>

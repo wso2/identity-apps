@@ -28,6 +28,7 @@ const httpClient = AxiosHttpClient.getInstance();
 
 /**
  * Retrieve the list of groups that are currently in the system.
+ * TODO: Return `response.data` rather than `response`.
  *
  * @returns {Promise<BasicProfileInterface>} a promise containing the user list.
  */
