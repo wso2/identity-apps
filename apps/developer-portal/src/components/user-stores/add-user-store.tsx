@@ -133,7 +133,7 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
         setGroupDetailsData(values);
     }
 
-    const serializeData = () => {
+    const serializeData = (): void => {
         const userStore: UserStorePostData = {
             description: generalDetailsData?.get("description")?.toString(),
             name: generalDetailsData?.get("name")?.toString(),
