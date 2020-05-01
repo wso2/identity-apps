@@ -312,7 +312,7 @@ export const EditBasicDetailsUserStore = (
                                                         value={ property.value ?? property.defaultValue }
                                                         type="toggle"
                                                         key={ index }
-                                                        required={ true }
+                                                        required={ false }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
                                                             `${property.description.split("#")[ 0 ]} is  required`

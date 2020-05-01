@@ -208,32 +208,34 @@ export const EditGroupDetails = (
                                             />
                                         )
                                         : toggle
-                                            ? master ? (
-                                                <Field
-                                                    name={ property.name }
-                                                    value={ property.value ?? property.defaultValue }
-                                                    type="toggle"
-                                                    key={ index }
-                                                    required={ false }
-                                                    label={ property.description.split("#")[ 0 ] }
-                                                    requiredErrorMessage={
-                                                        `${property.description.split("#")[ 0 ]} is  required`
-                                                    }
-                                                    listen={ (values: Map<string, FormValue>) => {
-                                                        setDisabled(
-                                                            values.get(property.name)
-                                                                .toString() === "false"
-                                                        )
-                                                    } }
-                                                    toggle
-                                                />
-                                            ) : (
+                                            ? master
+                                                ? (
                                                     <Field
                                                         name={ property.name }
                                                         value={ property.value ?? property.defaultValue }
                                                         type="toggle"
                                                         key={ index }
-                                                        required={ !disabled }
+                                                        required={ false }
+                                                        label={ property.description.split("#")[ 0 ] }
+                                                        requiredErrorMessage={
+                                                            `${property.description.split("#")[ 0 ]} is  required`
+                                                        }
+                                                        listen={ (values: Map<string, FormValue>) => {
+                                                            setDisabled(
+                                                                values.get(property.name)
+                                                                    .toString() === "false"
+                                                            )
+                                                        } }
+                                                        toggle
+                                                    />
+                                                )
+                                                : (
+                                                    <Field
+                                                        name={ property.name }
+                                                        value={ property.value ?? property.defaultValue }
+                                                        type="toggle"
+                                                        key={ index }
+                                                        required={ false }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
                                                             `${property.description.split("#")[ 0 ]} is  required`
@@ -241,8 +243,8 @@ export const EditGroupDetails = (
                                                         disabled={ disabled }
                                                         toggle
                                                     />
-                                                ) :
-                                            (
+                                                )
+                                            : (
                                                 <Field
                                                     name={ property.name }
                                                     value={ property.value ?? property.defaultValue }
