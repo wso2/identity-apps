@@ -63,7 +63,7 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
 
     const { open, onClose, type } = props;
 
-    const [ currentWizardStep, setCurrentWizardStep ] = useState(0);
+    const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(0);
     const [ generalDetailsData, setGeneralDetailsData ] = useState<Map<string, FormValue>>(null);
     const [ userDetailsData, setUserDetailsData ] = useState<Map<string, FormValue>>(null);
     const [ groupDetailsData, setGroupDetailsData ] = useState<Map<string, FormValue>>(null);
