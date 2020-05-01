@@ -148,28 +148,28 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
         const connectionProperties: UserStoreProperty[] = properties.connection.required.map(property => {
             return {
                 name: property.name,
-                value: generalDetailsData.get(property.name).toString()
+                value: generalDetailsData.get(property.name)?.toString()
             }
         });
 
         const userProperties: UserStoreProperty[] = properties.user.required.map(property => {
             return {
                 name: property.name,
-                value: userDetailsData.get(property.name).toString()
+                value: userDetailsData.get(property.name)?.toString()
             }
         });
 
         const groupProperties: UserStoreProperty[] = properties.group.required.map(property => {
             return {
                 name: property.name,
-                value: groupDetailsData.get(property.name).toString()
+                value: groupDetailsData.get(property.name)?.toString()
             }
         });
 
         const basicProperties: UserStoreProperty[] = properties.basic.required.map(property => {
             return {
                 name: property.name,
-                value: generalDetailsData.get(property.name).toString()
+                value: generalDetailsData.get(property.name)?.toString()
             }
         });
 
