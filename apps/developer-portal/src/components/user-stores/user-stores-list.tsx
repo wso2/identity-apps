@@ -22,7 +22,9 @@ import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ResourceList } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Image } from "semantic-ui-react";
 import { deleteUserStore } from "../../api";
+import { DatabaseAvatarGraphic } from "../../configs/ui";
 import { EDIT_USER_STORE_PATH } from "../../constants";
 import { history } from "../../helpers";
 import { AlertLevels, FeatureConfigInterface, UserStoreListItem } from "../../models";
@@ -54,7 +56,7 @@ export const UserStoresList = (props: UserStoresListPropsInterface): ReactElemen
         update
     } = props;
 
-    const [deleteConfirm, setDeleteConfirm] = useState(false);
+    const [ deleteConfirm, setDeleteConfirm ] = useState(false);
     const [ deleteID, setDeleteID ] = useState<string>(null);
     const [ deleteName, setDeleteName ] = useState<string>("");
 
@@ -138,11 +140,22 @@ export const UserStoresList = (props: UserStoresListPropsInterface): ReactElemen
 
     return (
         <>
-            {deleteConfirm && showDeleteConfirm()}
+            { deleteConfirm && showDeleteConfirm() }
             <ResourceList>
                 {
                     list?.map((userStore: UserStoreListItem, index: number) => (
                         <ResourceList.Item
+                            avatar={
+                                <Image
+                                    floated="left"
+                                    verticalAlign="middle"
+                                    rounded
+                                    centered
+                                    size="mini"
+                                >
+                                    <DatabaseAvatarGraphic.ReactComponent />
+                                </Image>
+                            }
                             key={ index }
                             actions={ [
                                 {
@@ -167,7 +180,7 @@ export const UserStoresList = (props: UserStoresListPropsInterface): ReactElemen
                             ] }
                             actionsFloated="right"
                             itemHeader={ userStore.name }
-                            metaContent={ userStore.description }
+                            itemDescription={ userStore.description }
                         />
                     ))
                 }

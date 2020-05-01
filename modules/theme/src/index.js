@@ -62,6 +62,7 @@ export const ControlsIcon = require("../dist/lib/themes/default/assets/images/ic
 export const CrossIcon = require("../dist/lib/themes/default/assets/images/icons/cross-icon.svg");
 export const DashboardIcon = require("../dist/lib/themes/default/assets/images/icons/dashboard-icon.svg");
 export const DatabaseIcon = require("../dist/lib/themes/default/assets/images/icons/database-icon.svg");
+export const DatabaseAvatar = require("../dist/lib/themes/default/assets/images/icons/database-avatar.svg");
 export const DocumentIcon = require("../dist/lib/themes/default/assets/images/icons/document-icon.svg");
 export const DotIcon = require("../dist/lib/themes/default/assets/images/icons/dot-icon.svg");
 export const DragIcon = require("../dist/lib/themes/default/assets/images/icons/drag-icon.svg");

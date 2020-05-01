@@ -19,6 +19,7 @@
 import { ResourceTab } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react"
 import { useDispatch } from "react-redux";
+import { Image } from "semantic-ui-react";
 import { getAType, getAUserStore } from "../api";
 import {
     EditBasicDetailsUserStore,
@@ -26,6 +27,7 @@ import {
     EditGroupDetails,
     EditUserDetails
 } from "../components";
+import { DatabaseAvatarGraphic } from "../configs";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts"
 import { AlertLevels, CategorizedProperties, UserStore, UserstoreType } from "../models";
@@ -140,6 +142,17 @@ export const UserStoresEditPage = (props): ReactElement => {
 
     return (
         <PageLayout
+            image={
+                <Image
+                    floated="left"
+                    verticalAlign="middle"
+                    rounded
+                    centered
+                    size="tiny"
+                >
+                    <DatabaseAvatarGraphic.ReactComponent />
+                </Image>
+            }
             title={ userStore?.name }
             description={ "Edit userstore" }
             backButton={ {
