@@ -72,7 +72,8 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
     const { checkError, handleBlur, handleChange, handleToggle, handleChangeCheckBox, handleReset, form } = formProps;
 
     const formFieldClasses = classNames({
-        hidden: formField.hidden
+        hidden: formField.hidden,
+        [ "read-only" ]: formField.readOnly
     }, formField.className);
 
     /**
