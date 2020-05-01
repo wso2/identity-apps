@@ -18,13 +18,13 @@
 
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails } from "./wizards";
 import { addUserStore } from "../../api";
 import { ApplicationWizardStepIcons } from "../../configs";
-import { USER_STORES_PATH, UserstoreTypeDisplayNames } from "../../constants";
+import { USERSTORE_TYPE_DISPLAY_NAMES, USER_STORES_PATH } from "../../constants";
 import { history } from "../../helpers";
 import {
     AlertLevels,
@@ -59,7 +59,7 @@ interface AddUserStoreProps {
  * @param {AddUserStoreProps} props
  * @return {ReactElement}
  */
-export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
+export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUserStoreProps): ReactElement => {
 
     const { open, onClose, type } = props;
 
@@ -270,7 +270,7 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
             className="wizard application-create-wizard"
         >
             <Modal.Header className="wizard-header">
-                { "Add " + UserstoreTypeDisplayNames[ type.typeName ] + " Userstore" }
+                { "Add " + USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ] + " Userstore" }
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group

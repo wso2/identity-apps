@@ -17,7 +17,7 @@
 */
 
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import React, { ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
 import { TypeProperty } from "../../../models";
 
@@ -48,7 +48,7 @@ interface UserDetailsPropsInterface {
  * @param {UserDetailsPropsInterface} props
  * @returns {Promise<any>}
  */
-export const UserDetails = (
+export const UserDetails: FunctionComponent<UserDetailsPropsInterface> = (
     props: UserDetailsPropsInterface
 ): ReactElement => {
 

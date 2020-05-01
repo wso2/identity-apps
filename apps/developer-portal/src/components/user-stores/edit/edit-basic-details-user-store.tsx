@@ -141,110 +141,112 @@ export const EditBasicDetailsUserStore = (
         </ConfirmationModal>
     );
 
+    const onSubmitHandler = (values: Map<string, FormValue>): void => {
+        const data = { ...userStore };
+        data.description = values.get("description").toString();
+        data.name = values.get("name").toString();
+        delete data.typeName;
+        delete data.className;
+
+        const requiredData = properties.required.map((property: TypeProperty) => {
+            return {
+                operation: "REPLACE",
+                path: `/properties/${property.name}`,
+                value: values.get(property.name).toString()
+            }
+        });
+
+        const optionalNonSqlData = showMore
+            ? properties.optional.nonSql.map((property: TypeProperty) => {
+                return {
+                    operation: "REPLACE",
+                    path: `/properties/${property.name}`,
+                    value: values.get(property.name).toString()
+                }
+            })
+            : null;
+
+        const optionalSqlInsertData = showMore
+            ? properties.optional.sql.insert.map((property: TypeProperty) => {
+                return {
+                    operation: "REPLACE",
+                    path: `/properties/${property.name}`,
+                    value: sql.get(property.name).toString()
+                }
+            })
+            : null;
+
+        const optionalSqlUpdateData = showMore
+            ? properties.optional.sql.update.map((property: TypeProperty) => {
+                return {
+                    operation: "REPLACE",
+                    path: `/properties/${property.name}`,
+                    value: sql.get(property.name).toString()
+                }
+            })
+            : null;
+
+        const optionalSqlDeleteData = showMore
+            ? properties.optional.sql.delete.map((property: TypeProperty) => {
+                return {
+                    operation: "REPLACE",
+                    path: `/properties/${property.name}`,
+                    value: sql.get(property.name).toString()
+                }
+            })
+            : null;
+
+        const optionalSqlSelectData = showMore
+            ? properties.optional.sql.select.map((property: TypeProperty) => {
+                return {
+                    operation: "REPLACE",
+                    path: `/properties/${property.name}`,
+                    value: sql.get(property.name).toString()
+                }
+            })
+            : null;
+
+        const patchData = showMore
+            ? [
+                ...requiredData,
+                ...optionalNonSqlData,
+                ...optionalSqlDeleteData,
+                ...optionalSqlInsertData,
+                ...optionalSqlUpdateData,
+                ...optionalSqlSelectData
+            ]
+            : requiredData;
+
+        updateUserStore(id, data).then(() => {
+            patchUserStore(id, patchData).then(() => {
+                dispatch(addAlert({
+                    description: "This userstore has been updated successfully!",
+                    level: AlertLevels.SUCCESS,
+                    message: "Userstore updated successfully!"
+                }));
+                update();
+            }).catch(error => {
+                dispatch(addAlert({
+                    description: error?.description
+                        || "An error occurred while updating the userstore.",
+                    level: AlertLevels.ERROR,
+                    message: error?.message || "Something went wrong"
+                }));
+            });
+        }).catch((error) => {
+            dispatch(addAlert({
+                description: error?.description ?? "An error occurred while updating the Userstore",
+                level: AlertLevels.ERROR,
+                message: error?.message ?? "Something went wrong"
+            }));
+        });
+    };
+
     return (
         <>
             { confirmDelete && deleteConfirmation() }
             <Forms
-                onSubmit={ (values: Map<string, FormValue>) => {
-                    const data = { ...userStore };
-                    data.description = values.get("description").toString();
-                    data.name = values.get("name").toString();
-                    delete data.typeName;
-                    delete data.className;
-
-                    const requiredData = properties.required.map((property: TypeProperty) => {
-                        return {
-                            operation: "REPLACE",
-                            path: `/properties/${property.name}`,
-                            value: values.get(property.name).toString()
-                        }
-                    });
-
-                    const optionalNonSqlData = showMore
-                        ? properties.optional.nonSql.map((property: TypeProperty) => {
-                            return {
-                                operation: "REPLACE",
-                                path: `/properties/${property.name}`,
-                                value: values.get(property.name).toString()
-                            }
-                        })
-                        : null;
-
-                    const optionalSqlInsertData = showMore
-                        ? properties.optional.sql.insert.map((property: TypeProperty) => {
-                            return {
-                                operation: "REPLACE",
-                                path: `/properties/${property.name}`,
-                                value: sql.get(property.name).toString()
-                            }
-                        })
-                        : null;
-
-                    const optionalSqlUpdateData = showMore
-                        ? properties.optional.sql.update.map((property: TypeProperty) => {
-                            return {
-                                operation: "REPLACE",
-                                path: `/properties/${property.name}`,
-                                value: sql.get(property.name).toString()
-                            }
-                        })
-                        : null;
-
-                    const optionalSqlDeleteData = showMore
-                        ? properties.optional.sql.delete.map((property: TypeProperty) => {
-                            return {
-                                operation: "REPLACE",
-                                path: `/properties/${property.name}`,
-                                value: sql.get(property.name).toString()
-                            }
-                        })
-                        : null;
-
-                    const optionalSqlSelectData = showMore
-                        ? properties.optional.sql.select.map((property: TypeProperty) => {
-                            return {
-                                operation: "REPLACE",
-                                path: `/properties/${property.name}`,
-                                value: sql.get(property.name).toString()
-                            }
-                        })
-                        : null;
-
-                    const patchData = showMore
-                        ? [
-                            ...requiredData,
-                            ...optionalNonSqlData,
-                            ...optionalSqlDeleteData,
-                            ...optionalSqlInsertData,
-                            ...optionalSqlUpdateData,
-                            ...optionalSqlSelectData
-                        ]
-                        : requiredData;
-
-                    updateUserStore(id, data).then(() => {
-                        patchUserStore(id, patchData).then(() => {
-                            dispatch(addAlert({
-                                description: "This userstore has been updated successfully!",
-                                level: AlertLevels.SUCCESS,
-                                message: "Userstore updated successfully!"
-                            }));
-                            update();
-                        }).catch(error => {
-                            dispatch(addAlert({
-                                description: error?.description
-                                    || "An error occurred while updating the userstore.",
-                                level: AlertLevels.ERROR,
-                                message: error?.message || "Something went wrong"
-                            }));
-                        });
-                    }).catch((error) => {
-                        dispatch(addAlert({
-                            description: error?.description ?? "An error occurred while updating the Userstore",
-                            level: AlertLevels.ERROR,
-                            message: error?.message ?? "Something went wrong"
-                        }));
-                    });
-                } }
+                onSubmit={ onSubmitHandler }
             >
                 <Grid>
                     <Grid.Row columns={ 1 }>
@@ -457,7 +459,7 @@ export const EditBasicDetailsUserStore = (
             </Forms>
 
             <Divider hidden />
-            
+
             <Grid columns={ 1 }>
                 <Grid.Column width={ 16 }>
                     <DangerZoneGroup sectionHeader="Danger Zone">

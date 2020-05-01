@@ -20,7 +20,7 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ResourceList } from "@wso2is/react-components";
-import React, { ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Image } from "semantic-ui-react";
 import { deleteUserStore } from "../../api";
@@ -48,7 +48,9 @@ interface UserStoresListPropsInterface extends SBACInterface<FeatureConfigInterf
  * @param {UserStoresListPropsInterface} props
  * @return {ReactElement}
  */
-export const UserStoresList = (props: UserStoresListPropsInterface): ReactElement => {
+export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
+    props: UserStoresListPropsInterface
+): ReactElement => {
 
     const {
         featureConfig,

@@ -17,7 +17,7 @@
 */
 
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import React, { ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Button, Divider, Grid, Header, Icon } from "semantic-ui-react";
 import { testConnection } from "../../../api";
 import { JDBC } from "../../../constants";
@@ -56,9 +56,9 @@ interface GeneralDetailsUserstorePropsInterface {
 /**
  * This component renders the General Details step of the wizard
  * @param {GeneralDetailsUserstorePropsInterface} props
- * @returns {Promise<any>}
+ * @returns {ReactElement}
  */
-export const GeneralDetailsUserstore = (
+export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstorePropsInterface> = (
     props: GeneralDetailsUserstorePropsInterface
 ): ReactElement => {
 

@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import React, { ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Divider, Grid } from "semantic-ui-react";
 import { TypeProperty, UserStorePostData, UserStoreProperty } from "../../../models";
 
@@ -55,7 +55,9 @@ interface SummaryUserStoresPropsInterface {
  * @param {SummaryUserStoresPropsInterface} props
  * @return {ReactElement}
  */
-export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): ReactElement => {
+export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterface> = (
+    props: SummaryUserStoresPropsInterface
+): ReactElement => {
 
     const { data, connectionProperties, userProperties, groupProperties, basicProperties, type } = props;
 
