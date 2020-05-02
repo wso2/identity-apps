@@ -225,6 +225,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             submitted={ isFormSubmitted }
             dropdownPosition={ dropdownPosition }
             triggerClearQuery={ triggerClearQuery }
+            data-testid="advanced-search"
         >
             <Grid>
                 <Grid.Row columns={ 1 }>
@@ -240,7 +241,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                         };
                                     })
                                 }
-                                readOnly={ filterAttributeOptions.length === 1 }
+                                // readOnly={ filterAttributeOptions.length === 1 }
                                 label={ t("devPortal:components.advancedSearch.form.inputs.filterAttribute.label") }
                                 name={ FILTER_ATTRIBUTE_FIELD_IDENTIFIER }
                                 placeholder={
