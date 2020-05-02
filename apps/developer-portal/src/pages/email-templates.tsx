@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { addAlert } from "@wso2is/core/dist/src/store";
+import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";

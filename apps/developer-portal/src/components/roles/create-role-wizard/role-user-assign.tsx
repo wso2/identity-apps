@@ -32,7 +32,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Grid, Icon, Input, Modal, Segment, Table } from "semantic-ui-react";
 import { getUsersList } from "../../../api";
 import { EmptyPlaceholderIllustrations } from "../../../configs";
-import { UserConstants } from "../../../constants";
+import { UIConstants } from "../../../constants";
 import { RolesMemberInterface, UserBasicInterface } from "../../../models";
 
 /**
@@ -162,7 +162,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     };
 
     useEffect(() => {
-        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
+        setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
         setUserListMetaContent(new Map<string, string>([
             ["name", "name"],
             ["emails", "emails"],

@@ -93,15 +93,15 @@ interface ClaimsListPropsInterface extends SBACInterface<FeatureConfigInterface>
     /**
      * Callback for the search query clear action.
      */
-    onSearchQueryClear: () => void;
+    onSearchQueryClear?: () => void;
     /**
      * Callback to be fired when clicked on the empty list placeholder action.
      */
-    onEmptyListPlaceholderActionClick: () => void;
+    onEmptyListPlaceholderActionClick?: () => void;
     /**
      * Search query for the list.
      */
-    searchQuery: string;
+    searchQuery?: string;
 }
 
 /**
@@ -712,7 +712,9 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                             ? "times"
                                                             : "pencil alternate",
                                                         onClick: () => {
-                                                            setEditExternalClaim(editExternalClaim !== -1 ? -1 : index);
+                                                            setEditExternalClaim(
+                                                                editExternalClaim !== -1 ? -1 : index
+                                                            );
                                                         },
                                                         popupText: "Edit",
                                                         type: "button"

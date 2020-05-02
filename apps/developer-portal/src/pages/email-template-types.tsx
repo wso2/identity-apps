@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/dist/src/models";
-import { addAlert } from "@wso2is/core/dist/src/store";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { ReactElement, useEffect, useState } from "react";

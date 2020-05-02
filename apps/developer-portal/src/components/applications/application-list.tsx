@@ -267,7 +267,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             const [
                                 templateName,
                                 description
-                            ] = ApplicationManagementUtils.resolveApplicationTemplateNameInDescription(app.description);
+                            ] = ApplicationManagementUtils.resolveApplicationTemplateNameInDescription(
+                                app.description);
 
                             // TODO Remove this check and move the logic to backend.
                             if ("wso2carbon-local-sp" !== app.name) {

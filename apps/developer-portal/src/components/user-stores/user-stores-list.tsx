@@ -19,7 +19,13 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { LoadableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, EmptyPlaceholder, LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    EmptyPlaceholder,
+    LinkButton,
+    PrimaryButton,
+    ResourceList
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Icon, Image } from "semantic-ui-react";
