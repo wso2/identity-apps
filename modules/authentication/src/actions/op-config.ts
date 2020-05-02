@@ -155,8 +155,10 @@ export const initOPConfiguration = (
             setCallbackURL(requestParams.callbackURL);
             setOPConfigInitiated();
 
-            return Promise.resolve();
+            return Promise.resolve("Initialized OpenID Provider configuration from: "
+                + serverHost + SERVICE_RESOURCES.wellKnown);
         }).catch(() => {
+            setAuthorizeEndpoint(requestParams.serverOrigin + SERVICE_RESOURCES.authorize);
             setTokenEndpoint(requestParams.serverOrigin + SERVICE_RESOURCES.token);
             setRevokeTokenEndpoint(requestParams.serverOrigin + SERVICE_RESOURCES.revoke);
             setEndSessionEndpoint(requestParams.serverOrigin + SERVICE_RESOURCES.logout);
@@ -166,7 +168,8 @@ export const initOPConfiguration = (
             setCallbackURL(requestParams.callbackURL);
             setOPConfigInitiated();
 
-            return Promise.resolve();
+            return Promise.resolve(new Error("Initialized OpenID Provider configuration from default configuration."
+                + "Because failed to access welknown endpoint: " + serverHost + SERVICE_RESOURCES.wellKnown));
         });
 };
 
