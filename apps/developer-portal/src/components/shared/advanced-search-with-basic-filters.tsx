@@ -241,6 +241,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                         };
                                     })
                                 }
+                                // TODO: Enable this once default value is working properly for the dropdowns.
                                 // readOnly={ filterAttributeOptions.length === 1 }
                                 label={ t("devPortal:components.advancedSearch.form.inputs.filterAttribute.label") }
                                 name={ FILTER_ATTRIBUTE_FIELD_IDENTIFIER }

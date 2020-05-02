@@ -60,6 +60,7 @@ export class HelpPanelConstants {
 
     /**
      * Key for the `Edit Application` tag in the docs structure object.
+     * TODO: Rename this to `"Developer Portal` once mkdocs.yml is changed.
      * @constant
      * @type {string}
      */
