@@ -24,7 +24,7 @@ import { AxiosHttpClientInstance } from "@wso2is/http";
 import { AxiosHttpClient } from "@wso2is/http";
 import _ from "lodash";
 import { getFederatedAuthenticatorsList, getIdentityProviderList, getLocalAuthenticators } from "../api";
-import { selectedFederatedAuthenticators, selectedLocalAuthenticators } from "../components/applications/meta";
+import { getSelectedFederatedAuthenticators, getSelectedLocalAuthenticators } from "../components/applications/meta";
 import { AuthenticatorIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
@@ -123,7 +123,7 @@ export class IdentityProviderManagementUtils {
                         displayName: authenticator.displayName,
                         id: `${ IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER }-${ authenticator.id }`,
                         idp: IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER,
-                        image: this.findAuthenticatorIcon(selectedLocalAuthenticators, authenticator.id,
+                        image: this.findAuthenticatorIcon(getSelectedLocalAuthenticators(), authenticator.id,
                             authenticator.name),
                         isEnabled: authenticator.isEnabled,
                         name: authenticator.name
@@ -154,7 +154,7 @@ export class IdentityProviderManagementUtils {
                             idp: authenticator.name,
                             image: authenticator.image
                                 ? authenticator.image
-                                : this.findAuthenticatorIcon(selectedFederatedAuthenticators, authenticator.id,
+                                : this.findAuthenticatorIcon(getSelectedFederatedAuthenticators(), authenticator.id,
                                     authenticator.name),
                             isEnabled: authenticator.isEnabled,
                             name: authenticator.name
