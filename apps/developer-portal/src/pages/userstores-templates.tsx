@@ -23,8 +23,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { getAType, getUserstoreTypes } from "../api";
 import { AddUserStore } from "../components";
-import { ApplicationTemplateIllustrations, EmptyPlaceholderIllustrations } from "../configs";
-import { USERSTORE_TYPE_DISPLAY_NAMES, USER_STORES_PATH, USER_STORE_TYPE_DESCRIPTIONS } from "../constants";
+import { EmptyPlaceholderIllustrations, UserstoreTemplateIllustrations } from "../configs";
+import {
+    USERSTORE_TYPE_DISPLAY_NAMES,
+    USERSTORE_TYPE_IMAGES,
+    USER_STORES_PATH,
+    USER_STORE_TYPE_DESCRIPTIONS
+} from "../constants";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import { AlertLevels, TypeResponse, UserstoreType } from "../models";
@@ -97,7 +102,7 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
                                 description: type.description
                                     ?? USER_STORE_TYPE_DESCRIPTIONS[ type.typeName ],
                                 id: type.typeId,
-                                image: "customApp",
+                                image: USERSTORE_TYPE_IMAGES[ type.typeName ],
                                 name: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ]
                             }
                         )
@@ -107,7 +112,7 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
                                 description: type.description
                                     ?? USER_STORE_TYPE_DESCRIPTIONS[ type.typeName ],
                                 id: type.typeId,
-                                image: "customApp",
+                                image: USERSTORE_TYPE_IMAGES[ type.typeName ],
                                 name: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ]
                             }
                         )
@@ -166,7 +171,7 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
                                 onTemplateSelect={ (e: SyntheticEvent, { id }: { id: string }) => {
                                     setSelectedType(rawUserstoreTypes.find((type) => type.typeId === id));
                                 } }
-                                templateIcons={ ApplicationTemplateIllustrations }
+                                templateIcons={ UserstoreTemplateIllustrations }
                                 paginate={ true }
                                 paginationLimit={ 4 }
                                 paginationOptions={ {

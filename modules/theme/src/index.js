@@ -175,6 +175,14 @@ export const GoogleIdPIcon =
 export const TwitterIdPIcon =
     require("../dist/lib/themes/default/assets/images/identity-providers/twitter-idp-illustration.svg");
 
+// Userstore template illustrations
+export const ActiveDirectoryUserstoreIllustration =
+    require("../dist/lib/themes/default/assets/images/illustrations/ad-illustration.svg");
+export const JDBCUserstoreIllustration =
+    require("../dist/lib/themes/default/assets/images/illustrations/jdbc-illustration.svg");
+export const LDAPUserstoreIllustration =
+    require("../dist/lib/themes/default/assets/images/illustrations/ldap-illustration.svg");
+
 // Logos
 export const GravatarLogo = require("../dist/lib/themes/default/assets/images/gravatar-logo.png");
 export const Logo = require("../dist/lib/themes/default/assets/images/logo.svg");

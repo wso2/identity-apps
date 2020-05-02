@@ -17,6 +17,7 @@
  */
 
 import {
+    ActiveDirectoryUserstoreIllustration,
     AlertIcon,
     AndroidLogo,
     AngularLogo,
@@ -50,8 +51,8 @@ import {
     DragIcon,
     DragSquaresIcon,
     DummyUser,
-    EmailOTPIcon,
     EmailIcon,
+    EmailOTPIcon,
     EmptySearchResultsIllustration,
     ErrorIcon,
     ExpertModeIdPIcon,
@@ -67,9 +68,11 @@ import {
     HTMLLogo,
     HomeTileIcons,
     InfoIcon,
+    JDBCUserstoreIllustration,
     JWTLogo,
     JavaLogo,
     JavaScriptLogo,
+    LDAPUserstoreIllustration,
     LaunchIcon,
     LockShieldIcon,
     Logo,
@@ -91,14 +94,14 @@ import {
     ReactLogo,
     ReportIcon,
     SAMLWebAppTemplateIllustration,
+    SCIMLogo,
     SMSOTPIcon,
     SPATemplateIllustration,
+    SPMLLogo,
     SalesforceLogo,
     SamlLogo,
-    SCIMLogo,
     SettigsSectionIconSet,
     SpinWheelIcon,
-    SPMLLogo,
     SuccessIcon,
     TOTPIcon,
     TwitterIdPIcon,
@@ -142,7 +145,7 @@ export const SidePanelIcons = {
     serverConfigurations: GearsIcon,
     userStore: DatabaseIcon,
     usersAndRoles: UserIcon
-}
+};
 
 export const SidePanelMiscIcons = {
     caretRight: CaretRightIcon
@@ -371,4 +374,11 @@ export const OutboundProvisioningConnectorWizard = {
     connectorDetails: DocumentIcon,
     connectorSelection: GearsIcon,
     summary: ReportIcon
+};
+
+export const UserstoreTemplateIllustrations = {
+    ad: ActiveDirectoryUserstoreIllustration,
+    default: CustomApplicationTemplateIllustration,
+    jdbc: JDBCUserstoreIllustration,
+    ldap: LDAPUserstoreIllustration
 };
