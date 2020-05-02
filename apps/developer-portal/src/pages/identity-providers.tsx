@@ -65,7 +65,7 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
 
     const dispatch = useDispatch();
 
-    const [ searchQuery, setSearchQuery ] = useState("");
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
         IDENTITY_PROVIDER_LIST_SORTING_OPTIONS[ 0 ]
     );
@@ -73,7 +73,7 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(false);
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     /**
      * Retrieves the list of identity providers.

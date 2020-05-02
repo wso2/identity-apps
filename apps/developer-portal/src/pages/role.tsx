@@ -69,7 +69,7 @@ const filterOptions: DropdownItemProps[] = [
 
 /**
  * React component to list User Roles.
- * 
+ *
  * @return {ReactElement}
  */
 export const RolesPage = (): ReactElement => {
@@ -88,7 +88,7 @@ export const RolesPage = (): ReactElement => {
     // TODO: Check the usage and delete if not required.
     const [ isEmptyResults, setIsEmptyResults ] = useState<boolean>(false);
     const [ isRoleListFetchRequestLoading, setRoleListFetchRequestLoading ] = useState<boolean>(false);
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const [ initialRolList, setInitialRoleList ] = useState<RolesInterface[]>([]);
     const [ paginatedRoles, setPaginatedRoles ] = useState<RolesInterface[]>([]);
@@ -206,7 +206,7 @@ export const RolesPage = (): ReactElement => {
                 let updatedResults = [];
                 if (results) {
                     updatedResults = results.filter((role: RolesInterface) => {
-                        return role.displayName.includes(APPLICATION_DOMAIN) || 
+                        return role.displayName.includes(APPLICATION_DOMAIN) ||
                             role.displayName.includes(INTERNAL_DOMAIN);
                     })
                 }
@@ -218,7 +218,7 @@ export const RolesPage = (): ReactElement => {
 
     /**
      * Util method to paginate retrieved email template type list.
-     * 
+     *
      * @param offsetValue pagination offset value
      * @param itemLimit pagination item limit
      */
@@ -256,7 +256,7 @@ export const RolesPage = (): ReactElement => {
 
     /**
      * Function which will handle role deletion action.
-     * 
+     *
      * @param role - Role ID which needs to be deleted
      */
     const handleOnDelete = (role: RolesInterface): void => {
@@ -302,7 +302,7 @@ export const RolesPage = (): ReactElement => {
         <PageLayout
             title="Roles"
             description="Create and manage roles, assign permissions for roles."
-            showBottomDivider={ true } 
+            showBottomDivider={ true }
         >
             {
                 !isEmptyResults &&
@@ -383,7 +383,7 @@ export const RolesPage = (): ReactElement => {
                         closeWizard={ () => setShowWizard(false) }
                         updateList={ () => setListUpdated(true) }
                     />
-                ) 
+                )
             }
         </PageLayout>
     );

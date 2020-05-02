@@ -28,8 +28,7 @@ import { AdvancedSearchWithBasicFilters, ClaimsList, ListType } from "../compone
 import { AddLocalClaims } from "../components";
 import { CLAIM_DIALECTS_PATH, UIConstants } from "../constants";
 import { history } from "../helpers";
-import { ListLayout } from "../layouts";
-import { PageLayout } from "../layouts";
+import { ListLayout, PageLayout } from "../layouts";
 import { AlertLevels, Claim, ClaimsGetParams, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { filterList, sortList } from "../utils";
@@ -67,9 +66,9 @@ export const LocalClaimsPage = (): ReactElement => {
     const [ filteredClaims, setFilteredClaims ] = useState<Claim[]>(null);
     const [ sortBy, setSortBy ] = useState<DropdownItemProps>(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
-    const [ searchQuery, setSearchQuery ] = useState("");
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ isLoading, setIsLoading ] = useState(true);
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 

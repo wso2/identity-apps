@@ -51,7 +51,7 @@ const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
 
 /**
  * React component to list User Groups.
- * 
+ *
  * @return {ReactElement}
  */
 export const GroupsPage = (): ReactElement => {
@@ -70,7 +70,7 @@ export const GroupsPage = (): ReactElement => {
     // TODO: Check the usage and delete id not required.
     const [ isEmptyResults, setIsEmptyResults ] = useState<boolean>(false);
     const [ isGroupsListRequestLoading, setGroupsListRequestLoading ] = useState<boolean>(false);
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const [ groupList, setGroupsList ] = useState<RolesInterface[]>([]);
     const [ paginatedGroups, setPaginatedGroups ] = useState<RolesInterface[]>([]);
@@ -142,7 +142,7 @@ export const GroupsPage = (): ReactElement => {
 
         let storeOption = {
             key: null,
-            text: "", 
+            text: "",
             value: ""
         };
 
@@ -242,7 +242,7 @@ export const GroupsPage = (): ReactElement => {
 
     /**
      * Function which will handle role deletion action.
-     * 
+     *
      * @param role - Role which needs to be deleted
      */
     const handleOnDelete = (role: RolesInterface): void => {
@@ -298,7 +298,7 @@ export const GroupsPage = (): ReactElement => {
         <PageLayout
             title="Groups"
             description="Create and manage user groups, assign permissions for groups."
-            showBottomDivider={ true } 
+            showBottomDivider={ true }
         >
             <ListLayout
                 advancedSearch={ (

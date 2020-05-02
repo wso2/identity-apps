@@ -24,8 +24,7 @@ import { ConfirmationModal, EmptyPlaceholder, LinkButton, PrimaryButton, Resourc
 import { CopyInputField } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Icon, List, Popup } from "semantic-ui-react";
-import { Image } from "semantic-ui-react";
+import { Icon, Image, List, Popup } from "semantic-ui-react";
 import { EditExternalClaim } from "./edit";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim, getUserStores } from "../../api";
 import { EmptyPlaceholderIllustrations } from "../../configs";
@@ -521,39 +520,39 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                         ] }
                                         avatar={
                                             <>
-                                                { showWarning &&
-                                                <Popup
-                                                    trigger={
-                                                        <Icon
-                                                            className="notification-icon"
-                                                            name="warning circle"
-                                                            size="small"
-                                                            color="red"
-                                                        />
-                                                    }
-                                                    content={
-                                                        <div>
-                                                            This attribute has not been mapped to an attribute
-                                                            in the following userstores:
-                                                            <ul>
-                                                                {
-                                                                    userStoresNotMapped.map(
-                                                                        (store: string, index: number) => {
-                                                                            return (
-                                                                                <li key={ index }>
-                                                                                    { store }
-                                                                                </li>
-                                                                            )
-                                                                        })
-                                                                }
-                                                            </ul>
+                                                { showWarning && (
+                                                    <Popup
+                                                        trigger={
+                                                            <Icon
+                                                                className="notification-icon"
+                                                                name="warning circle"
+                                                                size="small"
+                                                                color="red"
+                                                            />
+                                                        }
+                                                        content={
+                                                            <div>
+                                                                This attribute has not been mapped to an attribute
+                                                                in the following userstores:
+                                                                <ul>
+                                                                    {
+                                                                        userStoresNotMapped.map(
+                                                                            (store: string, index: number) => {
+                                                                                return (
+                                                                                    <li key={ index }>
+                                                                                        { store }
+                                                                                    </li>
+                                                                                )
+                                                                            })
+                                                                    }
+                                                                </ul>
 
 
-                                                        </div>
-                                                    }
-                                                    inverted
-                                                />
-                                                }
+                                                            </div>
+                                                        }
+                                                        inverted
+                                                    />
+                                                ) }
                                                 <Image
                                                     floated="left"
                                                     verticalAlign="middle"

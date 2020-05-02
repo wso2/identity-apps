@@ -45,7 +45,7 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const [ searchQuery, setSearchQuery ] = useState("");
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -55,7 +55,7 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ userStore, setUserStore ] = useState(undefined);
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
 
     const username = AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME);

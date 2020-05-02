@@ -65,7 +65,7 @@ export const UserStores = (): ReactElement => {
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
     const [ searchQuery, setSearchQuery ] = useState("");
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 

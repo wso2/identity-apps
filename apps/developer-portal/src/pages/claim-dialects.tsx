@@ -63,9 +63,9 @@ export const ClaimDialectsPage = (): ReactElement => {
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
     const [ localURI, setLocalURI ] = useState("");
-    const [ searchQuery, setSearchQuery ] = useState("");
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ isLoading, setIsLoading ] = useState(true);
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
@@ -312,7 +312,8 @@ export const ClaimDialectsPage = (): ReactElement => {
                                     setAddEditClaim(true);
                                 } }
                             >
-                                <Icon name="add"/>New External Dialect
+                                <Icon name="add"/>
+                                New External Dialect
                             </PrimaryButton>
                         )
                     }

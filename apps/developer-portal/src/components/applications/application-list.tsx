@@ -25,7 +25,8 @@ import {
     EmptyPlaceholder,
     LinkButton,
     PrimaryButton,
-    ResourceList, ResourceListActionInterface
+    ResourceList,
+    ResourceListActionInterface
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";

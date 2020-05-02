@@ -53,8 +53,8 @@ export const CertificatesTruststore: FunctionComponent<{}> = (): ReactElement =>
     const [ filteredCertificatesTruststore, setFilteredCertificatesTruststore ] = useState<Certificate[]>(null);
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
-    const [ searchQuery, setSearchQuery ] = useState("");
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 

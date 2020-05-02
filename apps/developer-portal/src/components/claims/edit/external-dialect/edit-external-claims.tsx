@@ -80,8 +80,8 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
     const [ showAddExternalClaim, setShowAddExternalClaim ] = useState(false);
-    const [ searchQuery, setSearchQuery ] = useState("");
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const [ triggerAddExternalClaim, setTriggerAddExternalClaim ] = useTrigger();
 
@@ -107,7 +107,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
      * @param {ExternalClaim[]} list.
      * @param {number} limit.
      * @param {number} offset.
-     * 
+     *
      * @return {ExternalClaim[]}
      */
     const paginate = (list: ExternalClaim[], limit: number, offset: number): ExternalClaim[] => {
