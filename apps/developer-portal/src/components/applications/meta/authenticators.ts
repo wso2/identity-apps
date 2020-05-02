@@ -19,88 +19,92 @@
 import { AuthenticatorIcons } from "../../../configs";
 import { StrictGenericAuthenticatorInterface } from "../../../models";
 
-export const selectedLocalAuthenticators: StrictGenericAuthenticatorInterface[] = [
-    {
-        id: "SWRlbnRpZmllckV4ZWN1dG9y",
-        image: AuthenticatorIcons?.identifierFirst,
-        name: "IdentifierExecutor"
-    },
-    {
-        id: "SldUQmFzaWNBdXRoZW50aWNhdG9y",
-        image: AuthenticatorIcons?.jwtBasic,
-        name: "JWTBasicAuthenticator"
-    },
-    {
-        id: "RklET0F1dGhlbnRpY2F0b3I",
-        image: AuthenticatorIcons?.fido,
-        name: "FIDOAuthenticator"
-    },
-    {
-        id: "eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg",
-        image: AuthenticatorIcons?.x509,
-        name: "x509CertificateAuthenticator"
-    },
-    {
-        id: "dG90cA",
-        image: AuthenticatorIcons?.totp,
-        name: "totp"
-    },
-    {
-        id: "QmFzaWNBdXRoZW50aWNhdG9y",
-        image: AuthenticatorIcons?.basic,
-        name: "BasicAuthenticator"
-    },
-    {
-        id: "U2Vzc2lvbkV4ZWN1dG9y",
-        image: AuthenticatorIcons?.sessionExecutor,
-        name: "SessionExecutor"
-    }
-];
+export const getSelectedLocalAuthenticators = (): StrictGenericAuthenticatorInterface[] => {
+    return [
+        {
+            id: "SWRlbnRpZmllckV4ZWN1dG9y",
+            image: AuthenticatorIcons?.identifierFirst,
+            name: "IdentifierExecutor"
+        },
+        {
+            id: "SldUQmFzaWNBdXRoZW50aWNhdG9y",
+            image: AuthenticatorIcons?.jwtBasic,
+            name: "JWTBasicAuthenticator"
+        },
+        {
+            id: "RklET0F1dGhlbnRpY2F0b3I",
+            image: AuthenticatorIcons?.fido,
+            name: "FIDOAuthenticator"
+        },
+        {
+            id: "eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg",
+            image: AuthenticatorIcons?.x509,
+            name: "x509CertificateAuthenticator"
+        },
+        {
+            id: "dG90cA",
+            image: AuthenticatorIcons?.totp,
+            name: "totp"
+        },
+        {
+            id: "QmFzaWNBdXRoZW50aWNhdG9y",
+            image: AuthenticatorIcons?.basic,
+            name: "BasicAuthenticator"
+        },
+        {
+            id: "U2Vzc2lvbkV4ZWN1dG9y",
+            image: AuthenticatorIcons?.sessionExecutor,
+            name: "SessionExecutor"
+        }
+    ];
+};
 
-export const selectedFederatedAuthenticators: StrictGenericAuthenticatorInterface[] = [
-    {
-        id: "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y",
-        image: AuthenticatorIcons?.microsoft,
-        name: "MicrosoftWindowsLiveAuthenticator"
-    },
-    {
-        id: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
-        image: AuthenticatorIcons?.google,
-        name: "GoogleOIDCAuthenticator"
-    },
-    {
-        id: "U01TT1RQ",
-        image: AuthenticatorIcons?.smsOTP,
-        name: "SMSOTP"
-    },
-    {
-        id: "VHdpdHRlckF1dGhlbnRpY2F0b3I",
-        image: AuthenticatorIcons?.twitter,
-        name: "TwitterAuthenticator"
-    },
-    {
-        id: "RW1haWxPVFA",
-        image: AuthenticatorIcons?.emailOTP,
-        name: "EmailOTP"
-    },
-    {
-        id: "WWFob29PQXV0aDJBdXRoZW50aWNhdG9y",
-        image: AuthenticatorIcons?.yahoo,
-        name: "YahooOAuth2Authenticator"
-    },
-    {
-        id: "SVdBS2VyYmVyb3NBdXRoZW50aWNhdG9y",
-        image: undefined,
-        name: "IWAKerberosAuthenticator"
-    },
-    {
-        id: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
-        image: AuthenticatorIcons?.facebook,
-        name: "FacebookAuthenticator"
-    },
-    {
-        id: "T2ZmaWNlMzY1QXV0aGVudGljYXRvcg",
-        image: AuthenticatorIcons?.office365,
-        name: "Office365Authenticator"
-    }
-];
+export const getSelectedFederatedAuthenticators = (): StrictGenericAuthenticatorInterface[] => {
+    return [
+        {
+            id: "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y",
+            image: AuthenticatorIcons?.microsoft,
+            name: "MicrosoftWindowsLiveAuthenticator"
+        },
+        {
+            id: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
+            image: AuthenticatorIcons?.google,
+            name: "GoogleOIDCAuthenticator"
+        },
+        {
+            id: "U01TT1RQ",
+            image: AuthenticatorIcons?.smsOTP,
+            name: "SMSOTP"
+        },
+        {
+            id: "VHdpdHRlckF1dGhlbnRpY2F0b3I",
+            image: AuthenticatorIcons?.twitter,
+            name: "TwitterAuthenticator"
+        },
+        {
+            id: "RW1haWxPVFA",
+            image: AuthenticatorIcons?.emailOTP,
+            name: "EmailOTP"
+        },
+        {
+            id: "WWFob29PQXV0aDJBdXRoZW50aWNhdG9y",
+            image: AuthenticatorIcons?.yahoo,
+            name: "YahooOAuth2Authenticator"
+        },
+        {
+            id: "SVdBS2VyYmVyb3NBdXRoZW50aWNhdG9y",
+            image: undefined,
+            name: "IWAKerberosAuthenticator"
+        },
+        {
+            id: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
+            image: AuthenticatorIcons?.facebook,
+            name: "FacebookAuthenticator"
+        },
+        {
+            id: "T2ZmaWNlMzY1QXV0aGVudGljYXRvcg",
+            image: AuthenticatorIcons?.office365,
+            name: "Office365Authenticator"
+        }
+    ];
+};
