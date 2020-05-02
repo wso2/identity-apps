@@ -17,15 +17,13 @@
  */
 
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownProps, PaginationProps } from "semantic-ui-react";
 import { listClientCertificates } from "../api";
 import { AdvancedSearchWithBasicFilters, CertificatesList } from "../components";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { UserConstants } from "../constants";
+import { UIConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertLevels, Certificate } from "../models";
 import { filterList, sortList } from "../utils";
@@ -50,11 +48,13 @@ export const CertificatesTruststore: FunctionComponent<{}> = (): ReactElement =>
 
     const [ certificatesTruststore, setCertificatesTruststore ] = useState<Certificate[]>(null);
     const [ offset, setOffset ] = useState(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ filteredCertificatesTruststore, setFilteredCertificatesTruststore ] = useState<Certificate[]>(null);
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
+    const [ searchQuery, setSearchQuery ] = useState("");
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -62,11 +62,6 @@ export const CertificatesTruststore: FunctionComponent<{}> = (): ReactElement =>
 
     /**
      * Fetches all certificates.
-     *
-     * @param {number} limit.
-     * @param {string} sort.
-     * @param {number} offset.
-     * @param {string} filter.
      */
     const fetchCertificatesTruststore = () => {
         setIsLoading(true);
@@ -87,7 +82,6 @@ export const CertificatesTruststore: FunctionComponent<{}> = (): ReactElement =>
     };
 
     useEffect(() => {
-        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
         fetchCertificatesTruststore();
     }, []);
 
@@ -155,9 +149,17 @@ export const CertificatesTruststore: FunctionComponent<{}> = (): ReactElement =>
     const handleTruststoreFilter = (query: string): void => {
         // TODO: Implement once the API is ready
         // fetchCertificatesTruststore(null, null, null, query);
-        setFilteredCertificatesTruststore(
-            filterList(certificatesTruststore, query, "alias", true)
-        );
+        setFilteredCertificatesTruststore(filterList(certificatesTruststore, query, "alias", true));
+        setSearchQuery(query);
+    };
+
+    /**
+     * Handles the `onSearchQueryClear` callback action.
+     */
+    const handleSearchQueryClear = (): void => {
+        setTriggerClearQuery(!triggerClearQuery);
+        setSearchQuery("");
+        setFilteredCertificatesTruststore(certificatesTruststore);
     };
 
     return (
@@ -166,67 +168,58 @@ export const CertificatesTruststore: FunctionComponent<{}> = (): ReactElement =>
             description="Create and manage certificates in the truststore"
             showBottomDivider={ true }
         >
-            {
-                filteredCertificatesTruststore?.length > 0
-                    ? (<ListLayout
-                        advancedSearch={
-                            <AdvancedSearchWithBasicFilters
-                                onFilter={ handleTruststoreFilter }
-                                filterAttributeOptions={ [
-                                    {
-                                        key: 0,
-                                        text: "Alias",
-                                        value: "alias"
-                                    }
-                                ] }
-                                filterAttributePlaceholder={
-                                    t("devPortal:components.certificates.truststore.advancedSearch.form.inputs" +
-                                        ".filterAttribute.placeholder")
-                                }
-                                filterConditionsPlaceholder={
-                                    t("devPortal:components.certificates.truststore.advancedSearch.form.inputs" +
-                                        ".filterCondition.placeholder")
-                                }
-                                filterValuePlaceholder={
-                                    t("devPortal:components.certificates.truststore.advancedSearch.form.inputs" +
-                                        ".filterValue.placeholder")
-                                }
-                                placeholder={
-                                    t("devPortal:components.certificates.truststore.advancedSearch.placeholder")
-                                }
-                                defaultSearchAttribute="alias"
-                                defaultSearchOperator="co"
-                            />
+            <ListLayout
+                advancedSearch={
+                    <AdvancedSearchWithBasicFilters
+                        onFilter={ handleTruststoreFilter }
+                        filterAttributeOptions={ [
+                            {
+                                key: 0,
+                                text: "Alias",
+                                value: "alias"
+                            }
+                        ] }
+                        filterAttributePlaceholder={
+                            t("devPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                                ".filterAttribute.placeholder")
                         }
-                        currentListSize={ listItemLimit }
-                        listItemLimit={ listItemLimit }
-                        onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                        onPageChange={ handlePaginationChange }
-                        onSortStrategyChange={ handleSortStrategyChange }
-                        onSortOrderChange={ handleSortOrderChange }
-                        leftActionPanel={ null }
-                        showPagination={ true }
-                        sortOptions={ SORT_BY }
-                        sortStrategy={ sortBy }
-                        totalPages={ Math.ceil(filteredCertificatesTruststore?.length / listItemLimit) }
-                        totalListSize={ filteredCertificatesTruststore?.length }
-                    >
-                        <CertificatesList
-                            list={ paginate(filteredCertificatesTruststore, listItemLimit, offset) }
-                            update={ fetchCertificatesTruststore }
-                            type="truststore"
-                        />
-                    </ListLayout>
-                    )
-                    : !isLoading && (
-                        <EmptyPlaceholder
-                            title="No Certificate"
-                            subtitle={ [ "Currently, there are no certificates available." ] }
-                            image={ EmptyPlaceholderIllustrations.emptyList }
-                            imageSize="tiny"
-                        />
-                    )
-            }
+                        filterConditionsPlaceholder={
+                            t("devPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                                ".filterCondition.placeholder")
+                        }
+                        filterValuePlaceholder={
+                            t("devPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                                ".filterValue.placeholder")
+                        }
+                        placeholder={
+                            t("devPortal:components.certificates.truststore.advancedSearch.placeholder")
+                        }
+                        defaultSearchAttribute="alias"
+                        defaultSearchOperator="co"
+                    />
+                }
+                currentListSize={ listItemLimit }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                onPageChange={ handlePaginationChange }
+                onSortStrategyChange={ handleSortStrategyChange }
+                onSortOrderChange={ handleSortOrderChange }
+                leftActionPanel={ null }
+                showPagination={ true }
+                sortOptions={ SORT_BY }
+                sortStrategy={ sortBy }
+                totalPages={ Math.ceil(filteredCertificatesTruststore?.length / listItemLimit) }
+                totalListSize={ filteredCertificatesTruststore?.length }
+            >
+                <CertificatesList
+                    isLoading={ isLoading }
+                    list={ paginate(filteredCertificatesTruststore, listItemLimit, offset) }
+                    update={ fetchCertificatesTruststore }
+                    onSearchQueryClear={ handleSearchQueryClear }
+                    searchQuery={ searchQuery }
+                    type="truststore"
+                />
+            </ListLayout>
         </PageLayout>
     );
 };

@@ -66,7 +66,7 @@ interface CertificatesListPropsInterface extends SBACInterface<FeatureConfigInte
     /**
      * Callback to be fired when clicked on the empty list placeholder action.
      */
-    onEmptyListPlaceholderActionClick: () => void;
+    onEmptyListPlaceholderActionClick?: () => void;
     /**
      * Search query for the list.
      */
@@ -394,7 +394,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
             );
         }
 
-        if (list?.length === 0) {
+        if (list?.length === 0 && onEmptyListPlaceholderActionClick) {
             return (
                 <EmptyPlaceholder
                     action={ (

@@ -18,15 +18,14 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getUserStores } from "../api";
 import { AdvancedSearchWithBasicFilters, UserStoresList } from "../components";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { USERSTORE_TEMPLATES_PATH, UserConstants } from "../constants";
+import { UIConstants, USERSTORE_TEMPLATES_PATH } from "../constants";
 import { history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertLevels, FeatureConfigInterface, QueryParams, UserStoreListItem } from "../models";
@@ -60,12 +59,13 @@ export const UserStores = (): ReactElement => {
 
     const [ userStores, setUserStores ] = useState<UserStoreListItem[]>([]);
     const [ offset, setOffset ] = useState(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ filteredUserStores, setFilteredUserStores ] = useState<UserStoreListItem[]>([]);
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
-    const [ query, setQuery ] = useState("");
+    const [ searchQuery, setSearchQuery ] = useState("");
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -104,7 +104,6 @@ export const UserStores = (): ReactElement => {
     };
 
     useEffect(() => {
-        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
         fetchUserStores(null, null, null, null);
     }, []);
 
@@ -172,10 +171,17 @@ export const UserStores = (): ReactElement => {
     const handleUserstoreFilter = (query: string): void => {
         // TODO: Implement once the API is ready
         // fetchUserStores(null, null, null, query);
-        setFilteredUserStores(
-            filterList(userStores, query, "name", true)
-        );
-        setQuery(query);
+        setFilteredUserStores(filterList(userStores, query, "name", true));
+        setSearchQuery(query);
+    };
+
+    /**
+     * Handles the `onSearchQueryClear` callback action.
+     */
+    const handleSearchQueryClear = (): void => {
+        setTriggerClearQuery(!triggerClearQuery);
+        setSearchQuery("");
+        setFilteredUserStores(userStores);
     };
 
     return (
@@ -184,116 +190,78 @@ export const UserStores = (): ReactElement => {
                 description="Create and manage userstores"
                 showBottomDivider={ true }
             >
-                {
-                    filteredUserStores?.length > 0
-                        ? (
-                            <ListLayout
-                                advancedSearch={
-                                    <AdvancedSearchWithBasicFilters
-                                        onFilter={ handleUserstoreFilter }
-                                        filterAttributeOptions={ [
-                                            {
-                                                key: 0,
-                                                text: t("common:name"),
-                                                value: "name"
-                                            },
-                                            {
-                                                key: 1,
-                                                text: t("common:description"),
-                                                value: "description"
-                                            }
-                                        ] }
-                                        filterAttributePlaceholder={
-                                            t("devPortal:components.userstores.advancedSearch.form.inputs" +
-                                                ".filterAttribute.placeholder")
-                                        }
-                                        filterConditionsPlaceholder={
-                                            t("devPortal:components.userstores.advancedSearch.form.inputs" +
-                                                ".filterCondition.placeholder")
-                                        }
-                                        filterValuePlaceholder={
-                                            t("devPortal:components.userstores.advancedSearch.form.inputs" +
-                                                ".filterValue.placeholder")
-                                        }
-                                        placeholder={
-                                            t("devPortal:components.userstores.advancedSearch.placeholder")
-                                        }
-                                        defaultSearchAttribute="name"
-                                        defaultSearchOperator="co"
-                                    />
+                <ListLayout
+                    advancedSearch={
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleUserstoreFilter }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: t("common:name"),
+                                    value: "name"
+                                },
+                                {
+                                    key: 1,
+                                    text: t("common:description"),
+                                    value: "description"
                                 }
-                                currentListSize={ listItemLimit }
-                                listItemLimit={ listItemLimit }
-                                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                                onPageChange={ handlePaginationChange }
-                                onSortStrategyChange={ handleSortStrategyChange }
-                                onSortOrderChange={ handleSortOrderChange }
-                                rightActionPanel={
-                                    hasRequiredScopes(
-                                        featureConfig?.userStores,
-                                        featureConfig?.userStores?.scopes?.create) && (
-                                        <PrimaryButton
-                                            onClick={ () => {
-                                                history.push(USERSTORE_TEMPLATES_PATH);
-                                            } }
-                                        >
-                                            <Icon name="add" />New Userstore
-                                        </PrimaryButton>
-                                    )
-                                }
-                                leftActionPanel={ null }
-                                showPagination={ true }
-                                sortOptions={ SORT_BY }
-                                sortStrategy={ sortBy }
-                                totalPages={ Math.ceil(filteredUserStores?.length / listItemLimit) }
-                                totalListSize={ filteredUserStores?.length }
+                            ] }
+                            filterAttributePlaceholder={
+                                t("devPortal:components.userstores.advancedSearch.form.inputs" +
+                                    ".filterAttribute.placeholder")
+                            }
+                            filterConditionsPlaceholder={
+                                t("devPortal:components.userstores.advancedSearch.form.inputs" +
+                                    ".filterCondition.placeholder")
+                            }
+                            filterValuePlaceholder={
+                                t("devPortal:components.userstores.advancedSearch.form.inputs" +
+                                    ".filterValue.placeholder")
+                            }
+                            placeholder={
+                                t("devPortal:components.userstores.advancedSearch.placeholder")
+                            }
+                            defaultSearchAttribute="name"
+                            defaultSearchOperator="co"
+                            triggerClearQuery={ triggerClearQuery }
+                        />
+                    }
+                    currentListSize={ listItemLimit }
+                    listItemLimit={ listItemLimit }
+                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                    onPageChange={ handlePaginationChange }
+                    onSortStrategyChange={ handleSortStrategyChange }
+                    onSortOrderChange={ handleSortOrderChange }
+                    rightActionPanel={
+                        hasRequiredScopes(
+                            featureConfig?.userStores,
+                            featureConfig?.userStores?.scopes?.create) && (
+                            <PrimaryButton
+                                onClick={ () => {
+                                    history.push(USERSTORE_TEMPLATES_PATH);
+                                } }
                             >
-                                <UserStoresList
-                                    list={ paginate(filteredUserStores, listItemLimit, offset) }
-                                    update={ fetchUserStores }
-                                    featureConfig={ featureConfig }
-                                />
-                            </ListLayout>
+                                <Icon name="add"/>New Userstore
+                            </PrimaryButton>
                         )
-                        : !isLoading &&
-                            (!userStores || (userStores?.length === 0 && filteredUserStores?.length === 0))
-                            ? (
-                                <EmptyPlaceholder
-                                    action={
-                                        <PrimaryButton
-                                            onClick={ () => {
-                                                history.push(USERSTORE_TEMPLATES_PATH);
-                                            } }
-                                        >
-                                            <Icon name="add" /> New Userstore
-                                </PrimaryButton>
-                                    }
-                                    title="Add Userstore"
-                                    subtitle={ [ "Currently, there are no userstores available." ] }
-                                    image={ EmptyPlaceholderIllustrations.emptyList }
-                                    imageSize="tiny"
-                                />
-                            )
-                            : !isLoading && (
-                                <EmptyPlaceholder
-                                    action={ (
-                                        <LinkButton onClick={ () => {
-                                            setFilteredUserStores(userStores);
-                                        } }
-                                        >
-                                            Clear search query
-                                        </LinkButton>
-                                    ) }
-                                    image={ EmptyPlaceholderIllustrations.emptySearch }
-                                    imageSize="tiny"
-                                    title={ "No results found" }
-                                    subtitle={ [
-                                        `We couldn't find any results for "${query}"`,
-                                        "Please try a different search term."
-                                    ] }
-                                />
-                            )
-                }
+                    }
+                    leftActionPanel={ null }
+                    showPagination={ true }
+                    sortOptions={ SORT_BY }
+                    sortStrategy={ sortBy }
+                    totalPages={ Math.ceil(filteredUserStores?.length / listItemLimit) }
+                    totalListSize={ filteredUserStores?.length }
+                >
+                    <UserStoresList
+                        isLoading={ isLoading }
+                        list={ paginate(filteredUserStores, listItemLimit, offset) }
+                        onEmptyListPlaceholderActionClick={ () => history.push(USERSTORE_TEMPLATES_PATH) }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        searchQuery={ searchQuery }
+                        update={ fetchUserStores }
+                        featureConfig={ featureConfig }
+                    />
+                </ListLayout>
             </PageLayout>
     );
 };

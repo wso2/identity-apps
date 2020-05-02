@@ -17,22 +17,22 @@
 */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { SBACInterface } from "@wso2is/core/models";
+import { LoadableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, ResourceList } from "@wso2is/react-components";
+import { ConfirmationModal, EmptyPlaceholder, LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Image } from "semantic-ui-react";
+import { Icon, Image } from "semantic-ui-react";
 import { deleteUserStore } from "../../api";
-import { DatabaseAvatarGraphic } from "../../configs/ui";
-import { EDIT_USER_STORE_PATH } from "../../constants";
+import { DatabaseAvatarGraphic, EmptyPlaceholderIllustrations } from "../../configs";
+import { EDIT_USER_STORE_PATH, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import { AlertLevels, FeatureConfigInterface, UserStoreListItem } from "../../models";
 
 /**
  * Prop types of the `UserStoresList` component
  */
-interface UserStoresListPropsInterface extends SBACInterface<FeatureConfigInterface> {
+interface UserStoresListPropsInterface extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface {
     /**
      * The userstore list
      */
@@ -41,6 +41,18 @@ interface UserStoresListPropsInterface extends SBACInterface<FeatureConfigInterf
      * Initiate an update
      */
     update: () => void;
+    /**
+     * Callback for the search query clear action.
+     */
+    onSearchQueryClear: () => void;
+    /**
+     * Callback to be fired when clicked on the empty list placeholder action.
+     */
+    onEmptyListPlaceholderActionClick: () => void;
+    /**
+     * Search query for the list.
+     */
+    searchQuery: string;
 }
 
 /**
@@ -53,8 +65,12 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
 ): ReactElement => {
 
     const {
+        isLoading,
         featureConfig,
         list,
+        onEmptyListPlaceholderActionClick,
+        onSearchQueryClear,
+        searchQuery,
         update
     } = props;
 
@@ -140,51 +156,107 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
         </ConfirmationModal>
     );
 
+    /**
+     * Shows list placeholders.
+     *
+     * @return {React.ReactElement}
+     */
+    const showPlaceholders = (): ReactElement => {
+        // When the search returns empty.
+        if (searchQuery) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ onSearchQueryClear }>Clear search query</LinkButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    imageSize="tiny"
+                    title={ "No results found" }
+                    subtitle={ [
+                        `We couldn't find any results for ${ searchQuery }`,
+                        "Please try a different search term."
+                    ] }
+                />
+            );
+        }
+
+        if (list?.length === 0) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
+                            <Icon name="add" />
+                            New Userstore
+                        </PrimaryButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.newList }
+                    imageSize="tiny"
+                    title={ "Add a new Userstore" }
+                    subtitle={ [
+                        "There are currently no userstores available.",
+                        "You can add a new userstore easily by following the",
+                        "steps in the userstore creation wizard."
+                    ] }
+                />
+            );
+        }
+
+        return null;
+    };
+
     return (
         <>
             { deleteConfirm && showDeleteConfirm() }
-            <ResourceList>
+            <ResourceList
+                isLoading={ isLoading }
+                loadingStateOptions={ {
+                    count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                    imageType: "square"
+                } }
+            >
                 {
-                    list?.map((userStore: UserStoreListItem, index: number) => (
-                        <ResourceList.Item
-                            avatar={
-                                <Image
-                                    floated="left"
-                                    verticalAlign="middle"
-                                    rounded
-                                    centered
-                                    size="mini"
-                                >
-                                    <DatabaseAvatarGraphic.ReactComponent />
-                                </Image>
-                            }
-                            key={ index }
-                            actions={ [
-                                {
-                                    icon: "pencil alternate",
-                                    onClick: () => {
-                                        history.push(`${EDIT_USER_STORE_PATH}/${userStore?.id}`);
-                                    },
-                                    popupText: "Edit",
-                                    type: "button"
-                                },
-                                {
-                                    hidden: !hasRequiredScopes(
-                                        featureConfig?.userStores,
-                                        featureConfig?.userStores?.scopes?.delete),
-                                    icon: "trash alternate",
-                                    onClick: () => {
-                                        initDelete(userStore?.id, userStore?.name)
-                                    },
-                                    popupText: "Delete",
-                                    type: "dropdown"
+                    list && list instanceof Array && list.length > 0
+                        ? list?.map((userStore: UserStoreListItem, index: number) => (
+                            <ResourceList.Item
+                                avatar={
+                                    <Image
+                                        floated="left"
+                                        verticalAlign="middle"
+                                        rounded
+                                        centered
+                                        size="mini"
+                                    >
+                                        <DatabaseAvatarGraphic.ReactComponent />
+                                    </Image>
                                 }
-                            ] }
-                            actionsFloated="right"
-                            itemHeader={ userStore.name }
-                            itemDescription={ userStore.description }
-                        />
-                    ))
+                                key={ index }
+                                actions={ [
+                                    {
+                                        icon: "pencil alternate",
+                                        onClick: () => {
+                                            history.push(`${EDIT_USER_STORE_PATH}/${userStore?.id}`);
+                                        },
+                                        popupText: "Edit",
+                                        type: "button"
+                                    },
+                                    {
+                                        hidden: !hasRequiredScopes(
+                                            featureConfig?.userStores,
+                                            featureConfig?.userStores?.scopes?.delete),
+                                        icon: "trash alternate",
+                                        onClick: () => {
+                                            initDelete(userStore?.id, userStore?.name)
+                                        },
+                                        popupText: "Delete",
+                                        type: "dropdown"
+                                    }
+                                ] }
+                                actionsFloated="right"
+                                itemHeader={ userStore.name }
+                                itemDescription={ userStore.description }
+                            />
+                        ))
+                        : showPlaceholders()
                 }
             </ResourceList>
         </>
