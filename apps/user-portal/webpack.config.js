@@ -20,7 +20,7 @@ const webpack = require("webpack");
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const TaserJSPlugin = require("terser-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const WriteFilePlugin = require("write-file-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
@@ -246,15 +246,16 @@ module.exports = (env) => {
         ],
         devtool: "eval",
         optimization: {
-            minimize: false,
-            // minimizer: [
-            //     isProd &&
-            //         new TaserJSPlugin({
-            //             terserOptions: {
-            //                 keep_fnames: true
-            //             }
-            //         })
-            // ].filter(Boolean),
+            minimize: true,
+            minimizer: [
+                new TerserPlugin({
+                    cache: path.resolve(__dirname, "cache"),
+                    extractComments: true,
+                    terserOptions: {
+                        keep_fnames: true
+                    }
+                })
+            ].filter(Boolean),
             splitChunks: {
                 chunks: "all"
             }
