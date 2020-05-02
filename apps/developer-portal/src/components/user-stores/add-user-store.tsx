@@ -18,15 +18,23 @@
 
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
-import React, { ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { SummaryUserStores } from "./wizards";
-import { BasicDetailsUserStore, ConnectionDetails } from "./wizards";
+import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails } from "./wizards";
 import { addUserStore } from "../../api";
 import { ApplicationWizardStepIcons } from "../../configs";
-import { AlertLevels, Type, UserStorePostData } from "../../models";
-import { addAlert } from "../../store/actions";
+import { USERSTORE_TYPE_DISPLAY_NAMES, USER_STORES_PATH } from "../../constants";
+import { history } from "../../helpers";
+import {
+    AlertLevels,
+    CategorizedProperties,
+    UserStorePostData,
+    UserStoreProperty,
+    UserstoreType
+} from "../../models";
+import { addAlert } from "@wso2is/core/store";
+import { reOrganizeProperties } from "../../utils";
 
 /**
  * Prop types of the `AddUserStore` component
@@ -40,7 +48,10 @@ interface AddUserStoreProps {
      * Called when the modal is closed
      */
     onClose: () => void;
-
+    /**
+     * The userstore type.
+     */
+    type: UserstoreType;
 }
 
 /**
@@ -48,20 +59,34 @@ interface AddUserStoreProps {
  * @param {AddUserStoreProps} props
  * @return {ReactElement}
  */
-export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
+export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUserStoreProps): ReactElement => {
 
-    const { open, onClose } = props;
+    const { open, onClose, type } = props;
 
-    const [currentWizardStep, setCurrentWizardStep] = useState(0);
-    const [basicDetailsData, setBasicDetailsData] = useState<Map<string, FormValue>>(null);
-    const [connectionDetailsData, setConnectionDetailsData] = useState<Map<string, FormValue>>(null);
-    const [type, setType] = useState<Type>(null);
-    const [userStore, setUserStore] = useState<UserStorePostData>(null);
+    const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(0);
+    const [ generalDetailsData, setGeneralDetailsData ] = useState<Map<string, FormValue>>(null);
+    const [ userDetailsData, setUserDetailsData ] = useState<Map<string, FormValue>>(null);
+    const [ groupDetailsData, setGroupDetailsData ] = useState<Map<string, FormValue>>(null);
+    const [ userStore, setUserStore ] = useState<UserStorePostData>(null);
+    const [ properties, setProperties ] = useState<CategorizedProperties>(null);
 
-    const [firstStep, setFirstStep] = useTrigger();
-    const [secondStep, setSecondStep] = useTrigger();
+    const [ firstStep, setFirstStep ] = useTrigger();
+    const [ secondStep, setSecondStep ] = useTrigger();
+    const [ thirdStep, setThirdStep ] = useTrigger();
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        type && setProperties(reOrganizeProperties(type.properties));
+    }, [ type ]);
+
+    useEffect(() => {
+        userStore && setCurrentWizardStep(3);
+    }, [ userStore ]);
+
+    useEffect(() => {
+        groupDetailsData && serializeData();
+    }, [ groupDetailsData ]);
 
     /**
      * Adds the userstore
@@ -80,48 +105,75 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
                 message: "Updating Userstore list takes time"
             }));
             onClose();
+            history.push(USER_STORES_PATH);
         }).catch(error => {
-                dispatch(addAlert({
-                    description: error?.description ?? "There was an error while creating the userstore",
-                    level: AlertLevels.ERROR,
-                    message: error?.message ?? "Something went wrong!"
-                }))
-            })
+            dispatch(addAlert({
+                description: error?.description ?? "There was an error while creating the userstore",
+                level: AlertLevels.ERROR,
+                message: error?.message ?? "Something went wrong!"
+            }))
+        })
     };
 
     /**
-     * This saves the Basic Details values
-     * @param {Map<string, FormValue>} values Basic Details Values to be submitted
+     * This saves the General Details values along with the Type
+     * @param {Map<string, FormValue>} values Connection Details Values
      */
-    const onSubmitBasicDetails = (values: Map<string, FormValue>) => {
-        setBasicDetailsData(values);
+    const onSubmitGeneralDetails = (values: Map<string, FormValue>): void => {
+        setGeneralDetailsData(values);
         setCurrentWizardStep(1);
     }
 
-    /**
-     * This saves the Connection Details values along with the te Type
-     * @param {Map<string, FormValue>} values Connection Details Values
-     * @param {Type} type 
-     */
-    const onSubmitConnectionDetails = (values: Map<string, FormValue>, type: Type) => {
-        setConnectionDetailsData(values);
-        setType(type);
+    const onSubmitUserDetails = (values: Map<string, FormValue>): void => {
+        setUserDetailsData(values);
+        setCurrentWizardStep(2);
+    }
 
-        const data = new Map([...Array.from(basicDetailsData ?? []), ...Array.from(values ?? [])]);
+    const onSubmitGroupDetails = (values: Map<string, FormValue>): void => {
+        setGroupDetailsData(values);
+    }
+
+    const serializeData = (): void => {
         const userStore: UserStorePostData = {
-            description: data.get("description")?.toString(),
-            name: data.get("name")?.toString(),
-            properties: type?.properties?.Mandatory?.map(property => {
-                return {
-                    name: property.name,
-                    value: data.get(property.name)?.toString()
-                }
-            }),
-            typeId: data.get("type")?.toString()
+            description: generalDetailsData?.get("description")?.toString(),
+            name: generalDetailsData?.get("name")?.toString(),
+            properties: serializeProperties(),
+            typeId: type?.typeId
         };
 
         setUserStore(userStore);
-        setCurrentWizardStep(2);
+    }
+
+    const serializeProperties = (): UserStoreProperty[] => {
+        const connectionProperties: UserStoreProperty[] = properties.connection.required.map(property => {
+            return {
+                name: property.name,
+                value: generalDetailsData.get(property.name)?.toString()
+            }
+        });
+
+        const userProperties: UserStoreProperty[] = properties.user.required.map(property => {
+            return {
+                name: property.name,
+                value: userDetailsData.get(property.name)?.toString()
+            }
+        });
+
+        const groupProperties: UserStoreProperty[] = properties.group.required.map(property => {
+            return {
+                name: property.name,
+                value: groupDetailsData.get(property.name)?.toString()
+            }
+        });
+
+        const basicProperties: UserStoreProperty[] = properties.basic.required.map(property => {
+            return {
+                name: property.name,
+                value: generalDetailsData.get(property.name)?.toString()
+            }
+        });
+
+        return [ ...connectionProperties, ...userProperties, ...groupProperties, ...basicProperties ];
     }
 
     /**
@@ -130,43 +182,60 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
     const STEPS = [
         {
             content: (
-                <BasicDetailsUserStore
+                <GeneralDetailsUserstore
                     submitState={ firstStep }
-                    onSubmit={ onSubmitBasicDetails }
-                    values={ basicDetailsData }
+                    onSubmit={ onSubmitGeneralDetails }
+                    values={ generalDetailsData }
+                    type={ type }
+                    connectionProperties={ properties?.connection?.required }
+                    basicProperties={ properties?.basic?.required }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Basic userstore details"
+            title: "General"
         },
         {
             content: (
-                <ConnectionDetails
+                <UserDetails
                     submitState={ secondStep }
-                    onSubmit={ onSubmitConnectionDetails }
-                    values={ connectionDetailsData }
-                    typeId={ basicDetailsData?.get("type").toString() }
+                    onSubmit={ onSubmitUserDetails }
+                    values={ userDetailsData }
+                    properties={ properties?.user?.required }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Connection details"
+            title: "User"
+        },
+        {
+            content: (
+                <GroupDetails
+                    submitState={ thirdStep }
+                    onSubmit={ onSubmitGroupDetails }
+                    values={ groupDetailsData }
+                    properties={ properties?.group?.required }
+                />
+            ),
+            icon: ApplicationWizardStepIcons.general,
+            title: "Group"
         },
         {
             content: (
                 <SummaryUserStores
                     data={ userStore }
-                    properties={ type?.properties?.Mandatory }
+                    connectionProperties={ properties?.connection?.required }
+                    userProperties={ properties?.user?.required }
+                    groupProperties={ properties?.group?.required }
+                    basicProperties={ properties?.basic?.required }
                     type={ type?.typeName }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
             title: "Summary"
-
         }
     ];
 
     /**
-     * Moves to teh next step in the wizard
+     * Moves to the next step in the wizard
      */
     const next = () => {
         switch (currentWizardStep) {
@@ -177,6 +246,9 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
                 setSecondStep();
                 break;
             case 2:
+                setThirdStep();
+                break;
+            case 3:
                 handleSubmit();
                 break;
         }
@@ -198,24 +270,23 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
             className="wizard application-create-wizard"
         >
             <Modal.Header className="wizard-header">
-                Add Userstore
+                { "Add " + USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ] + " Userstore" }
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group
-                    header="Fill in the following details to create a userstore."
                     current={ currentWizardStep }
                 >
-                    {STEPS.map((step, index) => (
+                    { STEPS.map((step, index) => (
                         <Steps.Step
                             key={ index }
                             icon={ step.icon }
                             title={ step.title }
                         />
-                    ))}
+                    )) }
                 </Steps.Group>
             </Modal.Content >
             <Modal.Content className="content-container" scrolling>
-                {STEPS[currentWizardStep].content}
+                { STEPS[ currentWizardStep ].content }
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
@@ -224,20 +295,20 @@ export const AddUserStore = (props: AddUserStoreProps): ReactElement => {
                             <LinkButton floated="left" onClick={ () => onClose() }>Cancel</LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            {currentWizardStep < STEPS.length - 1 && (
+                            { currentWizardStep < STEPS.length - 1 && (
                                 <PrimaryButton floated="right" onClick={ next }>
                                     Next <Icon name="arrow right" />
                                 </PrimaryButton>
-                            )}
-                            {currentWizardStep === STEPS.length - 1 && (
+                            ) }
+                            { currentWizardStep === STEPS.length - 1 && (
                                 <PrimaryButton floated="right" onClick={ next }>
                                     Finish</PrimaryButton>
-                            )}
-                            {currentWizardStep > 0 && (
+                            ) }
+                            { currentWizardStep > 0 && (
                                 <LinkButton floated="right" onClick={ previous }>
                                     <Icon name="arrow left" /> Previous
                                 </LinkButton>
-                            )}
+                            ) }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

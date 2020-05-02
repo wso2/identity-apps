@@ -19,17 +19,20 @@
 import { ResourceTab } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react"
 import { useDispatch } from "react-redux";
+import { Image } from "semantic-ui-react";
 import { getAType, getAUserStore } from "../api";
 import {
     EditBasicDetailsUserStore,
-    MemoEditAdvancedProperties,
-    MemoEditConnectionDetails,
-    MemoEditOptionalProperties
+    EditConnectionDetails,
+    EditGroupDetails,
+    EditUserDetails
 } from "../components";
+import { DatabaseAvatarGraphic } from "../configs";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts"
-import { AlertLevels, Type, UserStore } from "../models";
-import { addAlert } from "../store/actions";
+import { AlertLevels, CategorizedProperties, UserStore, UserstoreType } from "../models";
+import { addAlert } from "@wso2is/core/store";
+import { reOrganizeProperties } from "../utils";
 
 /**
  * This renders the userstore edit page
@@ -40,8 +43,9 @@ export const UserStoresEditPage = (props): ReactElement => {
 
     const userStoreId = props.match.params.id;
 
-    const [userStore, setUserStore] = useState<UserStore>(null);
-    const [type, setType] = useState<Type>(null);
+    const [ userStore, setUserStore ] = useState<UserStore>(null);
+    const [ type, setType ] = useState<UserstoreType>(null);
+    const [ properties, setProperties ] = useState<CategorizedProperties>(null);
 
     const dispatch = useDispatch();
 
@@ -78,16 +82,23 @@ export const UserStoresEditPage = (props): ReactElement => {
                 }));
             });
         }
-    }, [userStore]);
+    }, [ userStore ]);
+
+    useEffect(() => {
+        if (type) {
+            setProperties(reOrganizeProperties(type.properties, userStore.properties));
+        }
+    }, [ type ])
 
     /**
      * The tab panes
      */
     const panes = [
         {
-            menuItem: "Basic Details",
+            menuItem: "General",
             render: () => (
                 <EditBasicDetailsUserStore
+                    properties={ properties?.basic }
                     userStore={ userStore }
                     update={ getUserStore }
                     id={ userStoreId }
@@ -95,35 +106,35 @@ export const UserStoresEditPage = (props): ReactElement => {
             )
         },
         {
-            menuItem: "Connection Details",
+            menuItem: "Connection",
             render: () => (
-                <MemoEditConnectionDetails
-                    userStore={ userStore }
+                <EditConnectionDetails
                     update={ getUserStore }
                     type={ type }
                     id={ userStoreId }
+                    properties={ properties?.connection }
                 />
             )
         },
         {
-            menuItem: "Advanced Properties",
+            menuItem: "User",
             render: () => (
-                <MemoEditAdvancedProperties
-                    userStore={ userStore }
+                <EditUserDetails
                     update={ getUserStore }
                     type={ type }
                     id={ userStoreId }
+                    properties={ properties?.user }
                 />
             )
         },
         {
-            menuItem: "Optional Properties",
+            menuItem: "Group",
             render: () => (
-                <MemoEditOptionalProperties
-                    userStore={ userStore }
+                <EditGroupDetails
                     update={ getUserStore }
                     type={ type }
                     id={ userStoreId }
+                    properties={ properties?.group }
                 />
             )
         }
@@ -131,6 +142,17 @@ export const UserStoresEditPage = (props): ReactElement => {
 
     return (
         <PageLayout
+            image={
+                <Image
+                    floated="left"
+                    verticalAlign="middle"
+                    rounded
+                    centered
+                    size="tiny"
+                >
+                    <DatabaseAvatarGraphic.ReactComponent />
+                </Image>
+            }
             title={ userStore?.name }
             description={ "Edit userstore" }
             backButton={ {

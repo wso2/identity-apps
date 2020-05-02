@@ -69,7 +69,7 @@ export const getUserStores = (params: QueryParams): Promise<any> => {
  *
  * @return {Promise<any>} response.
  */
-export const getTypes = (): Promise<any> => {
+export const getUserstoreTypes = (): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",

@@ -17,21 +17,21 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useContext, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getUserStores } from "../api";
-import { AddUserStore, UserStoresList } from "../components";
+import { AdvancedSearchWithBasicFilters, UserStoresList } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
-import { UserConstants } from "../constants";
+import { USERSTORE_TEMPLATES_PATH, UserConstants } from "../constants";
+import { history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertLevels, FeatureConfigInterface, QueryParams, UserStoreListItem } from "../models";
 import { AppState } from "../store";
 import { filterList, sortList } from "../utils";
-import { useTranslation } from "react-i18next";
-import { AdvancedSearchWithBasicFilters } from "../components/shared/advanced-search-with-basic-filters";
-import { addAlert } from "@wso2is/core/store";
 
 /**
  * This renders the Userstores page.
@@ -61,7 +61,6 @@ export const UserStores = (): ReactElement => {
     const [ userStores, setUserStores ] = useState<UserStoreListItem[]>([]);
     const [ offset, setOffset ] = useState(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
-    const [ openModal, setOpenModal ] = useState(false);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ filteredUserStores, setFilteredUserStores ] = useState<UserStoreListItem[]>([]);
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
@@ -176,21 +175,10 @@ export const UserStores = (): ReactElement => {
         setFilteredUserStores(
             filterList(userStores, query, "name", true)
         );
+        setQuery(query);
     };
 
     return (
-        <>
-            {
-                openModal
-                && (
-                    <AddUserStore
-                        open={ openModal }
-                        onClose={ () => {
-                            setOpenModal(false)
-                        } }
-                    />
-                )
-            }
             <PageLayout
                 title="Userstores"
                 description="Create and manage userstores"
@@ -246,7 +234,7 @@ export const UserStores = (): ReactElement => {
                                         featureConfig?.userStores?.scopes?.create) && (
                                         <PrimaryButton
                                             onClick={ () => {
-                                                setOpenModal(true);
+                                                history.push(USERSTORE_TEMPLATES_PATH);
                                             } }
                                         >
                                             <Icon name="add" />New Userstore
@@ -274,7 +262,7 @@ export const UserStores = (): ReactElement => {
                                     action={
                                         <PrimaryButton
                                             onClick={ () => {
-                                                setOpenModal(true);
+                                                history.push(USERSTORE_TEMPLATES_PATH);
                                             } }
                                         >
                                             <Icon name="add" /> New Userstore
@@ -307,6 +295,5 @@ export const UserStores = (): ReactElement => {
                             )
                 }
             </PageLayout>
-        </>
     );
 };

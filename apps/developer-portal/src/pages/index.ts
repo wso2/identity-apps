@@ -44,3 +44,4 @@ export * from "./application-template";
 export * from "./external-dialect-edit";
 export * from "./certificates-keystore";
 export * from "./certificates-truststore";
+export * from "./userstores-templates";

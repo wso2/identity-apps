@@ -16,8 +16,8 @@
 * under the License.
 */
 
-import React, { ReactElement } from "react";
-import { Grid } from "semantic-ui-react";
+import React, { FunctionComponent, ReactElement } from "react";
+import { Divider, Grid } from "semantic-ui-react";
 import { TypeProperty, UserStorePostData, UserStoreProperty } from "../../../models";
 
 /**
@@ -25,15 +25,27 @@ import { TypeProperty, UserStorePostData, UserStoreProperty } from "../../../mod
  */
 interface SummaryUserStoresPropsInterface {
     /**
-     * The complete data ready to be submitted
+     * The connection properties.
+     */
+    connectionProperties: TypeProperty[];
+    /**
+     * The user properties.
+     */
+    userProperties: TypeProperty[];
+    /**
+     * The group properties.
+     */
+    groupProperties: TypeProperty[];
+    /**
+     * The basic properties.
+     */
+    basicProperties: TypeProperty[];
+    /**
+     * The userstore data ready to be posted.
      */
     data: UserStorePostData;
     /**
-     * The connection properties
-     */
-    properties: TypeProperty[];
-    /**
-     * The type of the userstore
+     * The type of the userstore.
      */
     type: string;
 }
@@ -43,9 +55,11 @@ interface SummaryUserStoresPropsInterface {
  * @param {SummaryUserStoresPropsInterface} props
  * @return {ReactElement}
  */
-export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): ReactElement => {
+export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterface> = (
+    props: SummaryUserStoresPropsInterface
+): ReactElement => {
 
-    const { data, properties, type } = props;
+    const { data, connectionProperties, userProperties, groupProperties, basicProperties, type } = props;
 
     /**
      * This generates a summary row
@@ -54,10 +68,11 @@ export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): React
      */
     const generateSummaryLine = (
         title: string,
-        description: string | number | ReactElement
+        description: string | number | ReactElement,
+        key?: number
     ): ReactElement => {
         return (
-            <Grid.Row className="summary-field" columns={ 2 }>
+            <Grid.Row key={ key } className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                     <div className="label">{title}</div>
                 </Grid.Column>
@@ -78,16 +93,70 @@ export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): React
                     </div>
                 </Grid.Column>
             </Grid.Row>
-            {type ? generateSummaryLine("Userstore Type", type) : null}
+            { type ? generateSummaryLine("Userstore Type", type) : null }
+
+            <Divider horizontal>General</Divider>
+
             {
-                properties?.map((property: TypeProperty) => {
-                    if (!property.name.toLocaleLowerCase().includes("password")) {
+                basicProperties?.map((property: TypeProperty, index: number) => {
+                    if (!(property.attributes.find(attribute => attribute.name === "type")?.value === "password")) {
+                        return (
+                            generateSummaryLine(
+                                property.description.split("#")[ 0 ],
+                                data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
+                                    return userStoreProperty.name === property.name
+                                }))[ 0 ]?.value,
+                                index
+                            )
+                        )
+                    }
+                })
+            }
+            {
+                connectionProperties?.map((property: TypeProperty, index: number) => {
+                    if (!(property.attributes.find(attribute=>attribute.name==="type")?.value==="password")) {
                         return (
                             generateSummaryLine(
                                 property.description.split("#")[0],
                                 data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
                                     return userStoreProperty.name === property.name
-                                }))[0].value
+                                }))[ 0 ]?.value,
+                                index
+                            )
+                        )
+                    }
+                })
+            }
+
+            <Divider horizontal>User</Divider>
+
+            {
+                userProperties?.map((property: TypeProperty, index: number) => {
+                    if (!(property.attributes.find(attribute => attribute.name === "type")?.value === "password")) {
+                        return (
+                            generateSummaryLine(
+                                property.description.split("#")[ 0 ],
+                                data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
+                                    return userStoreProperty.name === property.name
+                                }))[ 0 ]?.value,
+                                index
+                            )
+                        )
+                    }
+                })
+            }
+
+            <Divider horizontal>Group</Divider>
+
+            {
+                groupProperties?.map((property: TypeProperty) => {
+                    if (!(property.attributes.find(attribute => attribute.name === "type")?.value === "password")) {
+                        return (
+                            generateSummaryLine(
+                                property.description.split("#")[ 0 ],
+                                data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
+                                    return userStoreProperty.name === property.name
+                                }))[ 0 ]?.value
                             )
                         )
                     }

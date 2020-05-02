@@ -20,3 +20,4 @@ export * from "./user-stores-list";
 export * from "./add-user-store";
 export * from "./edit";
 export * from "./wizards";
+export * from "./sql-editor";

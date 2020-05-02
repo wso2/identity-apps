@@ -43,6 +43,7 @@ import {
     CrossIcon,
     CustomApplicationTemplateIllustration,
     DashboardIcon,
+    DatabaseAvatar,
     DatabaseIcon,
     DocumentIcon,
     DotNetLogo,
@@ -333,6 +334,11 @@ export const HelpSidebarIcons = {
         docs: DocumentIcon
     }
 };
+
+/**
+ * The userstore avatar.
+ */
+export const DatabaseAvatarGraphic = DatabaseAvatar;
 
 export const CertificateIllustrations = {
     /**

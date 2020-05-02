@@ -84,7 +84,7 @@ interface TemplateGridPropsInterface<T> {
     /**
      * Grid type.
      */
-    type: "application" | "idp";
+    type: "application" | "idp" | "userstore";
     /**
      * Use selection card
      */
@@ -381,12 +381,16 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                         tags={
                                             type === "application"
                                                 ? template.types
-                                                : template.services
+                                                : type === "idp"
+                                                    ? template.services
+                                                    : null
                                         }
                                         tagsAs={
                                             type === "application"
                                                 ? "icon"
-                                                : "label"
+                                                : type === "idp"
+                                                    ? "label"
+                                                    : null
                                         }
                                         name={ template.name }
                                         id={ template.id }

@@ -23,7 +23,9 @@ import {
     CLAIM_DIALECTS_PATH,
     EDIT_EXTERNAL_DIALECT,
     EDIT_LOCAL_CLAIMS_PATH,
+    EDIT_USER_STORE_PATH,
     LOCAL_CLAIMS_PATH,
+    USERSTORE_TEMPLATES_PATH,
     USER_STORES_PATH
 } from "../constants";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultPageLayout, ErrorPageLayout } from "../layouts";
@@ -54,7 +56,8 @@ import {
     UserEditPage,
     UserStores,
     UserStoresEditPage,
-    UsersPage
+    UsersPage,
+    UserstoresTemplates
 } from "../pages";
 
 /**
@@ -256,7 +259,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 path: `${EDIT_EXTERNAL_DIALECT}/:id`,
                 protected: true,
                 showOnSidePanel: false
-            },
+            }
         ],
         component: ClaimDialectsPage,
         exact: true,
@@ -275,7 +278,16 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 icon: "userStore",
                 id: "edit-user-store",
                 name: "Edit Userstore",
-                path: "/edit-user-store/:id",
+                path: `${EDIT_USER_STORE_PATH}/:id`,
+                protected: true,
+                showOnSidePanel: false
+            },
+            {
+                component: UserstoresTemplates,
+                icon: "userStore",
+                id: "userstore-templates",
+                name: "Userstore Templates",
+                path: USERSTORE_TEMPLATES_PATH,
                 protected: true,
                 showOnSidePanel: false
             }
@@ -309,7 +321,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 path: "/server-configurations",
                 protected: true,
                 showOnSidePanel: true
-            },{
+            },
+            {
                 component: EmailTemplateTypes,
                 exact: true,
                 icon: "childIcon",
@@ -319,7 +332,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 path: "/email-templates",
                 protected: true,
                 showOnSidePanel: true
-            },{
+            },
+            {
                 component: EmailTemplates,
                 exact: true,
                 icon: "serverConfigurations",
@@ -328,7 +342,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 path: "/email-templates/:typeId",
                 protected: true,
                 showOnSidePanel: false
-            },{
+            },
+            {
                 component: AddTemplateLocale,
                 exact: true,
                 icon: "serverConfigurations",
@@ -337,7 +352,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 path: "/email-templates/:typeId/add-template",
                 protected: true,
                 showOnSidePanel: false
-            },{
+            },
+            {
                 component: AddTemplateLocale,
                 exact: true,
                 icon: "serverConfigurations",

@@ -16,19 +16,17 @@
 * under the License.
 */
 
-import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import React, { ReactElement, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Button, Divider, Grid, Header, Icon } from "semantic-ui-react";
-import { getAType, testConnection } from "../../../api";
+import { testConnection } from "../../../api";
 import { JDBC } from "../../../constants";
-import { AlertLevels, TestConnection, Type, TypeProperty } from "../../../models";
+import { TestConnection, TypeProperty, UserstoreType } from "../../../models";
 
 /**
- * Prop types of the `ConnectionDetails` component 
+ * Prop types of the `GeneralDetails` component 
  */
-interface ConnectionDetailsPropsInterface {
+interface GeneralDetailsUserstorePropsInterface {
     /**
      * Trigger submit
      */
@@ -36,49 +34,40 @@ interface ConnectionDetailsPropsInterface {
     /**
      * Submits values
      */
-    onSubmit: (values: Map<string, FormValue>, type: Type) => void;
+    onSubmit: (values: Map<string, FormValue>) => void;
     /**
      * The saved values
      */
     values: Map<string, FormValue>;
     /**
-     * The type ID chosen by the user
+     * The type of the userstore chosen by the user
      */
-    typeId: string;
+    type: UserstoreType;
+    /**
+     * Connection properties.
+     */
+    connectionProperties: TypeProperty[];
+    /**
+     * Basic properties.
+     */
+    basicProperties: TypeProperty[];
 }
 
 /**
- * This component renders the Connection Details step of the wizard
- * @param {ConnectionDetailsPropsInterface} props
- * @return {Promise<any>}
+ * This component renders the General Details step of the wizard
+ * @param {GeneralDetailsUserstorePropsInterface} props
+ * @returns {ReactElement}
  */
-export const ConnectionDetails = (
-    props: ConnectionDetailsPropsInterface
+export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstorePropsInterface> = (
+    props: GeneralDetailsUserstorePropsInterface
 ): ReactElement => {
 
-    const { submitState, onSubmit, values, typeId } = props;
+    const { submitState, onSubmit, values, type, connectionProperties, basicProperties } = props;
 
-    const [ type, setType ] = useState<Type>(null);
     const [ connectionFailed, setConnectionFailed ] = useState(false);
     const [ connectionSuccessful, setConnectionSuccessful ] = useState(false);
     const [ formValue, setFormValue ] = useState<Map<string, FormValue>>(null);
     const [ isTesting, setIsTesting ] = useState(false);
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        if (typeId !== null) {
-            getAType(typeId, null).then(response => {
-                setType(response);
-            }).catch(error => {
-                dispatch(addAlert({
-                    description: error?.description || "An error occurred while fetching the userstore type metadata.",
-                    level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
-                }))
-            })
-        }
-    }, [ typeId ]);
 
     /**
      * Enum containing the icons a test connection button can have 
@@ -137,41 +126,45 @@ export const ConnectionDetails = (
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
-                <Grid.Column>
+                <Grid.Column width={ 8 }>
                     <Forms
                         onSubmit={ (values: Map<string, FormValue>) => {
-                            onSubmit(values, type);
+                            onSubmit(values);
                         } }
                         submitState={ submitState }
                         onChange={ (isPure, values) => {
                             setFormValue(values);
                         } }
                     >
+                        <Field
+                            label="Name"
+                            name="name"
+                            type="text"
+                            required={ true }
+                            requiredErrorMessage="Name is a required field"
+                            placeholder="Enter a name"
+                            value={ values?.get("name")?.toString() }
+                        />
+                        <Field
+                            label="Description"
+                            name="description"
+                            type="text"
+                            required={ false }
+                            requiredErrorMessage=""
+                            placeholder="Enter a description"
+                            value={ values?.get("description")?.toString() }
+                        />
                         {
-                            type?.properties?.Mandatory?.map(
+                            basicProperties?.map(
                                 (selectedTypeDetail: TypeProperty, index: number) => {
                                     const name = selectedTypeDetail.description.split("#")[ 0 ];
-                                    const isPassword = selectedTypeDetail.name
-                                        .toLocaleLowerCase()
-                                        .includes("password");
+                                    const isPassword = selectedTypeDetail.attributes
+                                        .find(attribute => attribute.name === "type").value === "password";
+                                    const toggle = selectedTypeDetail.attributes
+                                        .find(attribute => attribute.name === "type")?.value === "boolean";
                                     return (
-                                        !isPassword
+                                        isPassword
                                             ? (
-                                                <Field
-                                                    key={ index }
-                                                    label={ name }
-                                                    name={ selectedTypeDetail.name }
-                                                    type="text"
-                                                    required={ true }
-                                                    requiredErrorMessage={ name + " is a required field" }
-                                                    placeholder={ "Enter a " + name }
-                                                    value={
-                                                        values?.get(selectedTypeDetail?.name)?.toString()
-                                                        ?? selectedTypeDetail.defaultValue
-                                                    }
-                                                />
-                                            )
-                                            : (
                                                 <Field
                                                     key={ index }
                                                     label={ name }
@@ -188,6 +181,100 @@ export const ConnectionDetails = (
                                                     }
                                                 />
                                             )
+                                            : toggle
+                                                ? (
+                                                    <Field
+                                                        key={ index }
+                                                        label={ name }
+                                                        name={ selectedTypeDetail.name }
+                                                        type="toggle"
+                                                        required={ false }
+                                                        requiredErrorMessage={ name + " is a required field" }
+                                                        value={
+                                                            values?.get(selectedTypeDetail?.name)?.toString()
+                                                            ?? selectedTypeDetail.defaultValue
+                                                        }
+                                                        toggle
+                                                    />
+                                                ) :
+                                                (
+                                                    <Field
+                                                        key={ index }
+                                                        label={ name }
+                                                        name={ selectedTypeDetail.name }
+                                                        type="text"
+                                                        required={ true }
+                                                        requiredErrorMessage={ name + " is a required field" }
+                                                        placeholder={ "Enter a " + name }
+                                                        value={
+                                                            values?.get(selectedTypeDetail?.name)?.toString()
+                                                            ?? selectedTypeDetail.defaultValue
+                                                        }
+                                                    />
+                                                )
+                                    );
+                                })
+                        }
+                        <Divider hidden/>
+                        {
+                            connectionProperties?.map(
+                                (selectedTypeDetail: TypeProperty, index: number) => {
+                                    const name = selectedTypeDetail.description.split("#")[ 0 ];
+                                    const isPassword = selectedTypeDetail.attributes
+                                        .find(attribute => attribute.name === "type").value === "password";
+                                    const toggle = selectedTypeDetail.attributes
+                                        .find(attribute => attribute.name === "type")?.value === "boolean";
+                                    return (
+                                        isPassword
+                                            ? (
+                                                <Field
+                                                    key={ index }
+                                                    label={ name }
+                                                    name={ selectedTypeDetail.name }
+                                                    type="password"
+                                                    required={ true }
+                                                    requiredErrorMessage={ name + " is a required field" }
+                                                    placeholder={ "Enter a " + name }
+                                                    showPassword="Show Password"
+                                                    hidePassword='Hide Password'
+                                                    value={
+                                                        values?.get(selectedTypeDetail?.name)?.toString()
+                                                        ?? selectedTypeDetail.defaultValue
+                                                    }
+                                                />
+                                            )
+                                            : toggle
+                                                ? (
+                                                    <Field
+                                                        key={ index }
+                                                        label={ name }
+                                                        name={ selectedTypeDetail.name }
+                                                        type="toggle"
+                                                        required={ false }
+                                                        requiredErrorMessage={ name + " is a required field" }
+                                                        value={
+                                                            values?.get(selectedTypeDetail?.name)?.toString()
+                                                            ?? selectedTypeDetail.defaultValue
+                                                        }
+                                                        toggle
+                                                    />
+                                                ) :
+                                                (
+                                                    <Field
+                                                        key={ index }
+                                                        label={ name }
+                                                        name={ selectedTypeDetail.name }
+                                                        type="text"
+                                                        required={ true }
+                                                        requiredErrorMessage={ name + " is a required field" }
+                                                        placeholder={ "Enter a " + name }
+                                                        value={
+                                                            values?.get(selectedTypeDetail?.name)?.toString()
+                                                            ?? selectedTypeDetail.defaultValue
+                                                        }
+                                                    />
+
+                                                )
                                     );
                                 })
                         }

@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
 import _ from "lodash";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 /**
  *Interface to contain props needed for treeview component
@@ -187,7 +187,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                         checked={ !!node.isChecked }
                         id={ node.id }
                     />
-                    <div className={"checkbox " + (node.isPartiallyChecked ? "indeterminate" : "") }>
+                    <div className={ "checkbox " + (node.isPartiallyChecked ? "indeterminate" : "") }>
                         <svg width="17px" height="17px" viewBox="0 0 20 20">
                             <path d="M3,1 L17,1 L17,1 C18.1045695,1 19,1.8954305 19,3 L19,17 L19,17 C19,
                                 18.1045695 18.1045695,19 17,19 L3,19 L3,19 C1.8954305,19 1,18.1045695 1,17 L1,3 L1,
@@ -321,8 +321,8 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                             <div
                                 className={ "treeview-node" + getStyleClassCb(node) }
                             >
-                                <div className={`treeview-node-content ${!node.children 
-                                    || node.children.length == 0 ? "no-child" : ""}`}>
+                                <div className={ `treeview-node-content ${!node.children 
+                                    || node.children.length == 0 ? "no-child" : ""}` }>
                                     { node.children && node.children.length != 0 ? printExpandButton(node) : "" }
                                     { printCheckbox(node) }
                                     { printDeleteButton(node) }
@@ -395,5 +395,5 @@ TreeView.defaultProps = {
     getStyleClassCb: (/* node, depth */) => { return ""; },
     isCheckable: (/* node, depth */) => { return true; },
     isDeletable: (/* node, depth */) => { return true; },
-    isExpandable: (/* node, depth */) => { return true; },
+    isExpandable: (/* node, depth */) => { return true; }
 }

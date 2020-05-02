@@ -49,7 +49,7 @@ export const LOGIN_ERROR_PAGE_PATH = "/login-error";
 export const APPLICATIONS_PAGE_PATH = "/applications";
 
 /**
- * Path to the applications page.
+ * Path to the local claims page.
  * @constant
  * @type {string}
  * @default
@@ -57,7 +57,7 @@ export const APPLICATIONS_PAGE_PATH = "/applications";
 export const LOCAL_CLAIMS_PATH = "/local-claims";
 
 /**
- * Path to the applications page.
+ * Path to the edit external dialect page.
  * @constant
  * @type {string}
  * @default
@@ -65,7 +65,7 @@ export const LOCAL_CLAIMS_PATH = "/local-claims";
 export const EDIT_EXTERNAL_DIALECT = "/edit-external-dialect";
 
 /**
- * Path to the applications page.
+ * Path to the claim dialects page.
  * @constant
  * @type {string}
  * @default
@@ -73,7 +73,7 @@ export const EDIT_EXTERNAL_DIALECT = "/edit-external-dialect";
 export const CLAIM_DIALECTS_PATH = "/claim-dialects";
 
 /**
- * Path to the applications page.
+ * Path to the edit local claims page.
  * @constant
  * @type {string}
  * @default
@@ -81,12 +81,28 @@ export const CLAIM_DIALECTS_PATH = "/claim-dialects";
 export const EDIT_LOCAL_CLAIMS_PATH = "/edit-local-claims";
 
 /**
- * Path to the applications page.
+ * Path to the userstores page.
  * @constant
  * @type {string}
  * @default
  */
 export const USER_STORES_PATH = "/user-stores";
+
+/**
+ * Path to the edit userstore page.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const EDIT_USER_STORE_PATH = "/edit-user-store";
+
+/**
+ * Path to the userstore templates page.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const USERSTORE_TEMPLATES_PATH = "/userstore-templates";
 
 /**
  * User portal application identifier.
