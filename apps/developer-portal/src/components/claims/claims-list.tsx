@@ -454,7 +454,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                             New {
                             isLocalClaim(list)
                                 ? "Local Attribute"
-                                : isExternalClaim(list)
+                                : isDialect(list)
                                     ? "External Dialect"
                                     : "External Attribute"
                             }
@@ -462,7 +462,13 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                     ) }
                     image={ EmptyPlaceholderIllustrations.newList }
                     imageSize="tiny"
-                    title={ "Add an attribute dialect" }
+                    title={
+                        isLocalClaim(list)
+                            ? "Add a Local Attribute"
+                            : isDialect(list)
+                                ? "Add an External Dialect"
+                                : "Add an External Attribute"
+                    }
                     subtitle={ [
                         "There are currently no results available.",
                         "You can add a new item easily by following the",
