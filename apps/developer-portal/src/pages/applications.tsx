@@ -19,7 +19,7 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, {
     FunctionComponent,
@@ -34,7 +34,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getApplicationList } from "../api";
 import { AdvancedSearchWithBasicFilters, ApplicationList } from "../components";
-import { EmptyPlaceholderIllustrations } from "../configs";
 import { ApplicationConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
@@ -191,62 +190,6 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
         setTriggerClearQuery(!triggerClearQuery);
     };
 
-    /**
-     * Resolve the relevant placeholder.
-     *
-     * @return {React.ReactElement}
-     */
-    const showPlaceholders = (): ReactElement => {
-
-        if (isApplicationListRequestLoading) {
-            return null;
-        }
-
-        // When the search returns empty.
-        if (searchQuery) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <LinkButton onClick={ handleSearchQueryClear }>Clear search query</LinkButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
-                    imageSize="tiny"
-                    title={ "No results found" }
-                    subtitle={ [
-                        `We couldn't find any results for ${ searchQuery }`,
-                        "Please try a different search term."
-                    ] }
-                />
-            );
-        }
-
-        if (appList?.totalResults === 0) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <PrimaryButton
-                            onClick={ (): void => {
-                                history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
-                            } }
-                        >
-                            <Icon name="add"/>New Application
-                        </PrimaryButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
-                    imageSize="tiny"
-                    title={ "Add a new Application" }
-                    subtitle={ [
-                        "There are currently no applications available.",
-                        "You can add a new application easily by using the",
-                        "predefined templates."
-                    ] }
-                />
-            );
-        }
-
-        return null;
-    };
-
     return (
         <PageLayout
             title="Applications"
@@ -301,26 +244,23 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                         : null
                 }
                 showPagination={ true }
-                showTopActionPanel={ !(!searchQuery && appList?.totalResults <= 0) }
+                showTopActionPanel={ isApplicationListRequestLoading || !(!searchQuery && appList?.totalResults <= 0) }
                 sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
                 sortStrategy={ listSortingStrategy }
                 totalPages={ Math.ceil(appList.totalResults / listItemLimit) }
                 totalListSize={ appList.totalResults }
             >
-                {
-                    (appList?.totalResults > 0
-                        && appList?.applications instanceof Array
-                        && appList.applications.length > 0)
-                        ? (
-                            <ApplicationList
-                                featureConfig={ featureConfig }
-                                list={ appList }
-                                onApplicationDelete={ handleApplicationDelete }
-                                isLoading={ isApplicationListRequestLoading }
-                            />
-                        )
-                        : showPlaceholders()
-                }
+                <ApplicationList
+                    featureConfig={ featureConfig }
+                    isLoading={ isApplicationListRequestLoading }
+                    list={ appList }
+                    onApplicationDelete={ handleApplicationDelete }
+                    onEmptyListPlaceholderActionClick={
+                        () => history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"))
+                    }
+                    onSearchQueryClear={ handleSearchQueryClear }
+                    searchQuery={ searchQuery }
+                />
             </ListLayout>
         </PageLayout>
     );

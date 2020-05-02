@@ -18,7 +18,7 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -26,7 +26,6 @@ import { useDispatch } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getIdentityProviderList } from "../api";
 import { AdvancedSearchWithBasicFilters, IdentityProviderList } from "../components";
-import { EmptyPlaceholderIllustrations } from "../configs";
 import { IdentityProviderConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
@@ -180,62 +179,6 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
         setTriggerClearQuery(!triggerClearQuery);
     };
 
-    /**
-     * Resolve the relevant placeholder.
-     *
-     * @return {React.ReactElement}
-     */
-    const showPlaceholders = (): ReactElement => {
-
-        if (isIdPListRequestLoading) {
-            return null;
-        }
-
-        // When the search returns empty.
-        if (searchQuery) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <LinkButton onClick={ handleSearchQueryClear }>Clear search query</LinkButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
-                    imageSize="tiny"
-                    title={ "No results found" }
-                    subtitle={ [
-                        `We couldn't find any results for ${ searchQuery }`,
-                        "Please try a different search term."
-                    ] }
-                />
-            );
-        }
-
-        if (idpList?.totalResults === 0) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <PrimaryButton
-                            onClick={ (): void => {
-                                history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDER_TEMPLATES"));
-                            } }
-                        >
-                            <Icon name="add"/>New Identity Provider
-                        </PrimaryButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
-                    imageSize="tiny"
-                    title={ "Add a new Identity Provider" }
-                    subtitle={ [
-                        "There are currently no identity providers available.",
-                        "You can add a new identity provider easily by following the",
-                        "steps in the identity providers creation wizard."
-                    ] }
-                />
-            );
-        }
-
-        return null;
-    };
-
     return (
         <PageLayout
             title="Identity Providers"
@@ -287,25 +230,22 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
                     )
                 }
                 showPagination={ true }
-                showTopActionPanel={ !(!searchQuery && idpList?.totalResults <= 0) }
+                showTopActionPanel={ isIdPListRequestLoading || !(!searchQuery && idpList?.totalResults <= 0) }
                 sortOptions={ IDENTITY_PROVIDER_LIST_SORTING_OPTIONS }
                 sortStrategy={ listSortingStrategy }
                 totalPages={ Math.ceil(idpList.totalResults / listItemLimit) }
                 totalListSize={ idpList.totalResults }
             >
-                {
-                    (idpList?.totalResults > 0
-                        && idpList?.identityProviders instanceof Array
-                        && idpList.identityProviders.length > 0)
-                        ? (
-                            <IdentityProviderList
-                                list={ idpList }
-                                onIdentityProviderDelete={ handleIdentityProviderDelete }
-                                isLoading={ isIdPListRequestLoading }
-                            />
-                        )
-                        : showPlaceholders()
-                }
+                <IdentityProviderList
+                    isLoading={ isIdPListRequestLoading }
+                    list={ idpList }
+                    onEmptyListPlaceholderActionClick={
+                        () => history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDER_TEMPLATES"))
+                    }
+                    onIdentityProviderDelete={ handleIdentityProviderDelete }
+                    onSearchQueryClear={ handleSearchQueryClear }
+                    searchQuery={ searchQuery }
+                />
             </ListLayout>
         </PageLayout>
     );

@@ -17,7 +17,7 @@
  */
 
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,8 +27,7 @@ import { deleteRoleById, getRolesList, getUserStoreList, searchRoleList } from "
 import { AdvancedSearchWithBasicFilters } from "../components";
 import { RoleList } from "../components/roles";
 import { CreateRoleWizard } from "../components/roles/create-role-wizard";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { UserConstants } from "../constants";
+import { UIConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertInterface, AlertLevels, RoleListInterface, RolesInterface, SearchRoleInterface } from "../models"
 
@@ -59,14 +58,16 @@ export const GroupsPage = (): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
+    // TODO: Check the usage and delete if not required.
     const [ roleList, setRoleList ] = useState<RoleListInterface>();
-    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ userStore, setUserStore ] = useState(undefined);
-    const [ searchQuery, setSearchQuery ] = useState<string>('');
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
+    // TODO: Check the usage and delete id not required.
     const [ isEmptyResults, setIsEmptyResults ] = useState<boolean>(false);
     const [ isGroupsListRequestLoading, setGroupsListRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
@@ -75,10 +76,6 @@ export const GroupsPage = (): ReactElement => {
     const [ paginatedGroups, setPaginatedGroups ] = useState<RolesInterface[]>([]);
 
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(ROLES_SORTING_OPTIONS[ 0 ]);
-
-    useEffect(() => {
-        setListItemLimit(UserConstants.DEFAULT_ROLE_LIST_ITEM_LIMIT);
-    }, []);
 
     useEffect(() => {
         if(searchQuery == "") {
@@ -189,7 +186,7 @@ export const GroupsPage = (): ReactElement => {
                 "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
             ],
             startIndex: 1
-        }
+        };
 
         setSearchQuery(searchQuery);
 
@@ -206,17 +203,18 @@ export const GroupsPage = (): ReactElement => {
                 setPaginatedGroups(updatedResults);
             }
         })
-    }
+    };
 
     /**
      * Util method to paginate retrieved email template type list.
-     * 
+     *
      * @param offsetValue pagination offset value
      * @param itemLimit pagination item limit
+     * @param list - Role list.
      */
     const setGroupsPage = (offsetValue: number, itemLimit: number, list: RolesInterface[]) => {
         setPaginatedGroups(list?.slice(offsetValue, itemLimit + offsetValue));
-    }
+    };
 
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setUserStore(data.value as string);
@@ -245,7 +243,7 @@ export const GroupsPage = (): ReactElement => {
     /**
      * Function which will handle role deletion action.
      * 
-     * @param id - Role ID which needs to be deleted
+     * @param role - Role which needs to be deleted
      */
     const handleOnDelete = (role: RolesInterface): void => {
         deleteRoleById(role.id).then(() => {
@@ -294,59 +292,6 @@ export const GroupsPage = (): ReactElement => {
         setTriggerClearQuery(!triggerClearQuery);
         setSearchQuery("");
         getGroups();
-    };
-
-    /**
-     * Shows list placeholders.
-     *
-     * @return {React.ReactElement}
-     */
-    const showPlaceholders = (): ReactElement => {
-
-        if (isGroupsListRequestLoading) {
-            return null;
-        }
-
-        // When the search returns empty.
-        if (searchQuery) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <LinkButton onClick={ handleSearchQueryClear }>Clear search query</LinkButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
-                    imageSize="tiny"
-                    title={ "No results found" }
-                    subtitle={ [
-                        `We couldn't find any results for ${ searchQuery }`,
-                        "Please try a different search term."
-                    ] }
-                />
-            );
-        }
-
-        if (paginatedGroups?.length === 0) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <PrimaryButton onClick={ () => setShowWizard(true) }>
-                            <Icon name="add"/>
-                            New Group
-                        </PrimaryButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
-                    imageSize="tiny"
-                    title={ "Add a new group" }
-                    subtitle={ [
-                        "There are currently no groups available.",
-                        "You can add a new group easily by following the",
-                        "steps in the group creation wizard."
-                    ] }
-                />
-            );
-        }
-
-        return null;
     };
 
     return (
@@ -405,21 +350,19 @@ export const GroupsPage = (): ReactElement => {
                     />
                 }
                 showPagination={ paginatedGroups.length > 0  }
-                showTopActionPanel={ !(!searchQuery && paginatedGroups?.length <= 0) }
+                showTopActionPanel={ isGroupsListRequestLoading || !(!searchQuery && paginatedGroups?.length <= 0) }
                 totalPages={ Math.ceil(groupList?.length / listItemLimit) }
                 totalListSize={ groupList?.length }
             >
-                {
-                    paginatedGroups.length > 0
-                        ? (
-                            <RoleList
-                                isGroup
-                                roleList={ paginatedGroups }
-                                handleRoleDelete={ handleOnDelete }
-                            />
-                        )
-                        : showPlaceholders()
-                }
+                <RoleList
+                    handleRoleDelete={ handleOnDelete }
+                    isGroup={ true }
+                    isLoading={ isGroupsListRequestLoading }
+                    onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
+                    onSearchQueryClear={ handleSearchQueryClear }
+                    roleList={ paginatedGroups }
+                    searchQuery={ searchQuery }
+                />
             </ListLayout>
             {
                 showWizard && (

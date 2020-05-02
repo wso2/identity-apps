@@ -16,17 +16,29 @@
 * under the License.
 */
 
+import { LoadableComponentInterface } from "@wso2is/core/dist/src/models";
+import {
+    ConfirmationModal,
+    EmptyPlaceholder,
+    PrimaryButton,
+    ResourceList,
+    ResourceListItem
+} from "@wso2is/react-components";
 import React, { FunctionComponent , ReactElement, useState } from "react";
-import { ResourceList, ResourceListItem, ConfirmationModal } from "@wso2is/react-components";
-import { Image } from "semantic-ui-react";
-import { EmailTemplateType } from "../../models";
+import { Icon, Image } from "semantic-ui-react";
+import { EmailTemplateIllustrations } from "../../configs";
+import { EMAIL_TEMPLATE_VIEW_PATH, UIConstants } from "../../constants";
 import { history } from "../../helpers";
-import { EMAIL_TEMPLATE_VIEW_PATH } from "../../constants";
+import { EmailTemplateType } from "../../models";
 import { AvatarBackground } from "../shared";
 
-interface EmailTemplateListPropsInterface {
+interface EmailTemplateListPropsInterface extends LoadableComponentInterface {
     onDelete: (templateId: string) => void;
     templateTypeList: EmailTemplateType[];
+    /**
+     * Callback to be fired when clicked on the empty list placeholder action.
+     */
+    onEmptyListPlaceholderActionClick: () => void;
 }
 
 /**
@@ -39,8 +51,10 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
 ): ReactElement => {
 
     const {
+        isLoading,
         templateTypeList: templateList,
-        onDelete
+        onDelete,
+        onEmptyListPlaceholderActionClick
     } = props;
 
     const [ showTemplateTypeDeleteConfirmation, setShowTemplateTypeDeleteConfirmation ] = useState<boolean>(false);
@@ -50,46 +64,85 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
         history.push(EMAIL_TEMPLATE_VIEW_PATH + templateTypeId);
     };
 
+    /**
+     * Resolve the relevant placeholder.
+     *
+     * @return {React.ReactElement}
+     */
+    const showPlaceholders = (): ReactElement => {
+        if (templateList?.length === 0) {
+            return (
+                <EmptyPlaceholder
+                    action={
+                        <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
+                            <Icon name="add"/>
+                            New Template Type
+                        </PrimaryButton>
+                    }
+                    title="Add new Template Type"
+                    subtitle={ [
+                        "Currently there are no templates types available.",
+                        "You can add a new template type by clicking on the",
+                        "button below."
+                    ] }
+                    image={ EmailTemplateIllustrations.emptyEmailListing }
+                    imageSize="tiny"
+                />
+            );
+        }
+
+        return null;
+    };
+
     return (
         <>
-            <ResourceList className="roles-list">
+            <ResourceList
+                className="email-template-types-list"
+                isLoading={ isLoading }
+                loadingStateOptions={ {
+                    count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                    imageType: "square"
+                } }
+            >
                 {
-                    templateList && templateList.map((template: EmailTemplateType, index: number) => (
-                        <ResourceListItem
-                            key={ index }
-                            actionsFloated="right"
-                            actions={ [{
-                                icon: "pencil alternate",
-                                onClick: () => handleEditTemplate(template.id),
-                                popupText: "Edit Template",
-                                type: "button"
-                            },{
-                                icon: "trash alternate",
-                                onClick: () => {
-                                    setCurrentDeletingTemplate(template);
-                                    setShowTemplateTypeDeleteConfirmation(true)
-                                    
-                                },
-                                popupText: "Delete Template",
-                                type: "button"
-                            }] }
-                            avatar={ (
-                                <Image
-                                    floated="left"
-                                    verticalAlign="middle"
-                                    rounded
-                                    centered
-                                    size="mini"
-                                >
-                                    <AvatarBackground />
-                                    <span className="claims-letter">
-                                        { template.displayName[0].toLocaleUpperCase() }
-                                    </span>
-                                </Image>
-                            ) }
-                            itemHeader={ template.displayName }
-                        />
-                    ))
+                    templateList && templateList instanceof Array && templateList.length > 0
+                        ? templateList && templateList.map((template: EmailTemplateType, index: number) => (
+                            <ResourceListItem
+                                key={ index }
+                                actionsFloated="right"
+                                actions={ [{
+                                    icon: "pencil alternate",
+                                    onClick: () => handleEditTemplate(template.id),
+                                    popupText: "Edit Template",
+                                    type: "button"
+                                },{
+                                    icon: "trash alternate",
+                                    onClick: () => {
+                                        setCurrentDeletingTemplate(template);
+                                        setShowTemplateTypeDeleteConfirmation(true)
+
+                                    },
+                                    popupText: "Delete Template",
+                                    type: "button"
+                                }] }
+                                avatar={ (
+                                    <Image
+                                        floated="left"
+                                        verticalAlign="middle"
+                                        rounded
+                                        centered
+                                        size="mini"
+                                    >
+                                        <AvatarBackground />
+                                        <span className="claims-letter">
+                                            { template.displayName[0].toLocaleUpperCase() }
+                                        </span>
+                                    </Image>
+                                ) }
+                                itemHeader={ template.displayName }
+                            />
+                        ))
+                        : showPlaceholders()
                 }
             </ResourceList>
             {
@@ -124,4 +177,4 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
             }
         </>
     )
-}
+};

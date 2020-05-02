@@ -16,19 +16,49 @@
  * under the License.
  */
 
-import { ConfirmationModal, ResourceList, ResourceListItem } from "@wso2is/react-components";
+import { LoadableComponentInterface } from "@wso2is/core/dist/src/models";
+import {
+    ConfirmationModal,
+    EmptyPlaceholder,
+    LinkButton, PrimaryButton,
+    ResourceList,
+    ResourceListItem
+} from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
-import { Image, Label } from "semantic-ui-react";
-import { ROLE_VIEW_PATH, GROUP_VIEW_PATH, APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../constants";
+import { Icon, Image, Label } from "semantic-ui-react";
+import { EmptyPlaceholderIllustrations } from "../../configs";
+import { APPLICATION_DOMAIN, GROUP_VIEW_PATH, INTERNAL_DOMAIN, ROLE_VIEW_PATH, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import { RolesInterface } from "../../models";
 import { CommonUtils } from "../../utils";
 import { AvatarBackground } from "../shared";
 
-interface RoleListProps {
+interface RoleListProps extends LoadableComponentInterface {
+    /**
+     * Flag for Group list.
+     */
     isGroup: boolean;
+    /**
+     * Roles list.
+     */
     roleList: RolesInterface[];
+    /**
+     * Role delete callback.
+     * @param {RolesInterface} role - Deleting role.
+     */
     handleRoleDelete: (role: RolesInterface) => void;
+    /**
+     * Callback for the search query clear action.
+     */
+    onSearchQueryClear: () => void;
+    /**
+     * Callback to be fired when clicked on the empty list placeholder action.
+     */
+    onEmptyListPlaceholderActionClick: () => void;
+    /**
+     * Search query for the list.
+     */
+    searchQuery: string;
 }
 
 /**
@@ -39,12 +69,16 @@ interface RoleListProps {
 export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleListProps): ReactElement => {
     
     const {
-        roleList,
         handleRoleDelete,
-        isGroup
+        isGroup,
+        isLoading,
+        onEmptyListPlaceholderActionClick,
+        onSearchQueryClear,
+        roleList,
+        searchQuery
     } = props;
 
-    const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false)
+    const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
 
     const handleRoleEdit = (roleId: string) => {
@@ -59,20 +93,21 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
      * Util method to generate listing header content.
      * 
      * @param displayName - display name of the role/group
-     * @returns - React element if containing a prfix or the string
+     *
+     * @returns - React element if containing a prefix or the string
      */
     const generateHeaderContent = (displayName: string): ReactElement | string => {
         if (isGroup) {
-            if (displayName.indexOf('/') !== -1){
+            if (displayName.indexOf("/") !== -1){
                 return (
                     <>
                         <Label
-                            content={ displayName.split('/')[0] }
+                            content={ displayName.split("/")[0] }
                             size="mini"
                             color="olive"
                             className={ "group-label" }
                         />
-                        { "/ " + displayName.split('/')[1] }
+                        { "/ " + displayName.split("/")[1] }
                     </>
                 )
             } else {
@@ -86,8 +121,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         />
                         { "/ " + displayName }
                     </>
-                )
-                return "" + displayName;
+                );
             }
         } else {
             if (displayName.includes(APPLICATION_DOMAIN)) {
@@ -97,7 +131,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                 size="mini"
                                 className={ "application-label" }
                             />
-                            { "/ " + displayName.split('/')[1] }
+                            { "/ " + displayName.split("/")[1] }
                         </>
             } else if (displayName.includes(INTERNAL_DOMAIN)) {
                 return <>
@@ -106,53 +140,112 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                 size="mini"
                                 className={ "internal-label" }
                             />
-                            { "/ " + displayName.split('/')[1] }
+                            { "/ " + displayName.split("/")[1] }
                         </>
             }
         }
-    }
+    };
+
+    /**
+     * Shows list placeholders.
+     *
+     * @return {React.ReactElement}
+     */
+    const showPlaceholders = (): ReactElement => {
+        // When the search returns empty.
+        if (searchQuery) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ onSearchQueryClear }>Clear search query</LinkButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    imageSize="tiny"
+                    title={ "No results found" }
+                    subtitle={ [
+                        `We couldn't find any results for ${ searchQuery }`,
+                        "Please try a different search term."
+                    ] }
+                />
+            );
+        }
+
+        if (roleList?.length === 0) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
+                            <Icon name="add"/>
+                            New { isGroup ? "Group" : "Role" }
+                        </PrimaryButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.newList }
+                    imageSize="tiny"
+                    title={ `Add a new ${ isGroup ? "group" : "role" }` }
+                    subtitle={ [
+                        `There are currently no ${ isGroup ? "groups" : "roles" } available.`,
+                        `You can add a new ${ isGroup ? "group" : "role" } easily by following the`,
+                        `steps in the ${ isGroup ? "group" : "role" } creation wizard.`
+                    ] }
+                />
+            );
+        }
+
+        return null;
+    };
 
     return (
         <>
-            <ResourceList className="roles-list">
+            <ResourceList
+                className="roles-list"
+                isLoading={ isLoading }
+                loadingStateOptions={ {
+                    count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                    imageType: "square"
+                } }
+            >
                 {
-                    roleList && roleList.map((role, index) => (
-                        <ResourceListItem
-                            key={ index }
-                            actionsFloated="right"
-                            actions={ [{
-                                    icon: "pencil alternate",
-                                    onClick: () => handleRoleEdit(role.id),
-                                    popupText: isGroup ? "Edit Group" : "Edit Role" ,
-                                    type: "button"
-                                },
-                                {
-                                    icon: "trash alternate",
-                                    onClick: () => {
-                                        setCurrentDeletedRole(role);
-                                        setShowDeleteConfirmationModal(!showRoleDeleteConfirmation);
+                    roleList && roleList instanceof Array && roleList.length > 0
+                        ? roleList.map((role, index) => (
+                            <ResourceListItem
+                                key={ index }
+                                actionsFloated="right"
+                                actions={ [
+                                    {
+                                        icon: "pencil alternate",
+                                        onClick: () => handleRoleEdit(role.id),
+                                        popupText: isGroup ? "Edit Group" : "Edit Role",
+                                        type: "button"
                                     },
-                                    popupText: isGroup ? "Delete Group" : "Delete Role" ,
-                                    type: "button"
-                            }] }
-                            avatar={ (
-                                <Image
-                                    floated="left"
-                                    verticalAlign="middle"
-                                    rounded
-                                    centered
-                                    size="mini"
-                                >
-                                    <AvatarBackground />
-                                    <span className="claims-letter">
-                                        { role.displayName[0].toLocaleUpperCase() }
-                                    </span>
-                                </Image>
-                            ) }
-                            itemHeader={ generateHeaderContent(role.displayName) }
-                            metaContent={ CommonUtils.humanizeDateDifference(role.meta.created) }
-                        />
-                    ))
+                                    {
+                                        icon: "trash alternate",
+                                        onClick: () => {
+                                            setCurrentDeletedRole(role);
+                                            setShowDeleteConfirmationModal(!showRoleDeleteConfirmation);
+                                        },
+                                        popupText: isGroup ? "Delete Group" : "Delete Role",
+                                        type: "button"
+                                    }
+                                ] }
+                                avatar={ (
+                                    <Image
+                                        floated="left"
+                                        verticalAlign="middle"
+                                        rounded
+                                        centered
+                                        size="mini"
+                                    >
+                                        <AvatarBackground/>
+                                        <span className="claims-letter">
+                                            { role.displayName[ 0 ].toLocaleUpperCase() }
+                                        </span>
+                                    </Image>
+                                ) }
+                                itemHeader={ generateHeaderContent(role.displayName) }
+                                metaContent={ CommonUtils.humanizeDateDifference(role.meta.created) }
+                            />
+                        ))
+                        : showPlaceholders()
                 }
             </ResourceList>
             {

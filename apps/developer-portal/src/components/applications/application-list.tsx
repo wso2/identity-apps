@@ -19,11 +19,19 @@
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, LoadableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AppAvatar, ConfirmationModal, ResourceList, ResourceListActionInterface } from "@wso2is/react-components";
+import {
+    AppAvatar,
+    ConfirmationModal,
+    EmptyPlaceholder,
+    LinkButton,
+    PrimaryButton,
+    ResourceList, ResourceListActionInterface
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Label } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
 import { deleteApplication } from "../../api";
+import { EmptyPlaceholderIllustrations } from "../../configs";
 import { ApplicationManagementConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import {
@@ -49,6 +57,18 @@ interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInter
      * On application delete callback.
      */
     onApplicationDelete: () => void;
+    /**
+     * Callback for the search query clear action.
+     */
+    onSearchQueryClear: () => void;
+    /**
+     * Callback to be fired when clicked on the empty list placeholder action.
+     */
+    onEmptyListPlaceholderActionClick: () => void;
+    /**
+     * Search query for the list.
+     */
+    searchQuery: string;
 }
 
 /**
@@ -63,9 +83,12 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
     const {
         featureConfig,
+        isLoading,
         list,
         onApplicationDelete,
-        isLoading
+        onEmptyListPlaceholderActionClick,
+        onSearchQueryClear,
+        searchQuery
     } = props;
 
     const dispatch = useDispatch();
@@ -146,9 +169,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      * Resolves list item actions based on the app config.
      *
      * @param {ApplicationListItemInterface} app - Application derails.
+     *
      * @return {ResourceListActionInterface[]} Resolved list actions.
      */
-    const resolveListActions = (app: ApplicationListItemInterface): ResourceListActionInterface[]  => {
+    const resolveListActions = (app: ApplicationListItemInterface): ResourceListActionInterface[] => {
         const actions: ResourceListActionInterface[] = [
             {
                 hidden: !isFeatureEnabled(
@@ -178,6 +202,54 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         return actions;
     };
 
+    /**
+     * Resolve the relevant placeholder.
+     *
+     * @return {React.ReactElement}
+     */
+    const showPlaceholders = (): ReactElement => {
+        // When the search returns empty.
+        if (searchQuery) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ onSearchQueryClear }>Clear search query</LinkButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    imageSize="tiny"
+                    title={ "No results found" }
+                    subtitle={ [
+                        `We couldn't find any results for ${ searchQuery }`,
+                        "Please try a different search term."
+                    ] }
+                />
+            );
+        }
+
+        if (list?.totalResults === 0) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
+                            <Icon name="add"/>
+                            New Application
+                        </PrimaryButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.newList }
+                    imageSize="tiny"
+                    title={ "Add a new Application" }
+                    subtitle={ [
+                        "Currently there are no applications available.",
+                        "You can add a new application easily by following the",
+                        "steps in the application creation wizard."
+                    ] }
+                />
+            );
+        }
+
+        return null;
+    };
+
     return (
         <>
             <ResourceList
@@ -189,50 +261,52 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 } }
             >
                 {
-                    list.applications.map((app: ApplicationListItemInterface, index: number) => {
+                    list?.applications && list.applications instanceof Array && list.applications.length > 0
+                        ? list.applications.map((app: ApplicationListItemInterface, index: number) => {
 
-                        const [
-                            templateName,
-                            description
-                        ] = ApplicationManagementUtils.resolveApplicationTemplateNameInDescription(app.description);
+                            const [
+                                templateName,
+                                description
+                            ] = ApplicationManagementUtils.resolveApplicationTemplateNameInDescription(app.description);
 
-                        // TODO Remove this check and move the logic to backend.
-                        if ("wso2carbon-local-sp" !== app.name) {
-                            return (
-                                <ResourceList.Item
-                                    key={ index }
-                                    actions={ resolveListActions(app) }
-                                    actionsFloated="right"
-                                    avatar={ (
-                                        <AppAvatar
-                                            name={ app.name }
-                                            image={ app.image }
-                                            size="mini"
-                                            floated="left"
-                                        />
-                                    ) }
-                                    itemHeader={ app.name }
-                                    itemDescription={ (
-                                        <>
-                                            {
-                                                templateName
-                                                && applicationTemplates
-                                                && applicationTemplates instanceof Array
-                                                && applicationTemplates
-                                                    .find((template) => template.name === templateName)
-                                                && (
-                                                    <Label size="mini" className="compact spaced-right">
-                                                        { templateName }
-                                                    </Label>
-                                                )
-                                            }
-                                            { description }
-                                        </>
-                                    ) }
-                                />
-                            );
-                        }
-                    })
+                            // TODO Remove this check and move the logic to backend.
+                            if ("wso2carbon-local-sp" !== app.name) {
+                                return (
+                                    <ResourceList.Item
+                                        key={ index }
+                                        actions={ resolveListActions(app) }
+                                        actionsFloated="right"
+                                        avatar={ (
+                                            <AppAvatar
+                                                name={ app.name }
+                                                image={ app.image }
+                                                size="mini"
+                                                floated="left"
+                                            />
+                                        ) }
+                                        itemHeader={ app.name }
+                                        itemDescription={ (
+                                            <>
+                                                {
+                                                    templateName
+                                                    && applicationTemplates
+                                                    && applicationTemplates instanceof Array
+                                                    && applicationTemplates
+                                                        .find((template) => template.name === templateName)
+                                                    && (
+                                                        <Label size="mini" className="compact spaced-right">
+                                                            { templateName }
+                                                        </Label>
+                                                    )
+                                                }
+                                                { description }
+                                            </>
+                                        ) }
+                                    />
+                                );
+                            }
+                        })
+                        : showPlaceholders()
                 }
             </ResourceList>
             {

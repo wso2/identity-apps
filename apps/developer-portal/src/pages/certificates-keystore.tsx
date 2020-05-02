@@ -18,15 +18,14 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { listCertificateAliases } from "../api";
 import { AdvancedSearchWithBasicFilters, CertificatesList, ImportCertificate } from "../components";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { UserConstants } from "../constants";
+import { UIConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertLevels, Certificate, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
@@ -52,7 +51,7 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
 
     const [ certificatesKeystore, setCertificatesKeystore ] = useState<Certificate[]>([]);
     const [ offset, setOffset ] = useState(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ openModal, setOpenModal ] = useState(false);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ filteredCertificatesKeystore, setFilteredCertificatesKeystore ] = useState<Certificate[]>([]);
@@ -103,7 +102,6 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
     };
 
     useEffect(() => {
-        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
         fetchCertificatesKeystore();
     }, []);
 
@@ -184,62 +182,6 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
         setFilteredCertificatesKeystore(certificatesKeystore);
     };
 
-    /**
-     * Shows list placeholders.
-     *
-     * @return {React.ReactElement}
-     */
-    const showPlaceholders = (): ReactElement => {
-
-        if (isLoading) {
-            return null;
-        }
-
-        // When the search returns empty.
-        if (searchQuery) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <LinkButton onClick={ handleSearchQueryClear }>Clear search query</LinkButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
-                    imageSize="tiny"
-                    title={ "No results found" }
-                    subtitle={ [
-                        `We couldn't find any results for ${ searchQuery }`,
-                        "Please try a different search term."
-                    ] }
-                />
-            );
-        }
-
-        if (filteredCertificatesKeystore.length === 0) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <PrimaryButton
-                            onClick={ () => {
-                                setOpenModal(true);
-                            } }
-                        >
-                            <Icon name="cloud upload" />Import Certificate
-                        </PrimaryButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
-                    imageSize="tiny"
-                    title={ "Import Certificate" }
-                    subtitle={ [
-                        "There are currently no certificates available.",
-                        "You can import a new certificate by clicking on",
-                        "the button below."
-                    ] }
-                />
-            );
-        }
-
-        return null;
-    };
-
     return (
         <>
             {
@@ -311,22 +253,20 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                     showPagination={ true }
                     sortOptions={ SORT_BY }
                     sortStrategy={ sortBy }
-                    showTopActionPanel={ !(!searchQuery && filteredCertificatesKeystore?.length <= 0) }
+                    showTopActionPanel={ isLoading || !(!searchQuery && certificatesKeystore?.length <= 0) }
                     totalPages={ Math.ceil(filteredCertificatesKeystore?.length / listItemLimit) }
                     totalListSize={ filteredCertificatesKeystore?.length }
                 >
-                    {
-                        filteredCertificatesKeystore?.length > 0
-                            ? (
-                                <CertificatesList
-                                    list={ paginate(filteredCertificatesKeystore, listItemLimit, offset) }
-                                    update={ fetchCertificatesKeystore }
-                                    type="keystore"
-                                    featureConfig={ featureConfig }
-                                />
-                            )
-                            : showPlaceholders()
-                    }
+                    <CertificatesList
+                        isLoading={ isLoading }
+                        list={ paginate(filteredCertificatesKeystore, listItemLimit, offset) }
+                        onEmptyListPlaceholderActionClick={ () => setOpenModal(true) }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        searchQuery={ searchQuery }
+                        update={ fetchCertificatesKeystore }
+                        type="keystore"
+                        featureConfig={ featureConfig }
+                    />
                 </ListLayout>
             </PageLayout>
         </>

@@ -18,7 +18,7 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,8 +27,7 @@ import { getDialects } from "../api";
 import { AddDialect, AvatarBackground } from "../components";
 import { ClaimsList, ListType } from "../components";
 import { AdvancedSearchWithBasicFilters } from "../components";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { LOCAL_CLAIMS_PATH, UserConstants } from "../constants";
+import { LOCAL_CLAIMS_PATH, UIConstants } from "../constants";
 import { history } from "../helpers";
 import { ListLayout } from "../layouts";
 import { PageLayout } from "../layouts";
@@ -58,7 +57,7 @@ export const ClaimDialectsPage = (): ReactElement => {
 
     const [ dialects, setDialects ] = useState<ClaimDialect[]>(null);
     const [ offset, setOffset ] = useState(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ addEditClaim, setAddEditClaim ] = useState(false);
     const [ filteredDialects, setFilteredDialects ] = useState<ClaimDialect[]>(null);
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
@@ -111,7 +110,6 @@ export const ClaimDialectsPage = (): ReactElement => {
     };
 
     useEffect(() => {
-        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
         getDialect();
     }, []);
 
@@ -200,63 +198,6 @@ export const ClaimDialectsPage = (): ReactElement => {
         setTriggerClearQuery(!triggerClearQuery);
         setSearchQuery("");
         setFilteredDialects(dialects);
-    };
-
-    /**
-     * Resolve the relevant placeholder.
-     *
-     * @return {React.ReactElement}
-     */
-    const showPlaceholders = (): ReactElement => {
-
-        if (isLoading) {
-            return null;
-        }
-
-        // When the search returns empty.
-        if (searchQuery) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <LinkButton onClick={ handleSearchQueryClear }>Clear search query</LinkButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
-                    imageSize="tiny"
-                    title={ "No results found" }
-                    subtitle={ [
-                        `We couldn't find any results for ${ searchQuery }`,
-                        "Please try a different search term."
-                    ] }
-                />
-            );
-        }
-
-        if (filteredDialects.length === 0) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <PrimaryButton
-                            onClick={ () => {
-                                setAddEditClaim(true);
-                            } }
-                        >
-                            <Icon name="add"/>
-                            New External Dialect
-                        </PrimaryButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
-                    imageSize="tiny"
-                    title={ "Add an attribute dialect" }
-                    subtitle={ [
-                        "There are currently no attribute dialects available.",
-                        "You can add a new external dialect easily by following the",
-                        "steps in the creation wizard."
-                    ] }
-                />
-            );
-        }
-
-        return null;
     };
 
     return (
@@ -378,23 +319,19 @@ export const ClaimDialectsPage = (): ReactElement => {
                     showPagination={ true }
                     sortOptions={ SORT_BY }
                     sortStrategy={ sortBy }
-                    showTopActionPanel={ !(!searchQuery && filteredDialects?.length <= 0) }
+                    showTopActionPanel={ isLoading || !(!searchQuery && filteredDialects?.length <= 0) }
                     totalPages={ Math.ceil(filteredDialects?.length / listItemLimit) }
                     totalListSize={ filteredDialects?.length }
                 >
-                    {
-                        filteredDialects
-                        && filteredDialects instanceof Array
-                        && filteredDialects.length > 0
-                            ? (
-                                <ClaimsList
-                                    list={ paginate(filteredDialects, listItemLimit, offset) }
-                                    localClaim={ ListType.DIALECT }
-                                    update={ getDialect }
-                                />
-                            )
-                            : showPlaceholders()
-                    }
+                    <ClaimsList
+                        isLoading={ isLoading }
+                        list={ paginate(filteredDialects, listItemLimit, offset) }
+                        localClaim={ ListType.DIALECT }
+                        update={ getDialect }
+                        onEmptyListPlaceholderActionClick={ () => setAddEditClaim(true) }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        searchQuery={ searchQuery }
+                    />
                 </ListLayout>
             </PageLayout>
         </>

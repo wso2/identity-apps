@@ -17,7 +17,7 @@
  */
 
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,8 +27,7 @@ import { deleteRoleById, getRolesList, getUserStoreList, searchRoleList } from "
 import { AdvancedSearchWithBasicFilters } from "../components";
 import { RoleList } from "../components/roles";
 import { CreateRoleWizard } from "../components/roles/create-role-wizard";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, UserConstants } from "../constants";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, UIConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertInterface, AlertLevels, RolesInterface, SearchRoleInterface } from "../models"
 
@@ -77,28 +76,24 @@ export const RolesPage = (): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isListUpdated, setListUpdated ] = useState(false);
-    // TODO: Check the usage and delete id not required.
+    // TODO: Check the usage and delete if not required.
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ userStore, setUserStore ] = useState(undefined);
     const [ filterBy, setFilterBy ] = useState<string>("all");
     const [ searchQuery, setSearchQuery ] = useState<string>("");
-    // TODO: Check the usage and delete id not required.
+    // TODO: Check the usage and delete if not required.
     const [ isEmptyResults, setIsEmptyResults ] = useState<boolean>(false);
-    const [ isRoleListRequestLoading, setRoleListRequestLoading ] = useState<boolean>(false);
+    const [ isRoleListFetchRequestLoading, setRoleListFetchRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState(false);
 
     const [ initialRolList, setInitialRoleList ] = useState<RolesInterface[]>([]);
     const [ paginatedRoles, setPaginatedRoles ] = useState<RolesInterface[]>([]);
 
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(ROLES_SORTING_OPTIONS[ 0 ]);
-
-    useEffect(() => {
-        setListItemLimit(UserConstants.DEFAULT_ROLE_LIST_ITEM_LIMIT);
-    }, []);
 
     useEffect(() => {
         if (searchQuery == "") {
@@ -124,7 +119,7 @@ export const RolesPage = (): ReactElement => {
     }, [ userStore ]);
 
     const getRoles = () => {
-        setRoleListRequestLoading(true);
+        setRoleListFetchRequestLoading(true);
 
         getRolesList(userStore)
             .then((response) => {
@@ -149,7 +144,7 @@ export const RolesPage = (): ReactElement => {
                 }
             })
             .finally(() => {
-                setRoleListRequestLoading(false);
+                setRoleListFetchRequestLoading(false);
             });
     };
 
@@ -303,59 +298,6 @@ export const RolesPage = (): ReactElement => {
         getRoles();
     };
 
-    /**
-     * Shows list placeholders.
-     *
-     * @return {React.ReactElement}
-     */
-    const showPlaceholders = (): ReactElement => {
-
-        if (isRoleListRequestLoading) {
-            return null;
-        }
-
-        // When the search returns empty.
-        if (searchQuery) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <LinkButton onClick={ handleSearchQueryClear }>Clear search query</LinkButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
-                    imageSize="tiny"
-                    title={ "No results found" }
-                    subtitle={ [
-                        `We couldn't find any results for ${ searchQuery }`,
-                        "Please try a different search term."
-                    ] }
-                />
-            );
-        }
-
-        if (paginatedRoles?.length === 0) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <PrimaryButton onClick={ () => setShowWizard(true) }>
-                            <Icon name="add"/>
-                            New Role
-                        </PrimaryButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
-                    imageSize="tiny"
-                    title={ "Add a new role" }
-                    subtitle={ [
-                        "There are currently no roles available.",
-                        "You can add a new role easily by following the",
-                        "steps in the role creation wizard."
-                    ] }
-                />
-            );
-        }
-
-        return null;
-    };
-
     return (
         <PageLayout
             title="Roles"
@@ -417,21 +359,21 @@ export const RolesPage = (): ReactElement => {
                         )
                     }
                     showPagination={ paginatedRoles?.length > 0 }
-                    showTopActionPanel={ !(!searchQuery && paginatedRoles?.length <= 0) }
+                    showTopActionPanel={
+                        isRoleListFetchRequestLoading || !(!searchQuery && paginatedRoles?.length <= 0)
+                    }
                     totalPages={ Math.ceil(initialRolList?.length / listItemLimit) }
                     totalListSize={ initialRolList?.length }
                 >
-                    {
-                        paginatedRoles.length > 0
-                            ? (
-                                <RoleList
-                                    isGroup={ false }
-                                    roleList={ paginatedRoles }
-                                    handleRoleDelete={ handleOnDelete }
-                                />
-                            )
-                            : showPlaceholders()
-                    }
+                    <RoleList
+                        handleRoleDelete={ handleOnDelete }
+                        isGroup={ false }
+                        isLoading={ isRoleListFetchRequestLoading }
+                        onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        roleList={ paginatedRoles }
+                        searchQuery={ searchQuery }
+                    />
                 </ListLayout>
             }
             {

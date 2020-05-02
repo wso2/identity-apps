@@ -18,7 +18,7 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,8 +26,7 @@ import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semanti
 import { getADialect, getAllLocalClaims } from "../api";
 import { AdvancedSearchWithBasicFilters, ClaimsList, ListType } from "../components";
 import { AddLocalClaims } from "../components";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { CLAIM_DIALECTS_PATH, UserConstants } from "../constants";
+import { CLAIM_DIALECTS_PATH, UIConstants } from "../constants";
 import { history } from "../helpers";
 import { ListLayout } from "../layouts";
 import { PageLayout } from "../layouts";
@@ -62,7 +61,7 @@ export const LocalClaimsPage = (): ReactElement => {
 
     const [ claims, setClaims ] = useState<Claim[]>(null);
     const [ offset, setOffset ] = useState(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ openModal, setOpenModal ] = useState(false);
     const [ claimURIBase, setClaimURIBase ] = useState("");
     const [ filteredClaims, setFilteredClaims ] = useState<Claim[]>(null);
@@ -119,7 +118,6 @@ export const LocalClaimsPage = (): ReactElement => {
     }, [ sortBy, sortOrder ]);
 
     useEffect(() => {
-        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
         getLocalClaims(null, null, null, null);
         getADialect("local").then((response) => {
             setClaimURIBase(response.dialectURI);
@@ -215,63 +213,6 @@ export const LocalClaimsPage = (): ReactElement => {
         setFilteredClaims(claims);
     };
 
-    /**
-     * Shows list placeholders.
-     *
-     * @return {React.ReactElement}
-     */
-    const showPlaceholders = (): ReactElement => {
-
-        if (isLoading) {
-            return null;
-        }
-
-        // When the search returns empty.
-        if (searchQuery) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <LinkButton onClick={ handleSearchQueryClear }>Clear search query</LinkButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
-                    imageSize="tiny"
-                    title={ "No results found" }
-                    subtitle={ [
-                        `We couldn't find any results for ${ searchQuery }`,
-                        "Please try a different search term."
-                    ] }
-                />
-            );
-        }
-
-        if (filteredClaims.length === 0) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <PrimaryButton
-                            onClick={ () => {
-                                setOpenModal(true);
-                            } }
-                        >
-                            <Icon name="add" />
-                            New Local Attribute
-                        </PrimaryButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
-                    imageSize="tiny"
-                    title={ "Add a local attribute" }
-                    subtitle={ [
-                        "There are currently no local attributes available.",
-                        "You can add a new local attribute easily by following the",
-                        "steps in the creation wizard."
-                    ] }
-                />
-            );
-        }
-
-        return null;
-    };
-
     return (
         <>
             {
@@ -349,24 +290,20 @@ export const LocalClaimsPage = (): ReactElement => {
                     showPagination={ true }
                     sortOptions={ SORT_BY }
                     sortStrategy={ sortBy }
-                    showTopActionPanel={ !(!searchQuery && filteredClaims?.length <= 0) }
+                    showTopActionPanel={ isLoading || !(!searchQuery && filteredClaims?.length <= 0) }
                     totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
                     totalListSize={ filteredClaims?.length }
                     onSortOrderChange={ handleSortOrderChange }
                 >
-                    {
-                        filteredClaims
-                        && filteredClaims instanceof Array
-                        && filteredClaims.length > 0 ?
-                            (
-                                <ClaimsList
-                                    list={ paginate(filteredClaims, listItemLimit, offset) }
-                                    localClaim={ ListType.LOCAL }
-                                    update={ getLocalClaims }
-                                />
-                            )
-                            : showPlaceholders()
-                    }
+                    <ClaimsList
+                        isLoading={ isLoading }
+                        list={ paginate(filteredClaims, listItemLimit, offset) }
+                        localClaim={ ListType.LOCAL }
+                        update={ getLocalClaims }
+                        onEmptyListPlaceholderActionClick={ () => setOpenModal(true) }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        searchQuery={ searchQuery }
+                    />
                 </ListLayout>
             </PageLayout>
         </>

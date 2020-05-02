@@ -18,14 +18,13 @@
 
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Modal, PaginationProps } from "semantic-ui-react";
 import { AddExternalClaims, ClaimsList, ListType } from "../../..";
-import { EmptyPlaceholderIllustrations } from "../../../../configs";
-import { UserConstants } from "../../../../constants";
+import { UIConstants } from "../../../../constants";
 import { ListLayout } from "../../../../layouts";
 import { AlertLevels, ExternalClaim } from "../../../../models";
 import { filterList, sortList } from "../../../../utils";
@@ -76,7 +75,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
     ];
 
     const [ offset, setOffset ] = useState(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ filteredClaims, setFilteredClaims ] = useState<ExternalClaim[]>([]);
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
@@ -91,10 +90,6 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
     const dispatch = useDispatch();
 
     const { dialectID, claims, update, isLoading } = props;
-
-    useEffect(() => {
-        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
-    }, []);
 
     useEffect(() => {
         if (claims) {
@@ -188,64 +183,6 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
         setFilteredClaims(claims);
     };
 
-    /**
-     * Shows list placeholders.
-     *
-     * @return {React.ReactElement}
-     */
-    const showPlaceholders = (): ReactElement => {
-
-        if (isLoading) {
-            return null;
-        }
-
-        // When the search returns empty.
-        if (searchQuery) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <LinkButton onClick={ handleSearchQueryClear }>Clear search query</LinkButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
-                    imageSize="tiny"
-                    title={ "No results found" }
-                    subtitle={ [
-                        `We couldn't find any results for ${ searchQuery }`,
-                        "Please try a different search term."
-                    ] }
-                />
-            );
-        }
-
-        if (filteredClaims.length === 0) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <PrimaryButton
-                            onClick={ (): void => {
-                                setShowAddExternalClaim(true);
-                            } }
-                            disabled={ showAddExternalClaim }
-                        >
-                            <Icon name="add"/>
-                            New External Attribute
-                        </PrimaryButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
-                    imageSize="tiny"
-                    title={ "Add a new external attribute" }
-                    subtitle={ [
-                        "There are currently no external attributes available.",
-                        "You can add a new external attribute by clicking",
-                        "on the button below."
-                    ] }
-                />
-            );
-        }
-
-        return null;
-    };
-
     return (
         <ListLayout
             advancedSearch={ (
@@ -290,7 +227,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
             showPagination={ true }
             sortOptions={ SORT_BY }
             sortStrategy={ sortBy }
-            showTopActionPanel={ !(!searchQuery && filteredClaims?.length <= 0) }
+            showTopActionPanel={ isLoading || !(!searchQuery && filteredClaims?.length <= 0) }
             totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
             totalListSize={ filteredClaims?.length }
             rightActionPanel={
@@ -344,17 +281,16 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
             <Grid columns={ 1 }>
                 <Grid.Column width={ 16 }>
                     <Divider hidden />
-                    {
-                        filteredClaims?.length > 0
-                            ? (
-                                <ClaimsList
-                                    list={ paginate(filteredClaims, listItemLimit, offset) }
-                                    localClaim={ ListType.EXTERNAL }
-                                    update={ () => update() }
-                                    dialectID={ dialectID }
-                                />
-                            ) : showPlaceholders()
-                    }
+                    <ClaimsList
+                        isLoading={ isLoading }
+                        list={ paginate(filteredClaims, listItemLimit, offset) }
+                        localClaim={ ListType.EXTERNAL }
+                        update={ () => update() }
+                        dialectID={ dialectID }
+                        onEmptyListPlaceholderActionClick={ () => setShowAddExternalClaim(true) }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        searchQuery={ searchQuery }
+                    />
                 </Grid.Column>
             </Grid>
         </ListLayout>

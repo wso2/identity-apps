@@ -16,20 +16,19 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
-import { PageLayout, ListLayout } from "../layouts";
-import { PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
-import { Icon, PaginationProps, DropdownProps } from "semantic-ui-react";
-import { history } from "../helpers";
-import { EmailTemplateDetails, EmailTemplate, AlertInterface, AlertLevels } from "../models";
-import { getEmailTemplate, deleteLocaleTemplate } from "../api";
-import { AxiosResponse, AxiosError } from "axios";
-import { EmailTemplateList } from "../components/email-templates";
-import { UserConstants, EMAIL_TEMPLATE_VIEW_PATH } from "../constants";
-import { useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
 import { addAlert } from "@wso2is/core/dist/src/store";
-import { EmailTemplateIllustrations } from "../configs";
+import { PrimaryButton } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { deleteLocaleTemplate, getEmailTemplate } from "../api";
+import { EmailTemplateList } from "../components/email-templates";
+import { EMAIL_TEMPLATE_VIEW_PATH, UIConstants } from "../constants";
+import { history } from "../helpers";
+import { ListLayout, PageLayout } from "../layouts";
+import { AlertInterface, AlertLevels, EmailTemplate, EmailTemplateDetails } from "../models";
 
 /**
  * Component will list all available locale based email templates for 
@@ -39,17 +38,14 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
 
-    const [ templateTypeId, setTemplateTypeId ] = useState<string>('');
+    const [ templateTypeId, setTemplateTypeId ] = useState<string>("");
     const [ emailTemplateTypeDetails, setEmailTemplateTypeDetails ] = useState<EmailTemplateDetails>(undefined);
     const [ emailTemplates, setEmailTemplates ] = useState<EmailTemplate[]>([]);
-    const [ paginatedemailTemplates, setPaginatedemailTemplates ] = useState<EmailTemplate[]>([]);
-
-    useEffect(() => {
-        setListItemLimit(UserConstants.DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT);
-    }, []);
+    const [ paginatedEmailTemplates, setPaginatedEmailTemplates ] = useState<EmailTemplate[]>([]);
+    const [ isEmailTemplatesFetchRequestLoading, setIsEmailTemplatesFetchRequestLoading ] = useState<boolean>(false);
 
     useEffect(() => {
         const path = history.location.pathname.split("/");
@@ -64,17 +60,23 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
      * Util method to get all locale templates.
      */
     const getTemplates = () => {
-        getEmailTemplate(templateTypeId).then((response: AxiosResponse<EmailTemplateDetails>) => {
-            if (response.status === 200) {
-                setEmailTemplateTypeDetails(response.data);
-                
-                if (response.data.templates instanceof Array && response.data.templates.length !== 0) {
-                    setEmailTemplates(response.data.templates);
-                    setEmailTemplateTypePage(listOffset, listItemLimit);
+        setIsEmailTemplatesFetchRequestLoading(true);
+
+        getEmailTemplate(templateTypeId)
+            .then((response: AxiosResponse<EmailTemplateDetails>) => {
+                if (response.status === 200) {
+                    setEmailTemplateTypeDetails(response.data);
+
+                    if (response.data.templates instanceof Array && response.data.templates.length !== 0) {
+                        setEmailTemplates(response.data.templates);
+                        setEmailTemplateTypePage(listOffset, listItemLimit);
+                    }
                 }
-            }
-        })
-    }
+            })
+            .finally(() => {
+                setIsEmailTemplatesFetchRequestLoading(false);
+            })
+    };
 
     /**
      * Handler for pagination page change.
@@ -106,8 +108,8 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
      * @param itemLimit pagination item limit
      */
     const setEmailTemplateTypePage = (offsetValue: number, itemLimit: number) => {
-        setPaginatedemailTemplates(emailTemplates?.slice(offsetValue, itemLimit + offsetValue));
-    }
+        setPaginatedEmailTemplates(emailTemplates?.slice(offsetValue, itemLimit + offsetValue));
+    };
 
     /**
      * Util to handle back button event.
@@ -162,7 +164,7 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
                 )
             });
         })
-    }
+    };
     
     return (
         <PageLayout
@@ -176,47 +178,31 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
             titleTextAlign="left"
             bottomMargin={ false }
         >
-            { paginatedemailTemplates.length > 0 ?
-                <ListLayout
-                    currentListSize={ listItemLimit }
-                    listItemLimit={ listItemLimit }
-                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                    onPageChange={ handlePaginationChange }
-                    showPagination={ true }
-                    totalPages={ Math.ceil(emailTemplates?.length / listItemLimit) }
-                    totalListSize={ emailTemplates?.length }
-                    rightActionPanel={
-                        (
-                            <PrimaryButton onClick={ () => handleAddNewTemplate() }>
-                                <Icon name="add"/>
-                                New Template
-                            </PrimaryButton>
-                        )
-                    }
-                >
-                    <EmailTemplateList 
-                        onDelete={ deleteTemplateType } 
-                        templateTypeId={ templateTypeId } 
-                        templateList={ paginatedemailTemplates }
-                    />
-                </ListLayout>
-                :
-                <EmptyPlaceholder
-                    action={
-                        <PrimaryButton
-                            onClick={ () => {
-                                handleAddNewTemplate();
-                            } }
-                        >
-                            <Icon name="add"/> New Template
+            <ListLayout
+                currentListSize={ listItemLimit }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                onPageChange={ handlePaginationChange }
+                showPagination={ true }
+                totalPages={ Math.ceil(emailTemplates?.length / listItemLimit) }
+                totalListSize={ emailTemplates?.length }
+                rightActionPanel={
+                    (
+                        <PrimaryButton onClick={ () => handleAddNewTemplate() }>
+                            <Icon name="add"/>
+                            New Template
                         </PrimaryButton>
-                    }
-                    title="Add Template"
-                    subtitle={ ["There are no templates available for the selected email template type."] }
-                    image={ EmailTemplateIllustrations.emptyEmailListing }
-                    imageSize="tiny"
-                /> 
-            }
+                    )
+                }
+            >
+                <EmailTemplateList
+                    isLoading={ isEmailTemplatesFetchRequestLoading }
+                    onEmptyListPlaceholderActionClick={ () => handleAddNewTemplate() }
+                    onDelete={ deleteTemplateType }
+                    templateTypeId={ templateTypeId }
+                    templateList={ paginatedEmailTemplates }
+                />
+            </ListLayout>
         </PageLayout>
     )
-}
+};

@@ -20,7 +20,7 @@ import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentic
 import { CommonHelpers } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
-import { Button, EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { Button, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -30,8 +30,7 @@ import { AdvancedSearchWithBasicFilters } from "../components";
 import { UsersList } from "../components/users";
 import { UsersListOptionsComponent } from "../components/users";
 import { AddUserWizard } from "../components/users/wizard";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { UserConstants } from "../constants";
+import { UIConstants, UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertInterface, AlertLevels, UserListInterface } from "../models";
 import { store } from "../store";
@@ -48,7 +47,7 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
 
     const [ searchQuery, setSearchQuery ] = useState("");
     const [ listOffset, setListOffset ] = useState<number>(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ usersList, setUsersList ] = useState<UserListInterface>({});
     const [ rolesList ] = useState([]);
@@ -76,8 +75,6 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
     };
 
     useEffect(() => {
-        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
-
         if(CommonHelpers.lookupKey(tenantSettings, username) !== null) {
             const userSettings = CommonHelpers.lookupKey(tenantSettings, username);
             const userPreferences = userSettings[1];
@@ -227,62 +224,6 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
         setTriggerClearQuery(!triggerClearQuery);
         setSearchQuery("");
         getList(listItemLimit, listOffset, null, null, null);
-    };
-
-    /**
-     * Shows list placeholders.
-     *
-     * @return {React.ReactElement}
-     */
-    const showPlaceholders = (): ReactElement => {
-
-        if (isUserListRequestLoading) {
-            return null;
-        }
-
-        // When the search returns empty.
-        if (searchQuery) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <LinkButton onClick={ handleSearchQueryClear }>Clear search query</LinkButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
-                    imageSize="tiny"
-                    title={ "No results found" }
-                    subtitle={ [
-                        `We couldn't find any results for ${ searchQuery }`,
-                        "Please try a different search term."
-                    ] }
-                />
-            );
-        }
-
-        if (usersList.totalResults === 0 && usersList.Resources) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <PrimaryButton
-                            data-testid="user_mgt_user_list_add_user_button"
-                            onClick={ () => setShowWizard(true) }
-                        >
-                            <Icon name="add"/>
-                            New User
-                        </PrimaryButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
-                    imageSize="tiny"
-                    title={ "Add a new User" }
-                    subtitle={ [
-                        "There are currently no users available.",
-                        "You can add a new user easily by following the",
-                        "steps in the creation wizard."
-                    ] }
-                />
-            );
-        }
-
-        return null;
     };
 
     /**
@@ -453,23 +394,19 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
                     )
                 }
                 showPagination={ true }
-                showTopActionPanel={ !(!searchQuery && usersList?.totalResults <= 0) }
+                showTopActionPanel={ isUserListRequestLoading || !(!searchQuery && usersList?.totalResults <= 0) }
                 totalPages={ Math.ceil(usersList.totalResults / listItemLimit) }
                 totalListSize={ usersList.totalResults }
             >
-                {
-                    (usersList?.totalResults > 0
-                        && usersList?.Resources instanceof Array
-                        && usersList.Resources.length > 0)
-                        ? (
-                            <UsersList
-                                usersList={ usersList }
-                                handleUserDelete={ handleUserDelete }
-                                userMetaListContent={ userListMetaContent }
-                            />
-                        )
-                        : showPlaceholders()
-                }
+                <UsersList
+                    usersList={ usersList }
+                    handleUserDelete={ handleUserDelete }
+                    userMetaListContent={ userListMetaContent }
+                    isLoading={ isUserListRequestLoading }
+                    onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
+                    onSearchQueryClear={ handleSearchQueryClear }
+                    searchQuery={ searchQuery }
+                />
                 {
                     showWizard && (
                     <AddUserWizard
