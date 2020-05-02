@@ -108,6 +108,10 @@ export interface AdvancedSearchPropsInterface extends TestableComponentInterface
      * Is form submitted.
      */
     submitted?: boolean;
+    /**
+     * Manually trigger query clear action from outside.
+     */
+    triggerClearQuery?: boolean;
 }
 
 /**
@@ -140,7 +144,8 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
         resetSubmittedState,
         searchOptionsHeader,
         submitted,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        triggerClearQuery
     } = props;
 
     const searchInputRef: MutableRefObject<HTMLDivElement> = useRef();
@@ -148,6 +153,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
     const [ internalSearchQuery, setInternalSearchQuery ] = useState<string>("");
     const [ showSearchFieldHint, setShowSearchFieldHint ] = useState<boolean>(false);
     const [ isDropdownVisible, setIsDropdownVisible ] = useState<boolean>(false);
+    const [ internalQueryClearTriggerState, setInternalQueryClearTriggerState ] = useState<boolean>(false);
 
     /**
      * useEffect hook to handle `internalSearchQuery` change.
@@ -177,6 +183,15 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
             resetSubmittedState();
         }
     }, [ submitted ]);
+
+    useEffect(() => {
+        if (triggerClearQuery === undefined || (internalQueryClearTriggerState === triggerClearQuery)) {
+            return;
+        }
+
+        clearSearchQuery();
+        setInternalQueryClearTriggerState(triggerClearQuery);
+    }, [ triggerClearQuery ]);
 
     /**
      * Wrapper `div` style classes.
@@ -220,7 +235,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
     /**
      * Handles the clear query button `onClick` event.
      */
-    const handleQueryClearClick = (): void => {
+    const clearSearchQuery = (): void => {
         setInternalSearchQuery("");
         onSearchQuerySubmit(false, null);
         onExternalSearchQueryClear();
@@ -283,7 +298,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                                                         basic
                                                         compact
                                                         className="input-add-on"
-                                                        onClick={ handleQueryClearClick }
+                                                        onClick={ clearSearchQuery }
                                                     >
                                                         <GenericIcon
                                                             size="nano"
@@ -349,7 +364,6 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                 ) }
                 on="click"
                 position={ dropdownPosition }
-                eventsEnabled={ true }
                 open={ isDropdownVisible }
                 onClose={ handleSearchDropdownClose }
                 closeOnPortalMouseLeave={ false }

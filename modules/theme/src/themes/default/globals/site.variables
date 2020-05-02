@@ -143,3 +143,9 @@
 @defaultCardHoverBoxShadow: 0 2px 8px rgba(0, 0, 0, 0.09);
 @defaultCardTransition: all 0.3s;
 @defaultCardBorder: 1px solid #e8e8e8;
+
+/*-------------------------
+           Forms
+--------------------------*/
+
+@readOnlyFormFieldBgColor: #e9ecef;

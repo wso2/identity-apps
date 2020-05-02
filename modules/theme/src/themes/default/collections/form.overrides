@@ -2,6 +2,39 @@
         Form Overrides
 *******************************/
 
+/*-------------------------
+      Readonly Fields
+--------------------------*/
+
+.ui.form {
+
+    textarea[readonly] {
+        background-color: @readOnlyFormFieldBgColor !important;
+        pointer-events: none;
+    }
+
+    input[readonly] {
+        background-color: @readOnlyFormFieldBgColor !important;
+        pointer-events: none;
+    }
+
+    .ui.read-only.checkbox ~ .box:before,
+    .ui.read-only.checkbox ~ label:before,
+    .ui.read-only.checkbox input.hidden+label:before,
+    .ui.read-only.checkbox input:checked ~ .box:before,
+    .ui.read-only.checkbox input:checked ~ label:before {
+        background-color: @readOnlyFormFieldBgColor !important;
+        pointer-events: none;
+    }
+
+    .field.read-only .field {
+        .ui.dropdown {
+            background-color: @readOnlyFormFieldBgColor !important;
+            pointer-events: none;
+        }
+    }
+}
+
 /*-------------------------------
       Hidden/Disable Field
 --------------------------------*/

@@ -100,6 +100,8 @@ apps/*/build/
 apps/*/src/main/webapp/libs/themes
 apps/user-portal/src/main/
 apps/developer-portal/src/main/
+apps/user-portal/cache
+apps/developer-portal/cache
 
 .classpath
 .settings

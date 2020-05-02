@@ -60,10 +60,11 @@ export class HelpPanelConstants {
 
     /**
      * Key for the `Edit Application` tag in the docs structure object.
+     * TODO: Rename this to `"Developer Portal` once mkdocs.yml is changed.
      * @constant
      * @type {string}
      */
-    public static readonly EDIT_APPLICATIONS_DOCS_KEY = "[\"Developer Portal\"].Applications[\"Edit Application\"]";
+    public static readonly EDIT_APPLICATIONS_DOCS_KEY = "[\"Admin Portal\"].Applications[\"Edit Application\"]";
 
     /**
      * Key for the application samples tag in the docs structure object.

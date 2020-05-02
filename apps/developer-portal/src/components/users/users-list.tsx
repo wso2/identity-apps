@@ -16,14 +16,20 @@
  * under the License.
  */
 
+import { LoadableComponentInterface } from "@wso2is/core/dist/src/models";
 import {
     ConfirmationModal,
+    EmptyPlaceholder,
+    LinkButton,
+    PrimaryButton,
     ResourceList,
     ResourceListItem,
     UserAvatar
 } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
-import { Grid, List, SemanticWIDTHS } from "semantic-ui-react";
+import { Grid, Icon, List, SemanticWIDTHS } from "semantic-ui-react";
+import { EmptyPlaceholderIllustrations } from "../../configs";
+import { UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import { UserBasicInterface, UserListInterface } from "../../models";
 import { CommonUtils } from "../../utils";
@@ -31,10 +37,32 @@ import { CommonUtils } from "../../utils";
 /**
  * Prop types for the liked accounts component.
  */
-interface UsersListProps {
-    usersList: UserListInterface;
+interface UsersListProps extends LoadableComponentInterface {
+    /**
+     * User delete callback.
+     * @param {string} userId - ID of the deleting user.
+     */
     handleUserDelete: (userId: string) => void;
+    /**
+     * Callback to be fired when clicked on the empty list placeholder action.
+     */
+    onEmptyListPlaceholderActionClick: () => void;
+    /**
+     * Callback for the search query clear action.
+     */
+    onSearchQueryClear: () => void;
+    /**
+     * Search query for the list.
+     */
+    searchQuery: string;
+    /**
+     * Meta for the user list.
+     */
     userMetaListContent: Map<string, string>;
+    /**
+     * User list.
+     */
+    usersList: UserListInterface;
 }
 
 /**
@@ -44,9 +72,13 @@ interface UsersListProps {
  */
 export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersListProps): ReactElement => {
     const {
-        usersList,
         handleUserDelete,
-        userMetaListContent
+        isLoading,
+        onEmptyListPlaceholderActionClick,
+        onSearchQueryClear,
+        searchQuery,
+        userMetaListContent,
+        usersList
     } = props;
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
@@ -87,16 +119,17 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         }
 
         let metaColumnWidth: SemanticWIDTHS = 1;
-         const metaList = attributes.map((metaAttribute, index) => {
-             if (metaAttribute?.toString().length <= 10) {
-                 metaColumnWidth = 2;
-             }
-             if (metaAttribute?.toString().length >= 20) {
-                 metaColumnWidth = 4;
-             }
-             if (metaAttribute?.toString().length >= 30 && metaAttribute?.toString().length <= 40) {
-                 metaColumnWidth = 6;
-             }
+
+        return attributes.map((metaAttribute, index) => {
+            if (metaAttribute?.toString().length <= 10) {
+                metaColumnWidth = 2;
+            }
+            if (metaAttribute?.toString().length >= 20) {
+                metaColumnWidth = 4;
+            }
+            if (metaAttribute?.toString().length >= 30 && metaAttribute?.toString().length <= 40) {
+                metaColumnWidth = 6;
+            }
             return (
                 <Grid.Column width={ metaColumnWidth } key={ index }>
                     <List.Content>
@@ -107,7 +140,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 </Grid.Column>
             );
         });
-        return metaList;
     };
 
     const listContent = (user: UserBasicInterface) => {
@@ -132,53 +164,112 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         }
     };
 
+    /**
+     * Shows list placeholders.
+     *
+     * @return {React.ReactElement}
+     */
+    const showPlaceholders = (): ReactElement => {
+        // When the search returns empty.
+        if (searchQuery) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ onSearchQueryClear }>Clear search query</LinkButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    imageSize="tiny"
+                    title={ "No results found" }
+                    subtitle={ [
+                        `We couldn't find any results for ${ searchQuery }`,
+                        "Please try a different search term."
+                    ] }
+                />
+            );
+        }
+
+        if (usersList.totalResults === 0 && usersList.Resources) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <PrimaryButton
+                            data-testid="user_mgt_user_list_add_user_button"
+                            onClick={ () => onEmptyListPlaceholderActionClick() }
+                        >
+                            <Icon name="add"/>
+                            New User
+                        </PrimaryButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.newList }
+                    imageSize="tiny"
+                    title={ "Add a new User" }
+                    subtitle={ [
+                        "There are currently no users available.",
+                        "You can add a new user easily by following the",
+                        "steps in the user creation wizard."
+                    ] }
+                />
+            );
+        }
+
+        return null;
+    };
+
     return (
         <>
-            <ResourceList className="applications-list">
+            <ResourceList
+                className="applications-list"
+                isLoading={ isLoading }
+                loadingStateOptions={ {
+                    count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                    imageType: "circular"
+                } }
+            >
                 {
-                    usersList && usersList.Resources && usersList.Resources instanceof Array &&
-                    usersList.Resources.map((user, index) => (
-                        <ResourceListItem
-                            key={ index }
-                            actions={ [
-                                {
-                                    elementTestId: `user_mgt_user_list_edit_user_${ user.userName }_button`,
-                                    icon: "pencil alternate",
-                                    onClick: () => handleUserEdit(user.id),
-                                    popupText: "Edit",
-                                    type: "button",
-                                },
-                                {
-                                    elementTestId: `user_mgt_user_list_delete_user_${ user.userName }_button`,
-                                    hidden: user.userName === "admin",
-                                    icon: "trash alternate",
-                                    onClick: (): void => {
-                                        setShowDeleteConfirmationModal(true);
-                                        setDeletingUser(user);
+                    usersList?.Resources && usersList.Resources instanceof Array && usersList.Resources.length > 0
+                        ? usersList.Resources.map((user, index) => (
+                            <ResourceListItem
+                                key={ index }
+                                actions={ [
+                                    {
+                                        elementTestId: `user_mgt_user_list_edit_user_${ user.userName }_button`,
+                                        icon: "pencil alternate",
+                                        onClick: () => handleUserEdit(user.id),
+                                        popupText: "Edit",
+                                        type: "button"
                                     },
-                                    popupText: "Delete user",
-                                    type: "button"
-                                }
-                            ] }
-                            actionsFloated="right"
-                            avatar={ (
-                                <UserAvatar
-                                    name={ user.userName }
-                                    size="mini"
-                                    floated="left"
-                                    image={ user.profileUrl }
-                                />
-                            ) }
-                            itemHeader={ user.name && user.name.givenName !== undefined ? user.name.givenName +
-                                " " + user.name.familyName : user.userName }
-                            itemDescription={ user.emails ? user.emails[0].toString() :
-                                user.userName }
-                            metaContent={ listContent(user) }
-                            metaColumnWidth={ 10 }
-                            descriptionColumnWidth={ 3 }
-                            actionsColumnWidth={ 3 }
-                        />
-                    ))
+                                    {
+                                        elementTestId: `user_mgt_user_list_delete_user_${ user.userName }_button`,
+                                        hidden: user.userName === "admin",
+                                        icon: "trash alternate",
+                                        onClick: (): void => {
+                                            setShowDeleteConfirmationModal(true);
+                                            setDeletingUser(user);
+                                        },
+                                        popupText: "Delete user",
+                                        type: "button"
+                                    }
+                                ] }
+                                actionsFloated="right"
+                                avatar={ (
+                                    <UserAvatar
+                                        name={ user.userName }
+                                        size="mini"
+                                        floated="left"
+                                        image={ user.profileUrl }
+                                    />
+                                ) }
+                                itemHeader={ user.name && user.name.givenName !== undefined ? user.name.givenName +
+                                    " " + user.name.familyName : user.userName }
+                                itemDescription={ user.emails ? user.emails[ 0 ].toString() :
+                                    user.userName }
+                                metaContent={ listContent(user) }
+                                metaColumnWidth={ 10 }
+                                descriptionColumnWidth={ 3 }
+                                actionsColumnWidth={ 3 }
+                            />
+                        ))
+                        : showPlaceholders()
                 }
             </ResourceList>
             {

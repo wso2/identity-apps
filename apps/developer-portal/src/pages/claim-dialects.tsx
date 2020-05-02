@@ -18,23 +18,22 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useContext, useEffect, useState } from "react";
+import { PrimaryButton } from "@wso2is/react-components";
+import React, { ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
 import { getDialects } from "../api";
 import { AddDialect, AvatarBackground } from "../components";
 import { ClaimsList, ListType } from "../components";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { LOCAL_CLAIMS_PATH, UserConstants } from "../constants";
+import { AdvancedSearchWithBasicFilters } from "../components";
+import { LOCAL_CLAIMS_PATH, UIConstants } from "../constants";
 import { history } from "../helpers";
 import { ListLayout } from "../layouts";
 import { PageLayout } from "../layouts";
 import { AlertLevels, ClaimDialect, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { filterList, sortList } from "../utils";
-import { useTranslation } from "react-i18next";
-import { AdvancedSearchWithBasicFilters } from "../components/shared/advanced-search-with-basic-filters";
 
 /**
  * This displays a list fo claim dialects.
@@ -58,14 +57,15 @@ export const ClaimDialectsPage = (): ReactElement => {
 
     const [ dialects, setDialects ] = useState<ClaimDialect[]>(null);
     const [ offset, setOffset ] = useState(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ addEditClaim, setAddEditClaim ] = useState(false);
     const [ filteredDialects, setFilteredDialects ] = useState<ClaimDialect[]>(null);
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
     const [ localURI, setLocalURI ] = useState("");
-    const [ query, setQuery ] = useState("");
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ isLoading, setIsLoading ] = useState(true);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
@@ -110,7 +110,6 @@ export const ClaimDialectsPage = (): ReactElement => {
     };
 
     useEffect(() => {
-        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
         getDialect();
     }, []);
 
@@ -182,6 +181,7 @@ export const ClaimDialectsPage = (): ReactElement => {
         try {
             const filteredDialects = filterList(dialects, query, sortBy.value, sortOrder);
             setFilteredDialects(filteredDialects);
+            setSearchQuery(query);
         } catch (error) {
             dispatch(addAlert({
                 description: error.message,
@@ -189,6 +189,15 @@ export const ClaimDialectsPage = (): ReactElement => {
                 message: "Filter query format incorrect"
             }));
         }
+    };
+
+    /**
+     * Handles the `onSearchQueryClear` callback action.
+     */
+    const handleSearchQueryClear = (): void => {
+        setTriggerClearQuery(!triggerClearQuery);
+        setSearchQuery("");
+        setFilteredDialects(dialects);
     };
 
     return (
@@ -261,13 +270,10 @@ export const ClaimDialectsPage = (): ReactElement => {
                     )
                 }
                 <Divider hidden />
-                {
-                    filteredDialects && filteredDialects.length > 0
-                        ? (
-                            <ListLayout
-                                advancedSearch={
-                                     <AdvancedSearchWithBasicFilters
-                            onFilter={ handleDialectFilter  }
+                <ListLayout
+                    advancedSearch={
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleDialectFilter }
                             filterAttributeOptions={ [
                                 {
                                     key: 0,
@@ -290,58 +296,44 @@ export const ClaimDialectsPage = (): ReactElement => {
                             placeholder={ t("devPortal:components.claims.dialects.advancedSearch.placeholder") }
                             defaultSearchAttribute="dialectURI"
                             defaultSearchOperator="co"
+                            triggerClearQuery={ triggerClearQuery }
                         />
-                                }
-                                currentListSize={ listItemLimit }
-                                listItemLimit={ listItemLimit }
-                                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                                onPageChange={ handlePaginationChange }
-                                onSortStrategyChange={ handleSortStrategyChange }
-                                onSortOrderChange={ handleSortOrderChange }
-                                rightActionPanel={
-                                    (
-                                        <PrimaryButton
-                                            onClick={ () => {
-                                                setAddEditClaim(true);
-                                            } }
-                                        >
-                                            <Icon name="add" />New External Dialect
-                                        </PrimaryButton>
-                                    )
-                                }
-                                showPagination={ true }
-                                sortOptions={ SORT_BY }
-                                sortStrategy={ sortBy }
-                                totalPages={ Math.ceil(filteredDialects?.length / listItemLimit) }
-                                totalListSize={ filteredDialects?.length }
+                    }
+                    currentListSize={ listItemLimit }
+                    listItemLimit={ listItemLimit }
+                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                    onPageChange={ handlePaginationChange }
+                    onSortStrategyChange={ handleSortStrategyChange }
+                    onSortOrderChange={ handleSortOrderChange }
+                    rightActionPanel={
+                        (
+                            <PrimaryButton
+                                onClick={ () => {
+                                    setAddEditClaim(true);
+                                } }
                             >
-                                <ClaimsList
-                                    list={ paginate(filteredDialects, listItemLimit, offset) }
-                                    localClaim={ ListType.DIALECT }
-                                    update={ getDialect }
-                                />
-                            </ListLayout>
+                                <Icon name="add"/>
+                                New External Dialect
+                            </PrimaryButton>
                         )
-                        : !isLoading && (
-                            <EmptyPlaceholder
-                                action={ (
-                                    <LinkButton onClick={ () => {
-                                        setFilteredDialects(dialects);
-                                    } }
-                                    >
-                                        Clear search query
-                                    </LinkButton>
-                                ) }
-                                image={ EmptyPlaceholderIllustrations.emptySearch }
-                                imageSize="tiny"
-                                title={ "No results found" }
-                                subtitle={ [
-                                    `We couldn't find any results for "${query}"`,
-                                    "Please try a different search term."
-                                ] }
-                            />
-                        )
-                }
+                    }
+                    showPagination={ true }
+                    sortOptions={ SORT_BY }
+                    sortStrategy={ sortBy }
+                    showTopActionPanel={ isLoading || !(!searchQuery && filteredDialects?.length <= 0) }
+                    totalPages={ Math.ceil(filteredDialects?.length / listItemLimit) }
+                    totalListSize={ filteredDialects?.length }
+                >
+                    <ClaimsList
+                        isLoading={ isLoading }
+                        list={ paginate(filteredDialects, listItemLimit, offset) }
+                        localClaim={ ListType.DIALECT }
+                        update={ getDialect }
+                        onEmptyListPlaceholderActionClick={ () => setAddEditClaim(true) }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        searchQuery={ searchQuery }
+                    />
+                </ListLayout>
             </PageLayout>
         </>
     );

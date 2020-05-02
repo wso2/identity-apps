@@ -87,4 +87,10 @@ export class UIConstants {
      * @type {string}
      */
     public static readonly GITHUB_API_BASE_URL: string = "https://api.github.com";
+
+    /**
+     * Default list item size for resources such as applications, IdPs etc.
+     * @type {number}
+     */
+    public static readonly DEFAULT_RESOURCE_LIST_ITEM_LIMIT: number = 10;
 }

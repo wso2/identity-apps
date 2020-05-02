@@ -16,12 +16,22 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, LoadableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AppAvatar, ConfirmationModal, ResourceList } from "@wso2is/react-components";
+import {
+    AppAvatar,
+    ConfirmationModal,
+    EmptyPlaceholder,
+    LinkButton,
+    PrimaryButton,
+    ResourceList
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Icon } from "semantic-ui-react";
 import { deleteIdentityProvider } from "../../api";
+import { EmptyPlaceholderIllustrations } from "../../configs";
+import { UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import {
     ConfigReducerStateInterface,
@@ -33,9 +43,27 @@ import { AppState } from "../../store";
 /**
  * Proptypes for the identity provider list component.
  */
-interface IdentityProviderListPropsInterface {
+interface IdentityProviderListPropsInterface extends LoadableComponentInterface {
+    /**
+     * IdP list.
+     */
     list: IdentityProviderListResponseInterface;
+    /**
+     * Callback to be fired when clicked on the empty list placeholder action.
+     */
+    onEmptyListPlaceholderActionClick: () => void;
+    /**
+     * On IdP delete callback.
+     */
     onIdentityProviderDelete: () => void;
+    /**
+     * Callback for the search query clear action.
+     */
+    onSearchQueryClear: () => void;
+    /**
+     * Search query for the list.
+     */
+    searchQuery: string;
 }
 
 /**
@@ -49,8 +77,12 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
 ): ReactElement => {
 
     const {
+        isLoading,
         list,
-        onIdentityProviderDelete
+        onEmptyListPlaceholderActionClick,
+        onIdentityProviderDelete,
+        onSearchQueryClear,
+        searchQuery
     } = props;
 
     const dispatch = useDispatch();
@@ -66,7 +98,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
      * @param {string} idpId Identity provider id.
      */
     const handleIdentityProviderEdit = (idpId: string): void => {
-        history.push(`identity-providers/${idpId}`);
+        history.push(`identity-providers/${ idpId }`);
     };
 
     /**
@@ -114,47 +146,105 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
             });
     };
 
+    /**
+     * Resolve the relevant placeholder.
+     *
+     * @return {React.ReactElement}
+     */
+    const showPlaceholders = (): ReactElement => {
+        // When the search returns empty.
+        if (searchQuery) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ onSearchQueryClear }>Clear search query</LinkButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    imageSize="tiny"
+                    title={ "No results found" }
+                    subtitle={ [
+                        `We couldn't find any results for ${ searchQuery }`,
+                        "Please try a different search term."
+                    ] }
+                />
+            );
+        }
+
+        if (list?.totalResults === 0) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <PrimaryButton
+                            onClick={ onEmptyListPlaceholderActionClick }
+                        >
+                            <Icon name="add"/>
+                            New Identity Provider
+                        </PrimaryButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.newList }
+                    imageSize="tiny"
+                    title={ "Add a new Identity Provider" }
+                    subtitle={ [
+                        "Currently there are no identity providers available.",
+                        "You can add a new identity provider easily by following the",
+                        "steps in the identity providers creation wizard."
+                    ] }
+                />
+            );
+        }
+
+        return null;
+    };
 
     return (
-        <ResourceList className="identity-providers-list">
+        <ResourceList
+            className="identity-providers-list"
+            isLoading={ isLoading }
+            loadingStateOptions={ {
+                count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                imageType: "square"
+            } }
+        >
             {
-                list.identityProviders.map((idp, index) => {
-                    // TODO Remove this check and move the logic to backend.
-                    if ("LOCAL" !== idp.name) {
-                        return (
-                            <ResourceList.Item
-                                key={ index }
-                                actions={ [
-                                    {
-                                        hidden: config.ui.doNotDeleteIdentityProviders.includes(idp.name),
-                                        icon: "pencil alternate",
-                                        onClick: (): void => handleIdentityProviderEdit(idp.id),
-                                        popupText: "edit",
-                                        type: "button"
-                                    },
-                                    {
-                                        hidden: config.ui.doNotDeleteIdentityProviders.includes(idp.name),
-                                        icon: "trash alternate",
-                                        onClick: (): void => handleIdentityProviderDeleteAction(idp.id),
-                                        popupText: "delete",
-                                        type: "dropdown"
-                                    }
-                                ] }
-                                actionsFloated="right"
-                                avatar={ (
-                                    <AppAvatar
-                                        name={ idp.name }
-                                        image={ idp.image }
-                                        size="mini"
-                                        floated="left"
-                                    />
-                                ) }
-                                itemHeader={ idp.name }
-                                itemDescription={ idp.description }
-                            />
-                        );
-                    }
-                })
+                list?.identityProviders && list.identityProviders instanceof Array && list.identityProviders.length > 0
+                    ? list.identityProviders.map((idp, index) => {
+                        // TODO Remove this check and move the logic to backend.
+                        if ("LOCAL" !== idp.name) {
+                            return (
+                                <ResourceList.Item
+                                    key={ index }
+                                    actions={ [
+                                        {
+                                            hidden: config.ui.doNotDeleteIdentityProviders.includes(idp.name),
+                                            icon: "pencil alternate",
+                                            onClick: (): void => handleIdentityProviderEdit(idp.id),
+                                            popupText: "edit",
+                                            type: "button"
+                                        },
+                                        {
+                                            hidden: config.ui.doNotDeleteIdentityProviders.includes(idp.name),
+                                            icon: "trash alternate",
+                                            onClick: (): void => handleIdentityProviderDeleteAction(idp.id),
+                                            popupText: "delete",
+                                            type: "dropdown"
+                                        }
+                                    ] }
+                                    actionsFloated="right"
+                                    avatar={ (
+                                        <AppAvatar
+                                            name={ idp.name }
+                                            image={ idp.image }
+                                            size="mini"
+                                            floated="left"
+                                        />
+                                    ) }
+                                    itemHeader={ idp.name }
+                                    itemDescription={ idp.description }
+                                />
+                            );
+                        }
+                    })
+                    : showPlaceholders()
             }
             {
                 deletingIDP && (

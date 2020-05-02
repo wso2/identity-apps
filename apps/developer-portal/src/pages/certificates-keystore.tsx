@@ -17,21 +17,19 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useContext, useEffect, useState } from "react";
+import { addAlert } from "@wso2is/core/store";
+import { PrimaryButton } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { listCertificateAliases } from "../api";
-import { CertificatesList, ImportCertificate } from "../components";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { UserConstants } from "../constants";
+import { AdvancedSearchWithBasicFilters, CertificatesList, ImportCertificate } from "../components";
+import { UIConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertLevels, Certificate, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
-import { filterList, sortList, hasScope } from "../utils";
-import { useTranslation } from "react-i18next";
-import { addAlert } from "@wso2is/core/dist/src/store";
-import { AdvancedSearchWithBasicFilters } from "../components/shared/advanced-search-with-basic-filters";
+import { filterList, sortList } from "../utils";
 
 /**
  * This renders the Userstores page.
@@ -53,14 +51,15 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
 
     const [ certificatesKeystore, setCertificatesKeystore ] = useState<Certificate[]>([]);
     const [ offset, setOffset ] = useState(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ openModal, setOpenModal ] = useState(false);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ filteredCertificatesKeystore, setFilteredCertificatesKeystore ] = useState<Certificate[]>([]);
     const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
     const [ sortOrder, setSortOrder ] = useState(true);
     const [ isSuper, setIsSuper ] = useState(true);
-    const [ query, setQuery ] = useState("");
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const tenantDomain: string = useSelector<AppState, string>((state: AppState) => state.config.deployment.tenant);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
@@ -79,32 +78,30 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
 
     /**
      * Fetches all certificates.
-     *
-     * @param {number} limit.
-     * @param {string} sort.
-     * @param {number} offset.
-     * @param {string} filter.
      */
     const fetchCertificatesKeystore = () => {
         setIsLoading(true);
-        listCertificateAliases().then(response => {
-            setCertificatesKeystore(response);
-            setFilteredCertificatesKeystore(response);
-            setIsLoading(false);
-        }).catch(error => {
-            setIsLoading(false);
-            dispatch(addAlert(
-                {
-                    description: error?.description || "An error occurred while fetching certificates",
-                    level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
-                }
-            ));
-        });
+        listCertificateAliases()
+            .then(response => {
+                setCertificatesKeystore(response);
+                setFilteredCertificatesKeystore(response);
+            })
+            .catch(error => {
+                setIsLoading(false);
+                dispatch(addAlert(
+                    {
+                        description: error?.description || "An error occurred while fetching certificates",
+                        level: AlertLevels.ERROR,
+                        message: error?.message || "Something went wrong"
+                    }
+                ));
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
 
     useEffect(() => {
-        setListItemLimit(UserConstants.DEFAULT_USER_LIST_ITEM_LIMIT);
         fetchCertificatesKeystore();
     }, []);
 
@@ -171,10 +168,18 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
      */
     const handleKeystoreFilter = (query: string): void => {
         // TODO: Implement once the API is ready
-        // fetchCertificatesKeystore(null, null, null, query);
-        setFilteredCertificatesKeystore(
-            filterList(certificatesKeystore, query, "alias", true)
-        );
+        // fetchCertificatesKeystore(null, null, null, searchQuery);
+        setFilteredCertificatesKeystore(filterList(certificatesKeystore, query, "alias", true));
+        setSearchQuery(query);
+    };
+
+    /**
+     * Handles the `onSearchQueryClear` callback action.
+     */
+    const handleSearchQueryClear = (): void => {
+        setTriggerClearQuery(!triggerClearQuery);
+        setSearchQuery("");
+        setFilteredCertificatesKeystore(certificatesKeystore);
     };
 
     return (
@@ -194,116 +199,75 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                 description="Create and manage certificates in the keystore"
                 showBottomDivider={ true }
             >
-                {
-                    filteredCertificatesKeystore?.length > 0
-                        ? (<ListLayout
-                            advancedSearch={
-                                <AdvancedSearchWithBasicFilters
-                                    onFilter={ handleKeystoreFilter }
-                                    filterAttributeOptions={ [
-                                        {
-                                            key: 0,
-                                            text: "Alias",
-                                            value: "alias"
-                                        }
-                                    ] }
-                                    filterAttributePlaceholder={
-                                        t("devPortal:components.certificates.keystore.advancedSearch.form.inputs" +
-                                            ".filterAttribute.placeholder")
-                                    }
-                                    filterConditionsPlaceholder={
-                                        t("devPortal:components.certificates.keystore.advancedSearch.form.inputs" +
-                                            ".filterCondition.placeholder")
-                                    }
-                                    filterValuePlaceholder={
-                                        t("devPortal:components.certificates.keystore.advancedSearch.form.inputs" +
-                                            ".filterValue.placeholder")
-                                    }
-                                    placeholder={
-                                        t("devPortal:components.certificates.keystore.advancedSearch.placeholder")
-                                    }
-                                    defaultSearchAttribute="alias"
-                                    defaultSearchOperator="co"
-                                />
+                <ListLayout
+                    advancedSearch={
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleKeystoreFilter }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: "Alias",
+                                    value: "alias"
+                                }
+                            ] }
+                            filterAttributePlaceholder={
+                                t("devPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                    ".filterAttribute.placeholder")
                             }
-                            currentListSize={ listItemLimit }
-                            listItemLimit={ listItemLimit }
-                            onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                            onPageChange={ handlePaginationChange }
-                            onSortStrategyChange={ handleSortStrategyChange }
-                            onSortOrderChange={ handleSortOrderChange }
-                            rightActionPanel={
-                                (hasRequiredScopes(featureConfig?.certificates,
-                                    featureConfig?.certificates?.scopes?.create)
-                                    && !isSuper) && (
-                                    <PrimaryButton
-                                        onClick={ () => {
-                                            setOpenModal(true);
-                                        } }
-                                    >
-                                        <Icon name="cloud upload" />Import Certificate
-                                    </PrimaryButton>
-                                )
+                            filterConditionsPlaceholder={
+                                t("devPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                    ".filterCondition.placeholder")
                             }
-                            leftActionPanel={ null }
-                            showPagination={ true }
-                            sortOptions={ SORT_BY }
-                            sortStrategy={ sortBy }
-                            totalPages={ Math.ceil(filteredCertificatesKeystore?.length / listItemLimit) }
-                            totalListSize={ filteredCertificatesKeystore?.length }
-                        >
-                            <CertificatesList
-                                list={ paginate(filteredCertificatesKeystore, listItemLimit, offset) }
-                                update={ fetchCertificatesKeystore }
-                                type="keystore"
-                                featureConfig={ featureConfig }
-                            />
-                        </ListLayout>
+                            filterValuePlaceholder={
+                                t("devPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                    ".filterValue.placeholder")
+                            }
+                            placeholder={
+                                t("devPortal:components.certificates.keystore.advancedSearch.placeholder")
+                            }
+                            defaultSearchAttribute="alias"
+                            defaultSearchOperator="co"
+                            triggerClearQuery={ triggerClearQuery }
+                        />
+                    }
+                    currentListSize={ listItemLimit }
+                    listItemLimit={ listItemLimit }
+                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                    onPageChange={ handlePaginationChange }
+                    onSortStrategyChange={ handleSortStrategyChange }
+                    onSortOrderChange={ handleSortOrderChange }
+                    rightActionPanel={
+                        (hasRequiredScopes(featureConfig?.certificates,
+                            featureConfig?.certificates?.scopes?.create)
+                            && !isSuper) && (
+                            <PrimaryButton
+                                onClick={ () => {
+                                    setOpenModal(true);
+                                } }
+                            >
+                                <Icon name="cloud upload"/>Import Certificate
+                            </PrimaryButton>
                         )
-                        : !isLoading &&
-                            (!certificatesKeystore
-                                || (certificatesKeystore.length === 0 && filteredCertificatesKeystore.length === 0))
-                            ? (
-                                <EmptyPlaceholder
-                                    action={
-                                        (hasRequiredScopes(featureConfig?.certificates,
-                                            featureConfig?.certificates?.scopes?.create)
-                                            && !isSuper) && (
-                                            <PrimaryButton
-                                                onClick={ () => {
-                                                    setOpenModal(true);
-                                                } }
-                                            >
-                                                <Icon name="upload" /> Import Certificate
-                                            </PrimaryButton>
-                                        )
-                                    }
-                                    title="Import Certificate"
-                                    subtitle={ [ "Currently, there are no certificates available." ] }
-                                    image={ EmptyPlaceholderIllustrations.emptyList }
-                                    imageSize="tiny"
-                                />
-                            )
-                            : !isLoading && (
-                                <EmptyPlaceholder
-                                    action={ (
-                                        <LinkButton onClick={ () => {
-                                            setFilteredCertificatesKeystore(certificatesKeystore);
-                                        } }
-                                        >
-                                            Clear search query
-                                        </LinkButton>
-                                    ) }
-                                    image={ EmptyPlaceholderIllustrations.emptySearch }
-                                    imageSize="tiny"
-                                    title={ "No results found" }
-                                    subtitle={ [
-                                        `We couldn't find any results for "${query}"`,
-                                        "Please try a different search term."
-                                    ] }
-                                />
-                            )
-                }
+                    }
+                    leftActionPanel={ null }
+                    showPagination={ true }
+                    sortOptions={ SORT_BY }
+                    sortStrategy={ sortBy }
+                    showTopActionPanel={ isLoading || !(!searchQuery && certificatesKeystore?.length <= 0) }
+                    totalPages={ Math.ceil(filteredCertificatesKeystore?.length / listItemLimit) }
+                    totalListSize={ filteredCertificatesKeystore?.length }
+                >
+                    <CertificatesList
+                        isLoading={ isLoading }
+                        list={ paginate(filteredCertificatesKeystore, listItemLimit, offset) }
+                        onEmptyListPlaceholderActionClick={ () => setOpenModal(true) }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        searchQuery={ searchQuery }
+                        update={ fetchCertificatesKeystore }
+                        type="keystore"
+                        featureConfig={ featureConfig }
+                    />
+                </ListLayout>
             </PageLayout>
         </>
     );

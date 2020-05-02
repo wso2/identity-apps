@@ -99,6 +99,10 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface {
      * Show reset button flag.
      */
     showResetButton?: boolean;
+    /**
+     * Manually trigger query clear action from outside.
+     */
+    triggerClearQuery?: boolean;
 }
 
 /**
@@ -124,7 +128,8 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         placeholder,
         resetButtonLabel,
         showResetButton,
-        submitButtonLabel
+        submitButtonLabel,
+        triggerClearQuery
     } = props;
 
     const { t } = useTranslation();
@@ -219,6 +224,8 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             externalSearchQuery={ externalSearchQuery }
             submitted={ isFormSubmitted }
             dropdownPosition={ dropdownPosition }
+            triggerClearQuery={ triggerClearQuery }
+            data-testid="advanced-search"
         >
             <Grid>
                 <Grid.Row columns={ 1 }>
@@ -234,7 +241,8 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                         };
                                     })
                                 }
-                                readOnly={ filterAttributeOptions.length === 1 }
+                                // TODO: Enable this once default value is working properly for the dropdowns.
+                                // readOnly={ filterAttributeOptions.length === 1 }
                                 label={ t("devPortal:components.advancedSearch.form.inputs.filterAttribute.label") }
                                 name={ FILTER_ATTRIBUTE_FIELD_IDENTIFIER }
                                 placeholder={

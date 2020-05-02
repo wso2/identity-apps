@@ -31,14 +31,6 @@ export class UserConstants {
     private constructor() { }
 
     /**
-     * Default user list item limit.
-     * @constant
-     * @type {number}
-     * @default
-     */
-    public static readonly DEFAULT_USER_LIST_ITEM_LIMIT = 10;
-
-    /**
      * Default role list item limit.
      * @constant
      * @type {number}

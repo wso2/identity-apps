@@ -19,7 +19,7 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, {
     FunctionComponent,
@@ -34,8 +34,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getApplicationList } from "../api";
 import { AdvancedSearchWithBasicFilters, ApplicationList } from "../components";
-import { EmptyPlaceholderIllustrations } from "../configs";
-import { ApplicationConstants } from "../constants";
+import { ApplicationConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
 import { ApplicationListInterface, FeatureConfigInterface } from "../models";
@@ -64,9 +63,6 @@ const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     }
 ];
 
-// TODO: Calculate based on the screen dimensions.
-const DEFAULT_APP_LIST_ITEM_LIMIT = 10;
-
 /**
  * Overview page.
  *
@@ -80,14 +76,15 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
 
-    const [ searchQuery, setSearchQuery ] = useState("");
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
         APPLICATIONS_LIST_SORTING_OPTIONS[ 0 ]
     );
     const [ appList, setAppList ] = useState<ApplicationListInterface>({});
     const [ listOffset, setListOffset ] = useState<number>(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(DEFAULT_APP_LIST_ITEM_LIMIT);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     /**
      * Called on every `listOffset` & `listItemLimit` change.
@@ -190,53 +187,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
     const handleSearchQueryClear = (): void => {
         setSearchQuery("");
         getAppLists(listItemLimit, listOffset, null);
-    };
-
-    /**
-     * Resolve the relevant placeholder.
-     *
-     * @return {React.ReactElement}
-     */
-    const showPlaceholders = (): ReactElement => {
-        // When the search returns empty.
-        if (searchQuery) {
-            return (
-                <EmptyPlaceholder
-                    action={ (
-                        <LinkButton onClick={ handleSearchQueryClear }>Clear search query</LinkButton>
-                    ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
-                    imageSize="tiny"
-                    title={ "No results found" }
-                    subtitle={ [
-                        `We couldn't find any results for ${ searchQuery }`,
-                        "Please try a different search term."
-                    ] }
-                />
-            );
-        }
-
-        return (
-            <EmptyPlaceholder
-                action={ (
-                    <PrimaryButton
-                        onClick={ (): void => {
-                            history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
-                        } }
-                    >
-                        <Icon name="add"/>New Application
-                    </PrimaryButton>
-                ) }
-                image={ EmptyPlaceholderIllustrations.newList }
-                imageSize="tiny"
-                title={ "Create an Application" }
-                subtitle={ [
-                    "There are currently no applications available.",
-                    "You can create a new application easily by using the",
-                    "predefined templates."
-                ] }
-            />
-        );
+        setTriggerClearQuery(!triggerClearQuery);
     };
 
     return (
@@ -271,6 +222,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                         placeholder={ t("devPortal:components.applications.advancedSearch.placeholder") }
                         defaultSearchAttribute="name"
                         defaultSearchOperator="co"
+                        triggerClearQuery={ triggerClearQuery }
                     />
                 }
                 currentListSize={ appList.count }
@@ -292,24 +244,23 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                         : null
                 }
                 showPagination={ true }
-                showTopActionPanel={ !(!searchQuery && appList?.totalResults <= 0) }
+                showTopActionPanel={ isApplicationListRequestLoading || !(!searchQuery && appList?.totalResults <= 0) }
                 sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
                 sortStrategy={ listSortingStrategy }
                 totalPages={ Math.ceil(appList.totalResults / listItemLimit) }
                 totalListSize={ appList.totalResults }
             >
-                {
-                    (appList?.totalResults > 0 ||
-                        appList?.applications instanceof Array && appList.applications.length > 0)
-                        ? (
-                            <ApplicationList
-                                featureConfig={ featureConfig }
-                                list={ appList }
-                                onApplicationDelete={ handleApplicationDelete }
-                            />
-                        )
-                        : !isApplicationListRequestLoading && showPlaceholders()
-                }
+                <ApplicationList
+                    featureConfig={ featureConfig }
+                    isLoading={ isApplicationListRequestLoading }
+                    list={ appList }
+                    onApplicationDelete={ handleApplicationDelete }
+                    onEmptyListPlaceholderActionClick={
+                        () => history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"))
+                    }
+                    onSearchQueryClear={ handleSearchQueryClear }
+                    searchQuery={ searchQuery }
+                />
             </ListLayout>
         </PageLayout>
     );

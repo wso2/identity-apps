@@ -90,6 +90,7 @@ export const ExternalClaims = (props: ExternalClaimsPropsInterface): ReactElemen
                         claims?.length > 0
                             ? (
                                 <ClaimsList
+                                    isLoading={ false }
                                     list={ claims }
                                     localClaim={ ListType.ADD_EXTERNAL }
                                     onEdit={ (index: number, values: Map<string, FormValue>) => {

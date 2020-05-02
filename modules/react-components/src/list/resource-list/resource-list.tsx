@@ -16,12 +16,13 @@
  * under the License.
  */
 
-import { List , ListProps } from "semantic-ui-react";
-import React, { FunctionComponent, ReactElement } from "react";
 import classNames from "classnames";
+import React, { FunctionComponent, ReactElement } from "react";
+import { List, ListProps, Placeholder } from "semantic-ui-react";
 import { ResourceListHeader } from "./resource-list-header";
 import { ResourceListHeaderCell } from "./resource-list-header-cell";
 import { ResourceListItem } from "./resource-list-item";
+import { Avatar } from "../../avatar";
 
 /**
  * Interface for the resource tab sub component.
@@ -33,19 +34,49 @@ export interface ResourceListSubComponentsInterface {
 }
 
 /**
+ * Proptypes for the resource list component.
+ */
+export interface ResourceListPropsInterface extends ListProps {
+    /**
+     * Is the list in loading state.
+     */
+    isLoading?: boolean;
+    /**
+     * Optional meta for the loading state.
+     */
+    loadingStateOptions?: ListLoadingStateOptionsInterface;
+}
+
+/**
+ * Interface for loading state options.
+ */
+interface ListLoadingStateOptionsInterface {
+    /**
+     * Number of loading rows.
+     */
+    count: number;
+    /**
+     * Loading state image type.
+     */
+    imageType: "circular" | "square";
+}
+
+/**
  * Resource list component.
  *
- * @param {ListProps} props - Props injected to the component.
+ * @param {ResourceListPropsInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const ResourceList: FunctionComponent<ListProps> & ResourceListSubComponentsInterface = (
-    props: ListProps
+export const ResourceList: FunctionComponent<ResourceListPropsInterface> & ResourceListSubComponentsInterface = (
+    props: ResourceListPropsInterface
 ): ReactElement => {
 
     const {
         children,
         className,
+        isLoading,
+        loadingStateOptions,
         rest
     } = props;
 
@@ -54,6 +85,46 @@ export const ResourceList: FunctionComponent<ListProps> & ResourceListSubCompone
         , className
     );
 
+    /**
+     * Shows the loading state placeholder rows.
+     *
+     * @return {React.ReactElement[]}
+     */
+    const showPlaceholders = (): ReactElement[] => {
+
+        const placeholders: ReactElement[] = [];
+
+        for(let i=0; i < loadingStateOptions.count; i++) {
+            placeholders.push(
+                <ResourceListItem
+                    avatar={ (
+                        <Avatar
+                            image={ (
+                                <Placeholder style={ { height: 35, width: 35 } }>
+                                    <Placeholder.Image />
+                                </Placeholder>
+                            ) }
+                            isLoading={ true }
+                            avatarType={ loadingStateOptions.imageType === "circular" ? "user" : "app" }
+                            size="mini"
+                            floated="left"
+                        />
+                    ) }
+                    itemHeader={ (
+                        <Placeholder style={ { width: "300px" } }>
+                            <Placeholder.Header>
+                                <Placeholder.Line />
+                                <Placeholder.Line />
+                            </Placeholder.Header>
+                        </Placeholder>
+                    ) }
+                />
+            )
+        }
+
+        return placeholders;
+    };
+
     return (
         <List
             className={ classes }
@@ -61,9 +132,24 @@ export const ResourceList: FunctionComponent<ListProps> & ResourceListSubCompone
             relaxed="very"
             { ...rest }
         >
-            { children }
+            {
+                isLoading
+                    ? showPlaceholders()
+                    : children
+            }
         </List>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+ResourceList.defaultProps = {
+    isLoading: false,
+    loadingStateOptions: {
+        count: 10,
+        imageType: "square"
+    }
 };
 
 ResourceList.Header = ResourceListHeader;

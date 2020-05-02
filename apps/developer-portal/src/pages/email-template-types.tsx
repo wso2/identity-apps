@@ -16,19 +16,19 @@
  * under the License.
  */
 
-import React, { ReactElement, useEffect, useState } from "react";
-import { Icon, PaginationProps, DropdownProps } from "semantic-ui-react";
-import { AxiosResponse, AxiosError } from "axios";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
-import { PageLayout, ListLayout } from "../layouts";
-import { EmailTemplateTypeList, EmailTemplateTypeWizard } from "../components/email-templates";
-import { getEmailTemplateTypes, deleteEmailTemplateType } from "../api";
-import { UserConstants } from "../constants";
-import { EmailTemplateType, AlertInterface } from "../models";
-import { useDispatch } from "react-redux";
+import { AxiosError, AxiosResponse } from "axios";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { addAlert } from "@wso2is/core/dist/src/store";
-import { AlertLevels } from "@wso2is/core/dist/src/models";
+import { useDispatch } from "react-redux";
+import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { deleteEmailTemplateType, getEmailTemplateTypes } from "../api";
+import { EmailTemplateTypeList, EmailTemplateTypeWizard } from "../components/email-templates";
+import { UIConstants } from "../constants";
+import { ListLayout, PageLayout } from "../layouts";
+import { AlertInterface, EmailTemplateType } from "../models";
 
 /**
  * Component to list available email template types.
@@ -37,29 +37,32 @@ export const EmailTemplateTypes = (): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ showNewTypeWizard, setShowNewTypeWizard ] = useState<boolean>(false);
     
     const [ emailTemplateTypes, setEmailTemplateTypes ] = useState<EmailTemplateType[]>([]);
     const [ paginatedEmailTemplateTypes, setPaginatedEmailTemplateTypes ] = useState<EmailTemplateType[]>([]);
-
-    useEffect(() => {
-        setListItemLimit(UserConstants.DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT);
-    }, []);
+    const [ isTemplateTypesFetchRequestLoading, setIsTemplateTypesFetchRequestLoading ] = useState<boolean>(false);
 
     useEffect(() => {
         getTemplateTypes()
     }, [emailTemplateTypes.length]);
 
     const getTemplateTypes = (): void => {
-        getEmailTemplateTypes().then((response: AxiosResponse<EmailTemplateType[]>) => {
-            if (response.status === 200) {
-                setEmailTemplateTypes(response.data);
-                setEmailTemplateTypePage(listOffset, listItemLimit);
-            }
-        });
-    }
+        setIsTemplateTypesFetchRequestLoading(true);
+
+        getEmailTemplateTypes()
+            .then((response: AxiosResponse<EmailTemplateType[]>) => {
+                if (response.status === 200) {
+                    setEmailTemplateTypes(response.data);
+                    setEmailTemplateTypePage(listOffset, listItemLimit);
+                }
+            })
+            .finally(() => {
+                setIsTemplateTypesFetchRequestLoading(false);
+            });
+    };
 
     /**
      * Handler for pagination page change.
@@ -92,7 +95,7 @@ export const EmailTemplateTypes = (): ReactElement => {
      */
     const setEmailTemplateTypePage = (offsetValue: number, itemLimit: number) => {
         setPaginatedEmailTemplateTypes(emailTemplateTypes?.slice(offsetValue, itemLimit + offsetValue));
-    }
+    };
 
     /**
      * Dispatches the alert object to the redux store.
@@ -126,7 +129,7 @@ export const EmailTemplateTypes = (): ReactElement => {
                 )
             });
         })
-    }
+    };
 
     return (
         <PageLayout
@@ -151,8 +154,10 @@ export const EmailTemplateTypes = (): ReactElement => {
                     )
                 }
             >
-                <EmailTemplateTypeList 
-                    onDelete={ deleteTemplateType } 
+                <EmailTemplateTypeList
+                    isLoading={ isTemplateTypesFetchRequestLoading }
+                    onDelete={ deleteTemplateType }
+                    onEmptyListPlaceholderActionClick={ () => setShowNewTypeWizard(true) }
                     templateTypeList={ paginatedEmailTemplateTypes } 
                 />
                 {
@@ -168,4 +173,4 @@ export const EmailTemplateTypes = (): ReactElement => {
             </ListLayout>
         </PageLayout>
     )
-}
+};
