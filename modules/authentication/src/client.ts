@@ -106,7 +106,7 @@ export class IdentityClient implements ConfigInterface {
         Object.assign(this, UserConfig);
     }
 
-    public getUser() {
+    public getUserInfo() {
         // TODO: Implement
         return;
     }
@@ -116,7 +116,7 @@ export class IdentityClient implements ConfigInterface {
         return;
     }
 
-    public getToken() {
+    public getAccessToken() {
         // TODO: Implement
         return;
     }

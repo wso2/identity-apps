@@ -17,20 +17,6 @@
  */
 
 /**
- * OIDC request parameters.
- */
-export interface OIDCRequestParamsInterface {
-    clientId: string;
-    clientHost: string;
-    clientSecret?: string;
-    enablePKCE: boolean;
-    prompt?: string;
-    redirectUri: string;
-    scope?: string[];
-    serverOrigin: string;
-}
-
-/**
  * Interface for the account switch grant
  * request parameters.
  */
