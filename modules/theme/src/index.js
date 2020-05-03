@@ -73,6 +73,7 @@ export const FingerprintIcon = require("../dist/lib/themes/default/assets/images
 export const ForbiddenIcon = require("../dist/lib/themes/default/assets/images/icons/forbidden-icon.svg");
 export const GearsIcon = require("../dist/lib/themes/default/assets/images/icons/gears-icon.svg");
 export const InfoIcon = require("../dist/lib/themes/default/assets/images/icons/info-icon.svg");
+export const KeyIcon = require("../dist/lib/themes/default/assets/images/icons/key-icon.svg");
 export const LaunchIcon = require("../dist/lib/themes/default/assets/images/icons/launch-icon.svg");
 export const LockIcon = require("../dist/lib/themes/default/assets/images/icons/lock-icon.svg");
 export const LockShieldIcon = require("../dist/lib/themes/default/assets/images/icons/lock-shield.svg");
