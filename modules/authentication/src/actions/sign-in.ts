@@ -113,12 +113,12 @@ export const sendAuthorizationRequest = (requestParams: ConfigInterface): Promis
 /**
  * Validate id_token.
  *
- * @param {string} clientId client ID.
+ * @param {string} clientID client ID.
  * @param {string} idToken id_token received from the IdP.
  * @returns {Promise<boolean>} whether token is valid.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const validateIdToken = (clientId: string, idToken: string,  serverOrigin: string): Promise<any> => {
+const validateIdToken = (clientID: string, idToken: string,  serverOrigin: string): Promise<any> => {
     const jwksEndpoint = getJwksUri();
 
     if (!jwksEndpoint || jwksEndpoint.trim().length === 0) {
@@ -140,7 +140,7 @@ const validateIdToken = (clientId: string, idToken: string,  serverOrigin: strin
                 issuer = serverOrigin + SERVICE_RESOURCES.token;
             }
 
-            return Promise.resolve(isValidIdToken(idToken, jwk, clientId, issuer));
+            return Promise.resolve(isValidIdToken(idToken, jwk, clientID, issuer));
         }).catch((error) => {
             return Promise.reject(error);
         });
@@ -190,6 +190,7 @@ export const sendTokenRequest = (
                 .then((valid) => {
                 if (valid) {
                     setSessionParameter(REQUEST_PARAMS, JSON.stringify(requestParams));
+
                     const tokenResponse: TokenResponseInterface = {
                         accessToken: response.data.access_token,
                         expiresIn: response.data.expires_in,

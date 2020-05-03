@@ -22,7 +22,7 @@ Sends the OAuth2 authorization code request to the IdP based on the provided req
 `requestParams` is type of `OIDCRequestParamsInterface`
 ```js
 interface OIDCRequestParamsInterface {
-    clientId: string;
+    clientID: string;
     clientHost: string;
     clientSecret?: string;
     enablePKCE: boolean;
@@ -31,7 +31,7 @@ interface OIDCRequestParamsInterface {
     serverOrigin: string;
 }
 ```
-* `clientId` Client id of the application.
+* `clientID` Client id of the application.
 * `clientHost` Client host name.
 * `clientSecret` Client secret of the application. If not provided, it will considered as a public client.
 * `enablePKCE` Enable PKCE for the authorization grant type.
@@ -100,4 +100,3 @@ Terminates the user session and clears the session attributes.
 ## License
 
 Licenses this source under the Apache License, Version 2.0 ([LICENSE](LICENSE)), You may not use this file except in compliance with the License.
-
