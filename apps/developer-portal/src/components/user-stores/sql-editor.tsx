@@ -56,13 +56,13 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
         editor.current.style.width = width;
     }, [ sideBarVisible ]);
 
-    const EditorSideBar = (): ReactElement => (
+    const editorSideBar = (): ReactElement => (
         <Sidebar
             as={ Segment }
             className="script-templates-panel"
             animation="overlay"
             icon="labeled"
-            direction="right"
+            direction="left"
             vertical
             secondary
             visible={ sideBarVisible }
@@ -255,19 +255,11 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
         <div className="sign-on-methods-tab-content">
             <div className="adaptive-scripts-section">
                 <Sidebar.Pushable className="script-editor-section" >
-                    <EditorSideBar />
+                    { editorSideBar() }
                     <Sidebar.Pusher>
                         <div className="script-editor-container" ref={ editor }>
                             <Menu attached="top" className="action-panel" secondary>
-                                <Menu.Item>
-                                    <Checkbox
-                                        label="Dark mode"
-                                        checked={ isEditorDarkMode }
-                                        onChange={ () => { setIsEditorDarkMode(!isEditorDarkMode) } }
-                                        slider
-                                    />
-                                </Menu.Item>
-                                <Menu.Menu position="right">
+                                <Menu.Menu position="left">
                                     <Menu.Item
                                         onClick={
                                             () => setSideBarVisible(!sideBarVisible)
@@ -277,16 +269,24 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                         <Icon name="bars" />
                                     </Menu.Item>
                                 </Menu.Menu>
+                                <Menu.Item position="right">
+                                    <Checkbox
+                                        label="Dark mode"
+                                        checked={ isEditorDarkMode }
+                                        onChange={ () => { setIsEditorDarkMode(!isEditorDarkMode) } }
+                                        slider
+                                    />
+                                </Menu.Item>
                             </Menu>
-
                             <div className="code-editor-wrapper">
                                 <CodeEditor
                                     lint
                                     sourceCode={ propertyDefaultValue }
                                     options={ {
                                         lineWrapping: true,
-                                        mode: "x-sql"
+                                        mode: "text/x-sql"
                                     } }
+                                    showLineNumbers={ false }
                                     onChange={ (editor, data, value) => {
                                         setPropertyValue(value);
                                     } }
@@ -304,7 +304,6 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                             setTimeout(() => {
                                                 setPropertyDefaultValue(defaultValue);
                                             }, 1);
-                                            
                                         } }
                                     >
                                         Reset

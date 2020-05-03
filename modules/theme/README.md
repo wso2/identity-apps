@@ -22,7 +22,7 @@ This theme module is build with customized [Semantic-UI](https://semantic-ui.com
 
 1. Use less overrides and variables to override existing styles. Use files in `src/semantic-ui-core/default` & `src/themes/default` as reference.
 
-1. Re-build the project. And your new sub-theme will creates in the `dist` folder.
+1. Re-build the project. And your new sub-theme will be created in the `dist` folder.
 
 ## Reporting Issues
 

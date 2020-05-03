@@ -84,7 +84,7 @@ export const EditUserDetails = (
     }, [ properties ]);
 
     const onSubmitHandler = (values: Map<string, FormValue>): void => {
-        const requiredData = properties.required.map((property: TypeProperty) => {
+        const requiredData = properties?.required.map((property: TypeProperty) => {
             return {
                 operation: "REPLACE",
                 path: `/properties/${property.name}`,
@@ -93,7 +93,7 @@ export const EditUserDetails = (
         });
 
         const optionalNonSqlData = showMore
-            ? properties.optional.nonSql.map((property: TypeProperty) => {
+            ? properties?.optional.nonSql.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
@@ -103,7 +103,7 @@ export const EditUserDetails = (
             : null;
 
         const optionalSqlInsertData = showMore
-            ? properties.optional.sql.insert.map((property: TypeProperty) => {
+            ? properties?.optional.sql.insert.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
@@ -113,7 +113,7 @@ export const EditUserDetails = (
             : null;
 
         const optionalSqlUpdateData = showMore
-            ? properties.optional.sql.update.map((property: TypeProperty) => {
+            ? properties?.optional.sql.update.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
@@ -123,7 +123,7 @@ export const EditUserDetails = (
             : null;
 
         const optionalSqlDeleteData = showMore
-            ? properties.optional.sql.delete.map((property: TypeProperty) => {
+            ? properties?.optional.sql.delete.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
@@ -133,7 +133,7 @@ export const EditUserDetails = (
             : null;
 
         const optionalSqlSelectData = showMore
-            ? properties.optional.sql.select.map((property: TypeProperty) => {
+            ? properties?.optional.sql.select.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
@@ -237,10 +237,10 @@ export const EditUserDetails = (
                 </Grid.Row>
             </Grid>
 
-            { (properties.optional.sql.delete.length > 0
-                || properties.optional.sql.insert.length > 0
-                || properties.optional.sql.select.length > 0
-                || properties.optional.sql.update.length > 0)
+            { (properties?.optional.sql.delete.length > 0
+                || properties?.optional.sql.insert.length > 0
+                || properties?.optional.sql.select.length > 0
+                || properties?.optional.sql.update.length > 0)
                 && (
                     <Grid columns={ 1 }>
                         <Grid.Column width={ 8 } textAlign="center">
@@ -255,7 +255,7 @@ export const EditUserDetails = (
                     </Grid>
                 ) }
 
-            { showMore && properties.optional.nonSql.length > 0 &&
+            { showMore && properties?.optional.nonSql.length > 0 &&
                 (
                     <Grid>
                         <Grid.Row columns={ 1 }>
@@ -321,10 +321,10 @@ export const EditUserDetails = (
                 )
             }
             { showMore
-                && (properties.optional.sql.delete.length > 0
-                    || properties.optional.sql.insert.length > 0
-                    || properties.optional.sql.select.length > 0
-                    || properties.optional.sql.update.length > 0)
+                && (properties?.optional.sql.delete.length > 0
+                    || properties?.optional.sql.insert.length > 0
+                    || properties?.optional.sql.select.length > 0
+                    || properties?.optional.sql.update.length > 0)
                 && (
                     <Grid columns={ 1 }>
                         <Grid.Column width={ 16 }>
@@ -334,7 +334,7 @@ export const EditUserDetails = (
                                     tempSql.set(name, value);
                                     setSql(tempSql);
                                 } }
-                                properties={ properties.optional.sql }
+                                properties={ properties?.optional.sql }
                                 values={ sql }
                             />
                         </Grid.Column>

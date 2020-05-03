@@ -148,7 +148,7 @@ export const EditBasicDetailsUserStore = (
         delete data.typeName;
         delete data.className;
 
-        const requiredData = properties.required.map((property: TypeProperty) => {
+        const requiredData = properties?.required.map((property: TypeProperty) => {
             return {
                 operation: "REPLACE",
                 path: `/properties/${property.name}`,
@@ -157,7 +157,7 @@ export const EditBasicDetailsUserStore = (
         });
 
         const optionalNonSqlData = showMore
-            ? properties.optional.nonSql.map((property: TypeProperty) => {
+            ? properties?.optional.nonSql.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
@@ -167,7 +167,7 @@ export const EditBasicDetailsUserStore = (
             : null;
 
         const optionalSqlInsertData = showMore
-            ? properties.optional.sql.insert.map((property: TypeProperty) => {
+            ? properties?.optional.sql.insert.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
@@ -177,7 +177,7 @@ export const EditBasicDetailsUserStore = (
             : null;
 
         const optionalSqlUpdateData = showMore
-            ? properties.optional.sql.update.map((property: TypeProperty) => {
+            ? properties?.optional.sql.update.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
@@ -187,7 +187,7 @@ export const EditBasicDetailsUserStore = (
             : null;
 
         const optionalSqlDeleteData = showMore
-            ? properties.optional.sql.delete.map((property: TypeProperty) => {
+            ? properties?.optional.sql.delete.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
@@ -197,7 +197,7 @@ export const EditBasicDetailsUserStore = (
             : null;
 
         const optionalSqlSelectData = showMore
-            ? properties.optional.sql.select.map((property: TypeProperty) => {
+            ? properties?.optional.sql.select.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
@@ -361,7 +361,7 @@ export const EditBasicDetailsUserStore = (
                             </Grid.Row>
                         )
                     }
-                    { showMore && properties.optional.nonSql.length > 0 && (
+                    { showMore && properties?.optional.nonSql.length > 0 && (
                         <Grid>
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column width={ 8 }>
@@ -441,7 +441,7 @@ export const EditBasicDetailsUserStore = (
                                             tempSql.set(name, value);
                                             setSql(tempSql);
                                         } }
-                                        properties={ properties.optional.sql }
+                                        properties={ properties?.optional.sql }
                                         values={ sql }
                                     />
                                 </Grid.Column>

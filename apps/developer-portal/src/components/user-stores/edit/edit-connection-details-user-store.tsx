@@ -142,7 +142,7 @@ export const EditConnectionDetails = (
     }, [ properties ]);
 
     const onSubmitHandler = (values: Map<string, FormValue>): void => {
-        const requiredData = properties.required.map((property: TypeProperty) => {
+        const requiredData = properties?.required.map((property: TypeProperty) => {
             return {
                 operation: "REPLACE",
                 path: `/properties/${property.name}`,
@@ -151,7 +151,7 @@ export const EditConnectionDetails = (
         });
 
         const optionalNonSqlData = showMore
-            ? properties.optional.nonSql.map((property: TypeProperty) => {
+            ? properties?.optional.nonSql.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
@@ -161,7 +161,7 @@ export const EditConnectionDetails = (
             : null;
 
         const optionalSqlInsertData = showMore
-            ? properties.optional.sql.insert.map((property: TypeProperty) => {
+            ? properties?.optional.sql.insert.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
@@ -171,7 +171,7 @@ export const EditConnectionDetails = (
             : null;
 
         const optionalSqlUpdateData = showMore
-            ? properties.optional.sql.update.map((property: TypeProperty) => {
+            ? properties?.optional.sql.update.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
@@ -181,7 +181,7 @@ export const EditConnectionDetails = (
             : null;
 
         const optionalSqlDeleteData = showMore
-            ? properties.optional.sql.delete.map((property: TypeProperty) => {
+            ? properties?.optional.sql.delete.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
@@ -191,7 +191,7 @@ export const EditConnectionDetails = (
             : null;
 
         const optionalSqlSelectData = showMore
-            ? properties.optional.sql.select.map((property: TypeProperty) => {
+            ? properties?.optional.sql.select.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
@@ -316,16 +316,16 @@ export const EditConnectionDetails = (
                                         if (type.typeName.includes(JDBC)) {
                                             const testData: TestConnection = {
                                                 connectionPassword: formValue?.get("password").toString()
-                                                    ?? properties.required
+                                                    ?? properties?.required
                                                         .find(property => property.name === "password")?.value,
                                                 connectionURL: formValue?.get("url").toString()
-                                                    ?? properties.required
+                                                    ?? properties?.required
                                                         .find(property => property.name === "url")?.value,
                                                 driverName: formValue?.get("driverName").toString()
-                                                    ?? properties.required
+                                                    ?? properties?.required
                                                         .find(property => property.name === "driverName")?.value,
                                                 username: formValue?.get("userName").toString()
-                                                    ?? properties.required
+                                                    ?? properties?.required
                                                         .find(property => property.name === "userName")?.value
                                             };
                                             testConnection(testData).then(() => {
@@ -394,7 +394,7 @@ export const EditConnectionDetails = (
                 )
             }
 
-            { showMore && properties.optional.nonSql.length > 0 && (
+            { showMore && properties?.optional.nonSql.length > 0 && (
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 8 }>
@@ -458,10 +458,10 @@ export const EditConnectionDetails = (
                 </Grid>
             ) }
             { showMore
-                && (properties.optional.sql.delete.length > 0
-                    || properties.optional.sql.insert.length > 0
-                    || properties.optional.sql.select.length > 0
-                    || properties.optional.sql.update.length > 0)
+                && (properties?.optional.sql.delete.length > 0
+                    || properties?.optional.sql.insert.length > 0
+                    || properties?.optional.sql.select.length > 0
+                    || properties?.optional.sql.update.length > 0)
                 && (
                     <Grid columns={ 1 }>
                         <Grid.Column width={ 16 }>
@@ -471,7 +471,7 @@ export const EditConnectionDetails = (
                                     tempSql.set(name, value);
                                     setSql(tempSql);
                                 } }
-                                properties={ properties.optional.sql }
+                                properties={ properties?.optional.sql }
                                 values={ sql }
                             />
                         </Grid.Column>
