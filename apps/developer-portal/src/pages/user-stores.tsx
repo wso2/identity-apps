@@ -249,6 +249,7 @@ export const UserStores = (): ReactElement => {
                     showPagination={ true }
                     sortOptions={ SORT_BY }
                     sortStrategy={ sortBy }
+                    showTopActionPanel={ isLoading || !(!searchQuery && filteredUserStores?.length <= 0) }
                     totalPages={ Math.ceil(filteredUserStores?.length / listItemLimit) }
                     totalListSize={ filteredUserStores?.length }
                 >

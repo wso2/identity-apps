@@ -50,3 +50,18 @@ export const USERSTORE_TYPE_DISPLAY_NAMES = {
     UniqueIDReadOnlyLDAPUserStoreManager: "Read Only LDAP",
     UniqueIDReadWriteLDAPUserStoreManager: "Read Write LDAP"
 };
+
+/**
+ * User store type to image mapping.
+ */
+export const USERSTORE_TYPE_IMAGES = {
+    ActiveDirectoryUserStoreManager: "ad",
+    CarbonRemoteUserStoreManger: "default",
+    JDBCUserStoreManager: "jdbc",
+    ReadOnlyLDAPUserStoreManager: "ldap",
+    ReadWriteLDAPUserStoreManager: "ldap",
+    UniqueIDActiveDirectoryUserStoreManager: "ad",
+    UniqueIDJDBCUserStoreManager: "jdbc",
+    UniqueIDReadOnlyLDAPUserStoreManager: "ldap",
+    UniqueIDReadWriteLDAPUserStoreManager: "ldap"
+};
