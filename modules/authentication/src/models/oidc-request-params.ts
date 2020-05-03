@@ -16,6 +16,21 @@
  * under the License.
  */
 
+// TODO: Remove this when the authenticate component removes/refactor from the core module 
+/**
+ * OIDC request parameters.
+ */
+export interface OIDCRequestParamsInterface {
+    clientID: string;
+    clientHost: string;
+    clientSecret?: string;
+    enablePKCE: boolean;
+    prompt?: string;
+    redirectUri: string;
+    scope?: string[];
+    serverOrigin: string;
+}
+
 /**
  * Interface for the account switch grant
  * request parameters.
