@@ -72,6 +72,7 @@ import {
     JWTLogo,
     JavaLogo,
     JavaScriptLogo,
+    KeyIcon,
     LDAPUserstoreIllustration,
     LaunchIcon,
     LockShieldIcon,
@@ -253,7 +254,7 @@ export const UserWizardStepIcons = {
 
 export const RolesWizardStepIcons = {
     general: DocumentIcon,
-    permissions: GearsIcon,
+    permissions: KeyIcon,
     assignUser: UserIcon,
     summary: ReportIcon
 };
