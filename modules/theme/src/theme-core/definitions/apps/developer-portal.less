@@ -109,6 +109,10 @@
          }
      }
  
+     /** 
+        TODO: This styling is used by the SQL editor component as well.
+        This should be refactored into a separate class.
+     **/
      .adaptive-scripts-section {
          .script-editor-section {
              border: @defaultBorderWidth solid @defaultBorderColor;
@@ -134,12 +138,19 @@
                      }
                  }
              }
- 
+
              .script-templates-panel {
                  padding: 1em;
                  border: none;
                  box-shadow: none !important;
  
+                 &.left {
+                    ~.pusher {
+                        display: flex;
+                        justify-content: flex-end;
+                    }
+                 }
+
                  .template-category-menu {
                      margin-right: 0;
  
