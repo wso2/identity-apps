@@ -72,12 +72,12 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
         ...rest
     } = props;
 
-    const [userImage, setUserImage] = useState(null);
-    const [showPopup, setShowPopup] = useState(false);
-    const [showEditOverlay, setShowEditOverlay] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false);
-    const [url, setUrl] = useState("");
-    const [urlError, setUrlError] = useState(Error.NONE);
+    const [ userImage, setUserImage ] = useState(null);
+    const [ showPopup, setShowPopup ] = useState(false);
+    const [ showEditOverlay, setShowEditOverlay ] = useState(false);
+    const [ showEditModal, setShowEditModal ] = useState(false);
+    const [ url, setUrl ] = useState("");
+    const [ urlError, setUrlError ] = useState(Error.NONE);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();

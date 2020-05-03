@@ -45,9 +45,9 @@ interface ProfileProps {
  * @return {JSX.Element}
  */
 export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): JSX.Element => {
-    const [profileInfo, setProfileInfo] = useState(new Map<string, string>());
-    const [profileSchema, setProfileSchema] = useState<ProfileSchema[]>();
-    const [editingForm, setEditingForm] = useState(new Map<string, boolean>());
+    const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
+    const [ profileSchema, setProfileSchema ] = useState<ProfileSchema[]>();
+    const [ editingForm, setEditingForm ] = useState(new Map<string, boolean>());
     const { onAlertFired } = props;
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -55,7 +55,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
     const isSCIMEnabled: boolean = useSelector((state: AppState) => state.profile.isSCIMEnabled);
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
-    const [urlSchema, setUrlSchema] = useState<ProfileSchema>();
+    const [ urlSchema, setUrlSchema ] = useState<ProfileSchema>();
 
     /**
      * dispatch getProfileInformation action if the profileDetails object is empty
