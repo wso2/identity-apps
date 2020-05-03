@@ -72,8 +72,8 @@ export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisionin
 
     // Sets the selected connector as the default outbound provisioning connector when there's no default connector
     // in the identity provider.
-    const defaultOutboundProvisioningConnector = initialValues?.provisioning?.outboundConnectors?.connectors.length > 0 ?
-        initialValues?.provisioning?.outboundConnectors?.connectors.find(connector => connector.connectorId
+    const defaultOutboundProvisioningConnector = initialValues?.provisioning?.outboundConnectors?.connectors.length > 0
+        ? initialValues?.provisioning?.outboundConnectors?.connectors.find(connector => connector.connectorId
             === initialValues?.provisioning?.outboundConnectors.defaultConnectorId) : defaultConnector;
     return (
         <OutboundProvisioningConnectorFormFactory

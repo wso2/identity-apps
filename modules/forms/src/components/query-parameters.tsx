@@ -180,7 +180,7 @@ export const QueryParameters: FunctionComponent<QueryParametersPropsInterface> =
                         )
                     }
                     position="top center"
-                    content="Add URL"
+                    content="Add key value pair"
                     inverted
                 />
             </Form.Group>

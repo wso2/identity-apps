@@ -52,7 +52,8 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
     } = props;
 
     const handleSubmit = (authenticator: FederatedAuthenticatorListItemInterface) => {
-        if (initialValues?.id) {
+        if (initialValues?.name) {
+            // Add new IDP instance
             onSubmit({
                 ...initialValues,
                 federatedAuthenticators: {
@@ -65,6 +66,7 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
                 }
             });
         } else {
+            // Add new authenticator instance
             onSubmit({
                 federatedAuthenticators: {
                     authenticators: [{

@@ -124,8 +124,6 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                     level: AlertLevels.SUCCESS,
                     message: "Delete successful"
                 }));
-
-                onIdentityProviderDelete();
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -143,6 +141,11 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                     level: AlertLevels.ERROR,
                     message: "Identity Provider Delete Error"
                 }));
+            })
+            .finally(() => {
+                setShowDeleteConfirmationModal(false)
+                setDeletingIDP(undefined)
+                onIdentityProviderDelete();
             });
     };
 

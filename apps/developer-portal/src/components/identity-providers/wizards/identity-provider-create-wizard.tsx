@@ -224,7 +224,14 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      */
     const handleWizardFormSubmit = (values: any, formType: WizardConstants): void => {
         setCurrentWizardStep(currentWizardStep + 1);
-        setWizardState(_.merge(wizardState, { [formType]: values }));
+        if (wizardSteps[currentWizardStep]?.name === WizardSteps.AUTHENTICATOR_SETTINGS ||
+            wizardSteps[currentWizardStep]?.name === WizardSteps.OUTBOUND_PROVISIONING_SETTINGS) {
+            setWizardState({
+                [ WizardConstants.IDENTITY_PROVIDER ]: values
+            })
+        } else {
+            setWizardState(_.merge(wizardState, { [formType]: values }));
+        }
     };
 
     /**
