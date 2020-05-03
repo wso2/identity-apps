@@ -27,6 +27,10 @@ export const meta: StoryMetaInterface = {
         {
             description: "Default page header.",
             title: "Default"
+        },
+        {
+            description: "Page header placeholder.",
+            title: "Placeholder"
         }
     ],
     title: `${ StoryCategories.COMPONENTS }/Page Header`

@@ -60,3 +60,36 @@ DefaultPageHeader.story = {
         }
     }
 };
+
+/**
+ * Story to display a page header loading state.
+ *
+ * @return {React.ReactElement}
+ */
+export const PageHeaderPlaceholder = (): ReactElement => (
+    <PageHeader
+        title="Header"
+        description="A clear description for the page header"
+        image={ (
+            <AppAvatar
+                name="User Portal"
+                size="tiny"
+                spaced="right"
+            />
+        ) }
+        isLoading={ true }
+        backButton={ {
+            onClick: null,
+            text: "Go back to list"
+        } }
+        titleTextAlign="left"
+    />
+);
+
+PageHeaderPlaceholder.story = {
+    parameters: {
+        docs: {
+            storyDescription: meta.stories[ 1 ].description
+        }
+    }
+};
