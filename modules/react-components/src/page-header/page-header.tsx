@@ -130,7 +130,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                     ) }
                     <Header className="page-header ellipsis" as={ titleAs } textAlign={ titleTextAlign }>
                         {
-                            title && isLoading
+                            isLoading
                                 ? (
                                     <div style={ { width: "250px" } }>
                                         <Placeholder fluid>
@@ -141,12 +141,22 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                                         </Placeholder>
                                     </div>
                                 )
-                                : title
-                        }
-                        {
-                            description && !isLoading && (
-                                <Header.Subheader className="sub-header ellipsis">{ description }</Header.Subheader>
-                            )
+                                : (
+                                    <Header
+                                        className="page-header ellipsis"
+                                        as={ titleAs }
+                                        textAlign={ titleTextAlign }
+                                    >
+                                        { title && title }
+                                        { description && (
+                                            <Header.Subheader
+                                                className="sub-header ellipsis"
+                                            >
+                                                { description }
+                                            </Header.Subheader>
+                                        ) }
+                                    </Header>
+                                )
                         }
                     </Header>
                 </div>
