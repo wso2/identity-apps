@@ -374,6 +374,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                     <Grid>
                         <Grid.Row>
                             <Grid.Column width={ 8 }>
+                                <Divider hidden />
                                 <Segment>
                                     <EmptyPlaceholder
                                         title="No outbound provisioning connectors"
@@ -389,6 +390,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                         ) }
                                     />
                                 </Segment>
+                                <Divider hidden />
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

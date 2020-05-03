@@ -142,7 +142,13 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     }, [ user ]);
 
     useEffect(() => {
-        getRolesList("Primary")
+        let domain = "Primary";
+        const domainName: string[] = user?.userName?.split("/");
+
+        if (domainName.length > 1) {
+            domain = domainName[0];
+        }
+        getRolesList(domain)
             .then((response) => {
                 setPrimaryGroups(response.data.Resources);
             });
@@ -167,7 +173,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
      * The following function remove already assigned roles from the initial roles.
      */
     const removeExistingRoles = () => {
-        const groupListCopy = [ ...primaryGroups ];
+        const groupListCopy = primaryGroups ? [ ...primaryGroups ] : [];
 
         const addedGroups = [];
         _.forEachRight(groupListCopy, (group) => {
