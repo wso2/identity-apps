@@ -90,6 +90,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
     const deleteUser = (id: string): void => {
         handleUserDelete(id);
+        setDeletingUser(undefined);
         setShowDeleteConfirmationModal(false);
     };
 
