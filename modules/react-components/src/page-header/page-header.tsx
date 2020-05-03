@@ -16,15 +16,16 @@
  * under the License.
  */
 
-import { Divider, Header, Icon } from "semantic-ui-react";
-import React, { MouseEventHandler, ReactNode } from "react";
+import { LoadableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
+import React, { MouseEventHandler, ReactNode } from "react";
+import { Divider, Header, Icon, Placeholder } from "semantic-ui-react";
 import { GenericIcon } from "../icon";
 
 /**
  * Page header component Prop types.
  */
-export interface PageHeaderPropsInterface {
+export interface PageHeaderPropsInterface extends LoadableComponentInterface {
     backButton?: BackButtonInterface;
     bottomMargin?: boolean;
     className?: string;
@@ -61,10 +62,11 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
         className,
         description,
         image,
+        isLoading,
         showBottomDivider,
         title,
         titleAs,
-        titleTextAlign,
+        titleTextAlign
     } = props;
 
     const wrapperClasses = classNames(
@@ -87,30 +89,75 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
             <div className={ wrapperClasses }>
                 {
                     backButton && backButton.text && (
-                        <div
-                            data-testid={ backButton.testId }
-                            className="back-button"
-                            onClick={ backButton.onClick }
-                        >
-                            <Icon name="arrow left" />
-                            { backButton.text }
-                        </div>
+                        isLoading
+                            ? (
+                                <div className="back-button fluid">
+                                    <Placeholder>
+                                        <Placeholder.Line length="short" />
+                                    </Placeholder>
+                                </div>
+                            )
+                            : (
+                                <div
+                                    data-testid={ backButton.testId }
+                                    className="back-button"
+                                    onClick={ backButton.onClick }
+                                >
+                                    <Icon name="arrow left"/>
+                                    { backButton.text }
+                                </div>
+                            )
                     )
                 }
                 <div className={ innerClasses }>
                     { image && (
                         <GenericIcon
-                            icon={ image }
+                            icon={
+                                isLoading ?
+                                    (
+                                        <div className="fluid">
+                                            <Placeholder style={ { height: 100, width: 100 } }>
+                                                <Placeholder.Image square />
+                                            </Placeholder>
+                                        </div>
+                                    )
+                                    : image
+                            }
                             size="tiny"
                             transparent
                             spaced="right"
                         />
                     ) }
                     <Header className="page-header ellipsis" as={ titleAs } textAlign={ titleTextAlign }>
-                        { title && title }
-                        { description && (
-                            <Header.Subheader className="sub-header ellipsis">{ description }</Header.Subheader>
-                        ) }
+                        {
+                            isLoading
+                                ? (
+                                    <div style={ { width: "250px" } }>
+                                        <Placeholder fluid>
+                                            <Placeholder.Header>
+                                                <Placeholder.Line />
+                                                { description && <Placeholder.Line /> }
+                                            </Placeholder.Header>
+                                        </Placeholder>
+                                    </div>
+                                )
+                                : (
+                                    <Header
+                                        className="page-header ellipsis"
+                                        as={ titleAs }
+                                        textAlign={ titleTextAlign }
+                                    >
+                                        { title && title }
+                                        { description && (
+                                            <Header.Subheader
+                                                className="sub-header ellipsis"
+                                            >
+                                                { description }
+                                            </Header.Subheader>
+                                        ) }
+                                    </Header>
+                                )
+                        }
                     </Header>
                 </div>
                 {

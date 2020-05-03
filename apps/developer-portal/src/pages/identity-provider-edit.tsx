@@ -109,6 +109,7 @@ export const IdentityProviderEditPage: FunctionComponent<{}> = (): ReactElement 
 
     return (
         <PageLayout
+            isLoading={ isIdentityProviderRequestLoading }
             title={ identityProvider.name }
             contentTopMargin={ true }
             description={ identityProvider.description }

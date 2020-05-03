@@ -36,7 +36,7 @@ import { filterList, sortList } from "../utils";
 /**
  * This returns the list of local claims.
  *
- * @return {ReactElement}
+ * @return {React.ReactElement}
  */
 export const LocalClaimsPage = (): ReactElement => {
 
@@ -225,6 +225,7 @@ export const LocalClaimsPage = (): ReactElement => {
                     : null
             }
             <PageLayout
+                isLoading={ isLoading }
                 title="Local Attributes"
                 description="Create and manage local attributes"
                 showBottomDivider={ true }

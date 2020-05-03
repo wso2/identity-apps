@@ -133,6 +133,7 @@ export const EmailTemplateTypes = (): ReactElement => {
 
     return (
         <PageLayout
+            isLoading={ isTemplateTypesFetchRequestLoading }
             title="Email Templates Types"
             description="Create and manage templates types."
             showBottomDivider={ true } 

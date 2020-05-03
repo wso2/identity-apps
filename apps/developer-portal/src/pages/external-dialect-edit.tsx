@@ -164,6 +164,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
 
     return (
         <PageLayout
+            isLoading={ isLoading }
             image={
                 <Image
                     floated="left"

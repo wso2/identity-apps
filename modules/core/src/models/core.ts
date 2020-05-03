@@ -114,5 +114,5 @@ export interface LoadableComponentInterface {
     /**
      * Flag for loading state.
      */
-    isLoading: boolean;
+    isLoading?: boolean;
 }

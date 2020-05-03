@@ -159,6 +159,14 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
     );
 
     /**
+     * Handler for the secondary button click event.
+     */
+    const handleSecondaryActionClick = (e: MouseEvent<HTMLButtonElement>) => {
+        setAssertionInput("");
+        onSecondaryActionClick(e);
+    };
+
+    /**
      * Resolves the animated icon.
      *
      * @param {string} type - Type of the modal.
@@ -318,7 +326,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                                         neagtive={ type === "negative" }
                                         warning={ type === "warning" }
                                         info={ type === "info" }
-                                        onClick={ onSecondaryActionClick }
+                                        onClick={ handleSecondaryActionClick }
                                     >
                                         { secondaryAction }
                                     </LinkButton>
