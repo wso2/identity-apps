@@ -19,8 +19,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { Image, Placeholder, SemanticSIZES } from "semantic-ui-react";
-import { DefaultAppIcon } from "../../configs";
-import { UserImageDummy } from "./ui";
+import { DefaultAppIcon, UserImage } from "../../configs";
 
 /**
  * Prop types for the Avatar component.
@@ -191,7 +190,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
     return (
         <Image
             className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
-            src={ avatarType === "user" ? UserImageDummy : DefaultAppIcon.default }
+            src={ avatarType === "user" ? UserImage : DefaultAppIcon.default }
             bordered={ bordered }
             floated={ floated }
             verticalAlign="middle"

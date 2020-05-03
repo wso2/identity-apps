@@ -47,8 +47,6 @@ import {
     WarningIcon
 } from "@wso2is/theme";
 
-type ImageType = string;
-
 interface StylesType {
     appPrimaryColor?: string;
     appBackgroundColor?: string;
@@ -60,7 +58,7 @@ interface CustomCSSType {
 }
 
 export const LogoImage = Logo;
-export const UserImage: ImageType = DummyUser;
+export const UserImage: string = DummyUser;
 export const HomeTileIconImages = HomeTileIcons;
 export const ConsentedAppIcon = PackageIcon;
 export const DefaultAppIcon = CodeIcon;
