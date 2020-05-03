@@ -169,15 +169,16 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
      * Handles wizard step submit.
      *
      * @param values - Forms values to be stored in state.
-     * @param {WizardConstants} formType - Type of the form.
      */
-    const handleWizardFormSubmit = (values: any, formType: WizardConstants): void => {
+    const handleWizardFormSubmit = (values: any): void => {
 		if (values.templateId) {
             setSelectedTemplateId(values.templateId);
         } else if (values.manualModeOptionId) {
             setSelectedManualModeOptionId(values.manualModeOptionId);
         } else {
-            setWizardState(_.merge(wizardState, { [formType]: values }));
+            setWizardState({
+                [ WizardConstants.AUTHENTICATOR ]: values
+            })
         }
         setCurrentWizardStep(currentWizardStep + 1);
     };
@@ -262,8 +263,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                 return (
                     <AuthenticatorTemplateSelection
                         triggerSubmit={ submitTemplateSelection }
-                        onSubmit={ (values): void => handleWizardFormSubmit(values,
-                            WizardConstants.AUTHENTICATOR) }
+                        onSubmit={ (values): void => handleWizardFormSubmit(values) }
                         manualModeOptions={ manualModeOptions }
                         authenticatorTemplates={ availableTemplates }
                     />
@@ -274,8 +274,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                     <AuthenticatorSettings
                         metadata={ selectedAuthenticatorMetadata }
                         initialValues={ wizardState[WizardConstants.AUTHENTICATOR] }
-                        onSubmit={ (values): void => handleWizardFormSubmit(
-                            values, WizardConstants.AUTHENTICATOR) }
+                        onSubmit={ (values): void => handleWizardFormSubmit(values) }
                         triggerSubmit={ submitAuthenticator }
                     />
                 )
