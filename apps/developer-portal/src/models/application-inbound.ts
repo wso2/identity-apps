@@ -35,11 +35,20 @@ export interface MetadataPropertyInterface {
     defaultValue?: string;
 }
 
+interface GrantTypeInterface {
+    name?: string;
+    displayName?: string;
+}
+
+export interface GrantTypeMetaDataInterface {
+    options?: GrantTypeInterface[];
+}
+
 /**
  * OIDC related metadata.
  */
 export interface OIDCMetadataInterface {
-    allowedGrantTypes?: MetadataPropertyInterface;
+    allowedGrantTypes?: GrantTypeMetaDataInterface;
     defaultUserAccessTokenExpiryTime?: string;
     defaultApplicationAccessTokenExpiryTime?: string;
     defaultRefreshTokenExpiryTime?: string;
