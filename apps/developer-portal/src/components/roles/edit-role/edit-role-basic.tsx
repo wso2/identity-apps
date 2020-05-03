@@ -53,7 +53,7 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     } = props;
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false)
-    const [ labelText, setLableText ] = useState<string>(undefined);
+    const [ labelText, setLableText ] = useState<string>('');
     const [ nameValue, setNameValue ] = useState<string>('');
 
     useEffect(() => {
@@ -161,7 +161,7 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                 <Input
                                     required={ true }
                                     name={ "rolename" }
-                                    label={ labelText + " /" }
+                                    label={ labelText !== '' ? labelText + " /" : null }
                                     requiredErrorMessage={ 
                                         isGroup ? 
                                             t("devPortal:components.groups.edit.basics.fields.groupName.required") : 
