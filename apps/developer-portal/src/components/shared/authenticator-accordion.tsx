@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { GenericIcon, GenericIconProps } from "@wso2is/react-components";
+import { ContentLoader, GenericIcon, GenericIconProps } from "@wso2is/react-components";
 import { SegmentedAccordion, SegmentedAccordionTitlePropsInterface } from "@wso2is/react-components";
 import _ from "lodash";
 import React, {
@@ -121,49 +121,51 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
         setAccordionActiveIndexes(newIndexes);
     };
 
-    return (
-        <SegmentedAccordion
-            fluid
-        >
-            {
-                _.sortBy(authenticators, orderBy).map((authenticator, index) => (
-                    !authenticator.hidden
-                        ? (
-                            <>
-                                <SegmentedAccordion.Title
-                                    id={ authenticator.id }
-                                    active={ accordionActiveIndexes.includes(index) }
-                                    index={ index }
-                                    onClick={ handleAccordionOnClick }
-                                    content={ (
-                                        <>
-                                            <GenericIcon
-                                                floated="left"
-                                                size="micro"
-                                                spaced="right"
-                                                transparent
-                                                { ...authenticator.icon }
-                                            />
-                                            { authenticator.title }
-                                        </>
-                                    ) }
-                                    actions={ (authenticator?.actions && globalActions) ?
-                                        [ ...authenticator?.actions, ...globalActions ] :
-                                        authenticator.actions || globalActions
-                                    }
-                                    hideChevron={ hideChevron }
-                                />
-                                <SegmentedAccordion.Content
-                                    active={ accordionActiveIndexes.includes(index) }
-                                >
-                                    { authenticator.content }
-                                </SegmentedAccordion.Content>
-                            </>
-                        )
-                        : null
-                ))
-            }
-        </SegmentedAccordion>
+    return (authenticators
+            ?
+            <SegmentedAccordion
+                fluid
+            >
+                {
+                    _.sortBy(authenticators, orderBy).map((authenticator, index) => (
+                        !authenticator.hidden
+                            ? (
+                                <>
+                                    <SegmentedAccordion.Title
+                                        id={ authenticator.id }
+                                        active={ accordionActiveIndexes.includes(index) }
+                                        index={ index }
+                                        onClick={ handleAccordionOnClick }
+                                        content={ (
+                                            <>
+                                                <GenericIcon
+                                                    floated="left"
+                                                    size="micro"
+                                                    spaced="right"
+                                                    transparent
+                                                    { ...authenticator.icon }
+                                                />
+                                                { authenticator.title }
+                                            </>
+                                        ) }
+                                        actions={ (authenticator?.actions && globalActions) ?
+                                            [ ...authenticator?.actions, ...globalActions ] :
+                                            authenticator.actions || globalActions
+                                        }
+                                        hideChevron={ hideChevron }
+                                    />
+                                    <SegmentedAccordion.Content
+                                        active={ accordionActiveIndexes.includes(index) }
+                                    >
+                                        { authenticator.content }
+                                    </SegmentedAccordion.Content>
+                                </>
+                            )
+                            : null
+                    ))
+                }
+            </SegmentedAccordion>
+            : <ContentLoader/>
     );
 };
 
