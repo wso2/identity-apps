@@ -23,6 +23,7 @@ import { isEmpty } from "lodash";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Button, Divider, Form, Grid } from "semantic-ui-react";
 import {
+    GrantTypeMetaDataInterface,
     MetadataPropertyInterface,
     OAuth2PKCEConfigurationInterface,
     OIDCDataInterface,
@@ -103,41 +104,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     /**
-     * Maps meta data grant types and configuration grant types.
-     *
-     * @param {string} grant - Grant type.
-     * @return {any}
-     */
-    const makeGrantTypeReadable = (grant: string): any => {
-        // TODO Remove this method and fix backend to provide consistent options
-        if ("urn:ietf:params:oauth:grant-type:device_code" === grant) {
-            return { label: "Device Code", value: grant };
-        } else if ("urn:ietf:params:oauth:grant-type:uma-ticket" === grant) {
-            return { label: "UMA Ticket ", value: grant };
-        } else if ("account_switch" === grant) {
-            return { label: "Account Switch", value: grant };
-        } else if ("urn:ietf:params:oauth:grant-type:jwt-bearer" === grant) {
-            return { label: "JWT Bearer", value: grant };
-        } else if ("Code" === grant) {
-            return { label: grant, value: "authorization_code" };
-        } else if ("Refresh Token" === grant) {
-            return { label: grant, value: "refresh_token" };
-        } else if ("SAML2" === grant) {
-            return { label: grant, value: "urn:ietf:params:oauth:grant-type:saml2-bearer" };
-        } else if ("Implicit" === grant) {
-            return { label: grant, value: "implicit" };
-        } else if ("Password" === grant) {
-            return { label: grant, value: "password" };
-        } else if ("Client Credential" === grant) {
-            return { label: grant, value: "client_credentials" };
-        } else if ("IWA-NTLM" === grant) {
-            return { label: grant, value: "iwa:ntlm" };
-        } else {
-            return { label: grant, value: grant };
-        }
-    };
-
-    /**
      * Creates options for Radio & dropdown using MetadataPropertyInterface options.
      *
      * @param {MetadataPropertyInterface} metadataProp - Metadata.
@@ -145,17 +111,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @param {boolean} isGrant - Flag to determine if grant type.
      * @return {any[]}
      */
-    const getAllowedList = (metadataProp: MetadataPropertyInterface, isLabel?: boolean, isGrant?: boolean): any[] => {
+    const getAllowedList = (metadataProp: MetadataPropertyInterface, isLabel?: boolean): any[] => {
         const allowedList = [];
-        if (metadata) {
-            if (isGrant) {
-                metadataProp.options.map((ele) => {
-                    const addElement = makeGrantTypeReadable(ele);
-                    if (addElement) {
-                        allowedList.push(makeGrantTypeReadable(ele));
-                    }
-                });
-            } else if (isLabel) {
+        if (metadataProp) {
+            if (isLabel) {
                 metadataProp.options.map((ele) => {
                     allowedList.push({ label: ele, value: ele });
                 });
@@ -165,6 +124,25 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 });
             }
         }
+        return allowedList;
+    };
+
+    /**
+     * Creates options for Radio GrantTypeMetaDataInterface options.
+     *
+     * @param {GrantTypeMetaDataInterface} metadataProp - Metadata.
+     *
+     * @return {any[]}
+     */
+    const getAllowedGranTypeList = (metadataProp: GrantTypeMetaDataInterface): any[] => {
+        const allowedList = [];
+        if (metadataProp) {
+            metadataProp.options.map((grant) => {
+                allowedList.push({ label: grant.displayName, value: grant.name });
+            });
+
+        }
+
         return allowedList;
     };
 
@@ -411,7 +389,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     type="checkbox"
                                     required={ true }
                                     requiredErrorMessage="Select at least a  grant type"
-                                    children={ getAllowedList(metadata.allowedGrantTypes, true, true) }
+                                    children={ getAllowedGranTypeList(metadata.allowedGrantTypes) }
                                     value={ initialValues.grantTypes }
                                     readOnly={ readOnly }
                                 />

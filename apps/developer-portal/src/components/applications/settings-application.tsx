@@ -103,9 +103,9 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
     const dispatch = useDispatch();
 
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
-    const [showWizard, setShowWizard] = useState<boolean>(false);
-    const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState<boolean>(false);
-    const [protocolToDelete, setProtocolToDelete] = useState<string>(undefined);
+    const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ protocolToDelete, setProtocolToDelete ] = useState<string>(undefined);
 
     /**
      * Handles the inbound config delete action.
@@ -270,85 +270,87 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
      * @return {React.ReactElement}
      */
     const resolveInboundProtocolSettingsForm = (): ReactElement => {
-        return (
-            <AuthenticatorAccordion
-                globalActions={ [
-                    {
-                        icon: "trash alternate",
-                        onClick: handleProtocolDeleteOnClick,
-                        type: "icon"
-                    }
-                ] }
-                authenticators={
-                    Object.keys(inboundProtocolConfig).map((protocol) => {
-                        if (Object.values(SupportedAuthProtocolTypes).includes(protocol as SupportedAuthProtocolTypes)) {
-                            return {
-                                actions: [],
-                                icon: { icon: InboundProtocolLogos[protocol], size: "micro" } as GenericIconProps,
-                                content: (
-                                    <InboundFormFactory
-                                        metadata={ authProtocolMeta[protocol] }
-                                        initialValues={
-                                            _.isEmpty(inboundProtocolConfig[protocol])
-                                                ? undefined : inboundProtocolConfig[protocol]
-                                        }
-                                        onSubmit={
-                                            (values: any) => handleInboundConfigFormSubmit(values,
-                                                protocol)
-                                        }
-                                        type={ protocol as SupportedAuthProtocolTypes }
-                                        onApplicationRegenerate={ handleApplicationRegenerate }
-                                        onApplicationRevoke={ handleApplicationRevoke }
-                                        readOnly={
-                                            !hasRequiredScopes(
-                                                featureConfig?.applications,
-                                                featureConfig?.applications?.scopes?.update
-                                            )
-                                        }
-                                    />
-                                ),
-                                id: protocol,
-                                title: _.upperCase(protocol)
-                            }
-                        } else {
-                            return {
-                                actions: [],
-                                icon: {
-                                    icon: (
-                                        <UserAvatar
-                                            name={ protocol }
-                                            size="mini"
+        return (inboundProtocolConfig
+                ?
+                <AuthenticatorAccordion
+                    globalActions={ [
+                        {
+                            icon: "trash alternate",
+                            onClick: handleProtocolDeleteOnClick,
+                            type: "icon"
+                        }
+                    ] }
+                    authenticators={
+                        Object.keys(inboundProtocolConfig).map((protocol) => {
+                            if (Object.values(SupportedAuthProtocolTypes)
+                                .includes(protocol as SupportedAuthProtocolTypes)) {
+                                return {
+                                    actions: [],
+                                    icon: { icon: InboundProtocolLogos[protocol], size: "micro" } as GenericIconProps,
+                                    content: (
+                                        <InboundFormFactory
+                                            metadata={ authProtocolMeta[protocol] }
+                                            initialValues={
+                                                _.isEmpty(inboundProtocolConfig[protocol])
+                                                    ? undefined : inboundProtocolConfig[protocol]
+                                            }
+                                            onSubmit={
+                                                (values: any) => handleInboundConfigFormSubmit(values,
+                                                    protocol)
+                                            }
+                                            type={ protocol as SupportedAuthProtocolTypes }
+                                            onApplicationRegenerate={ handleApplicationRegenerate }
+                                            onApplicationRevoke={ handleApplicationRevoke }
+                                            readOnly={
+                                                !hasRequiredScopes(
+                                                    featureConfig?.applications,
+                                                    featureConfig?.applications?.scopes?.update
+                                                )
+                                            }
                                         />
                                     ),
-                                    size: "nano"
-                                } as GenericIconProps,
-                                content: (
-                                    <InboundFormFactory
-                                        metadata={ authProtocolMeta[protocol] }
-                                        initialValues={
-                                            _.isEmpty(inboundProtocolConfig[protocol])
-                                                ? undefined : inboundProtocolConfig[protocol]
-                                        }
-                                        onSubmit={
-                                            (values: any) => handleInboundConfigFormSubmit(values,
-                                                protocol)
-                                        }
-                                        type={ SupportedAuthProtocolTypes.CUSTOM }
-                                        readOnly={
-                                            !hasRequiredScopes(
-                                                featureConfig?.applications,
-                                                featureConfig?.applications?.scopes?.update
-                                            )
-                                        }
-                                    />
-                                ),
-                                id: protocol,
-                                title: _.upperCase(protocol)
+                                    id: protocol,
+                                    title: _.upperCase(protocol)
+                                }
+                            } else {
+                                return {
+                                    actions: [],
+                                    icon: {
+                                        icon: (
+                                            <UserAvatar
+                                                name={ protocol }
+                                                size="mini"
+                                            />
+                                        ),
+                                        size: "nano"
+                                    } as GenericIconProps,
+                                    content: (
+                                        <InboundFormFactory
+                                            metadata={ authProtocolMeta[protocol] }
+                                            initialValues={
+                                                _.isEmpty(inboundProtocolConfig[protocol])
+                                                    ? undefined : inboundProtocolConfig[protocol]
+                                            }
+                                            onSubmit={
+                                                (values: any) => handleInboundConfigFormSubmit(values,
+                                                    protocol)
+                                            }
+                                            type={ SupportedAuthProtocolTypes.CUSTOM }
+                                            readOnly={
+                                                !hasRequiredScopes(
+                                                    featureConfig?.applications,
+                                                    featureConfig?.applications?.scopes?.update
+                                                )
+                                            }
+                                        />
+                                    ),
+                                    id: protocol,
+                                    title: _.upperCase(protocol)
+                                }
                             }
-                        }
-                    })
-                }
-            />
+                        })
+                    }
+                /> : <ContentLoader/>
         )
     };
 
@@ -394,7 +396,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                     });
             }
         })
-    }, [inboundProtocols]);
+    }, [ inboundProtocols ]);
 
     return (
         !isLoading
@@ -442,7 +444,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            { resolveInboundProtocolSettingsForm() }
+                            { inboundProtocols?.length > 0 && resolveInboundProtocolSettingsForm() }
                         </Grid.Column>
                     </Grid.Row>
                     {
