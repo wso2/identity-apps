@@ -168,6 +168,7 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
     
     return (
         <PageLayout
+            isLoading={ isEmailTemplatesFetchRequestLoading }
             title={ emailTemplateTypeDetails && 
                     emailTemplateTypeDetails.displayName ? "Templates - " + emailTemplateTypeDetails.displayName 
                     : "Email Templates" }

@@ -423,6 +423,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
             tabs={ helpPanelTabs }
         >
             <PageLayout
+                isLoading={ isApplicationRequestLoading }
                 title={ application.name }
                 contentTopMargin={ true }
                 description={ (

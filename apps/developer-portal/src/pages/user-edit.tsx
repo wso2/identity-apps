@@ -16,15 +16,15 @@
  * under the License.
  */
 
+import { addAlert } from "@wso2is/core/store";
 import { UserAvatar } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getUserDetails } from "../api";
-import { EditUser } from "../components/users/edit-user";
+import { EditUser } from "../components/users";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import { AlertInterface, BasicProfileInterface, createEmptyProfile } from "../models";
-import { addAlert } from "../store/actions";
 
 /**
  * User Edit page.
@@ -32,8 +32,11 @@ import { addAlert } from "../store/actions";
  * @return {JSX.Element}
  */
 export const UserEditPage = (): JSX.Element => {
-    const [ user, setUserProfile ] = useState<BasicProfileInterface>(createEmptyProfile);
+
     const dispatch = useDispatch();
+
+    const [ user, setUserProfile ] = useState<BasicProfileInterface>(createEmptyProfile);
+    const [ isUserDetailsRequestLoading, setIsUserDetailsRequestLoading ] = useState<boolean>(false);
 
     /**
      * Dispatches the alert object to the redux store.
@@ -45,12 +48,17 @@ export const UserEditPage = (): JSX.Element => {
     };
 
     const getUser = (id: string) => {
+        setIsUserDetailsRequestLoading(true);
+
         getUserDetails(id)
             .then((response) => {
                 setUserProfile(response);
             })
             .catch(() => {
                 // TODO add to notifications
+            })
+            .finally(() => {
+                setIsUserDetailsRequestLoading(false);
             });
     };
 
@@ -71,6 +79,7 @@ export const UserEditPage = (): JSX.Element => {
 
     return (
         <PageLayout
+            isLoading={ isUserDetailsRequestLoading }
             title={ user?.name?.givenName && user.name.familyName ? user.name.givenName + " " + user.name.familyName :
                 "Administrator" }
             description={ "" + user.emails && user.emails !== undefined ? user.emails[0].toString() :
@@ -84,8 +93,8 @@ export const UserEditPage = (): JSX.Element => {
                 />
             ) }
             backButton={ {
-                testId: "user_mgt_edit_user_back_button",
                 onClick: handleBackButtonClick,
+                testId: "user_mgt_edit_user_back_button",
                 text: "Go back to users"
             } }
             titleTextAlign="left"

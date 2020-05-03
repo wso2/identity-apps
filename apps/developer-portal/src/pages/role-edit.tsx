@@ -19,7 +19,7 @@
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { getRoleById } from "../api";
 import { EditRole } from "../components/roles/edit-role/edit-role";
-import { ROLE_VIEW_PATH, GROUP_VIEW_PATH } from "../constants";
+import { GROUP_VIEW_PATH, ROLE_VIEW_PATH } from "../constants";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import { RolesInterface } from "../models";
@@ -29,20 +29,27 @@ export const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
     const [ roleId, setRoleId ] = useState<string>(undefined);
     const [ roleObject, setRoleObject ] = useState<RolesInterface>();
     const [ isGroup, setIsGroup ] = useState<boolean>(false);
+    const [ isRoleDetailsRequestLoading, setIsRoleDetailsRequestLoading ] = useState<boolean>(false);
 
     const getRoleDetails = (roleId: string ): void => {
-        getRoleById(roleId).then(response => {
-            if (response.status === 200) {
-                const role = response.data;
-                if (!role.displayName.includes("Application/") && !role.displayName.includes("Internal/")) {
-                    setIsGroup(true);
+        setIsRoleDetailsRequestLoading(true);
+
+        getRoleById(roleId)
+            .then(response => {
+                if (response.status === 200) {
+                    const role = response.data;
+                    if (!role.displayName.includes("Application/") && !role.displayName.includes("Internal/")) {
+                        setIsGroup(true);
+                    }
+                    setRoleObject(role);
                 }
-                setRoleObject(role);
-            }
-        }).catch(() => {
-            // TODO: handle error
-        })
-    }
+            }).catch(() => {
+                // TODO: handle error
+            })
+            .finally(() => {
+                setIsRoleDetailsRequestLoading(false);
+            })
+    };
 
     const onRoleUpdate = (): void => {
         getRoleDetails(roleId);
@@ -69,6 +76,7 @@ export const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
     
     return (
         <PageLayout
+            isLoading={ isRoleDetailsRequestLoading }
             title={ roleObject && roleObject.displayName ? roleObject.displayName : "Edit Role" }
             backButton={ {
                 onClick: handleBackButtonClick,
@@ -80,4 +88,4 @@ export const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
             <EditRole roleObject={ roleObject } roleId={ roleId } onRoleUpdate={ onRoleUpdate } />
         </PageLayout>
     );
-}
+};

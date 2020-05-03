@@ -16,6 +16,7 @@
 * under the License.
 */
 
+import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react"
 import { useDispatch } from "react-redux";
@@ -31,18 +32,20 @@ import { LOCAL_CLAIMS_PATH } from "../constants";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts"
 import { AlertLevels, Claim } from "../models";
-import { addAlert } from "../store/actions";
 
 /**
  * This renders the edit local claims page
- * @param props 
- * @return {ReactElement}
+ *
+ * @param props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const LocalClaimsEditPage = (props): ReactElement => {
 
     const claimID = props.match.params.id;
 
-    const [claim, setClaim] = useState<Claim>(null);
+    const [ claim, setClaim ] = useState<Claim>(null);
+    const [ isLocalClaimDetailsRequestLoading, setIsLocalClaimDetailsRequestLoading ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
@@ -50,18 +53,24 @@ export const LocalClaimsEditPage = (props): ReactElement => {
      * Fetches the local claim
      */
     const getClaim = () => {
-        getAClaim(claimID).then(response => {
-            setClaim(response);
-        }).catch(error => {
-            dispatch(addAlert(
-                {
-                    description: error?.description || "There was an error while fetching the local claim",
-                    level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
-                }
-            ));
-        })
-    }
+        setIsLocalClaimDetailsRequestLoading(true);
+
+        getAClaim(claimID)
+            .then((response) => {
+                setClaim(response);
+            })
+            .catch((error) => {
+                dispatch(addAlert({
+                        description: error?.description || "There was an error while fetching the local claim",
+                        level: AlertLevels.ERROR,
+                        message: error?.message || "Something went wrong"
+                    })
+                );
+            })
+            .finally(() => {
+                setIsLocalClaimDetailsRequestLoading(false);
+            });
+    };
 
     useEffect(() => {
         getClaim();
@@ -111,6 +120,7 @@ export const LocalClaimsEditPage = (props): ReactElement => {
 
     return (
         <PageLayout
+            isLoading={ isLocalClaimDetailsRequestLoading }
             image={
                 <Image
                     floated="left"
@@ -139,4 +149,4 @@ export const LocalClaimsEditPage = (props): ReactElement => {
             <ResourceTab panes={ panes } />
         </PageLayout>
     )
-}
+};
