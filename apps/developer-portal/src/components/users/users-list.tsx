@@ -122,10 +122,10 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         let metaColumnWidth: SemanticWIDTHS = 1;
 
         return attributes.map((metaAttribute, index) => {
-            if (metaAttribute?.toString().length <= 10) {
+            if (metaAttribute?.toString().length <= 20) {
                 metaColumnWidth = 2;
             }
-            if (metaAttribute?.toString().length >= 20) {
+            if (metaAttribute?.toString().length > 20) {
                 metaColumnWidth = 4;
             }
             if (metaAttribute?.toString().length >= 30 && metaAttribute?.toString().length <= 40) {

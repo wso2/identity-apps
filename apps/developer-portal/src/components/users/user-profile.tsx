@@ -24,7 +24,7 @@ import * as _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Divider, Grid } from "semantic-ui-react";
+import { Button, Divider, Grid, Input, Form } from "semantic-ui-react";
 import { deleteUser, updateUserInfo } from "../../api";
 import { history } from "../../helpers";
 import { AuthStateInterface, BasicProfileInterface, ProfileSchema } from "../../models";
@@ -236,20 +236,43 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
             schema.name.replace(".", "_"), { defaultValue: schema.displayName }
         );
 
+        const domainName = profileInfo?.get(schema.name)?.toString().split("/");
+
         return (
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
-                    <Field
-                        data-testid={ `user_mgt_user_profile_form_${ schema.name }_input` }
-                        name={ schema.name }
-                        label={ schema.name === "profileUrl" ? "Profile Image URL" : fieldName }
-                        required={ schema.required }
-                        requiredErrorMessage={ fieldName + " " + "is required" }
-                        placeholder={ "Enter your" + " " + fieldName }
-                        type="text"
-                        value={ profileInfo.get(schema.name) }
-                        key={ key }
-                    />
+                    {
+                        schema.name === "userName" && domainName.length > 1 ? (
+                            <Form.Field>
+                                <label>
+                                    { fieldName }
+                                </label>
+                                <Input
+                                    data-testid={ `user_mgt_user_profile_form_${ schema.name }_input` }
+                                    name={ schema.name }
+                                    label={ domainName[0] + " / " }
+                                    required={ schema.required }
+                                    requiredErrorMessage={ fieldName + " " + "is required" }
+                                    placeholder={ "Enter your" + " " + fieldName }
+                                    type="text"
+                                    value={ domainName[1] }
+                                    key={ key }
+                                />
+                            </Form.Field>
+                        ) : (
+                            <Field
+                                data-testid={ `user_mgt_user_profile_form_${ schema.name }_input` }
+                                name={ schema.name }
+                                label={ schema.name === "profileUrl" ? "Profile Image URL" : fieldName }
+                                required={ schema.required }
+                                requiredErrorMessage={ fieldName + " " + "is required" }
+                                placeholder={ "Enter your" + " " + fieldName }
+                                type="text"
+                                value={ profileInfo.get(schema.name) }
+                                key={ key }
+                            />
+                        )
+                    }
                 </Grid.Column>
             </Grid.Row>
         );
