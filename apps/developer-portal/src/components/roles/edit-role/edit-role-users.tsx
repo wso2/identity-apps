@@ -16,7 +16,7 @@
  * under the License
  */
 
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { updateRoleDetails } from "../../../api";
@@ -29,6 +29,7 @@ import {
 } from "../../../models";
 import { addAlert } from "../../../store/actions";
 import { AddRoleUsers } from "../create-role-wizard/role-user-assign";
+import { PRIMARY_DOMAIN } from "../../../constants";
 
 interface RoleUserDetailsProps {
     roleObject: RolesInterface;
@@ -39,14 +40,25 @@ interface RoleUserDetailsProps {
 export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
     props: RoleUserDetailsProps
 ): ReactElement => {
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const {
         roleObject,
         onRoleUpdate,
         isGroup
     } = props;
 
-    const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const [ currentUserStore, setCurrentUserStore ] = useState<string>(undefined);
+
+    useEffect(() => {
+        const roleName = roleObject.displayName;
+        if (roleName.indexOf('/') !== -1) {
+            setCurrentUserStore(roleName.split('/')[0]);
+        } else {
+            setCurrentUserStore(PRIMARY_DOMAIN);
+        }
+    }, [currentUserStore, roleObject, isGroup])
 
     /**
      * Dispatches the alert object to the redux store.
@@ -107,6 +119,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         <AddRoleUsers 
             isGroup={ isGroup } 
             isEdit={ true } 
+            userStore={ currentUserStore }
             assignedUsers={ roleObject.members } 
             onSubmit={ onUserUpdate }
         />
