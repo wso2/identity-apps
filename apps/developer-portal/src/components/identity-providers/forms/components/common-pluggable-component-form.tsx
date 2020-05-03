@@ -27,6 +27,7 @@ import {
 } from "../../../../models";
 import { getPropertyMetadata } from "../../utils";
 import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../helpers";
+import _ from "lodash";
 
 /**
  * Common pluggable connector configurations form.
@@ -136,27 +137,33 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
         metaProperties?.forEach((metaProperty: CommonPluggableComponentMetaPropertyInterface) => {
 
-            const property: CommonPluggableComponentPropertyInterface = dynamicValues?.properties?.find(property =>
-                property.key === metaProperty.key);
+            // Ignoring elements with empty display name.
+            // Note: This will remove the element from all API requests as well. If an element that is required
+            // by the API is removed, that will break the app. In that case, metadata API needs to updated to
+            // send a displayName for such required elements.
+            if (!_.isEmpty(metaProperty?.displayName)) {
+                const property: CommonPluggableComponentPropertyInterface = dynamicValues?.properties?.find(property =>
+                    property.key === metaProperty.key);
 
-            let field: ReactElement;
-            if (!isCheckboxWithSubProperties(metaProperty)) {
-                field = getField(property, metaProperty, disable, isSub);
-            } else {
-                field =
-                    <React.Fragment key={ metaProperty?.displayOrder }>
-                        {
-                            // Render parent property.
-                            getField(property, metaProperty, disable, isSub, handleParentPropertyChange)
-                        }
-                        {
-                            getSortedPropertyFields(metaProperty?.subProperties, !(property?.value?.toString()?.
-                            toLowerCase() === "true"), true)
-                        }
-                    </React.Fragment>;
+                let field: ReactElement;
+                if (!isCheckboxWithSubProperties(metaProperty)) {
+                    field = getField(property, metaProperty, disable, isSub);
+                } else {
+                    field =
+                        <React.Fragment key={ metaProperty?.displayOrder }>
+                            {
+                                // Render parent property.
+                                getField(property, metaProperty, disable, isSub, handleParentPropertyChange)
+                            }
+                            {
+                                getSortedPropertyFields(metaProperty?.subProperties,
+                                    !(property?.value?.toString()?.toLowerCase() === "true"), true)
+                            }
+                        </React.Fragment>;
+                }
+
+                bucket.push(field);
             }
-
-            bucket.push(field);
         });
 
         return bucket.sort((a, b) => Number(a.key) - Number(b.key));
