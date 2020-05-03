@@ -19,8 +19,8 @@
 import classNames from "classnames";
 import * as React from "react";
 import { Image } from "semantic-ui-react";
-import { GlobalConfig, HomeTileIconImages, LogoImage, UserImage } from "../../configs";
 import { ThemeIcon } from "./icon";
+import { GlobalConfig, HomeTileIconImages, LogoImage, UserImage } from "../../configs";
 
 interface ImageProps {
     classes?: any;
@@ -113,5 +113,3 @@ export const HomeTileIcon = (props: HomeTileIconImageProps) => {
         />
     );
 };
-
-export const UserImageDummy = UserImage;
