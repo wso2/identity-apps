@@ -45,8 +45,12 @@ export const ProtectedRoute = (props: RouteProps): JSX.Element => {
      * The login path and the login error path have been skipped.
      */
     if ((history.location.pathname !== config.deployment.appLoginPath)
-        && (history.location.pathname !== ApplicationConstants.LOGIN_ERROR_PAGE_PATH)) {
+        && (history.location.pathname !== ApplicationConstants.LOGIN_ERROR_PAGE_PATH)
+        && (history.location.pathname !== ApplicationConstants.PAGE_NOT_FOUND_PATH)) {
         updateAuthenticationCallbackUrl(history.location.pathname);
+    }
+    else {
+        updateAuthenticationCallbackUrl(config.deployment.appHomePath);
     }
 
     return (

@@ -41,6 +41,14 @@ export const PRIMARY_USER_STORE_IDENTIFIER = "PRIMARY";
 export const LOGIN_ERROR_PAGE_PATH = "/login-error";
 
 /**
+ * Path to the 404 page.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const PAGE_NOT_FOUND_PATH = "/404";
+
+/**
  * Path to the applications page.
  * @constant
  * @type {string}
