@@ -38,9 +38,6 @@
     String tenantDomain;
     if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
         tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
-        if (StringUtils.isBlank(tenantDomain)) {
-            tenantDomain = request.getParameter("tenantDomain");
-        }
     } else {
         tenantDomain = request.getParameter("tenantDomain");
     }
