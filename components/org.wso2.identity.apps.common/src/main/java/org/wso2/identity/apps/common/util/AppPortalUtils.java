@@ -18,7 +18,6 @@
 
 package org.wso2.identity.apps.common.util;
 
-import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
 import org.wso2.carbon.identity.application.common.model.Claim;
@@ -37,7 +36,6 @@ import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
 import org.wso2.carbon.registry.core.exceptions.RegistryException;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
-import org.wso2.carbon.utils.CarbonUtils;
 import org.wso2.identity.apps.common.internal.AppsCommonDataHolder;
 
 import java.util.Arrays;
@@ -204,12 +202,6 @@ public class AppPortalUtils {
         String adminUsername = userRealm.getRealmConfiguration().getAdminUserName();
 
         for (AppPortalConstants.AppPortal appPortal : AppPortalConstants.AppPortal.values()) {
-            if (appPortal.equals(AppPortalConstants.AppPortal.DEVELOPER_PORTAL)) {
-                String productVersion = CarbonUtils.getServerConfiguration().getFirstProperty("Version");
-                if (StringUtils.isBlank(productVersion) || !productVersion.startsWith("5.11.0")) {
-                    continue;
-                }
-            }
             if (applicationMgtService.getApplicationExcludingFileBasedSPs(appPortal.getName(), tenantDomain) == null) {
                 // Initiate portal
                 String consumerSecret = OAuthUtil.getRandomNumber();
@@ -218,9 +210,18 @@ public class AppPortalUtils {
                 if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
                     consumerKey = consumerKey + "_" + tenantDomain;
                 }
-                AppPortalUtils
-                        .createOAuth2Application(appPortal.getName(), appPortal.getPath(), consumerKey, consumerSecret,
-                                adminUsername, tenantId, tenantDomain, TOKEN_BINDING_TYPE_COOKIE, grantTypes);
+                try {
+                    AppPortalUtils.createOAuth2Application(appPortal.getName(), appPortal.getPath(), consumerKey,
+                            consumerSecret, adminUsername, tenantId, tenantDomain, TOKEN_BINDING_TYPE_COOKIE,
+                            grantTypes);
+                } catch (IdentityOAuthAdminException e) {
+                    if ("Error when adding the application. An application with the same name already exists."
+                            .equals(e.getMessage())) {
+                        // Application is already created.
+                        continue;
+                    }
+                    throw e;
+                }
                 AppPortalUtils.createApplication(appPortal.getName(), adminUsername, appPortal.getDescription(),
                         consumerKey, consumerSecret, tenantDomain);
             }
