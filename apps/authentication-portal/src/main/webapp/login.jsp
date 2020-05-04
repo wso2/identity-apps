@@ -32,7 +32,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.Map" %>
-    
+
 <%@ include file="includes/localize.jsp" %>
 <jsp:directive.include file="includes/init-url.jsp"/>
 
@@ -359,7 +359,7 @@
         function checkSessionKey() {
             $.ajax({
                 type: "GET",
-                url: "<%=logincontextURL%>?sessionDataKey=" + getParameterByName("sessionDataKey") + "&relyingParty=" + getParameterByName("relyingParty") + "&tenantDomain=" + getTenantDomainFromContext("tenantDomain"),
+                url: "<%=logincontextURL%>?sessionDataKey=" + getParameterByName("sessionDataKey") + "&relyingParty=" + getParameterByName("relyingParty") + "&tenantDomain=" + "<%=tenantDomain%>",
                 success: function (data) {
                     if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
                         window.location.href = data.redirectUrl;

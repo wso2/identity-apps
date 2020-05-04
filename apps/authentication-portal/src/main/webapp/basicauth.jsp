@@ -56,9 +56,7 @@
                     console.warn("Prevented a possible double submit event");
                 } else {
                     e.preventDefault();
-
-                    var tenantName = getParameterByName("tenantDomain");
-
+                    
                     var userName = document.getElementById("username");
                     var usernameUserInput = document.getElementById("usernameUserInput");
 
@@ -70,7 +68,7 @@
                         $.ajax({
                             type: "GET",
                             url: "<%=logincontextURL%>?sessionDataKey=" + getParameterByName("sessionDataKey") +
-                                "&relyingParty=" + getParameterByName("relyingParty") + "&tenantDomain=" + tenantName,
+                                "&relyingParty=" + getParameterByName("relyingParty") + "&tenantDomain=" + "<%=tenantDomain%>",
                             success: function (data) {
                                 if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
                                     window.location.href = data.redirectUrl;
