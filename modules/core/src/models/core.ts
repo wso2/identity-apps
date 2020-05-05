@@ -104,7 +104,7 @@ export interface TestableComponentInterface {
     /**
      * Unit test id.
      */
-    "data-testid": string;
+    "data-testid"?: string;
 }
 
 /**
