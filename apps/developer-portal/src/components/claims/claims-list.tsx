@@ -686,6 +686,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                             } }
                                                             submit={ submitExternalClaim }
                                                             claimURI={ claim.claimURI }
+                                                            externalClaims={ list }
                                                         />
                                                         : null
                                                 ].filter(meta => meta !== null) }
@@ -767,6 +768,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                             } }
                                                             wizard={ true }
                                                             addedClaim={ claim }
+                                                            externalClaims={ list }
                                                         />
                                                     )
                                                 ] }

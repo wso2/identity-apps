@@ -60,6 +60,10 @@ interface EditExternalClaimsPropsInterface {
      * Claim data if called from wizard
      */
     addedClaim?: AddExternalClaim;
+    /**
+     * The list of external claims belonging to the dialect.
+     */
+    externalClaims: ExternalClaim[] | AddExternalClaim[];
 }
 
 /**
@@ -69,11 +73,11 @@ interface EditExternalClaimsPropsInterface {
  */
 export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): ReactElement => {
 
-    const { claimID, update, dialectID, submit, claimURI, wizard, onSubmit, addedClaim } = props;
+    const { claimID, update, dialectID, submit, claimURI, wizard, onSubmit, addedClaim, externalClaims } = props;
 
     const [ localClaims, setLocalClaims ] = useState<Claim[]>();
     const [ claim, setClaim ] = useState<ExternalClaim>(null);
-
+    const [ filteredLocalClaims, setFilteredLocalClaims ] = useState<Claim[]>();
 
     const dispatch = useDispatch();
 
@@ -104,6 +108,48 @@ export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): Reac
             })
         }
     }, []);
+
+    /**
+     * Remove local claims that have already been mapped. 
+     */
+    useEffect(() => {
+        if (externalClaims && localClaims && (claim || addedClaim)) {
+            let tempLocalClaims: Claim[] = [ ...localClaims ];
+            externalClaims.forEach((externalClaim: ExternalClaim) => {
+                tempLocalClaims = [ ...removeMappedLocalClaim(externalClaim.mappedLocalClaimURI, tempLocalClaims) ];
+            });
+            tempLocalClaims.unshift(getLocalClaimMappedToSelectedExternalClaim());
+            setFilteredLocalClaims(tempLocalClaims);
+        }
+    }, [ externalClaims, localClaims, claim, addedClaim ]);
+
+    /**
+     * This removes the mapped local claims from the local claims list.
+     * 
+     * @param {string} claimURI The claim URI of the mapped local claim.
+     * 
+     * @returns {Claim[]} The array of filtered Claims.
+     */
+    const removeMappedLocalClaim = (claimURI: string, filteredLocalClaims?: Claim[]): Claim[] => {
+        const claimsToFilter = filteredLocalClaims ? filteredLocalClaims : localClaims;
+
+        return claimsToFilter?.filter((claim: Claim) => {
+            return claim.claimURI !== claimURI;
+        });
+    };
+
+    /**
+     * Returns the local claim that is mapped to the external claim.
+     * 
+     * @returns {Claim} The Local Claim mapped to the selected external claim.
+     */
+    const getLocalClaimMappedToSelectedExternalClaim = (): Claim => {
+        return localClaims.find((localClaim: Claim) => {
+            return wizard
+                ? localClaim?.claimURI === addedClaim?.mappedLocalClaimURI
+                : localClaim?.claimURI === claim?.mappedLocalClaimURI
+        })
+    }
 
     return (
         <Forms
@@ -167,7 +213,7 @@ export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): Reac
                             search
                             value={ wizard ? addedClaim.mappedLocalClaimURI : claim?.mappedLocalClaimURI }
                             children={
-                                localClaims?.map((claim: Claim, index) => {
+                                filteredLocalClaims?.map((claim: Claim, index) => {
                                     return {
                                         key: index,
                                         text: claim?.displayName,

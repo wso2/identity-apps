@@ -48,7 +48,7 @@ interface AddExternalClaimsPropsInterface {
     /**
      * The list of external claims belonging to the dialect.
      */
-    externalClaims?: ExternalClaim[] | AddExternalClaim[];
+    externalClaims: ExternalClaim[] | AddExternalClaim[];
     /**
      * Triggers submit externally.
      */
