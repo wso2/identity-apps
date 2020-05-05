@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { LoadableComponentInterface } from "@wso2is/core/dist/src/models";
+import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/dist/src/models";
 import {
     ConfirmationModal,
     EmptyPlaceholder,
@@ -37,7 +37,7 @@ import { CommonUtils } from "../../utils";
 /**
  * Prop types for the liked accounts component.
  */
-interface UsersListProps extends LoadableComponentInterface {
+interface UsersListProps extends LoadableComponentInterface, TestableComponentInterface {
     /**
      * User delete callback.
      * @param {string} userId - ID of the deleting user.
@@ -78,7 +78,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         onSearchQueryClear,
         searchQuery,
         userMetaListContent,
-        usersList
+        usersList,
+        [ "data-testid" ]: testId
     } = props;
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
@@ -192,9 +193,10 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         if (usersList.totalResults === 0 && usersList.Resources) {
             return (
                 <EmptyPlaceholder
+                    data-testid={ `${ testId }-empty-placeholder` }
                     action={ (
                         <PrimaryButton
-                            data-testid="user_mgt_user_list_add_user_button"
+                            data-testid={ `${ testId }-empty-placeholder-add-user-button` }
                             onClick={ () => onEmptyListPlaceholderActionClick() }
                         >
                             <Icon name="add"/>
@@ -233,14 +235,14 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 key={ index }
                                 actions={ [
                                     {
-                                        elementTestId: `user_mgt_user_list_edit_user_${ user.userName }_button`,
+                                        "data-testid": `${ testId }-edit-user-${ user.userName }-button`,
                                         icon: "pencil alternate",
                                         onClick: () => handleUserEdit(user.id),
                                         popupText: "Edit",
                                         type: "button"
                                     },
                                     {
-                                        elementTestId: `user_mgt_user_list_delete_user_${ user.userName }_button`,
+                                        "data-testid": `${ testId }-delete-user-${ user.userName }-button`,
                                         hidden: user.userName === "admin",
                                         icon: "trash alternate",
                                         onClick: (): void => {
@@ -276,10 +278,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             {
                 deletingUser && (
                     <ConfirmationModal
-                        confirmationModalTestId="user_mgt_user_list_confirmation_modal"
-                        primaryActionButtonTestId="user_mgt_user_list_confirmation_modal_confirm_button"
-                        secondaryActionButtonTestId="user_mgt_user_list_confirmation_modal_cancel_button"
-                        confirmationInputTestId="user_mgt_user_list_confirmation_modal_input"
+                        data-testid={ `${ testId }-confirmation-modal` }
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
                         open={ showDeleteConfirmationModal }
@@ -291,11 +290,17 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => deleteUser(deletingUser.id) }
                     >
-                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
+                        <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
+                            Are you sure?
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message
+                            data-testid={ `${ testId }-confirmation-modal-message` }
+                            attached
+                            warning
+                        >
                             This action is irreversible and will permanently delete the user.
                         </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
+                        <ConfirmationModal.Content data-testid={ `${ testId }-confirmation-modal-content` }>
                             If you delete this user, the user will not be able to login to the developer portal or any
                             other application the user was subscribed before. Please proceed with caution.
                         </ConfirmationModal.Content>

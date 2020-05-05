@@ -18,7 +18,7 @@
 
 import { addAlert } from "@wso2is/core/store";
 import { UserAvatar } from "@wso2is/react-components";
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getUserDetails } from "../api";
 import { EditUser } from "../components/users";
@@ -29,9 +29,9 @@ import { AlertInterface, BasicProfileInterface, createEmptyProfile } from "../mo
 /**
  * User Edit page.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const UserEditPage = (): JSX.Element => {
+export const UserEditPage = (): ReactElement => {
 
     const dispatch = useDispatch();
 
@@ -93,8 +93,8 @@ export const UserEditPage = (): JSX.Element => {
                 />
             ) }
             backButton={ {
+                "data-testid": "user-mgt-edit-user-back-button",
                 onClick: handleBackButtonClick,
-                testId: "user_mgt_edit_user_back_button",
                 text: "Go back to users"
             } }
             titleTextAlign="left"

@@ -16,8 +16,14 @@
  * under the License.
  */
 
-import { ContentLoader, GenericIcon, GenericIconProps } from "@wso2is/react-components";
-import { SegmentedAccordion, SegmentedAccordionTitlePropsInterface } from "@wso2is/react-components";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import {
+    ContentLoader,
+    GenericIcon,
+    GenericIconProps,
+    SegmentedAccordion,
+    SegmentedAccordionTitlePropsInterface
+} from "@wso2is/react-components";
 import _ from "lodash";
 import React, {
     FunctionComponent,
@@ -29,7 +35,7 @@ import React, {
 /**
  * Proptypes for the Authenticator Accordion component.
  */
-export interface AuthenticatorAccordionPropsInterface {
+export interface AuthenticatorAccordionPropsInterface extends TestableComponentInterface {
     /**
      * Set of authenticators.
      */
@@ -97,7 +103,8 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
         authenticators,
         defaultActiveIndexes,
         hideChevron,
-        orderBy
+        orderBy,
+        [ "data-testid" ]: testId
     } = props;
 
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
@@ -125,6 +132,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
             ?
             <SegmentedAccordion
                 fluid
+                data-testid={ testId }
             >
                 {
                     _.sortBy(authenticators, orderBy).map((authenticator, index) => (
@@ -133,6 +141,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                                 <>
                                     <SegmentedAccordion.Title
                                         id={ authenticator.id }
+                                        data-testid={ `${ testId }-title` }
                                         active={ accordionActiveIndexes.includes(index) }
                                         index={ index }
                                         onClick={ handleAccordionOnClick }
@@ -142,20 +151,23 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                                                     floated="left"
                                                     size="micro"
                                                     spaced="right"
+                                                    data-testid={ `${ testId }-title-icon` }
                                                     transparent
                                                     { ...authenticator.icon }
                                                 />
                                                 { authenticator.title }
                                             </>
                                         ) }
-                                        actions={ (authenticator?.actions && globalActions) ?
-                                            [ ...authenticator?.actions, ...globalActions ] :
-                                            authenticator.actions || globalActions
+                                        actions={
+                                            (authenticator?.actions && globalActions)
+                                                ? [ ...authenticator?.actions, ...globalActions ]
+                                                : authenticator.actions || globalActions
                                         }
                                         hideChevron={ hideChevron }
                                     />
                                     <SegmentedAccordion.Content
                                         active={ accordionActiveIndexes.includes(index) }
+                                        data-testid={ `${ testId }-content` }
                                     >
                                         { authenticator.content }
                                     </SegmentedAccordion.Content>
@@ -173,6 +185,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
  * Default props for the authenticator accordion component.
  */
 AuthenticatorAccordion.defaultProps = {
+    "data-testid": "authenticator-accordion",
     defaultActiveIndexes: [ -1 ],
     hideChevron: false,
     orderBy: undefined
