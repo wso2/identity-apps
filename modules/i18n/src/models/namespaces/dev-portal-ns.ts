@@ -16,8 +16,16 @@
  * under the License.
  */
 
-import { ConfirmationModelInterface, DangerZone, EditPage, FormAttributes, HelpPanelInterface,
-    Notification, Page, Placeholder } from "../common";
+import {
+    Confirmation,
+    DangerZone,
+    EditPage,
+    FormAttributes,
+    HelpPanelInterface,
+    Notification,
+    Page,
+    Placeholder
+} from "../common";
 
 /**
  * Model for the dev portal namespace
@@ -234,7 +242,25 @@ export interface DevPortalNS {
                 };
             };
             confirmations: {
-                deleteIDP: ConfirmationModelInterface;
+                deleteIDP: Confirmation;
+            };
+            forms: {
+                advancedConfigs: {
+                    federationHub: FormAttributes;
+                    homeRealmIdentifier: FormAttributes;
+                    alias: FormAttributes;
+                    certificateType: {
+                        label: string;
+                        hint: string;
+                        certificatePEM: FormAttributes;
+                        certificateJWKS: FormAttributes;
+                    };
+                };
+                common: {
+                    requiredErrorMessage: string;
+                    invalidURLErrorMessage: string;
+                    invalidQueryParamErrorMessage: string;
+                };
             };
             templates: {
                 manualSetup: {

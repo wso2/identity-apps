@@ -60,7 +60,7 @@ interface NotificationItem {
 /**
  * Model for confirmation boxes.
  */
-export interface ConfirmationModelInterface {
+export interface Confirmation {
     header: string;
     message: string;
     content: string;
@@ -74,6 +74,15 @@ export interface Placeholder {
     action?: string;
     title: string;
     subtitles: string | PlaceholderSubtitle;
+}
+
+export interface FormAttributes {
+    hint?: string;
+    label: string;
+    placeholder?: string;
+    validations?: {
+        empty?: string;
+    };
 }
 
 /**

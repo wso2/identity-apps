@@ -466,6 +466,47 @@ export const devPortal: DevPortalNS = {
                     message: "This action is irreversible and will permanently delete the IDP."
                 }
             },
+            forms:{
+                advancedConfigs: {
+                    alias: {
+                        hint: "If the resident identity provider is known by an alias at the federated identity " +
+                            "provider specify it",
+                        label: "Alias"
+                    },
+                    certificateType: {
+                        certificateJWKS: {
+                            label: "JWKS",
+                            placeholder: "Value should be the certificate in PEM format.",
+                            validations: {
+                                empty: "Certificate value is required"
+                            }
+                        },
+                        certificatePEM: {
+                            label: "PEM",
+                            placeholder: "Value should be a JWKS URL.",
+                            validations: {
+                                empty: "Certificate value is required"
+                            }
+                        },
+                        hint: "If the type is JWKS, the value should be a JWKS URL. If the type is PEM, the" +
+                            " value should be the certificate in PEM format.",
+                        label: "Certificate type"
+                    },
+                    federationHub: {
+                        hint: "Check if this points to a federation hub identity provider",
+                        label: "Federation Hub"
+                    },
+                    homeRealmIdentifier: {
+                        hint: "Enter the home realm identifier for this identity provider",
+                        label: "Home Realm Identifier"
+                    }
+                },
+                common: {
+                    invalidQueryParamErrorMessage: "These are not valid query parameters",
+                    invalidURLErrorMessage: "This is not a valid URL",
+                    requiredErrorMessage: "This is required"
+                }
+            },
             notifications: {
                 deleteIDP: {
                     error: {

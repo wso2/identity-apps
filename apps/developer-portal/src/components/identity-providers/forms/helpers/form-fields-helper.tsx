@@ -23,10 +23,13 @@ import {
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import {
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../../models";
+
+const { t } = useTranslation();
 
 export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyInterface,
                                      propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
@@ -40,7 +43,7 @@ export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyI
                 name={ propertyMetadata?.key }
                 placeholder={ propertyMetadata?.defaultValue }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage={ "This is required" }
+                requiredErrorMessage={ t("devPortal:components.idp.forms.common.requiredErrorMessage") }
                 value={ eachProp?.value }
                 type="password"
                 disabled={ disable }
@@ -63,7 +66,7 @@ export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInter
                 type="checkbox"
                 required={ propertyMetadata?.isMandatory }
                 value={ (eachProp?.value == "true") ? [eachProp?.key] : [] }
-                requiredErrorMessage="This is required"
+                requiredErrorMessage={ t("devPortal:components.idp.forms.common.requiredErrorMessage") }
                 children={
                     [
                         {
@@ -93,7 +96,7 @@ export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentP
                 type="checkbox"
                 required={ propertyMetadata?.isMandatory }
                 value={ eachProp?.value ? [eachProp?.key] : [] }
-                requiredErrorMessage="This is required"
+                requiredErrorMessage={ t("devPortal:components.idp.forms.common.requiredErrorMessage") }
                 children={
                     [
                         {
@@ -123,7 +126,7 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
                 name={ propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage="This is required"
+                requiredErrorMessage={ t("devPortal:components.idp.forms.common.requiredErrorMessage") }
                 placeholder={ propertyMetadata?.defaultValue }
                 type="text"
                 value={ eachProp?.value }
@@ -146,12 +149,13 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
                 name={ propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage="This is required"
+                requiredErrorMessage={ t("devPortal:components.idp.forms.common.requiredErrorMessage") }
                 placeholder={ propertyMetadata?.defaultValue }
                 validation={ (value, validation) => {
                     if (!FormValidation.url(value)) {
                         validation.isValid = false;
-                        validation.errorMessages.push("This is not a valid URL");
+                        validation.errorMessages.push(
+                            t("devPortal:components.idp.forms.common.invalidURLErrorMessage"));
                     }
                 } }
                 type="text"
@@ -175,11 +179,12 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
                 name={ propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage="This is required"
+                requiredErrorMessage={ t("devPortal:components.idp.forms.common.requiredErrorMessage") }
                 validation={ (value, validation) => {
                     if (!FormValidation.url("https://www.sample.com?" + value)) {
                         validation.isValid = false;
-                        validation.errorMessages.push("These are not valid query parameters");
+                        validation.errorMessages.push(
+                            t("devPortal:components.idp.forms.common.invalidQueryParamErrorMessage"));
                     }
                 } }
                 type="queryParams"
@@ -203,7 +208,7 @@ export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInter
                 name={ eachProp?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage="This is required"
+                requiredErrorMessage={ t("devPortal:components.idp.forms.common.requiredErrorMessage") }
                 type="dropdown"
                 value={ eachProp?.value }
                 key={ eachProp?.key }
