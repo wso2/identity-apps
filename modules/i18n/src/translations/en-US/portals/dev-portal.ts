@@ -665,18 +665,18 @@ export const devPortal: DevPortalNS = {
                         "assign roles to this user please click on the button below."
                 },
                 addUserWizard: {
-                    title: "Create User",
-                    subTitle: "Follow the steps to create the new user",
-                    steps: {
-                        basicDetails: "Basic Details",
-                        roles: "User Roles",
-                        groups: "User Groups",
-                        summary: "Summary"
-                    },
                     buttons: {
                         next: "Next",
                         previous: "Previous"
-                    }
+                    },
+                    steps: {
+                        basicDetails: "Basic Details",
+                        groups: "User Groups",
+                        roles: "User Roles",
+                        summary: "Summary"
+                    },
+                    subTitle: "Follow the steps to create the new user",
+                    title: "Create User"
                 }
             },
             profile: {

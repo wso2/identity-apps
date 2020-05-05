@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { EditPage, HelpPanelInterface, Notification, Page, Placeholder } from "../common";
+import { EditPage, FormAttributes, HelpPanelInterface, Notification, Page, Placeholder } from "../common";
 
 /**
  * Model for the dev portal namespace
@@ -486,7 +486,7 @@ export interface DevPortalNS {
                 };
                 placeholder: string;
             };
-        }
+        };
         roles: {
             advancedSearch: {
                 form: {
@@ -511,7 +511,7 @@ export interface DevPortalNS {
                             name: string;
                             required: string;
                             placeholder: string;
-                        }
+                        };
                     };
                 };
             };
@@ -546,7 +546,7 @@ export interface DevPortalNS {
                             name: string;
                             required: string;
                             placeholder: string;
-                        }
+                        };
                     };
                 };
             };
@@ -576,42 +576,13 @@ export interface DevPortalNS {
                     updateReCaptcha: Notification;
                 };
                 form: {
-                    enable: {
-                        label: string;
-                    };
-                    enableAccountLockOnCreation: {
-                        label: string;
-                    };
-                    internalNotificationManagement: {
-                        label: string;
-                    };
-                    enableReCaptcha: {
-                        label: string;
-                    };
-                    verificationLinkExpiryTime: {
-                        hint: string;
-                        label: string;
-                        placeholder: string;
-                        validations: {
-                            empty: string;
-                        };
-                    };
-                    smsOTPExpiryTime: {
-                        hint: string;
-                        label: string;
-                        placeholder: string;
-                        validations: {
-                            empty: string;
-                        };
-                    };
-                    callbackURLRegex: {
-                        hint: string;
-                        label: string;
-                        placeholder: string;
-                        validations: {
-                            empty: string;
-                        };
-                    };
+                    enable: FormAttributes;
+                    enableAccountLockOnCreation: FormAttributes;
+                    internalNotificationManagement: FormAttributes;
+                    enableReCaptcha: FormAttributes;
+                    verificationLinkExpiryTime: FormAttributes;
+                    smsOTPExpiryTime: FormAttributes;
+                    callbackURLRegex: FormAttributes;
                 };
             };
             accountRecovery: {
@@ -635,88 +606,31 @@ export interface DevPortalNS {
                 usernameRecovery: {
                     heading: string;
                     form: {
-                        enable: {
-                            label: string;
-                        };
-                        enableReCaptcha: {
-                            label: string;
-                        };
+                        enable: FormAttributes;
+                        enableReCaptcha: FormAttributes;
                     };
                 };
                 passwordRecovery: {
                     heading: string;
                     form: {
-                        enableNotificationBasedRecovery: {
-                            label: string;
-                        };
-                        enableReCaptchaForNotificationBasedRecovery: {
-                            label: string;
-                        };
-                        enableSecurityQuestionBasedRecovery: {
-                            label: string;
-                        };
-                        noOfQuestionsRequired: {
-                            label: string;
-                            hint: string;
-                            placeholder: string;
-                            validations: {
-                                empty: string;
-                            };
-                        };
-                        enableReCaptchaForSecurityQuestionBasedRecovery: {
-                            label: string;
-                            hint: string;
-                        };
+                        enableNotificationBasedRecovery: FormAttributes;
+                        enableReCaptchaForNotificationBasedRecovery: FormAttributes;
+                        enableSecurityQuestionBasedRecovery: FormAttributes;
+                        noOfQuestionsRequired: FormAttributes;
+                        enableReCaptchaForSecurityQuestionBasedRecovery: FormAttributes;
                     };
                 };
                 otherSettings: {
                     heading: string;
                     form: {
-                        enableForcedChallengeQuestions: {
-                            label: string;
-                            hint: string;
-                        };
-                        reCaptchaMaxFailedAttempts: {
-                            label: string;
-                            placeholder: string;
-                            validations: {
-                                empty: string;
-                            };
-                        };
-                        enableInternalNotificationManagement: {
-                            label: string;
-                            hint: string;
-                        };
-                        notifyRecoverySuccess: {
-                            label: string;
-                        };
-                        notifyQuestionRecoveryStart: {
-                            label: string;
-                        };
-                        recoveryLinkExpiryTime: {
-                            label: string;
-                            hint: string;
-                            placeholder: string;
-                            validations: {
-                                empty: string;
-                            };
-                        };
-                        smsOTPExpiryTime: {
-                            label: string;
-                            hint: string;
-                            placeholder: string;
-                            validations: {
-                                empty: string;
-                            };
-                        };
-                        recoveryCallbackURLRegex: {
-                            label: string;
-                            hint: string;
-                            placeholder: string;
-                            validations: {
-                                empty: string;
-                            };
-                        };
+                        enableForcedChallengeQuestions: FormAttributes;
+                        reCaptchaMaxFailedAttempts: FormAttributes;
+                        enableInternalNotificationManagement: FormAttributes;
+                        notifyRecoverySuccess: FormAttributes;
+                        notifyQuestionRecoveryStart: FormAttributes;
+                        recoveryLinkExpiryTime: FormAttributes;
+                        smsOTPExpiryTime: FormAttributes;
+                        recoveryCallbackURLRegex: FormAttributes;
                     };
                 };
             };
@@ -739,42 +653,18 @@ export interface DevPortalNS {
                 accountLock: {
                     heading: string;
                     form: {
-                        accountLockEnable: {
-                            label: string;
-                            hint: string;
-                        };
-                        maxFailedLoginAttemptsToAccountLock: {
-                            label: string;
-                            hint: string;
-                            placeholder: string;
-                        };
-                        accountLockTime: {
-                            label: string;
-                            hint: string;
-                            placeholder: string;
-                        };
-                        accountLockTimeIncrementFactor: {
-                            label: string;
-                            hint: string;
-                            placeholder: string;
-                        };
-                        accountLockInternalNotificationManagement: {
-                            label: string;
-                            hint: string;
-                        };
+                        accountLockEnable: FormAttributes;
+                        maxFailedLoginAttemptsToAccountLock: FormAttributes;
+                        accountLockTime: FormAttributes;
+                        accountLockTimeIncrementFactor: FormAttributes;
+                        accountLockInternalNotificationManagement: FormAttributes;
                     };
                 };
                 accountDisable: {
                     heading: string;
                     form: {
-                        accountDisablingEnable: {
-                            label: string;
-                            hint: string;
-                        };
-                        accountDisableInternalNotificationManagement: {
-                            label: string;
-                            hint: string;
-                        };
+                        accountDisablingEnable: FormAttributes;
+                        accountDisableInternalNotificationManagement: FormAttributes;
                     };
                 };
                 reCaptcha: {
@@ -782,18 +672,10 @@ export interface DevPortalNS {
                     form: {
                         reCaptchaPreference: {
                             label: string;
-                            reCaptchaAlwaysEnable: {
-                                label: string;
-                            };
-                            reCaptchaAfterMaxFailedAttemptsEnable: {
-                                label: string;
-                            };
+                            reCaptchaAlwaysEnable: FormAttributes;
+                            reCaptchaAfterMaxFailedAttemptsEnable: FormAttributes;
                         };
-                        maxFailedLoginAttemptsToReCaptcha: {
-                            label: string;
-                            hint: string;
-                            placeholder: string;
-                        };
+                        maxFailedLoginAttemptsToReCaptcha: FormAttributes;
                     };
                 };
             };
@@ -815,43 +697,18 @@ export interface DevPortalNS {
                 passwordHistory: {
                     heading: string;
                     form: {
-                        enable: {
-                            label: string;
-                            hint: string;
-                        };
-                        passwordHistoryCount: {
-                            label: string;
-                            hint: string;
-                            placeholder: string;
-                            validations: {
-                                empty: string;
-                            };
-                        };
+                        enable: FormAttributes;
+                        passwordHistoryCount: FormAttributes;
                     };
                 };
                 passwordPatterns: {
                     heading: string;
                     form: {
-                        enable: {
-                            label: string;
-                            hint: string;
-                        };
-                        policyMinLength: {
-                            label: string;
-                            hint: string;
-                        };
-                        policyMaxLength: {
-                            label: string;
-                            hint: string;
-                        };
-                        policyPattern: {
-                            label: string;
-                            hint: string;
-                        };
-                        errorMessage: {
-                            label: string;
-                            hint: string;
-                        };
+                        enable: FormAttributes;
+                        policyMinLength: FormAttributes;
+                        policyMaxLength: FormAttributes;
+                        policyPattern: FormAttributes;
+                        errorMessage: FormAttributes;
                     };
                 };
             };
