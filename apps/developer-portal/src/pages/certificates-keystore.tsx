@@ -18,6 +18,7 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
+import { useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -63,6 +64,8 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
 
     const tenantDomain: string = useSelector<AppState, string>((state: AppState) => state.config.deployment.tenant);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
+
+    const [ resetPagination, setResetPagination ] = useTrigger();
 
     const dispatch = useDispatch();
 
@@ -167,10 +170,20 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
      * @param {string} query - Search query.
      */
     const handleKeystoreFilter = (query: string): void => {
-        // TODO: Implement once the API is ready
-        // fetchCertificatesKeystore(null, null, null, searchQuery);
-        setFilteredCertificatesKeystore(filterList(certificatesKeystore, query, "alias", true));
-        setSearchQuery(query);
+        try {
+            // TODO: Implement once the API is ready
+            // fetchCertificatesKeystore(null, null, null, searchQuery);
+            setFilteredCertificatesKeystore(filterList(certificatesKeystore, query, "alias", true));
+            setSearchQuery(query);
+            setOffset(0);
+            setResetPagination();
+        } catch (error) {
+            dispatch(addAlert({
+                description: error.message,
+                level: AlertLevels.ERROR,
+                message: "Filter query format incorrect"
+            }));
+        }
     };
 
     /**
@@ -195,6 +208,7 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                 )
             }
             <PageLayout
+                isLoading={ isLoading }
                 title="Certificates"
                 description="Create and manage certificates in the keystore"
                 showBottomDivider={ true }
@@ -236,6 +250,7 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                     onPageChange={ handlePaginationChange }
                     onSortStrategyChange={ handleSortStrategyChange }
                     onSortOrderChange={ handleSortOrderChange }
+                    resetPagination={ resetPagination }
                     rightActionPanel={
                         (hasRequiredScopes(featureConfig?.certificates,
                             featureConfig?.certificates?.scopes?.create)

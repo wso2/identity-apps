@@ -18,6 +18,7 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
+import { useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -69,6 +70,8 @@ export const LocalClaimsPage = (): ReactElement => {
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ isLoading, setIsLoading ] = useState(true);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+
+    const [ resetPagination, setResetPagination ] = useTrigger();
 
     const dispatch = useDispatch();
 
@@ -194,6 +197,8 @@ export const LocalClaimsPage = (): ReactElement => {
             const filteredClaims = filterList(claims, query, sortBy.value as string, sortOrder);
             setFilteredClaims(filteredClaims);
             setSearchQuery(query);
+            setOffset(0);
+            setResetPagination();
         } catch (error) {
             dispatch(addAlert({
                 description: error?.message,
@@ -235,6 +240,7 @@ export const LocalClaimsPage = (): ReactElement => {
                 } }
             >
                 <ListLayout
+                    resetPagination={ resetPagination }
                     advancedSearch={
                         <AdvancedSearchWithBasicFilters
                             onFilter={ handleLocalClaimsFilter }

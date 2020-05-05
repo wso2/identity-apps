@@ -18,6 +18,7 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
+import { useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -66,6 +67,8 @@ export const ClaimDialectsPage = (): ReactElement => {
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ isLoading, setIsLoading ] = useState(true);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+
+    const [ resetPagination, setResetPagination ] = useTrigger();
 
     const dispatch = useDispatch();
 
@@ -182,6 +185,8 @@ export const ClaimDialectsPage = (): ReactElement => {
             const filteredDialects = filterList(dialects, query, sortBy.value, sortOrder);
             setFilteredDialects(filteredDialects);
             setSearchQuery(query);
+            setOffset(0);
+            setResetPagination();
         } catch (error) {
             dispatch(addAlert({
                 description: error.message,
@@ -210,6 +215,7 @@ export const ClaimDialectsPage = (): ReactElement => {
                 update={ getDialect }
             />
             <PageLayout
+                isLoading={ isLoading }
                 title="Attribute Dialects"
                 description="Create and manage attribute dialects"
                 showBottomDivider={ true }
@@ -305,6 +311,7 @@ export const ClaimDialectsPage = (): ReactElement => {
                     onPageChange={ handlePaginationChange }
                     onSortStrategyChange={ handleSortStrategyChange }
                     onSortOrderChange={ handleSortOrderChange }
+                    resetPagination={ resetPagination }
                     rightActionPanel={
                         (
                             <PrimaryButton

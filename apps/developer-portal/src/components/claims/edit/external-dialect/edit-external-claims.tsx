@@ -84,6 +84,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const [ triggerAddExternalClaim, setTriggerAddExternalClaim ] = useTrigger();
+    const [ resetPagination, setResetPagination ] = useTrigger();
 
     const { t } = useTranslation();
 
@@ -165,6 +166,8 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
             );
             setFilteredClaims(filteredList);
             setSearchQuery(query);
+            setOffset(0);
+            setResetPagination();
         } catch (error) {
             dispatch(addAlert({
                 description: error?.message,
@@ -224,6 +227,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
             onPageChange={ handlePaginationChange }
             onSortStrategyChange={ handleSortStrategyChange }
             onSortOrderChange={ handleSortOrderChange }
+            resetPagination={ resetPagination }
             showPagination={ true }
             sortOptions={ SORT_BY }
             sortStrategy={ sortBy }
