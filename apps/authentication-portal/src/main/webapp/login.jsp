@@ -32,7 +32,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.Map" %>
-    
+
 <%@ include file="includes/localize.jsp" %>
 <jsp:directive.include file="includes/init-url.jsp"/>
 
@@ -110,6 +110,16 @@
             String redirectURL = "error.do";
             response.sendRedirect(redirectURL);
         }
+    }
+    
+    // Login context request url.
+    String sessionDataKey = request.getParameter("sessionDataKey");
+    String relyingParty = request.getParameter("relyingParty");
+    String loginContextRequestUrl = logincontextURL + "?sessionDataKey=" + sessionDataKey + "&relyingParty="
+            + relyingParty;
+    if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+        // We need to send the tenant domain as a query param only in non tenant qualified URL mode.
+        loginContextRequestUrl += "&tenantDomain=" + tenantDomain;
     }
 %>
 
@@ -359,7 +369,7 @@
         function checkSessionKey() {
             $.ajax({
                 type: "GET",
-                url: "<%=logincontextURL%>?sessionDataKey=" + getParameterByName("sessionDataKey") + "&relyingParty=" + getParameterByName("relyingParty") + "&tenantDomain=" + getTenantDomainFromContext("tenantDomain"),
+                url: "<%=loginContextRequestUrl%>",
                 success: function (data) {
                     if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
                         window.location.href = data.redirectUrl;

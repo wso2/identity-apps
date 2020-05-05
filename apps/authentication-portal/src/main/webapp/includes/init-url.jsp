@@ -17,6 +17,7 @@
 --%>
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%
     String identityServerEndpointContextParam = application.getInitParameter("IdentityServerEndpointContextURL");
     String samlssoURL = "../samlsso";
@@ -32,5 +33,12 @@
         oidcLogoutURL = identityServerEndpointContextParam + "/oidc/logout";
         openidServerURL = identityServerEndpointContextParam + "/oidc/logout";
         logincontextURL = identityServerEndpointContextParam + "/logincontext";
+    }
+    
+    String tenantDomain;
+    if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
+    } else {
+        tenantDomain = request.getParameter("tenantDomain");
     }
 %>

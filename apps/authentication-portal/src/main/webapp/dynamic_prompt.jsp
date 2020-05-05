@@ -37,7 +37,6 @@
 <%
     String templateId = request.getParameter("templateId");
     String promptId = request.getParameter("promptId");
-    String tenantDomain = request.getParameter("tenantDomain");
     
     String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
     if (StringUtils.isBlank(authAPIURL)) {
