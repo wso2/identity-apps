@@ -16,6 +16,8 @@
  * under the License.
  */
 import { DevPortalNS } from "../../../models";
+import { Field } from "../../../../../forms/dist/typings/components";
+import React from "react";
 
 export const devPortal: DevPortalNS = {
     components: {
@@ -505,6 +507,26 @@ export const devPortal: DevPortalNS = {
                     invalidQueryParamErrorMessage: "These are not valid query parameters",
                     invalidURLErrorMessage: "This is not a valid URL",
                     requiredErrorMessage: "This is required"
+                },
+                generalDetails: {
+                    description: {
+                        hint: "A meaningful description about the identity provider",
+                        label: "Description",
+                        placeholder: "This is a sample IDP."
+                    },
+                    image: {
+                        hint: "A URL to configure the image of the identity provider",
+                        label: "Identity Provider Image URL",
+                        placeholder: "https://example.com/image01"
+                    },
+                    name: {
+                        hint: "Enter a unique name for this identity provider",
+                        label: "Identity Provider Name",
+                        validations: {
+                            duplicate: "An identity provider already exists with this name",
+                            empty: "Identity Provider name is required"
+                        }
+                    }
                 }
             },
             notifications: {
@@ -520,6 +542,20 @@ export const devPortal: DevPortalNS = {
                     success: {
                         description: "Successfully deleted the identity provider",
                         message: "Delete successful"
+                    }
+                },
+                getIDP: {
+                    error: {
+                        description: "",
+                        message: "An error occurred while retrieving identity providers"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving identity providers",
+                        message: "Retrieval Error"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
                     }
                 }
             },

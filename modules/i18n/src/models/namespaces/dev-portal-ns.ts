@@ -261,6 +261,11 @@ export interface DevPortalNS {
                     invalidURLErrorMessage: string;
                     invalidQueryParamErrorMessage: string;
                 };
+                generalDetails: {
+                    name: FormAttributes;
+                    description: FormAttributes;
+                    image: FormAttributes;
+                };
             };
             templates: {
                 manualSetup: {
@@ -274,6 +279,7 @@ export interface DevPortalNS {
             };
             notifications: {
                 deleteIDP: Notification;
+                getIDP: Notification;
             };
             placeHolders: {
                 emptyIDPList: Placeholder;

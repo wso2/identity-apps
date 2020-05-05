@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import { Button, Divider, Grid } from "semantic-ui-react";
 import { Field, Forms } from "@wso2is/forms";
-import { Heading, Hint } from "@wso2is/react-components";
+import { Hint } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Button, Grid } from "semantic-ui-react";
 import {
     IdentityProviderInterface,
     JITProvisioningResponseInterface,
     SimpleUserStoreListItemInterface,
     SupportedJITProvisioningSchemes
 } from "../../../models";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 
 /**
  *  Just-in time provisioning configurations for the IdP.

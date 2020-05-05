@@ -76,15 +76,6 @@ export interface Placeholder {
     subtitles: string | PlaceholderSubtitle;
 }
 
-export interface FormAttributes {
-    hint?: string;
-    label: string;
-    placeholder?: string;
-    validations?: {
-        empty?: string;
-    };
-}
-
 /**
  * Model for form attributes.
  */
@@ -94,6 +85,7 @@ export interface FormAttributes {
     placeholder?: string;
     validations?: {
         empty?: string;
+        duplicate?: string;
     };
 }
 

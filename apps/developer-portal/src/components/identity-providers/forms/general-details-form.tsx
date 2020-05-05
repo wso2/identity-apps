@@ -26,6 +26,7 @@ import { useDispatch } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
 import { getIdentityProviderList } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";
+import { useTranslation } from "react-i18next";
 
 
 /**
@@ -88,6 +89,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     const dispatch = useDispatch();
 
+    const { t } = useTranslation();
+
     /**
      * Called when name field is modified.
      */
@@ -112,15 +115,15 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "An error occurred while retrieving identity providers"
+                        message: t("devPortal:components.idp.notifications.getIDP.error.message")
                     }));
 
                     return;
                 }
                 dispatch(addAlert({
-                    description: "An error occurred while retrieving identity providers",
+                    description: t("devPortal.components.idp.notifications.getIDP.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Retrieval Error"
+                    message: t("devPortal:components.idp.notifications.getIDP.genericError.message")
                 }));
                 return;
             })
@@ -158,22 +161,23 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="name"
-                            label="Identity Provider Name"
+                            label={ t("devPortal:components.idp.forms.generalDetails.name.label") }
                             required={ true }
-                            requiredErrorMessage="Identity Provider name is required"
+                            requiredErrorMessage={ t("devPortal:components.idp.forms.generalDetails." +
+                                "name.validations.empty") }
                             placeholder={ name }
                             type="text"
                             validation={ (value: string, validation: Validation) => {
                                 if (isNameValid === false) {
                                     validation.isValid = false;
-                                    validation.errorMessages.push("An identity provider already exists with this " +
-                                        "name");
+                                    validation.errorMessages.push(t("devPortal:components.idp.forms." +
+                                        "generalDetails.name.validations.duplicate"));
                                 }
                             } }
                             value={ name }
                         />
                         <Hint>
-                            Enter a unique name for this identity provider
+                            { t("devPortal:components.idp.forms.generalDetails.name.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -181,15 +185,16 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="description"
-                            label="Description"
+                            label={ t("devPortal:components.idp.forms.generalDetails.description.label") }
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder="Enter a description for the identity provider"
+                            placeholder={ t("devPortal:components.idp.forms." +
+                                "generalDetails.description.placeholder") }
                             type="textarea"
                             value={ description }
                         />
                         <Hint>
-                            A meaningful description about the identity provider
+                            { t("devPortal:components.idp.forms.generalDetails.description.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -197,21 +202,22 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="image"
-                            label="Identity Provider Image URL"
+                            label={ t("devPortal:components.idp.forms.generalDetails.image.label") }
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder="Provide the image url for the identity provider"
+                            placeholder={ t("devPortal:components.idp.forms.generalDetails.image.placeholder") }
                             type="text"
                             validation={ (value: string, validation: Validation) => {
                                 if (!FormValidation.url(value)) {
                                     validation.isValid = false;
-                                    validation.errorMessages.push("This is not a valid URL");
+                                    validation.errorMessages.push(t("devPortal:components.idp.forms." +
+                                        "common.invalidURLErrorMessage"));
                                 }
                             } }
                             value={ imageUrl }
                         />
                         <Hint>
-                            A URL to configure the image of the identity provider
+                            { t("devPortal:components.idp.forms.generalDetails.image.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -221,7 +227,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Button primary type="submit" size="small" className="form-button">
-                                    Update
+                                    { t("common:update") }
                                 </Button>
                             </Grid.Column>
                         </Grid.Row>
