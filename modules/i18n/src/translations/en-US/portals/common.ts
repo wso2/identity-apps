@@ -36,6 +36,7 @@ export const common: CommonNS = {
     close: "Close",
     completed: "Completed",
     configure: "Configure",
+    confirm: "Confirm",
     contains: "Contains",
     continue: "Continue",
     createdOn: "Created on",

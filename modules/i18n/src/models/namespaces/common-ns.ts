@@ -37,6 +37,7 @@ export interface CommonNS {
     claim: string;
     completed: string;
     configure: string;
+    confirm: string;
     contains: string;
     continue: string;
     createdOn: string;

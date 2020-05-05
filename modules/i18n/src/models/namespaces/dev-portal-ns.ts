@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { EditPage, FormAttributes, HelpPanelInterface, Notification, Page, Placeholder } from "../common";
+import { DangerZone, EditPage, FormAttributes, HelpPanelInterface, Notification, Page, Placeholder } from "../common";
 
 /**
  * Model for the dev portal namespace
@@ -244,6 +244,12 @@ export interface DevPortalNS {
         users: {
             advancedSearch: {
                 form: {
+                    dropdown: {
+                        filterAttributeOptions: {
+                            username: string;
+                            email: string;
+                        };
+                    };
                     inputs: {
                         filterAttribute: {
                             placeholder: string;
@@ -273,10 +279,46 @@ export interface DevPortalNS {
             placeholders: {
                 emptyList: Placeholder;
             };
+            userstores: {
+                userstoreOptions: {
+                    all: string;
+                    primary: string;
+                };
+            };
         };
         user: {
+            deleteUser: {
+                confirmationModal: {
+                    content: string;
+                    header: string;
+                    message: string;
+                    assertionHint: string;
+                };
+            };
+            editUser: {
+                dangerZoneGroup: {
+                    header: string;
+                    dangerZone: DangerZone;
+                };
+                menu: {
+                    menuItems: {
+                        0: string;
+                        1: string;
+                        2: string;
+                    };
+                };
+            };
             forms: {
                 addUserForm: {
+                    buttons: {
+                        radioButton: {
+                            label: string;
+                            options: {
+                                createPassword: string;
+                                askPassword: string;
+                            };
+                        };
+                    };
                     inputs: {
                         confirmPassword: {
                             label: string;
@@ -713,6 +755,16 @@ export interface DevPortalNS {
                 };
             };
         };
+        transferList: {
+            searchPlaceholder: string;
+            list: {
+                headers: {
+                    0: string;
+                    1: string;
+                };
+                emptyPlaceholder: string;
+            };
+        };
         footer: {
             copyright: string;
         };
@@ -877,6 +929,8 @@ export interface DevPortalNS {
         applicationsEdit: EditPage;
         idpTemplate: EditPage;
         overView: Page;
+        users: Page;
+        usersEdit: EditPage;
     };
     placeholders: {
         404: Placeholder;
