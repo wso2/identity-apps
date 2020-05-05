@@ -16,14 +16,15 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { GenericIcon } from "../icon";
 
 /**
  * Interface for the step component.
  */
-interface StepPropsInterface {
+export interface StepPropsInterface extends TestableComponentInterface {
     /**
      * Determines if the step is active or not.
      */
@@ -58,18 +59,20 @@ interface StepPropsInterface {
  * Step component.
  *
  * @param {StepPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
-export const Step: React.FunctionComponent<StepPropsInterface> = (
+export const Step: FunctionComponent<StepPropsInterface> = (
     props: StepPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         className,
         icon,
         style,
         status,
-        title
+        title,
+        [ "data-testid" ]: testId
     } = props;
 
     const classes = classNames(
@@ -81,18 +84,19 @@ export const Step: React.FunctionComponent<StepPropsInterface> = (
     );
 
     return (
-        <div className={ classes } style={ style }>
+        <div className={ classes } style={ style } data-testid={ testId }>
             <div className="step-icon-wrapper">
                 <GenericIcon
                     className="step-icon"
                     icon={ icon }
                     size="micro"
+                    data-testid={ `${ testId }-icon` }
                     inline
                     transparent
                 />
-                <div className="step-checked"></div>
+                <div className="step-checked" data-testid={ `${ testId }-checked` }></div>
             </div>
-            { title && <div className="step-title">{ title }</div> }
+            { title && <div className="step-title" data-testid={ `${ testId }-title` }>{ title }</div> }
         </div>
     );
 };
@@ -101,5 +105,6 @@ export const Step: React.FunctionComponent<StepPropsInterface> = (
  * Default props for the steps component.
  */
 Step.defaultProps = {
+    "data-testid": "step",
     status: undefined
 };

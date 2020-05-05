@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import { Message, MessageProps } from "semantic-ui-react";
-import React, { FunctionComponent, ReactElement } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
+import React, { FunctionComponent, ReactElement } from "react";
+import { Message, MessageProps } from "semantic-ui-react";
 
 /**
- * Proptypes for the resource list item component.
+ * Proptypes for the confirmation modal message component.
  */
-export interface ResourceListItemPropsInterface extends MessageProps {
+export interface ConfirmationModalMessagePropsInterface extends MessageProps, TestableComponentInterface {
     /**
      * If the message should be attached to the top.
      */
@@ -31,20 +32,21 @@ export interface ResourceListItemPropsInterface extends MessageProps {
 }
 
 /**
- * Confirmation modal actions component.
+ * Confirmation modal message component.
  *
- * @param {ResourceListItemPropsInterface} props - Props injected to the component.
+ * @param {ConfirmationModalMessagePropsInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const ConfirmationModalMessage: FunctionComponent<ResourceListItemPropsInterface> = (
-    props: MessageProps
+export const ConfirmationModalMessage: FunctionComponent<ConfirmationModalMessagePropsInterface> = (
+    props: ConfirmationModalMessagePropsInterface
 ): ReactElement => {
 
     const {
         attached,
         children,
         className,
+        [ "data-testid" ]: testId,
         ...rest
     } = props;
 
@@ -57,6 +59,13 @@ export const ConfirmationModalMessage: FunctionComponent<ResourceListItemPropsIn
     );
 
     return (
-        <Message { ...rest } className={ classes }>{ children }</Message>
+        <Message data-testid={ testId } { ...rest } className={ classes }>{ children }</Message>
     );
+};
+
+/**
+ * Default proptypes for the confirmation modal message component.
+ */
+ConfirmationModalMessage.defaultProps = {
+    "data-testid": "confirmation-modal-message"
 };

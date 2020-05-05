@@ -16,9 +16,10 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import JSBeautify from "js-beautify";
 import { JSHINT } from "jshint/dist/jshint";
-import React, { ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { UnControlled as CodeMirror, IUnControlledCodeMirror } from "react-codemirror2";
 import "codemirror/addon/lint/lint";
 import "codemirror/addon/lint/javascript-lint";
@@ -47,7 +48,7 @@ interface CustomWindow extends Window {
 /**
  * Code editor component Prop types.
  */
-export interface CodeEditorProps extends IUnControlledCodeMirror {
+export interface CodeEditorProps extends IUnControlledCodeMirror, TestableComponentInterface {
     /**
      * Whether to format the code.
      */
@@ -91,9 +92,10 @@ export interface CodeEditorProps extends IUnControlledCodeMirror {
  * Code editor component.
  *
  * @param {CodeEditorProps} props - Props injected to the danger zone component.
+ *
  * @return {React.ReactElement}
  */
-export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
+export const CodeEditor: FunctionComponent<CodeEditorProps> = (
     props: CodeEditorProps
 ): ReactElement => {
 
@@ -108,6 +110,7 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
         sourceCode,
         tabSize,
         theme,
+        [ "data-testid" ]: testId,
         ...rest
     } = props;
 
@@ -123,10 +126,10 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
         }
 
         return  {
-            name: (language === "json" || language === "typescript") ? "javascript" : language,
             json: language === "json",
-            typescript: language === "typescript",
-            statementIndent: 4
+            name: (language === "json" || language === "typescript") ? "javascript" : language,
+            statementIndent: 4,
+            typescript: language === "typescript"
         };
     };
 
@@ -170,26 +173,31 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
             options={
                 {
                     ...options,
-                    indentUnit: tabSize,
-                    mode: options?.mode ? options.mode : resolveMode(language),
-                    theme: resolveTheme(),
-                    lineNumbers: showLineNumbers,
-                    readOnly,
-                    gutters: [ "note-gutter", "CodeMirror-linenumbers", "CodeMirror-lint-markers" ],
-                    tabSize,
-                    lint,
                     autoCloseBrackets: smart,
+                    autoCloseTags: smart,
+                    extraKeys: smart ? { "Ctrl-Space": "autocomplete" } : {},
+                    gutters: [ "note-gutter", "CodeMirror-linenumbers", "CodeMirror-lint-markers" ],
+                    indentUnit: tabSize,
+                    lineNumbers: showLineNumbers,
+                    lint,
                     matchBrackets: smart,
                     matchTags: smart,
-                    autoCloseTags: smart,
-                    extraKeys: smart ? { "Ctrl-Space": "autocomplete", } : {},
+                    mode: options?.mode ? options.mode : resolveMode(language),
+                    readOnly,
+                    tabSize,
+                    theme: resolveTheme()
                 }
             }
+            data-testid={ testId }
         />
     );
 };
 
+/**
+ * Default props for the code editor component.
+ */
 CodeEditor.defaultProps = {
+    "data-testid": "code-editor",
     language: "javascript",
     lint: false,
     readOnly: false,

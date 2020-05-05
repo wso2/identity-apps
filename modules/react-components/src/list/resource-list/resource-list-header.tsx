@@ -16,15 +16,16 @@
  * under the License.
  */
 
-import { Grid, List, SemanticWIDTHS } from "semantic-ui-react";
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import { Grid, List, SemanticWIDTHS } from "semantic-ui-react";
 import { ResourceListHeaderCellPropsInterface } from "./resource-list-header-cell";
 
 /**
  * Proptypes for the resource list header component.
  */
-export interface ResourceListHeaderPropsInterface {
+export interface ResourceListHeaderPropsInterface extends TestableComponentInterface {
     /**
      * Additional CSS classes.
      */
@@ -44,13 +45,14 @@ export const ResourceListHeader: FunctionComponent<PropsWithChildren<ResourceLis
 
     const {
         children,
-        className
+        className,
+        [ "data-testid" ]: testId
     } = props;
 
     const classes = classNames("resource-list-header", className);
 
     return (
-        <List.Item className={ classes }>
+        <List.Item className={ classes } data-testid={ testId }>
             { React.Children.count(children) > 0 && (
                 <Grid>
                     <Grid.Row columns={ React.Children.count(children) as SemanticWIDTHS }>
@@ -62,7 +64,9 @@ export const ResourceListHeader: FunctionComponent<PropsWithChildren<ResourceLis
                                             <Grid.Column width={ heading.props.offset } />
                                         )}
                                         <Grid.Column key={ index } width={ heading.props.width }>
-                                            <List.Header>{ heading }</List.Header>
+                                            <List.Header data-testid={ `${ testId }-heading` }>
+                                                { heading }
+                                            </List.Header>
                                         </Grid.Column>
                                     </>
                                 ))
@@ -72,4 +76,11 @@ export const ResourceListHeader: FunctionComponent<PropsWithChildren<ResourceLis
             )}
         </List.Item>
     );
+};
+
+/**
+ * Default props for resource list header component.
+ */
+ResourceListHeader.defaultProps = {
+    "data-testid": "resource-list-header"
 };

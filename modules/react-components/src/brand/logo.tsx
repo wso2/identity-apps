@@ -16,17 +16,30 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { GenericIcon, GenericIconSizes } from "../icon";
 
 /**
  * Logo component Prop types.
  */
-interface LogoPropsInterface {
+export interface LogoPropsInterface extends TestableComponentInterface {
+    /**
+     * Additional CSS classes.
+     */
     className?: string;
+    /**
+     * Logo image.
+     */
     image: any;
+    /**
+     * Logo image size.
+     */
     size?: GenericIconSizes;
+    /**
+     * Custom styles object.
+     */
     style?: object;
 }
 
@@ -34,17 +47,19 @@ interface LogoPropsInterface {
  * Logo component.
  *
  * @param {LogoPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
-export const Logo: React.FunctionComponent<LogoPropsInterface> = (
+export const Logo: FunctionComponent<LogoPropsInterface> = (
     props: LogoPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         className,
         image,
         size,
-        style
+        style,
+        [ "data-testid" ]: testId
     } = props;
 
     const classes = classNames(className, "product-logo");
@@ -55,6 +70,7 @@ export const Logo: React.FunctionComponent<LogoPropsInterface> = (
             className={ classNames(classes, "product-logo") }
             size={ size }
             style={ style }
+            data-testid={ testId }
             transparent
             inline
         />
@@ -65,5 +81,6 @@ export const Logo: React.FunctionComponent<LogoPropsInterface> = (
  * Default props for the logo component.
  */
 Logo.defaultProps = {
+    "data-testid": "logo",
     size: "auto"
 };

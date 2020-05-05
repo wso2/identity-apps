@@ -16,18 +16,38 @@
  * under the License.
  */
 
-import React, { SyntheticEvent } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { ReactElement, SyntheticEvent } from "react";
 import { LanguageSwitcherDropdown } from "./language-switcher-dropdown";
 
 /**
  * Proptypes for the language switcher component.
  */
-export interface LanguageSwitcherProps {
+export interface LanguageSwitcherProps extends TestableComponentInterface {
+    /**
+     * Additional CSS classes.
+     */
     className?: string;
+    /**
+     * Current language.
+     */
     currentLanguage: string;
+    /**
+     * Direction to be placed.
+     */
     direction?: "left" | "right";
+    /**
+     * Language change callback.
+     * @param {string} language - Changed language.
+     */
     onLanguageChange: (language: string) => void;
+    /**
+     * Set of supported languages.
+     */
     supportedLanguages: object;
+    /**
+     * Should dropdown open upwards.
+     */
     upward?: boolean;
 }
 
@@ -35,11 +55,12 @@ export interface LanguageSwitcherProps {
  * Language switcher component.
  *
  * @param {React.PropsWithChildren<any>} props - Props passed in to the language switcher component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
 export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = (
     props: LanguageSwitcherProps
-): JSX.Element => {
+): ReactElement => {
 
     const {
         className,
@@ -47,7 +68,8 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
         direction,
         onLanguageChange,
         supportedLanguages,
-        upward
+        upward,
+        [ "data-testid" ]: testId
     } = props;
 
     /**
@@ -68,6 +90,7 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
             language={ currentLanguage }
             changeLanguage={ handleLanguageChange }
             supportedLanguages={ supportedLanguages }
+            data-testid={ testId }
         />
     );
 };
@@ -76,6 +99,7 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
  * Default proptypes for the language switcher component.
  */
 LanguageSwitcher.defaultProps = {
+    "data-testid": "language-switcher",
     direction: "left",
     upward: true
 };

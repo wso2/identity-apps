@@ -16,7 +16,15 @@
  * under the License.
  */
 
-import { GenericIcon, GenericIconProps } from "../icon";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import classNames from "classnames";
+import React, {
+    ForwardRefExoticComponent,
+    PropsWithoutRef,
+    ReactElement,
+    ReactNode, RefAttributes,
+    forwardRef, useEffect, useState
+} from "react";
 import {
     Icon,
     Menu,
@@ -26,15 +34,8 @@ import {
     SidebarProps,
     TabPaneProps
 } from "semantic-ui-react";
-import React, {
-    forwardRef,
-    ForwardRefExoticComponent,
-    PropsWithoutRef,
-    ReactElement, ReactNode,
-    RefAttributes, useEffect, useState
-} from "react";
-import classNames from "classnames";
 import { HelpPanelActionBar } from "./help-panel-action-bar";
+import { GenericIcon, GenericIconProps } from "../icon";
 import { ResourceTab } from "../tab";
 
 /**
@@ -52,7 +53,7 @@ export interface HelpPanelSubComponentsInterface {
 /**
  * Help panel interface.
  */
-export interface HelpPanelPropsInterface extends SidebarProps {
+export interface HelpPanelPropsInterface extends SidebarProps, TestableComponentInterface {
     /**
      * Set of actions for the top action bar.
      */
@@ -100,6 +101,7 @@ export interface HelpPanelTabInterface {
  * Help side panel.
  *
  * @param {React.PropsWithChildren<HelpPanelComponentPropsInterface>} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
 export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelComponentPropsInterface>
@@ -116,6 +118,7 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
             visible,
             tabsActiveIndex,
             onSidebarMiniItemClick,
+            [ "data-testid" ]: testId,
             ...rest
         } = props;
 
@@ -172,21 +175,38 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                 animation="overlay"
                 className={ classes }
                 visible={ sidebarMiniEnabled || visible }
+                data-testid={ testId }
                 { ...rest }
             >
                 <div ref={ ref }>
                     {
                         sidebarMiniEnabled && !visible && (
                             <>
-                                <Menu.Item as="a" onClick={ onSidebarToggle }>
-                                    <Icon color="grey" name="angle left"/>
+                                <Menu.Item
+                                    as="a"
+                                    onClick={ onSidebarToggle }
+                                    data-testid={ `${ testId }-visibility-toggle` }
+                                >
+                                    <Icon
+                                        color="grey"
+                                        name="angle left"
+                                        data-testid={ `${ testId }-visibility-toggle-icon` }
+                                    />
                                 </Menu.Item>
                                 {
                                     tabPanes && tabPanes instanceof Array && tabPanes.length > 0 && (
                                         tabPanes.map((pane, index) => (
-                                            <Menu.Item as="a" key={ index }
-                                                       onClick={ () => onSidebarMiniItemClick(pane.menuItem) }>
-                                                <Icon color="grey" name={ pane.icon }/>
+                                            <Menu.Item
+                                                as="a"
+                                                key={ index }
+                                                onClick={ () => onSidebarMiniItemClick(pane.menuItem) }
+                                                data-testid={ `${ testId }-sidebar-mini-item-${ index }` }
+                                            >
+                                                <Icon
+                                                    color="grey"
+                                                    name={ pane.icon }
+                                                    data-testid={ `${ testId }-sidebar-mini-item-${ index }-icon` }
+                                                />
                                                 { pane.menuItem }
                                             </Menu.Item>
                                         ))
@@ -200,7 +220,7 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                             <>
                                 {
                                     actions && actions instanceof Array && actions.length > 0 && (
-                                        <HelpPanel.ActionBar>
+                                        <HelpPanel.ActionBar data-testid={ `${ testId }-action-bar` }>
                                             {
                                                 actions.map((action, index) => (
                                                     <GenericIcon
@@ -211,6 +231,7 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                                                         hoverable
                                                         inline
                                                         transparent
+                                                        data-testid={ `${ testId }-action-bar-action-${ index }` }
                                                         { ...action }
                                                     />
                                                 ))
@@ -218,8 +239,12 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                                         </HelpPanel.ActionBar>
                                     )
                                 }
-                                <ResourceTab className="help-panel-tabs" panes={ tabPanes }
-                                             defaultActiveIndex={ tabsActiveIndex }/>
+                                <ResourceTab
+                                    className="help-panel-tabs"
+                                    panes={ tabPanes }
+                                    defaultActiveIndex={ tabsActiveIndex }
+                                    data-testid={ `${ testId }-tabs` }
+                                />
                                 { children }
                             </>
                         )
@@ -233,6 +258,7 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
  * Default props for the help panel component.
  */
 HelpPanel.defaultProps = {
+    "data-testid": "help-panel",
     direction: "right",
     sidebarMiniEnabled: true,
     visible: true

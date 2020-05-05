@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import { Dimmer, Loader, LoaderProps } from "semantic-ui-react";
-import React, { FunctionComponent } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
+import React, { FunctionComponent, ReactElement } from "react";
+import { Dimmer, Loader, LoaderProps } from "semantic-ui-react";
 
 /**
  * Content loader component Prop types.
  */
-export interface ContentLoaderPropsInterface extends LoaderProps {
+export interface ContentLoaderPropsInterface extends LoaderProps, TestableComponentInterface {
     /**
      * Addition classes.
      */
@@ -42,17 +43,19 @@ export interface ContentLoaderPropsInterface extends LoaderProps {
  * Content loader component.
  *
  * @param {ContentLoaderPropsInterface} props - Props injected to the global loader component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
 export const ContentLoader: FunctionComponent<ContentLoaderPropsInterface> = (
     props: ContentLoaderPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         className,
         dimmer,
         text,
-        rest
+        [ "data-testid" ]: testId,
+        ...rest
     } = props;
 
     const classes = classNames(
@@ -61,9 +64,9 @@ export const ContentLoader: FunctionComponent<ContentLoaderPropsInterface> = (
     );
 
     return (
-        <div className={ classes }>
-            <Dimmer active={ dimmer } inverted>
-                <Loader { ...rest } inverted>{ text }</Loader>
+        <div className={ classes } data-testid={ `${ testId }-wrapper` }>
+            <Dimmer active={ dimmer } data-testid={ `${ testId }-dimmer` } inverted>
+                <Loader { ...rest } data-testid={ testId } inverted>{ text }</Loader>
             </Dimmer>
         </div>
     );
@@ -73,6 +76,7 @@ export const ContentLoader: FunctionComponent<ContentLoaderPropsInterface> = (
  * Content loader component default props.
  */
 ContentLoader.defaultProps = {
+    "data-testid": "content-loader",
     dimmer: true,
     text: null
 };

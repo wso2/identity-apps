@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import { Icon, Popup, PopupProps, SemanticICONS } from "semantic-ui-react";
-import React, { PropsWithChildren, ReactElement } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
+import React, { PropsWithChildren, ReactElement } from "react";
+import { Icon, Popup, PopupProps, SemanticICONS } from "semantic-ui-react";
 
 /**
  * Heading component prop types.
  */
-export interface HintPropsInterface {
+export interface HintPropsInterface extends TestableComponentInterface {
     /**
      * Additional classes.
      */
@@ -62,6 +63,7 @@ export interface HintPropsInterface {
  * Hint component.
  *
  * @param {React.PropsWithChildren<HintPropsInterface>} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
 export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>> = (
@@ -77,7 +79,8 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
         icon,
         inline,
         popup,
-        popupOptions
+        popupOptions,
+        [ "data-testid" ]: testId
     } = props;
 
     const classes = classNames(
@@ -93,19 +96,22 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
     );
 
     return (
-        <div className={ classes }>
+        <div className={ classes } data-testid={ testId }>
             {
                 popup
                     ? (
                         <Popup
                             trigger={ <Icon color="grey" floated="left" name={ icon } /> }
                             content={ children }
+                            data-testid={ `${ testId }-popup` }
                             { ...popupOptions }
                         />
                     )
                     : (
                         <>
-                            { icon && <Icon color="grey" floated="left" name={ icon }/> }
+                            { icon && (
+                                <Icon color="grey" floated="left" name={ icon } data-testid={ `${ testId }-icon` }/>
+                            ) }
                             { children }
                         </>
                     )
@@ -119,6 +125,7 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
  */
 Hint.defaultProps = {
     compact: false,
+    "data-testid": "hint",
     icon: "info circle",
     inline: false,
     popup: false,

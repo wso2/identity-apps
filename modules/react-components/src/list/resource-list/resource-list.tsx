@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { List, ListProps, Placeholder } from "semantic-ui-react";
@@ -36,7 +37,7 @@ export interface ResourceListSubComponentsInterface {
 /**
  * Proptypes for the resource list component.
  */
-export interface ResourceListPropsInterface extends ListProps {
+export interface ResourceListPropsInterface extends ListProps, TestableComponentInterface  {
     /**
      * Is the list in loading state.
      */
@@ -77,7 +78,8 @@ export const ResourceList: FunctionComponent<ResourceListPropsInterface> & Resou
         className,
         isLoading,
         loadingStateOptions,
-        rest
+        [ "data-testid" ]: testId,
+        ...rest
     } = props;
 
     const classes = classNames(
@@ -118,6 +120,7 @@ export const ResourceList: FunctionComponent<ResourceListPropsInterface> & Resou
                             </Placeholder.Header>
                         </Placeholder>
                     ) }
+                    data-testid={ `${ testId }-loading-placeholder` }
                 />
             )
         }
@@ -130,6 +133,7 @@ export const ResourceList: FunctionComponent<ResourceListPropsInterface> & Resou
             className={ classes }
             celled
             relaxed="very"
+            data-testid={ testId }
             { ...rest }
         >
             {
@@ -145,6 +149,7 @@ export const ResourceList: FunctionComponent<ResourceListPropsInterface> & Resou
  * Default props for the component.
  */
 ResourceList.defaultProps = {
+    "data-testid": "resource-list",
     isLoading: false,
     loadingStateOptions: {
         count: 10,

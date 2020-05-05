@@ -16,15 +16,16 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { OrangeAppIconBackground } from "@wso2is/theme";
 import classNames from "classnames";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Avatar, AvatarPropsInterface } from "./avatar";
 
 /**
  * Prop types for the App Avatar component.
  */
-export interface AppAvatarPropsInterface extends AvatarPropsInterface {
+export interface AppAvatarPropsInterface extends AvatarPropsInterface, TestableComponentInterface {
     /**
      * If the avatar is placed on a card.
      */
@@ -35,17 +36,24 @@ export interface AppAvatarPropsInterface extends AvatarPropsInterface {
  * App Avatar component.
  *
  * @param {AvatarPropsInterface} props - Props injected in to the app avatar component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
 export const AppAvatar: FunctionComponent<AppAvatarPropsInterface> = (
     props: AppAvatarPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
-    const { image, className, name, onCard } = props;
+    const {
+        image,
+        className,
+        name,
+        onCard,
+        [ "data-testid" ]: testId
+    } = props;
 
     const appAvatarClassNames = classNames({
-        [ "default-app-icon" ]: onCard,
-        [ "bg-image" ]: !onCard
+        [ "bg-image" ]: !onCard,
+        [ "default-app-icon" ]: onCard
     }, className);
 
     if (image) {
@@ -56,6 +64,7 @@ export const AppAvatar: FunctionComponent<AppAvatarPropsInterface> = (
                 className="with-app-image"
                 image={ image }
                 bordered={ false }
+                data-testid={ testId }
                 { ...props }
             />
         );
@@ -69,6 +78,7 @@ export const AppAvatar: FunctionComponent<AppAvatarPropsInterface> = (
             bordered
             avatar
             name={ name }
+            data-testid={ testId }
             { ...props }
         />
     );
@@ -78,6 +88,7 @@ export const AppAvatar: FunctionComponent<AppAvatarPropsInterface> = (
  * Default proptypes for the App avatar component.
  */
 AppAvatar.defaultProps = {
+    "data-testid": "app-avatar",
     image: null,
     name: null,
     onCard: false

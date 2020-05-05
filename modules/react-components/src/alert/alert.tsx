@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { ErrorIcon, InfoIcon, SuccessIcon, WarningIcon } from "@wso2is/theme";
 import classNames from "classnames";
-import React, { FunctionComponent, useEffect, useRef } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef } from "react";
 import NotificationSystem from "react-notification-system";
 import { GenericIcon } from "../icon";
 
 /**
  * Prop types interface for the Alert component.
  */
-export interface AlertPropsInterface {
+export interface AlertPropsInterface extends TestableComponentInterface {
     /**
      * Unset the position of the alert.
      */
@@ -78,11 +78,12 @@ const AlertIcons = {
  * Alert component to show success, error, warning and info notifications on the front end dashboards.
  *
  * @param {AlertPropsInterface} props - Props injected in to the alert component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
 export const Alert: FunctionComponent<AlertPropsInterface> = (
     props: AlertPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         absolute,
@@ -92,7 +93,8 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
         dismissible,
         dismissInterval,
         onAlertSystemInitialize,
-        withIcon
+        withIcon,
+        [ "data-testid" ]: testId
     } = props;
 
     const classes = classNames({
@@ -141,9 +143,13 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
             dismissible,
             level: alert.level,
             message: (
-                <div className="alert-message">
-                    <div className="header bold-text">{ alert.message }</div>
-                    <div className="description">{ alert.description }</div>
+                <div className="alert-message" data-testid={ `${ testId }-${ alert.level }-body` }>
+                    <div className="header bold-text" data-testid={ `${ testId }-${ alert.level }-message` }>
+                        { alert.message }
+                    </div>
+                    <div className="description" data-testid={ `${ testId }-${ alert.level }-description` }>
+                        { alert.description }
+                    </div>
                 </div>
             ),
             position: alertsPosition,
@@ -157,6 +163,7 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
                         size="mini"
                         inline
                         spaced="right"
+                        data-testid={ `${ testId }-${ alert.level }-icon` }
                         relaxed
                     />
                 )
@@ -165,7 +172,7 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
     }, [ alert ]);
 
     return (
-        <div className={ `alert-wrapper ${ classes }` }>
+        <div className={ `alert-wrapper ${ classes }` } data-testid={ testId }>
             <NotificationSystem ref={ alertRef } />
         </div>
     );
@@ -177,6 +184,7 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
 Alert.defaultProps = {
     absolute: false,
     alertsPosition: "br",
+    "data-testid": "alert",
     dismissInterval: 5,
     dismissible: true,
     withIcon: true

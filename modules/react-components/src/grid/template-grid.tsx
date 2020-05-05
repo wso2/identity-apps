@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import _ from "lodash";
 import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
@@ -28,7 +29,7 @@ import { Heading } from "../typography";
 /**
  * Proptypes for the template grid component.
  */
-interface TemplateGridPropsInterface<T> {
+export interface TemplateGridPropsInterface<T> extends TestableComponentInterface {
     /**
      * Empty placeholder
      */
@@ -174,7 +175,8 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
         useSelectionCard,
         onSecondaryTemplateSelect,
         secondaryTemplates,
-        useNameInitialAsImage
+        useNameInitialAsImage,
+        [ "data-testid" ]: testId
     } = props;
 
     const [templateList, setTemplateList] = useState<T[]>([]);
@@ -275,6 +277,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                         }
                         onClick={ onClick }
                         selected={ selectedTemplate?.id === template.id }
+                        data-testid={ `${ testId }-selection-card` }
                     />
                 )
             )
@@ -303,7 +306,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
     });
 
     return (
-        <Grid>
+        <Grid data-testid={ testId }>
             {
                 (heading || subHeading)
                     ? (
@@ -311,12 +314,16 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                             <Grid.Column>
                                 {
                                     heading && (
-                                        <Heading as="h4" compact>{ heading }</Heading>
+                                        <Heading as="h4" compact data-testid={ `${ testId }-heading` }>
+                                            { heading }
+                                        </Heading>
                                     )
                                 }
                                 {
                                     subHeading && (
-                                        <Heading subHeading ellipsis as="h6">{ subHeading }</Heading>
+                                        <Heading subHeading ellipsis as="h6" data-testid={ `${ testId }-sub-heading` }>
+                                            { subHeading }
+                                        </Heading>
                                     )
                                 }
                             </Grid.Column>
@@ -327,11 +334,17 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                             (paginationLimitExceed())
                                                 ? (
                                                     isShowMoreClicked ? (
-                                                        <LinkButton onClick={ viewLessTemplates }>
+                                                        <LinkButton
+                                                            onClick={ viewLessTemplates }
+                                                            data-testid={ `${ testId }-show-less-button` }
+                                                        >
                                                             { paginationOptions.showLessButtonLabel }
                                                         </LinkButton>
                                                     ) : (
-                                                        <LinkButton onClick={ viewMoreTemplates }>
+                                                        <LinkButton
+                                                            onClick={ viewMoreTemplates }
+                                                            data-testid={ `${ testId }-show-more-button` }
+                                                        >
                                                             { paginationOptions.showMoreButtonLabel }
                                                         </LinkButton>
                                                     )
@@ -396,6 +409,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                         id={ template.id }
                                         onClick={ onTemplateSelect }
                                         imageSize="tiny"
+                                        data-testid={ `${ testId }-template-card` }
                                     />
                                 ))
                                 : emptyPlaceholder && emptyPlaceholder
@@ -411,6 +425,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
  * Default props for template grid component.
  */
 TemplateGrid.defaultProps = {
+    "data-testid": "template-grid",
     paginate: true,
     paginationLimit: DEFAULT_PAGINATION_LIMIT,
     paginationOptions: {

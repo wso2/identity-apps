@@ -16,15 +16,16 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
+import classNames from "classnames";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Card, CardProps, Icon, Label, Popup } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
-import React, { FunctionComponent, ReactElement } from "react";
-import classNames from "classnames";
 
 /**
  * Proptypes for the info card component.
  */
-export interface InfoCardPropsInterface extends CardProps {
+export interface InfoCardPropsInterface extends CardProps, TestableComponentInterface {
     /**
      * Is card disabled.
      */
@@ -75,6 +76,9 @@ export interface InfoCardPropsInterface extends CardProps {
     inline?: boolean;
 }
 
+/**
+ * Interface for Github repo meta info.
+ */
 export interface GithubHubRepoMetaInfoInterface {
     language?: any;
     languageLogo?: any;
@@ -111,6 +115,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
         subHeader,
         tags,
         textAlign,
+        [ "data-testid" ]: testId,
         ...rest
     } = props;
 
@@ -132,12 +137,14 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
             className={ classes }
             link={ false }
             as="div"
+            data-testid={ testId }
             { ...rest }
         >
             <Card.Content>
                 {
                     image && (
                         <GenericIcon
+                            data-testid={ `${ testId }-image` }
                             className="card-image"
                             size={ fluid? fluidImageSize : imageSize }
                             icon={ image }
@@ -148,16 +155,26 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                     )
                 }
                 <div className="card-header-section">
-                    { header && <Card.Header className="card-header ellipsis">{ header }</Card.Header> }
-                    { subHeader && <Card.Header className="card-subheader ellipsis">{ subHeader }</Card.Header> }
+                    { header && (
+                        <Card.Header className="card-header ellipsis" data-testid={ `${ testId }-header` }>
+                            { header }
+                        </Card.Header>
+                    ) }
+                    { subHeader && (
+                        <Card.Header className="card-subheader ellipsis" data-testid={ `${ testId }-sub-header` }>
+                            { subHeader }
+                        </Card.Header>
+                    ) }
                     {
                         description && fluid && (
-                            <Card.Description className="card-description">{ description }</Card.Description>
+                            <Card.Description className="card-description" data-testid={ `${ testId }-description` }>
+                                { description }
+                            </Card.Description>
                         )
                     }
                     {
                         githubRepoCard && githubRepoMetaInfo && fluid && (
-                            <Card.Content className="github-meta">
+                            <Card.Content className="github-meta" data-testid={ `${ testId }-github-repo-meta` }>
                                 {
                                     githubRepoMetaInfo.languageLogo && (
                                         <Popup
@@ -165,6 +182,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                                                 <div className="language">
                                                     <GenericIcon
                                                         icon={ githubRepoMetaInfo.languageLogo }
+                                                        data-testid={ `${ testId }-github-repo-language-logo` }
                                                         size="micro"
                                                         transparent
                                                         inline
@@ -179,14 +197,14 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                                         />
                                     )
                                 }
-                                <Label.Group size="mini">
-                                    <Label>
+                                <Label.Group size="mini" data-testid={ `${ testId }-github-repo-stats` }>
+                                    <Label data-testid={ `${ testId }-github-repo-stars` }>
                                         <Icon name="star" /> { githubRepoMetaInfo.stars }
                                     </Label>
-                                    <Label>
+                                    <Label data-testid={ `${ testId }-github-repo-forks` }>
                                         <Icon name="fork" /> { githubRepoMetaInfo.forks }
                                     </Label>
-                                    <Label>
+                                    <Label data-testid={ `${ testId }-github-repo-watchers` }>
                                         <Icon name="eye" /> { githubRepoMetaInfo.watchers }
                                     </Label>
                                 </Label.Group>
@@ -197,7 +215,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
             </Card.Content>
             { description && !fluid && (
                 <Card.Content className="card-description-container">
-                    <Card.Description className="card-description">
+                    <Card.Description className="card-description" data-testid={ `${ testId }-description` }>
                         { description }
                     </Card.Description>
                 </Card.Content>
@@ -205,7 +223,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
             {
                 tags && tags instanceof Array && tags.length > 0
                     ? (
-                        <Card.Content className="card-tags">
+                        <Card.Content className="card-tags" data-testid={ `${ testId }-tags` }>
                             <Label.Group size="mini">
                                 {
                                     tags.map((tag, index) => (
@@ -219,7 +237,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
             }
             {
                 githubRepoCard && githubRepoMetaInfo && !fluid && (
-                    <Card.Content className="github-meta">
+                    <Card.Content className="github-meta" data-testid={ `${ testId }-github-repo-meta` }>
                         {
                             githubRepoMetaInfo.languageLogo && (
                                 <Popup
@@ -227,6 +245,7 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                                         <div className="language">
                                             <GenericIcon
                                                 icon={ githubRepoMetaInfo.languageLogo }
+                                                data-testid={ `${ testId }-github-repo-language-logo` }
                                                 size="micro"
                                                 transparent
                                                 inline
@@ -241,14 +260,14 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
                                 />
                             )
                         }
-                        <Label.Group size="mini">
-                            <Label>
+                        <Label.Group size="mini" data-testid={ `${ testId }-github-repo-stats` }>
+                            <Label data-testid={ `${ testId }-github-repo-stars` }>
                                 <Icon name="star" /> { githubRepoMetaInfo.stars }
                             </Label>
-                            <Label>
+                            <Label data-testid={ `${ testId }-github-repo-forks` }>
                                 <Icon name="fork" /> { githubRepoMetaInfo.forks }
                             </Label>
-                            <Label>
+                            <Label data-testid={ `${ testId }-github-repo-watchers` }>
                                 <Icon name="eye" /> { githubRepoMetaInfo.watchers }
                             </Label>
                         </Label.Group>
@@ -259,7 +278,11 @@ export const InfoCard: FunctionComponent<InfoCardPropsInterface> = (
     );
 };
 
+/**
+ * Prop types for the info card component.
+ */
 InfoCard.defaultProps = {
+    "data-testid": "info-card",
     fluidImageSize: "tiny",
     imageSize: "mini",
     inline: false,

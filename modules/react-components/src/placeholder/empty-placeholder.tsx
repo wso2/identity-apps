@@ -16,18 +16,34 @@
  * under the License.
  */
 
-import React, { FunctionComponent } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Header } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
 
 /**
  * Proptypes for the placeholder component.
  */
-export interface PlaceholderProps {
+export interface PlaceholderProps extends TestableComponentInterface {
+    /**
+     * Action of the placeholder.
+     */
     action?: React.ReactNode;
+    /**
+     * Image for the placeholder.
+     */
     image?: any;
+    /**
+     * Size of the placeholder image.
+     */
     imageSize?: GenericIconSizes;
+    /**
+     * Placeholder subtitle.
+     */
     subtitle: string | string[];
+    /**
+     * Placeholder title.
+     */
     title?: string;
 }
 
@@ -35,33 +51,57 @@ export interface PlaceholderProps {
  * Placeholder component.
  *
  * @param {PlaceholderProps} props - Props injected in to the placeholder component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
-export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: PlaceholderProps): JSX.Element => {
-    const { action, image, imageSize, subtitle, title } = props;
+export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: PlaceholderProps): ReactElement => {
+
+    const {
+        action,
+        image,
+        imageSize,
+        subtitle,
+        title,
+        [ "data-testid" ]: testId
+    } = props;
 
     return (
-        <div className="empty-placeholder">
+        <div className="empty-placeholder" data-testid={ testId }>
             {
                 image
                     ? (
                         <div className="image-container">
-                            <GenericIcon icon={ image } size={ imageSize } transparent/>
+                            <GenericIcon
+                                icon={ image }
+                                size={ imageSize }
+                                data-testid={ `${ testId }-icon` }
+                                transparent
+                            />
                         </div>
                     )
                     : null
             }
-            { title && <Header as="h4" className="title">{ title }</Header> }
+            { title && <Header as="h4" className="title" data-testid={ `${ testId }-header` }>{ title }</Header> }
             {
                 (subtitle && subtitle.length && subtitle.length > 0)
                     ? typeof subtitle !== "string" && subtitle.map((line, index) => (
-                    <div key={ index } className="subtitle">{ line }</div>
-                ))
-                    : <div className="subtitle">{ subtitle }</div>
+                        <div
+                            key={ index }
+                            className="subtitle"
+                            data-testid={ `${ testId }-sub-header-line-${ index }` }
+                        >
+                            { line }
+                        </div>
+                    ))
+                    : <div className="subtitle" data-testid={ `${ testId }-sub-header` }>{ subtitle }</div>
             }
             {
                 action
-                    ? <div className="action-container">{ action }</div>
+                    ? (
+                        <div className="action-container" data-testid={ `${ testId }-action-container` }>
+                            { action }
+                        </div>
+                    )
                     : null
             }
         </div>
@@ -73,6 +113,7 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
  */
 EmptyPlaceholder.defaultProps = {
     action: null,
+    "data-testid": "empty-placeholder",
     image: null,
     imageSize: "auto"
 };

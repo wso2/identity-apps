@@ -18,9 +18,9 @@
 
 import { getGravatarImage } from "@wso2is/core/api";
 import { resolveUserDisplayName, resolveUsername } from "@wso2is/core/helpers";
-import { LinkedAccountInterface } from "@wso2is/core/models";
+import { LinkedAccountInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { SyntheticEvent } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
 import {
     Container,
@@ -37,7 +37,7 @@ import { UserAvatar } from "../avatar";
 /**
  * Header component prop types.
  */
-interface HeaderPropsInterface {
+export interface HeaderPropsInterface extends TestableComponentInterface {
     // TODO: Add proper type interface.
     basicProfileInfo: any;
     brand?: React.ReactNode;
@@ -61,8 +61,14 @@ interface HeaderPropsInterface {
 /**
  * Header links interface.
  */
-interface HeaderLinkInterface {
+export interface HeaderLinkInterface {
+    /**
+     * Link location.
+     */
     to: string;
+    /**
+     * Link name.
+     */
     name: string;
 }
 
@@ -70,11 +76,12 @@ interface HeaderLinkInterface {
  * Header component.
  *
  * @param {HeaderPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
-export const Header: React.FunctionComponent<HeaderPropsInterface> = (
+export const Header: FunctionComponent<HeaderPropsInterface> = (
     props: HeaderPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         brand,
@@ -92,7 +99,8 @@ export const Header: React.FunctionComponent<HeaderPropsInterface> = (
         onLinkedAccountSwitch,
         onSidePanelToggleClick,
         userDropdownIcon,
-        userDropdownLinks
+        userDropdownLinks,
+        [ "data-testid" ]: testId
     } = props;
 
     const classes = classNames(
@@ -104,11 +112,11 @@ export const Header: React.FunctionComponent<HeaderPropsInterface> = (
     );
 
     const trigger = (
-        <span className="user-dropdown-trigger">
-            <div className="username">{
+        <span className="user-dropdown-trigger" data-testid={ `${ testId }-user-dropdown-trigger` }>
+            <div className="username" data-testid={ `${ testId }-user-display-name` }>{
                 isProfileInfoLoading
                     ? (
-                        <Placeholder>
+                        <Placeholder data-testid={ `${ testId }-username-loading-placeholder` }>
                             <Placeholder.Line/>
                         </Placeholder>
                     )
@@ -119,6 +127,7 @@ export const Header: React.FunctionComponent<HeaderPropsInterface> = (
                 authState={ basicProfileInfo }
                 profileInfo={ profileInfo }
                 size="mini"
+                data-testid={ `${ testId }-user-avatar` }
             />
         </span>
     );
@@ -156,26 +165,32 @@ export const Header: React.FunctionComponent<HeaderPropsInterface> = (
     };
 
     return (
-        <Menu id="app-header" className={ classes } fixed={ fixed } borderless>
-            <Container fluid={ fluid }>
+        <Menu id="app-header" className={ classes } fixed={ fixed } borderless data-testid={ testId }>
+            <Container fluid={ fluid } data-testid={ `${ testId }-container` }>
                 {
                     showSidePanelToggle
                         ? (
                             <Responsive as={ Menu.Item } maxWidth={ 767 }>
-                                <Icon name="bars" size="large" onClick={ onSidePanelToggleClick } link/>
+                                <Icon
+                                    name="bars"
+                                    size="large"
+                                    onClick={ onSidePanelToggleClick }
+                                    data-testid={ `${ testId }-hamburger-icon` }
+                                    link
+                                />
                             </Responsive>
                         )
                         : null
                 }
                 {
                     brand && (
-                        <Menu.Item as={ Link } to={ brandLink } header>
+                        <Menu.Item as={ Link } to={ brandLink } header data-testid={ `${ testId }-brand-container` }>
                             { brand }
                         </Menu.Item>
                     )
                 }
                 { (
-                    <Menu.Menu position="right">
+                    <Menu.Menu position="right" data-testid={ `${ testId }-user-dropdown-container` }>
                         {
                             showUserDropdown && (
                                 <Dropdown
@@ -184,6 +199,7 @@ export const Header: React.FunctionComponent<HeaderPropsInterface> = (
                                     floating
                                     icon={ userDropdownIcon }
                                     className="user-dropdown"
+                                    data-testid={ `${ testId }-user-dropdown` }
                                 >
                                     <Dropdown.Menu onClick={ handleUserDropdownClick }>
                                         <Item.Group className="authenticated-user" unstackable>
@@ -195,11 +211,15 @@ export const Header: React.FunctionComponent<HeaderPropsInterface> = (
                                                     authState={ basicProfileInfo }
                                                     profileInfo={ profileInfo }
                                                     isLoading={ isProfileInfoLoading }
+                                                    data-testid={ `${ testId }-user-dropdown-avatar` }
                                                     size="tiny"
                                                 />
                                                 <Item.Content verticalAlign="middle">
                                                     <Item.Description>
-                                                        < div className="name">
+                                                        <div
+                                                            className="name"
+                                                            data-testid={ `${ testId }-user-dropdown-display-name` }
+                                                        >
                                                             {
                                                                 isProfileInfoLoading
                                                                     ? <Placeholder><Placeholder.Line/></Placeholder>
@@ -212,9 +232,15 @@ export const Header: React.FunctionComponent<HeaderPropsInterface> = (
                                                         {
                                                             (profileInfo.emails !== undefined
                                                                 && profileInfo.emails !== null) && (
-                                                                <div className="email">
+                                                                <div
+                                                                    className="email"
+                                                                    data-testid={ `${ testId }-user-dropdown-email` }
+                                                                >
                                                                     { isProfileInfoLoading
-                                                                        ? <Placeholder><Placeholder.Line/></Placeholder>
+                                                                        ? (
+                                                                            <Placeholder>
+                                                                                <Placeholder.Line/>
+                                                                            </Placeholder>)
                                                                         : resolveAuthenticatedUserEmail()
                                                                     }
                                                                 </div>
@@ -236,7 +262,11 @@ export const Header: React.FunctionComponent<HeaderPropsInterface> = (
                                         {
                                             (linkedAccounts && linkedAccounts.length && linkedAccounts.length > 0)
                                                 ? (
-                                                    <Item.Group className="linked-accounts-list" unstackable>
+                                                    <Item.Group
+                                                        className="linked-accounts-list"
+                                                        unstackable
+                                                        data-testid={ `${ testId }-linked-accounts-container` }
+                                                    >
                                                         {
                                                             linkedAccounts.map((association, index) => (
                                                                 <Item
@@ -252,10 +282,14 @@ export const Header: React.FunctionComponent<HeaderPropsInterface> = (
                                                                         size="little"
                                                                         image={ getGravatarImage(association.email) }
                                                                         name={ association.username }
+                                                                        data-testid={ `${ testId }-la-avatar` }
                                                                     />
                                                                     <Item.Content verticalAlign="middle">
                                                                         <Item.Description>
-                                                                            <div className="name">
+                                                                            <div
+                                                                                className="name"
+                                                                                data-testid={ `${ testId }-la-name` }
+                                                                            >
                                                                                 {
                                                                                     resolveUsername(
                                                                                         association.username,
@@ -263,7 +297,10 @@ export const Header: React.FunctionComponent<HeaderPropsInterface> = (
                                                                                     )
                                                                                 }
                                                                             </div>
-                                                                            <div className="email">
+                                                                            <div
+                                                                                className="email"
+                                                                                data-testid={ `${ testId }-la-email` }
+                                                                            >
                                                                                 { association.tenantDomain }
                                                                             </div>
                                                                         </Item.Description>
@@ -280,7 +317,11 @@ export const Header: React.FunctionComponent<HeaderPropsInterface> = (
                                                 && userDropdownLinks.length
                                                 && userDropdownLinks.length > 0)
                                                 ? userDropdownLinks.map((link, index) => (
-                                                    <Dropdown.Item key={ index } className="action-panel">
+                                                    <Dropdown.Item
+                                                        key={ index }
+                                                        className="action-panel"
+                                                        data-testid={ `${ testId }-dropdown-link-${ name }` }
+                                                    >
                                                         <Link className="action-button" to={ link.to }>
                                                             { link.name }
                                                         </Link>
@@ -303,6 +344,7 @@ export const Header: React.FunctionComponent<HeaderPropsInterface> = (
  * Default prop types for the header component.
  */
 Header.defaultProps = {
+    "data-testid": "app-header",
     fixed: "top",
     fluid: false,
     onLinkedAccountSwitch: () => null,

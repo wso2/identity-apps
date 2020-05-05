@@ -16,35 +16,101 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { Fragment, FunctionComponent, MouseEvent, PropsWithChildren } from "react";
+import React, { Fragment, FunctionComponent, MouseEvent, PropsWithChildren, ReactElement } from "react";
 import { Card, Grid, Header, Icon, List, Menu, Message, Responsive, SemanticICONS } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
 
 /**
  * Proptypes for the section component.
  */
-export interface SectionProps {
+export interface SectionProps extends TestableComponentInterface {
+    /**
+     * Additional CSS classes.
+     */
     className?: string;
+    /**
+     * Show content padding.
+     */
     contentPadding?: boolean;
+    /**
+     * Section description.
+     */
     description?: string;
+    /**
+     * Section header.
+     */
     header: string;
+    /**
+     * Section icon.
+     */
     icon?: any;
+    /**
+     * Mini version of the section icon.
+     */
     iconMini?: any;
+    /**
+     * Icon floated direction.
+     */
     iconFloated?: "left" | "right";
+    /**
+     * Icon style.
+     */
     iconStyle?: "twoTone" | "default" | "colored";
+    /**
+     * Icon size.
+     */
     iconSize?: GenericIconSizes;
+    /**
+     * Primary action onclick callback.
+     * @param {React.MouseEvent<HTMLElement>} e - Click event.
+     */
     onPrimaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
+    /**
+     * Secondary action onclick callback.
+     * @param {React.MouseEvent<HTMLElement>} e - Click event.
+     */
     onSecondaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
+    /**
+     * Placeholder text.
+     */
     placeholder?: string;
+    /**
+     * Primary action node.
+     */
     primaryAction?: any;
+    /**
+     * Enable/ Disable primary action.
+     */
     primaryActionDisabled?: boolean;
+    /**
+     * Primary action icon.
+     */
     primaryActionIcon?: SemanticICONS;
+    /**
+     * Secondary action node.
+     */
     secondaryAction?: any;
+    /**
+     * Enable/ Disable secondary action.
+     */
     secondaryActionDisabled?: boolean;
+    /**
+     * Secondary action icon.
+     */
     secondaryActionIcon?: SemanticICONS;
+    /**
+     * Show/ Hide action bar.
+     */
     showActionBar?: boolean;
+    /**
+     * Show/ Hide top action bar.
+     */
     topActionBar?: React.ReactNode;
+    /**
+     * Accordion.
+     */
     accordion?: any;
 }
 
@@ -52,11 +118,12 @@ export interface SectionProps {
  * Section component.
  *
  * @param {PropsWithChildren<SectionProps>} props - Props injected to the section component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
 export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
     props: PropsWithChildren<SectionProps>
-): JSX.Element => {
+): ReactElement => {
 
     const {
         children,
@@ -80,7 +147,8 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
         secondaryActionIcon,
         showActionBar,
         topActionBar,
-        accordion
+        accordion,
+        [ "data-testid" ]: testId
     } = props;
 
     const classes = classNames({
@@ -110,6 +178,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                 <List.Content
                     className={ actionDisabled ? "disabled" : "" }
                     floated={ actionType === "secondary" ? "right" : "left" }
+                    data-testid={ `${ testId }-${ actionType }-action` }
                 >
                     { action }
                 </List.Content>
@@ -122,6 +191,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                 <List.Content
                     className={ actionDisabled ? "disabled" : "" }
                     floated={ actionType === "secondary" ? "right" : "left" }
+                    data-testid={ `${ testId }-${ actionType }-action` }
                 >
                     <List.Header className="action-button-text" onClick={ actionOnClick }>
                         {
@@ -139,13 +209,13 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
     };
 
     return (
-        <Card className={ `settings-card ${ classes }` } fluid padded="very">
+        <Card className={ `settings-card ${ classes }` } fluid padded="very" data-testid={ testId }>
             <Card.Content>
                 <Grid>
                     <Grid.Row className="header-section" columns={ 2 }>
                         <Grid.Column width={ (icon || iconMini) ? 10 : 16 } className="no-padding">
-                            <Header as="h2">{ header }</Header>
-                            <Card.Meta>{ description }</Card.Meta>
+                            <Header as="h2" data-testid={ `${ testId }-header` }>{ header }</Header>
+                            <Card.Meta data-testid={ `${ testId }-description` }>{ description }</Card.Meta>
                         </Grid.Column>
                         {
                             icon || iconMini ? (
@@ -161,6 +231,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                                             defaultIcon={ iconStyle === "default" }
                                                             twoTone={ iconStyle === "twoTone" }
                                                             colored={ iconStyle === "colored" }
+                                                            data-testid={ `${ testId }-icon` }
                                                         />
                                                     )
                                                     : null
@@ -177,6 +248,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                                             defaultIcon={ iconStyle === "default" }
                                                             twoTone={ iconStyle === "twoTone" }
                                                             colored={ iconStyle === "colored" }
+                                                            data-testid={ `${ testId }-icon-mini` }
                                                         />
                                                     )
                                                     : null
@@ -192,7 +264,10 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                             {
                                 topActionBar
                                 ? (
-                                        <Menu className="top-action-panel no-margin-bottom">
+                                        <Menu
+                                            className="top-action-panel no-margin-bottom"
+                                            data-testid={ `${ testId }-top-action-panel` }
+                                        >
                                             <Menu.Menu position="right">
                                                 { topActionBar }
                                             </Menu.Menu>
@@ -277,6 +352,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
 Section.defaultProps = {
     className: "",
     contentPadding: false,
+    "data-testid": "section",
     description: "",
     header: "",
     iconFloated: "right",

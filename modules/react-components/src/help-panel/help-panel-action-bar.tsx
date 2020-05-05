@@ -16,15 +16,25 @@
  * under the License.
  */
 
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 
 /**
  * Help side panel action bar Prop types.
  */
-export interface HelpPanelActionBarInterface {
+export interface HelpPanelActionBarInterface extends TestableComponentInterface {
+    /**
+     * Additional CSS classes.
+     */
     className?: string;
+    /**
+     * Float clearing.
+     */
     clearing?: boolean;
+    /**
+     * Floated direction.
+     */
     floated?: "left" | "right";
 }
 
@@ -43,7 +53,8 @@ export const HelpPanelActionBar: FunctionComponent<PropsWithChildren<HelpPanelAc
         children,
         clearing,
         className,
-        floated
+        floated,
+        [ "data-testid" ]: testId
     } = props;
 
     const classes = classNames("help-panel-action-bar", {
@@ -52,12 +63,12 @@ export const HelpPanelActionBar: FunctionComponent<PropsWithChildren<HelpPanelAc
     }, className);
 
     return (
-        <div className={ classes }>
-            <div className="actions-group">
+        <div className={ classes } data-testid={ testId }>
+            <div className="actions-group" data-testid={ `${ testId }-action-group` }>
                 {
                     React.Children.map((children),
                         (action: ReactElement<any>, index: number) => (
-                            <div key={ index } className="action">
+                            <div key={ index } className="action" data-testid={ `${ testId }-action-${ index }` }>
                                 { action }
                             </div>
                         ))
@@ -72,5 +83,6 @@ export const HelpPanelActionBar: FunctionComponent<PropsWithChildren<HelpPanelAc
  */
 HelpPanelActionBar.defaultProps = {
     clearing: true,
+    "data-testid": "help-panel-action-bar",
     floated: "right"
 };

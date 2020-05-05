@@ -16,15 +16,16 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { CodeIcon, DummyUser } from "@wso2is/theme";
 import classNames from "classnames";
-import React, { PropsWithChildren, SyntheticEvent } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, SyntheticEvent } from "react";
 import { Image, Placeholder, SemanticSIZES } from "semantic-ui-react";
 
 /**
  * Prop types for the Avatar component.
  */
-export interface AvatarPropsInterface {
+export interface AvatarPropsInterface extends TestableComponentInterface {
     /**
      * To determine if avatar with initials should be displayed.
      */
@@ -115,12 +116,12 @@ export type AvatarSizes = SemanticSIZES | "little";
  * Avatar component.
  *
  * @param {AvatarPropsInterface} props - Props passed in to the Avatar component.
- * @return {JSX.Element}
- * @constructor
+ *
+ * @return {React.ReactElement}
  */
-export const Avatar: React.FunctionComponent<PropsWithChildren<AvatarPropsInterface>> = (
+export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> = (
     props: PropsWithChildren<AvatarPropsInterface>
-): JSX.Element => {
+): ReactElement => {
 
     const {
         avatar,
@@ -142,7 +143,8 @@ export const Avatar: React.FunctionComponent<PropsWithChildren<AvatarPropsInterf
         size,
         spaced,
         style,
-        transparent
+        transparent,
+        [ "data-testid" ]: testId
     } = props;
 
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
@@ -156,7 +158,7 @@ export const Avatar: React.FunctionComponent<PropsWithChildren<AvatarPropsInterf
         [ `spaced-${ spaced }` ]: spaced,
         transparent,
         [ `${ avatarType === "user" ? "user-avatar" : "app-avatar" }` ]: avatar,
-        [ `${ relaxLevel }` ]: relaxLevel,
+        [ `${ relaxLevel }` ]: relaxLevel
     }, className);
 
     // If loading, show the placeholder.
@@ -169,8 +171,9 @@ export const Avatar: React.FunctionComponent<PropsWithChildren<AvatarPropsInterf
                 circular={ avatarType === "user" }
                 rounded={ avatarType === "app" }
                 style={ style }
+                data-testid={ `${ testId }-loading` }
             >
-                <Placeholder>
+                <Placeholder data-testid={ `${ testId }-loading-placeholder` }>
                     <Placeholder.Image square />
                 </Placeholder>
             </Image>
@@ -214,12 +217,9 @@ export const Avatar: React.FunctionComponent<PropsWithChildren<AvatarPropsInterf
                 onClick={ onClick }
                 onMouseOver={ onMouseOver }
                 onMouseOut={ onMouseOut }
+                data-testid={ testId }
             >
-                <div className="wrapper">
-                    {
-                        image
-                    }
-                </div>
+                <div className="wrapper" data-testid={ `${ testId }-image-wrapper` }>{ image }</div>
             </Image>
         )
     }
@@ -237,8 +237,9 @@ export const Avatar: React.FunctionComponent<PropsWithChildren<AvatarPropsInterf
                     onClick={ onClick }
                     onMouseOver={ onMouseOver }
                     onMouseOut={ onMouseOut }
+                    data-testid={ testId }
                 >
-                    <div className="wrapper">
+                    <div className="wrapper" data-testid={ `${ testId }-image-wrapper` }>
                         {
                             label
                                 ? (
@@ -275,9 +276,10 @@ export const Avatar: React.FunctionComponent<PropsWithChildren<AvatarPropsInterf
                 onClick={ onClick }
                 onMouseOver={ onMouseOver }
                 onMouseOut={ onMouseOut }
+                data-testid={ testId }
             >
                 { children }
-                <span className="initials">{ generateInitials() }</span>
+                <span className="initials" data-testid={ `${ testId }-initials` }>{ generateInitials() }</span>
             </Image>
         );
     }
@@ -295,10 +297,16 @@ export const Avatar: React.FunctionComponent<PropsWithChildren<AvatarPropsInterf
             onClick={ onClick }
             onMouseOver={ onMouseOver }
             onMouseOut={ onMouseOut }
+            data-testid={ testId }
         >
-            <div className="wrapper">
+            <div className="wrapper" data-testid={ `${ testId }-image-wrapper` }>
                 { children }
-                <img className="inner-image" alt="avatar" src={ avatarType === "user" ? DummyUser : CodeIcon.default } />
+                <img
+                    className="inner-image"
+                    alt="avatar"
+                    src={ avatarType === "user" ? DummyUser : CodeIcon.default }
+                    data-testid={ `${ testId }-image` }
+                />
             </div>
         </Image>
     );
@@ -313,6 +321,7 @@ Avatar.defaultProps = {
     avatarType: "user",
     bordered: true,
     className: "",
+    "data-testid": "avatar",
     inline: false,
     isLoading: false,
     label: null,

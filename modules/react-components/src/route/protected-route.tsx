@@ -16,24 +16,51 @@
  * under the License.
  */
 
-import React from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Redirect, Route } from "react-router-dom";
 
 /**
  * Proptypes for the protected route component.
  */
-export interface ProtectedRouteProps {
+export interface ProtectedRouteProps extends TestableComponentInterface {
+    /**
+     * Component to render.
+     */
     component: any;
+    /**
+     * Current location.
+     */
     currentPath: string;
+    /**
+     * Is authorized.
+     */
     isAuthorized: boolean;
+    /**
+     * Auth Callback URL update callback.
+     * @param {string} url - URL.
+     */
     onAuthCallbackUrlUpdate: (url: string) => void;
+    /**
+     * Login Path.
+     */
     loginPath: string;
+    /**
+     * Login error path.
+     */
     loginErrorPath: string;
 }
 
-export const ProtectedRoute: React.FunctionComponent<ProtectedRouteProps> = (
+/**
+ * Protected route component.
+ *
+ * @param {ProtectedRouteProps} props - Props injected in to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const ProtectedRoute: FunctionComponent<ProtectedRouteProps> = (
     props: ProtectedRouteProps
-): JSX.Element => {
+): ReactElement => {
 
     const {
         component: Component,
@@ -42,6 +69,7 @@ export const ProtectedRoute: React.FunctionComponent<ProtectedRouteProps> = (
         onAuthCallbackUrlUpdate,
         loginPath,
         loginErrorPath,
+        [ "data-testid" ]: testId,
         ...rest
     } = props;
 
@@ -60,6 +88,7 @@ export const ProtectedRoute: React.FunctionComponent<ProtectedRouteProps> = (
                     <Component { ...props } /> :
                     <Redirect to={ loginPath } />
             }
+            data-testid={ testId }
             { ...rest }
         />
     );

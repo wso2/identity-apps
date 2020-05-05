@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Checkbox, Table, TableProps } from "semantic-ui-react";
 import { EmptyPlaceholder } from "../placeholder";
@@ -28,20 +29,19 @@ interface TransferListItemInterface {
 /**
  * Proptypes transfer list component.
  */
-export interface TransferListPropsInterface extends TableProps {
+export interface TransferListPropsInterface extends TableProps, TestableComponentInterface {
     listValues?: TransferListItemInterface[] | string[];
     listHeaders?: any;
     listType: "selected" | "unselected";
     isListEmpty: boolean;
     handleHeaderCheckboxChange: () => void;
     isHeaderCheckboxChecked: boolean;
-    [ "data-testid" ]?: string;
 }
 
 /**
  * Transfer list component.
  *
- * @param {TransferListProps} props - Props injected to the component.
+ * @param {TransferListPropsInterface} props - Props injected to the component.
  * @return {React.ReactElement}
  */
 export const TransferList: FunctionComponent<TransferListPropsInterface> = (
@@ -53,7 +53,8 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
         listHeaders,
         isListEmpty,
         handleHeaderCheckboxChange,
-        isHeaderCheckboxChecked
+        isHeaderCheckboxChecked,
+        [ "data-testid" ]: testId
     } = props;
 
     return (
@@ -67,7 +68,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                                 <Table.Row>
                                     <Table.HeaderCell>
                                         <Checkbox
-                                            data-testid={ props[ "data-testid" ] }
+                                            data-testid={ testId }
                                             checked={ isHeaderCheckboxChecked }
                                             onChange={ handleHeaderCheckboxChange }
                                         />
@@ -89,6 +90,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                 ) : (
                     <div className={ "empty-placeholder-center" }>
                         <EmptyPlaceholder
+                            data-testid={ `${ testId }-placeholder` }
                             subtitle={ [ "There are no items in this list at the moment." ] }
                         />
                     </div>
@@ -96,4 +98,11 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
             }
         </>
     );
+};
+
+/**
+ * Default props for the transfer list component.
+ */
+TransferList.defaultProps = {
+    "data-testid": "transfer-list"
 };

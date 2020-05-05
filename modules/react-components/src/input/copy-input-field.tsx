@@ -16,19 +16,43 @@
 * under the License.
 */
 
-import React, { useRef, useEffect, useState } from "react";
-import { Input, Popup, Button } from "semantic-ui-react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import { Button, Input, Popup } from "semantic-ui-react";
 
-interface CopyInputFieldPropsInterface{
+/**
+ * Copy to clipboard input field props.
+ */
+export interface CopyInputFieldPropsInterface extends TestableComponentInterface {
+    /**
+     * Input value.
+     */
     value: string;
+    /**
+     * Additional CSS classes.
+     */
     className?: string;
 }
-export const CopyInputField = (props: CopyInputFieldPropsInterface): React.ReactElement => {
+
+/**
+ * Copy to clipboard input field component.
+ *
+ * @param {CopyInputFieldPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
+    props: CopyInputFieldPropsInterface
+): ReactElement => {
+
+    const {
+        value,
+        className,
+        [ "data-testid" ]: testId
+    } = props;
 
     const claimURIText = useRef<Input>(null);
     const copyButton = useRef(null);
-    
-    const { value, className } = props;
 
     const [copied, setCopied] = useState(false);
 
@@ -47,8 +71,9 @@ export const CopyInputField = (props: CopyInputFieldPropsInterface): React.React
             action
             fluid
             className={ className }
+            data-testid={ `${ testId }-wrapper` }
         >
-            <input />
+            <input data-testid={ testId } />
             <Popup
                 trigger={
                     (
@@ -79,4 +104,11 @@ export const CopyInputField = (props: CopyInputFieldPropsInterface): React.React
             />
         </Input>
     )
+};
+
+/**
+ * Default proptypes for the copy input component.
+ */
+CopyInputField.defaultProps = {
+    "data-testid": "copy-input"
 };

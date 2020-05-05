@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
+import classNames from "classnames";
+import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import {
     Dropdown,
     DropdownItemProps,
@@ -29,13 +32,11 @@ import {
     SemanticWIDTHS,
     StrictGridRowProps
 } from "semantic-ui-react";
-import React, { FunctionComponent, ReactNode } from "react";
-import classNames from "classnames";
 
 /**
  * Proptypes for the resource list item component.
  */
-export interface ResourceListItemPropsInterface extends ListItemProps {
+export interface ResourceListItemPropsInterface extends ListItemProps, TestableComponentInterface {
     /**
      * List items actions.
      */
@@ -82,7 +83,7 @@ export interface ResourceListItemPropsInterface extends ListItemProps {
 /**
  * Resource list action interface.
  */
-export interface ResourceListActionInterface {
+export interface ResourceListActionInterface extends TestableComponentInterface {
     disabled?: boolean;
     hidden?: boolean;
     icon: SemanticICONS;
@@ -90,18 +91,18 @@ export interface ResourceListActionInterface {
     popupText?: string;
     subActions?: DropdownItemProps[];
     type: "button" | "dropdown";
-    elementTestId?: string;
 }
 
 /**
  * Resource list item component.
  *
  * @param {ResourceListItemPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
 export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface> = (
     props: ResourceListItemPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         actions,
@@ -113,13 +114,14 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
         itemDescription,
         itemHeader,
         metaContent,
-        metaColumnWidth
+        metaColumnWidth,
+        [ "data-testid" ]: testId
     } = props;
 
     const classes = classNames("resource-list-item", className);
 
     return (
-        <List.Item className={ classes }>
+        <List.Item className={ classes } data-testid={ testId }>
             <Grid>
                 <Grid.Row columns={
                     metaContent instanceof Array
@@ -133,12 +135,17 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                             <Grid.Column width={ descriptionColumnWidth } className="resource-item-column">
                                 { avatar }
                                 <List.Content>
-                                    <List.Header className="list-item-name">{ itemHeader }</List.Header>
-                                    { itemDescription &&
-                                        <List.Description className="list-item-description">
+                                    <List.Header className="list-item-name" data-testid={ `${ testId }-heading` }>
+                                        { itemHeader }
+                                    </List.Header>
+                                    { itemDescription && (
+                                        <List.Description
+                                            className="list-item-description"
+                                            data-testid={ `${ testId }-description` }
+                                        >
                                             { itemDescription }
                                         </List.Description>
-                                    }
+                                    ) }
                                 </List.Content>
                             </Grid.Column>
                         )
@@ -150,19 +157,27 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                                 metaContent?.map((content, index) => {
                                     return (
                                         <Grid.Column key={ index } width={ metaColumnWidth } verticalAlign="middle">
-                                            <List.Content>{ content }</List.Content>
+                                            <List.Content data-testid={ `${ testId }-meta-content-${ index }` }>
+                                                { content }
+                                            </List.Content>
                                         </Grid.Column>
                                     )
                                 })
                             )
                             : (
                                 <Grid.Column width={ metaColumnWidth } verticalAlign="middle">
-                                    <List.Content>{ metaContent }</List.Content>
+                                    <List.Content data-testid={ `${ testId }-meta-content` }>
+                                        { metaContent }
+                                    </List.Content>
                                 </Grid.Column>
                             )
                     }
                     <Grid.Column width={ actionsColumnWidth }>
-                        <List.Content floated={ actionsFloated } className="list-item-action-panel">
+                        <List.Content
+                            floated={ actionsFloated }
+                            className="list-item-action-panel"
+                            data-testid={ `${ testId }-actions` }
+                        >
                             {
                                 (actions && actions.length && actions.length > 0)
                                     ? actions.map((action, index) => (
@@ -179,7 +194,7 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                                                                         disabled={ action.disabled }
                                                                         trigger={ (
                                                                             <Icon
-                                                                                data-testid={ action.elementTestId }
+                                                                                data-testid={ action[ "data-testid" ] }
                                                                                 link
                                                                                 className="list-icon"
                                                                                 disabled={ action.disabled }
@@ -195,6 +210,9 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                                                                     />
                                                                 ) }
                                                                 options={ action.subActions }
+                                                                data-testid={
+                                                                    `${ testId }-action-${ action.type }-${ index }`
+                                                                }
                                                             />
                                                         ) :
                                                         (
@@ -202,7 +220,7 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                                                                 disabled={ action.disabled }
                                                                 trigger={ (
                                                                     <Icon
-                                                                        data-testid={ action.elementTestId }
+                                                                        data-testid={ action[ "data-testid" ] }
                                                                         link
                                                                         className="list-icon"
                                                                         disabled={ action.disabled }
@@ -237,6 +255,7 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
 ResourceListItem.defaultProps = {
     actionsColumnWidth: 5,
     actionsFloated: "left",
+    "data-testid": "resource-list-item",
     descriptionColumnWidth: 7,
     metaColumnWidth: 4
 };

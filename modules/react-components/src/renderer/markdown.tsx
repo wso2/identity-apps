@@ -16,15 +16,16 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import ReactMarkdown from "react-markdown/with-html";
+import React, { FunctionComponent, ReactElement } from "react";
 import { ReactMarkdownProps } from "react-markdown";
+import ReactMarkdown from "react-markdown/with-html";
 
 /**
  * Proptypes for the placeholder component.
  */
-export interface MarkdownPropsInterface extends ReactMarkdownProps {
+export interface MarkdownPropsInterface extends ReactMarkdownProps, TestableComponentInterface {
     /**
      * Text alignment.
      */
@@ -35,6 +36,7 @@ export interface MarkdownPropsInterface extends ReactMarkdownProps {
  * Markdown renderer component.
  *
  * @param {MarkdownPropsInterface} props - Props injected in to the component.
+ *
  * @return {React.ReactElement}
  */
 export const Markdown: FunctionComponent<MarkdownPropsInterface> = (props: MarkdownPropsInterface): ReactElement => {
@@ -42,6 +44,7 @@ export const Markdown: FunctionComponent<MarkdownPropsInterface> = (props: Markd
     const {
         className,
         textAlign,
+        [ "data-testid" ]: testId,
         ...rest
     } = props;
 
@@ -57,6 +60,7 @@ export const Markdown: FunctionComponent<MarkdownPropsInterface> = (props: Markd
         <ReactMarkdown
             className={ classes }
             escapeHtml={ false }
+            data-testid={ testId }
             { ...rest }
         />
     );
@@ -66,5 +70,6 @@ export const Markdown: FunctionComponent<MarkdownPropsInterface> = (props: Markd
  * Default proptypes for the markdown component.
  */
 Markdown.defaultProps = {
+    "data-testid": "markdown-renderer",
     textAlign: "left"
 };

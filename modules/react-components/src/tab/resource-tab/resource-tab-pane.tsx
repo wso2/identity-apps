@@ -16,25 +16,41 @@
  * under the License.
  */
 
-import React, { FunctionComponent, PropsWithChildren } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Tab, TabPaneProps } from "semantic-ui-react";
+
+/**
+ * Resource tab pane component Prop types.
+ */
+export interface ResourceTabPanePropsInterface extends TabPaneProps, TestableComponentInterface { }
+
 
 /**
  * Resource tab pane component.
  *
- * @param {TabPaneProps} props - Props injected to the component.
- * @return {JSX.Element}
+ * @param {ResourceTabPanePropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const ResourceTabPane: FunctionComponent<PropsWithChildren<TabPaneProps>> = (
-    props: PropsWithChildren<TabPaneProps>
-): JSX.Element => {
+export const ResourceTabPane: FunctionComponent<PropsWithChildren<ResourceTabPanePropsInterface>> = (
+    props: PropsWithChildren<ResourceTabPanePropsInterface>
+): ReactElement => {
 
     const {
         children,
+        [ "data-testid" ]: testId,
         ...rest
     } = props;
 
     return (
-        <Tab.Pane attached={ false } { ...rest }>{ children }</Tab.Pane>
+        <Tab.Pane attached={ false } data-testid={ testId } { ...rest }>{ children }</Tab.Pane>
     );
+};
+
+/**
+ * Default props for the resource tab pane component.
+ */
+ResourceTabPane.defaultProps = {
+    "data-testid": "resource-tab-pane"
 };

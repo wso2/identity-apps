@@ -16,19 +16,36 @@
  * under the License.
  */
 
-import React from "react";
-import { Button as SemanticButton, ButtonProps } from "semantic-ui-react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement } from "react";
+import { ButtonProps, Button as SemanticButton } from "semantic-ui-react";
+
+/**
+ * Danger button Prop types.
+ */
+export interface DangerButtonPropsInterface extends ButtonProps, TestableComponentInterface { }
 
 /**
  * Danger button component.
  *
- * @param {ButtonProps} props - Props injected to the component.
- * @return {JSX.Element}
+ * @param {DangerButtonPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const DangerButton: React.FunctionComponent<ButtonProps> = (
-    props: ButtonProps
-): JSX.Element => {
+export const DangerButton: FunctionComponent<DangerButtonPropsInterface> = (
+    props: DangerButtonPropsInterface
+): ReactElement => {
+
+    const { [ "data-testid" ]: testId } = props;
+
     return (
-        <SemanticButton { ...props } negative />
+        <SemanticButton { ...props } negative data-testid={ testId } />
     );
+};
+
+/**
+ * Default props for the danger button component.
+ */
+DangerButton.defaultProps = {
+    "data-testid": "danger-button"
 };

@@ -16,15 +16,14 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Grid, Icon, Input } from "semantic-ui-react";
-
 
 /**
  * Proptypes transfer list search component.
  */
-export interface TransferListSearchProps {
-    searchFieldTestId?: string;
+export interface TransferListSearchPropsInterface extends TestableComponentInterface {
     placeholder: string;
     handleListSearch?: (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => void;
 }
@@ -32,23 +31,24 @@ export interface TransferListSearchProps {
 /**
  * Transfer list component.
  *
- * @param {TransferComponentProps} props - Props injected to the component.
+ * @param {TransferListSearchPropsInterface} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
-export const TransferListSearch: FunctionComponent<TransferListSearchProps> = (
-    props: TransferListSearchProps
+export const TransferListSearch: FunctionComponent<TransferListSearchPropsInterface> = (
+    props: TransferListSearchPropsInterface
 ): ReactElement => {
 
     const {
-        searchFieldTestId,
         handleListSearch,
-        placeholder
+        placeholder,
+        [ "data-testid" ]: testId
     } = props;
 
     return (
         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
             <Input
-                data-testid={ searchFieldTestId }
+                data-testid={ testId }
                 icon={ <Icon name="search"/> }
                 fluid
                 onChange={ handleListSearch }
@@ -56,4 +56,11 @@ export const TransferListSearch: FunctionComponent<TransferListSearchProps> = (
             />
         </Grid.Column>
     );
+};
+
+/**
+ * Default props for the transfer list search component.
+ */
+TransferListSearch.defaultProps = {
+    "data-testid": "transfer-list-search"
 };

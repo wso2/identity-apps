@@ -16,15 +16,16 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
+import classNames from "classnames";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Card, CardProps } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
-import React, { FunctionComponent, ReactElement } from "react";
-import classNames from "classnames";
 
 /**
  * Proptypes for the selection card component.
  */
-export interface SelectionCardPropsInterface {
+export interface SelectionCardPropsInterface extends TestableComponentInterface {
     /**
      * Additional classes.
      */
@@ -106,7 +107,8 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         selected,
         size,
         spaced,
-        textAlign
+        textAlign,
+        [ "data-testid" ]: testId
     } = props;
 
     const classes = classNames(
@@ -129,6 +131,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
             onClick={ onClick }
             link={ false }
             as="div"
+            data-testid={ testId }
         >
             {
                 image && (
@@ -137,6 +140,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
                             className="card-image"
                             size={ imageSize }
                             icon={ image }
+                            data-testid={ `${ testId }-image` }
                             square
                             transparent
                         />
@@ -144,14 +148,22 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
                 )
             }
             <Card.Content className="card-text-container" style={ { textAlign } }>
-                <Card.Header>{ header }</Card.Header>
-                { description && <Card.Description>{ description }</Card.Description> }
+                <Card.Header data-testid={ `${ testId }-header` }>{ header }</Card.Header>
+                { description && (
+                    <Card.Description data-testid={ `${ testId }-description` }>
+                        { description }
+                    </Card.Description>
+                ) }
             </Card.Content>
         </Card>
     );
 };
 
+/**
+ * Default props for the selection card component.
+ */
 SelectionCard.defaultProps = {
+    "data-testid": "selection-card",
     imageSize: "tiny",
     inline: false,
     onClick: () => null,

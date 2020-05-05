@@ -16,15 +16,24 @@
  * under the License.
  */
 
-import React, { Children, cloneElement, PropsWithChildren, useEffect, useState } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
+import React, {
+    Children,
+    FunctionComponent,
+    PropsWithChildren,
+    ReactElement,
+    cloneElement,
+    useEffect,
+    useState
+} from "react";
 import { Divider } from "semantic-ui-react";
 import { Step } from "./step";
 
 /**
  * Steps component prop types.
  */
-export interface StepsPropsInterface {
+export interface StepsPropsInterface extends TestableComponentInterface {
     /**
      * Currently active step.
      */
@@ -52,11 +61,11 @@ export interface StepsPropsInterface {
  *
  * @param {React.PropsWithChildren<StepsPropsInterface>} props - Props injected to the component.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const Steps: React.FunctionComponent<PropsWithChildren<StepsPropsInterface>> & StepsSubComponentsInterface = (
+export const Steps: FunctionComponent<PropsWithChildren<StepsPropsInterface>> & StepsSubComponentsInterface = (
     props: PropsWithChildren<StepsPropsInterface>
-): JSX.Element => {
+): ReactElement => {
 
     const {
         children,
@@ -64,7 +73,8 @@ export const Steps: React.FunctionComponent<PropsWithChildren<StepsPropsInterfac
         current,
         header,
         initial,
-        style
+        style,
+        [ "data-testid" ]: testId
     } = props;
 
     const [ filteredChildren, setFilteredChildren ] = useState<any>([]);
@@ -79,10 +89,10 @@ export const Steps: React.FunctionComponent<PropsWithChildren<StepsPropsInterfac
     }, []);
 
     return (
-        <div className={ classes } style={ style }>
+        <div className={ classes } style={ style } data-testid={ testId }>
             { header && (
                 <>
-                    <div className="header">{ header }</div>
+                    <div className="header" data-testid={ `${ testId }-header` }>{ header }</div>
                     <Divider hidden/>
                 </>
             ) }
@@ -134,5 +144,6 @@ Steps.Step = Step;
  */
 Steps.defaultProps = {
     current: 0,
+    "data-testid": "steps",
     initial: 0
 };
