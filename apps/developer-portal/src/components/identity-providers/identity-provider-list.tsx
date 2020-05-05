@@ -27,6 +27,7 @@ import {
     ResourceList
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon } from "semantic-ui-react";
 import { deleteIdentityProvider } from "../../api";
@@ -92,6 +93,8 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingIDP, setDeletingIDP ] = useState<StrictIdentityProviderInterface>(undefined);
 
+    const { t } = useTranslation();
+    
     /**
      * Redirects to the identity provider edit page when the edit button is clicked.
      *
@@ -120,9 +123,9 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
         deleteIdentityProvider(idpId)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully deleted the identity provider",
+                    description: t("devPortal:components.idp.notifications.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Delete successful"
+                    message: t("devPortal:components.idp.notifications.success.message")
                 }));
             })
             .catch((error) => {
@@ -130,21 +133,21 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Identity Provider Delete Error"
+                        message: t("devPortal:components.idp.notifications.deleteIDP.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while deleting the identity provider",
+                    description: t("devPortal:components.idp.notifications.deleteIDP.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Identity Provider Delete Error"
+                    message: t("devPortal:components.idp.notifications.deleteIDP.genericError.message")
                 }));
             })
             .finally(() => {
-                setShowDeleteConfirmationModal(false)
-                setDeletingIDP(undefined)
+                setShowDeleteConfirmationModal(false);
+                setDeletingIDP(undefined);
                 onIdentityProviderDelete();
             });
     };
@@ -164,10 +167,11 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                     ) }
                     image={ EmptyPlaceholderIllustrations.emptySearch }
                     imageSize="tiny"
-                    title={ "No results found" }
+                    title={ t("devPortal:components.idp.advancedSearch.placeHolders.emptyIDPList.title") }
                     subtitle={ [
-                        `We couldn't find any results for ${ searchQuery }`,
-                        "Please try a different search term."
+                        t("devPortal:components.idp.advancedSearch.placeHolders.emptyIDPList.subtitles.0",
+                            { searchQuery: searchQuery }),
+                        t("devPortal:components.idp.advancedSearch.placeHolders.emptyIDPList.subtitles.1")
                     ] }
                 />
             );
@@ -186,11 +190,11 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                     ) }
                     image={ EmptyPlaceholderIllustrations.newList }
                     imageSize="tiny"
-                    title={ "Add a new Identity Provider" }
+                    title={ t("devPortal:components.idp.placeHolders.emptyIDPList.title") }
                     subtitle={ [
-                        "Currently there are no identity providers available.",
-                        "You can add a new identity provider easily by following the",
-                        "steps in the identity providers creation wizard."
+                        t("devPortal:components.idp.placeHolders.emptyIDPList.subtitles.0"),
+                        t("devPortal:components.idp.placeHolders.emptyIDPList.subtitles.1"),
+                        t("devPortal:components.idp.placeHolders.emptyIDPList.subtitles.2")
                     ] }
                 />
             );
@@ -257,7 +261,14 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingIDP?.name }
                         assertionHint={ (
-                            <p>Please type <strong>{ deletingIDP?.name }</strong> to confirm.</p>
+                            <p>
+                                <Trans
+                                    i18nKey="devPortal:components.idp.confirmations.deleteIDP.assertionHint"
+                                    tOptions={ { idpName: deletingIDP?.name } }
+                                >
+                                    Please type <strong>{ deletingIDP?.name }</strong> to confirm.
+                                </Trans>
+                            </p>
                         ) }
                         assertionType="input"
                         primaryAction="Confirm"
@@ -267,13 +278,14 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                             (): void => handleIdentityProviderDelete(deletingIDP.id)
                         }
                     >
-                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+                        <ConfirmationModal.Header>
+                            { t("devPortal:components.idp.confirmations.deleteIDP.header") }
+                        </ConfirmationModal.Header>
                         <ConfirmationModal.Message attached warning>
-                            This action is irreversible and will permanently delete the IDP.
+                            { t("devPortal:components.idp.confirmations.deleteIDP.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            If you delete this identity provider, you will not be able to get it back. All the
-                            applications depending on this also might stop working. Please proceed with caution.
+                            { t("devPortal:components.idp.confirmations.deleteIDP.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

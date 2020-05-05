@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { DangerZone, EditPage, FormAttributes, HelpPanelInterface, Notification, Page, Placeholder } from "../common";
+import { ConfirmationModelInterface, DangerZone, EditPage, FormAttributes, HelpPanelInterface,
+    Notification, Page, Placeholder } from "../common";
 
 /**
  * Model for the dev portal namespace
@@ -228,7 +229,12 @@ export interface DevPortalNS {
                         };
                     };
                 };
-                placeholder: string;
+                placeHolders: {
+                    emptyIDPList: Placeholder;
+                };
+            };
+            confirmations: {
+                deleteIDP: ConfirmationModelInterface;
             };
             templates: {
                 manualSetup: {
@@ -239,6 +245,12 @@ export interface DevPortalNS {
                     heading: string;
                     subHeading: string;
                 };
+            };
+            notifications: {
+                deleteIDP: Notification;
+            };
+            placeHolders: {
+                emptyIDPList: Placeholder;
             };
         };
         users: {

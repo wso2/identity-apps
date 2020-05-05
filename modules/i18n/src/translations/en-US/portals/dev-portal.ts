@@ -447,7 +447,50 @@ export const devPortal: DevPortalNS = {
                         }
                     }
                 },
-                placeholder: "Search by IdP name"
+                placeHolders: {
+                    emptyIDPList: {
+                        subtitles: {
+                            0: "We couldn't find any results for '{{ searchQuery }}'",
+                            1: "Please try a different search term."
+                        },
+                        title: "No results found"
+                    }
+                }
+            },
+            confirmations: {
+                deleteIDP: {
+                    assertionHint: "Please type <1>{{ idpName }}</1> to confirm.",
+                    content: "If you delete this identity provider, you will not be able to get it back. All the " +
+                        "applications depending on this also might stop working. Please proceed with caution.",
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will permanently delete the IDP."
+                }
+            },
+            notifications: {
+                deleteIDP: {
+                    error: {
+                        description: "",
+                        message: "Identity Provider Delete Error"
+                    },
+                    genericError: {
+                        description: "An error occurred while deleting the identity provider",
+                        message: "Identity Provider Delete Error"
+                    },
+                    success: {
+                        description: "Successfully deleted the identity provider",
+                        message: "Delete successful"
+                    }
+                }
+            },
+            placeHolders: {
+                emptyIDPList: {
+                    subtitles: {
+                        0: "Currently there are no identity providers available.",
+                        1: "You can add a new identity provider easily by following the",
+                        2: "steps in the identity providers creation wizard."
+                    },
+                    title: "Add a new Identity Provider"
+                }
             },
             templates: {
                 manualSetup: {

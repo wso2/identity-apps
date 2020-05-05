@@ -58,6 +58,16 @@ interface NotificationItem {
 }
 
 /**
+ * Model for confirmation boxes.
+ */
+export interface ConfirmationModelInterface {
+    header: string;
+    message: string;
+    content: string;
+    assertionHint: string;
+}
+
+/**
  * Model for placeholder.
  */
 export interface Placeholder {
