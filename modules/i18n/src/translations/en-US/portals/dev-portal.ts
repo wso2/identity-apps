@@ -18,6 +18,7 @@
 import { DevPortalNS } from "../../../models";
 import { Field } from "../../../../../forms/dist/typings/components";
 import React from "react";
+import { lang } from "moment";
 
 export const devPortal: DevPortalNS = {
     components: {
@@ -526,6 +527,27 @@ export const devPortal: DevPortalNS = {
                             duplicate: "An identity provider already exists with this name",
                             empty: "Identity Provider name is required"
                         }
+                    }
+                },
+                jitProvisioning: {
+                    enableJITProvisioning: {
+                        hint: "Specifies if users federated from this identity provider " +
+                            "needs to be provisioned locally.",
+                        label: "Enable Just-in-time Provisioning"
+                    },
+                    provisioningScheme: {
+                        children: {
+                            0: "Prompt for username, password and consent",
+                            1: "Prompt for password and consent",
+                            2: "Prompt for consent",
+                            3: "Provision silently"
+                        },
+                        hint: "Select the scheme to be used, when users are provisioned.",
+                        label: "Provisioning scheme"
+                    },
+                    provisioningUserStoreDomain: {
+                        hint: "Select user store domain name to provision users.",
+                        label: "User store domain to always provision users"
                     }
                 }
             },

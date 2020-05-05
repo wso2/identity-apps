@@ -266,6 +266,20 @@ export interface DevPortalNS {
                     description: FormAttributes;
                     image: FormAttributes;
                 };
+                jitProvisioning: {
+                    enableJITProvisioning: FormAttributes;
+                    provisioningUserStoreDomain: FormAttributes;
+                    provisioningScheme: {
+                        hint: string;
+                        label: string;
+                        children: {
+                            0: string;
+                            1: string;
+                            2: string;
+                            3: string;
+                        };
+                    };
+                };
             };
             templates: {
                 manualSetup: {
