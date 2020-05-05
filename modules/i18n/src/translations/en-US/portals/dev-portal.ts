@@ -333,18 +333,6 @@ export const devPortal: DevPortalNS = {
         footer: {
             copyright: "WSO2 Identity Server © {{year}}"
         },
-        helpPanel: {
-            notifications: {
-                pin: {
-                    error: null,
-                    genericError: null,
-                    success: {
-                        description: "Help panel will always appear {{state}} unless you change explicitly.",
-                        message: "Help panel {{state}}"
-                    }
-                }
-            }
-        },
         groups: {
             advancedSearch: {
                 form: {
@@ -428,6 +416,18 @@ export const devPortal: DevPortalNS = {
                     success: {
                         description: "The selected group was updated successfully.",
                         message: "Group updated successfully"
+                    }
+                }
+            }
+        },
+        helpPanel: {
+            notifications: {
+                pin: {
+                    error: null,
+                    genericError: null,
+                    success: {
+                        description: "Help panel will always appear {{state}} unless you change explicitly.",
+                        message: "Help panel {{state}}"
                     }
                 }
             }

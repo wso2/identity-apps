@@ -36,6 +36,7 @@ export const common: CommonNS = {
     close: "වසන්න",
     completed: "සම්පුර්ණ කරන ලද",
     configure: "වින්\u200Dයාස කරන්න",
+    confirm: "තහවුරු කරන්න",
     contains: "අඩංගු වේ",
     continue: "පවත්වාගෙන යන්න",
     createdOn: "නිර්මාණය කරන ලද්දේ",
