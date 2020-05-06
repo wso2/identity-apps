@@ -26,7 +26,7 @@ import { Certificate } from "../../../models";
 /**
  * The model of the object returned by the `convertFromPem()` function.
  */
-interface PemCertificate{
+interface PemCertificate {
     /**
      * The PEM string.
      */
@@ -179,7 +179,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         if (forgeCertificateData) {
             setForgeCertificate(forgeCertificateData);
         }
-    }, [forgeCertificateData]);
+    }, [ forgeCertificateData ]);
 
     /**
      * Gets the browser color scheme so that the color scheme of the textarea can be decided.
@@ -203,13 +203,13 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
     }, []);
 
     /**
-     * This takes in an ArrayBuffer and converts it to PEM.
+     * This takes in a `.cer` file and converts it to PEM.
      * 
-     * @param {ArrayBuffer} value .cer `File` converted to `ArrayBuffer`.
+     * @param {File} value .cer `File`.
      * 
      * @returns {Promise<string>} The PEM encoded string.
      */
-    const convertFromDerToPem = (file: File): Promise<string> => {
+    const convertFromCerToPem = (file: File): Promise<string> => {
         return file.arrayBuffer().then((value: ArrayBuffer) => {
             const byteString = forge.util.createBuffer(value);
             const asn1 = forge.asn1.fromDer(byteString);
@@ -262,13 +262,16 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         // adds -----BEGIN CERTIFICATE----- if not present.
         !pemValue[ 0 ]?.includes(CERTIFICATE_BEGIN) && pemValue.unshift(CERTIFICATE_BEGIN);
 
-        // adds -----END CERTIFICATE----- if present.
-        !pemValue[ pemValue.length - 1 ]?.includes(CERTIFICATE_END)
-            && pemValue.push(CERTIFICATE_END);
-
         // adds "\n" if not present.
         !(pemValue[ pemValue.length - 1 ] === END_LINE)
             && pemValue.push(END_LINE);
+        
+        // adds -----END CERTIFICATE----- if not present.
+        if (!pemValue[ pemValue.length - 2 ]?.includes(CERTIFICATE_END)) {
+            const lastLine = pemValue.pop();
+            pemValue.push(CERTIFICATE_END);
+            pemValue.push(lastLine);
+        }
 
         return pemValue.join("\n");
     }
@@ -307,12 +310,20 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
     const checkCertType = (file: File): Promise<string> => {
         const extension = file.name.split(".").pop();
         if (extension === "cer") {
-            return convertFromDerToPem(file);
-        } else if (extension === "pem") {
+            return convertFromCerToPem(file);
+        } else if (extension==="crt"){ 
+            return file.arrayBuffer().then((value: ArrayBuffer) => {
+                const byteString = forge.util.createBuffer(value);
+
+                return convertFromPem(byteString?.data).value;
+            }).catch((error) => {
+                throw Error(error);
+            })
+        }else if (extension === "pem") {
             return file.text().then((value: string) => {
                 return convertFromPem(value).value;
-            }).catch(() => {
-                throw Error();
+            }).catch((error) => {
+                throw Error(error);
             })
         }
 
