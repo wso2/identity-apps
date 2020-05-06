@@ -20,6 +20,7 @@ import { addAlert } from "@wso2is/core/store";
 import { UserAvatar } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { getUserDetails } from "../api";
 import { EditUser } from "../components/users";
 import { history } from "../helpers";
@@ -33,6 +34,7 @@ import { AlertInterface, BasicProfileInterface, createEmptyProfile } from "../mo
  */
 export const UserEditPage = (): ReactElement => {
 
+    const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const [ user, setUserProfile ] = useState<BasicProfileInterface>(createEmptyProfile);
@@ -80,10 +82,10 @@ export const UserEditPage = (): ReactElement => {
     return (
         <PageLayout
             isLoading={ isUserDetailsRequestLoading }
-            title={ user?.name?.givenName && user.name.familyName ? user.name.givenName + " " + user.name.familyName :
-                "Administrator" }
-            description={ "" + user.emails && user.emails !== undefined ? user.emails[0].toString() :
-                user.userName }
+            title={ t(user?.name?.givenName && user.name.familyName ? user.name.givenName + " " + user.name.familyName :
+                "Administrator") }
+            description={ t("" + user.emails && user.emails !== undefined ? user.emails[0].toString() :
+                user.userName) }
             image={ (
                 <UserAvatar
                     name={ user.userName }
@@ -95,7 +97,7 @@ export const UserEditPage = (): ReactElement => {
             backButton={ {
                 "data-testid": "user-mgt-edit-user-back-button",
                 onClick: handleBackButtonClick,
-                text: "Go back to users"
+                text: t("devPortal:pages.usersEdit.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }

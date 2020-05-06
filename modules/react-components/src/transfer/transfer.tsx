@@ -66,13 +66,14 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                             list.props.listType === "unselected" && (
                                                 <Grid.Column width={ 7 }>
                                                     <Segment
-                                                        data-testid={ `${ testId }-unselected-groups` }
+                                                        data-testid={
+                                                            `${ testId }-unselected-groups`
+                                                        }
                                                         className="transfer-segment"
                                                     >
                                                         <TransferListSearch
-                                                            data-testid={
-                                                                `${ testId }-unselected-groups-search-input`
-                                                            }
+                                                            data-testid={ testId + "-unselected-groups-" +
+                                                            "search-input" }
                                                             handleListSearch={ handleUnelectedListSearch }
                                                             placeholder={ searchPlaceholder }
                                                         />
@@ -92,7 +93,9 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                 >
                                                     <Grid.Row>
                                                         <Button
-                                                            data-testid={ `${testId}-unselected-groups-add-button` }
+                                                            data-testid={
+                                                                `${ testId }-unselected-groups-add-button`
+                                                            }
                                                             type="button"
                                                             basic
                                                             size="mini"
@@ -103,9 +106,7 @@ export const TransferComponent: FunctionComponent<PropsWithChildren<TransferComp
                                                     </Grid.Row>
                                                     <Grid.Row>
                                                         <Button
-                                                            data-testid={
-                                                                `${ testId }-unselected-groups-remove-button`
-                                                            }
+                                                            data-testid={ testId + "-unselected-groups-remove-button" }
                                                             type="button"
                                                             basic
                                                             size="mini"
