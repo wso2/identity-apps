@@ -69,7 +69,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             required={ true }
                             options={ dropDownOptions }
                             value={ getValidatedInitialValue(initialSubjectUri) }
-                            placeholder={ t("devPortal:components.idp.forms.uriAttributeSettings.subject.placeholder") }
+                            placeholder={ t("devPortal:components.idp.forms.uriAttributeSettings.subject.placeHolder") }
                             onChange={
                                 (event, data) => {
                                     updateSubject(data.value.toString())
@@ -78,7 +78,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             search
                             fullTextSearch={ false }
                             error={ _.isEmpty(getValidatedInitialValue(initialSubjectUri)) && {
-                                content: t("devPortal.components.idp.forms.uriAttributeSettings." +
+                                content: t("devPortal:components.idp.forms.uriAttributeSettings." +
                                     "subject.validation.empty"),
                                 pointing: "above"
                             } }
@@ -109,7 +109,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 options={ dropDownOptions }
                                 value={ getValidatedInitialValue(initialRoleUri) }
                                 placeholder={ t("devPortal:components.idp.forms.uriAttributeSettings." +
-                                    "role.placeholder") }
+                                    "role.placeHolder") }
                                 onChange={
                                     (event, data) => {
                                         updateRole(data.value.toString())
@@ -126,7 +126,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             />
                         </Form>
                         <Hint>
-                            { t("devPortal.components.idp.forms.uriAttributeSettings.role.hint") }
+                            { t("devPortal:components.idp.forms.uriAttributeSettings.role.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

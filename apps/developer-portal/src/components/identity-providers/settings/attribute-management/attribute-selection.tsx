@@ -185,7 +185,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                 <EmptyPlaceholder
                                     title={ t("devPortal:components.idp.placeHolders.noAttributes.title") }
                                     subtitle={ [
-                                        t("devPortal:components.idp.placeHolders.noAttributes.subtitle.0")
+                                        t("devPortal:components.idp.placeHolders.noAttributes.subtitles.0")
                                     ] }
                                     action={
                                         <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">

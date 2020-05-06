@@ -401,8 +401,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                         title={ t("devPortal:components.idp.placeHolders.emptyConnectorList.title") }
                                         image={ EmptyPlaceholderIllustrations.emptyList }
                                         subtitle={ [
-                                            t("devPortal:components.idp.placeHolders.emptyConnectorList.subtitle.0"),
-                                            t("devPortal:components.idp.placeHolders.emptyConnectorList.subtitle.1")
+                                            t("devPortal:components.idp.placeHolders.emptyConnectorList.subtitles.0"),
+                                            t("devPortal:components.idp.placeHolders.emptyConnectorList.subtitles.1")
                                         ] }
                                         imageSize="tiny"
                                         action={ (

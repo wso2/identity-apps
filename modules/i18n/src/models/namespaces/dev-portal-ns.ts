@@ -402,22 +402,24 @@ export interface DevPortalNS {
             };
             notifications: {
                 deleteIDP: Notification;
+                disableAuthenticator: Notification;
+                disableOutboundProvisioningConnector: Notification;
                 getIDP: Notification;
-                updateIDP: Notification;
-                submitAttributeSettings: Notification;
-                updateFederatedAuthenticator: Notification;
-                getIDPTemplateList: Notification;
                 getIDPTemplate: Notification;
+                getIDPTemplateList: Notification;
                 getFederatedAuthenticator: Notification;
                 getFederatedAuthenticatorMetadata: Notification;
-                disableAuthenticator: Notification;
-                updateJITProvisioning: Notification;
-                getOutboundProvisioningConnectorMetadata: Notification;
                 getOutboundProvisioningConnector: Notification;
-                updateOutboundProvisioningConnector: Notification;
-                disableOutboundProvisioningConnector: Notification;
+                getOutboundProvisioningConnectorMetadata: Notification;
+                getAllLocalClaims: Notification;
                 getRolesList: Notification;
+                submitAttributeSettings: Notification;
+                updateClaimsConfigs: Notification;
+                updateFederatedAuthenticator: Notification;
+                updateIDP: Notification;
                 updateIDPRoleMappings: Notification;
+                updateJITProvisioning: Notification;
+                updateOutboundProvisioningConnector: Notification;
             };
             placeHolders: {
                 emptyIDPList: Placeholder;

@@ -19,6 +19,7 @@
 import { Field, Forms } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
 import {
     IdentityProviderInterface,
@@ -26,7 +27,6 @@ import {
     SimpleUserStoreListItemInterface,
     SupportedJITProvisioningSchemes
 } from "../../../models";
-import { useTranslation } from "react-i18next";
 
 /**
  *  Just-in time provisioning configurations for the IdP.
@@ -164,7 +164,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
-                            label={ t("devPortal.components.idp.forms.jitProvisioning.provisioningScheme.label") }
+                            label={ t("devPortal:components.idp.forms.jitProvisioning.provisioningScheme.label") }
                             name={ JITProvisioningConstants.PROVISIONING_SCHEME_TYPE_KEY }
                             default={ initialValues?.scheme ? initialValues?.scheme :
                                 SupportedJITProvisioningSchemes.PROMPT_USERNAME_PASSWORD_CONSENT }
@@ -194,7 +194,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             disabled={ !isJITProvisioningEnabled }
                         />
                         <Hint>
-                            { t("devPortal.components.idp.forms.jitProvisioning.provisioningScheme.hint") }
+                            { t("devPortal:components.idp.forms.jitProvisioning.provisioningScheme.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

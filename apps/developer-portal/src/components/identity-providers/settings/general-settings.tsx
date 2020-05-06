@@ -24,7 +24,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { CheckboxProps } from "semantic-ui-react";
 import { deleteIdentityProvider, updateIdentityProviderDetails } from "../../../api";
-import { ConfigReducerStateInterface, IdentityProviderInterface } from "../../../models";
+import {
+    ConfigReducerStateInterface,
+    IdentityProviderInterface
+} from "../../../models";
 import { AppState } from "../../../store";
 import { GeneralDetailsForm } from "../forms";
 import { handleIDPDeleteError, handleIDPUpdateError } from "../utils";
@@ -101,9 +104,9 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         deleteIdentityProvider(idpId)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.success.description"),
+                    description: t("devPortal:components.idp.notifications.deleteIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.idp.notifications.success.message")
+                    message: t("devPortal:components.idp.notifications.deleteIDP.success.message")
                 }));
 
                 onDelete();

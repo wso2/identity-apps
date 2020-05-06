@@ -20,6 +20,7 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { store } from "../../../store";
+import { updateIDPRoleMappings } from "../../../api";
 
 export const handleIDPDeleteError = (error) => {
     if (error.response && error.response.data && error.response.data.description) {
@@ -74,5 +75,24 @@ export const handleGetRoleListError = (error) => {
         description: I18n.instance.t("devPortal.components.idp.notifications.getRolesList.genericError.description"),
         level: AlertLevels.ERROR,
         message: I18n.instance.t("devPortal:components.idp.notifications.getRolesList.genericError.message")
+    }));
+};
+
+export const handleUpdateIDPRoleMappingsError = (error) => {
+    if (error.response && error.response.data && error.response.data.description) {
+        store.dispatch(addAlert({
+            description: I18n.instance.t("devPortal:components.idp.notifications." +
+                "updateIDPRoleMappings.error.description",
+                { description: error.response.data.description }),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t("devPortal:components.idp.notifications.updateIDPRoleMappings.error.message")
+        }));
+    }
+
+    store.dispatch(addAlert({
+        description: I18n.instance.t("devPortal:components.idp.notifications.updateIDPRoleMappings." +
+            "genericError.description"),
+        level: AlertLevels.ERROR,
+        message: I18n.instance.t("devPortal:components.idp.notifications.updateIDPRoleMappings.genericError.message")
     }));
 };

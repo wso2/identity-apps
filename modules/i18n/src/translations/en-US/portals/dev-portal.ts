@@ -625,6 +625,15 @@ export const devPortal: DevPortalNS = {
                     default: "Make default",
                     enable: "Enabled"
                 },
+                outboundProvisioningRoles: {
+                    heading: "OutBound Provisioning Roles",
+                    hint: "Select and add as identity provider outbound provisioning roles",
+                    label: "Role",
+                    placeHolder: "Select Role",
+                    popup: {
+                        content: "Add Role"
+                    }
+                },
                 roleMapping: {
                     heading: "Role Mapping",
                     hint: "Map local roles with the Identity Provider roles",
@@ -654,15 +663,6 @@ export const devPortal: DevPortalNS = {
                         validation: {
                             empty: "Please select an attribute for subject"
                         }
-                    }
-                },
-                outboundProvisioningRoles: {
-                    heading: "OutBound Provisioning Roles",
-                    hint: "Select and add as identity provider outbound provisioning roles",
-                    label: "Role",
-                    placeHolder: "Select Role",
-                    popup: {
-                        content: "Add Role"
                     }
                 }
             },
@@ -716,6 +716,20 @@ export const devPortal: DevPortalNS = {
                     genericError: {
                         description: "",
                         message: ""
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                getAllLocalClaims: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Retrieval Error"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving local claims.",
+                        message: "Retrieval Error"
                     },
                     success: {
                         description: "",
@@ -848,6 +862,20 @@ export const devPortal: DevPortalNS = {
                         message: ""
                     }
                 },
+                updateClaimsConfigs: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Update Error"
+                    },
+                    genericError: {
+                        description: "An error occurred while the updating claims configurations.",
+                        message: "Update Error"
+                    },
+                    success: {
+                        description: "Successfully updated attribute configurations.",
+                        message: "Update successful"
+                    }
+                },
                 updateFederatedAuthenticator: {
                     error: {
                         description: "{{ description }}",
@@ -873,6 +901,20 @@ export const devPortal: DevPortalNS = {
                     },
                     success: {
                         description: "Successfully updated the advanced configurations.",
+                        message: "Update successful"
+                    }
+                },
+                updateIDPRoleMappings: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Update Error"
+                    },
+                    genericError: {
+                        description: "There was an error while updating outbound provisioning role configurations",
+                        message: "Update Error"
+                    },
+                    success: {
+                        description: "Successfully updated outbound provisioning role configurations.",
                         message: "Update successful"
                     }
                 },
@@ -903,20 +945,6 @@ export const devPortal: DevPortalNS = {
                         description: "Successfully updated the outbound provisioning connector.",
                         message: "Update successful"
                     }
-                },
-                updateIDPRoleMappings: {
-                    error: {
-                        description: "{{ description }}",
-                        message: "Update Error"
-                    },
-                    genericError: {
-                        description: "There was an error while updating outbound provisioning role configurations",
-                        message: "Update Error"
-                    },
-                    success: {
-                        description: "Successfully updated outbound provisioning role configurations.",
-                        message: "Update successful"
-                    }
                 }
             },
             placeHolders: {
@@ -931,7 +959,7 @@ export const devPortal: DevPortalNS = {
                 emptyConnectorList: {
                     subtitles: {
                         0: "This IDP has no outbound provisioning connectors configured",
-                        1: "Add a connect to view it here."
+                        1: "Add a connector to view it here."
                     },
                     title: "No outbound provisioning connectors"
                 },

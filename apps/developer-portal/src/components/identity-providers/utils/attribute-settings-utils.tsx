@@ -17,8 +17,9 @@
  */
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
-import { Dispatch } from "redux";
+import { handleUpdateIDPRoleMappingsError } from "./common-utils";
 import { getAllLocalClaims, updateClaimsConfigs, updateIDPRoleMappings } from "../../../api";
 import {
     Claim,
@@ -30,6 +31,7 @@ import {
     IdentityProviderRoleMappingInterface,
     IdentityProviderRolesInterface
 } from "../../../models";
+import { store } from "../../../store";
 
 export interface DropdownOptionsInterface {
     key: string;
@@ -44,11 +46,13 @@ export const getLocalDialectURI = (): string => {
     let localDialect = "http://wso2.org/claims";
     getAllLocalClaims(null)
         .then((response) => {
-          
             const retrieved = response.slice(0, 1)[0].dialectURI;
             if (!_.isEmpty(retrieved)) {
                 localDialect = retrieved;
             }
+        })
+        .catch((error) => {
+            handleGetAllLocalClaimsError(error);
         });
     return localDialect;
 };
@@ -98,7 +102,7 @@ export const isClaimExistsInIdPClaims = (mapping: IdentityProviderCommonClaimMap
     return _.find(selectedClaimsWithMapping, element => element.mappedValue === mapping.claim.uri) !== undefined;
 };
 
-export const updateAvailableLocalClaims = (setAvailableLocalClaims, dispatch) => {
+export const updateAvailableLocalClaims = (setAvailableLocalClaims) => {
     getAllLocalClaims(null)
         .then((response: Claim[]) => {
             setAvailableLocalClaims(response?.map(claim => {
@@ -109,12 +113,8 @@ export const updateAvailableLocalClaims = (setAvailableLocalClaims, dispatch) =>
                 } as IdentityProviderClaimInterface;
             }));
         })
-        .catch(() => {
-            dispatch(addAlert({
-                description: "An error occurred while retrieving local claims.",
-                level: AlertLevels.ERROR,
-                message: "Get Error"
-            }));
+        .catch((error) => {
+            handleGetAllLocalClaimsError(error);
         });
 };
 
@@ -152,21 +152,34 @@ export const initSubjectAndRoleURIs = (initialClaims, setSubjectClaimUri, setRol
 
 export const handleAttributeSettingsFormSubmit = (idpId: string, values: IdentityProviderClaimsInterface,
                                                   roleMapping: IdentityProviderRoleMappingInterface[],
-                                                  onUpdate: (idpId: string) => void, dispatch: Dispatch<any>): void => {
+                                                  onUpdate: (idpId: string) => void): void => {
     updateClaimsConfigs(idpId, values)
         .then(() => {
-            dispatch(addAlert({
-                description: "Successfully updated attribute configurations.",
+            store.dispatch(addAlert({
+                description: I18n.instance.t("devPortal:components.idp.notifications." +
+                    "updateClaimsConfigs.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Update successful"
+                message: I18n.instance.t("devPortal:components.idp.notifications.updateClaimsConfigs.success.message")
             }));
             onUpdate(idpId);
         })
-        .catch(() => {
-            dispatch(addAlert({
-                description: "An error occurred while the updating claims configurations.",
+        .catch((error) => {
+            if (error.response && error.response.data && error.response.data.description) {
+                store.dispatch(addAlert({
+                    description: I18n.instance.t("devPortal:components.idp.notifications." +
+                        "updateClaimsConfigs.error.description",
+                        { description: error.response.data.description }),
+                    level: AlertLevels.ERROR,
+                    message: I18n.instance.t("devPortal:components.idp.notifications.updateClaimsConfigs.error.message")
+                }));
+            }
+
+            store.dispatch(addAlert({
+                description: I18n.instance.t("devPortal:components.idp.notifications." +
+                    "updateClaimsConfigs.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: "Update error"
+                message: I18n.instance.t("devPortal:components.idp.notifications." +
+                    "updateClaimsConfigs.genericError.message")
             }));
         });
 
@@ -175,21 +188,34 @@ export const handleAttributeSettingsFormSubmit = (idpId: string, values: Identit
             outboundProvisioningRoles: [""]
         } as IdentityProviderRolesInterface
     ).then(() => {
-        dispatch(addAlert(
+        store.dispatch(addAlert(
             {
-                description: "Successfully updated role mapping configurations.",
+                description: I18n.instance.t("devPortal:components.idp.notifications." +
+                    "updateIDPRoleMappings.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Update successful"
+                message: I18n.instance.t("devPortal:components.idp.notifications.updateIDPRoleMappings.success.message")
             }
         ));
         onUpdate(idpId);
     }).catch(error => {
-        dispatch(addAlert(
-            {
-                description: error?.description || "There was an error while updating role configurations",
-                level: AlertLevels.ERROR,
-                message: "Update error"
-            }
-        ));
+        handleUpdateIDPRoleMappingsError(error);
     })
+};
+
+export const handleGetAllLocalClaimsError = (error) => {
+    if (error.response && error.response.data && error.response.data.description) {
+        store.dispatch(addAlert({
+            description: I18n.instance.t("devPortal:components.idp.notifications.getAllLocalClaims.error.description",
+                { description: error.response.data.description }),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t("devPortal:components.idp.notifications.getAllLocalClaims.error.message")
+        }));
+    }
+
+    store.dispatch(addAlert({
+        description: I18n.instance.t("devPortal:components.idp.notifications.getAllLocalClaims." +
+            "genericError.description"),
+        level: AlertLevels.ERROR,
+        message: I18n.instance.t("devPortal:components.idp.notifications.getAllLocalClaims.genericError.message")
+    }));
 };

@@ -25,7 +25,7 @@ import { useDispatch } from "react-redux";
 import { Button, DropdownItemProps, Form, Grid, Icon, Label, Popup } from "semantic-ui-react";
 import { getRolesList, updateIDPRoleMappings } from "../../../../api";
 import { IdentityProviderRolesInterface, RoleListInterface, RolesInterface } from "../../../../models";
-import { handleGetRoleListError } from "../../utils";
+import { handleGetRoleListError, handleUpdateIDPRoleMappingsError } from "../../utils";
 
 interface OutboundProvisioningRolesPropsInterface {
     idpId: string;
@@ -98,20 +98,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                 }
             ));
         }).catch(error => {
-            if (error.response && error.response.data && error.response.data.description) {
-                dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.updateIDPRoleMappings.error.description",
-                        { description: error.response.data.description }),
-                    level: AlertLevels.ERROR,
-                    message: t("devPortal:components.idp.notifications.updateIDPRoleMappings.error.message")
-                }));
-            }
-
-            dispatch(addAlert({
-                description: t("devPortal.components.idp.notifications.updateIDPRoleMappings.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("devPortal:components.idp.notifications.updateIDPRoleMappings.genericError.message")
-            }));
+            handleUpdateIDPRoleMappingsError(error);
         })
     };
 
@@ -135,7 +122,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 } as DropdownItemProps
                             }) }
                             value={ selectedRole }
-                            placeholder={ t("devPortal:components.idp.forms.outboundProvisioningRoles.placeholder") }
+                            placeholder={ t("devPortal:components.idp.forms.outboundProvisioningRoles.placeHolder") }
                             onChange={
                                 (event, data) => {
                                     if (_.isEmpty(data?.value?.toString())) {

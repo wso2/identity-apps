@@ -239,9 +239,9 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     return (
         <Modal open={ showAddModal } size="small" className="user-attributes">
             <Modal.Header>
-                { t("devPortal.components.idp.modals.attributeSelection.title") }
+                { t("devPortal:components.idp.modals.attributeSelection.title") }
                 <Heading subHeading ellipsis as="h6">
-                    { t("devPortal.components.idp.modals.attributeSelection.subTitle") }
+                    { t("devPortal:components.idp.modals.attributeSelection.subTitle") }
                 </Heading>
             </Modal.Header>
             <Modal.Content image>

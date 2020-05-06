@@ -22,12 +22,11 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
 import { getIdentityProviderList } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";
-import { useTranslation } from "react-i18next";
-
 
 /**
  * Proptypes for the identity provider general details form component.
@@ -122,7 +121,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     return;
                 }
                 dispatch(addAlert({
-                    description: t("devPortal.components.idp.notifications.getIDP.genericError.description"),
+                    description: t("devPortal:components.idp.notifications.getIDP.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("devPortal:components.idp.notifications.getIDP.genericError.message")
                 }));
