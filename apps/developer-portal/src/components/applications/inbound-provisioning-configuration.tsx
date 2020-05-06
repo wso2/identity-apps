@@ -16,21 +16,21 @@
  * under the License.
  */
 
-import { AuthenticatorAccordion } from "../shared";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Divider, Grid } from "semantic-ui-react";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { AlertLevels, SBACInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Heading } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Divider, Grid } from "semantic-ui-react";
+import { ProvisioningConfigurationsForm } from "./forms";
+import { getUserStoreList, updateApplicationConfigurations } from "../../api";
 import {
     FeatureConfigInterface,
     ProvisioningConfigurationInterface,
     SimpleUserStoreListItemInterface
 } from "../../models";
-import { AlertLevels, SBACInterface } from "@wso2is/core/models";
-import { getUserStoreList, updateApplicationConfigurations } from "../../api";
-import { addAlert } from "@wso2is/core/store";
-import { useDispatch } from "react-redux";
-import { ProvisioningConfigurationsForm } from "./forms";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { AuthenticatorAccordion } from "../shared";
 
 /**
  *  Inbound Provisioning Configurations for the Application.
@@ -145,7 +145,7 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
                                             />
                                         ),
                                         id: "scim",
-                                        title: "SCIM",
+                                        title: "SCIM"
                                     }
                                 ]
                             }

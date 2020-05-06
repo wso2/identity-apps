@@ -83,6 +83,7 @@ interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfi
  * Component to edit general details of the application.
  *
  * @param {GeneralApplicationSettingsInterface} props - Props injected to the component.
+ *
  * @return {ReactElement}
  */
 export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSettingsInterface> = (

@@ -16,28 +16,27 @@
  * under the License.
  */
 
-import { AuthenticatorAccordion } from "../shared";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
+import { OutboundProvisioningIdpCreateWizard, OutboundProvisioningWizardIdpForm } from "./wizard";
+import { getIdentityProviderList, updateApplicationConfigurations } from "../../api";
+import { EmptyPlaceholderIllustrations } from "../../configs";
 import {
     ApplicationInterface,
     IdentityProviderInterface,
     OutboundProvisioningConfigurationInterface,
     ProvisioningConfigurationInterface
 } from "../../models";
-import { AlertLevels } from "@wso2is/core/models";
-import { getIdentityProviderList, updateApplicationConfigurations } from "../../api";
-import { addAlert } from "@wso2is/core/store";
-import { useDispatch } from "react-redux";
-import { EmptyPlaceholderIllustrations } from "../../configs";
-import { OutboundProvisioningIdpCreateWizard } from "./wizard";
-import { OutboundProvisioningWizardIdpForm } from "./wizard";
+import { AuthenticatorAccordion } from "../shared";
 
 /**
  *  Provisioning Configurations for the Application.
  */
-interface OutboundProvisioningConfigurationsPropsInterface {
+interface OutboundProvisioningConfigurationPropsInterface {
     /**
      * Editing application.
      */
@@ -56,15 +55,16 @@ interface OutboundProvisioningConfigurationsPropsInterface {
  * Provisioning configurations form component.
  *
  * @param {ProvisioningConfigurationFormPropsInterface} props - Props injected to the component.
+ *
  * @return {ReactElement}
  */
-export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvisioningConfigurationsPropsInterface> = (
-    props: OutboundProvisioningConfigurationsPropsInterface
+export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvisioningConfigurationPropsInterface> = (
+    props: OutboundProvisioningConfigurationPropsInterface
 ): ReactElement => {
 
     const {
         application,
-        onUpdate,
+        onUpdate
     } = props;
 
     const dispatch = useDispatch();
@@ -210,7 +210,7 @@ export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvi
                                                                 />
                                                             ),
                                                             id: provisioningIdp?.idp,
-                                                            title: provisioningIdp?.idp,
+                                                            title: provisioningIdp?.idp
                                                         }
                                                     ]
                                                 }

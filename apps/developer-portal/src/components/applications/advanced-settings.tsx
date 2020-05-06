@@ -47,6 +47,7 @@ interface AdvancedSettingsPropsInterface extends SBACInterface<FeatureConfigInte
  *  advance settings component.
  *
  * @param {AdvancedSettingsPropsInterface} props - Props injected to the component.
+ *
  * @return {ReactElement}
  */
 export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface> = (
@@ -97,16 +98,14 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
     };
 
     return (
-        <>
-            <div className="advanced-configuration-section">
-                <AdvancedConfigurationsForm
-                    config={ advancedConfigurations }
-                    onSubmit={ handleAdvancedConfigFormSubmit }
-                    readOnly={
-                        !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
-                    }
-                />
-            </div>
-        </>
+        <div className="advanced-configuration-section">
+            <AdvancedConfigurationsForm
+                config={ advancedConfigurations }
+                onSubmit={ handleAdvancedConfigFormSubmit }
+                readOnly={
+                    !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                }
+            />
+        </div>
     );
 };

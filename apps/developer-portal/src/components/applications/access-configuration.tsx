@@ -49,7 +49,7 @@ import { AuthenticatorAccordion } from "../shared";
 /**
  * Proptypes for the applications settings component.
  */
-interface ApplicationSettingsPropsInterface extends SBACInterface<FeatureConfigInterface> {
+interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
      * Currently editing application id.
      */
@@ -83,11 +83,12 @@ interface ApplicationSettingsPropsInterface extends SBACInterface<FeatureConfigI
 /**
  *  Inbound protocols and advance settings component.
  *
- * @param {ApplicationSettingsPropsInterface} props - Props injected to the component.
+ * @param {AccessConfigurationPropsInterface} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
-export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInterface> = (
-    props: ApplicationSettingsPropsInterface
+export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInterface> = (
+    props: AccessConfigurationPropsInterface
 ): ReactElement => {
 
     const {
@@ -246,7 +247,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
      * Handles Authenticator delete button on click action.
      *
      * @param {React.MouseEvent<HTMLDivElement>} e - Click event.
-     * @param {string} id - Id of the authenticator.
+     * @param {string} name - Protocol name.
      */
     const handleProtocolDeleteOnClick = (e: MouseEvent<HTMLDivElement>, name: string): void => {
         if (!name) {
@@ -286,7 +287,6 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                 .includes(protocol as SupportedAuthProtocolTypes)) {
                                 return {
                                     actions: [],
-                                    icon: { icon: InboundProtocolLogos[protocol], size: "micro" } as GenericIconProps,
                                     content: (
                                         <InboundFormFactory
                                             metadata={ authProtocolMeta[protocol] }
@@ -309,21 +309,13 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                             }
                                         />
                                     ),
+                                    icon: { icon: InboundProtocolLogos[protocol], size: "micro" } as GenericIconProps,
                                     id: protocol,
                                     title: _.upperCase(protocol)
                                 }
                             } else {
                                 return {
                                     actions: [],
-                                    icon: {
-                                        icon: (
-                                            <UserAvatar
-                                                name={ protocol }
-                                                size="mini"
-                                            />
-                                        ),
-                                        size: "nano"
-                                    } as GenericIconProps,
                                     content: (
                                         <InboundFormFactory
                                             metadata={ authProtocolMeta[protocol] }
@@ -344,6 +336,15 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                             }
                                         />
                                     ),
+                                    icon: {
+                                        icon: (
+                                            <UserAvatar
+                                                name={ protocol }
+                                                size="mini"
+                                            />
+                                        ),
+                                        size: "nano"
+                                    } as GenericIconProps,
                                     id: protocol,
                                     title: _.upperCase(protocol)
                                 }

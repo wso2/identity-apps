@@ -17,16 +17,13 @@
  */
 
 export * from "./application-list";
-export * from "./application-edit";
-export * from "./dropdown-details";
-export * from "./dropdown-details-general";
+export * from "./edit-application";
 export * from "./forms";
 export * from "./general-application-settings";
-export * from "./settings-application";
-export * from "./settings-section-application-variation";
-export * from "./application-edit";
+export * from "./access-configuration";
+export * from "./edit-application";
 export * from "./wizard";
 export * from "./components";
-export * from "./provisioning";
+export * from "./provisioning-settings";
 export * from "./inbound-provisioning-configuration";
 export * from "./outbound-provisioning-configuration";

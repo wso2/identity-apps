@@ -23,12 +23,12 @@ import { ContentLoader, ResourceTab } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { AccessConfiguration } from "./access-configuration";
 import { AdvancedSettings } from "./advanced-settings";
 import { AttributeSettings } from "./attribute-management";
 import { GeneralApplicationSettings } from "./general-application-settings";
 import { InboundProtocolsMeta } from "./meta";
-import { ProvisioningSettings } from "./provisioning";
-import { ApplicationSettings } from "./settings-application";
+import { ProvisioningSettings } from "./provisioning-settings";
 import { SignOnMethods } from "./sign-on-methods";
 import { getInboundProtocolConfig } from "../../api";
 import { ApplicationManagementConstants } from "../../constants";
@@ -214,7 +214,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const ApplicationSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane attached={ false }>
-            <ApplicationSettings
+            <AccessConfiguration
                 appId={ application.id }
                 appName={ application.name }
                 isLoading={ isLoading }

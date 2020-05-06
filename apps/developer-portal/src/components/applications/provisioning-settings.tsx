@@ -17,21 +17,16 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { SBACInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Divider } from "semantic-ui-react";
-import { getUserStoreList, updateApplicationConfigurations } from "../../api";
+import { InboundProvisioningConfigurations } from "./inbound-provisioning-configuration";
+import { OutboundProvisioningConfiguration } from "./outbound-provisioning-configuration";
 import {
     ApplicationInterface,
     FeatureConfigInterface,
-    ProvisioningConfigurationInterface,
-    SimpleUserStoreListItemInterface
+    ProvisioningConfigurationInterface
 } from "../../models";
-import { OutboundProvisioningConfigurations } from "./outbound-provisioning-configuration";
-import { InboundProvisioningConfigurations } from "./inbound-provisioning-configuration";
-import { SBACInterface } from "@wso2is/core/models";
 
 /**
  * Proptypes for the provision settings component.
@@ -55,6 +50,7 @@ interface ProvisioningSettingsPropsInterface extends SBACInterface<FeatureConfig
  *  Provisioning component.
  *
  * @param {ProvisioningSettingsPropsInterface} props - Props injected to the component.
+ *
  * @return {ReactElement}
  */
 export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsInterface> = (
@@ -81,7 +77,7 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
             <Divider hidden/>
             <Divider/>
             <Divider hidden/>
-            <OutboundProvisioningConfigurations
+            <OutboundProvisioningConfiguration
                 application={ application }
                 provisioningConfigurations={ provisioningConfigurations }
                 onUpdate={ onUpdate }
