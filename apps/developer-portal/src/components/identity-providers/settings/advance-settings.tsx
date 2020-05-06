@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import { updateIdentityProviderDetails } from "../../../api";
 import { IdentityProviderAdvanceInterface } from "../../../models";
 import { AdvanceConfigurationsForm } from "../forms";
-import { handleIDPUpdateError } from "../utils/common-utils";
+import { handleIDPUpdateError } from "../utils";
 
 /**
  * Proptypes for the advance settings component.

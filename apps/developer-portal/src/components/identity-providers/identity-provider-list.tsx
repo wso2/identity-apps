@@ -30,7 +30,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon } from "semantic-ui-react";
-import { handleIDPDeleteError } from "./utils/common-utils";
+import { handleIDPDeleteError } from "./utils";
 import { deleteIdentityProvider } from "../../api";
 import { EmptyPlaceholderIllustrations } from "../../configs";
 import { UIConstants } from "../../constants";

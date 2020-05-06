@@ -27,7 +27,7 @@ import { deleteIdentityProvider, updateIdentityProviderDetails } from "../../../
 import { ConfigReducerStateInterface, IdentityProviderInterface } from "../../../models";
 import { AppState } from "../../../store";
 import { GeneralDetailsForm } from "../forms";
-import { handleIDPDeleteError, handleIDPUpdateError } from "../utils/common-utils";
+import { handleIDPDeleteError, handleIDPUpdateError } from "../utils";
 
 /**
  * Proptypes for the identity provider general details component.

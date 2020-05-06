@@ -1,8 +1,3 @@
-import { addAlert } from "@wso2is/core/dist/src/store";
-import { AlertLevels } from "@wso2is/core/dist/src/models";
-import { useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
-
 /**
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -20,6 +15,11 @@ import { useTranslation } from "react-i18next";
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 
 const dispatch = useDispatch();
 
