@@ -274,9 +274,8 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                     /**
                      * {
                      *      {
-                     *          Check if the field value is empty OR
-                     *          (the field doesn't already exist
-                     *              /the value is empty OR the array's length is 0 OR boolean value is false )
+                     *          If the value is an array check if its length is zero
+                     *          OR check if it the value is empty or false
                      *      } OR
                      *      the reset button has been clicked
                      * } AND
@@ -287,13 +286,10 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                      * Else: Set required to true
                      *
                      */
-
                     const value = tempForm.get(inputField.name);
                     (
-                        (
-                            !inputField.value
-                            || (!value || !(value.length > 0))
-                        )
+                        !((value instanceof Array && value.length > 0)
+                            || (!(value instanceof Array) && !!value))
                         || isReset
                     )
                         && (!isRadioField(inputField) && inputField.required)
