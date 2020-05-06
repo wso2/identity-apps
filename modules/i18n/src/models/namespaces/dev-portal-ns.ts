@@ -241,8 +241,20 @@ export interface DevPortalNS {
                     emptyIDPList: Placeholder;
                 };
             };
+            buttons: {
+                addIDP: string;
+                addAuthenticator: string;
+                addConnector: string;
+            };
             confirmations: {
                 deleteIDP: Confirmation;
+                deleteAuthenticator: Confirmation;
+                deleteConnector: Confirmation;
+            };
+            dangerZoneGroup: {
+                header: string;
+                disableIDP: DangerZone;
+                deleteIDP: DangerZone;
             };
             forms: {
                 advancedConfigs: {
@@ -255,6 +267,39 @@ export interface DevPortalNS {
                         certificatePEM: FormAttributes;
                         certificateJWKS: FormAttributes;
                     };
+                };
+                attributeSettings: {
+                    attributeMapping: {
+                        attributeColumnHeader: string;
+                        attributeMapColumnHeader: string;
+                        attributeMapInputPlaceholderPrefix: string;
+                        componentHeading: string;
+                        hint: string;
+                    };
+                    attributeProvisioning: {
+                        attributeColumnHeader: {
+                            0: string;
+                            1: string;
+                        };
+                        attributeMapColumnHeader: string;
+                        attributeMapInputPlaceholderPrefix: string;
+                        componentHeading: string;
+                        hint: string;
+                    };
+                };
+                authenticatorAccordion: {
+                    default: {
+                        0: string;
+                        1: string;
+                    };
+                    enable: {
+                        0: string;
+                        1: string;
+                    };
+                };
+                outboundConnectorAccordion: {
+                    default: string;
+                    enable: string;
                 };
                 common: {
                     requiredErrorMessage: string;
@@ -291,12 +336,33 @@ export interface DevPortalNS {
                     subHeading: string;
                 };
             };
+            modals: {
+                addAuthenticator: {
+                    title: string;
+                    subTitle: string;
+                };
+            };
             notifications: {
                 deleteIDP: Notification;
                 getIDP: Notification;
+                updateIDP: Notification;
+                submitAttributeSettings: Notification;
+                updateFederatedAuthenticator: Notification;
+                getIDPTemplateList: Notification;
+                getIDPTemplate: Notification;
+                getFederatedAuthenticator: Notification;
+                getFederatedAuthenticatorMetadata: Notification;
+                disableAuthenticator: Notification;
+                updateJITProvisioning: Notification;
+                getOutboundProvisioningConnectorMetadata: Notification;
+                getOutboundProvisioningConnector: Notification;
+                updateOutboundProvisioningConnector: Notification;
+                disableOutboundProvisioningConnector: Notification;
             };
             placeHolders: {
                 emptyIDPList: Placeholder;
+                emptyAuthenticatorList: Placeholder;
+                emptyConnectorList: Placeholder;
             };
         };
         users: {

@@ -30,6 +30,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon } from "semantic-ui-react";
+import { handleIDPDeleteError } from "./utils/common-utils";
 import { deleteIdentityProvider } from "../../api";
 import { EmptyPlaceholderIllustrations } from "../../configs";
 import { UIConstants } from "../../constants";
@@ -129,21 +130,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 }));
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("devPortal:components.idp.notifications.deleteIDP.error.message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.deleteIDP.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("devPortal:components.idp.notifications.deleteIDP.genericError.message")
-                }));
+                handleIDPDeleteError(error);
             })
             .finally(() => {
                 setShowDeleteConfirmationModal(false);
@@ -185,7 +172,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                             onClick={ onEmptyListPlaceholderActionClick }
                         >
                             <Icon name="add"/>
-                            New Identity Provider
+                            { t("devPortal:components.idp.buttons.addIDP") }
                         </PrimaryButton>
                     ) }
                     image={ EmptyPlaceholderIllustrations.newList }
@@ -264,15 +251,15 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                             <p>
                                 <Trans
                                     i18nKey="devPortal:components.idp.confirmations.deleteIDP.assertionHint"
-                                    tOptions={ { idpName: deletingIDP?.name } }
+                                    tOptions={ { name: deletingIDP?.name } }
                                 >
                                     Please type <strong>{ deletingIDP?.name }</strong> to confirm.
                                 </Trans>
                             </p>
                         ) }
                         assertionType="input"
-                        primaryAction="Confirm"
-                        secondaryAction="Cancel"
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={
                             (): void => handleIdentityProviderDelete(deletingIDP.id)

@@ -21,6 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
 import {
@@ -91,6 +92,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
     const dispatch = useDispatch();
 
+    const { t } = useTranslation();
+
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [
         deletingAuthenticator,
@@ -116,82 +119,90 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         updateFederatedAuthenticator(idpId, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully updated the federated authenticator.",
+                    description: t("devPortal:components.idp.notifications.updateFederatedAuthenticator." +
+                        "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Update successful"
+                    message: t("devPortal:components.idp.notifications.updateFederatedAuthenticator.success.message")
                 }));
                 onUpdate(idpId)
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
-                        description: error.response.data.description,
+                        description: t("devPortal:components.idp.notifications.updateFederatedAuthenticator." +
+                            "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: "Update error"
+                        message: t("devPortal:components.idp.notifications.updateFederatedAuthenticator.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while updating the federated authenticator.",
+                    description: t("devPortal:components.idp.notifications.updateFederatedAuthenticator." +
+                        "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Update error"
+                    message: t("devPortal:components.idp.notifications.updateFederatedAuthenticator." +
+                        "genericError.message")
                 }));
             });
     };
 
-    const handleIDPTemplateAPICallError = (error) => {
+    const handleGetIDPTemplateAPICallError = (error) => {
         if (error.response && error.response.data && error.response.data.description) {
             dispatch(addAlert({
-                description: error.response.data.description,
+                description: t("devPortal:components.idp.notifications.getIDPTemplate.error.description",
+                    { description: error.response.data.description }),
                 level: AlertLevels.ERROR,
-                message: "Retrieval error"
+                message: t("devPortal:components.idp.notifications.getIDPTemplate.error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: "An error occurred while retrieving IDP template.",
+            description: t("devPortal:components.idp.notifications.getIDPTemplate.genericError.description"),
             level: AlertLevels.ERROR,
-            message: "Retrieval error"
+            message: t("devPortal:components.idp.notifications.getIDPTemplate.genericError.message")
         }));
     };
 
-    const handleAuthenticatorAPICallError = (error) => {
+    const handleGetFederatedAuthenticatorAPICallError = (error) => {
         if (error.response && error.response.data && error.response.data.description) {
             dispatch(addAlert({
-                description: error.response.data.description,
+                description: t("devPortal:components.idp.notifications.getFederatedAuthenticator.error.description",
+                    { description: error.response.data.description }),
                 level: AlertLevels.ERROR,
-                message: "Retrieval error"
+                message: t("devPortal:components.idp.notifications.getFederatedAuthenticator.error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: "An error occurred while retrieving the federated authenticator details.",
+            description: t("devPortal:components.idp.notifications.getFederatedAuthenticator.genericError.description"),
             level: AlertLevels.ERROR,
-            message: "Retrieval error"
+            message: t("devPortal:components.idp.notifications.getFederatedAuthenticator.genericError.message")
         }));
     };
 
-    const handleMetadataAPICallError = (error) => {
+    const handleGetFederatedAuthenticatorMetadataAPICallError = (error) => {
         if (error.response && error.response.data && error.response.data.description) {
             dispatch(addAlert({
-                description: error.response.data.description,
+                description: t("devPortal:components.idp.notifications.getFederatedAuthenticatorMetadata." +
+                    "error.description", { description: error.response.data.description }),
                 level: AlertLevels.ERROR,
-                message: "Retrieval error"
+                message: t("devPortal:components.idp.notifications.getFederatedAuthenticatorMetadata.error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: "An error occurred while retrieving the federated authenticator metadata.",
+            description: t("devPortal:components.idp.notifications.getFederatedAuthenticatorMetadata." +
+                "genericError.description"),
             level: AlertLevels.ERROR,
-            message: "Retrieval error"
+            message: t("devPortal:components.idp.notifications.getFederatedAuthenticatorMetadata.genericError.message")
         }));
     };
 
@@ -213,11 +224,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                             })
                         })
                         .catch(error => {
-                            handleMetadataAPICallError(error)
+                            handleGetFederatedAuthenticatorMetadataAPICallError(error)
                         });
                 })
                 .catch(error => {
-                    handleAuthenticatorAPICallError(error);
+                    handleGetFederatedAuthenticatorAPICallError(error);
                 });
         });
     };
@@ -280,9 +291,9 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         // Validation
         if (authenticator.isDefault && !data.checked) {
             dispatch(addAlert({
-                description: "You cannot disable the default authenticator.",
+                description: t("devPortal:components.idp.notifications.disableAuthenticator.error.description"),
                 level: AlertLevels.WARNING,
-                message: "Data validation error"
+                message: t("devPortal:components.idp.notifications.disableAuthenticator.error.message")
             }));
             onUpdate(idpId);
         } else {
@@ -363,17 +374,20 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
-                        description: error.response.data.description,
+                        description: t("devPortal:components.idp.notifications.getIDPTemplateList." +
+                            "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: "Identity provider Template List Fetch Error"
+                        message: t("devPortal:components.idp.notifications.getIDPTemplateList.error.message")
                     }));
 
                     return;
                 }
+
                 dispatch(addAlert({
-                    description: "An error occurred while retrieving identity provider template list",
+                    description: t("devPortal:components.idp.notifications.getIDPTemplateList." +
+                        "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Retrieval Error"
+                    message: t("devPortal:components.idp.notifications.getIDPTemplateList.genericError.message")
                 }));
             })
             .finally(() => {
@@ -406,7 +420,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     resolve(response)
                 })
                 .catch(error => {
-                    handleIDPTemplateAPICallError(error);
+                    handleGetIDPTemplateAPICallError(error);
                 });
         });
     };
@@ -421,11 +435,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 ) }
                 image={ EmptyPlaceholderIllustrations.newList }
                 imageSize="tiny"
-                title={ "Add an authenticator" }
+                title={ t("devPortal:components.idp.placeHolders.emptyAuthenticatorList.title") }
                 subtitle={ [
-                    "There are currently no authenticators available.",
-                    "You can add a new authenticator easily by using the",
-                    "predefined templates."
+                    t("devPortal:components.idp.placeHolders.emptyAuthenticatorList.subtitles.0"),
+                    t("devPortal:components.idp.placeHolders.emptyAuthenticatorList.subtitles.1"),
+                    t("devPortal:components.idp.placeHolders.emptyAuthenticatorList.subtitles.2")
                 ] }
             />
         )
@@ -437,7 +451,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 <Grid.Row>
                     <Grid.Column width={ 16 } textAlign="right">
                         <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }>
-                            <Icon name="add"/>New Authenticator
+                            <Icon name="add"/>
+                            { t("devPortal:components.idp.buttons.addAuthenticator") }
                         </PrimaryButton>
                     </Grid.Column>
                 </Grid.Row>
@@ -460,13 +475,19 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                 defaultChecked: authenticator.data?.isDefault,
                                                 disabled: (authenticator.data?.isDefault ||
                                                     !authenticator.data?.isEnabled),
-                                                label: (authenticator.data?.isDefault ? "Default" : "Make default"),
+                                                label: (authenticator.data?.isDefault ? t("devPortal:components." +
+                                                    "idp.forms.authenticatorAccordion.default.0") : 
+                                                    t("devPortal:components.idp.forms.authenticatorAccordion." +
+                                                        "default.1")),
                                                 onChange: handleDefaultAuthenticatorChange,
                                                 type: "checkbox"
                                             },
                                             {
                                                 defaultChecked: authenticator.data?.isEnabled,
-                                                label: (authenticator.data?.isEnabled ? "Enabled" : "Disabled"),
+                                                label: (authenticator.data?.isEnabled ? t("devPortal:components." +
+                                                    "idp.forms.authenticatorAccordion.enable.0") :
+                                                    t("devPortal:components.idp.forms.authenticatorAccordion." +
+                                                        "enable.1")),
                                                 onChange: handleAuthenticatorEnableToggle,
                                                 type: "toggle"
                                             }
@@ -500,9 +521,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         (!isLoading && !isPageLoading)
             ? (
                 <div className="authentication-section">
-                    {
-                        availableAuthenticators.length > 0 ? showAuthenticatorList() : showEmptyPlaceholder()
-                    }
+                    { availableAuthenticators.length > 0 ? showAuthenticatorList() : showEmptyPlaceholder() }
 
                     {
                         deletingAuthenticator && (
@@ -512,23 +531,32 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                 open={ showDeleteConfirmationModal }
                                 assertion={ deletingAuthenticator?.name }
                                 assertionHint={ (
-                                    <p>Please type <strong>{ deletingAuthenticator?.name }</strong> to confirm.</p>
+                                    <p>
+                                        <Trans
+                                            i18nKey="devPortal:components.idp.confirmations.deleteAuthenticator.
+                                            assertionHint"
+                                            tOptions={ { name: deletingAuthenticator?.name } }
+                                        >
+                                            Please type <strong>{ deletingAuthenticator?.name }</strong> to confirm.
+                                        </Trans>
+                                    </p>
                                 ) }
                                 assertionType="input"
-                                primaryAction="Confirm"
-                                secondaryAction="Cancel"
+                                primaryAction={ t("common:confirm") }
+                                secondaryAction={ t("common:cancel") }
                                 onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                                 onPrimaryActionClick={
                                     (): void => handleAuthenticatorDelete(deletingAuthenticator.authenticatorId)
                                 }
                             >
-                                <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+                                <ConfirmationModal.Header>
+                                    { t("devPortal:components.idp.confirmations.deleteAuthenticator.header") }
+                                </ConfirmationModal.Header>
                                 <ConfirmationModal.Message attached warning>
-                                    This action is irreversible and will permanently delete the authenticator.
+                                    { t("devPortal:components.idp.confirmations.deleteAuthenticator.message") }
                                 </ConfirmationModal.Message>
                                 <ConfirmationModal.Content>
-                                    If you delete this authenticator, you will not be able to get it back. All the
-                                    applications depending on this also might stop working. Please proceed with caution.
+                                    { t("devPortal:components.idp.confirmations.deleteAuthenticator.content") }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
                         )
@@ -536,8 +564,9 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     {
                          showAddAuthenticatorWizard && (
                              <AuthenticatorCreateWizard
-                                 title={ "Add New Authenticator" }
-                                 subTitle={ "Add new authenticator to the identity provider: " + idpName }
+                                 title={ t("devPortal:components.idp.modals.addAuthenticator.title") }
+                                 subTitle={ t("devPortal:components.idp.modals.addAuthenticator.subTitle",
+                                     { idpName: idpName }) }
                                  closeWizard={ () => {
                                      setShowAddAuthenticatorWizard(false);
                                      setAvailableAuthenticators([]);

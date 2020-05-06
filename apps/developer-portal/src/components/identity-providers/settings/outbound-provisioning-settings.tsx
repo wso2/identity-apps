@@ -20,6 +20,7 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { OutboundProvisioningRoles } from "./outbound-provisioning";
@@ -81,6 +82,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     } = props;
 
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -107,7 +109,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     /**
      * Fetch data and metadata of a given connector id and return a promise.
      *
-     * @param id of the connector.
+     * @param connectorId ID of the connector.
      */
     const fetchConnector = (connectorId: string) => {
         return new Promise(resolve => {
@@ -124,37 +126,46 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         .catch(error => {
                             if (error?.response?.data?.description) {
                                 dispatch(addAlert({
-                                    description: error.response.data.description,
+                                    description: t("devPortal:components.idp.notifications." +
+                                        "getOutboundProvisioningConnectorMetadata.error.description",
+                                        { description: error.response.data.description } ),
                                     level: AlertLevels.ERROR,
-                                    message: "Retrieval error"
+                                    message: t("devPortal:components.idp.notifications." +
+                                        "getOutboundProvisioningConnectorMetadata.error.message")
                                 }));
 
                                 return;
                             }
 
                             dispatch(addAlert({
-                                description: "An error occurred retrieving the outbound provisioning connector " +
-                                    "metadata.",
+                                description: t("devPortal:components.idp.notifications." +
+                                    "getOutboundProvisioningConnectorMetadata.genericError.description"),
                                 level: AlertLevels.ERROR,
-                                message: "Retrieval error"
+                                message: t("devPortal:components.idp.notifications." +
+                                    "getOutboundProvisioningConnectorMetadata.genericError.message")
                             }));
                         });
                 })
                 .catch(error => {
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(addAlert({
-                            description: error.response.data.description,
+                            description: t("devPortal:components.idp.notifications." +
+                                "getOutboundProvisioningConnector.error.description",
+                                { description: error.response.data.description } ),
                             level: AlertLevels.ERROR,
-                            message: "Retrieval error"
+                            message: t("devPortal:components.idp.notifications." +
+                                "getOutboundProvisioningConnector.error.message")
                         }));
 
                         return;
                     }
 
                     dispatch(addAlert({
-                        description: "An error occurred retrieving the outbound provisioning connector details.",
+                        description: t("devPortal:components.idp.notifications." +
+                            "getOutboundProvisioningConnector.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: "Retrieval error"
+                        message: t("devPortal:components.idp.notifications." +
+                            "getOutboundProvisioningConnector.genericError.message")
                     }));
                 });
         });
@@ -183,9 +194,11 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         updateOutboundProvisioningConnector(identityProvider.id, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully updated the outbound provisioning connector.",
+                    description: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
+                        "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Update successful"
+                    message: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
+                        "message.description")
                 }));
 
                 onUpdate(identityProvider.id);
@@ -193,18 +206,23 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
-                        description: error.response.data.description,
+                        description: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
+                            "error.description",
+                            { description: error.response.data.description } ),
                         level: AlertLevels.ERROR,
-                        message: "Update error"
+                        message: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
+                            "error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while updating the outbound provisioning connector.",
+                    description: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
+                        "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Update error"
+                    message: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
+                        "genericError.message")
                 }));
             });
     };
@@ -286,9 +304,11 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         // Validation
         if (connector.isDefault && !data.checked) {
             dispatch(addAlert({
-                description: "You cannot disable the default outbound provisioning connector.",
+                description: t("devPortal:components.idp.notifications.disableOutboundProvisioningConnector." +
+                    "error.description"),
                 level: AlertLevels.WARNING,
-                message: "Data validation error"
+                message: t("devPortal:components.idp.notifications.disableOutboundProvisioningConnector." +
+                    "error.message")
             }));
             onUpdate(identityProvider.id);
         } else {
@@ -315,7 +335,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                     <Grid.Column>
                                         <PrimaryButton floated="right" onClick={ () => setShowWizard(true) }>
                                             <Icon name="add"/>
-                                            New Connector
+                                            { t("devPortal:components.idp.buttons.addConnector") }
                                         </PrimaryButton>
                                     </Grid.Column>
                                 </Grid.Row>
@@ -339,13 +359,15 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                         actions: [
                                                             {
                                                                 defaultChecked: connector.data?.isDefault,
-                                                                label: "Make default",
+                                                                label: t("devPortal:components.idp.forms." +
+                                                                    "outboundConnectorAccordion.default"),
                                                                 onChange: handleDefaultConnectorChange,
                                                                 type: "checkbox"
                                                             },
                                                             {
                                                                 defaultChecked: connector?.data?.isEnabled,
-                                                                label: "Enabled",
+                                                                label: t("devPortal:components.idp.forms." +
+                                                                    "outboundConnectorAccordion.enable"),
                                                                 onChange: handleConnectorEnableToggle,
                                                                 type: "toggle"
                                                             }
@@ -377,15 +399,17 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                 <Divider hidden />
                                 <Segment>
                                     <EmptyPlaceholder
-                                        title="No outbound provisioning connectors"
+                                        title={ t("devPortal:components.idp.placeHolders.emptyConnectorList.title") }
                                         image={ EmptyPlaceholderIllustrations.emptyList }
-                                        subtitle={ [ "This IDP has no outbound provisioning connectors configured",
-                                            "Add a connect to view it here." ] }
+                                        subtitle={ [
+                                            t("devPortal:components.idp.placeHolders.emptyConnectorList.subtitle.0"),
+                                            t("devPortal:components.idp.placeHolders.emptyConnectorList.subtitle.1")
+                                        ] }
                                         imageSize="tiny"
                                         action={ (
                                             <PrimaryButton onClick={ () => setShowWizard(true) }>
                                                 <Icon name="add"/>
-                                                New Connector
+                                                { t("devPortal:components.idp.buttons.addConnector") }
                                             </PrimaryButton>
                                         ) }
                                     />
@@ -404,23 +428,31 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingConnector?.name }
                         assertionHint={ (
-                            <p>Please type <strong>{ deletingConnector?.name }</strong> to confirm.</p>
+                            <p>
+                                <Trans
+                                    i18nKey="devPortal:components.idp.confirmations.deleteConnector.assertionHint"
+                                    tOptions={ { name: deletingConnector?.name } }
+                                >
+                                    Please type <strong>{ deletingConnector?.name }</strong> to confirm.
+                                </Trans>
+                            </p>
                         ) }
                         assertionType="input"
-                        primaryAction="Confirm"
-                        secondaryAction="Cancel"
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={
                             (): void => handleDeleteConnector(deletingConnector)
                         }
                     >
-                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+                        <ConfirmationModal.Header>
+                            { t("devPortal:components.idp.confirmations.deleteConnector.header") }
+                        </ConfirmationModal.Header>
                         <ConfirmationModal.Message attached warning>
-                            This action is irreversible and will permanently delete the connector.
+                            { t("devPortal:components.idp.confirmations.deleteConnector.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            If you delete this outbound provisioning connector, you will not be able to get it back.
-                            Please proceed with caution.
+                            { t("devPortal:components.idp.confirmations.deleteConnector.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

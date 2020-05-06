@@ -20,12 +20,14 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { CheckboxProps } from "semantic-ui-react";
 import { deleteIdentityProvider, updateIdentityProviderDetails } from "../../../api";
 import { ConfigReducerStateInterface, IdentityProviderInterface } from "../../../models";
 import { AppState } from "../../../store";
 import { GeneralDetailsForm } from "../forms";
+import { handleIDPDeleteError, handleIDPUpdateError } from "../utils/common-utils";
 
 /**
  * Proptypes for the identity provider general details component.
@@ -88,6 +90,8 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
 
     const dispatch = useDispatch();
 
+    const { t } = useTranslation();
+
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     /**
@@ -97,29 +101,15 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         deleteIdentityProvider(idpId)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully deleted the identity provider",
+                    description: t("devPortal:components.idp.notifications.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Delete successful"
+                    message: t("devPortal:components.idp.notifications.success.message")
                 }));
 
                 onDelete();
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Identity Provider Delete Error"
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: "An error occurred while deleting the identity provider",
-                    level: AlertLevels.ERROR,
-                    message: "Identity Provider Delete Error"
-                }));
+                handleIDPDeleteError(error);
             });
     };
 
@@ -132,29 +122,14 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         updateIdentityProviderDetails({ id: idpId, ...updatedDetails })
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully updated the identity provider",
+                    description: t("devPortal:components.idp.notifications.updateIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Update successful"
+                    message: t("devPortal:components.idp.notifications.updateIDP.success.message")
                 }));
-
                 onUpdate(idpId);
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Update Error"
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: "An error occurred while updating the identity provider",
-                    level: AlertLevels.ERROR,
-                    message: "Update Error"
-                }));
+                handleIDPUpdateError(error);
             });
     };
 
@@ -178,12 +153,11 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                         imageUrl={ imageUrl }
                     />
                     { !(config.ui.doNotDeleteIdentityProviders.includes(name)) && (
-                        <DangerZoneGroup sectionHeader="Danger Zone">
+                        <DangerZoneGroup sectionHeader={ t("devPortal:components.idp.dangerZoneGroup.header") }>
                             <DangerZone
-                                actionTitle="Enable Identity Provider"
-                                header="Enable identity provider"
-                                subheader={ "Once you disable an identity provider, it can no longer be used until " +
-                                "you enable it again. Please be certain." }
+                                actionTitle={ t("devPortal:components.idp.dangerZoneGroup.disableIDP.actionTitle") }
+                                header={ t("devPortal:components.idp.dangerZoneGroup.disableIDP.header") }
+                                subheader={ t("devPortal:components.idp.dangerZoneGroup.disableIDP.subheader") }
                                 onActionClick={ undefined }
                                 toggle={ {
                                     checked: isEnabled,
@@ -191,10 +165,9 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 } }
                             />
                             <DangerZone
-                                actionTitle="Delete Identity Provider"
-                                header="Delete identity provider"
-                                subheader={ "Once you delete an identity provider, there is no going back." +
-                                " Please be certain." }
+                                actionTitle={ t("devPortal:components.idp.dangerZoneGroup.deleteIDP.actionTitle") }
+                                header={ t("devPortal:components.idp.dangerZoneGroup.deleteIDP.header") }
+                                subheader={ t("devPortal:components.idp.dangerZoneGroup.deleteIDP.subheader") }
                                 onActionClick={ handleIdentityProviderDelete }
                             />
                         </DangerZoneGroup>

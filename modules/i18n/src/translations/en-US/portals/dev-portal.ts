@@ -16,9 +16,6 @@
  * under the License.
  */
 import { DevPortalNS } from "../../../models";
-import { Field } from "../../../../../forms/dist/typings/components";
-import React from "react";
-import { lang } from "moment";
 
 export const devPortal: DevPortalNS = {
     components: {
@@ -460,16 +457,50 @@ export const devPortal: DevPortalNS = {
                     }
                 }
             },
+            buttons: {
+                addAuthenticator: "New Authenticator",
+                addConnector: "New Connector",
+                addIDP: "New Identity Provider"
+            },
             confirmations: {
+                deleteAuthenticator: {
+                    assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                    content: "If you delete this authenticator, you will not be able to get it back. All the " +
+                        "applications depending on this also might stop working. Please proceed with caution.",
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will permanently delete the authenticator."
+                },
+                deleteConnector: {
+                    assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                    content: "If you delete this connector, you will not be able to get it back. Please " +
+                        "proceed with caution.",
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will permanently delete the connector."
+                },
                 deleteIDP: {
-                    assertionHint: "Please type <1>{{ idpName }}</1> to confirm.",
+                    assertionHint: "Please type <1>{{ name }}</1> to confirm.",
                     content: "If you delete this identity provider, you will not be able to get it back. All the " +
                         "applications depending on this also might stop working. Please proceed with caution.",
                     header: "Are you sure?",
                     message: "This action is irreversible and will permanently delete the IDP."
                 }
             },
-            forms:{
+            dangerZoneGroup: {
+                deleteIDP: {
+                    actionTitle: "Delete Identity Provider",
+                    header: "Delete identity provider",
+                    subheader: "Once you delete an identity provider, there is no going back." +
+                        " Please be certain."
+                },
+                disableIDP: {
+                    actionTitle: "Enable Identity Provider",
+                    header: "Enable identity provider",
+                    subheader: "Once you disable an identity provider, it can no longer be used until " +
+                        "you enable it again. Please be certain."
+                },
+                header: "Danger Zone"
+            },
+            forms: {
                 advancedConfigs: {
                     alias: {
                         hint: "If the resident identity provider is known by an alias at the federated identity " +
@@ -502,6 +533,35 @@ export const devPortal: DevPortalNS = {
                     homeRealmIdentifier: {
                         hint: "Enter the home realm identifier for this identity provider",
                         label: "Home Realm Identifier"
+                    }
+                },
+                attributeSettings: {
+                    attributeMapping: {
+                        attributeColumnHeader: "Attribute",
+                        attributeMapColumnHeader: "Identity provider attribute",
+                        attributeMapInputPlaceholderPrefix: "eg: IdP's attribute for ",
+                        componentHeading: "Attributes Mapping",
+                        hint: "Add attributes supported by Identity Provider"
+                    },
+                    attributeProvisioning: {
+                        attributeColumnHeader: {
+                            0: "Attribute",
+                            1: "Identity provider attribute"
+                        },
+                        attributeMapColumnHeader: "Default value",
+                        attributeMapInputPlaceholderPrefix: "eg: a default value for the ",
+                        componentHeading: "Provisioning Attributes Selection",
+                        hint: "Specify required attributes for provisioning"
+                    }
+                },
+                authenticatorAccordion: {
+                    default: {
+                        0: "Default",
+                        1: "Make default"
+                    },
+                    enable: {
+                        0: "Enabled",
+                        1: "Disabled"
                     }
                 },
                 common: {
@@ -549,6 +609,16 @@ export const devPortal: DevPortalNS = {
                         hint: "Select user store domain name to provision users.",
                         label: "User store domain to always provision users"
                     }
+                },
+                outboundConnectorAccordion: {
+                    default: "Make default",
+                    enable: "Enabled"
+                }
+            },
+            modals: {
+                addAuthenticator: {
+                    subTitle: "Add new authenticator to the identity provider: {{ idpName }}",
+                    title: "Add New Authenticator"
                 }
             },
             notifications: {
@@ -566,6 +636,62 @@ export const devPortal: DevPortalNS = {
                         message: "Delete successful"
                     }
                 },
+                disableAuthenticator: {
+                    error: {
+                        description: "You cannot disable the default authenticator.",
+                        message: "Data validation error"
+                    },
+                    genericError: {
+                        description: "",
+                        message: ""
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                disableOutboundProvisioningConnector: {
+                    error: {
+                        description: "You cannot disable the default outbound provisioning connector.",
+                        message: "Data validation error"
+                    },
+                    genericError: {
+                        description: "",
+                        message: ""
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                getFederatedAuthenticator: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "",
+                        message: "Retrieval error"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                getFederatedAuthenticatorMetadata: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "",
+                        message: "Retrieval error"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
                 getIDP: {
                     error: {
                         description: "",
@@ -579,9 +705,150 @@ export const devPortal: DevPortalNS = {
                         description: "",
                         message: ""
                     }
+                },
+                getIDPTemplate: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving IDP template.",
+                        message: "Retrieval error"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                getIDPTemplateList: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Identity provider Template List Fetch Error"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving identity provider template list",
+                        message: "Retrieval Error"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                getOutboundProvisioningConnector: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "An error occurred retrieving the outbound provisioning connector details.",
+                        message: "Retrieval error"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                getOutboundProvisioningConnectorMetadata: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "An error occurred retrieving the outbound provisioning connector metadata.",
+                        message: "Retrieval error"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                submitAttributeSettings: {
+                    error: {
+                        description: "Need to configure all the mandatory properties.",
+                        message: "Cannot perform update"
+                    },
+                    genericError: {
+                        description: "",
+                        message: ""
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                updateFederatedAuthenticator: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Update error"
+                    },
+                    genericError: {
+                        description: "An error occurred while updating the federated authenticator.",
+                        message: "Update error"
+                    },
+                    success: {
+                        description: "Successfully updated the federated authenticator.",
+                        message: "Update successful"
+                    }
+                },
+                updateIDP: {
+                    error: {
+                        description: "An error occurred while the advanced configurations.",
+                        message: "Update error"
+                    },
+                    genericError: {
+                        description: "An error occurred while updating the identity provider",
+                        message: "Update Error"
+                    },
+                    success: {
+                        description: "Successfully updated the advanced configurations.",
+                        message: "Update successful"
+                    }
+                },
+                updateJITProvisioning: {
+                    error: {
+                        description: "",
+                        message: ""
+                    },
+                    genericError: {
+                        description: "An error occurred while the updating JIT provisioning configurations.",
+                        message: "Update Error"
+                    },
+                    success: {
+                        description: "Successfully updated JIT provisioning configurations.",
+                        message: "Update successful"
+                    }
+                },
+                updateOutboundProvisioningConnector: {
+                    error: {
+                        description: "{{ description }}",
+                        message: ""
+                    },
+                    genericError: {
+                        description: "An error occurred while updating the outbound provisioning connector.",
+                        message: "Update Error"
+                    },
+                    success: {
+                        description: "Successfully updated the outbound provisioning connector.",
+                        message: "Update successful"
+                    }
                 }
             },
             placeHolders: {
+                emptyAuthenticatorList: {
+                    subtitles: {
+                        0: "There are currently no authenticators available.",
+                        1: "You can add a new authenticator easily by using the",
+                        2: "predefined templates."
+                    },
+                    title: "Add an authenticator"
+                },
+                emptyConnectorList: {
+                    subtitles: {
+                        0: "This IDP has no outbound provisioning connectors configured",
+                        1: "Add a connect to view it here."
+                    },
+                    title: "No outbound provisioning connectors"
+                },
                 emptyIDPList: {
                     subtitles: {
                         0: "Currently there are no identity providers available.",

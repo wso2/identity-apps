@@ -15,6 +15,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { ContentLoader } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
     getUserStoreList,
     updateJITProvisioningConfigs
@@ -23,12 +29,8 @@ import {
     JITProvisioningResponseInterface,
     SimpleUserStoreListItemInterface
 } from "../../../models";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
-import { ContentLoader } from "@wso2is/react-components";
 import { JITProvisioningConfigurationsForm } from "../forms";
-import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 /**
  * Proptypes for the identity provider general details component.
@@ -70,6 +72,8 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
 
     const dispatch = useDispatch();
 
+    const { t } = useTranslation();
+
     const [userStore, setUserStore] = useState<SimpleUserStoreListItemInterface[]>([]);
 
 
@@ -82,17 +86,18 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
         updateJITProvisioningConfigs(idpId, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully updated JIT provisioning configurations.",
+                    description: t("devPortal:components.idp.notifications.updateJITProvisioning.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Update successful"
+                    message: t("devPortal:components.idp.notifications.updateJITProvisioning.success.message")
                 }));
                 onUpdate(idpId);
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: "An error occurred while the updating JIT provisioning configurations.",
+                    description: t("devPortal:components.idp.notifications.updateJITProvisioning." +
+                        "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Update error"
+                    message: t("devPortal:components.idp.notifications.updateJITProvisioning.genericError.message")
                 }));
             });
     };

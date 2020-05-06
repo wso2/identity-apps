@@ -18,13 +18,13 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider } from "semantic-ui-react";
 import { updateIdentityProviderDetails } from "../../../api";
 import { IdentityProviderAdvanceInterface } from "../../../models";
 import { AdvanceConfigurationsForm } from "../forms";
+import { handleIDPUpdateError } from "../utils/common-utils";
 
 /**
  * Proptypes for the advance settings component.
@@ -62,6 +62,8 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
 
     const dispatch = useDispatch();
 
+    const { t } = useTranslation();
+
     /**
      * Handles the advanced config form submit action.
      *
@@ -71,18 +73,14 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
         updateIdentityProviderDetails({ id: idpId, ...values })
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully updated the advanced configurations.",
+                    description: t("devPortal:components.idp.notifications.updateIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Update successful"
+                    message: t("devPortal:components.idp.notifications.updateIDP.success.message")
                 }));
                 onUpdate(idpId);
             })
-            .catch(() => {
-                dispatch(addAlert({
-                    description: "An error occurred while the advanced configurations.",
-                    level: AlertLevels.ERROR,
-                    message: "Update error"
-                }));
+            .catch((error) => {
+                handleIDPUpdateError(error);
             });
     };
 
