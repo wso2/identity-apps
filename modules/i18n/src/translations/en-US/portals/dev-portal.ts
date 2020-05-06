@@ -458,6 +458,7 @@ export const devPortal: DevPortalNS = {
                 }
             },
             buttons: {
+                addAttribute: "Add Attribute",
                 addAuthenticator: "New Authenticator",
                 addConnector: "New Connector",
                 addIDP: "New Identity Provider"
@@ -536,6 +537,11 @@ export const devPortal: DevPortalNS = {
                     }
                 },
                 attributeSettings: {
+                    attributeListItem: {
+                        validation: {
+                            empty: "Please enter a value"
+                        }
+                    },
                     attributeMapping: {
                         attributeColumnHeader: "Attribute",
                         attributeMapColumnHeader: "Identity provider attribute",
@@ -552,6 +558,11 @@ export const devPortal: DevPortalNS = {
                         attributeMapInputPlaceholderPrefix: "eg: a default value for the ",
                         componentHeading: "Provisioning Attributes Selection",
                         hint: "Specify required attributes for provisioning"
+                    },
+                    attributeSelection: {
+                        searchAttributes: {
+                            placeHolder: "Search attributes"
+                        }
                     }
                 },
                 authenticatorAccordion: {
@@ -613,18 +624,65 @@ export const devPortal: DevPortalNS = {
                 outboundConnectorAccordion: {
                     default: "Make default",
                     enable: "Enabled"
+                },
+                roleMapping: {
+                    heading: "Role Mapping",
+                    hint: "Map local roles with the Identity Provider roles",
+                    keyName: "Local Role",
+                    validation: {
+                        duplicateKeyErrorMsg: "This role is already mapped. Please select another role",
+                        keyRequiredMessage: "Please enter the local role",
+                        valueRequiredErrorMessage: "Please enter an IDP role to map to"
+                    },
+                    valueName: "Identity Provider Role"
+                },
+                uriAttributeSettings: {
+                    role: {
+                        heading: "Role",
+                        hint: "Specifies the attribute that identifies the roles at the Identity Provider",
+                        label: "Role Attribute",
+                        placeHolder: "Select Attribute",
+                        validation: {
+                            empty: "Please select an attribute for role"
+                        }
+                    },
+                    subject: {
+                        heading: "Subject",
+                        hint: "Specifies the attribute that identifies the user at the identity provider",
+                        label: "Subject Attribute",
+                        placeHolder: "Select Attribute",
+                        validation: {
+                            empty: "Please select an attribute for subject"
+                        }
+                    }
+                },
+                outboundProvisioningRoles: {
+                    heading: "OutBound Provisioning Roles",
+                    hint: "Select and add as identity provider outbound provisioning roles",
+                    label: "Role",
+                    placeHolder: "Select Role",
+                    popup: {
+                        content: "Add Role"
+                    }
                 }
             },
             modals: {
                 addAuthenticator: {
                     subTitle: "Add new authenticator to the identity provider: {{ idpName }}",
                     title: "Add New Authenticator"
+                },
+                attributeSelection: {
+                    content: {
+                        searchPlaceholder: "Search Attributes"
+                    },
+                    subTitle: "Add new attributes or remove existing attributes.",
+                    title: "Update attribute selection"
                 }
             },
             notifications: {
                 deleteIDP: {
                     error: {
-                        description: "",
+                        description: "{{ description }}",
                         message: "Identity Provider Delete Error"
                     },
                     genericError: {
@@ -694,7 +752,7 @@ export const devPortal: DevPortalNS = {
                 },
                 getIDP: {
                     error: {
-                        description: "",
+                        description: "{{ description }}",
                         message: "An error occurred while retrieving identity providers"
                     },
                     genericError: {
@@ -762,6 +820,20 @@ export const devPortal: DevPortalNS = {
                         message: ""
                     }
                 },
+                getRolesList: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Retrieval Error"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving roles",
+                        message: "Retrieval Error"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
                 submitAttributeSettings: {
                     error: {
                         description: "Need to configure all the mandatory properties.",
@@ -792,7 +864,7 @@ export const devPortal: DevPortalNS = {
                 },
                 updateIDP: {
                     error: {
-                        description: "An error occurred while the advanced configurations.",
+                        description: "{{ description }}",
                         message: "Update error"
                     },
                     genericError: {
@@ -821,7 +893,7 @@ export const devPortal: DevPortalNS = {
                 updateOutboundProvisioningConnector: {
                     error: {
                         description: "{{ description }}",
-                        message: ""
+                        message: "Update Error"
                     },
                     genericError: {
                         description: "An error occurred while updating the outbound provisioning connector.",
@@ -829,6 +901,20 @@ export const devPortal: DevPortalNS = {
                     },
                     success: {
                         description: "Successfully updated the outbound provisioning connector.",
+                        message: "Update successful"
+                    }
+                },
+                updateIDPRoleMappings: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Update Error"
+                    },
+                    genericError: {
+                        description: "There was an error while updating outbound provisioning role configurations",
+                        message: "Update Error"
+                    },
+                    success: {
+                        description: "Successfully updated outbound provisioning role configurations.",
                         message: "Update successful"
                     }
                 }
@@ -856,6 +942,12 @@ export const devPortal: DevPortalNS = {
                         2: "steps in the identity providers creation wizard."
                     },
                     title: "Add a new Identity Provider"
+                },
+                noAttributes: {
+                    subtitles: {
+                        0: "There are no attributes selected at the moment."
+                    },
+                    title: "No attributes added"
                 }
             },
             templates: {

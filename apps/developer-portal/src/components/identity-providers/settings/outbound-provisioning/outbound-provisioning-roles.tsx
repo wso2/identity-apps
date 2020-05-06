@@ -20,11 +20,12 @@ import { addAlert } from "@wso2is/core/store";
 import { Heading, Hint } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Divider, DropdownItemProps, Form, Grid, Icon, Label, Popup } from "semantic-ui-react";
+import { Button, DropdownItemProps, Form, Grid, Icon, Label, Popup } from "semantic-ui-react";
 import { getRolesList, updateIDPRoleMappings } from "../../../../api";
 import { IdentityProviderRolesInterface, RoleListInterface, RolesInterface } from "../../../../models";
-
+import { handleGetRoleListError } from "../../utils";
 
 interface OutboundProvisioningRolesPropsInterface {
     idpId: string;
@@ -45,6 +46,8 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
 
     const dispatch = useDispatch();
 
+    const { t } = useTranslation();
+    
     const handleRoleAdd = (event) => {
         event.preventDefault();
         if (_.isEmpty(selectedRole)) {
@@ -75,11 +78,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                 }
             })
             .catch((error) => {
-                dispatch(addAlert({
-                    description: error?.description ? error.description : "An error occurred while retrieving roles.",
-                    level: AlertLevels.ERROR,
-                    message: "Get Error"
-                }));
+                handleGetRoleListError(error);
             });
         setSelectedRoles(idpRoles.outboundProvisioningRoles === undefined ? [] :
             idpRoles.outboundProvisioningRoles);
@@ -93,28 +92,34 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
         ).then(() => {
             dispatch(addAlert(
                 {
-                    description: "Successfully updated outbound provisioning role configurations.",
+                    description: t("devPortal:components.idp.notifications.updateIDPRoleMappings.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Update successful"
+                    message: t("devPortal:components.idp.notifications.updateIDPRoleMappings.success.message")
                 }
             ));
         }).catch(error => {
-            dispatch(addAlert(
-                {
-                    description: error?.description || "There was an error while updating outbound provisioning role " +
-                        "configurations",
+            if (error.response && error.response.data && error.response.data.description) {
+                dispatch(addAlert({
+                    description: t("devPortal:components.idp.notifications.updateIDPRoleMappings.error.description",
+                        { description: error.response.data.description }),
                     level: AlertLevels.ERROR,
-                    message: "Update error"
-                }
-            ));
+                    message: t("devPortal:components.idp.notifications.updateIDPRoleMappings.error.message")
+                }));
+            }
+
+            dispatch(addAlert({
+                description: t("devPortal.components.idp.notifications.updateIDPRoleMappings.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.idp.notifications.updateIDPRoleMappings.genericError.message")
+            }));
         })
-    }
+    };
 
     return (
         <Grid>
             <Grid.Row>
                 <Grid.Column width={ 8 }>
-                    <Heading as="h5">OutBound Provisioning Roles</Heading>
+                    <Heading as="h5">{ t("devPortal:components.idp.forms.outboundProvisioningRoles.heading") }</Heading>
                 </Grid.Column>
             </Grid.Row>
 
@@ -130,7 +135,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 } as DropdownItemProps
                             }) }
                             value={ selectedRole }
-                            placeholder={ "Select Role" }
+                            placeholder={ t("devPortal:components.idp.forms.outboundProvisioningRoles.placeholder") }
                             onChange={
                                 (event, data) => {
                                     if (_.isEmpty(data?.value?.toString())) {
@@ -140,7 +145,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 }
                             }
                             search
-                            label={ "Role" }
+                            label={ t("devPortal:components.idp.forms.outboundProvisioningRoles.label") }
                         />
                         <Popup
                             trigger={
@@ -155,13 +160,12 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 )
                             }
                             position="top center"
-                            content="Add Role"
+                            content={ t("devPortal:components.idp.forms.outboundProvisioningRoles.popup.content") }
                             inverted
                         />
                     </Form>
-
                     <Hint>
-                        Select and add as identity provider outbound provisioning roles
+                        { t("devPortal:components.idp.forms.outboundProvisioningRoles.hint") }
                     </Hint>
 
                     {
@@ -170,7 +174,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 <Label
                                     key={ index }
                                 >
-                                    {selectedRole}
+                                    { selectedRole }
                                     <Icon
                                         name="delete"
                                         onClick={ () => handleRoleRemove(selectedRole) }
@@ -193,7 +197,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                             handleOutboundProvisioningRoleMapping(selectedRoles);
                         } }
                     >
-                        Update
+                        { t("common:update") }
                     </Button>
                 </Grid.Column>
             </Grid.Row>

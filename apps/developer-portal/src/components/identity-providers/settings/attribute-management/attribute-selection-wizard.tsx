@@ -28,6 +28,7 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Modal } from "semantic-ui-react";
 import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../../models";
+import { useTranslation } from "react-i18next";
 
 
 interface AttributeSelectionWizardPropsInterface {
@@ -50,6 +51,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
         attributesList
     } = props;
 
+    const { t } = useTranslation();
 
     const [tempAvailableClaims, setTempAvailableClaims] = useState<IdentityProviderClaimInterface[]>([]);
     const [filterTempAvailableClaims, setFilterTempAvailableClaims] = useState<IdentityProviderClaimInterface[]>([]);
@@ -237,14 +239,15 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     return (
         <Modal open={ showAddModal } size="small" className="user-attributes">
             <Modal.Header>
-                Update attribute selection
+                { t("devPortal.components.idp.modals.attributeSelection.title") }
                 <Heading subHeading ellipsis as="h6">
-                    Add new attributes or remove existing attributes.
+                    { t("devPortal.components.idp.modals.attributeSelection.subTitle") }
                 </Heading>
             </Modal.Header>
             <Modal.Content image>
                 <TransferComponent
-                    searchPlaceholder="Search Attributes"
+                    searchPlaceholder={ t("devPortal:components.idp.modals.attributeSelection." +
+                        "content.searchPlaceholder") }
                     addItems={ addAttributes }
                     removeItems={ removeAttributes }
                     handleUnelectedListSearch={ searchTempAvailable }
@@ -306,12 +309,12 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                 <LinkButton
                     onClick={ handleAttributeModal }
                 >
-                    Cancel
+                    { t("common:cancel") }
                 </LinkButton>
                 <PrimaryButton
                     onClick={ updateSelectedClaims }
                 >
-                    Save
+                    { t("common:save") }
                 </PrimaryButton>
             </Modal.Actions>
         </Modal>

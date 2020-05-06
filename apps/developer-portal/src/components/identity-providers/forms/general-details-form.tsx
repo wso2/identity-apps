@@ -113,7 +113,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             .catch((error) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
-                        description: error.response.data.description,
+                        description: t("devPortal:components.idp.notifications.getIDP.error.message",
+                            { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.idp.notifications.getIDP.error.message")
                     }));

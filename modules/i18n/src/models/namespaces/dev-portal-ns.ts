@@ -245,6 +245,7 @@ export interface DevPortalNS {
                 addIDP: string;
                 addAuthenticator: string;
                 addConnector: string;
+                addAttribute: string;
             };
             confirmations: {
                 deleteIDP: Confirmation;
@@ -286,6 +287,16 @@ export interface DevPortalNS {
                         componentHeading: string;
                         hint: string;
                     };
+                    attributeListItem: {
+                        validation: {
+                            empty: string;
+                        };
+                    };
+                    attributeSelection: {
+                        searchAttributes: {
+                            placeHolder: string;
+                        };
+                    };
                 };
                 authenticatorAccordion: {
                     default: {
@@ -325,6 +336,46 @@ export interface DevPortalNS {
                         };
                     };
                 };
+                roleMapping: {
+                    heading: string;
+                    keyName: string;
+                    valueName: string;
+                    validation: {
+                        keyRequiredMessage: string;
+                        valueRequiredErrorMessage: string;
+                        duplicateKeyErrorMsg: string;
+                    };
+                    hint: string;
+                };
+                uriAttributeSettings: {
+                    subject: {
+                        heading: string;
+                        hint: string;
+                        placeHolder: string;
+                        label: string;
+                        validation: {
+                            empty: string;
+                        };
+                    };
+                    role: {
+                        heading: string;
+                        hint: string;
+                        placeHolder: string;
+                        label: string;
+                        validation: {
+                            empty: string;
+                        };
+                    };
+                };
+                outboundProvisioningRoles: {
+                    heading: string;
+                    hint: string;
+                    placeHolder: string;
+                    label: string;
+                    popup: {
+                        content: string;
+                    };
+                };
             };
             templates: {
                 manualSetup: {
@@ -340,6 +391,13 @@ export interface DevPortalNS {
                 addAuthenticator: {
                     title: string;
                     subTitle: string;
+                };
+                attributeSelection: {
+                    title: string;
+                    subTitle: string;
+                    content: {
+                        searchPlaceholder: string;
+                    };
                 };
             };
             notifications: {
@@ -358,11 +416,14 @@ export interface DevPortalNS {
                 getOutboundProvisioningConnector: Notification;
                 updateOutboundProvisioningConnector: Notification;
                 disableOutboundProvisioningConnector: Notification;
+                getRolesList: Notification;
+                updateIDPRoleMappings: Notification;
             };
             placeHolders: {
                 emptyIDPList: Placeholder;
                 emptyAuthenticatorList: Placeholder;
                 emptyConnectorList: Placeholder;
+                noAttributes: Placeholder;
             };
         };
         users: {

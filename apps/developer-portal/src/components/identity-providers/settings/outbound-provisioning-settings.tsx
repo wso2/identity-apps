@@ -207,8 +207,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
-                            "error.description",
-                            { description: error.response.data.description } ),
+                            "error.description", { description: error.response.data.description } ),
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
                             "error.message")

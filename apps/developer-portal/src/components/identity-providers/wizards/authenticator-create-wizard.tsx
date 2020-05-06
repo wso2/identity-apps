@@ -397,19 +397,21 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                 closeOnEscape
             >
                 <Modal.Header className="wizard-header">
-                    {title}
-                    {subTitle && <Heading as="h6">{subTitle}</Heading>}
+                    { title }
+                    { subTitle &&
+                        <Heading as="h6">{ subTitle }</Heading>
+                    }
                 </Modal.Header>
                 <Modal.Content className="steps-container">
                     <Steps.Group header={ "Fill the basic information about your authenticator." }
                                  current={ currentWizardStep }>
-                        {wizardSteps.map((step, index) => (
+                        { wizardSteps.map((step, index) => (
                             <Steps.Step
                                 key={ index }
                                 icon={ step.icon }
                                 title={ step.title }
                             />
-                        ))}
+                        )) }
                     </Steps.Group>
                 </Modal.Content>
                 <Modal.Content className="content-container" scrolling>{ resolveStepContent(currentWizardStep) }
