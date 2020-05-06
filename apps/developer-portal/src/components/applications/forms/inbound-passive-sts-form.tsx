@@ -39,7 +39,8 @@ interface InboundPassiveStsFormPropsInterface {
 /**
  * Inbound Passive Sts protocol configurations form.
  *
- * @param {InboundPassiveStsFormPropsInterface} props
+ * @param {InboundPassiveStsFormPropsInterface} props - Props injected to the component.
+ *
  * @return {ReactElement}
  */
 export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormPropsInterface> = (

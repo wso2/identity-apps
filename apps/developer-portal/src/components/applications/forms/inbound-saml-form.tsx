@@ -43,10 +43,12 @@ interface InboundSAMLFormPropsInterface {
 /**
  * Inbound SAML configurations.
  *
- * @param props InboundSAMLFormPropsInterface
+ * @param {InboundSAMLFormPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> = (
-    props
+    props: InboundSAMLFormPropsInterface
 ): ReactElement => {
 
     const {
@@ -66,7 +68,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                 });
             } else {
                 metadataProp.options.map((ele) => {
-                    allowedOptions.push({ text: ele, value: ele, key: metadataProp.options.indexOf(ele) });
+                    allowedOptions.push({ key: metadataProp.options.indexOf(ele), text: ele, value: ele });
                 });
             }
         }
@@ -96,7 +98,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         if (!isEmpty(assertionConsumerUrls)) {
             const assertionUrlArray = assertionConsumerUrls.split(",");
             assertionUrlArray.map((url) => {
-                allowedOptions.push({ text: url, value: url, key: assertionUrlArray.indexOf(url) });
+                allowedOptions.push({ key: assertionUrlArray.indexOf(url), text: url, value: url });
             })
         }
         return allowedOptions;
@@ -106,44 +108,17 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
 
         return {
             manualConfiguration: {
-                issuer: values.get("issuer") || initialValues?.issuer,
                 assertionConsumerUrls: assertionConsumerUrls.split(","),
-                serviceProviderQualifier: values.get("applicationQualifier"),
-                defaultAssertionConsumerUrl: values.get("defaultAssertionConsumerUrl"),
-                idpEntityIdAlias: values.get("idpEntityIdAlias"),
-                singleSignOnProfile: {
-                    bindings: values.get("bindings"),
-                    enableSignatureValidationForArtifactBinding:
-                        values.get("signatureValidationForArtifactBinding")
-                            .includes("enableSignatureValidationForArtifactBinding"),
-                    attributeConsumingServiceIndex: values.get("attributeConsumingServiceIndex"),
-                    enableIdpInitiatedSingleSignOn: values.get("idPInitiatedSSO").includes("enableIdPInitiatedSSO"),
-                    assertion: {
-                        nameIdFormat: values.get("nameIdFormat"),
-                        audiences: audiences ? audiences.split(",") : [],
-                        recipients: recipients ? recipients.split(",") : [],
-                        digestAlgorithm: values.get("digestAlgorithm"),
-                        encryption: {
-                            enabled: values.get("assertionEncryption").includes("enableAssertionEncryption"),
-                            assertionEncryptionAlgorithm: values.get("assertionEncryptionAlgorithm"),
-                            keyEncryptionAlgorithm: values.get("keyEncryptionAlgorithm")
-                        }
-                    }
-                },
                 attributeProfile: {
-                    enabled: values.get("attributeProfile").includes("enabled"),
                     alwaysIncludeAttributesInResponse: values.get("includeAttributesInResponse")
-                        .includes("alwaysIncludeAttributesInResponse")
+                        .includes("alwaysIncludeAttributesInResponse"),
+                    enabled: values.get("attributeProfile").includes("enabled")
                 },
-                singleLogoutProfile: {
-                    enabled: values.get("singleLogoutProfile").includes("enabled"),
-                    logoutResponseUrl: values.get("singleLogoutResponseUrl"),
-                    logoutMethod: values.get("logoutMethod"),
-                    idpInitiatedSingleLogout: {
-                        enabled: values.get("idpInitiatedSingleLogout").includes("enabled"),
-                        returnToUrls: returnToURLS ? returnToURLS.split(",") : []
-                    }
-                },
+                defaultAssertionConsumerUrl: values.get("defaultAssertionConsumerUrl"),
+                enableAssertionQueryProfile:
+                    values.get("assertionQueryProfile").includes("enableAssertionQueryProfile"),
+                idpEntityIdAlias: values.get("idpEntityIdAlias"),
+                issuer: values.get("issuer") || initialValues?.issuer,
                 requestValidation: {
                     enableSignatureValidation: values.get("requestSignatureValidation")
                         .includes("enableSignatureValidation"),
@@ -153,7 +128,35 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                     enabled: values.get("responseSigning").includes("enabled"),
                     signingAlgorithm: values.get("signingAlgorithm")
                 },
-                enableAssertionQueryProfile: values.get("assertionQueryProfile").includes("enableAssertionQueryProfile")
+                serviceProviderQualifier: values.get("applicationQualifier"),
+                singleLogoutProfile: {
+                    enabled: values.get("singleLogoutProfile").includes("enabled"),
+                    idpInitiatedSingleLogout: {
+                        enabled: values.get("idpInitiatedSingleLogout").includes("enabled"),
+                        returnToUrls: returnToURLS ? returnToURLS.split(",") : []
+                    },
+                    logoutMethod: values.get("logoutMethod"),
+                    logoutResponseUrl: values.get("singleLogoutResponseUrl")
+                },
+                singleSignOnProfile: {
+                    assertion: {
+                        audiences: audiences ? audiences.split(",") : [],
+                        digestAlgorithm: values.get("digestAlgorithm"),
+                        encryption: {
+                            assertionEncryptionAlgorithm: values.get("assertionEncryptionAlgorithm"),
+                            enabled: values.get("assertionEncryption").includes("enableAssertionEncryption"),
+                            keyEncryptionAlgorithm: values.get("keyEncryptionAlgorithm")
+                        },
+                        nameIdFormat: values.get("nameIdFormat"),
+                        recipients: recipients ? recipients.split(",") : []
+                    },
+                    attributeConsumingServiceIndex: values.get("attributeConsumingServiceIndex"),
+                    bindings: values.get("bindings"),
+                    enableIdpInitiatedSingleSignOn: values.get("idPInitiatedSSO").includes("enableIdPInitiatedSSO"),
+                    enableSignatureValidationForArtifactBinding:
+                        values.get("signatureValidationForArtifactBinding")
+                            .includes("enableSignatureValidationForArtifactBinding")
+                }
             }
         }
     };
@@ -162,7 +165,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         () => {
             if (initialValues) {
                 setIsSingleLogoutProfileEnabled(initialValues?.singleLogoutProfile.enabled);
-                setIsIdpInitiatedSingleLogoutEnabled(initialValues?.singleLogoutProfile.idpInitiatedSingleLogout.enabled);
+                setIsIdpInitiatedSingleLogoutEnabled(
+                    initialValues?.singleLogoutProfile.idpInitiatedSingleLogout.enabled);
                 setIsAttributeProfileEnabled(initialValues?.attributeProfile.enabled);
                 setIsRequestSignatureValidationEnabled(initialValues?.requestValidation.enableSignatureValidation);
                 setAssertionEncryptionEnabled(initialValues?.singleSignOnProfile.assertion.encryption.enabled)
@@ -239,10 +243,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             placeholder={ "Enter URL " }
                             validationErrorMsg={ "Please add valid URL" }
                             validation={ (value: string) => {
-                                if (FormValidation.url(value)) {
-                                    return true;
-                                }
-                                return false;
+                                return FormValidation.url(value);
                             } }
                             required={ true }
                             showError={ showAssertionConsumerUrlError }
@@ -525,10 +526,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             placeholder={ "Enter audience " }
                             validationErrorMsg={ "Please add valid URL" }
                             validation={ (value: string) => {
-                                if (FormValidation.url(value)) {
-                                    return true;
-                                }
-                                return false;
+                                return FormValidation.url(value);
                             } }
                             showError={ showAudienceError }
                             setShowError={ setAudienceError }
@@ -543,10 +541,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             placeholder={ "Enter recipients" }
                             validationErrorMsg={ "Please add valid URL" }
                             validation={ (value: string) => {
-                                if (FormValidation.url(value)) {
-                                    return true;
-                                }
-                                return false;
+                                return FormValidation.url(value);
                             } }
                             showError={ showRecipientsError }
                             setShowError={ setRecipientsError }
@@ -758,19 +753,19 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     disabled={ !isSingleLogoutProfileEnabled }
                                     children={ [
                                         {
+                                            key: 1,
                                             text: "BACK CHANNEL",
-                                            value: LogoutMethods.BACK_CHANNEL,
-                                            key: 1
+                                            value: LogoutMethods.BACK_CHANNEL
                                         },
                                         {
+                                            key: 2,
                                             text: "FRONT CHANNEL HTTP REDIRECT",
-                                            value: LogoutMethods.FRONT_CHANNEL_HTTP_REDIRECT,
-                                            key: 2
+                                            value: LogoutMethods.FRONT_CHANNEL_HTTP_REDIRECT
                                         },
                                         {
+                                            key: 3,
                                             text: "FRONT CHANNEL HTTP POST",
-                                            value: LogoutMethods.FRONT_CHANNEL_HTTP_POST,
-                                            key: 3
+                                            value: LogoutMethods.FRONT_CHANNEL_HTTP_POST
                                         }
                                     ]
                                     }
@@ -868,10 +863,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             placeholder={ "Enter url" }
                             validationErrorMsg={ "Please add valid URL" }
                             validation={ (value: string) => {
-                                if (FormValidation.url(value)) {
-                                    return true;
-                                }
-                                return false;
+                                return FormValidation.url(value);
                             } }
                             showError={ returnToURLSError }
                             setShowError={ setReturnToURLSError }

@@ -19,7 +19,7 @@
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Button, Grid } from "semantic-ui-react";
 import { ApplicationInterface } from "../../../models";
 
@@ -64,9 +64,13 @@ interface GeneralDetailsFormPopsInterface {
 /**
  * Form to edit general details of the application.
  *
- * @param props GeneralDetailsFormPopsInterface.
+ * @param {GeneralDetailsFormPopsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterface> = (props): JSX.Element => {
+export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterface> = (
+    props: GeneralDetailsFormPopsInterface
+): ReactElement => {
 
     const {
         appId,

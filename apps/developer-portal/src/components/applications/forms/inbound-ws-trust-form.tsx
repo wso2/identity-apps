@@ -39,7 +39,8 @@ interface InboundWSTrustFormPropsInterface {
 /**
  * Inbound WS Trust protocol configurations form.
  *
- * @param {InboundWSTrustFormPropsInterface} props
+ * @param {InboundWSTrustFormPropsInterface} props - Props injected to the component.
+ *
  * @return {ReactElement}
  */
 export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterface> = (
@@ -61,7 +62,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
         const allowedOptions = [];
         if (metadataProp) {
             metadataProp.options.map((ele) => {
-                allowedOptions.push({ text: ele, value: ele, key: metadataProp.options.indexOf(ele) });
+                allowedOptions.push({ key: metadataProp.options.indexOf(ele), text: ele, value: ele });
             });
         }
 

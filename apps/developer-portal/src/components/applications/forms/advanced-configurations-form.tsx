@@ -26,7 +26,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState
 import { useDispatch } from "react-redux";
 import { Button, Divider, Grid, Modal } from "semantic-ui-react";
 import { AdvancedConfigurationsInterface, CertificateTypeInterface, DisplayCertificate } from "../../../models";
-import { CommonUtils } from "../../../utils/common-utils";
+import { CommonUtils } from "../../../utils";
 import { Certificate as CertificateDisplay } from "../../certificates";
 
 /**
@@ -45,7 +45,8 @@ interface AdvancedConfigurationsFormPropsInterface {
  * Advanced configurations form component.
  *
  * @param {AdvancedConfigurationsFormPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ *
+ * @return {React.ReactElement}
  */
 export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfigurationsFormPropsInterface> = (
     props: AdvancedConfigurationsFormPropsInterface
@@ -90,7 +91,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                     value: isPEMSelected ? values.get("certificateValue") : values.get("jwksValue")
                 },
                 enableAuthorization: !!values.get("enableAuthorization")?.includes("enableAuthorization"),
-                returnAuthenticatedIdpList: !!values.get("returnAuthenticatedIdpList")?.includes("returnAuthenticatedIdpList"),
+                returnAuthenticatedIdpList:
+                    !!values.get("returnAuthenticatedIdpList")?.includes("returnAuthenticatedIdpList"),
                 saas: !!values.get("saas")?.includes("saas"),
                 skipLoginConsent: !!values.get("skipConsentLogin")?.includes("skipLoginConsent"),
                 skipLogoutConsent: !!values.get("skipConsentLogout")?.includes("skipLogoutConsent")
@@ -277,7 +279,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             default={ CertificateTypeInterface.JWKS }
                             listen={
                                 (values) => {
-                                    setPEMSelected(values.get("type") === "PEM" ? true : false);
+                                    setPEMSelected(values.get("type") === "PEM");
                                 }
                             }
                             type="radio"

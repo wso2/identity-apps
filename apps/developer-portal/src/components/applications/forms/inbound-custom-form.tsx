@@ -41,8 +41,9 @@ interface InboundCustomFormPropsInterface {
 /**
  * Inbound Custom protocol configurations form.
  *
- * @param {InboundCustomFormPropsInterface} props
- * @return ReactElement
+ * @param {InboundCustomFormPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormPropsInterface> = (
     props: InboundCustomFormPropsInterface

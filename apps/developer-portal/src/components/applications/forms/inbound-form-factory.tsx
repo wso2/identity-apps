@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { InboundCustomProtocolForm } from "./inbound-custom-form";
 import { InboundOIDCForm } from "./inbound-oidc-form";
 import { InboundPassiveStsForm } from "./inbound-passive-sts-form";
@@ -44,11 +44,12 @@ interface InboundFormFactoryInterface {
  * Inbound protocol form factory.
  *
  * @param {InboundFormFactoryInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
 export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> = (
     props: InboundFormFactoryInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         metadata,

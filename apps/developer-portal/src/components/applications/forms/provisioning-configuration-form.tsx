@@ -39,6 +39,7 @@ interface ProvisioningConfigurationFormPropsInterface {
  * Provisioning configurations form component.
  *
  * @param {ProvisioningConfigurationFormPropsInterface} props - Props injected to the component.
+ *
  * @return {ReactElement}
  */
 export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfigurationFormPropsInterface> = (
@@ -64,8 +65,8 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
         return {
             provisioningConfigurations: {
                 inboundProvisioning: {
-                    proxyMode: values.get("proxyMode").includes("modeOn"),
-                    provisioningUserstoreDomain: values.get("provisioningUserstoreDomain")
+                    provisioningUserstoreDomain: values.get("provisioningUserstoreDomain"),
+                    proxyMode: values.get("proxyMode").includes("modeOn")
                 }
             }
         };
@@ -80,9 +81,9 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
         if (useStoreList) {
             useStoreList?.map((userStore) => {
                 allowedOptions.push({
+                    key: useStoreList.indexOf(userStore),
                     text: userStore?.name,
-                    value: userStore?.name,
-                    key: useStoreList.indexOf(userStore)
+                    value: userStore?.name
                 });
             });
         }

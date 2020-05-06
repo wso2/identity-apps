@@ -51,9 +51,9 @@ interface InboundOIDCFormPropsInterface {
 /**
  * Inbound OIDC protocol configurations form.
  *
- * @param {InboundOIDCFormPropsInterface} props
- * @return {JSX.Element}
- * @constructor
+ * @param {InboundOIDCFormPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> = (
     props: InboundOIDCFormPropsInterface
@@ -108,7 +108,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      *
      * @param {MetadataPropertyInterface} metadataProp - Metadata.
      * @param {boolean} isLabel - Flag to determine if label.
-     * @param {boolean} isGrant - Flag to determine if grant type.
      * @return {any[]}
      */
     const getAllowedList = (metadataProp: MetadataPropertyInterface, isLabel?: boolean): any[] => {
@@ -405,10 +404,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             placeholder={ "Enter callback URL" }
                             validationErrorMsg={ "Please add valid URL." }
                             validation={ (value: string) => {
-                                if (FormValidation.url(value)) {
-                                    return true;
-                                }
-                                return false;
+                                return FormValidation.url(value);
                             } }
                             showError={ showURLError }
                             setShowError={ setShowURLError }
@@ -636,8 +632,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     listen={
                                         (values) => {
                                             setEncryptionEnable(
-                                                values.get("encryption").includes("enableEncryption") ?
-                                                    true : false
+                                                !!values.get("encryption").includes("enableEncryption")
                                             );
                                         }
                                     }
@@ -727,10 +722,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     type="text"
                                     validationErrorMsg={ "Please add valid URL" }
                                     validation={ (value: string) => {
-                                        if (FormValidation.url(value)) {
-                                            return true;
-                                        }
-                                        return false;
+                                        return FormValidation.url(value);
                                     } }
                                     value={ initialValues.logout?.backChannelLogoutUrl }
                                     readOnly={ readOnly }
@@ -748,10 +740,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     type="text"
                                     validationErrorMsg={ "Please add valid URL" }
                                     validation={ (value: string) => {
-                                        if (FormValidation.url(value)) {
-                                            return true;
-                                        }
-                                        return false;
+                                        return FormValidation.url(value);
                                     } }
                                     value={ initialValues.logout?.frontChannelLogoutUrl }
                                     readOnly={ readOnly }
