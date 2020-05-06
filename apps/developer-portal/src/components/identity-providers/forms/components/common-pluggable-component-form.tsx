@@ -17,6 +17,7 @@
  */
 
 import { FormValue, Forms } from "@wso2is/forms";
+import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Button, Grid } from "semantic-ui-react";
 import {
@@ -27,7 +28,6 @@ import {
 } from "../../../../models";
 import { getPropertyMetadata } from "../../utils";
 import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../helpers";
-import _ from "lodash";
 
 /**
  * Common pluggable connector configurations form.

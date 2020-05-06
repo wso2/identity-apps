@@ -65,7 +65,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const handleSearch = (event) => {
         const changedValue = event.target.value;
         setSearchFilter(changedValue);
-    }
+    };
 
     const handleOpenSelectionModal = () => {
         setShowSelectionModal(true);

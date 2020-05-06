@@ -96,7 +96,7 @@ export const isClaimExistsInIdPClaims = (mapping: IdentityProviderCommonClaimMap
                                          selectedClaimsWithMapping: IdentityProviderCommonClaimMappingInterface[]) => {
     // Mapped value of the selectedClaim is non-other than IdP's claim uri.
     return _.find(selectedClaimsWithMapping, element => element.mappedValue === mapping.claim.uri) !== undefined;
-}
+};
 
 export const updateAvailableLocalClaims = (setAvailableLocalClaims, dispatch) => {
     getAllLocalClaims(null)
@@ -127,7 +127,7 @@ export const initSelectedClaimMappings = (initialClaims, setSelectedClaimsWithMa
             } as IdentityProviderCommonClaimMappingInterface;
         })
     );
-}
+};
 
 export const initSelectedProvisioningClaimsWithDefaultValues = (initialClaims,
                                                                 setSelectedProvisioningClaimsWithDefaultValue) => {
@@ -143,12 +143,12 @@ export const initSelectedProvisioningClaimsWithDefaultValues = (initialClaims,
             } as IdentityProviderCommonClaimMappingInterface;
         })
     );
-}
+};
 
 export const initSubjectAndRoleURIs = (initialClaims, setSubjectClaimUri, setRoleClaimUri) => {
     setSubjectClaimUri(initialClaims?.userIdClaim?.uri);
     setRoleClaimUri(initialClaims?.roleClaim?.uri);
-}
+};
 
 export const handleAttributeSettingsFormSubmit = (idpId: string, values: IdentityProviderClaimsInterface,
                                                   roleMapping: IdentityProviderRoleMappingInterface[],

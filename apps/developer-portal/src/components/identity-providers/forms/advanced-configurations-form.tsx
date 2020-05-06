@@ -21,6 +21,7 @@ import { Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { IdentityProviderAdvanceInterface } from "../../../models";
 
@@ -48,6 +49,8 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
     } = props;
 
     const [isPEMSelected, setPEMSelected] = useState<boolean>(false);
+
+    const { t } = useTranslation();
 
     /**
      * Prepare form values for submitting.
@@ -81,19 +84,19 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             name="federationHub"
                             label=""
                             required={ false }
-                            requiredErrorMessage="this is needed"
+                            requiredErrorMessage={ t("devPortal:components.idp.forms.common.requiredErrorMessage") }
                             value={ config?.isFederationHub ? ["federationHub"] : [] }
                             type="checkbox"
                             children={ [
                                 {
-                                    label: "Federation Hub",
+                                    label: t("devPortal:components.idp.forms.advancedConfigs.federationHub.label"),
                                     value: "federationHub"
                                 }
                             ] }
                             toggle
                         />
                         <Hint>
-                            Check if this points to a federation hub identity provider
+                            { t("devPortal.components.idp.forms.advancedConfigs.federationHub.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -101,7 +104,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="homeRealmIdentifier"
-                            label="Home Realm Identifier"
+                            label={ t("devPortal:components.idp.forms.advancedConfigs.homeRealmIdentifier.label") }
                             required={ false }
                             requiredErrorMessage=""
                             placeholder={ name }
@@ -109,7 +112,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             value={ config.homeRealmIdentifier }
                         />
                         <Hint>
-                            Enter the home realm identifier for this identity provider
+                            { t("devPortal:components.idp.forms.advancedConfigs.homeRealmIdentifier.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -117,7 +120,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="alias"
-                            label="Alias"
+                            label={ t("devPortal:components.idp.forms.advancedConfigs.alias.label") }
                             required={ false }
                             requiredErrorMessage=""
                             placeholder={ name }
@@ -125,8 +128,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             value={ config.alias }
                         />
                         <Hint>
-                            If the resident identity provider is known by an alias at the federated identity provider
-                            specify it
+                            { t("devPortal:components.idp.forms.advancedConfigs.alias.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -135,23 +137,25 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                         <Heading as="h5">Certificate</Heading>
                         <Divider hidden/>
                         <Field
-                            label="Certificate type"
+                            label={ t("devPortal:components.idp.forms.advancedConfigs.certificateType.label") }
                             name="type"
                             default={ config?.certificate && config?.certificate.certificates
                             && config?.certificate?.certificates.length > 0 ? "PEM" : "JWKS" }
                             listen={
                                 (values) => {
-                                    setPEMSelected(values.get("type") === "PEM" ? true : false);
+                                    setPEMSelected(values.get("type") === "PEM");
                                 }
                             }
                             type="radio"
                             children={ [
                                 {
-                                    label: "JWKS",
+                                    label: t("devPortal:components.idp.forms.advancedConfigs.certificateType." +
+                                        "certificateJWKS.label"),
                                     value: "JWKS"
                                 },
                                 {
-                                    label: "PEM",
+                                    label: t("devPortal:components.idp.forms.advancedConfigs.certificateType." +
+                                        "certificatePEM.label"),
                                     value: "PEM"
                                 }
                             ] }
@@ -167,8 +171,10 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                                         name="value"
                                         label="Value"
                                         required={ false }
-                                        requiredErrorMessage="Certificate value is required"
-                                        placeholder={ "Value should be the certificate in PEM format." }
+                                        requiredErrorMessage={ t("devPortal:components.idp.forms." +
+                                            "advancedConfigs.certificateType.certificateJWKS.validations.empty") }
+                                        placeholder={ t("devPortal:components.idp.forms.advancedConfigs." +
+                                            "certificateType.certificateJWKS.placeholder") }
                                         type="textarea"
                                         value={ config?.certificate && config?.certificate.certificates
                                         && config?.certificate?.certificates.length > 0 &&
@@ -179,13 +185,18 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                                         name="value"
                                         label="Value"
                                         required={ false }
-                                        requiredErrorMessage="Certificate value is required"
-                                        placeholder={ "Value should be jwks URL." }
+                                        requiredErrorMessage={ t("devPortal:components.idp.forms." +
+                                            "advancedConfigs.certificateType.certificatePEM.validations.empty") }
+                                        placeholder={ t("devPortal:components.idp.forms.advancedConfigs." +
+                                            "certificateType.certificatePEM.placeholder") }
                                         type="text"
                                         validation={ (value: string, validation: Validation) => {
                                             if (!FormValidation.url(value)) {
                                                 validation.isValid = false;
-                                                validation.errorMessages.push("This is not a valid URL");
+                                                validation.errorMessages.push(
+                                                    t("devPortal:components.idp.forms.common." +
+                                                        "invalidQueryParamErrorMessage")
+                                                );
                                             }
                                         } }
                                         value={ config?.certificate && config?.certificate?.jwksUri }
@@ -193,15 +204,14 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                                 )
                         }
                         <Hint>
-                            If the type is JWKS, value should be a jwks URL. If the type is PEM, value should be the
-                            certificate in PEM format.
+                            { t("devPortal:components.idp.forms.advancedConfigs.certificateType.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Button primary type="submit" size="small" className="form-button">
-                            Update
+                            { t("common:update") }
                         </Button>
                     </Grid.Column>
                 </Grid.Row>

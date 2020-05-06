@@ -16,11 +16,10 @@
  * under the License.
  */
 
-import {IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface} from "../../../../models";
-import {Input, Label, Table} from "semantic-ui-react";
-import React, {FunctionComponent, ReactElement} from "react";
 import _ from "lodash";
-
+import React, { FunctionComponent, ReactElement } from "react";
+import { Input, Label, Table } from "semantic-ui-react";
+import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../../models";
 
 interface AttributeListItemPropInterface {
     attribute: IdentityProviderClaimInterface;

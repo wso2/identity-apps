@@ -28,11 +28,11 @@ import {
     OutboundProvisioningSettings
 } from "./settings";
 import { AttributeSettings } from "./settings";
+import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import {
     IdentityProviderAdvanceInterface,
     IdentityProviderInterface
 } from "../../models";
-import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 
 /**
  * Proptypes for the idp edit component.

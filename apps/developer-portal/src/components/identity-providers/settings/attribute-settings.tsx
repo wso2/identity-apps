@@ -22,6 +22,7 @@ import { useTrigger } from "@wso2is/forms";
 import { ContentLoader } from "@wso2is/react-components";
 import _, { isEmpty } from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
 import { AttributeSelection, RoleMappingSettings, UriAttributesSettings } from "./attribute-management";
@@ -94,6 +95,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     } = props;
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     // Manage available local claims.
     const [availableLocalClaims, setAvailableLocalClaims] = useState<IdentityProviderClaimInterface[]>([]);
@@ -228,9 +231,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         } else {
             dispatch(addAlert(
                 {
-                    description: "Need to configure all the mandatory properties.",
+                    description: t("devPortal:components.idp.notifications." +
+                        "submitAttributeSettings.error.description"),
                     level: AlertLevels.WARNING,
-                    message: "Cannot perform update"
+                    message: t("devPortal:components.idp.notifications.submitAttributeSettings.error.message")
                 }
             ));
         }
@@ -253,12 +257,16 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     selectedAttributesWithMapping={ selectedClaimsWithMapping }
                     setSelectedAttributesWithMapping={ setSelectedClaimsWithMapping }
                     uiProps={ {
-                        attributeColumnHeader: "Attribute",
-                        attributeMapColumnHeader: "Identity provider attribute",
-                        attributeMapInputPlaceholderPrefix: "eg: IdP's attribute for ",
-                        componentHeading: "Attributes Mapping",
+                        attributeColumnHeader: t("devPortal:components.idp.forms.attributeSettings." +
+                            "attributeMapping.attributeColumnHeader"),
+                        attributeMapColumnHeader: t("devPortal:components.idp.forms.attributeSettings." +
+                            "attributeMapping.attributeMapColumnHeader"),
+                        attributeMapInputPlaceholderPrefix: t("devPortal:components.idp.forms.attributeSettings." +
+                            "attributeMapping.attributeMapInputPlaceholderPrefix"),
+                        componentHeading: t("devPortal:components.idp.forms.attributeSettings." +
+                            "attributeMapping.componentHeading"),
                         enablePrecedingDivider: false,
-                        hint: "Add attributes supported by Identity Provider"
+                        hint: t("devPortal:components.idp.forms.attributeSettings.attributeMapping.hint")
                     } }
                 /> }
 
@@ -281,13 +289,19 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     selectedAttributesWithMapping={ selectedProvisioningClaimsWithDefaultValue }
                     setSelectedAttributesWithMapping={ setSelectedProvisioningClaimsWithDefaultValue }
                     uiProps={ {
-                        attributeColumnHeader: _.isEmpty(selectedClaimsWithMapping) ? "Attribute" : "Identity " +
-                            "provider attribute",
-                        attributeMapColumnHeader: "Default value",
-                        attributeMapInputPlaceholderPrefix: "eg: a default value for the ",
-                        componentHeading: "Provisioning Attributes Selection",
+                        attributeColumnHeader: _.isEmpty(selectedClaimsWithMapping) ? 
+                            t("devPortal:components.idp.forms.attributeSettings.attributeProvisioning." +
+                                "attributeColumnHeader.0") :
+                            t("devPortal:components.idp.forms.attributeSettings.attributeProvisioning." +
+                                "attributeColumnHeader.1"),
+                        attributeMapColumnHeader: t("devPortal:components.idp.forms.attributeSettings." +
+                            "attributeProvisioning.attributeMapColumnHeader"),
+                        attributeMapInputPlaceholderPrefix: t("devPortal:components.idp.forms.attributeSettings." +
+                            "attributeProvisioning.attributeMapInputPlaceholderPrefix"),
+                        componentHeading: t("devPortal:components.idp.forms.attributeSettings." +
+                            "attributeProvisioning.componentHeading"),
                         enablePrecedingDivider: true,
-                        hint: "Specify required attributes for provisioning"
+                        hint: t("devPortal:components.idp.forms.attributeSettings.attributeProvisioning.hint")
                     } }
                 /> }
 
@@ -305,7 +319,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             size="small"
                             onClick={ setTriggerSubmission }
                         >
-                            Update
+                            { t("common:update") }
                         </Button>
                     </Grid.Column>
                 </Grid.Row>

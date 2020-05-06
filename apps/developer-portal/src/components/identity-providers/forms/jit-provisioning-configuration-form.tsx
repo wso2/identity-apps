@@ -16,16 +16,17 @@
  * under the License.
  */
 
-import { Button, Divider, Grid } from "semantic-ui-react";
 import { Field, Forms } from "@wso2is/forms";
-import { Heading, Hint } from "@wso2is/react-components";
+import { Hint } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Button, Grid } from "semantic-ui-react";
 import {
     IdentityProviderInterface,
     JITProvisioningResponseInterface,
     SimpleUserStoreListItemInterface,
     SupportedJITProvisioningSchemes
 } from "../../../models";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 /**
  *  Just-in time provisioning configurations for the IdP.
@@ -59,6 +60,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     } = props;
 
     const [isJITProvisioningEnabled, setIsJITProvisioningEnabled] = useState<boolean>(false);
+
+    const { t } = useTranslation();
 
     /**
      * Prepare form values for submitting.
@@ -126,14 +129,15 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             }
                             children={ [
                                 {
-                                    label: "Enable Just-in-time Provisioning",
+                                    label: t("devPortal:components.idp.forms." +
+                                        "jitProvisioning.enableJITProvisioning.label"),
                                     value: JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
                                 }
                             ] }
                             toggle
                         />
                         <Hint>
-                            Specifies if users federated from this identity provider needs to be provisioned locally.
+                            { t("devPortal:components.idp.forms.jitProvisioning.enableJITProvisioning.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -141,7 +145,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name={ JITProvisioningConstants.PROVISIONING_USER_STORE_DOMAIN_KEY }
-                            label="User store domain to always provision users"
+                            label={ t("devPortal:components.idp.forms.jitProvisioning." +
+                                "provisioningUserStoreDomain.label") }
                             required={ false }
                             requiredErrorMessage=""
                             type="dropdown"
@@ -151,7 +156,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             disabled={ !isJITProvisioningEnabled }
                         />
                         <Hint>
-                            Select user store domain name to provision users.
+                            { t("devPortal:components.idp.forms.jitProvisioning.provisioningUserStoreDomain.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -159,33 +164,37 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
-                            label="Provisioning scheme"
+                            label={ t("devPortal.components.idp.forms.jitProvisioning.provisioningScheme.label") }
                             name={ JITProvisioningConstants.PROVISIONING_SCHEME_TYPE_KEY }
                             default={ initialValues?.scheme ? initialValues?.scheme :
                                 SupportedJITProvisioningSchemes.PROMPT_USERNAME_PASSWORD_CONSENT }
                             type="radio"
                             children={ [
                                 {
-                                    label: "Prompt for username, password and consent",
+                                    label: t("devPortal:components.idp.forms.jitProvisioning." +
+                                        "provisioningScheme.children.0"),
                                     value: SupportedJITProvisioningSchemes.PROMPT_USERNAME_PASSWORD_CONSENT
                                 },
                                 {
-                                    label: "Prompt for password and consent",
+                                    label: t("devPortal:components.idp.forms.jitProvisioning." +
+                                        "provisioningScheme.children.1"),
                                     value: SupportedJITProvisioningSchemes.PROMPT_PASSWORD_CONSENT
                                 },
                                 {
-                                    label: "Prompt for consent",
+                                    label: t("devPortal:components.idp.forms.jitProvisioning." +
+                                        "provisioningScheme.children.2"),
                                     value: SupportedJITProvisioningSchemes.PROMPT_CONSENT
                                 },
                                 {
-                                    label: "Provision silently",
+                                    label: t("devPortal:components.idp.forms.jitProvisioning." +
+                                        "provisioningScheme.children.3"),
                                     value: SupportedJITProvisioningSchemes.PROVISION_SILENTLY
                                 }
                             ] }
                             disabled={ !isJITProvisioningEnabled }
                         />
                         <Hint>
-                            Select the scheme to be used, when users are provisioned.
+                            { t("devPortal.components.idp.forms.jitProvisioning.provisioningScheme.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -197,7 +206,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             size="small"
                             className="form-button"
                         >
-                            Update
+                            { t("common:update") }
                         </Button>
                     </Grid.Column>
                 </Grid.Row>

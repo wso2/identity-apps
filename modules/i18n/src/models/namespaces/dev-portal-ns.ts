@@ -16,7 +16,16 @@
  * under the License.
  */
 
-import { DangerZone, EditPage, FormAttributes, HelpPanelInterface, Notification, Page, Placeholder } from "../common";
+import {
+    Confirmation,
+    DangerZone,
+    EditPage,
+    FormAttributes,
+    HelpPanelInterface,
+    Notification,
+    Page,
+    Placeholder
+} from "../common";
 
 /**
  * Model for the dev portal namespace
@@ -228,7 +237,94 @@ export interface DevPortalNS {
                         };
                     };
                 };
-                placeholder: string;
+                placeHolders: {
+                    emptyIDPList: Placeholder;
+                };
+            };
+            buttons: {
+                addIDP: string;
+                addAuthenticator: string;
+                addConnector: string;
+            };
+            confirmations: {
+                deleteIDP: Confirmation;
+                deleteAuthenticator: Confirmation;
+                deleteConnector: Confirmation;
+            };
+            dangerZoneGroup: {
+                header: string;
+                disableIDP: DangerZone;
+                deleteIDP: DangerZone;
+            };
+            forms: {
+                advancedConfigs: {
+                    federationHub: FormAttributes;
+                    homeRealmIdentifier: FormAttributes;
+                    alias: FormAttributes;
+                    certificateType: {
+                        label: string;
+                        hint: string;
+                        certificatePEM: FormAttributes;
+                        certificateJWKS: FormAttributes;
+                    };
+                };
+                attributeSettings: {
+                    attributeMapping: {
+                        attributeColumnHeader: string;
+                        attributeMapColumnHeader: string;
+                        attributeMapInputPlaceholderPrefix: string;
+                        componentHeading: string;
+                        hint: string;
+                    };
+                    attributeProvisioning: {
+                        attributeColumnHeader: {
+                            0: string;
+                            1: string;
+                        };
+                        attributeMapColumnHeader: string;
+                        attributeMapInputPlaceholderPrefix: string;
+                        componentHeading: string;
+                        hint: string;
+                    };
+                };
+                authenticatorAccordion: {
+                    default: {
+                        0: string;
+                        1: string;
+                    };
+                    enable: {
+                        0: string;
+                        1: string;
+                    };
+                };
+                outboundConnectorAccordion: {
+                    default: string;
+                    enable: string;
+                };
+                common: {
+                    requiredErrorMessage: string;
+                    invalidURLErrorMessage: string;
+                    invalidQueryParamErrorMessage: string;
+                };
+                generalDetails: {
+                    name: FormAttributes;
+                    description: FormAttributes;
+                    image: FormAttributes;
+                };
+                jitProvisioning: {
+                    enableJITProvisioning: FormAttributes;
+                    provisioningUserStoreDomain: FormAttributes;
+                    provisioningScheme: {
+                        hint: string;
+                        label: string;
+                        children: {
+                            0: string;
+                            1: string;
+                            2: string;
+                            3: string;
+                        };
+                    };
+                };
             };
             templates: {
                 manualSetup: {
@@ -239,6 +335,34 @@ export interface DevPortalNS {
                     heading: string;
                     subHeading: string;
                 };
+            };
+            modals: {
+                addAuthenticator: {
+                    title: string;
+                    subTitle: string;
+                };
+            };
+            notifications: {
+                deleteIDP: Notification;
+                getIDP: Notification;
+                updateIDP: Notification;
+                submitAttributeSettings: Notification;
+                updateFederatedAuthenticator: Notification;
+                getIDPTemplateList: Notification;
+                getIDPTemplate: Notification;
+                getFederatedAuthenticator: Notification;
+                getFederatedAuthenticatorMetadata: Notification;
+                disableAuthenticator: Notification;
+                updateJITProvisioning: Notification;
+                getOutboundProvisioningConnectorMetadata: Notification;
+                getOutboundProvisioningConnector: Notification;
+                updateOutboundProvisioningConnector: Notification;
+                disableOutboundProvisioningConnector: Notification;
+            };
+            placeHolders: {
+                emptyIDPList: Placeholder;
+                emptyAuthenticatorList: Placeholder;
+                emptyConnectorList: Placeholder;
             };
         };
         users: {
