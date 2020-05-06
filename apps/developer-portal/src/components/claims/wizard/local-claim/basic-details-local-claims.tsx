@@ -63,6 +63,11 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     const regExField = useRef<HTMLElement>(null);
     const displayOrderField = useRef<HTMLElement>(null);
 
+    const nameTimer = useRef(null);
+    const claimTimer = useRef(null);
+    const regExTimer = useRef(null);
+    const displayTimer = useRef(null);
+
     /**
      * Set the if show on profile is selected or not
      * and the claim ID from the received `values` prop
@@ -71,6 +76,33 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
         setIsShow(values?.get("supportedByDefault").length > 0)
         setClaimID(values?.get("claimURI").toString())
     }, [ values ]);
+
+    /**
+     * This shows a popup with a delay of 500 ms.
+     * 
+     * @param {React.Dispatch<React.SetStateAction<boolean>>} callback The state dispatch method.
+     * @param {React.MutableRefObject<any>} ref The ref object carrying the `setTimeout` ID.
+     */
+    const delayPopup = (
+        callback: React.Dispatch<React.SetStateAction<boolean>>,
+        ref: React.MutableRefObject<any>
+    ): void => {
+        ref.current = setTimeout(() => callback(true), 500);
+    };
+
+    /**
+     * This closes the popup.
+     * 
+     * @param {React.Dispatch<React.SetStateAction<boolean>>} callback The state dispatch method.
+     * @param {React.MutableRefObject<any>} ref The ref object carrying the `setTimeout` ID.
+     */
+    const closePopup = (
+        callback: React.Dispatch<React.SetStateAction<boolean>>,
+        ref: React.MutableRefObject<any>
+    ): void => {
+        clearTimeout(ref.current);
+        callback(false);
+    }
 
     return (
         <Forms
@@ -94,10 +126,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                     <Grid.Column width={ 8 }>
                         <Field
                             onMouseOver={ () => {
-                                setIsShowNameHint(true);
+                                delayPopup(setIsShowNameHint, nameTimer);
                             } }
                             onMouseOut={ () => {
-                                setIsShowNameHint(false);
+                                closePopup(setIsShowNameHint, nameTimer);
                             } }
                             type="text"
                             name="name"
@@ -115,7 +147,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             open={ isShowNameHint }
                             trigger={ <span></span> }
                             onClose={ () => {
-                                setIsShowNameHint(false);
+                                closePopup(setIsShowNameHint, nameTimer);
                             } }
                             position="bottom left"
                             context={ nameField }
@@ -134,10 +166,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                 setClaimID(values.get("claimURI").toString())
                             } }
                             onMouseOver={ () => {
-                                setIsShowClaimIDHint(true);
+                                delayPopup(setIsShowClaimIDHint, claimTimer);
                             } }
                             onMouseOut={ () => {
-                                setIsShowClaimIDHint(false);
+                                closePopup(setIsShowClaimIDHint, claimTimer);
                             } }
                             ref={ claimField }
                         />
@@ -148,7 +180,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             open={ isShowClaimIDHint }
                             trigger={ <p></p> }
                             onClose={ () => {
-                                setIsShowClaimIDHint(false);
+                                closePopup(setIsShowClaimIDHint, claimTimer);
                             } }
                             position="bottom left"
                             context={ claimField }
@@ -185,10 +217,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             placeholder="Enter a regular expression"
                             value={ values?.get("regularExpression")?.toString() }
                             onMouseOver={ () => {
-                                setIsShowRegExHint(true);
+                                delayPopup(setIsShowRegExHint, regExTimer);
                             } }
                             onMouseOut={ () => {
-                                setIsShowRegExHint(false);
+                                closePopup(setIsShowRegExHint, regExTimer);
                             } }
                             ref={ regExField }
                         />
@@ -198,7 +230,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             open={ isShowRegExHint }
                             trigger={ <span></span> }
                             onClose={ () => {
-                                setIsShowRegExHint(false);
+                                closePopup(setIsShowRegExHint, regExTimer);
                             } }
                             position="bottom left"
                             context={ regExField }
@@ -238,10 +270,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     placeholder="Enter the display order"
                                     value={ values?.get("displayOrder")?.toString() ?? "0" }
                                     onMouseOver={ () => {
-                                        setIsShowDisplayOrderHint(true);
+                                        delayPopup(setIsShowDisplayOrderHint, displayTimer);
                                     } }
                                     onMouseOut={ () => {
-                                        setIsShowDisplayOrderHint(false);
+                                        closePopup(setIsShowDisplayOrderHint, displayTimer);
                                     } }
                                     ref={ displayOrderField }
                                 />
@@ -254,7 +286,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     open={ isShowDisplayOrderHint }
                                     trigger={ <span></span> }
                                     onClose={ () => {
-                                        setIsShowDisplayOrderHint(false);
+                                        closePopup(setIsShowDisplayOrderHint, displayTimer);
                                     } }
                                     position="bottom left"
                                     context={ displayOrderField }

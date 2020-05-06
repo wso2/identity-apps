@@ -64,6 +64,11 @@ export const EditBasicDetailsLocalClaims = (
     const regExField = useRef<HTMLElement>(null);
     const displayOrderField = useRef<HTMLElement>(null);
 
+    const nameTimer = useRef(null);
+    const claimTimer = useRef(null);
+    const regExTimer = useRef(null);
+    const displayTimer = useRef(null);
+
     useEffect(() => {
         if (claim?.supportedByDefault) {
             setIsShowDisplayOrder(true);
@@ -118,6 +123,33 @@ export const EditBasicDetailsLocalClaims = (
             ));
         })
     };
+
+    /**
+     * This shows a popup with a delay of 500 ms.
+     * 
+     * @param {React.Dispatch<React.SetStateAction<boolean>>} callback The state dispatch method.
+     * @param {React.MutableRefObject<any>} ref The ref object carrying the `setTimeout` ID.
+     */
+    const delayPopup = (
+        callback: React.Dispatch<React.SetStateAction<boolean>>,
+        ref: React.MutableRefObject<any>
+    ): void => {
+        ref.current = setTimeout(() => callback(true), 500);
+    };
+
+    /**
+     * This closes the popup.
+     * 
+     * @param {React.Dispatch<React.SetStateAction<boolean>>} callback The state dispatch method.
+     * @param {React.MutableRefObject<any>} ref The ref object carrying the `setTimeout` ID.
+     */
+    const closePopup = (
+        callback: React.Dispatch<React.SetStateAction<boolean>>,
+        ref: React.MutableRefObject<any>
+    ): void => {
+        clearTimeout(ref.current);
+        callback(false);
+    }
 
     return (
         <>
@@ -176,10 +208,10 @@ export const EditBasicDetailsLocalClaims = (
                         <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                             <Field
                                 onMouseOver={ () => {
-                                    setIsShowNameHint(true);
+                                    delayPopup(setIsShowNameHint, nameTimer);
                                 } }
                                 onMouseOut={ () => {
-                                    setIsShowNameHint(false);
+                                    closePopup(setIsShowNameHint, nameTimer);
                                 } }
                                 type="text"
                                 name="name"
@@ -197,7 +229,7 @@ export const EditBasicDetailsLocalClaims = (
                                 open={ isShowNameHint }
                                 trigger={ <span></span> }
                                 onClose={ () => {
-                                    setIsShowNameHint(false);
+                                    closePopup(setIsShowNameHint, nameTimer);
                                 } }
                                 position="bottom left"
                                 context={ nameField }
@@ -222,10 +254,10 @@ export const EditBasicDetailsLocalClaims = (
                                 placeholder="Enter a regular expression"
                                 value={ claim?.regEx }
                                 onMouseOver={ () => {
-                                    setIsShowRegExHint(true);
+                                    delayPopup(setIsShowRegExHint, regExTimer);
                                 } }
                                 onMouseOut={ () => {
-                                    setIsShowRegExHint(false);
+                                    closePopup(setIsShowRegExHint, regExTimer);
                                 } }
                                 ref={ regExField }
                             />
@@ -235,7 +267,7 @@ export const EditBasicDetailsLocalClaims = (
                                 open={ isShowRegExHint }
                                 trigger={ <span></span> }
                                 onClose={ () => {
-                                    setIsShowRegExHint(false);
+                                    closePopup(setIsShowRegExHint, regExTimer);
                                 } }
                                 position="bottom left"
                                 context={ regExField }
@@ -269,10 +301,10 @@ export const EditBasicDetailsLocalClaims = (
                                             placeholder="Enter the display order"
                                             value={ claim?.displayOrder.toString() }
                                             onMouseOver={ () => {
-                                                setIsShowDisplayOrderHint(true);
+                                                delayPopup(setIsShowDisplayOrderHint, displayTimer);
                                             } }
                                             onMouseOut={ () => {
-                                                setIsShowDisplayOrderHint(false);
+                                                closePopup(setIsShowDisplayOrderHint, displayTimer);
                                             } }
                                             ref={ displayOrderField }
                                         />
@@ -283,7 +315,7 @@ export const EditBasicDetailsLocalClaims = (
                                             open={ isShowDisplayOrderHint }
                                             trigger={ <span></span> }
                                             onClose={ () => {
-                                                setIsShowDisplayOrderHint(false);
+                                                closePopup(setIsShowDisplayOrderHint, displayTimer);
                                             } }
                                             position="bottom left"
                                             context={ displayOrderField }
