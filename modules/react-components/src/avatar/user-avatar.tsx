@@ -18,17 +18,17 @@
 
 import { UIConstants } from "@wso2is/core/constants";
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
-import { AuthReducerStateInterface, ProfileInfoInterface } from "@wso2is/core/models";
+import { AuthReducerStateInterface, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { GravatarLogo } from "@wso2is/theme";
 import classNames from "classnames";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Icon, Popup } from "semantic-ui-react";
 import { Avatar, AvatarPropsInterface } from "./avatar";
 
 /**
  * Prop types for the user avatar component.
  */
-export interface UserAvatarPropsInterface extends AvatarPropsInterface {
+export interface UserAvatarPropsInterface extends AvatarPropsInterface, TestableComponentInterface {
     /**
      * Authenticated users basic information.
      */
@@ -60,11 +60,12 @@ export interface UserAvatarPropsInterface extends AvatarPropsInterface {
  * User Avatar component.
  *
  * @param {UserAvatarPropsInterface} props - Props injected in to the user avatar component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
 export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
     props: UserAvatarPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         authState,
@@ -75,6 +76,7 @@ export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
         profileInfo,
         showGravatarLabel,
         isEditable,
+        [ "data-testid" ]: testId,
         ...rest
     } = props;
 
@@ -147,8 +149,6 @@ export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
 
     /**
      * Handles the mouse over event.
-     *
-     * @param {MouseEvent} e - Mouse event.
      */
     const handleOnMouseOver = () => {
         setShowPopup(true);
@@ -156,8 +156,6 @@ export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
 
     /**
      * Handles the mouse out event.
-     *
-     * @param {MouseEvent} e - Mouse event.
      */
     const handleOnMouseOut = () => {
         setShowPopup(false);
@@ -184,11 +182,20 @@ export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
                     onClick={ onEditAvatarClicked }
                     onMouseOver={ handleOnMouseOver }
                     onMouseOut={ handleOnMouseOut }
+                    data-testid={ testId }
                     { ...rest }
                 >
-                    { isEditable && <Icon name="camera" className="edit-icon" size="large"/> }
+                    { isEditable && (
+                        <Icon
+                            name="camera"
+                            className="edit-icon"
+                            size="large"
+                            data-testid={ `${ testId }-edit-icon` }
+                        />
+                    ) }
                 </Avatar>
             ) }
+            data-testid={ `${ testId }-gravatar-disclaimer-popup` }
         />
     );
 };
@@ -198,10 +205,11 @@ export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
  */
 UserAvatar.defaultProps = {
     authState: null,
+    "data-testid": "user-avatar",
     gravatarInfoPopoverText: null,
-    onEditAvatarClicked: () => null,
+    isEditable: false,
     name: null,
+    onEditAvatarClicked: () => null,
     profileInfo: null,
-    showGravatarLabel: false,
-    isEditable: false
+    showGravatarLabel: false
 };

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Checkbox, Icon, Label, LabelProps, Popup, SemanticCOLORS, Table, TableRowProps } from "semantic-ui-react";
 
@@ -31,7 +32,7 @@ interface ItemTypeLabelPropsInterface extends LabelProps {
 /**
  * Proptypes for the transfer list item component.
  */
-interface TransferListItemPropsInterface extends TableRowProps {
+interface TransferListItemPropsInterface extends TableRowProps, TestableComponentInterface {
     listItem: string;
     listItemId: string;
     listItemIndex: number | string;
@@ -43,13 +44,13 @@ interface TransferListItemPropsInterface extends TableRowProps {
     handleOpenPermissionModal?: () => void;
     showListSubItem?: boolean;
     listSubItem?: string;
-    [ "data-testid" ]?: string;
 }
 
 /**
  * Transfer list item component.
  *
  * @param {TransferListItemPropsInterface} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
 export const TransferListItem: FunctionComponent<TransferListItemPropsInterface> = (
@@ -67,14 +68,15 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
         showSecondaryActions,
         handleOpenPermissionModal,
         showListSubItem,
-        listSubItem
+        listSubItem,
+        [ "data-testid" ]: testId
     } = props;
 
     return (
         <Table.Row key={ listItemIndex }>
             <Table.Cell id={ listItemId } collapsing>
                 <Checkbox
-                    data-testid={ `${ props[ "data-testid" ] }_${ listItem.replace(" ", "_") }_checkbox` }
+                    data-testid={ `${ testId }-${ listItem.replace(" ", "-") }-checkbox` }
                     checked={ isItemChecked }
                     onChange={ handleItemChange }
                     onClick={ handleItemClick }
@@ -114,7 +116,7 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
                             content="View permissions"
                             trigger={
                                 <Icon
-                                    data-testid={ `${ props[ "data-testid" ] }_${ listItem.replace(" ", "_") }_icon` }
+                                    data-testid={ `${ testId }-${ listItem.replace(" ", "-") }-icon` }
                                     color="grey"
                                     name="key"
                                     onClick={ handleOpenPermissionModal }
@@ -128,6 +130,10 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
     );
 };
 
+/**
+ * Default props for the transfer list item component.
+ */
 TransferListItem.defaultProps = {
+    "data-testid": "transfer-list-item",
     showListSubItem: false
 };

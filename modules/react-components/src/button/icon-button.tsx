@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import React, { PropsWithChildren } from "react";
-import { Button as SemanticButton, ButtonProps } from "semantic-ui-react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import { ButtonProps, Button as SemanticButton } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
 
 /**
- * Danger button component Prop types.
+ * Icon button component Prop types.
  */
-interface IconButtonPropsInterface extends ButtonProps {
+export interface IconButtonPropsInterface extends ButtonProps, TestableComponentInterface {
     customIcon?: any;
     customIconPosition?: "left" | "right";
     customIconSize?: GenericIconSizes;
@@ -33,22 +34,25 @@ interface IconButtonPropsInterface extends ButtonProps {
  * Icon button component.
  *
  * @param {IconButtonPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
-export const IconButton: React.FunctionComponent<PropsWithChildren<IconButtonPropsInterface>> = (
+export const IconButton: FunctionComponent<PropsWithChildren<IconButtonPropsInterface>> = (
     props: PropsWithChildren<IconButtonPropsInterface>
-): JSX.Element => {
+): ReactElement => {
 
     const {
         children,
         customIcon,
         customIconPosition,
-        customIconSize
+        customIconSize,
+        [ "data-testid" ]: testId
     } = props;
 
     return (
         <SemanticButton
             { ...props }
+            data-testid={ testId }
             negative
         >
             {
@@ -59,6 +63,7 @@ export const IconButton: React.FunctionComponent<PropsWithChildren<IconButtonPro
                         transparent={ true }
                         spaced="right"
                         floated={ customIconPosition }
+                        data-testid={ `${ testId }-icon` }
                     />
                 )
             }
@@ -67,6 +72,10 @@ export const IconButton: React.FunctionComponent<PropsWithChildren<IconButtonPro
     );
 };
 
+/**
+ * Default props for the icon button component.
+ */
 IconButton.defaultProps = {
-    customIconPosition: "left"
+    customIconPosition: "left",
+    "data-testid": "icon-button"
 };

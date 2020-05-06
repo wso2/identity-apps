@@ -27,8 +27,7 @@ import { useDispatch } from "react-redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-ui-react";
 import { deleteUser, getUserStoreList, getUsersList } from "../api";
 import { AdvancedSearchWithBasicFilters } from "../components";
-import { UsersList } from "../components/users";
-import { UsersListOptionsComponent } from "../components/users";
+import { UsersList, UsersListOptionsComponent } from "../components/users";
 import { AddUserWizard } from "../components/users/wizard";
 import { UIConstants, UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
@@ -345,12 +344,12 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
                 currentListSize={ usersList.itemsPerPage }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                itemsPerPageDropDownTestId="user_mgt_user_list_items_per_page_dropdown"
+                data-testid="user-mgt-user-list-layout"
                 onPageChange={ handlePaginationChange }
                 rightActionPanel={
                     (
                         <PrimaryButton
-                            data-testid="user_mgt_user_list_add_user_button"
+                            data-testid="user-mgt-user-ist-add-user-button"
                             onClick={ () => setShowWizard(true) }
                         >
                             <Icon name="add"/>
@@ -374,7 +373,7 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
                                 pinned
                                 trigger={
                                     <Button
-                                        data-testid="user_mgt_user_list_meta_columns_button"
+                                        data-testid="user-mgt-user-list-meta-columns-button"
                                         className="meta-columns-button"
                                         basic
                                     >
@@ -384,7 +383,7 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
                                 }
                             />
                             <Dropdown
-                                data-testid="user_mgt_user_list_userstore_dropdown"
+                                data-testid="user-mgt-user-list-userstore-dropdown"
                                 selection
                                 options={ userStoreOptions && userStoreOptions }
                                 onChange={ handleDomainChange }
@@ -406,6 +405,7 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
                     onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                     onSearchQueryClear={ handleSearchQueryClear }
                     searchQuery={ searchQuery }
+                    data-testid="user-mgt-user-list"
                 />
                 {
                     showWizard && (

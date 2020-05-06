@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
@@ -23,7 +24,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 /**
  *Interface to contain props needed for treeview component
  */
-interface TreeViewProps {
+export interface TreeViewProps extends TestableComponentInterface {
     data: TreeNode[];
     depth?: number;
     deleteElement?: ReactElement;
@@ -65,16 +66,19 @@ interface TreeNode {
 /**
  * A Component which will return a tree view for a given set of node data.
  * 
- * @param props Props to create a tree view component
+ * @param {TreeViewProps} props - Props to create a tree view component
+ *
+ * @return {React.ReactElement}
  */
 export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps): ReactElement => {
 
+    const {
+        data,
+        [ "data-testid" ]: testId
+    } = props;
+
     const [ treeData, setTreeData ] = useState<TreeNode[]>();
     const [ lastCheckToggledNodeIndex, setLastCheckToggledNodeIndex ] = useState<number>();
-
-    const {
-        data
-    } = props;
 
     useEffect(() => {
         setTreeData(_.cloneDeep(data));
@@ -88,7 +92,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
     const handleUpdate = (updatedData: any): void => {
         const { depth, onUpdateCb } = props;
         onUpdateCb(updatedData, depth);
-    }
+    };
 
     /**
      * Util method to handle tree node check.
@@ -128,7 +132,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         onCheckToggleCb(toggledNodes, depth);
         setLastCheckToggledNodeIndex(currentNodeIndex);
         handleUpdate(data);
-    }
+    };
 
     /**
      * Util method to handle tree node delete.
@@ -144,7 +148,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         });
 
         onDeleteCb(node, newData, depth) && handleUpdate(newData);
-    }
+    };
 
     /**
      * Util method to handle expanding of a selected tree node.
@@ -163,7 +167,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         }
 
         handleUpdate(data);
-    }
+    };
 
     /**
      * Util method to print a checkbox for a given tree node.
@@ -200,7 +204,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                 </label>
             );
         }
-    }
+    };
 
     /**
      * Util method to print a delete button for a given tree node.
@@ -221,7 +225,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                 </div>
             );
         }
-    }
+    };
 
     /**
      * Util method to print the expand button of a given tree node.
@@ -256,7 +260,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                 </div>
             );
         }
-    }
+    };
 
     /**
      * Util method to print a text where no children is available.
@@ -289,7 +293,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                 </div>
             </CSSTransition>
         );
-    }
+    };
 
     const printNodes = (nodeArray: TreeNode[]) => {
         const {
@@ -334,7 +338,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                 }) }
             </TransitionGroup>
         );
-    }
+    };
 
     const printChildren = (node: any) => {
         if (!node.isExpanded) {
@@ -371,16 +375,17 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
             currentNode[keywordChildren] = updatedData;
             handleUpdate(data);
         }
-    }
+    };
 
     return (
-        <div className="treeview">
+        <div className="treeview" data-testid={ testId }>
             { printNodes(treeData) }
         </div>
     )
-}
+};
 
 TreeView.defaultProps = {
+    "data-testid": "treeview",
     depth: 0,
     deleteElement: <div>(X)</div>,
     keywordChildren: "children",
@@ -396,4 +401,4 @@ TreeView.defaultProps = {
     isCheckable: (/* node, depth */) => { return true; },
     isDeletable: (/* node, depth */) => { return true; },
     isExpandable: (/* node, depth */) => { return true; }
-}
+};

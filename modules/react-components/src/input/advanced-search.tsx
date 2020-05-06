@@ -280,10 +280,10 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
     };
 
     return (
-        <div className={ `advanced-search-wrapper ${ wrapperClasses }` }>
+        <div className={ `advanced-search-wrapper ${ wrapperClasses }` } data-testid={ testId }>
             <div ref={ searchInputRef }>
                 <Input
-                    data-testid={ `${ testId }_input` }
+                    data-testid={ `${ testId }-input` }
                     action={ (
                         <>
                             {
@@ -294,7 +294,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                                             trigger={
                                                 (
                                                     <Button
-                                                        data-testid={ `${ testId }_clear_button` }
+                                                        data-testid={ `${ testId }-clear-button` }
                                                         basic
                                                         compact
                                                         className="input-add-on"
@@ -321,7 +321,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                                 trigger={
                                     (
                                         <Button
-                                            data-testid={ `${ testId }_options_button` }
+                                            data-testid={ `${ testId }-options-button` }
                                             basic
                                             compact className="input-add-on"
                                             onClick={ handleShowOptionsClick }
@@ -347,7 +347,10 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                     onKeyDown={ handleSearchQuerySubmit }
                 />
             </div>
-            <div className={ `search-query-hint ${ searchFieldHintClasses }` }>
+            <div
+                className={ `search-query-hint ${ searchFieldHintClasses }` }
+                data-testid={ `${ testId }-query-hint` }
+            >
                 <div className="query">{ hintLabel }</div>
                 <div className="short-cut"><Icon name="keyboard outline"/>{ " " }{ hintActionKeys }</div>
             </div>
@@ -355,9 +358,11 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                 context={ searchInputRef }
                 content={ (
                     <div className="search-filters-dropdown">
-                        <Heading as="h6" bold="500" compact>{ searchOptionsHeader }</Heading>
+                        <Heading as="h6" bold="500" compact data-testid={ `${ testId }-header` }>
+                            { searchOptionsHeader }
+                        </Heading>
                         <Divider className="compact" />
-                        <div className="form-wrapper">
+                        <div className="form-wrapper" data-testid={ `${ testId }-form-wrapper` }>
                             { children }
                         </div>
                     </div>
@@ -367,6 +372,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                 open={ isDropdownVisible }
                 onClose={ handleSearchDropdownClose }
                 closeOnPortalMouseLeave={ false }
+                data-testid={ `${ testId }-dropdown` }
                 hoverable
                 pinned
             />
@@ -381,6 +387,7 @@ AdvancedSearch.defaultProps = {
     aligned: "left",
     className: null,
     clearButtonPopupLabel: null,
+    "data-testid": "advanced-search",
     dropdownPosition: "bottom left",
     dropdownTriggerPopupLabel: null,
     externalSearchQuery: "",

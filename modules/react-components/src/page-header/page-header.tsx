@@ -16,45 +16,78 @@
  * under the License.
  */
 
-import { LoadableComponentInterface } from "@wso2is/core/models";
+import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { MouseEventHandler, ReactNode } from "react";
+import React, { MouseEventHandler, ReactElement, ReactNode } from "react";
 import { Divider, Header, Icon, Placeholder } from "semantic-ui-react";
 import { GenericIcon } from "../icon";
 
 /**
  * Page header component Prop types.
  */
-export interface PageHeaderPropsInterface extends LoadableComponentInterface {
+export interface PageHeaderPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
+    /**
+     * Go back button.
+     */
     backButton?: BackButtonInterface;
+    /**
+     * Show/ Hide bottom margin.
+     */
     bottomMargin?: boolean;
+    /**
+     * Additional CSS classes.
+     */
     className?: string;
+    /**
+     * Description.
+     */
     description?: ReactNode;
+    /**
+     * Optional image.
+     */
     image?: any;
+    /**
+     * Show/ Hide bottom divider.
+     */
     showBottomDivider?: boolean;
+    /**
+     * Header title.
+     */
     title: string;
+    /**
+     * Title render element.
+     */
     titleAs?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+    /**
+     * Title text alignment.
+     */
     titleTextAlign?: "left" | "center" | "right" | "justified";
 }
 
 /**
  * Back button interface.
  */
-interface BackButtonInterface {
+export interface BackButtonInterface extends TestableComponentInterface {
+    /**
+     * Button label.
+     */
     text: string;
+    /**
+     * Button Onclick.
+     */
     onClick: MouseEventHandler;
-    testId?: string;
 }
 
 /**
  * Page header component.
  *
  * @param {PageHeaderPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
 export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
     props: PageHeaderPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         backButton,
@@ -66,7 +99,8 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
         showBottomDivider,
         title,
         titleAs,
-        titleTextAlign
+        titleTextAlign,
+        [ "data-testid" ]: testId
     } = props;
 
     const wrapperClasses = classNames(
@@ -86,7 +120,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
 
     return (
         (title || description) && (
-            <div className={ wrapperClasses }>
+            <div className={ wrapperClasses } data-testid={ testId }>
                 {
                     backButton && backButton.text && (
                         isLoading
@@ -99,7 +133,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                             )
                             : (
                                 <div
-                                    data-testid={ backButton.testId }
+                                    data-testid={ backButton[ "data-testid" ] }
                                     className="back-button"
                                     onClick={ backButton.onClick }
                                 >
@@ -126,6 +160,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                             size="tiny"
                             transparent
                             spaced="right"
+                            data-testid={ `${ testId }-image` }
                         />
                     ) }
                     <Header className="page-header ellipsis" as={ titleAs } textAlign={ titleTextAlign }>
@@ -146,11 +181,13 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                                         className="page-header ellipsis"
                                         as={ titleAs }
                                         textAlign={ titleTextAlign }
+                                        data-testid={ `${ testId }-header` }
                                     >
                                         { title && title }
                                         { description && (
                                             <Header.Subheader
                                                 className="sub-header ellipsis"
+                                                data-testid={ `${ testId }-sub-header` }
                                             >
                                                 { description }
                                             </Header.Subheader>
@@ -171,8 +208,12 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
     );
 };
 
+/**
+ * Default proptypes for the page header component.
+ */
 PageHeader.defaultProps = {
     bottomMargin: true,
+    "data-testid": "page-header",
     showBottomDivider: false,
     titleAs: "h1"
 };

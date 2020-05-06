@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, {
     ChangeEvent,
@@ -33,23 +34,10 @@ import { ConfirmationModalHeader } from "./confirmation-modal-header";
 import { ConfirmationModalMessage } from "./confirmation-modal-message";
 import { LinkButton } from "../../button";
 
-export interface ConfirmationModalPropsInterface extends ModalProps {
-    /**
-     * Test id of the confirmation modal.
-     */
-    confirmationModalTestId?: string;
-    /**
-     * Test id of the confirmation input field.
-     */
-    confirmationInputTestId?: string;
-    /**
-     * Test id of the secondary action button.
-     */
-    secondaryActionButtonTestId?: string;
-    /**
-     * Test id of the primary action button.
-     */
-    primaryActionButtonTestId?: string;
+/**
+ * Confirmation modal component props.
+ */
+export interface ConfirmationModalPropsInterface extends ModalProps, TestableComponentInterface {
     /**
      * If the animated icons should be shown.
      */
@@ -133,10 +121,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
         onPrimaryActionClick,
         onSecondaryActionClick,
         textAlign,
-        confirmationInputTestId,
-        primaryActionButtonTestId,
-        secondaryActionButtonTestId,
-        confirmationModalTestId,
+        [ "data-testid" ]: testId,
         ...rest
     } = props;
 
@@ -176,7 +161,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
     const resolveIcon = (type: string): ReactElement => {
         if (type === "positive") {
             return (
-                <div className="svg-box">
+                <div className="svg-box" data-testid={ `${ testId }-${ type }-animated-icon` }>
                     <svg className="circular positive-stroke">
                         <circle
                             className="path"
@@ -201,7 +186,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
             );
         } else if (type === "negative") {
             return (
-                <div className="svg-box">
+                <div className="svg-box" data-testid={ `${ testId }-${ type }-animated-icon` }>
                     <svg className="circular negative-stroke">
                         <circle
                             className="path"
@@ -225,7 +210,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
             );
         } else if (type === "warning") {
             return (
-                <div className="svg-box">
+                <div className="svg-box" data-testid={ `${ testId }-${ type }-animated-icon` }>
                     <svg className="circular warning-stroke">
                         <circle
                             className="path"
@@ -256,6 +241,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                         name="info circle"
                         size="huge"
                         color="blue"
+                        data-testid={ `${ testId }-info-animated-icon` }
                     />
             );
         }
@@ -274,7 +260,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                 <>
                     { assertionHint && typeof assertionHint === "string" ? <p>{ assertionHint }</p> : assertionHint }
                     <Input
-                        data-testid={ confirmationInputTestId }
+                        data-testid={ `${ testId }-assertion-input` }
                         onChange={ (e: ChangeEvent<HTMLInputElement>): void => setAssertionInput(e.target?.value) }
                         value={ assertionInput }
                         fluid
@@ -291,6 +277,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                     label={ assertionHint }
                     checked={ confirmed }
                     onChange={ (): void => setConfirmed(!confirmed) }
+                    data-testid={ `${ testId }-assertion-checkbox` }
                 />
             );
         }
@@ -300,7 +287,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
 
     return (
         <Modal
-            data-testid={ confirmationModalTestId }
+            data-testid={ testId }
             { ...rest }
             className={ classes }
         >
@@ -321,7 +308,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                         {
                             (secondaryAction && onSecondaryActionClick) && (
                                     <LinkButton
-                                        data-testid={ secondaryActionButtonTestId }
+                                        data-testid={ `${ testId }-secondary-action` }
                                         positive={ type === "positive" }
                                         neagtive={ type === "negative" }
                                         warning={ type === "warning" }
@@ -335,7 +322,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                         {
                             (primaryAction && onPrimaryActionClick) && (
                                 <Button
-                                    data-testid={ primaryActionButtonTestId }
+                                    data-testid={ `${ testId }-primary-action` }
                                     className={ `${ type } ${ primaryActionFluid ? "fluid" : "" }` }
                                     disabled={ !(!assertionType || confirmed) }
                                     onClick={ onPrimaryActionClick }
@@ -353,9 +340,10 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
 };
 
 /**
- * Default proptypes for the settings section component.
+ * Default proptypes for the confirmation modal component.
  */
 ConfirmationModal.defaultProps = {
+    "data-testid": "confirmation-modal",
     dimmer: "blurring",
     size: "tiny",
     textAlign: "left"

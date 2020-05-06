@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { RouteInterface } from "@wso2is/core/models";
-import React from "react";
+import { RouteInterface, TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Menu } from "semantic-ui-react";
 import { CommonSidePanelPropsInterface } from "./side-panel";
 import { SidePanelItem } from "./side-panel-item";
@@ -25,8 +25,14 @@ import { SidePanelItem } from "./side-panel-item";
 /**
  * Side panel items component Prop types.
  */
-export interface SidePanelItemsPropsInterface extends CommonSidePanelPropsInterface {
+export interface SidePanelItemsPropsInterface extends CommonSidePanelPropsInterface, TestableComponentInterface {
+    /**
+     * Set of routes.
+     */
     routes: RouteInterface[];
+    /**
+     * Panel type.
+     */
     type?: "desktop" | "mobile";
 }
 
@@ -34,11 +40,12 @@ export interface SidePanelItemsPropsInterface extends CommonSidePanelPropsInterf
  * Side panel items component.
  *
  * @param {SidePanelItemsPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
-export const SidePanelItems: React.FunctionComponent<SidePanelItemsPropsInterface> = (
+export const SidePanelItems: FunctionComponent<SidePanelItemsPropsInterface> = (
     props: SidePanelItemsPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         desktopContentTopSpacing,
@@ -46,7 +53,8 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsPropsInterfac
         routes,
         sidePanelPosition,
         sidePanelTopMargin,
-        type
+        type,
+        [ "data-testid" ]: testId
     } = props;
 
     const calcSidePanelTopMargin = (): string | undefined => {
@@ -71,13 +79,14 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsPropsInterfac
         : null;
 
     return (
-        <Menu className={ `side-panel ${type}` } style={ style } vertical fluid>
+        <Menu className={ `side-panel ${type}` } style={ style } data-testid={ testId } vertical fluid>
             {
                 routes
                     ? routes.map((route, index) => (
                         <SidePanelItem
                             key={ route.level ? `level-${route.level}-${index}` : `level-${0}-${index}` }
                             route={ route }
+                            data-testid={ `${ testId }-item` }
                             { ...props }
                         />
                     ))
@@ -85,4 +94,11 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsPropsInterfac
             }
         </Menu>
     );
+};
+
+/**
+ * Default props for the side panel items component.
+ */
+SidePanelItems.defaultProps = {
+    "data-testid": "side-panel-items"
 };

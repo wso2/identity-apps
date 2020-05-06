@@ -16,43 +16,79 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import {
     Dropdown,
     DropdownItemProps,
     DropdownProps,
-    Pagination as SemanticPagination,
-    PaginationProps
+    PaginationProps,
+    Pagination as SemanticPagination
 } from "semantic-ui-react";
 
 /**
  * Prop types for the pagination component.
  */
-export interface PaginationPropsInterface extends PaginationProps {
+export interface PaginationPropsInterface extends PaginationProps, TestableComponentInterface {
+    /**
+     * Additional CSS classes.
+     */
     className?: string;
+    /**
+     * Current list count.
+     */
     currentListSize?: number;
+    /**
+     * Float direction.
+     */
     float?: "left" | "right";
+    /**
+     * Label for items per page dropdown.
+     */
     itemsPerPageDropdownLabel?: string;
+    /**
+     * Label for items per page lower limit.
+     */
     itemsPerPageDropdownLowerLimit?: number;
+    /**
+     * Label for items per page dropdown multiple.
+     */
     itemsPerPageDropdownMultiple?: number;
+    /**
+     * Label for items per page dropdown upper limit.
+     */
     itemsPerPageDropdownUpperLimit?: number;
+    /**
+     * Callback for items per page change.
+     * @param {React.SyntheticEvent<HTMLElement>} event - Click event.
+     * @param {DropdownProps} data - Data.
+     */
     onItemsPerPageDropdownChange?: (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => void;
+    /**
+     * Items per page dropdown visibility.
+     */
     showItemsPerPageDropdown?: boolean;
+    /**
+     * Show/ Hide list summary.
+     */
     showListSummary?: boolean;
+    /**
+     * Total size of the list.
+     */
     totalListSize?: number;
-    itemsPerPageDropDownTestId?: string;
 }
 
 /**
  * Pagination component.
  *
  * @param {PaginationPropsInterface} props - Props injected in to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
 export const Pagination: FunctionComponent<PaginationPropsInterface> = (
     props: PaginationPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         className,
@@ -66,6 +102,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
         showListSummary,
         totalListSize,
         itemsPerPageDropDownTestId,
+        [ "data-testid" ]: testId,
         ...rest
     } = props;
 
@@ -90,13 +127,13 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
     };
 
     return (
-        <div className={ classes }>
+        <div className={ classes } data-testid={ testId }>
             {
                 showItemsPerPageDropdown && (
                     <label>
                         { itemsPerPageDropdownLabel }
                         <Dropdown
-                            data-testid={ itemsPerPageDropDownTestId }
+                            data-testid={ `${ testId }-items-per-page-dropdown` }
                             className="labeled horizontal right"
                             compact
                             defaultValue={ itemsPerPageDropdownLowerLimit }
@@ -109,6 +146,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
             }
             <SemanticPagination
                 className="list-pagination"
+                data-testid={ `${ testId }-steps` }
                 { ...rest }
             />
         </div>
@@ -119,6 +157,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
  * Prop types for the Pagination component.
  */
 Pagination.defaultProps =  {
+    "data-testid": "pagination",
     defaultActivePage: 1,
     float: "right",
     itemsPerPageDropdownLabel: "Items per page",

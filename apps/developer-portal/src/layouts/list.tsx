@@ -17,6 +17,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Pagination } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useState } from "react";
@@ -34,7 +35,7 @@ import {
 /**
  * List layout component Prop types.
  */
-interface ListLayoutPropsInterface extends PaginationProps {
+export interface ListLayoutPropsInterface extends PaginationProps, TestableComponentInterface {
     advancedSearch?: React.ReactNode;
     leftActionPanel?: React.ReactNode;
     listItemLimit?: number;
@@ -46,7 +47,6 @@ interface ListLayoutPropsInterface extends PaginationProps {
     sortOptions?: DropdownItemProps[];
     sortStrategy?: DropdownItemProps;
     totalListSize?: number;
-    itemsPerPageDropDownTestId?: string;
 }
 
 /**
@@ -73,7 +73,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         sortStrategy,
         totalListSize,
         totalPages,
-        itemsPerPageDropDownTestId,
+        [ "data-testid" ]: testId,
         ...rest
     } = props;
 
@@ -85,11 +85,11 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
     );
 
     return (
-        <div className={ classes }>
+        <div className={ classes } data-testid={ testId }>
             {
                 showTopActionPanel && (
                     <>
-                        <div className="top-action-panel">
+                        <div className="top-action-panel" data-testid={ `${ testId }-top-action-panel` }>
                             <Grid>
                                 <Grid.Row>
                                     <Grid.Column width={ 8 }>
@@ -111,6 +111,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                                                 : sortStrategy.value
                                                         }
                                                         disabled={ sortOptions?.length === 1 }
+                                                        data-testid={ `${ testId }-sort` }
                                                     />
                                                     <Popup
                                                         trigger={
@@ -164,7 +165,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                     (showPagination && totalListSize)
                         ? (
                             <Pagination
-                                itemsPerPageDropDownTestId={ itemsPerPageDropDownTestId }
+                                data-testid={ `${ testId }-pagination` }
                                 totalListSize={ totalListSize }
                                 totalPages={ totalPages }
                                 { ...rest }
@@ -181,6 +182,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
  * Default props for the list layout.
  */
 ListLayout.defaultProps = {
+    "data-testid": "list-layout",
     showPagination: false,
     showTopActionPanel: true
 };

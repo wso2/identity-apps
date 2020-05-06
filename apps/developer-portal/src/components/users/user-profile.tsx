@@ -16,15 +16,14 @@
  * under the License
  */
 
-import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import { isEmpty } from "lodash";
-import * as _ from "lodash";
+import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Divider, Grid, Input, Form } from "semantic-ui-react";
+import { Button, Divider, Form, Grid, Input } from "semantic-ui-react";
 import { deleteUser, updateUserInfo } from "../../api";
 import { history } from "../../helpers";
 import { AuthStateInterface, BasicProfileInterface, ProfileSchema } from "../../models";
@@ -34,7 +33,7 @@ import { flattenSchemas } from "../../utils";
 /**
  * Prop types for the basic details component.
  */
-interface ProfileProps {
+interface UserProfilePropsInterface extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
     user: BasicProfileInterface;
     handleUserUpdate: (userId: string) => void;
@@ -43,11 +42,20 @@ interface ProfileProps {
 /**
  * Basic details component.
  *
- * @param {ProfileProps} props - Props injected to the basic details component.
+ * @param {UserProfilePropsInterface} props - Props injected to the basic details component.
  * @return {ReactElement}
  */
-export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps): ReactElement => {
-    const { onAlertFired, user, handleUserUpdate } = props;
+export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
+    props: UserProfilePropsInterface
+): ReactElement => {
+
+    const {
+        onAlertFired,
+        user,
+        handleUserUpdate,
+        [ "data-testid" ]: testId
+    } = props;
+
     const { t } = useTranslation();
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
@@ -64,7 +72,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
      * @param userInfo BasicProfileInterface
      */
     const mapUserToSchema = (proSchema: ProfileSchema[], userInfo: BasicProfileInterface): void => {
-        if (!isEmpty(profileSchema) && !isEmpty(userInfo)) {
+        if (!_.isEmpty(profileSchema) && !_.isEmpty(userInfo)) {
             const tempProfileInfo: Map<string, string> = new Map<string, string>();
 
             proSchema.forEach((schema: ProfileSchema) => {
@@ -159,7 +167,6 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
      * The following method handles the `onSubmit` event of forms.
      *
      * @param values
-     * @param formName
      */
     const handleSubmit = (values: Map<string, string | string[]>): void => {
 
@@ -230,6 +237,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
      * This function generates the user profile details form based on the input Profile Schema
      *
      * @param {Profile Schema} schema
+     * @param {number} key
      */
     const generateProfileEditForm = (schema: ProfileSchema, key: number): JSX.Element => {
         const fieldName = t("devPortal:components.user.profile.fields." +
@@ -248,7 +256,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
                                     { fieldName }
                                 </label>
                                 <Input
-                                    data-testid={ `user_mgt_user_profile_form_${ schema.name }_input` }
+                                    data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
                                     name={ schema.name }
                                     label={ domainName[0] + " / " }
                                     required={ schema.required }
@@ -261,7 +269,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
                             </Form.Field>
                         ) : (
                             <Field
-                                data-testid={ `user_mgt_user_profile_form_${ schema.name }_input` }
+                                data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
                                 name={ schema.name }
                                 label={ schema.name === "profileUrl" ? "Profile Image URL" : fieldName }
                                 required={ schema.required }
@@ -283,7 +291,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
             {
                 !_.isEmpty(profileInfo) && (
                     <Forms
-                        data-testid="user_mgt_user_profile_form_update_button"
+                        data-testid={ `${ testId }-form` }
                         onSubmit={ (values) => handleSubmit(values) }
                     >
                         <Grid>
@@ -299,7 +307,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                     <Button
-                                        data-testid="user_mgt_user_profile_form_update_button"
+                                        data-testid={ `${ testId }-form-update-button` }
                                         primary
                                         type="submit"
                                         size="small"
@@ -316,8 +324,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
             <Divider hidden />
             <DangerZoneGroup sectionHeader="Danger Zone">
                 <DangerZone
-                    dangerZoneTestId="user_mgt_user_profile_danger_zone"
-                    deleteButtonTestId="user_mgt_user_profile_danger_zone_delete_button"
+                    data-testid={ `${ testId }-danger-zone` }
                     actionTitle="Delete User"
                     header="Delete user"
                     subheader="Once you delete a user, there is no going back. Please be certain."
@@ -330,10 +337,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
             {
                 deletingUser && (
                     <ConfirmationModal
-                        confirmationModalTestId="user_mgt_user_profile_confirmation_modal"
-                        primaryActionButtonTestId="user_mgt_user_profile_confirmation_modal_confirm_button"
-                        secondaryActionButtonTestId="user_mgt_user_profile_confirmation_modal_cancel_button"
-                        confirmationInputTestId="user_mgt_user_profile_confirmation_modal_input"
+                        data-testid={ `${ testId }-confirmation-modal` }
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
                         open={ showDeleteConfirmationModal }
@@ -345,11 +349,17 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => handleUserDelete(deletingUser.id) }
                     >
-                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
+                        <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
+                            Are you sure?
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message
+                            data-testid={ `${ testId }-confirmation-modal-message` }
+                            attached
+                            warning
+                        >
                             This action is irreversible and will permanently delete the user.
                         </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
+                        <ConfirmationModal.Content data-testid={ `${ testId }-confirmation-modal-content` }>
                             If you delete this user, the user will not be able to login to the developer portal or any
                             other application the user was subscribed before. Please proceed with caution.
                         </ConfirmationModal.Content>
@@ -358,4 +368,11 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
             }
         </>
     );
+};
+
+/**
+ * User profile component default props.
+ */
+UserProfile.defaultProps = {
+    "data-testid": "user-mgt-user-profile"
 };

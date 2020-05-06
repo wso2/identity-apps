@@ -17,7 +17,7 @@
  */
 
 import { UIConstants } from "@wso2is/core/constants";
-import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
+import { ChildRouteInterface, RouteInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import _ from "lodash";
 import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
@@ -27,20 +27,51 @@ import { SidePanelItems } from "./side-panel-items";
 /**
  * Common side panel base component Prop types.
  */
-export interface CommonSidePanelPropsInterface {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface CommonSidePanelPropsInterface extends TestableComponentInterface {
+    /**
+     * Caret icon.
+     */
     caretIcon?: any;
+    /**
+     * Content spacing.
+     */
     desktopContentTopSpacing?: number;
+    /**
+     * height of the footer.
+     */
     footerHeight: number;
+    /**
+     * Height of the header.
+     */
     headerHeight: number;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    /**
+     * Side panel icons.
+     */
     icons: any;
+    /**
+     * Side panel item onclick callback.
+     * @param {RouteInterface | ChildRouteInterface} route - Clicked route.
+     */
     onSidePanelItemClick: (route: RouteInterface | ChildRouteInterface) => void;
+    /**
+     * Selected route.
+     */
     selected: RouteInterface | ChildRouteInterface;
+    /**
+     * Side panel item height.
+     */
     sidePanelItemHeight?: number;
+    /**
+     * Position of the side panel.
+     */
     sidePanelPosition?: "absolute" | "fixed" | "inherit" | "initial" | "relative" | "static" | "sticky" | "unset";
+    /**
+     * Top margin.
+     */
     sidePanelTopMargin?: number | boolean;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    /**
+     * i18next translation hook.
+     */
     translationHook?: any;
 }
 
@@ -76,7 +107,8 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
         mobileSidePanelVisibility,
         onSidePanelItemClick,
         onSidePanelPusherClick,
-        routes
+        routes,
+        [ "data-testid" ]: testId
     } = props;
 
     const [ items, setItems ] = useState<RouteInterface[]>(routes);
@@ -147,12 +179,14 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
                     <Sidebar
                         animation="push"
                         visible={ mobileSidePanelVisibility }
+                        data-testid={ testId }
                     >
                         <SidePanelItems
                             { ...props }
                             type="mobile"
                             onSidePanelItemClick={ handleItemOnClick }
                             routes={ items }
+                            data-testid={ `${ testId }-items` }
                         />
                     </Sidebar>
                     <Sidebar.Pusher
@@ -172,12 +206,13 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
                 style={ desktopContentStyle }
                 minWidth={ Responsive.onlyTablet.minWidth }
             >
-                <div className={ wrapperClasses }>
+                <div className={ wrapperClasses } data-testid={ testId }>
                     <SidePanelItems
                         { ...props }
                         type="desktop"
                         onSidePanelItemClick={ handleItemOnClick }
                         routes={ items }
+                        data-testid={ `${ testId }-items` }
                     />
                 </div>
                 <div className="content-wrapper">
@@ -192,6 +227,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
  * Default props for the side panel items component.
  */
 SidePanel.defaultProps = {
+    "data-testid": "side-panel",
     desktopContentTopSpacing: UIConstants.DEFAULT_DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING,
     fluid: false,
     sidePanelItemHeight: UIConstants.DEFAULT_SIDE_PANEL_ITEM_HEIGHT,

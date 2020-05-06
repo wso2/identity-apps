@@ -16,13 +16,14 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import LoadingBar from "react-top-loading-bar";
 
 /**
  * Top loading bar component Prop types.
  */
-export interface TopLoadingBarPropsInterface {
+export interface TopLoadingBarPropsInterface extends TestableComponentInterface {
     /**
      * Height of the loading bar.
      */
@@ -46,7 +47,8 @@ export const TopLoadingBar: FunctionComponent<TopLoadingBarPropsInterface> = (
 
     const {
         height,
-        visibility
+        visibility,
+        [ "data-testid" ]: testId
     } = props;
 
     const [ loaderRef, setLoaderRef ] = useState(null);
@@ -67,6 +69,7 @@ export const TopLoadingBar: FunctionComponent<TopLoadingBarPropsInterface> = (
             className="app-top-loading-bar"
             onRef={ (ref) => setLoaderRef(ref) }
             height={ height }
+            data-testid={ testId }
         />
     );
 };
@@ -75,6 +78,7 @@ export const TopLoadingBar: FunctionComponent<TopLoadingBarPropsInterface> = (
  * Top loading bar component default props.
  */
 TopLoadingBar.defaultProps = {
+    "data-testid": "top-loading-bar",
     height: 3,
     visibility: true
 };

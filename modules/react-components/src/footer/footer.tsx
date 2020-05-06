@@ -16,8 +16,9 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { Container, Menu } from "semantic-ui-react";
 import { LanguageSwitcher } from "../language-switcher";
@@ -25,23 +26,57 @@ import { LanguageSwitcher } from "../language-switcher";
 /**
  * Footer component prop types.
  */
-interface FooterPropsInterface {
+export interface FooterPropsInterface extends TestableComponentInterface {
+    /**
+     * Additional CSS classes.
+     */
     className?: string;
+    /**
+     * Copyright text.
+     */
     copyright?: string;
+    /**
+     * Currently selected language.
+     */
     currentLanguage?: string;
+    /**
+     * Fixed direction.
+     */
     fixed?: "left" | "right" | "bottom" | "top";
+    /**
+     * Flag for fluid behavior.
+     */
     fluid?: boolean;
+    /**
+     * Set of footer links.
+     */
     links?: FooterLinkInterface[];
+    /**
+     * Callback for language change.
+     * @param {string} language - Changed language.
+     */
     onLanguageChange?: (language: string) => void;
+    /**
+     * Should the switcher be shown.
+     */
     showLanguageSwitcher?: boolean;
+    /**
+     * Set of supported languages.
+     */
     supportedLanguages?: object;
 }
 
 /**
  * Footer links interface.
  */
-interface FooterLinkInterface {
+export interface FooterLinkInterface {
+    /**
+     * Link location.
+     */
     to: string;
+    /**
+     * Link name.
+     */
     name: string;
 }
 
@@ -49,11 +84,12 @@ interface FooterLinkInterface {
  * Footer component.
  *
  * @param {FooterPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
-export const Footer: React.FunctionComponent<FooterPropsInterface> = (
+export const Footer: FunctionComponent<FooterPropsInterface> = (
     props: FooterPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         className,
@@ -64,7 +100,8 @@ export const Footer: React.FunctionComponent<FooterPropsInterface> = (
         links,
         onLanguageChange,
         showLanguageSwitcher,
-        supportedLanguages
+        supportedLanguages,
+        [ "data-testid" ]: testId
     } = props;
 
     const classes = classNames(
@@ -76,10 +113,10 @@ export const Footer: React.FunctionComponent<FooterPropsInterface> = (
     );
 
     return (
-        <Menu id="app-footer" className={ classes } fixed={ fixed } borderless>
-            <Container fluid={ fluid }>
-                <Menu.Item className="copyright">{ copyright }</Menu.Item>
-                <Menu.Menu position="right">
+        <Menu id="app-footer" className={ classes } fixed={ fixed } borderless data-testid={ testId }>
+            <Container fluid={ fluid } data-testid={ `${ testId }-container` }>
+                <Menu.Item className="copyright" data-testid={ `${ testId }-copyright` }>{ copyright }</Menu.Item>
+                <Menu.Menu position="right" data-testid={ `${ testId }-menu` }>
                     {
                         // Only show language switcher if it is set to show and if the required props are passed in.
                         (showLanguageSwitcher && currentLanguage && onLanguageChange && supportedLanguages)
@@ -89,6 +126,7 @@ export const Footer: React.FunctionComponent<FooterPropsInterface> = (
                                     currentLanguage={ currentLanguage }
                                     onLanguageChange={ onLanguageChange }
                                     supportedLanguages={ supportedLanguages }
+                                    data-testid={ `${ testId }-language-switcher` }
                                 />
                             )
                             : null
@@ -101,6 +139,7 @@ export const Footer: React.FunctionComponent<FooterPropsInterface> = (
                                     as={ Link }
                                     key={ index }
                                     to={ link.to }
+                                    data-testid={ `${ testId }-link-${ link.name }` }
                                 >
                                     { link.name }
                                 </Menu.Item>
@@ -117,6 +156,7 @@ export const Footer: React.FunctionComponent<FooterPropsInterface> = (
  * Default proptypes for the footer component.
  */
 Footer.defaultProps = {
+    "data-testid": "app-footer",
     fixed: "bottom",
     fluid: false,
     showLanguageSwitcher: false

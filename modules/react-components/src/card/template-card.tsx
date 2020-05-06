@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode } from "react";
 import { Card, CardProps, Divider, Label, Popup } from "semantic-ui-react";
@@ -24,7 +25,7 @@ import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 /**
  * Proptypes for the template card component.
  */
-export interface TemplateCardPropsInterface {
+export interface TemplateCardPropsInterface extends TestableComponentInterface {
     /**
      * Additional classes.
      */
@@ -128,16 +129,17 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
         tags,
         tagsAs,
         tagsSectionTitle,
-        textAlign
+        textAlign,
+        [ "data-testid" ]: testId
     } = props;
 
     const classes = classNames(
         "template-card",
         {
             disabled,
-            [ "with-image" ]: image,
             inline,
-            selected
+            selected,
+            [ "with-image" ]: image
         },
         className
     );
@@ -149,6 +151,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
             onClick={ onClick }
             link={ false }
             as="div"
+            data-testid={ testId }
         >
             {
                 image && (
@@ -157,6 +160,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                             className="card-image"
                             size={ imageSize }
                             icon={ image }
+                            data-testid={ `${ testId }-image` }
                             square
                             transparent
                         />
@@ -164,14 +168,16 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                 )
             }
             <Card.Content className="card-text-container" style={ { textAlign } }>
-                <Card.Header>{ name }</Card.Header>
-                <Card.Description>{ description }</Card.Description>
+                <Card.Header data-testid={ `${ testId }-header` }>{ name }</Card.Header>
+                <Card.Description data-testid={ `${ testId }-description` }>{ description }</Card.Description>
                 {
                     (tags && tags instanceof Array && tags.length > 0)
                         ? (
-                            <div className="tags">
-                                <div className="title">{ tagsSectionTitle }</div>
-                                <div className="logos">
+                            <div className="tags" data-testid={ `${ testId }-tags-container` }>
+                                <div className="title" data-testid={ `${ testId }-tags-title` }>
+                                    { tagsSectionTitle }
+                                </div>
+                                <div className="logos" data-testid={ `${ testId }-logos-container` }>
                                     {
                                         tags.map((tag, index) => (
                                             tagsAs === "icon"
@@ -180,15 +186,19 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                                                         basic
                                                         key={ index }
                                                         trigger={ (
-                                                            <span className="icon-wrapper">
-                                                        <GenericIcon
-                                                            icon={ tag.logo }
-                                                            size="micro"
-                                                            spaced="right"
-                                                            inline
-                                                            transparent
-                                                        />
-                                                    </span>
+                                                            <span
+                                                                className="icon-wrapper"
+                                                                data-testid={ `${ testId }-logo-wrapper` }
+                                                            >
+                                                                <GenericIcon
+                                                                    icon={ tag.logo }
+                                                                    size="micro"
+                                                                    spaced="right"
+                                                                    data-testid={ `${ testId }-logo` }
+                                                                    inline
+                                                                    transparent
+                                                                />
+                                                            </span>
                                                         ) }
                                                         size="mini"
                                                         position="top center"
@@ -196,7 +206,11 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                                                         inverted
                                                     />
                                                 )
-                                                : <Label size="mini">{ tag.displayName }</Label>
+                                                : (
+                                                    <Label size="mini" data-testid={ `${ testId }-logo-label` }>
+                                                        { tag.displayName }
+                                                    </Label>
+                                                )
                                         ))
                                     }
                                 </div>
@@ -210,9 +224,10 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
 };
 
 /**
- * Default props for the application template card.
+ * Default props for the template card.
  */
 TemplateCard.defaultProps = {
+    "data-testid": "template-card",
     imageSize: "tiny",
     inline: true,
     tagsAs: "label",

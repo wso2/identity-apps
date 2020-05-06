@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { ReactElement } from "react";
 import { Header, HeaderProps } from "semantic-ui-react";
@@ -23,7 +24,7 @@ import { Header, HeaderProps } from "semantic-ui-react";
 /**
  * Heading component prop types.
  */
-export interface HeadingPropsInterface extends HeaderProps {
+export interface HeadingPropsInterface extends HeaderProps, TestableComponentInterface {
     /**
      * Determines if the hint is in the disabled state.
      */
@@ -64,6 +65,7 @@ export const Heading: React.FunctionComponent<HeadingPropsInterface> = (
         compact,
         disabled,
         subHeading,
+        [ "data-testid" ]: testId,
         ...rest
     } = props;
 
@@ -80,6 +82,13 @@ export const Heading: React.FunctionComponent<HeadingPropsInterface> = (
     );
 
     return (
-        <Header className={ classes } { ...rest } />
+        <Header className={ classes } data-testid={ testId } { ...rest } />
     );
+};
+
+/**
+ * Default props for the transfer component.
+ */
+Heading.defaultProps = {
+    "data-testid": "heading"
 };

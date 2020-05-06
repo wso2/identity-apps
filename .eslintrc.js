@@ -53,6 +53,7 @@ module.exports = {
         "sort-keys": ["warn", "asc", {"caseSensitive": true, "natural": false, "minKeys": 2}],
         "object-curly-spacing": ["warn", "always"],
         "no-console": "warn",
+        "no-duplicate-imports": "warn"
     },
     overrides: [
         {

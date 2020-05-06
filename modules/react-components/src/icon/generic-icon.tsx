@@ -16,36 +16,101 @@
  * under the License.
  */
 
-import React, { PropsWithChildren } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
+import React, { PropsWithChildren, ReactElement } from "react";
 import { SemanticVERTICALALIGNMENTS } from "semantic-ui-react";
 
 /**
  * Proptypes for the Generic Icon component.
  */
-export interface GenericIconProps {
+export interface GenericIconProps extends TestableComponentInterface {
+    /**
+     * Should the icon appear bordered.
+     */
     bordered?: boolean;
+    /**
+     * Additional CSS classes.
+     */
     className?: string;
+    /**
+     * Should the icon appear colored.
+     */
     colored?: boolean;
+    /**
+     * Should the icon appear default i.e grey.
+     */
     defaultIcon?: boolean;
+    /**
+     * Floated direction.
+     */
     floated?: string;
+    /**
+     * Is hover style enabled.
+     */
     hoverable?: boolean;
+    /**
+     * Icon for the component.
+     */
     icon: any;
+    /**
+     * Should the icon appear inline.
+     */
     inline?: boolean;
+    /**
+     * Should the icon appear as a link. i.e On hover it'll be highlighted.
+     */
     link?: boolean;
+    /**
+     * Hover color of the icon.
+     */
     linkType?: "primary";
+    /**
+     * Icon onclick callback.
+     * @param {React.MouseEvent<HTMLDivElement>} event - Click event.
+     */
     onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
+    /**
+     * Relaxed padding.
+     */
     relaxed?: boolean | "very";
+    /**
+     * Should the icon appear rounded.
+     */
     rounded?: boolean;
+    /**
+     * Size of the icon.
+     */
     size?: GenericIconSizes;
+    /**
+     * Spacing direction.
+     */
     spaced?: "left" | "right";
+    /**
+     * Custom style object.
+     */
     style?: object;
+    /**
+     * Should the icon be squared.
+     */
     square?: boolean;
+    /**
+     * Should the icon be transparent.
+     */
     transparent?: boolean;
+    /**
+     * Should the icon be twoTone. i.e. Primary & secondary.
+     */
     twoTone?: boolean;
+    /**
+     * Vertical allignment.
+     */
     verticalAlign?: SemanticVERTICALALIGNMENTS;
 }
 
+/**
+ * Icon sizes.
+ */
 export type GenericIconSizes =
     "auto"
     | "nano"
@@ -64,11 +129,12 @@ export type GenericIconSizes =
  * Generic component to render icons.
  *
  * @param {GenericIconProps} props - Props injected to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
 export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconProps>> = (
     props: GenericIconProps
-): JSX.Element => {
+): ReactElement => {
 
     const {
         bordered,
@@ -90,8 +156,10 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         square,
         transparent,
         twoTone,
-        verticalAlign
+        verticalAlign,
+        [ "data-testid" ]: testId
     } = props;
+
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
 
     const classes = classNames({
@@ -118,9 +186,9 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
      * Constructs the icon.
      * TODO: Add a default icon if the an error occurs rather than returning null.
      *
-     * @return {HTMLElement | SVGElement | JSX.Element}
+     * @return {HTMLElement | SVGElement | React.ReactElement}
      */
-    const constructContent = (): HTMLElement | SVGElement | JSX.Element => {
+    const constructContent = (): HTMLElement | SVGElement | ReactElement => {
         if (!icon) {
             return null;
         }
@@ -159,7 +227,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
     };
 
     return (
-        <div className={ `theme-icon ${classes}` } style={ style } onClick={ onClick }>
+        <div className={ `theme-icon ${classes}` } style={ style } onClick={ onClick } data-testid={ testId }>
             { constructContent() }
         </div>
     );
@@ -171,6 +239,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
 GenericIcon.defaultProps = {
     bordered: false,
     className: "",
+    "data-testid": "generic-icon",
     defaultIcon: false,
     floated: null,
     inline: false,

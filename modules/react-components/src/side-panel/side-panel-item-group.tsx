@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { ChildRouteInterface } from "@wso2is/core/models";
+import { ChildRouteInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Menu } from "semantic-ui-react";
 import { CommonSidePanelPropsInterface } from "./side-panel";
 import { SidePanelItem } from "./side-panel-item";
@@ -26,8 +26,14 @@ import { SidePanelItem } from "./side-panel-item";
 /**
  * Side panel item group component Prop types.
  */
-interface SidePanelItemGroupPropsInterface extends CommonSidePanelPropsInterface {
+export interface SidePanelItemGroupPropsInterface extends CommonSidePanelPropsInterface, TestableComponentInterface {
+    /**
+     * Child routes array.
+     */
     childRoutes: ChildRouteInterface[];
+    /**
+     * Is opened.
+     */
     open?: boolean;
 }
 
@@ -35,16 +41,18 @@ interface SidePanelItemGroupPropsInterface extends CommonSidePanelPropsInterface
  * Side panel item group component.
  *
  * @param {SidePanelItemGroupPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
-export const SidePanelItemGroup: React.FunctionComponent<SidePanelItemGroupPropsInterface> = (
+export const SidePanelItemGroup: FunctionComponent<SidePanelItemGroupPropsInterface> = (
     props: SidePanelItemGroupPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         childRoutes,
         open,
-        sidePanelItemHeight
+        sidePanelItemHeight,
+        [ "data-testid" ]: testId
     } = props;
 
     const classes = classNames(
@@ -59,17 +67,25 @@ export const SidePanelItemGroup: React.FunctionComponent<SidePanelItemGroupProps
     };
 
     return (
-        <Menu.Menu className={ classes } style={ styles }>
+        <Menu.Menu className={ classes } style={ styles } data-testid={ testId }>
             {
                 childRoutes.map((route, index) => (
                     <SidePanelItem
                         key={ route.level ? `level-${ route.level }-${index}` : `level-${ 0 }-${index}` }
                         route={ route }
                         iconSize="nano"
+                        data-testid={ `${ testId }-child-item` }
                         { ...props }
                     />
                 ))
             }
         </Menu.Menu>
     );
+};
+
+/**
+ * Default props for the side panel item group component.
+ */
+SidePanelItemGroup.defaultProps = {
+    "data-testid": "side-panel-item-group"
 };

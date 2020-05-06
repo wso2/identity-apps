@@ -16,18 +16,39 @@
  * under the License.
  */
 
-import React, { SyntheticEvent } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { ReactElement, SyntheticEvent } from "react";
 import { Dropdown, Flag, FlagNameValues } from "semantic-ui-react";
 
 /**
  * Proptypes for the language switcher dropdown component.
  */
-export interface LanguageSwitcherDropdownProps {
+export interface LanguageSwitcherDropdownProps extends TestableComponentInterface {
+    /**
+     * Language chanege callback.
+     * @param {React.SyntheticEvent} event - Click event.
+     * @param {object} data - Data.
+     */
     changeLanguage: (event: SyntheticEvent, data: object) => void;
+    /**
+     * Additional CSS classes.
+     */
     className: string;
+    /**
+     * Direction to be placed.
+     */
     direction: "left" | "right";
+    /**
+     * Current language.
+     */
     language: string;
+    /**
+     * Should dropdown open upwards.
+     */
     upward: boolean;
+    /**
+     * Set of supported languages.
+     */
     supportedLanguages: object;
 }
 
@@ -35,16 +56,27 @@ export interface LanguageSwitcherDropdownProps {
  * Language switcher dropdown component.
  *
  * @param {LanguageSwitcherDropdownProps} props - Props passed in to the language switcher dropdown component.
- * @return {JSX.Element}
- * @constructor
+ *
+ * @return {React.ReactElement}
  */
 export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherDropdownProps> = (
     props: LanguageSwitcherDropdownProps
-): JSX.Element => {
-    const { direction, className, language, changeLanguage, upward, supportedLanguages } = props;
+): ReactElement => {
+
+    const {
+        direction,
+        className,
+        language,
+        changeLanguage,
+        upward,
+        supportedLanguages,
+        [ "data-testid" ]: testId
+    } = props;
 
     const LanguageSwitcherTrigger = () => (
-        <span className="dropdown-trigger link">{ supportedLanguages[language]?.name }</span>
+        <span className="dropdown-trigger link" data-testid={ `${ testId }-trigger` }>
+            { supportedLanguages[language]?.name }
+        </span>
     );
 
     return (
@@ -54,12 +86,18 @@ export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherD
             upward={ upward }
             trigger={ LanguageSwitcherTrigger() }
             direction={ direction }
+            data-testid={ testId }
             floating
         >
             <Dropdown.Menu>
                 {
                     Object.values(supportedLanguages).map((lang, index) => (
-                        <Dropdown.Item key={ index } onClick={ changeLanguage } value={ lang?.code }>
+                        <Dropdown.Item
+                            key={ index }
+                            onClick={ changeLanguage }
+                            value={ lang?.code }
+                            data-testid={ `${ testId }-language` }
+                        >
                             <Flag name={ lang?.flag as FlagNameValues } />
                              { lang?.name }
                         </Dropdown.Item>
@@ -68,4 +106,11 @@ export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherD
             </Dropdown.Menu>
         </Dropdown>
     );
+};
+
+/**
+ * Default proptypes for the language switcher dropdown component.
+ */
+LanguageSwitcherDropdown.defaultProps = {
+    "data-testid": "language-switcher-dropdown"
 };

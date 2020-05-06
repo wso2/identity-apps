@@ -16,25 +16,40 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Modal, ModalContentProps } from "semantic-ui-react";
 
 /**
+ * Confirmation modal content props.
+ */
+export interface ConfirmationModalContentPropsInterface extends ModalContentProps, TestableComponentInterface { }
+
+/**
  * Confirmation modal content component.
  *
- * @param {ModalComponentProps} props - Props injected to the component.
+ * @param {ConfirmationModalContentPropsInterface} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
-export const ConfirmationModalContent: FunctionComponent<ModalContentProps> = (
-    props: ModalContentProps
+export const ConfirmationModalContent: FunctionComponent<ConfirmationModalContentPropsInterface> = (
+    props: ConfirmationModalContentPropsInterface
 ): ReactElement => {
 
     const {
         children,
+        [ "data-testid" ]: testId,
         ...rest
     } = props;
 
     return (
-        <Modal.Content { ...rest }>{ children }</Modal.Content>
+        <Modal.Content data-testid={ testId } { ...rest }>{ children }</Modal.Content>
     );
+};
+
+/**
+ * Default proptypes for the confirmation modal content component.
+ */
+ConfirmationModalContent.defaultProps = {
+    "data-testid": "confirmation-modal-content"
 };
