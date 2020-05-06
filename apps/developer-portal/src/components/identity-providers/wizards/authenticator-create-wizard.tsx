@@ -22,6 +22,7 @@ import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AuthenticatorSettings, WizardSummary } from "./steps";
@@ -37,6 +38,7 @@ import {
     IdentityProviderInterface,
     IdentityProviderTemplateListItemInterface
 } from "../../../models";
+import { handleGetFederatedAuthenticatorMetadataAPICallError } from "../utils";
 
 /**
  * Proptypes for the identity provider creation wizard component.
@@ -122,6 +124,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
     const [ selectedManualModeOptionId, setSelectedManualModeOptionId ] = useState<string>(undefined);
 
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     // Triggers for each wizard step.
     const [ submitTemplateSelection, setSubmitTemplateSelection ] = useTrigger();
@@ -209,24 +212,30 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         updateFederatedAuthenticator(idpId, authenticator)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully added the authenticator.",
+                    description: t("devPortal:components.idp.notifications.addFederatedAuthenticator." +
+                        "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Operation successful"
+                    message: t("devPortal:components.idp.notifications.addFederatedAuthenticator.success.message")
                 }));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
-                        description: error.response.data.description,
+                        description: t("devPortal:components.idp.notifications.addFederatedAuthenticator." +
+                            "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: "Operation error"
+                        message: t("devPortal:components.idp.notifications.addFederatedAuthenticator.error.message")
                     }));
+
                     return;
                 }
+
                 dispatch(addAlert({
-                    description: "An error occurred while adding the authenticator.",
+                    description: t("devPortal:components.idp.notifications.addFederatedAuthenticator." +
+                        "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Operation error"
+                    message: t("devPortal:components.idp.notifications.addFederatedAuthenticator." +
+                        "genericError.message")
                 }));
             })
             .finally(() => {
@@ -300,19 +309,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                 setSelectedAuthenticatorMetadata(response);
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Retrieval error"
-                    }));
-                    return;
-                }
-                dispatch(addAlert({
-                    description: "An error occurred retrieving the authenticator: ." + authenticatorId,
-                    level: AlertLevels.ERROR,
-                    message: "Retrieval error"
-                }));
+                handleGetFederatedAuthenticatorMetadataAPICallError(error)
             });
     }
 
@@ -355,19 +352,19 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                 icon: IdentityProviderWizardStepIcons.general,
                 name: WizardSteps.TEMPLATE_SELECTION,
                 submitCallback: setSubmitTemplateSelection,
-                title: "Authenticator Selection"
+                title: t("devPortal:components.idp.wizards.addAuthenticator.steps.authenticatorSelection.title")
             },
             {
                 icon: IdentityProviderWizardStepIcons.authenticatorSettings,
                 name: WizardSteps.AUTHENTICATOR_SETTINGS,
                 submitCallback: setSubmitAuthenticator,
-                title: "Authenticator Configuration"
+                title: t("devPortal:components.idp.wizards.addAuthenticator.steps.authenticatorConfiguration.title")
             },
             {
                 icon: IdentityProviderWizardStepIcons.summary,
                 name: WizardSteps.SUMMARY,
                 submitCallback: setFinishSubmit,
-                title: "Summary"
+                title: t("devPortal:components.idp.wizards.addAuthenticator.steps.summary.title")
             }
         ]);
 
@@ -403,7 +400,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                     }
                 </Modal.Header>
                 <Modal.Content className="steps-container">
-                    <Steps.Group header={ "Fill the basic information about your authenticator." }
+                    <Steps.Group header={ t("devPortal:components.idp.wizards.addAuthenticator.header") }
                                  current={ currentWizardStep }>
                         { wizardSteps.map((step, index) => (
                             <Steps.Step
@@ -420,20 +417,26 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                     <Grid>
                         <Grid.Row column={ 1 }>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                <LinkButton floated="left" onClick={ handleWizardClose }>Cancel</LinkButton>
+                                <LinkButton floated="left" onClick={ handleWizardClose }>
+                                    { t("common:cancel") }
+                                </LinkButton>
                             </Grid.Column>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                 {currentWizardStep < wizardSteps.length - 1 && (
                                     <PrimaryButton floated="right" onClick={ navigateToNext }>
-                                        Next<Icon name="arrow right"/>
+                                        { t("devPortal:components.idp.wizards.buttons.next") }
+                                        <Icon name="arrow right"/>
                                     </PrimaryButton>
                                 )}
                                 {currentWizardStep === wizardSteps.length - 1 && (
-                                    <PrimaryButton floated="right" onClick={ navigateToNext }>Finish</PrimaryButton>
+                                    <PrimaryButton floated="right" onClick={ navigateToNext }>
+                                        { t("devPortal:components.idp.wizards.buttons.finish") }
+                                    </PrimaryButton>
                                 )}
                                 {currentWizardStep > 0 && (
                                     <LinkButton floated="right" onClick={ navigateToPrevious }>
-                                        <Icon name="arrow left"/> Previous
+                                        <Icon name="arrow left"/>
+                                        { t("devPortal:components.idp.wizards.buttons.previous") }
                                     </LinkButton>
                                 )}
                             </Grid.Column>

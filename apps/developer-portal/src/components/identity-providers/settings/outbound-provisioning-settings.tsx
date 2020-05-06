@@ -40,6 +40,10 @@ import {
 import { AuthenticatorAccordion } from "../../shared";
 import { OutboundProvisioningConnectorFormFactory } from "../forms";
 import { OutboundProvisioningConnectorCreateWizard } from "../wizards";
+import {
+    handleGetOutboundProvisioningConnectorMetadataError,
+    handleUpdateOutboundProvisioningConnectorError
+} from "../utils";
 
 /**
  * Proptypes for the provisioning settings component.
@@ -124,26 +128,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                             })
                         })
                         .catch(error => {
-                            if (error?.response?.data?.description) {
-                                dispatch(addAlert({
-                                    description: t("devPortal:components.idp.notifications." +
-                                        "getOutboundProvisioningConnectorMetadata.error.description",
-                                        { description: error.response.data.description } ),
-                                    level: AlertLevels.ERROR,
-                                    message: t("devPortal:components.idp.notifications." +
-                                        "getOutboundProvisioningConnectorMetadata.error.message")
-                                }));
-
-                                return;
-                            }
-
-                            dispatch(addAlert({
-                                description: t("devPortal:components.idp.notifications." +
-                                    "getOutboundProvisioningConnectorMetadata.genericError.description"),
-                                level: AlertLevels.ERROR,
-                                message: t("devPortal:components.idp.notifications." +
-                                    "getOutboundProvisioningConnectorMetadata.genericError.message")
-                            }));
+                            handleGetOutboundProvisioningConnectorMetadataError(error);
                         });
                 })
                 .catch(error => {
@@ -204,25 +189,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                 onUpdate(identityProvider.id);
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
-                            "error.description", { description: error.response.data.description } ),
-                        level: AlertLevels.ERROR,
-                        message: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
-                            "error.message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
-                        "genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
-                        "genericError.message")
-                }));
+                handleUpdateOutboundProvisioningConnectorError(error);
             });
     };
 

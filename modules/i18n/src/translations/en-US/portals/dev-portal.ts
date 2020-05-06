@@ -671,6 +671,10 @@ export const devPortal: DevPortalNS = {
                     subTitle: "Add new authenticator to the identity provider: {{ idpName }}",
                     title: "Add New Authenticator"
                 },
+                addProvisioningConnector: {
+                    subTitle: "Follow the steps to add new outbound provisioning connector",
+                    title: "Create outbound provisioning connector"
+                },
                 attributeSelection: {
                     content: {
                         searchPlaceholder: "Search Attributes"
@@ -680,6 +684,34 @@ export const devPortal: DevPortalNS = {
                 }
             },
             notifications: {
+                addFederatedAuthenticator: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Create error"
+                    },
+                    genericError: {
+                        description: "An error occurred while adding the authenticator.",
+                        message: "Create error"
+                    },
+                    success: {
+                        description: "Successfully added the authenticator.",
+                        message: "Create successful"
+                    }
+                },
+                addIDP: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Create error"
+                    },
+                    genericError: {
+                        description: "An error occurred while creating the identity provider.",
+                        message: "Create error"
+                    },
+                    success: {
+                        description: "Successfully created the identity provider.",
+                        message: "Create successful"
+                    }
+                },
                 deleteIDP: {
                     error: {
                         description: "{{ description }}",
@@ -756,7 +788,7 @@ export const devPortal: DevPortalNS = {
                         message: "Retrieval error"
                     },
                     genericError: {
-                        description: "",
+                        description: "An error occurred while retrieving authenticator metadata.",
                         message: "Retrieval error"
                     },
                     success: {
@@ -827,6 +859,20 @@ export const devPortal: DevPortalNS = {
                     },
                     genericError: {
                         description: "An error occurred retrieving the outbound provisioning connector metadata.",
+                        message: "Retrieval error"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                getOutboundProvisioningConnectorsList: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "An error occurred retrieving the outbound provisioning connectors list.",
                         message: "Retrieval error"
                     },
                     success: {
@@ -986,6 +1032,70 @@ export const devPortal: DevPortalNS = {
                 quickSetup: {
                     heading: "Quick Setup",
                     subHeading: "Predefined set of templates to speed up your identity provider creation."
+                }
+            },
+            wizards: {
+                addAuthenticator: {
+                    header: "Fill the basic information about your authenticator.",
+                    steps: {
+                        authenticatorConfiguration: {
+                            title: "Authenticator Configuration"
+                        },
+                        authenticatorSelection: {
+                            manualSetup: {
+                                subTitle: "Add a new authenticator with custom configurations.",
+                                title: "Manual Setup"
+                            },
+                            quickSetup: {
+                                subTitle: "Predefined authenticator templates to speed up your add operation.",
+                                title: "Quick Setup"
+                            },
+                            title: "Authenticator Selection"
+                        },
+                        summary: {
+                            title: "Summary"
+                        }
+                    }
+                },
+                addIDP: {
+                    header: "Fill the basic information about your identity provider.",
+                    steps: {
+                        authenticatorConfiguration: {
+                            title: "Authenticator Configuration"
+                        },
+                        generalSettings: {
+                            title: "General settings"
+                        },
+                        provisioningConfiguration: {
+                            title: "Provisioning Configuration"
+                        },
+                        summary: {
+                            title: "Summary"
+                        }
+                    }
+                },
+                addProvisioningConnector: {
+                    header: "Fill the following details",
+                    steps: {
+                        connectorConfiguration: {
+                            title: "Connector Details"
+                        },
+                        connectorSelection: {
+                            defaultSetup: {
+                                subTitle: "Select the type of the new outbound provisioning connector",
+                                title: "Connector Types"
+                            },
+                            title: "Connector selection"
+                        },
+                        summary: {
+                            title: "Summary"
+                        }
+                    }
+                },
+                buttons: {
+                    finish: "Finish",
+                    next: "Next",
+                    previous: "Previous"
                 }
             }
         },

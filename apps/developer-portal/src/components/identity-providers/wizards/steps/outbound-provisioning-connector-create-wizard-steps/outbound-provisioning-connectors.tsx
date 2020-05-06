@@ -16,12 +16,13 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useState } from "react";
-import { OutboundProvisioningConnectorListItemInterface } from "../../../../../models";
-import { Heading, SelectionCard } from "@wso2is/react-components";
-import { Grid } from "semantic-ui-react";
-import { OutboundConnectors } from "../../../meta";
 import { Forms } from "@wso2is/forms";
+import { Heading, SelectionCard } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Grid } from "semantic-ui-react";
+import { OutboundProvisioningConnectorListItemInterface } from "../../../../../models";
+import { OutboundConnectors } from "../../../meta";
 
 /**
  * Interface for the outbound provisioning connectors props.
@@ -44,10 +45,12 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
         setSelectedConnector
     ] = useState<OutboundProvisioningConnectorListItemInterface>(undefined);
 
+    const { t } = useTranslation();
+    
     /**
      * Handles inbound protocol selection.
-     *
-     * @param {IdentityProviderInterface} template - Selected protocol.
+     * 
+     * @param connector
      */
     const handleConnectorSelection = (connector: OutboundProvisioningConnectorListItemInterface): void => {
         setSelectedConnector(connector);
@@ -66,9 +69,11 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Heading as="h4">
-                            Connector Types
+                            { t("devPortal:components.idp.wizards.addProvisioningConnector.steps." +
+                                "connectorSelection.defaultSetup.title") }
                             <Heading subHeading as="h6">
-                                Select the type of the new outbound provisioning connector
+                                { t("devPortal:components.idp.wizards.addProvisioningConnector.steps." +
+                                    "connectorSelection.defaultSetup.subTitle") }
                             </Heading>
                         </Heading>
                             {

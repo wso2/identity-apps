@@ -392,6 +392,10 @@ export interface DevPortalNS {
                     title: string;
                     subTitle: string;
                 };
+                addProvisioningConnector: {
+                    title: string;
+                    subTitle: string;
+                };
                 attributeSelection: {
                     title: string;
                     subTitle: string;
@@ -401,6 +405,8 @@ export interface DevPortalNS {
                 };
             };
             notifications: {
+                addFederatedAuthenticator: Notification;
+                addIDP: Notification;
                 deleteIDP: Notification;
                 disableAuthenticator: Notification;
                 disableOutboundProvisioningConnector: Notification;
@@ -410,6 +416,7 @@ export interface DevPortalNS {
                 getFederatedAuthenticator: Notification;
                 getFederatedAuthenticatorMetadata: Notification;
                 getOutboundProvisioningConnector: Notification;
+                getOutboundProvisioningConnectorsList: Notification;
                 getOutboundProvisioningConnectorMetadata: Notification;
                 getAllLocalClaims: Notification;
                 getRolesList: Notification;
@@ -426,6 +433,71 @@ export interface DevPortalNS {
                 emptyAuthenticatorList: Placeholder;
                 emptyConnectorList: Placeholder;
                 noAttributes: Placeholder;
+            };
+            wizards: {
+                addAuthenticator: {
+                    header: string;
+                    steps: {
+                        authenticatorSelection: {
+                            title: string;
+                            quickSetup: {
+                                title: string;
+                                subTitle: string;
+                            };
+                            manualSetup: {
+                                title: string;
+                                subTitle: string;
+                            };
+                        };
+                        authenticatorConfiguration: {
+                            title: string;
+                        };
+                        summary: {
+                            title: string;
+                        };
+                    };
+                };
+                addIDP: {
+                    header: string;
+                    steps: {
+                        generalSettings: {
+                            title: string;
+                        };
+                        authenticatorConfiguration: {
+                            title: string;
+                        };
+                        provisioningConfiguration: {
+                            title: string;
+                        };
+                        summary: {
+                            title: string;
+                        };
+                    };
+                };
+                addProvisioningConnector: {
+                    header: string;
+                    steps: {
+                        connectorSelection: {
+                            title: string;
+                            defaultSetup: {
+                                title: string;
+                                subTitle: string;
+                            };
+                        };
+                        connectorConfiguration: {
+                            title: string;
+                        };
+                        summary: {
+                            title: string;
+                        };
+                    };
+                };
+                buttons: {
+                    next: string;
+                    finish: string;
+                    previous: string;
+
+                };
             };
         };
         users: {

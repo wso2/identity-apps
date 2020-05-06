@@ -43,6 +43,7 @@ import { AuthenticatorAccordion } from "../../shared";
 import { AuthenticatorFormFactory } from "../forms";
 import { FederatedAuthenticators } from "../meta/authenticators";
 import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizard";
+import { handleGetFederatedAuthenticatorMetadataAPICallError } from "../utils";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -183,26 +184,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             description: t("devPortal:components.idp.notifications.getFederatedAuthenticator.genericError.description"),
             level: AlertLevels.ERROR,
             message: t("devPortal:components.idp.notifications.getFederatedAuthenticator.genericError.message")
-        }));
-    };
-
-    const handleGetFederatedAuthenticatorMetadataAPICallError = (error) => {
-        if (error.response && error.response.data && error.response.data.description) {
-            dispatch(addAlert({
-                description: t("devPortal:components.idp.notifications.getFederatedAuthenticatorMetadata." +
-                    "error.description", { description: error.response.data.description }),
-                level: AlertLevels.ERROR,
-                message: t("devPortal:components.idp.notifications.getFederatedAuthenticatorMetadata.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("devPortal:components.idp.notifications.getFederatedAuthenticatorMetadata." +
-                "genericError.description"),
-            level: AlertLevels.ERROR,
-            message: t("devPortal:components.idp.notifications.getFederatedAuthenticatorMetadata.genericError.message")
         }));
     };
 
