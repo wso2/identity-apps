@@ -1399,6 +1399,27 @@ export const devPortal: DevPortalNS = {
                                 1: "Browser fingerprinting to determine the browser technology or/and version"
                             }
                         }
+<<<<<<< HEAD
+=======
+                    },
+                    connection: {
+                        custom: {
+                            requiredErrorMessage: "{{name}} is required"
+                        }
+                    }
+                }
+            },
+            notifications: {
+                delay: {
+                    description: "It may take a while for the userstore list to be updated. "
+                        + "Refresh in a few seconds to get the updated userstore list.",
+                    message: "Updating Userstore list takes time"
+                },
+                deleteUserstore: {
+                    genericError: {
+                        description: "There was an error while deleting the userstore",
+                        message: "Something went wrong!"
+>>>>>>> Localize edit connection details-userstore
                     },
                     heading: "Use of personal information"
                 },

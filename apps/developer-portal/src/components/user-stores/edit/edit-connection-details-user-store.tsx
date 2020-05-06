@@ -20,6 +20,7 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
@@ -62,6 +63,8 @@ export const EditConnectionDetails = (
     const [ sql, setSql ] = useState<Map<string, string>>(null);
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     /**
      * Enum containing the icons a test connection button can have 
@@ -213,17 +216,21 @@ export const EditConnectionDetails = (
 
         patchUserStore(id, data).then(() => {
             dispatch(addAlert({
-                description: "This userstore has been updated successfully!",
+                description: t("devPortal:components.userstores.notifications." +
+                    "updateUserstore.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Userstore updated successfully!"
+                message: t("devPortal:components.userstores.notifications." +
+                    "updateUserstore.success.message")
             }));
             update();
         }).catch(error => {
             dispatch(addAlert({
                 description: error?.description
-                    || "An error occurred while updating the userstore.",
+                    || t("devPortal:components.userstores.notifications." +
+                        "updateUserstore.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: error?.message || "Something went wrong"
+                message: error?.message || t("devPortal:components.userstores.notifications." +
+                    "updateUserstore.genericError.message")
             }));
         });
     };
@@ -233,7 +240,7 @@ export const EditConnectionDetails = (
             onChange={ (isPure: boolean, values: Map<string, FormValue>) => {
                 setFormValue(values);
             } }
-            onSubmit={ onSubmitHandler  }
+            onSubmit={ onSubmitHandler }
         >
             <Grid>
                 <Grid.Row columns={ 1 }>
@@ -258,8 +265,8 @@ export const EditConnectionDetails = (
                                                 requiredErrorMessage={
                                                     `${property.description.split("#")[ 0 ]} is  required`
                                                 }
-                                                showPassword="Show Password"
-                                                hidePassword="Hide Password"
+                                                showPassword={ t("common:showPassword") }
+                                                hidePassword={ t("common:hidePassword") }
                                             />
                                         )
                                         : toggle
@@ -272,7 +279,11 @@ export const EditConnectionDetails = (
                                                     required={ false }
                                                     label={ property.description.split("#")[ 0 ] }
                                                     requiredErrorMessage={
-                                                        `${property.description.split("#")[ 0 ]} is  required`
+                                                        t("devPortal:components.userstores.forms.edit.connection." +
+                                                            "custom.requiredErrorMessage",
+                                                            {
+                                                                name: property.description.split("#")[ 0 ]
+                                                            })
                                                     }
                                                     toggle
                                                 />
@@ -286,7 +297,11 @@ export const EditConnectionDetails = (
                                                     required={ true }
                                                     label={ property.description.split("#")[ 0 ] }
                                                     requiredErrorMessage={
-                                                        `${property.description.split("#")[ 0 ]} is  required`
+                                                        t("devPortal:components.userstores.forms.edit.connection." +
+                                                            "custom.requiredErrorMessage",
+                                                            {
+                                                                name: property.description.split("#")[ 0 ]
+                                                            })
                                                     }
                                                 />
                                             )
@@ -330,9 +345,11 @@ export const EditConnectionDetails = (
                                             };
                                             testConnection(testData).then(() => {
                                                 dispatch(addAlert({
-                                                    description: "The connection is healthy",
+                                                    description: t("devPortal:components.userstores.notifications." +
+                                                        "testConnection.success.description"),
                                                     level: AlertLevels.SUCCESS,
-                                                    message: "Connection successful!"
+                                                    message: t("devPortal:components.userstores.notifications." +
+                                                        "testConnection.success.message")
                                                 }));
                                                 setIsTesting(false);
                                                 setConnectionFailed(false);
@@ -340,10 +357,11 @@ export const EditConnectionDetails = (
                                             }).catch((error) => {
                                                 dispatch(addAlert({
                                                     description: error?.description
-                                                        || "An error occurred while testing the " +
-                                                        "connection to the userstore",
+                                                        || t("devPortal:components.userstores.notifications." +
+                                                            "testConnection.genericError.description"),
                                                     level: AlertLevels.ERROR,
-                                                    message: error?.message || "Something went wrong"
+                                                    message: error?.message || t("devPortal:components.userstores.notifications." +
+                                                        "testConnection.genericError.message")
                                                 }));
                                                 setIsTesting(false);
                                                 setConnectionSuccessful(false);
@@ -386,7 +404,7 @@ export const EditConnectionDetails = (
                                 onClick={ () => { setShowMore(!showMore) } }
                             >
                                 <Icon name={ showMore ? "chevron up" : "chevron down" } />
-                                { `Show ${showMore ? "Less" : "More"}` }
+                                { showMore ? t("common:showLess") : t("common:showMore") }
                             </LinkButton>
                         </Grid.Column>
                     </Grid>
@@ -418,8 +436,8 @@ export const EditConnectionDetails = (
                                                     requiredErrorMessage={
                                                         `${property.description.split("#")[ 0 ]} is  required`
                                                     }
-                                                    showPassword="Show Password"
-                                                    hidePassword="Hide Password"
+                                                    showPassword={ t("common:showPassword") }
+                                                    hidePassword={ t("common:hidePassword") }
                                                 />
                                             )
                                             : toggle
@@ -432,7 +450,11 @@ export const EditConnectionDetails = (
                                                         required={ false }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
-                                                            `${property.description.split("#")[ 0 ]} is  required`
+                                                            t("devPortal:components.userstores.forms.edit.connection." +
+                                                                "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
                                                         }
                                                         toggle
                                                     />
@@ -446,7 +468,11 @@ export const EditConnectionDetails = (
                                                         required={ false }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
-                                                            `${property.description.split("#")[ 0 ]} is  required`
+                                                            t("devPortal:components.userstores.forms.edit.connection." +
+                                                                "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
                                                         }
                                                     />
                                                 )
@@ -481,8 +507,8 @@ export const EditConnectionDetails = (
             <Grid columns={ 1 }>
                 <Grid.Column width={ 8 }>
                     <PrimaryButton type="submit">
-                        Update
-                            </PrimaryButton>
+                        { t("common:update") }
+                    </PrimaryButton>
                 </Grid.Column>
             </Grid>
         </Forms>

@@ -948,6 +948,7 @@ export interface DevPortalNS {
                 deleteUserstore: Notification;
                 delay: NotificationItem;
                 updateUserstore: Notification;
+                testConnection: Notification;
             };
             confirmation: {
                 hint: string;
@@ -986,6 +987,9 @@ export interface DevPortalNS {
                         name: FormField;
                         type: FormField;
                         description: FormField;
+                        custom: FormField;
+                    };
+                    connection: {
                         custom: FormField;
                     };
                 };
