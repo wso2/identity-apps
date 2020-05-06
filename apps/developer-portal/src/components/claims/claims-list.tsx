@@ -286,7 +286,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
             closeDeleteConfirm();
             dispatch(addAlert(
                 {
-                    description: "The external atribute has been deleted successfully!",
+                    description: "The external attribute has been deleted successfully!",
                     level: AlertLevels.SUCCESS,
                     message: "External attribute deleted successfully"
                 }

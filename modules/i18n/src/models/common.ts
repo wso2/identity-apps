@@ -44,7 +44,7 @@ export interface EditPage extends Page {
  * Model for notification set
  */
 export interface Notification {
-    error: NotificationItem;
+    error?: NotificationItem;
     genericError: NotificationItem;
     success: NotificationItem;
 }

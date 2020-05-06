@@ -938,6 +938,15 @@ export interface DevPortalNS {
                     };
                 };
                 placeholder: string;
+                error: string;
+            };
+            notifications: {
+                fetchUserstores: Notification;
+            };
+            pageLayout: {
+                title: string;
+                description: string;
+                primaryAction: string;
             };
         };
         roles: {

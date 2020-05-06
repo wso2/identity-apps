@@ -40,18 +40,20 @@ import { filterList, sortList } from "../utils";
  */
 export const UserStores = (): ReactElement => {
 
+    const { t } = useTranslation();
+
     /**
      * Sets the attributes by which the list can be sorted.
      */
     const SORT_BY = [
         {
             key: 0,
-            text: "Name",
+            text:t("common:name"),
             value: "name"
         },
         {
             key: 1,
-            text: "Description",
+            text: t("common:description"),
             value: "description"
         }
     ];
@@ -71,8 +73,6 @@ export const UserStores = (): ReactElement => {
     const dispatch = useDispatch();
 
     const [ resetPagination, setResetPagination ] = useTrigger();
-
-    const { t } = useTranslation();
 
     /**
      * Fetches all userstores.
@@ -98,9 +98,11 @@ export const UserStores = (): ReactElement => {
             setIsLoading(false);
             dispatch(addAlert(
                 {
-                    description: error?.description || "An error occurred while fetching userstores",
+                    description: error?.description
+                        || t("devPortal:components.userstores.notifications.fetchUserstores.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
+                    message: error?.message
+                        || t("devPortal:components.userstores.notifications.fetchUserstores.genericError.message")
                 }
             ));
         });
@@ -183,7 +185,7 @@ export const UserStores = (): ReactElement => {
             dispatch(addAlert({
                 description: error.message,
                 level: AlertLevels.ERROR,
-                message: "Filter query format incorrect"
+                message: t("devPortal:components.userstores.advancedSearch.error")
             }));
         }
     };
@@ -200,8 +202,8 @@ export const UserStores = (): ReactElement => {
     return (
         <PageLayout
             isLoading={ isLoading }
-            title="Userstores"
-            description="Create and manage userstores"
+            title={ t("devPortal:components.userstores.pageLayout.title") }
+            description={ t("devPortal:components.userstores.pageLayout.description") }
             showBottomDivider={ true }
         >
             <ListLayout
@@ -256,7 +258,7 @@ export const UserStores = (): ReactElement => {
                                 history.push(USERSTORE_TEMPLATES_PATH);
                             } }
                         >
-                            <Icon name="add" />New Userstore
+                            <Icon name="add" />{ t("devPortal:components.userstores.pageLayout.primaryAction")}
                         </PrimaryButton>
                     )
                 }
