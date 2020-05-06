@@ -82,10 +82,13 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
             const results: UserstoreType[] = await Promise.all(
                 typeRequests.map(response => response.catch(error => {
                     dispatch(addAlert({
-                        description: error?.description || "An error occurred while fetching the " +
-                            "userstore type details.",
+                        description: error?.description
+                            || t("devPortal:components.userstores.notifications." +
+                                "fetchUserstoreTemplates.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: error?.message || "Something went wrong"
+                        message: error?.message
+                            || t("devPortal:components.userstores.notifications." +
+                                "fetchUserstoreTemplates.genericError.message")
                     }));
                 }))
             );
@@ -123,9 +126,11 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
             setRawUserstoreTypes(rawUserstoreTypes);
         }).catch(error => {
             dispatch(addAlert({
-                description: error?.description || "An error occurred while fetching the userstore types.",
+                description: error?.description || t("devPortal:components.userstores.notifications." +
+                    "fetchUserstoreTypes.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: error?.message || "Something went wrong"
+                message: error?.message || t("devPortal:components.userstores.notifications." +
+                    "fetchUserstoreTypes.genericError.message")
             }));
         }).finally(() => {
             setIsLoading(false);
@@ -147,15 +152,17 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
                 )
             }
             <PageLayout
-                title="Userstores"
-                description="Please choose one of the following userstore types."
+                isLoading={ isLoading }
+                title={ t("devPortal:components.userstores.pageLayout.templates.title") }
+                description={ t("devPortal:components.userstores.pageLayout.templates.description") }
                 contentTopMargin={ true }
                 backButton={ {
                     onClick: () => {
                         history.push(USER_STORES_PATH);
                     },
-                    text: "Select Userstore Type"
-                } }
+                    text: t("devPortal:components.userstores.pageLayout.templates.back")
+                }
+                } 
                 titleTextAlign="left"
                 bottomMargin={ false }
                 showBottomDivider
@@ -166,8 +173,9 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
                             <TemplateGrid<UserstoreTypeListItem>
                                 type="userstore"
                                 templates={ userstoreTypes }
-                                heading="Quick Setup"
-                                subHeading="Predefined set of templates to speed up your userstore creation."
+                                heading={ t("devPortal:components.userstores.pageLayout.templates.templateHeading") }
+                                subHeading={ t("devPortal:components.userstores.pageLayout." +
+                                    "templates.templateSubHeading") }
                                 onTemplateSelect={ (e: SyntheticEvent, { id }: { id: string }) => {
                                     setSelectedType(rawUserstoreTypes.find((type) => type.typeId === id));
                                 } }

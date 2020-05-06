@@ -202,8 +202,8 @@ export const UserStores = (): ReactElement => {
     return (
         <PageLayout
             isLoading={ isLoading }
-            title={ t("devPortal:components.userstores.pageLayout.title") }
-            description={ t("devPortal:components.userstores.pageLayout.description") }
+            title={ t("devPortal:components.userstores.pageLayout.list.title") }
+            description={ t("devPortal:components.userstores.pageLayout.list.description") }
             showBottomDivider={ true }
         >
             <ListLayout
@@ -258,7 +258,7 @@ export const UserStores = (): ReactElement => {
                                 history.push(USERSTORE_TEMPLATES_PATH);
                             } }
                         >
-                            <Icon name="add" />{ t("devPortal:components.userstores.pageLayout.primaryAction")}
+                            <Icon name="add" />{ t("devPortal:components.userstores.pageLayout.list.primaryAction")}
                         </PrimaryButton>
                     )
                 }

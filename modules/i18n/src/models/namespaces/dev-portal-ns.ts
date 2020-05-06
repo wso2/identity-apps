@@ -942,11 +942,22 @@ export interface DevPortalNS {
             };
             notifications: {
                 fetchUserstores: Notification;
+                fetchUserstoreTemplates: Notification;
+                fetchUserstoreTypes: Notification;
             };
             pageLayout: {
-                title: string;
-                description: string;
-                primaryAction: string;
+                list: {
+                    title: string;
+                    description: string;
+                    primaryAction: string;
+                };
+                templates: {
+                    title: string;
+                    description: string;
+                    back: string;
+                    templateHeading: string;
+                    templateSubHeading: string;
+                };
             };
         };
         roles: {
