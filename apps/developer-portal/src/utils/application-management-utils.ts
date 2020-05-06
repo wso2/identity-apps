@@ -19,6 +19,7 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { I18n } from "@wso2is/i18n";
 import { TemplateCardTagInterface } from "@wso2is/react-components";
 import _ from "lodash";
 import { getApplicationTemplateList, getAvailableInboundProtocols } from "../api";
@@ -34,8 +35,8 @@ import {
 import { store } from "../store";
 import {
     checkAvailableCustomInboundAuthProtocolMeta,
-    setAvailableCustomInboundAuthProtocolMeta,
     setApplicationTemplates,
+    setAvailableCustomInboundAuthProtocolMeta,
     setAvailableInboundAuthProtocolMeta
 } from "../store/actions";
 
@@ -75,16 +76,19 @@ export class ApplicationManagementUtils {
                     store.dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message:  "Retrieval error"
+                        message: I18n.instance.t("devPortal:components.applications.notifications" +
+                            ".fetchInboundProtocols.error.message")
                     }));
 
                     return;
                 }
 
                 store.dispatch(addAlert({
-                    description: "An error occurred retrieving the available inbound protocols.",
+                    description: I18n.instance.t("devPortal:components.applications.notifications" +
+                        ".fetchInboundProtocols.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Retrieval error"
+                    message: I18n.instance.t("devPortal:components.applications.notifications" +
+                        ".fetchInboundProtocols.genericError.message")
                 }));
             });
     }
@@ -117,16 +121,19 @@ export class ApplicationManagementUtils {
                     store.dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Retrieval error"
+                        message: I18n.instance.t("devPortal:components.applications.notifications" +
+                            ".fetchCustomInboundProtocols.error.message")
                     }));
 
                     return;
                 }
 
                 store.dispatch(addAlert({
-                    description: "An error occurred retrieving the available inbound protocols.",
+                    description: I18n.instance.t("devPortal:components.applications.notifications" +
+                        ".fetchCustomInboundProtocols.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Retrieval error"
+                    message: I18n.instance.t("devPortal:components.applications.notifications" +
+                        ".fetchCustomInboundProtocols.genericError.message")
                 }));
             });
     }
@@ -159,16 +166,19 @@ export class ApplicationManagementUtils {
                     store.dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Application Template List Fetch Error"
+                        message: I18n.instance.t("devPortal:components.applications.notifications.fetchTemplates" +
+                            ".error.message")
                     }));
 
                     return;
                 }
 
                 store.dispatch(addAlert({
-                    description: "An error occurred while retrieving application template list",
+                    description: I18n.instance.t("devPortal:components.applications.notifications.fetchTemplates" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Retrieval Error"
+                    message: I18n.instance.t("devPortal:components.applications.notifications.fetchTemplates" +
+                        ".genericError.message")
                 }));
             })
     };

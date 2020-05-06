@@ -22,6 +22,7 @@ import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, ResourceTab } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { InboundProtocolsMeta } from "./meta";
 import {
@@ -74,6 +75,7 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
  * Application edit component.
  *
  * @param {EditApplicationPropsInterface} props - Props injected to the component.
+ *
  * @return {ReactElement}
  */
 export const EditApplication: FunctionComponent<EditApplicationPropsInterface> = (
@@ -90,6 +92,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     } = props;
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
@@ -176,16 +180,19 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         dispatch(addAlert({
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
-                            message: "Retrieval error"
+                            message: t("devPortal:components.applications.notifications.getInboundProtocolConfig" +
+                                ".error.message")
                         }));
 
                         return;
                     }
 
                     dispatch(addAlert({
-                        description: "An error occurred retrieving the protocol configurations.",
+                        description: t("devPortal:components.applications.notifications.getInboundProtocolConfig" +
+                            ".genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: "Retrieval error"
+                        message: t("devPortal:components.applications.notifications.getInboundProtocolConfig" +
+                            ".genericError.message")
                     }));
                 })
                 .finally(() => {
@@ -291,7 +298,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))) {
 
                 panes.push({
-                    menuItem: "General",
+                    menuItem: t("devPortal:components.applications.edit.sections.general.tabName"),
                     render: GeneralApplicationSettingsTabPane
                 });
             }
@@ -299,7 +306,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))) {
 
                 panes.push({
-                    menuItem: "Access",
+                    menuItem: t("devPortal:components.applications.edit.sections.access.tabName"),
                     render: ApplicationSettingsTabPane
                 });
             }
@@ -307,7 +314,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))) {
 
                 panes.push({
-                    menuItem: "Attributes",
+                    menuItem: t("devPortal:components.applications.edit.sections.attributes.tabName"),
                     render: AttributeSettingTabPane
                 });
             }
@@ -315,7 +322,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))) {
 
                 panes.push({
-                    menuItem: "Sign-on Method",
+                    menuItem: t("devPortal:components.applications.edit.sections.signOnMethod.tabName"),
                     render: SignOnMethodsTabPane
                 });
             }
@@ -323,7 +330,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))) {
 
                 panes.push({
-                    menuItem: "Provisioning",
+                    menuItem: t("devPortal:components.applications.edit.sections.provisioning.tabName"),
                     render: ProvisioningSettingsTabPane
                 });
             }
@@ -331,7 +338,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))) {
 
                 panes.push({
-                    menuItem: "Advanced",
+                    menuItem: t("devPortal:components.applications.edit.sections.advanced.tabName"),
                     render: AdvancedSettingsTabPane
                 });
             }
@@ -341,26 +348,27 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         return [
             {
-                menuItem: "General",
+                menuItem: t("devPortal:components.applications.edit.sections.general.tabName"),
                 render: GeneralApplicationSettingsTabPane
             },
             {
-                menuItem: "Access",
+                menuItem: t("devPortal:components.applications.edit.sections.access.tabName"),
                 render: ApplicationSettingsTabPane
-            }, {
-                menuItem: "Attribute",
+            },
+            {
+                menuItem: t("devPortal:components.applications.edit.sections.attributes.tabName"),
                 render: AttributeSettingTabPane
             },
             {
-                menuItem: "Sign-on Method",
+                menuItem: t("devPortal:components.applications.edit.sections.signOnMethod.tabName"),
                 render: SignOnMethodsTabPane
             },
             {
-                menuItem: "Provisioning",
+                menuItem: t("devPortal:components.applications.edit.sections.provisioning.tabName"),
                 render: ProvisioningSettingsTabPane
             },
             {
-                menuItem: "Advanced",
+                menuItem: t("devPortal:components.applications.edit.sections.advanced.tabName"),
                 render: AdvancedSettingsTabPane
             }
         ];

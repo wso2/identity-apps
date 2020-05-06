@@ -24,6 +24,7 @@ import { Divider } from "semantic-ui-react";
 import { ApplicationCreateWizard } from "../components";
 import { CustomApplicationTemplate } from "../components/applications/meta";
 import { ApplicationTemplateIllustrations, EmptyPlaceholderIllustrations } from "../configs";
+import { ApplicationConstants } from "../constants";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../models";
@@ -69,7 +70,7 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
      * Handles back button click.
      */
     const handleBackButtonClick = (): void => {
-        history.push("/applications");
+        history.push(ApplicationConstants.PATHS.get("APPLICATIONS"));
     };
 
     /**

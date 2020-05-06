@@ -237,16 +237,19 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                         dispatch(addAlert({
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
-                            message: "Update error"
+                            message: t("devPortal:components.applications.notifications.updateApplication" +
+                                ".error.message")
                         }));
 
                         return;
                     }
 
                     dispatch(addAlert({
-                        description: "An error occurred updating the application",
+                        description: t("devPortal:components.applications.notifications.updateApplication" +
+                            ".genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: "Update error"
+                        message: t("devPortal:components.applications.notifications.updateApplication" +
+                            ".genericError.message")
                     }));
                 })
         }
@@ -281,16 +284,17 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Retrieval Error"
+                        message: t("devPortal:components.applications.notifications.fetchApplication.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while retrieving application details",
+                    description: t("devPortal:components.applications.notifications.fetchApplication" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Retrieval Error"
+                    message: t("devPortal:components.applications.notifications.fetchApplication.genericError.message")
                 }));
             })
             .finally(() => {

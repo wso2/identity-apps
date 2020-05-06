@@ -78,6 +78,28 @@ export const devPortal: DevPortalNS = {
                 },
                 placeholder: "Search by application name"
             },
+            edit: {
+                sections: {
+                    access: {
+                        tabName: "Access"
+                    },
+                    advanced: {
+                        tabName: "Advanced"
+                    },
+                    attributes: {
+                        tabName: "Attributes"
+                    },
+                    general: {
+                        tabName: "General"
+                    },
+                    provisioning: {
+                        tabName: "Provisioning"
+                    },
+                    signOnMethod: {
+                        tabName: "Sign-on Method"
+                    }
+                }
+            },
             helpPanel: {
                 tabs: {
                     docs: {
@@ -107,10 +129,38 @@ export const devPortal: DevPortalNS = {
                 }
             },
             notifications: {
+                addApplication: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Creation Error"
+                    },
+                    genericError: {
+                        description: "Failed to create the application",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully created the application.",
+                        message: "Creation successful"
+                    }
+                },
+                fetchApplication: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "Couldn't retrieve application details.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved application details.",
+                        message: "Retrieval successful"
+                    }
+                },
                 fetchApplications: {
                     error: {
                         description: "{{description}}",
-                        message: "Error retrieving applications"
+                        message: "Retrieval error"
                     },
                     genericError: {
                         description: "Couldn't retrieve applications",
@@ -118,7 +168,77 @@ export const devPortal: DevPortalNS = {
                     },
                     success: {
                         description: "Successfully retrieved the applications.",
-                        message: "Applications retrieval successful"
+                        message: "Retrieval successful"
+                    }
+                },
+                fetchCustomInboundProtocols: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "An error occurred retrieving the custom inbound protocols.",
+                        message: "Retrieval error"
+                    },
+                    success: {
+                        description: "Successfully retrieved the custom inbound protocols.",
+                        message: "Retrieval successful"
+                    }
+                },
+                fetchInboundProtocols: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "An error occurred retrieving the available inbound protocols.",
+                        message: "Retrieval error"
+                    },
+                    success: {
+                        description: "Successfully retrieved the inbound protocols.",
+                        message: "Retrieval successful"
+                    }
+                },
+                fetchTemplates: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "Couldn't retrieve application templates.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved the application templates.",
+                        message: "Retrieval successful"
+                    }
+                },
+                getInboundProtocolConfig: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "An error occurred retrieving the protocol configurations.",
+                        message: "Retrieval error"
+                    },
+                    success: {
+                        description: "Successfully retrieved the inbound protocol configurations.",
+                        message: "Retrieval successful"
+                    }
+                },
+                updateApplication: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Update error"
+                    },
+                    genericError: {
+                        description: "Failed to update the applications",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully updated the application.",
+                        message: "Update successful"
                     }
                 }
             },
@@ -2587,7 +2707,7 @@ export const devPortal: DevPortalNS = {
             title: "Select Application Type"
         },
         applications: {
-            subTitle: "Create applications based on templates and configure authentication.",
+            subTitle: "Create and manage applications based on templates and configure authentication.",
             title: "Applications"
         },
         applicationsEdit: {

@@ -112,16 +112,17 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Application Create Error"
+                        message: t("devPortal:components.applications.notifications.fetchApplications.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while retrieving applications",
+                    description: t("devPortal:components.applications.notifications.fetchApplications" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Retrieval Error"
+                    message: t("devPortal:components.applications.notifications.fetchApplications.genericError.message")
                 }));
             })
             .finally(() => {
@@ -192,8 +193,8 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
 
     return (
         <PageLayout
-            title="Applications"
-            description="Create and manage applications based on templates and configure authentication."
+            title={ t("devPortal:pages.applications.title") }
+            description={ t("devPortal:pages.applications.subTitle") }
             showBottomDivider={ true }
         >
             <ListLayout
