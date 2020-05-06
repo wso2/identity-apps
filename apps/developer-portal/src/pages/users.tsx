@@ -26,9 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-ui-react";
 import { deleteUser, getUserStoreList, getUsersList } from "../api";
-import { AdvancedSearchWithBasicFilters } from "../components";
-import { UsersList, UsersListOptionsComponent } from "../components/users";
-import { AddUserWizard } from "../components/users/wizard";
+import { AddUserWizard, AdvancedSearchWithBasicFilters, UsersList, UsersListOptionsComponent } from "../components";
 import { UIConstants, UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertInterface, AlertLevels, UserListInterface } from "../models";
@@ -366,10 +364,13 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
                                 className={ "list-options-popup" }
                                 flowing
                                 basic
-                                content={ <UsersListOptionsComponent
-                                    handleMetaColumnChange={ handleMetaColumnChange }
-                                    userListMetaContent={ userListMetaContent }
-                                /> }
+                                content={
+                                    <UsersListOptionsComponent
+                                        data-testid="user-mgt-user-list-meta-columns"
+                                        handleMetaColumnChange={ handleMetaColumnChange }
+                                        userListMetaContent={ userListMetaContent }
+                                    />
+                                }
                                 position="bottom left"
                                 on='click'
                                 pinned
@@ -412,6 +413,7 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
                 {
                     showWizard && (
                     <AddUserWizard
+                        data-testid="user-mgt-add-user-wizard-modal"
                         closeWizard={ () => setShowWizard(false) }
                         listOffset={ listOffset }
                         listItemLimit={ listItemLimit }

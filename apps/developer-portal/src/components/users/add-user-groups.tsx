@@ -233,7 +233,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                     listType="unselected"
                     listHeaders={ [
                         t("devPortal:components.transferList.list.headers.0"),
-                        t("devPortal:components.transferList.list.headers.1")
+                        t("devPortal:components.transferList.list.headers.1"), ""
                     ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedGroupsAllRolesChecked }

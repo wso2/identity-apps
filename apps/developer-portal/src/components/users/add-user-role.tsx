@@ -196,9 +196,9 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         const role = roleName.split("/");
         if (role.length > 0) {
             if (role[0] == "Application") {
-                return { labelText: "Application", labelColor: null, name: "application-label" };
+                return { labelColor: null, labelText: "Application", name: "application-label" };
             } else {
-                return { labelText: "Internal", labelColor: null, name: "internal-label" };
+                return { labelColor: null, labelText: "Internal", name: "internal-label" };
             }
         }
     };
@@ -225,7 +225,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                     listType="unselected"
                     listHeaders={ [
                         t("devPortal:components.transferList.list.headers.0"),
-                        t("devPortal:components.transferList.list.headers.1")
+                        t("devPortal:components.transferList.list.headers.1"), ""
                     ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }

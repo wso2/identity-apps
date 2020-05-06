@@ -16,14 +16,16 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import React, { ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { Divider, Header, List } from "semantic-ui-react";
 
 /**
  * Prop types for user list options component.
  */
-interface UsersListOptionsProps {
+interface UsersListOptionsProps extends  TestableComponentInterface {
     handleMetaColumnChange: (columns: string[]) => void;
     userListMetaContent: Map<string, string>;
 }
@@ -39,8 +41,11 @@ export const UsersListOptionsComponent: React.FunctionComponent<UsersListOptions
 
     const {
         handleMetaColumnChange,
-        userListMetaContent
+        userListMetaContent,
+        [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const handleOptionOnChange = (isChanged, values) => {
         const checkedValues = [];
@@ -57,18 +62,19 @@ export const UsersListOptionsComponent: React.FunctionComponent<UsersListOptions
             onSubmit={ null }
             onChange={ (isChanged, values) => handleOptionOnChange(isChanged, values) }
         >
-            <Header as="h6" >Show Columns</Header>
+            <Header as="h6" >{ t("devPortal:components.users.usersList.metaOptions.heading") }</Header>
             <Divider />
             <List relaxed>
                 <List.Item>
                     <Field
+                        data-testid={ `${ testId }-name` }
                         name="name"
                         required={ false }
                         requiredErrorMessage=""
                         type="checkbox"
                         children={ [
                             {
-                                label: "Name",
+                                label: t("devPortal:components.users.usersList.metaOptions.columns.name"),
                                 value: "name"
                             }
                         ] }
@@ -79,13 +85,14 @@ export const UsersListOptionsComponent: React.FunctionComponent<UsersListOptions
                 </List.Item>
                 <List.Item>
                     <Field
+                        data-testid={ `${ testId }-emails` }
                         name="emails"
                         required={ false }
                         requiredErrorMessage=""
                         type="checkbox"
                         children={ [
                             {
-                                label: "Email",
+                                label: t("devPortal:components.users.usersList.metaOptions.columns.emails"),
                                 value: "emails"
                             }
                         ] }
@@ -96,13 +103,14 @@ export const UsersListOptionsComponent: React.FunctionComponent<UsersListOptions
                 </List.Item>
                 <List.Item>
                     <Field
+                        data-testid={ `${ testId }-username` }
                         name="userName"
                         required={ false }
                         requiredErrorMessage=""
                         type="checkbox"
                         children={ [
                             {
-                                label: "Username",
+                                label: t("devPortal:components.users.usersList.metaOptions.columns.userName"),
                                 value: "userName"
                             }
                         ] }
@@ -112,13 +120,14 @@ export const UsersListOptionsComponent: React.FunctionComponent<UsersListOptions
                 </List.Item>
                 <List.Item>
                     <Field
+                        data-testid={ `${ testId }-id` }
                         name="id"
                         required={ false }
                         requiredErrorMessage=""
                         type="checkbox"
                         children={ [
                             {
-                                label: "User id",
+                                label: t("devPortal:components.users.usersList.metaOptions.columns.id"),
                                 value: "id"
                             }
                         ] }
@@ -128,13 +137,14 @@ export const UsersListOptionsComponent: React.FunctionComponent<UsersListOptions
                 </List.Item>
                 <List.Item>
                     <Field
+                        data-testid={ `${ testId }-lastModified` }
                         name="meta.lastModified"
                         required={ false }
                         requiredErrorMessage=""
                         type="checkbox"
                         children={ [
                             {
-                                label: "Last modified",
+                                label: t("devPortal:components.users.usersList.metaOptions.columns.lastModified"),
                                 value: "meta.lastModified"
                             }
                         ] }

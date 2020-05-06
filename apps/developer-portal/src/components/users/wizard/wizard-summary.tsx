@@ -18,6 +18,7 @@
 
 import { Heading, UserAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
 
 interface AddUserWizardSummaryProps {
@@ -40,6 +41,8 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
         triggerSubmit,
         onSubmit
     } = props;
+
+    const { t } = useTranslation();
 
     /**
      * Submits the form programmatically if triggered from outside.
@@ -74,7 +77,9 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
             { summary?.firstName && (
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                        <div className="label">Name</div>
+                        <div className="label">
+                            { t("devPortal:components.user.modals.addUserWizard.wizardSummary.name") }
+                        </div>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                         <div className="value url">{ summary.firstName + " " + summary.lastName }</div>
@@ -88,7 +93,9 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                     ? (
                         <Grid.Row className="summary-field" columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                                <div className="label">Group(s)</div>
+                                <div className="label">
+                                    { t("devPortal:components.user.modals.addUserWizard.wizardSummary.groups") }
+                                </div>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                                 <Label.Group>
@@ -111,7 +118,9 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                     ? (
                         <Grid.Row className="summary-field" columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                                <div className="label">Role(s)</div>
+                                <div className="label">
+                                    { t("devPortal:components.user.modals.addUserWizard.wizardSummary.roles") }
+                                </div>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                                 <Label.Group>
@@ -130,7 +139,9 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
             { summary?.userName && (
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                        <div className="label">Username</div>
+                        <div className="label">
+                            { t("devPortal:components.user.modals.addUserWizard.wizardSummary.username") }
+                        </div>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                         <div className="value url">{ summary.userName }</div>
@@ -140,7 +151,9 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
             { summary?.domain && (
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                        <div className="label">User Store</div>
+                        <div className="label">
+                            { t("devPortal:components.user.modals.addUserWizard.wizardSummary.domain") }
+                        </div>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                         <div className="value url">{ summary.domain }</div>
@@ -150,20 +163,28 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
             { summary?.email && summary?.passwordOption && summary?.passwordOption === "askPw" ? (
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                        <div className="label">Password option</div>
+                        <div className="label">
+                            { t("devPortal:components.user.modals.addUserWizard.wizardSummary.passwordOption.label") }
+                        </div>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                        <div className="value url">{ "An email will be sent to" + " " + summary.email + " " +
-                        "with the link to set the password." }</div>
+                        <div className="value url">
+                            { t("devPortal:components.user.modals.addUserWizard.wizardSummary.passwordOption.message.0",
+                                { email: summary.email })
+                            }
+                        </div>
                     </Grid.Column>
                 </Grid.Row>
             ) : (
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                        <div className="label">Password option</div>
+                        <div className="label">
+                            { t("devPortal:components.user.modals.addUserWizard.wizardSummary.passwordOption.label") }
+                        </div>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                        <div className="value url">{ "The password was set by the administrator." }</div>
+                        <div className="value url">{ t("devPortal:components.user.modals.addUserWizard.wizardSummary" +
+                            ".passwordOption.message.1") }</div>
                     </Grid.Column>
                 </Grid.Row>
             ) }

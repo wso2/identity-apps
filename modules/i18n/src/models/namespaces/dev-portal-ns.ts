@@ -403,6 +403,43 @@ export interface DevPortalNS {
             placeholders: {
                 emptyList: Placeholder;
             };
+            usersList: {
+                list: {
+                    emptyResultPlaceholder: {
+                        addButton: string;
+                        subTitle: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
+                        title: string;
+                    };
+                    iconPopups: {
+                        delete: string;
+                        edit: string;
+                    };
+                };
+                metaOptions: {
+                    heading: string;
+                    columns: {
+                        name: string;
+                        emails: string;
+                        id: string;
+                        userName: string;
+                        lastModified: string;
+                    };
+                };
+                search: {
+                    emptyResultPlaceholder: {
+                        clearButton: string;
+                        subTitle: {
+                            0: string;
+                            1: string;
+                        };
+                        title: string;
+                    };
+                };
+            };
             userstores: {
                 userstoreOptions: {
                     all: string;
@@ -535,6 +572,20 @@ export interface DevPortalNS {
                         next: string;
                         previous: string;
                     };
+                    wizardSummary: {
+                        name: string;
+                        groups: string;
+                        roles: string;
+                        username: string;
+                        domain: string;
+                        passwordOption: {
+                            label: string;
+                            message: {
+                                0: string;
+                                1: string;
+                            };
+                        };
+                    };
                 };
             };
             profile: {
@@ -630,6 +681,78 @@ export interface DevPortalNS {
                 };
                 placeholders: {
                     SCIMDisabled: {
+                        heading: string;
+                    };
+                };
+            };
+            updateUser: {
+                groups: {
+                    addGroupsModal: {
+                        heading: string;
+                        subHeading: string;
+                    };
+                    editGroups: {
+                        groupList: {
+                            emptyListPlaceholder: {
+                                subTitle: {
+                                    0: string;
+                                    1: string;
+                                    2: string;
+                                };
+                                title: string;
+                            };
+                            headers: {
+                                0: string;
+                                1: string;
+                            };
+                        };
+                        heading: string;
+                        popups: {
+                            viewPermissions: string;
+                        };
+                        searchPlaceholder: string;
+                        subHeading: string;
+                    };
+                    notifications: {
+                        addUserGroups: Notification;
+                        fetchUserGroups: Notification;
+                        removeUserGroups: Notification;
+                    };
+                };
+                roles: {
+                    addRolesModal: {
+                        heading: string;
+                        subHeading: string;
+                    };
+                    editRoles: {
+                        roleList: {
+                            emptyListPlaceholder: {
+                                subTitle: {
+                                    0: string;
+                                    1: string;
+                                    2: string;
+                                };
+                                title: string;
+                            };
+                            headers: {
+                                0: string;
+                                1: string;
+                            };
+                        };
+                        heading: string;
+                        popups: {
+                            viewPermissions: string;
+                        };
+                        searchPlaceholder: string;
+                        subHeading: string;
+                    };
+                    notifications: {
+                        addUserRoles: Notification;
+                        fetchUserRoles: Notification;
+                        removeUserRoles: Notification;
+                    };
+                    viewPermissionModal: {
+                        backButton: string;
                         heading: string;
                     };
                 };

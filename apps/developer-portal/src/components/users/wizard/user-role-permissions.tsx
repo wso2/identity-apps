@@ -16,8 +16,10 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Divider, Icon, Segment } from "semantic-ui-react";
 import { getRoleById } from "../../../api";
 import { RolesInterface } from "../../../models";
@@ -26,8 +28,7 @@ import { PermissionList } from "../../roles";
 /**
  * Proptypes for the role permission component.
  */
-interface RolePermissionsInterface {
-    [ "data-testid" ]?: string;
+interface RolePermissionsInterface extends TestableComponentInterface {
     roleId: string;
     handleNavigateBack: () => void;
 }
@@ -44,8 +45,11 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
 
     const {
         roleId,
-        handleNavigateBack
+        handleNavigateBack,
+        [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const [ isRoleSet, setRoleCheck ] = useState(false);
     const [ role, setRole ] = useState<RolesInterface>();
@@ -84,20 +88,23 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
         isRoleSet && (
             <>
                 <Heading as="h5">
-                    Permissions for { role.displayName }
+                    {
+                        t("devPortal:components.user.updateUser.roles.viewPermissionModal.heading",
+                            { role: role.displayName })
+                    }
                 </Heading>
                 <Divider hidden/>
                 <LinkButton
-                    data-testid={ `${ props[ `data-testid`] }_back_button` }
+                    data-testid={ `${ testId }_back_button` }
                     floated="left"
                     onClick={ handleNavigateBack }
                 >
                     <Icon name="arrow left"/>
-                    Back to list
+                    { t("devPortal:components.user.updateUser.roles.viewPermissionModal.backButton") }
                 </LinkButton>
                 <Divider hidden/>
                 <Divider hidden/>
-                <Segment data-testid={ props[ `data-testid`] }>
+                <Segment data-testid={ testId }>
                     <div className="permissions-edit-container">
                         <PermissionList isEdit={ false } isRole roleObject={ role }/>
                     </div>

@@ -28,6 +28,7 @@ import {
 } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Button,
     Divider,
@@ -42,11 +43,9 @@ import {
 } from "semantic-ui-react";
 import { UserRolePermissions } from "./user-role-permissions";
 import { RolePermissions } from "./wizard";
-import { getRolesList } from "../../api";
-import { updateUserRoles } from "../../api";
+import { getRolesList, updateUserRoles } from "../../api";
 import { EmptyPlaceholderIllustrations } from "../../configs";
-import { RolesMemberInterface } from "../../models";
-import { AlertInterface, BasicProfileInterface } from "../../models";
+import { AlertInterface, BasicProfileInterface, RolesMemberInterface } from "../../models";
 
 interface UserGroupsPropsInterface {
     user: BasicProfileInterface;
@@ -63,6 +62,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         user,
         handleUserUpdate
     } = props;
+
+    const { t } = useTranslation();
 
     const [ showAddNewRoleModal, setAddNewRoleModalView ] = useState(false);
     const [ groupList, setGroupList ] = useState<any>([]);
@@ -222,7 +223,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
      * The following method handles the onChange event of the
      * checkbox field of an assigned item.
      *
-     * @param - The selected group
+     * @param group
      */
     const handleAssignedItemCheckboxChange = (group) => {
         const checkedGroups = [ ...checkedAssignedListItems ];
@@ -404,18 +405,47 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             updateUserRoles(bulkRemoveData)
                 .then(() => {
                     onAlertFired({
-                        description: "Removing assigned groups for the user successful",
+                        description: t(
+                            "devPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
+                            "success.description"
+                        ),
                         level: AlertLevels.SUCCESS,
-                        message: "Update user groups successful"
+                        message: t(
+                            "devPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
+                            "success.message"
+                        )
                     });
                     handleCloseAddNewGroupModal();
                     handleUserUpdate(user.id);
                 })
                 .catch((error) => {
+                    if (error?.response?.status === 404) {
+                        return;
+                    }
+
+                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
+                        onAlertFired({
+                            description: error.response?.data?.description,
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "devPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
+                                "error.message"
+                            )
+                        });
+
+                        return;
+                    }
+
                     onAlertFired({
-                        description: "An error occurred while updating user groups",
+                        description: t(
+                            "devPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
+                            "genericError.description"
+                        ),
                         level: AlertLevels.ERROR,
-                        message: "Something went wrong"
+                        message: t(
+                            "devPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
+                            "genericError.message"
+                        )
                     });
                 });
         } else {
@@ -434,18 +464,47 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             updateUserRoles(bulkAddData)
                 .then(() => {
                     onAlertFired({
-                        description: "Assigning new groups for the user successful",
+                        description: t(
+                            "devPortal:components.user.updateUser.groups.notifications.addUserGroups." +
+                            "success.description"
+                        ),
                         level: AlertLevels.SUCCESS,
-                        message: "Update user groups successful"
+                        message: t(
+                            "devPortal:components.user.updateUser.groups.notifications.addUserGroups." +
+                            "success.message"
+                        )
                     });
                     handleCloseAddNewGroupModal();
                     handleUserUpdate(user.id);
                 })
-                .catch(() => {
+                .catch((error) => {
+                    if (error?.response?.status === 404) {
+                        return;
+                    }
+
+                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
+                        onAlertFired({
+                            description: error.response?.data?.description,
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "devPortal:components.user.updateUser.groups.notifications.addUserGroups." +
+                                "error.message"
+                            )
+                        });
+
+                        return;
+                    }
+
                     onAlertFired({
-                        description: "An error occurred while updating user groups",
+                        description: t(
+                            "devPortal:components.user.updateUser.groups.notifications.addUserGroups." +
+                            "genericError.description"
+                        ),
                         level: AlertLevels.ERROR,
-                        message: "Something went wrong"
+                        message: t(
+                            "devPortal:components.user.updateUser.groups.notifications.addUserGroups." +
+                            "genericError.message"
+                        )
                     });
                 });
         }
@@ -469,7 +528,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         if (selectedGroupId) {
             return (
                 <UserRolePermissions
-                    data-testid="user_mgt_groups_list_group_permission_modal"
+                    data-testid="user-mgt-groups-list-group-permission-modal"
                     openRolePermissionModal={ showGroupPermissionModal }
                     handleCloseRolePermissionModal={ handleCloseRolePermissionModal }
                     roleId={ selectedGroupId }
@@ -490,15 +549,15 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
     const addNewGroupModal = () => (
         <Modal
-            data-testid="user_mgt_update_groups_modal"
+            data-testid="user-mgt-update-groups-modal"
             open={ showAddNewRoleModal }
             size="small"
             className="user-roles"
         >
             <Modal.Header>
-                Update User Groups
+                { t("devPortal:components.user.updateUser.groups.addGroupsModal.heading") }
                 <Heading subHeading ellipsis as="h6">
-                    Add new groups or remove existing group assigned to the user.
+                    { t("devPortal:components.user.updateUser.groups.addGroupsModal.subHeading") }
                 </Heading>
             </Modal.Header>
             {
@@ -507,7 +566,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                         <>
                             <Modal.Content>
                                 <RolePermissions
-                                    data-testid="user_mgt_update_groups_modal_unselected_group_permissions"
+                                    data-testid="user-mgt-update-groups-modal-unselected-group-permissions"
                                     handleNavigateBack={ handleViewGroupPermission }
                                     roleId={ groupId }
                                 />
@@ -517,20 +576,24 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                     ) : (
                         <Modal.Content image>
                             <TransferComponent
-                                searchPlaceholder="Search groups"
+                                searchPlaceholder={ t("devPortal:components.transferList.searchPlaceholder",
+                                    { type: "Groups" }) }
                                 addItems={ addGroups }
                                 removeItems={ removeGroups }
                                 handleUnelectedListSearch={ handleUnselectedListSearch }
                                 handleSelectedListSearch={ handleSelectedListSearch }
-                                data-testid="user_mgt_update_groups_modal"
+                                data-testid="user-mgt-update-groups-modal"
                             >
                                 <TransferList
                                     isListEmpty={ !(groupList.length > 0) }
                                     listType="unselected"
-                                    listHeaders={ [ "Domain", "Name", "" ] }
+                                    listHeaders={ [
+                                        t("devPortal:components.transferList.list.headers.0"),
+                                        t("devPortal:components.transferList.list.headers.1"), ""
+                                    ] }
                                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                     isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
-                                    data-testid="user_mgt_update_groups_modal_unselected_groups_select_all_checkbox"
+                                    data-testid="user-mgt-update-groups-modal-unselected-groups-select-all-checkbox"
                                 >
                                     {
                                         groupList?.map((role, index)=> {
@@ -538,16 +601,23 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                             if (roleName.length === 1) {
                                                 return (
                                                     <TransferListItem
-                                                        handleItemChange={ () => handleUnassignedItemCheckboxChange(role) }
+                                                        handleItemChange={
+                                                            () => handleUnassignedItemCheckboxChange(role)
+                                                        }
                                                         key={ index }
                                                         listItem={ role.displayName }
                                                         listItemId={ role.id }
                                                         listItemIndex={ index }
-                                                        listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
+                                                        listItemTypeLabel={
+                                                            {
+                                                                labelColor: "olive",
+                                                                labelText: "Primary"
+                                                            }
+                                                        }
                                                         isItemChecked={ checkedUnassignedListItems.includes(role) }
                                                         showSecondaryActions={ true }
                                                         handleOpenPermissionModal={ () => handleGroupIdSet(role.id) }
-                                                        data-testid="user_mgt_update_groups_modal_unselected_groups"
+                                                        data-testid="user-mgt-update-groups-modal-unselected-groups"
                                                     />
                                                 )
                                             }
@@ -557,10 +627,13 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                 <TransferList
                                     isListEmpty={ !(tempGroupList.length > 0) }
                                     listType="selected"
-                                    listHeaders={ [ "Domain", "Name" ] }
+                                    listHeaders={ [
+                                        t("devPortal:components.transferList.list.headers.0"),
+                                        t("devPortal:components.transferList.list.headers.1")
+                                    ] }
                                     handleHeaderCheckboxChange={ selectAllAssignedList }
                                     isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
-                                    data-testid="user_mgt_update_groups_modal_selected_groups_select_all_checkbox"
+                                    data-testid="user-mgt-update-groups-modal-selected-groups-select-all-checkbox"
                                 >
                                     {
                                         tempGroupList?.map((role, index)=> {
@@ -568,15 +641,22 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                             if (userGroup.length === 1) {
                                                 return (
                                                     <TransferListItem
-                                                        handleItemChange={ () => handleAssignedItemCheckboxChange(role) }
+                                                        handleItemChange={
+                                                            () => handleAssignedItemCheckboxChange(role)
+                                                        }
                                                         key={ index }
                                                         listItem={ role.displayName }
                                                         listItemId={ role.id }
                                                         listItemIndex={ index }
-                                                        listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
+                                                        listItemTypeLabel={
+                                                            {
+                                                                labelColor: "olive",
+                                                                labelText: "Primary"
+                                                            }
+                                                        }
                                                         isItemChecked={ checkedAssignedListItems.includes(role) }
                                                         showSecondaryActions={ false }
-                                                        data-testid="user_mgt_update_groups_modal_selected_groups"
+                                                        data-testid="user-mgt-update-groups-modal-selected-groups"
                                                     />
                                                 )
                                             }
@@ -592,7 +672,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton
-                                data-testid="user_mgt_update_groups_modal_cancel_button"
+                                data-testid="user-mgt-update-groups-modal-cancel-button"
                                 floated="left"
                                 onClick={ handleCloseAddNewGroupModal }
                             >
@@ -601,7 +681,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <PrimaryButton
-                                data-testid="user_mgt_update_groups_modal_save_button"
+                                data-testid="user-mgt-update-groups-modal-save-button"
                                 floated="right"
                                 onClick={ () => updateUserGroup(user, tempGroupList) }
                             >
@@ -639,9 +719,9 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     return (
         <>
             <Heading as="h4">
-                Assigned Groups
+                { t("devPortal:components.user.updateUser.groups.editGroups.heading") }
                 <Heading subHeading ellipsis as="h6">
-                    Add or remove the groups user is assigned with and note that this will affect performing certain tasks.
+                    { t("devPortal:components.user.updateUser.groups.editGroups.subHeading") }
                 </Heading>
             </Heading>
             <Divider hidden/>
@@ -652,21 +732,22 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                             primaryGroupsList?.size > 0 ? (
                             <Segment.Group fluid>
                                 <Segment
-                                    data-testid="user_mgt_groups_list"
+                                    data-testid="user-mgt-groups-list"
                                     className="user-role-edit-header-segment"
                                 >
                                     <Grid.Row>
                                         <Grid.Column>
                                             <Input
-                                                data-testid="user_mgt_groups_list_search_input"
+                                                data-testid="user-mgt-groups-list-search-input"
                                                 icon={ <Icon name="search"/> }
                                                 onChange={ handleAssignedGroupListSearch }
-                                                placeholder="Search groups"
+                                                placeholder={ t("devPortal:components.user.updateUser.groups." +
+                                                    "editGroups.searchPlaceholder") }
                                                 floated="left"
                                                 size="small"
                                             />
                                             <Button
-                                                data-testid="user_mgt_groups_list_update_button"
+                                                data-testid="user-mgt-groups-list-update-button"
                                                 size="medium"
                                                 icon="pencil"
                                                 floated="right"
@@ -678,8 +759,18 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                         <Table singleLine compact>
                                             <Table.Header>
                                                 <Table.Row>
-                                                    <Table.HeaderCell><strong>Domain</strong></Table.HeaderCell>
-                                                    <Table.HeaderCell><strong>Name</strong></Table.HeaderCell>
+                                                    <Table.HeaderCell>
+                                                        <strong>
+                                                            { t("devPortal:components.user.updateUser.groups." +
+                                                                "editGroups.groupList.headers.0") }
+                                                        </strong>
+                                                    </Table.HeaderCell>
+                                                    <Table.HeaderCell>
+                                                        <strong>
+                                                            { t("devPortal:components.user.updateUser.groups." +
+                                                                "editGroups.groupList.headers.1") }
+                                                        </strong>
+                                                    </Table.HeaderCell>
                                                     <Table.HeaderCell/>
                                                 </Table.Row>
                                             </Table.Header>
@@ -696,14 +787,21 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                                                     <Table.Cell>{ group.display }</Table.Cell>
                                                                     <Table.Cell textAlign="center">
                                                                         <Popup
-                                                                            content="View permissions"
+                                                                            content={ t("devPortal:components." +
+                                                                                "user.updateUser.groups.editGroups." +
+                                                                                "popups.viewPermissions") }
                                                                             trigger={
                                                                                 <Icon
-                                                                                    data-testid={ `user_mgt_groups_
-                                                                                    list_${ group.display }_permissions_button` }
+                                                                                    data-testid={ `user-mgt-groups
+                                                                                    -list-${ group.display }
+                                                                                    -permissions-button` }
                                                                                     color="grey"
                                                                                     name="key"
-                                                                                    onClick={ () => handleSetSelectedId(group.value) }
+                                                                                    onClick={
+                                                                                        () => handleSetSelectedId(
+                                                                                            group.value
+                                                                                        )
+                                                                                    }
                                                                                 />
                                                                             }
                                                                         />
@@ -721,16 +819,20 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                             ) : (
                                 <Segment>
                                     <EmptyPlaceholder
-                                        data-testid="user_mgt_empty_groups_list"
-                                        title="No Groups Assigned"
+                                        data-testid="user-mgt-empty-groups-list"
+                                        title={ t("devPortal:components.user.updateUser.groups.editGroups." +
+                                            "groupList.emptyListPlaceholder.title") }
                                         subtitle={ [
-                                            "There are no groups assigned to the user at the moment.",
-                                            "This might restrict user from performing certain",
-                                            "tasks like accessing certain applications."
+                                            t("devPortal:components.user.updateUser.groups.editGroups." +
+                                                    "groupList.emptyListPlaceholder.subTitle.0"),
+                                            t("devPortal:components.user.updateUser.groups.editGroups." +
+                                                "groupList.emptyListPlaceholder.subTitle.1"),
+                                            t("devPortal:components.user.updateUser.groups.editGroups." +
+                                                "groupList.emptyListPlaceholder.subTitle.2")
                                         ] }
                                         action={
                                             <PrimaryButton
-                                                data-testid="user_mgt_empty_groups_list_assign_group_button"
+                                                data-testid="user-mgt-empty-groups-list-assign-group-button"
                                                 icon="plus"
                                                 onClick={ handleOpenAddNewGroupModal }
                                             >

@@ -349,11 +349,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => handleUserDelete(deletingUser.id) }
                     >
-                        <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header`>
+                        <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
                             { t("devPortal:components.user.deleteUser.confirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
-                            data-testid={ `${ testId }-confirmation-modal-message`
+                            data-testid={ `${ testId }-confirmation-modal-message` }
                             attached
                             warning
                          >
