@@ -2,7 +2,8 @@ module.exports = {
     extends: [
         "eslint:recommended",
         "plugin:react/recommended",
-        "plugin:import/typescript"
+        "plugin:import/typescript",
+        "plugin:react-hooks/recommended"
     ],
     parserOptions: {
         ecmaVersion: 9,
