@@ -945,6 +945,16 @@ export interface DevPortalNS {
                 fetchUserstoreTemplates: Notification;
                 fetchUserstoreTypes: Notification;
                 fetchUserstoreMetadata: Notification;
+                deleteUserstore: Notification;
+                delay: NotificationItem;
+                updateUserstore: Notification;
+            };
+            confirmation: {
+                hint: string;
+                header: string;
+                message: string;
+                content: string;
+                confirm: string;
             };
             pageLayout: {
                 list: {
@@ -970,6 +980,17 @@ export interface DevPortalNS {
                     };
                 };
             };
+            forms: {
+                edit: {
+                    general: {
+                        name: FormField;
+                        type: FormField;
+                        description: FormField;
+                        custom: FormField;
+                    };
+                };
+            };
+            dangerZone: DangerZone;
         };
         roles: {
             advancedSearch: {

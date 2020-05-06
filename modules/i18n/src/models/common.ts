@@ -52,7 +52,7 @@ export interface Notification {
 /**
  * Model for notification
  */
-interface NotificationItem {
+export interface NotificationItem {
     message: string;
     description: string;
 }
@@ -107,4 +107,13 @@ interface HelpPanelTabsInterface {
 interface HelpPanelTabInterface {
     content: any;
     heading: string;
+}
+
+export interface FormField {
+    label?: string;
+    placeholder?: string;
+    requiredErrorMessage?: string;
+    validationErrorMessages?: {
+        [ key: string ]: string;
+    };
 }
