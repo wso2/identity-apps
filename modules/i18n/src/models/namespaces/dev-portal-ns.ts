@@ -944,6 +944,7 @@ export interface DevPortalNS {
                 fetchUserstores: Notification;
                 fetchUserstoreTemplates: Notification;
                 fetchUserstoreTypes: Notification;
+                fetchUserstoreMetadata: Notification;
             };
             pageLayout: {
                 list: {
@@ -957,6 +958,16 @@ export interface DevPortalNS {
                     back: string;
                     templateHeading: string;
                     templateSubHeading: string;
+                };
+                edit: {
+                    description: string;
+                    back: string;
+                    tabs: {
+                        general: string;
+                        connection: string;
+                        user: string;
+                        group: string;
+                    };
                 };
             };
         };
