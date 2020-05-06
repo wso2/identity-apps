@@ -36,6 +36,7 @@ export const common: CommonNS = {
     close: "நெருக்கமான",
     completed: "பூரணப்படுத்தப்பட்டவை",
     configure: "கட்டமை",
+    confirm: "உறுதிப்படுத்தவும்",
     contains: "கொண்டுள்ளது",
     continue: "தொடர்",
     createdOn: "உருவாக்கப்பட்ட தினம்",

@@ -333,6 +333,93 @@ export const devPortal: DevPortalNS = {
         footer: {
             copyright: "WSO2 Identity Server © {{year}}"
         },
+        groups: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: "E.g. group name."
+                        },
+                        filterCondition: {
+                            placeholder: "E.g. Starts with etc."
+                        },
+                        filterValue: {
+                            placeholder: "Enter value to search"
+                        }
+                    }
+                },
+                placeholder: "Search by group name"
+            },
+            edit: {
+                basics: {
+                    fields: {
+                        groupName: {
+                            name: "Group Name",
+                            placeholder: "Enter your group name",
+                            required: "Group name is required"
+                        }
+                    }
+                }
+            },
+            notifications: {
+                createGroup: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occurred while creating the group."
+                    },
+                    genericError: {
+                        description: "Couldn't create the group.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The group was created successfully.",
+                        message: "Group created successfully."
+                    }
+                },
+                createPermission: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occurred while adding permission to group."
+                    },
+                    genericError: {
+                        description: "Couldn't add permissions to group.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Permissions were successfully added to the group.",
+                        message: "Group created successfully."
+                    }
+                },
+                deleteGroup: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error deleting the selected group."
+                    },
+                    genericError: {
+                        description: "Couldn't remove the selected group.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The selected group was deleted successfully.",
+                        message: "Group deleted successfully"
+                    }
+                },
+                updateGroup: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error updating the selected group."
+                    },
+                    genericError: {
+                        description: "Couldn't update the selected group.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The selected group was updated successfully.",
+                        message: "Group updated successfully"
+                    }
+                }
+            }
+        },
         helpPanel: {
             notifications: {
                 pin: {
@@ -581,327 +668,6 @@ export const devPortal: DevPortalNS = {
                 }
             }
         },
-        user: {
-            forms: {
-                addUserForm: {
-                    inputs: {
-                        confirmPassword: {
-                            label: "Confirm Password",
-                            placeholder: "Enter the new password",
-                            validations: {
-                                empty: "Confirm password is a required field",
-                                mismatch: "The password confirmation doesn't match"
-                            }
-                        },
-                        domain: {
-                            label: "Userstore",
-                            placeholder: "Select user store",
-                            validations: {
-                                empty: "User store name cannot be empty."
-                            }
-                        },
-                        email: {
-                            label: "Email Address",
-                            placeholder: "Enter the email address",
-                            validations: {
-                                empty: "Email address cannot be empty",
-                                invalid: "Please enter a valid email address"
-                            }
-                        },
-                        firstName: {
-                            label: "First Name",
-                            placeholder: "Enter your first name",
-                            validations: {
-                                empty: "First name is a required field"
-                            }
-                        },
-                        lastName: {
-                            label: "Last Name",
-                            placeholder: "Enter your last name",
-                            validations: {
-                                empty: "Last name is a required field"
-                            }
-                        },
-                        newPassword: {
-                            label: "New Password",
-                            placeholder: "Enter the new password",
-                            validations: {
-                                empty: "New password is a required field"
-                            }
-                        },
-                        username: {
-                            label: "Username",
-                            placeholder: "Enter the username",
-                            validations: {
-                                empty: "Username is a required field",
-                                invalid: "Username is invalid"
-                            }
-                        }
-                    },
-                    validations: {
-                        genericError: {
-                            description: "Something went wrong. Please try again",
-                            message: "Change password error"
-                        },
-                        invalidCurrentPassword: {
-                            description: "The current password you entered appears to be invalid. Please try again",
-                            message: "Change password error"
-                        },
-                        submitError: {
-                            description: "{{description}}",
-                            message: "Change password error"
-                        },
-                        submitSuccess: {
-                            description: "The password has been changed successfully",
-                            message: "Password reset successful"
-                        }
-                    }
-                }
-            },
-            modals: {
-                addUserWarnModal: {
-                    heading: "Warning",
-                    message: "Please note that this created user will not be assigned with a role. If you wish to " +
-                        "assign roles to this user please click on the button below."
-                },
-                addUserWizard: {
-                    buttons: {
-                        next: "Next",
-                        previous: "Previous"
-                    },
-                    steps: {
-                        basicDetails: "Basic Details",
-                        groups: "User Groups",
-                        roles: "User Roles",
-                        summary: "Summary"
-                    },
-                    subTitle: "Follow the steps to create the new user",
-                    title: "Create User"
-                }
-            },
-            profile: {
-                fields: {
-                    /* eslint-disable @typescript-eslint/camelcase */
-                    addresses_home: "Home Address",
-                    addresses_work: "Work Address",
-                    emails: "Email",
-                    emails_home: "Home Email",
-                    emails_other: "Other Email",
-                    emails_work: "Work Email",
-                    generic: {
-                        default: "Add {{fieldName}}"
-                    },
-                    name_familyName: "Last Name",
-                    name_givenName: "First Name",
-                    phoneNumbers: "Phone Number",
-                    phoneNumbers_home: "Home Phone Number",
-                    phoneNumbers_mobile: "Mobile Number",
-                    phoneNumbers_other: "Other Phone Number",
-                    phoneNumbers_work: "Work Phone Number",
-                    profileUrl: "URL",
-                    userName: "Username"
-                    /* eslint-enable @typescript-eslint/camelcase */
-                },
-                forms: {
-                    emailChangeForm: {
-                        inputs: {
-                            email: {
-                                label: "Email",
-                                note: "NOTE: This will change the email address in your profile",
-                                placeholder: "Enter your email address",
-                                validations: {
-                                    empty: "Email address is a required field",
-                                    invalidFormat: "The email address is not of the correct format"
-                                }
-                            }
-                        }
-                    },
-                    generic: {
-                        inputs: {
-                            placeholder: "Enter your {{fieldName}}",
-                            validations: {
-                                empty: "{{fieldName}} is a required field",
-                                invalidFormat: "The {{fieldName}} is not of the correct format"
-                            }
-                        }
-                    },
-                    mobileChangeForm: {
-                        inputs: {
-                            mobile: {
-                                label: "Mobile number",
-                                note: "NOTE: This will change the mobile number in your profile",
-                                placeholder: "Enter your mobile number",
-                                validations: {
-                                    empty: "Mobile number is a required field",
-                                    invalidFormat: "The mobile number is not of the right format"
-                                }
-                            }
-                        }
-                    },
-                    nameChangeForm: {
-                        inputs: {
-                            firstName: {
-                                label: "First name",
-                                placeholder: "Enter the first name",
-                                validations: {
-                                    empty: "First name is a required field"
-                                }
-                            },
-                            lastName: {
-                                label: "Last name",
-                                placeholder: "Enter the last name",
-                                validations: {
-                                    empty: "Last name is a required field"
-                                }
-                            }
-                        }
-                    },
-                    organizationChangeForm: {
-                        inputs: {
-                            organization: {
-                                label: "Organization",
-                                placeholder: "Enter your organization",
-                                validations: {
-                                    empty: "Organization is a required field"
-                                }
-                            }
-                        }
-                    }
-                },
-                notifications: {
-                    getProfileInfo: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error occurred while retrieving the profile details"
-                        },
-                        genericError: {
-                            description: "Error occurred while retrieving the profile details",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "The required user profile details are retrieved successfully",
-                            message: "Successfully retrieved user profile"
-                        }
-                    },
-                    updateProfileInfo: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error occurred while updating the profile details"
-                        },
-                        genericError: {
-                            description: "Error occurred while updating the profile details",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "The required user profile details were successfully updated",
-                            message: "User profile updated successfully"
-                        }
-                    }
-                },
-                placeholders: {
-                    SCIMDisabled: {
-                        heading: "This feature is not available for your account"
-                    }
-                }
-            }
-        },
-        users: {
-            advancedSearch: {
-                form: {
-                    inputs: {
-                        filterAttribute: {
-                            placeholder: "E.g. Username, Email etc."
-                        },
-                        filterCondition: {
-                            placeholder: "E.g. Starts with etc."
-                        },
-                        filterValue: {
-                            placeholder: "Enter value to search"
-                        }
-                    }
-                },
-                placeholder: "Search by Username"
-            },
-            all: {
-                heading: "Users",
-                subHeading: "Add and manage user accounts, assign roles to the users and maintain user identities."
-            },
-            buttons: {
-                assignUserRoleBtn: "Assign roles"
-            },
-            notifications: {
-                addUser: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error adding the new user"
-                    },
-                    genericError: {
-                        description: "Couldn't add the new user",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "The new user was added successfully.",
-                        message: "User added successfully"
-                    }
-                },
-                deleteUser: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error deleting the user"
-                    },
-                    genericError: {
-                        description: "Couldn't delete the user",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "The user was deleted successfully.",
-                        message: "User deleted successfully"
-                    }
-                },
-                fetchUsers: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error retrieving users"
-                    },
-                    genericError: {
-                        description: "Couldn't retrieve users",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "Successfully retrieved the users.",
-                        message: "Users retrieval successful"
-                    }
-                }
-            },
-            placeholders: {
-                emptyList: {
-                    action: "Refresh list",
-                    subtitles: {
-                        0: "The users list returned empty.",
-                        1: "Something went wrong while fetching the user list"
-                    },
-                    title: "No Users Found"
-                }
-            }
-        },
-        userstores: {
-            advancedSearch: {
-                form: {
-                    inputs: {
-                        filterAttribute: {
-                            placeholder: "E.g. Name, Description etc."
-                        },
-                        filterCondition: {
-                            placeholder: "E.g. Starts with etc."
-                        },
-                        filterValue: {
-                            placeholder: "E.g. PRIMARY, SECONDARY etc."
-                        }
-                    }
-                },
-                placeholder: "Search by userstore name"
-            }
-        },
         roles: {
             advancedSearch: {
                 form: {
@@ -924,13 +690,42 @@ export const devPortal: DevPortalNS = {
                     fields: {
                         roleName: {
                             name: "Role Name",
-                            required: "Role name is required",
-                            placeholder: "Enter your role name"
+                            placeholder: "Enter your role name",
+                            required: "Role name is required"
+
                         }
                     }
                 }
             },
             notifications: {
+                createPermission: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occurred while adding permission to role."
+                    },
+                    genericError: {
+                        description: "Couldn't add permissions to role.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Permissions were successfully added to the role.",
+                        message: "Role created successfully."
+                    }
+                },
+                createRole: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occurred while creating the role."
+                    },
+                    genericError: {
+                        description: "Couldn't create the role.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The role was created successfully.",
+                        message: "Role created successfully."
+                    }
+                },
                 deleteRole: {
                     error: {
                         description: "{{description}}",
@@ -957,121 +752,6 @@ export const devPortal: DevPortalNS = {
                     success: {
                         description: "The selected role was updated successfully.",
                         message: "Role updated successfully"
-                    }
-                },
-                createRole: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error occurred while creating the role."
-                    },
-                    genericError: {
-                        description: "Couldn't create the role.",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "The role was created successfully.",
-                        message: "Role created successfully."
-                    }
-                },
-                createPermission: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error occurred while adding permission to role."
-                    },
-                    genericError: {
-                        description: "Couldn't add permissions to role.",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "Permissions were successfully added to the role.",
-                        message: "Role created successfully."
-                    }
-                }
-            }
-        },
-        groups: {
-            advancedSearch: {
-                form: {
-                    inputs: {
-                        filterAttribute: {
-                            placeholder: "E.g. group name."
-                        },
-                        filterCondition: {
-                            placeholder: "E.g. Starts with etc."
-                        },
-                        filterValue: {
-                            placeholder: "Enter value to search"
-                        }
-                    }
-                },
-                placeholder: "Search by group name"
-            },
-            edit: {
-                basics: {
-                    fields: {
-                        groupName: {
-                            name: "Group Name",
-                            required: "Group name is required",
-                            placeholder: "Enter your group name"
-                        }
-                    }
-                }
-            },
-            notifications: {
-                deleteGroup: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error deleting the selected group."
-                    },
-                    genericError: {
-                        description: "Couldn't remove the selected group.",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "The selected group was deleted successfully.",
-                        message: "Group deleted successfully"
-                    }
-                },
-                updateGroup: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error updating the selected group."
-                    },
-                    genericError: {
-                        description: "Couldn't update the selected group.",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "The selected group was updated successfully.",
-                        message: "Group updated successfully"
-                    }
-                },
-                createGroup: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error occurred while creating the group."
-                    },
-                    genericError: {
-                        description: "Couldn't create the group.",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "The group was created successfully.",
-                        message: "Group created successfully."
-                    }
-                },
-                createPermission: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error occurred while adding permission to group."
-                    },
-                    genericError: {
-                        description: "Couldn't add permissions to group.",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "Permissions were successfully added to the group.",
-                        message: "Group created successfully."
                     }
                 }
             }
@@ -1619,6 +1299,385 @@ export const devPortal: DevPortalNS = {
                 subtitles: "Please add templates to display here.",
                 title: "No templates to display."
             }
+        },
+        transferList: {
+            list: {
+                emptyPlaceholder: "There are no items in this list at the moment.",
+                headers: {
+                    0: "Domain",
+                    1: "Name"
+                }
+            },
+            searchPlaceholder: "Search {{type}}"
+        },
+        user: {
+            deleteUser: {
+                confirmationModal: {
+                    assertionHint: "Please type {{username}} to confirm.",
+                    content: "If you delete this user, the user will not be able to login to the developer portal or " +
+                        "any other application the user was subscribed before. Please proceed with caution.",
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will permanently delete the user.",
+                }
+            },
+            editUser: {
+                dangerZoneGroup: {
+                    dangerZone: {
+                        actionTitle: "Delete User",
+                        header: "Delete user",
+                        subheader: "Once you delete a user, there is no going back. Please be certain."
+                    },
+                    header: "Danger Zone"
+                },
+                menu: {
+                    menuItems: {
+                        0: "Profile",
+                        1: "Groups",
+                        2: "Roles"
+                    }
+                }
+            },
+            forms: {
+                addUserForm: {
+                    buttons: {
+                        radioButton: {
+                            label: "Select the method to set the user password",
+                            options: {
+                                askPassword: "Invite user to set password",
+                                createPassword: "Set user password"
+
+                            }
+                        }
+                    },
+                    inputs: {
+                        confirmPassword: {
+                            label: "Confirm Password",
+                            placeholder: "Enter the new password",
+                            validations: {
+                                empty: "Confirm password is a required field",
+                                mismatch: "The password confirmation doesn't match"
+                            }
+                        },
+                        domain: {
+                            label: "Userstore",
+                            placeholder: "Select user store",
+                            validations: {
+                                empty: "User store name cannot be empty."
+                            }
+                        },
+                        email: {
+                            label: "Email Address",
+                            placeholder: "Enter the email address",
+                            validations: {
+                                empty: "Email address cannot be empty",
+                                invalid: "Please enter a valid email address"
+                            }
+                        },
+                        firstName: {
+                            label: "First Name",
+                            placeholder: "Enter your first name",
+                            validations: {
+                                empty: "First name is a required field"
+                            }
+                        },
+                        lastName: {
+                            label: "Last Name",
+                            placeholder: "Enter your last name",
+                            validations: {
+                                empty: "Last name is a required field"
+                            }
+                        },
+                        newPassword: {
+                            label: "New Password",
+                            placeholder: "Enter the new password",
+                            validations: {
+                                empty: "New password is a required field"
+                            }
+                        },
+                        username: {
+                            label: "Username",
+                            placeholder: "Enter the username",
+                            validations: {
+                                empty: "Username is a required field",
+                                invalid: "A user already exists with this username."
+                            }
+                        }
+                    },
+                    validations: {
+                        genericError: {
+                            description: "Something went wrong. Please try again",
+                            message: "Change password error"
+                        },
+                        invalidCurrentPassword: {
+                            description: "The current password you entered appears to be invalid. Please try again",
+                            message: "Change password error"
+                        },
+                        submitError: {
+                            description: "{{description}}",
+                            message: "Change password error"
+                        },
+                        submitSuccess: {
+                            description: "The password has been changed successfully",
+                            message: "Password reset successful"
+                        }
+                    }
+                }
+            },
+            modals: {
+                addUserWarnModal: {
+                    heading: "Warning",
+                    message: "Please note that this created user will not be assigned with a role. If you wish to " +
+                        "assign roles to this user please click on the button below."
+                },
+                addUserWizard: {
+                    buttons: {
+                        next: "Next",
+                        previous: "Previous"
+                    },
+                    steps: {
+                        basicDetails: "Basic Details",
+                        groups: "User Groups",
+                        roles: "User Roles",
+                        summary: "Summary"
+                    },
+                    subTitle: "Follow the steps to create the new user",
+                    title: "Create User"
+                }
+            },
+            profile: {
+                fields: {
+                    /* eslint-disable @typescript-eslint/camelcase */
+                    addresses_home: "Home Address",
+                    addresses_work: "Work Address",
+                    emails: "Email",
+                    emails_home: "Home Email",
+                    emails_other: "Other Email",
+                    emails_work: "Work Email",
+                    generic: {
+                        default: "Add {{fieldName}}"
+                    },
+                    name_familyName: "Last Name",
+                    name_givenName: "First Name",
+                    phoneNumbers: "Phone Number",
+                    phoneNumbers_home: "Home Phone Number",
+                    phoneNumbers_mobile: "Mobile Number",
+                    phoneNumbers_other: "Other Phone Number",
+                    phoneNumbers_work: "Work Phone Number",
+                    profileUrl: "URL",
+                    userName: "Username"
+                    /* eslint-enable @typescript-eslint/camelcase */
+                },
+                forms: {
+                    emailChangeForm: {
+                        inputs: {
+                            email: {
+                                label: "Email",
+                                note: "NOTE: This will change the email address in your profile",
+                                placeholder: "Enter your email address",
+                                validations: {
+                                    empty: "Email address is a required field",
+                                    invalidFormat: "The email address is not of the correct format"
+                                }
+                            }
+                        }
+                    },
+                    generic: {
+                        inputs: {
+                            placeholder: "Enter your {{fieldName}}",
+                            validations: {
+                                empty: "{{fieldName}} is a required field",
+                                invalidFormat: "The {{fieldName}} is not of the correct format"
+                            }
+                        }
+                    },
+                    mobileChangeForm: {
+                        inputs: {
+                            mobile: {
+                                label: "Mobile number",
+                                note: "NOTE: This will change the mobile number in your profile",
+                                placeholder: "Enter your mobile number",
+                                validations: {
+                                    empty: "Mobile number is a required field",
+                                    invalidFormat: "The mobile number is not of the right format"
+                                }
+                            }
+                        }
+                    },
+                    nameChangeForm: {
+                        inputs: {
+                            firstName: {
+                                label: "First name",
+                                placeholder: "Enter the first name",
+                                validations: {
+                                    empty: "First name is a required field"
+                                }
+                            },
+                            lastName: {
+                                label: "Last name",
+                                placeholder: "Enter the last name",
+                                validations: {
+                                    empty: "Last name is a required field"
+                                }
+                            }
+                        }
+                    },
+                    organizationChangeForm: {
+                        inputs: {
+                            organization: {
+                                label: "Organization",
+                                placeholder: "Enter your organization",
+                                validations: {
+                                    empty: "Organization is a required field"
+                                }
+                            }
+                        }
+                    }
+                },
+                notifications: {
+                    getProfileInfo: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while retrieving the profile details"
+                        },
+                        genericError: {
+                            description: "Error occurred while retrieving the profile details",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The required user profile details are retrieved successfully",
+                            message: "Successfully retrieved user profile"
+                        }
+                    },
+                    updateProfileInfo: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while updating the profile details"
+                        },
+                        genericError: {
+                            description: "Error occurred while updating the profile details",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The required user profile details were successfully updated",
+                            message: "User profile updated successfully"
+                        }
+                    }
+                },
+                placeholders: {
+                    SCIMDisabled: {
+                        heading: "This feature is not available for your account"
+                    }
+                }
+            }
+        },
+        users: {
+            advancedSearch: {
+                form: {
+                    dropdown: {
+                        filterAttributeOptions: {
+                            username: "Username",
+                            email: "Email"
+                        }
+                    },
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: "E.g. Username, Email etc."
+                        },
+                        filterCondition: {
+                            placeholder: "E.g. Starts with etc."
+                        },
+                        filterValue: {
+                            placeholder: "Enter value to search"
+                        }
+                    }
+                },
+                placeholder: "Search by Username"
+            },
+            all: {
+                heading: "Users",
+                subHeading: "Add and manage user accounts, assign roles to the users and maintain user identities."
+            },
+            buttons: {
+                assignUserRoleBtn: "Assign roles"
+            },
+            notifications: {
+                addUser: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error adding the new user"
+                    },
+                    genericError: {
+                        description: "Couldn't add the new user",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The new user was added successfully.",
+                        message: "User added successfully"
+                    }
+                },
+                deleteUser: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error deleting the user"
+                    },
+                    genericError: {
+                        description: "Couldn't delete the user",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The user was deleted successfully.",
+                        message: "User deleted successfully"
+                    }
+                },
+                fetchUsers: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error retrieving users"
+                    },
+                    genericError: {
+                        description: "Couldn't retrieve users",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved the users.",
+                        message: "Users retrieval successful"
+                    }
+                }
+            },
+            placeholders: {
+                emptyList: {
+                    action: "Refresh list",
+                    subtitles: {
+                        0: "The users list returned empty.",
+                        1: "Something went wrong while fetching the user list"
+                    },
+                    title: "No Users Found"
+                }
+            },
+            userstores: {
+                userstoreOptions: {
+                    all: "All userstores",
+                    primary: "Primary"
+                }
+            }
+        },
+        userstores: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: "E.g. Name, Description etc."
+                        },
+                        filterCondition: {
+                            placeholder: "E.g. Starts with etc."
+                        },
+                        filterValue: {
+                            placeholder: "E.g. PRIMARY, SECONDARY etc."
+                        }
+                    }
+                },
+                placeholder: "Search by userstore name"
+            }
         }
     },
     pages: {
@@ -1644,6 +1703,15 @@ export const devPortal: DevPortalNS = {
         overView: {
             subTitle: "The following section would give you an overview of the system statistics",
             title: "Welcome, {{firstName}}"
+        },
+        users: {
+            subTitle: "Create and manage users, user access, and user profiles.",
+            title: "Users"
+        },
+        usersEdit: {
+            backButton: "Go back to users",
+            subTitle: "{{name}}",
+            title: "{{email}}"
         }
     },
     placeholders: {
