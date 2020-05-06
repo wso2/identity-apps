@@ -25,14 +25,14 @@ import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } f
 import { useDispatch } from "react-redux";
 import { Checkbox, Grid, Icon, Menu, Sidebar } from "semantic-ui-react";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
-import { getAdaptiveAuthTemplates } from "../../../../api";
-import { ApplicationManagementConstants } from "../../../../constants";
+import { getAdaptiveAuthTemplates } from "../../../../../api";
+import { ApplicationManagementConstants } from "../../../../../constants";
 import {
     AdaptiveAuthTemplateInterface,
     AdaptiveAuthTemplatesListInterface,
     AuthenticationSequenceInterface
-} from "../../../../models";
-import { AdaptiveScriptUtils } from "../../../../utils";
+} from "../../../../../models";
+import { AdaptiveScriptUtils } from "../../../../../utils";
 
 /**
  * Proptypes for the adaptive scripts component.

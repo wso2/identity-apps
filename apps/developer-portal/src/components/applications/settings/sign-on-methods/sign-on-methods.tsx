@@ -25,13 +25,13 @@ import { useDispatch } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
-import { updateAuthenticationSequence } from "../../../api";
+import { updateAuthenticationSequence } from "../../../../api";
 import {
     AdaptiveAuthTemplateInterface,
     AuthenticationSequenceInterface,
     AuthenticationStepInterface,
     FeatureConfigInterface
-} from "../../../models";
+} from "../../../../models";
 
 /**
  * Proptypes for the sign on methods component.

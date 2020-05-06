@@ -26,7 +26,7 @@ import { useDispatch } from "react-redux";
 import { Card, Divider, DropdownProps, Form, Grid, Icon, Popup } from "semantic-ui-react";
 import { AuthenticationStep } from "./authentication-step";
 import { AuthenticatorSidePanel } from "./authenticator-side-panel";
-import { OperationIcons } from "../../../../configs";
+import { OperationIcons } from "../../../../../configs";
 import {
     AuthenticationSequenceInterface,
     AuthenticationSequenceType,
@@ -34,8 +34,8 @@ import {
     AuthenticatorInterface,
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface
-} from "../../../../models";
-import { IdentityProviderManagementUtils } from "../../../../utils";
+} from "../../../../../models";
+import { IdentityProviderManagementUtils } from "../../../../../utils";
 
 /**
  * Proptypes for the applications settings component.

@@ -21,13 +21,13 @@ import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Droppable, DroppableProvided } from "react-beautiful-dnd";
 import { Form, Icon, Label, Popup, Radio } from "semantic-ui-react";
-import { IdentityProviderManagementConstants } from "../../../../constants";
+import { IdentityProviderManagementConstants } from "../../../../../constants";
 import {
     AuthenticationStepInterface,
     AuthenticatorInterface,
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface
-} from "../../../../models";
+} from "../../../../../models";
 
 /**
  * Proptypes for the authentication step component.

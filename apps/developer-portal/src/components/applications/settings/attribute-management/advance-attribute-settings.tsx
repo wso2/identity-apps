@@ -21,7 +21,7 @@ import { Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider, Grid } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
-import { RoleConfigInterface, SubjectConfigInterface } from "../../../models";
+import { RoleConfigInterface, SubjectConfigInterface } from "../../../../models";
 
 interface AdvanceAttributeSettingsPropsInterface {
     dropDownOptions: any;
@@ -36,8 +36,15 @@ interface AdvanceAttributeSettingsPropsInterface {
     readOnly?: boolean;
 }
 
+/**
+ * Advanced attribute settings component.
+ *
+ * @param {AdvanceAttributeSettingsPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
 export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSettingsPropsInterface> = (
-    props
+    props: AdvanceAttributeSettingsPropsInterface
 ): ReactElement => {
 
     const {
@@ -66,16 +73,16 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
     const submitValues = (values) => {
         const settingValues = {
+            role: {
+                claim: getDefaultDropDownValue(dropDownOptions, values.get("roleAttribute")),
+                includeUserDomain: values.get("role").includes("includeUserDomain"),
+                mappings: []
+            },
             subject: {
                 claim: getDefaultDropDownValue(dropDownOptions, values.get("subjectAttribute")),
                 includeTenantDomain: values.get("subjectIncludeTenantDomain").includes("includeTenantDomain"),
                 includeUserDomain: values.get("subjectIncludeUserDomain").includes("includeUserDomain"),
                 useMappedLocalSubject: values.get("subjectUseMappedLocalSubject").includes("useMappedLocalSubject")
-            },
-            role: {
-                claim: getDefaultDropDownValue(dropDownOptions, values.get("roleAttribute")),
-                includeUserDomain: values.get("role").includes("includeUserDomain"),
-                mappings: []
             }
         };
         setSubmissionValues(settingValues);
@@ -101,7 +108,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         <Field
                             name="subjectAttribute"
                             label="Subject attribute"
-                            required={ claimMappingOn ? true : false }
+                            required={ claimMappingOn }
                             requiredErrorMessage="Select the subject attribute"
                             type="dropdown"
                             value={ initialSubject?.claim?.uri || dropDownOptions[0]?.value }
@@ -195,7 +202,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         <Field
                             name="roleAttribute"
                             label="Role attribute"
-                            required={ claimMappingOn ? true : false }
+                            required={ claimMappingOn }
                             requiredErrorMessage="Select the role attribute"
                             type="dropdown"
                             value={ initialRole?.claim?.uri }

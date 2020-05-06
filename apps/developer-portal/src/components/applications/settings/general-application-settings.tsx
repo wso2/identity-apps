@@ -22,16 +22,16 @@ import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GeneralDetailsForm } from "./forms";
-import { deleteApplication, updateApplicationDetails } from "../../api";
+import { deleteApplication, updateApplicationDetails } from "../../../api";
 import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
     ConfigReducerStateInterface,
     FeatureConfigInterface
-} from "../../models";
-import { AppState } from "../../store";
-import { ApplicationManagementUtils } from "../../utils";
+} from "../../../models";
+import { AppState } from "../../../store";
+import { ApplicationManagementUtils } from "../../../utils";
+import { GeneralDetailsForm } from "../forms";
 
 /**
  * Proptypes for the applications general details component.

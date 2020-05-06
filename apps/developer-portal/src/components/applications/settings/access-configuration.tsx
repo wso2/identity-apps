@@ -31,20 +31,20 @@ import _ from "lodash";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
-import { InboundFormFactory } from "./forms";
-import { ApplicationCreateWizard } from "./wizard";
 import {
     deleteProtocol,
     getAuthProtocolMetadata,
     regenerateClientSecret,
     revokeClientSecret,
     updateAuthProtocolConfig
-} from "../../api";
-import { EmptyPlaceholderIllustrations, InboundProtocolLogos } from "../../configs";
-import { FeatureConfigInterface, SupportedAuthProtocolMetaTypes, SupportedAuthProtocolTypes } from "../../models";
-import { AppState } from "../../store";
-import { setAuthProtocolMeta } from "../../store/actions";
-import { AuthenticatorAccordion } from "../shared";
+} from "../../../api";
+import { EmptyPlaceholderIllustrations, InboundProtocolLogos } from "../../../configs";
+import { FeatureConfigInterface, SupportedAuthProtocolMetaTypes, SupportedAuthProtocolTypes } from "../../../models";
+import { AppState } from "../../../store";
+import { setAuthProtocolMeta } from "../../../store/actions";
+import { AuthenticatorAccordion } from "../../shared";
+import { InboundFormFactory } from "../forms";
+import { ApplicationCreateWizard } from "../wizard";
 
 /**
  * Proptypes for the applications settings component.

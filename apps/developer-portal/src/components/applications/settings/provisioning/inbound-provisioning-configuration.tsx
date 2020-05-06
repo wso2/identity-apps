@@ -23,14 +23,14 @@ import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { getUserStoreList, updateApplicationConfigurations } from "../../../api";
+import { getUserStoreList, updateApplicationConfigurations } from "../../../../api";
 import {
     FeatureConfigInterface,
     ProvisioningConfigurationInterface,
     SimpleUserStoreListItemInterface
-} from "../../../models";
-import { AuthenticatorAccordion } from "../../shared";
-import { ProvisioningConfigurationsForm } from "../forms";
+} from "../../../../models";
+import { AuthenticatorAccordion } from "../../../shared";
+import { ProvisioningConfigurationsForm } from "../../forms";
 
 /**
  *  Inbound Provisioning Configurations for the Application.
@@ -68,7 +68,6 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
         appId,
         provisioningConfigurations,
         onUpdate,
-        readOnly,
         featureConfig
     } = props;
 

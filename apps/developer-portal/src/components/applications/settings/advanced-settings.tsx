@@ -21,9 +21,9 @@ import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
-import { AdvancedConfigurationsForm } from "./forms";
-import { updateApplicationConfigurations } from "../../api";
-import { AdvancedConfigurationsInterface, FeatureConfigInterface } from "../../models";
+import { updateApplicationConfigurations } from "../../../api";
+import { AdvancedConfigurationsInterface, FeatureConfigInterface } from "../../../models";
+import { AdvancedConfigurationsForm } from "../forms";
 
 /**
  * Proptypes for the advance settings component.

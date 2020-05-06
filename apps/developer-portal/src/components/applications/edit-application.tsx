@@ -23,13 +23,15 @@ import { ContentLoader, ResourceTab } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AccessConfiguration } from "./access-configuration";
-import { AdvancedSettings } from "./advanced-settings";
-import { AttributeSettings } from "./attribute-management";
-import { GeneralApplicationSettings } from "./general-application-settings";
 import { InboundProtocolsMeta } from "./meta";
-import { ProvisioningSettings } from "./provisioning";
-import { SignOnMethods } from "./sign-on-methods";
+import {
+  AccessConfiguration,
+  AdvancedSettings,
+  AttributeSettings,
+  GeneralApplicationSettings,
+  ProvisioningSettings,
+  SignOnMethods
+} from "./settings";
 import { getInboundProtocolConfig } from "../../api";
 import { ApplicationManagementConstants } from "../../constants";
 import {

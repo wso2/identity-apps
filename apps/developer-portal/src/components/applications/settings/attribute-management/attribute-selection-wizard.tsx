@@ -41,8 +41,15 @@ interface AttributeSelectionWizardPropsInterface {
     removeMapping: any;
 }
 
+/**
+ * Attribute selection wizard component.
+ *
+ * @param {AttributeSelectionWizardPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
 export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizardPropsInterface> = (
-    props
+    props: AttributeSelectionWizardPropsInterface
 ): ReactElement => {
 
     const {
@@ -265,7 +272,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                         isHeaderCheckboxChecked={ isSelectUnassignedClaimsAllClaimsChecked }
                     >
                         {
-                            filterTempAvailableClaims?.map((claim, index) => {
+                            filterTempAvailableClaims?.map((claim) => {
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () => handleUnassignedItemCheckboxChange(claim) }
@@ -290,7 +297,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                         isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
                     >
                         {
-                            filterTempSelectedClaims?.map((claim, index) => {
+                            filterTempSelectedClaims?.map((claim) => {
 
                                 return (
                                     <TransferListItem

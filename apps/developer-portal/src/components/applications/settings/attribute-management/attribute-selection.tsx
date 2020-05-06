@@ -28,12 +28,12 @@ import {
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "./attribute-settings";
-import { EmptyPlaceholderIllustrations } from "../../../configs";
+import { EmptyPlaceholderIllustrations } from "../../../../configs";
 import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,
     RequestedClaimConfigurationInterface
-} from "../../../models";
+} from "../../../../models";
 
 interface AttributeSelectionPropsInterface {
     claims: ExtendedClaimInterface[];
@@ -65,10 +65,12 @@ interface AttributeSelectionPropsInterface {
 /**
  * Attribute selection component.
  *
- * @param props AttributeSelectionPropsInterface
+ * @param {AttributeSelectionPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterface> = (
-    props
+    props: AttributeSelectionPropsInterface
 ): ReactElement => {
 
     const {
@@ -99,7 +101,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const [availableExternalClaims, setAvailableExternalClaims] = useState<ExtendedExternalClaimInterface[]>([]);
 
     const [filterSelectedClaims, setFilterSelectedClaims] = useState<ExtendedClaimInterface[]>([]);
-    const [filterSelectedExternalClaims, setFilterSelectedExternalClaims] = useState<ExtendedExternalClaimInterface[]>([]);
+    const [
+        filterSelectedExternalClaims,
+        setFilterSelectedExternalClaims
+    ] = useState<ExtendedExternalClaimInterface[]>([]);
 
     const [initializationFinished, setInitializationFinished] = useState(false);
 
@@ -196,7 +201,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 checkInRequested = claimConfigurations.requestedClaims.find(
                     (requestClaims) => requestClaims?.claim?.uri === uri);
             }
-            return checkInRequested ? true : false;
+
+            return !!checkInRequested;
         } else {
             // If the dialect is not custom, the initial selected claim is decided by requested claims
             // So it is always true.
@@ -263,13 +269,13 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 const initialClaimMappingList: ExtendedClaimMappingInterface[] = [];
                 claimConfigurations.claimMappings.map((claim) => {
                     const claimMapping: ExtendedClaimMappingInterface = {
+                        addMapping: true,
                         applicationClaim: claim.applicationClaim,
                         localClaim: {
                             displayName: claim?.localClaim?.displayName,
                             id: claim?.localClaim?.id,
                             uri: claim?.localClaim?.uri
-                        },
-                        addMapping: true
+                        }
                     };
                     initialClaimMappingList.push(claimMapping);
                 });
@@ -279,13 +285,13 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 initialSelectedClaims.map((claim: ExtendedClaimInterface) => {
                     // createMapping(claim);
                     const claimMapping: ExtendedClaimMappingInterface = {
+                        addMapping: false,
                         applicationClaim: "",
                         localClaim: {
                             displayName: claim.displayName,
                             id: claim.id,
                             uri: claim.claimURI
-                        },
-                        addMapping: false
+                        }
                     };
                     initialClaimMappingList.push(claimMapping);
                 });
@@ -495,7 +501,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             localDialect={ true }
                                                                             updateMapping={ updateClaimMapping }
                                                                             addToMapping={ addToClaimMapping }
-                                                                            mapping={ getCurrentMapping(claim.claimURI) }
+                                                                            mapping={
+                                                                                getCurrentMapping(claim.claimURI)
+                                                                            }
                                                                             initialMandatory={ claim.mandatory }
                                                                             initialRequested={ claim.requested }
                                                                             selectMandatory={ updateMandatory }

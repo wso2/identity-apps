@@ -33,7 +33,7 @@ import {
     DroppableProvided
 } from "react-beautiful-dnd";
 import ReactDOM from "react-dom";
-import { GenericAuthenticatorInterface } from "../../../../models";
+import { GenericAuthenticatorInterface } from "../../../../../models";
 
 /**
  * Proptypes for the authenticators component.

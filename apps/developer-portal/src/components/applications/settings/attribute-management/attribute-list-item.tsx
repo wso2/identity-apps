@@ -39,11 +39,14 @@ interface AttributeListItemPropInterface {
 }
 
 /**
- * Selected Attribute list item.
- * @param props AttributeListItemPropInterface
+ * Selected Attribute list item component.
+ *
+ * @param {AttributeListItemPropInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface> = (
-    props
+    props: AttributeListItemPropInterface
 ): ReactElement => {
 
     const {

@@ -27,7 +27,7 @@ import React, {
     useState
 } from "react";
 import { Accordion, Icon, Menu, Popup, Segment, Sidebar } from "semantic-ui-react";
-import { AdaptiveAuthTemplateInterface } from "../../../../models";
+import { AdaptiveAuthTemplateInterface } from "../../../../../models";
 
 /**
  * Component ref type.

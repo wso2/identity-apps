@@ -16,6 +16,10 @@
  * under the License.
  */
 
-export * from "./inbound-provisioning-configuration";
-export * from "./outbound-provisioning-configuration";
-export * from "./provisioning-settings";
+export * from "./attribute-management";
+export * from "./provisioning";
+export * from "./sign-on-methods";
+export * from "./general-application-settings";
+export * from "./access-configuration";
+export * from "./advanced-settings";
+export * from "./general-application-settings";

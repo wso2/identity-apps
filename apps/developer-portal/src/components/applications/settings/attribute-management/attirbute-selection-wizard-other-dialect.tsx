@@ -39,8 +39,17 @@ interface AttributeSelectionWizardOtherDialectPropsInterface {
     setShowAddModal: (showModal: boolean) => void;
 }
 
-export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSelectionWizardOtherDialectPropsInterface> = (
-    props
+/**
+ * Other dialects attribute selection wizard component.
+ *
+ * @param {AttributeSelectionWizardOtherDialectPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const AttributeSelectionWizardOtherDialect: FunctionComponent<
+    AttributeSelectionWizardOtherDialectPropsInterface
+    > = (
+        props: AttributeSelectionWizardOtherDialectPropsInterface
 ): ReactElement => {
 
     const {
@@ -255,7 +264,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
                         isHeaderCheckboxChecked={ isSelectUnassignedClaimsAllClaimsChecked }
                     >
                         {
-                            filterTempAvailableClaims?.map((claim, index) => {
+                            filterTempAvailableClaims?.map((claim) => {
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () => handleUnassignedItemCheckboxChange(claim) }
@@ -278,7 +287,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
                         isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
                     >
                         {
-                            filterTempSelectedClaims?.map((claim, index) => {
+                            filterTempSelectedClaims?.map((claim) => {
 
                                 return (
                                     <TransferListItem

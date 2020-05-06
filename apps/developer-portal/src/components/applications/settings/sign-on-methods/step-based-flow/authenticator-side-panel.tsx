@@ -22,8 +22,8 @@ import React, { FunctionComponent, ReactElement, Ref, SyntheticEvent, forwardRef
 import Draggable from "react-draggable";
 import { Accordion, Card, Icon, Popup } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
-import { OperationIcons } from "../../../../configs";
-import { GenericAuthenticatorInterface } from "../../../../models";
+import { OperationIcons } from "../../../../../configs";
+import { GenericAuthenticatorInterface } from "../../../../../models";
 
 /**
  * Proptypes for the authenticator side panel component.

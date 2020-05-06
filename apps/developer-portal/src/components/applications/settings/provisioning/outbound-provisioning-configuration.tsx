@@ -22,16 +22,16 @@ import { ConfirmationModal, EmptyPlaceholder, Heading, PrimaryButton } from "@ws
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
-import { getIdentityProviderList, updateApplicationConfigurations } from "../../../api";
-import { EmptyPlaceholderIllustrations } from "../../../configs";
+import { getIdentityProviderList, updateApplicationConfigurations } from "../../../../api";
+import { EmptyPlaceholderIllustrations } from "../../../../configs";
 import {
     ApplicationInterface,
     IdentityProviderInterface,
     OutboundProvisioningConfigurationInterface,
     ProvisioningConfigurationInterface
-} from "../../../models";
-import { AuthenticatorAccordion } from "../../shared";
-import { OutboundProvisioningIdpCreateWizard, OutboundProvisioningWizardIdpForm } from "../wizard";
+} from "../../../../models";
+import { AuthenticatorAccordion } from "../../../shared";
+import { OutboundProvisioningIdpCreateWizard, OutboundProvisioningWizardIdpForm } from "../../wizard";
 
 /**
  *  Provisioning Configurations for the Application.
