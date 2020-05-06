@@ -16,12 +16,6 @@
  * under the License.
  */
 
-export * from "./application-list";
-export * from "./edit-application";
-export * from "./forms";
-export * from "./general-application-settings";
-export * from "./access-configuration";
-export * from "./edit-application";
-export * from "./provisioning";
-export * from "./wizard";
-export * from "./components";
+export * from "./inbound-provisioning-configuration";
+export * from "./outbound-provisioning-configuration";
+export * from "./provisioning-settings";

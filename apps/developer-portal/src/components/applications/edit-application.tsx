@@ -28,7 +28,7 @@ import { AdvancedSettings } from "./advanced-settings";
 import { AttributeSettings } from "./attribute-management";
 import { GeneralApplicationSettings } from "./general-application-settings";
 import { InboundProtocolsMeta } from "./meta";
-import { ProvisioningSettings } from "./provisioning-settings";
+import { ProvisioningSettings } from "./provisioning";
 import { SignOnMethods } from "./sign-on-methods";
 import { getInboundProtocolConfig } from "../../api";
 import { ApplicationManagementConstants } from "../../constants";

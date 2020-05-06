@@ -26,7 +26,7 @@ import {
     ApplicationInterface,
     FeatureConfigInterface,
     ProvisioningConfigurationInterface
-} from "../../models";
+} from "../../../models";
 
 /**
  * Proptypes for the provision settings component.
