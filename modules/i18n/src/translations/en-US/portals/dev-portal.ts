@@ -1300,6 +1300,7 @@ export const devPortal: DevPortalNS = {
                         heading: "Legal process"
                     }
                 },
+<<<<<<< HEAD
                 heading: "Privacy Policy",
                 moreInfo: {
                     changesToPolicy: {
@@ -1399,8 +1400,6 @@ export const devPortal: DevPortalNS = {
                                 1: "Browser fingerprinting to determine the browser technology or/and version"
                             }
                         }
-<<<<<<< HEAD
-=======
                     },
                     connection: {
                         custom: {
@@ -1419,7 +1418,6 @@ export const devPortal: DevPortalNS = {
                     genericError: {
                         description: "There was an error while deleting the userstore",
                         message: "Something went wrong!"
->>>>>>> Localize edit connection details-userstore
                     },
                     heading: "Use of personal information"
                 },
@@ -1445,6 +1443,14 @@ export const devPortal: DevPortalNS = {
                             "for this is that this information can not be used to track you."
                     },
                     heading: "What is personal information?"
+                }
+            },
+            wizard: {
+                steps: {
+                    general: "General",
+                    group: "Group",
+                    summary: "Summary",
+                    user: "User"
                 }
             }
         },

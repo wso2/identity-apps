@@ -270,33 +270,33 @@ export const EditBasicDetailsUserStore = (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 8 }>
                             <Field
-                                label={ t("devPortal:components.userstores.forms.edit.general.name.label") }
+                                label={ t("devPortal:components.userstores.forms.general.name.label") }
                                 name="name"
                                 type="text"
                                 required={ false }
-                                requiredErrorMessage={ t("devPortal:components.userstores.forms.edit.general." +
+                                requiredErrorMessage={ t("devPortal:components.userstores.forms.general." +
                                     "name.requiredErrorMessage") }
-                                placeholder={ t("devPortal:components.userstores.forms.edit.general.name.placeholder") }
+                                placeholder={ t("devPortal:components.userstores.forms.general.name.placeholder") }
                                 value={ userStore?.name }
                                 disabled
                             />
                             <Field
-                                label={ t("devPortal:components.userstores.forms.edit.general.type.label") }
+                                label={ t("devPortal:components.userstores.forms.general.type.label") }
                                 name="type"
                                 type="text"
                                 disabled
                                 required={ false }
-                                requiredErrorMessage={ t("devPortal:components.userstores.forms.edit.general" +
+                                requiredErrorMessage={ t("devPortal:components.userstores.forms.general" +
                                     ".type.requiredErrorMessage") }
                                 value={ userStore?.typeName }
                             />
                             <Field
-                                label={ t("devPortal:components.userstores.forms.edit.general.description.label") }
+                                label={ t("devPortal:components.userstores.forms.general.description.label") }
                                 name="description"
                                 type="textarea"
                                 required={ false }
                                 requiredErrorMessage=""
-                                placeholder={ t("devPortal:components.userstores.forms.edit.general." +
+                                placeholder={ t("devPortal:components.userstores.forms.general." +
                                     "description.placeholder") }
                                 value={ userStore?.description }
                             />
@@ -322,8 +322,15 @@ export const EditBasicDetailsUserStore = (
                                                     required={ true }
                                                     label={ name }
                                                     requiredErrorMessage={
-                                                        t("devPortal:components.userstores.forms.edit.general." +
+                                                        t("devPortal:components.userstores.forms.general." +
                                                             "custom.requiredErrorMessage",
+                                                            {
+                                                                name: property.description.split("#")[ 0 ]
+                                                            })
+                                                    }
+                                                    placeholder={
+                                                        t("devPortal:components.userstores.forms.general." +
+                                                            "custom.placeholder",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
                                                             })
@@ -342,8 +349,15 @@ export const EditBasicDetailsUserStore = (
                                                         required={ false }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
-                                                            t("devPortal:components.userstores.forms.edit.general." +
+                                                            t("devPortal:components.userstores.forms.general." +
                                                                 "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
+                                                        }
+                                                        placeholder={
+                                                            t("devPortal:components.userstores.forms.general." +
+                                                                "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
@@ -360,8 +374,15 @@ export const EditBasicDetailsUserStore = (
                                                         required={ true }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
-                                                            t("devPortal:components.userstores.forms.edit.general." +
+                                                            t("devPortal:components.userstores.forms.general." +
                                                                 "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
+                                                        }
+                                                        placeholder={
+                                                            t("devPortal:components.userstores.forms.general." +
+                                                                "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
@@ -417,7 +438,14 @@ export const EditBasicDetailsUserStore = (
                                                             label={ name }
                                                             requiredErrorMessage={
                                                                 t("devPortal:components.userstores.forms." +
-                                                                    "edit.general.custom.requiredErrorMessage",
+                                                                    "custom.requiredErrorMessage",
+                                                                    {
+                                                                        name: property.description.split("#")[ 0 ]
+                                                                    })
+                                                            }
+                                                            placeholder={
+                                                                t("devPortal:components.userstores.forms.general." +
+                                                                    "custom.placeholder",
                                                                     {
                                                                         name: property.description.split("#")[ 0 ]
                                                                     })
@@ -437,7 +465,14 @@ export const EditBasicDetailsUserStore = (
                                                                 label={ property.description.split("#")[ 0 ] }
                                                                 requiredErrorMessage={
                                                                     t("devPortal:components.userstores.forms." +
-                                                                        "edit.general.custom.requiredErrorMessage",
+                                                                        "custom.requiredErrorMessage",
+                                                                        {
+                                                                            name: property.description.split("#")[ 0 ]
+                                                                        })
+                                                                }
+                                                                placeholder={
+                                                                    t("devPortal:components.userstores.forms.general." +
+                                                                        "custom.placeholder",
                                                                         {
                                                                             name: property.description.split("#")[ 0 ]
                                                                         })
@@ -455,7 +490,14 @@ export const EditBasicDetailsUserStore = (
                                                                 label={ property.description.split("#")[ 0 ] }
                                                                 requiredErrorMessage={
                                                                     t("devPortal:components.userstores.forms." +
-                                                                        "edit.general.custom.requiredErrorMessage",
+                                                                        "custom.requiredErrorMessage",
+                                                                        {
+                                                                            name: property.description.split("#")[ 0 ]
+                                                                        })
+                                                                }
+                                                                placeholder={
+                                                                    t("devPortal:components.userstores.forms.general." +
+                                                                        "custom.placeholder",
                                                                         {
                                                                             name: property.description.split("#")[ 0 ]
                                                                         })

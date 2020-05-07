@@ -267,6 +267,13 @@ export const EditConnectionDetails = (
                                                 }
                                                 showPassword={ t("common:showPassword") }
                                                 hidePassword={ t("common:hidePassword") }
+                                                placeholder={
+                                                    t("devPortal:components.userstores.forms.general." +
+                                                        "custom.placeholder",
+                                                        {
+                                                            name: property.description.split("#")[ 0 ]
+                                                        })
+                                                }
                                             />
                                         )
                                         : toggle
@@ -279,8 +286,15 @@ export const EditConnectionDetails = (
                                                     required={ false }
                                                     label={ property.description.split("#")[ 0 ] }
                                                     requiredErrorMessage={
-                                                        t("devPortal:components.userstores.forms.edit.connection." +
+                                                        t("devPortal:components.userstores.forms." +
                                                             "custom.requiredErrorMessage",
+                                                            {
+                                                                name: property.description.split("#")[ 0 ]
+                                                            })
+                                                    }
+                                                    placeholder={
+                                                        t("devPortal:components.userstores.forms.general." +
+                                                            "custom.placeholder",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
                                                             })
@@ -297,8 +311,15 @@ export const EditConnectionDetails = (
                                                     required={ true }
                                                     label={ property.description.split("#")[ 0 ] }
                                                     requiredErrorMessage={
-                                                        t("devPortal:components.userstores.forms.edit.connection." +
+                                                        t("devPortal:components.userstores.forms." +
                                                             "custom.requiredErrorMessage",
+                                                            {
+                                                                name: property.description.split("#")[ 0 ]
+                                                            })
+                                                    }
+                                                    placeholder={
+                                                        t("devPortal:components.userstores.forms.general." +
+                                                            "custom.placeholder",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
                                                             })
@@ -383,7 +404,7 @@ export const EditConnectionDetails = (
                                                 : null
                                     }
                                 />
-                            Test Connection
+                                { t("devPortal:components.userstores.forms.connection.testButton")}
                     </Button>
                         </Grid.Column>
                     </Grid.Row>
@@ -438,6 +459,13 @@ export const EditConnectionDetails = (
                                                     }
                                                     showPassword={ t("common:showPassword") }
                                                     hidePassword={ t("common:hidePassword") }
+                                                    placeholder={
+                                                        t("devPortal:components.userstores.forms.general." +
+                                                            "custom.placeholder",
+                                                            {
+                                                                name: property.description.split("#")[ 0 ]
+                                                            })
+                                                    }
                                                 />
                                             )
                                             : toggle
@@ -450,8 +478,15 @@ export const EditConnectionDetails = (
                                                         required={ false }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
-                                                            t("devPortal:components.userstores.forms.edit.connection." +
+                                                            t("devPortal:components.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
+                                                        }
+                                                        placeholder={
+                                                            t("devPortal:components.userstores.forms.general." +
+                                                                "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
@@ -468,8 +503,15 @@ export const EditConnectionDetails = (
                                                         required={ false }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
-                                                            t("devPortal:components.userstores.forms.edit.connection." +
+                                                            t("devPortal:components.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
+                                                        }
+                                                        placeholder={
+                                                            t("devPortal:components.userstores.forms.general." +
+                                                                "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })

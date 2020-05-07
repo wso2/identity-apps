@@ -982,19 +982,26 @@ export interface DevPortalNS {
                 };
             };
             forms: {
-                edit: {
-                    general: {
-                        name: FormField;
-                        type: FormField;
-                        description: FormField;
-                        custom: FormField;
-                    };
-                    connection: {
-                        custom: FormField;
-                    };
+                general: {
+                    name: FormField;
+                    type: FormField;
+                    description: FormField;
                 };
+                connection: {
+                    testButton: string;
+                    connectionErrorMessage: string;
+                };
+                custom: FormField;
             };
             dangerZone: DangerZone;
+            wizard: {
+                steps: {
+                    general: string;
+                    user: string;
+                    group: string;
+                    summary: string;
+                };
+            };
         };
         roles: {
             advancedSearch: {
