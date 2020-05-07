@@ -1409,6 +1409,16 @@ export const devPortal: DevPortalNS = {
                 }
             },
             notifications: {
+                addUserstore: {
+                    genericError: {
+                        description: "There was an error while creating the userstore",
+                        message: "Something went wrong!"
+                    },
+                    success: {
+                        description: "The userstore has been added successfully!",
+                        message: "Userstore added successfully!"
+                    }
+                },
                 delay: {
                     description: "It may take a while for the userstore list to be updated. "
                         + "Refresh in a few seconds to get the updated userstore list.",
@@ -1446,6 +1456,7 @@ export const devPortal: DevPortalNS = {
                 }
             },
             wizard: {
+                header: "Add {{type}} Userstore",
                 steps: {
                     general: "General",
                     group: "Group",

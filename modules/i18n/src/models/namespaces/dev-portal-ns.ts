@@ -949,6 +949,7 @@ export interface DevPortalNS {
                 delay: NotificationItem;
                 updateUserstore: Notification;
                 testConnection: Notification;
+                addUserstore: Notification;
             };
             confirmation: {
                 hint: string;
@@ -1001,6 +1002,7 @@ export interface DevPortalNS {
                     group: string;
                     summary: string;
                 };
+                header: string;
             };
         };
         roles: {
