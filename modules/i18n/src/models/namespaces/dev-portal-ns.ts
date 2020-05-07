@@ -203,6 +203,7 @@ export interface DevPortalNS {
                     fetchADialect: Notification;
                     fetchExternalClaims: Notification;
                     deleteDialect: Notification;
+                    addDialect: Notification;
                 };
                 localDialect: string;
                 pageLayout: {
@@ -226,6 +227,14 @@ export interface DevPortalNS {
                     content: string;
                     hint: string;
                     action: string;
+                };
+                wizard: {
+                    steps: {
+                        dialectURI: string;
+                        externalAttribute: string;
+                        summary: string;
+                    };
+                    header: string;
                 };
             };
             external: {

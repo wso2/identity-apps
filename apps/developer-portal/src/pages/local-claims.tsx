@@ -54,7 +54,7 @@ export const LocalClaimsPage = (): ReactElement => {
         },
         {
             key: 1,
-            text: t("devPortal:components.dialects.local.attributes.attributeURI"),
+            text: t("devPortal:components.claims.local.attributes.attributeURI"),
             value: "claimURI"
         }
     ];
@@ -103,10 +103,10 @@ export const LocalClaimsPage = (): ReactElement => {
             dispatch(addAlert(
                 {
                     description: error?.description
-                        || t("devPortal:components.dialects.local.notifications.getClaims.genericError.description"),
+                        || t("devPortal:components.claims.local.notifications.getClaims.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
-                        || t("devPortal:components.dialects.local.notifications.getClaims.genericError.message")
+                        || t("devPortal:components.claims.local.notifications.getClaims.genericError.message")
                 }
             ));
         }).finally(() => {
@@ -130,10 +130,10 @@ export const LocalClaimsPage = (): ReactElement => {
             dispatch(addAlert(
                 {
                     description: error?.description
-                        || t("devPortal:components.dialects.local.notifications.getLocalDialect.genericError.message"),
+                        || t("devPortal:components.claims.local.notifications.getLocalDialect.genericError.message"),
                     level: AlertLevels.ERROR,
                     message: error?.message
-                        || t("devPortal:components.dialects.local.notifications.getLocalDialect.genericError.message")
+                        || t("devPortal:components.claims.local.notifications.getLocalDialect.genericError.message")
                 }
             ));
         });
@@ -208,7 +208,7 @@ export const LocalClaimsPage = (): ReactElement => {
             dispatch(addAlert({
                 description: error?.message,
                 level: AlertLevels.ERROR,
-                message: t("devPortal:components.dialects.local.advancedSearch.error")
+                message: t("devPortal:components.claims.local.advancedSearch.error")
             }));
         }
     };
@@ -236,12 +236,12 @@ export const LocalClaimsPage = (): ReactElement => {
             }
             <PageLayout
                 isLoading={ isLoading }
-                title={ t("devPortal:components.dialects.local.pageLayout.local.title") }
-                description={ t("devPortal:components.dialects.local.pageLayout.local.description") }
+                title={ t("devPortal:components.claims.local.pageLayout.local.title") }
+                description={ t("devPortal:components.claims.local.pageLayout.local.description") }
                 showBottomDivider={ true }
                 backButton={ {
                     onClick: () => { history.push(CLAIM_DIALECTS_PATH) },
-                    text: t("devPortal:components.dialects.local.pageLayout.local.back")
+                    text: t("devPortal:components.claims.local.pageLayout.local.back")
                 } }
             >
                 <ListLayout
@@ -257,7 +257,7 @@ export const LocalClaimsPage = (): ReactElement => {
                                 },
                                 {
                                     key: 1,
-                                    text: t("devPortal:components.dialects.local.advancedSearch.error"),
+                                    text: t("devPortal:components.claims.local.advancedSearch.error"),
                                     value: "claimURI"
                                 }
                             ] }
@@ -294,7 +294,7 @@ export const LocalClaimsPage = (): ReactElement => {
                                 } }
                             >
                                 <Icon name="add" />
-                                { t("devPortal:components.dialects.local.pageLayout.local.action") }
+                                { t("devPortal:components.claims.local.pageLayout.local.action") }
                             </PrimaryButton>
                         )
                     }

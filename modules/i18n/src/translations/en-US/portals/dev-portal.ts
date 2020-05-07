@@ -339,6 +339,21 @@ export const devPortal: DevPortalNS = {
                 },
                 localDialect: "Local Dialect",
                 notifications: {
+                    addDialect: {
+                        error: {
+                            description: "An error occurred while adding the external dialect",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "The external dialect has been added but not all external "
+                                + "attributes were added successfully",
+                            message: "External attributes couldn't be added"
+                        },
+                        success: {
+                            description: "The external dialect has been added successfully",
+                            message: "External Dialect added successfully"
+                        }
+                    },
                     deleteDialect: {
                         genericError: {
                             description: "There was an error while deleting the dialect",
@@ -380,6 +395,14 @@ export const devPortal: DevPortalNS = {
                         primaryAction: "New External Dialect",
                         title: "Attribute Dialects",
                         view: "View local claims"
+                    }
+                },
+                wizard: {
+                    header: "Add External Dialect",
+                    steps: {
+                        dialectURI: "Dialect URI",
+                        externalAttribute: "External attributes",
+                        summary: "Summary"
                     }
                 }
             },
