@@ -324,16 +324,57 @@ export const devPortal: DevPortalNS = {
                 attributes: {
                     dialectURI: "Dialect URI"
                 },
+                confirmations: {
+                    action: "Confirm",
+                    content: "If you delete this external dialect, all the associated external attributes will "
+                        + "also be deleted.Please proceed with caution.",
+                    header: "Are you sure?",
+                    hint: "Please type {{confirm}} to confirm.",
+                    message: "This action is irreversible and will permanently delete the selected external dialect."
+                },
+                dangerZone: {
+                    actionTitle: "Delete External Dialect",
+                    header: "Delete External Dialect",
+                    subheader: "Once you delete an external dialect, there is no going back. " + "Please be certain."
+                },
                 localDialect: "Local Dialect",
                 notifications: {
+                    deleteDialect: {
+                        genericError: {
+                            description: "There was an error while deleting the dialect",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The dialect has been deleted successfully!",
+                            message: "Dialect deleted successfully"
+                        }
+                    },
+                    fetchADialect: {
+                        genericError: {
+                            description: "There was an error while fetching the external dialect",
+                            message: "Something went wrong"
+                        }
+                    },
                     fetchDialects: {
                         genericError: {
                             description: "There was an error while getting the dialects",
                             message: "Something went wrong"
                         }
+                    },
+                    fetchExternalClaims: {
+                        genericError: {
+                            description: "There was an error while fetching the external attributes",
+                            message: "Something went wrong"
+                        }
                     }
                 },
                 pageLayout: {
+                    edit: {
+                        back: "Go back to attribute dialects",
+                        description: "Edit external dialect and its attributes",
+                        updateDialectURI: "Update Dialect URI",
+                        updateExternalAttributes: "Update External Attributes"
+                    },
                     list: {
                         description: "Create and manage attribute dialects",
                         primaryAction: "New External Dialect",

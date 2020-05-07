@@ -200,6 +200,9 @@ export interface DevPortalNS {
                 };
                 notifications: {
                     fetchDialects: Notification;
+                    fetchADialect: Notification;
+                    fetchExternalClaims: Notification;
+                    deleteDialect: Notification;
                 };
                 localDialect: string;
                 pageLayout: {
@@ -209,6 +212,20 @@ export interface DevPortalNS {
                         primaryAction: string;
                         view: string;
                     };
+                    edit: {
+                        description: string;
+                        back: string;
+                        updateDialectURI: string;
+                        updateExternalAttributes: string;
+                    };
+                };
+                dangerZone: DangerZone;
+                confirmations: {
+                    header: string;
+                    message: string;
+                    content: string;
+                    hint: string;
+                    action: string;
                 };
             };
             external: {
