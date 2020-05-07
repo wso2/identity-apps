@@ -1503,6 +1503,15 @@ export const devPortal: DevPortalNS = {
                     title: "No results found"
                 }
             },
+            sqlEditor: {
+                create: "Create",
+                darkMode: "Dark Mode",
+                delete: "Delete",
+                read: "Read",
+                reset: "Reset",
+                title: "SQL Query Types",
+                update: "Update"
+            },
             wizard: {
                 header: "Add {{type}} Userstore",
                 steps: {

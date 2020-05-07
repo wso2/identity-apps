@@ -1008,6 +1008,15 @@ export interface DevPortalNS {
                 emptySearch: Placeholder;
                 emptyList: Placeholder;
             };
+            sqlEditor: {
+                reset: string;
+                title: string;
+                create: string;
+                update: string;
+                read: string;
+                delete: string;
+                darkMode: string;
+            };
         };
         roles: {
             advancedSearch: {
