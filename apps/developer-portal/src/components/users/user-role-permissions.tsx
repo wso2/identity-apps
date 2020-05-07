@@ -110,7 +110,7 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
                         <Grid.Row column={ 1 }>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                 <LinkButton
-                                    data-testid={ `${ testId }_back_button` }
+                                    data-testid={ `${ testId }-back-button` }
                                     floated="left"
                                     onClick={ handleCloseRolePermissionModal }
                                 >

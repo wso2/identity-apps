@@ -16,7 +16,6 @@
  * under the License.
  */
 import { DevPortalNS } from "../../../models";
-import {Notification} from "../../../models/common";
 
 export const devPortal: DevPortalNS = {
     components: {

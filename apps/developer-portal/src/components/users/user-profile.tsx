@@ -269,7 +269,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             </Form.Field>
                         ) : (
                             <Field
-                                data-testid={ `${ testId }_profile_form_${ schema.name }_input` }
+                                data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
                                 name={ schema.name }
                                 label={ schema.name === "profileUrl" ? "Profile Image URL" : fieldName }
                                 required={ schema.required }
