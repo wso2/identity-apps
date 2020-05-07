@@ -360,8 +360,8 @@ export const EditConnectionDetails = (
                                                         || t("devPortal:components.userstores.notifications." +
                                                             "testConnection.genericError.description"),
                                                     level: AlertLevels.ERROR,
-                                                    message: error?.message || t("devPortal:components.userstores.notifications." +
-                                                        "testConnection.genericError.message")
+                                                    message: error?.message || t("devPortal:components." +
+                                                        "userstores.notifications.testConnection.genericError.message")
                                                 }));
                                                 setIsTesting(false);
                                                 setConnectionSuccessful(false);
