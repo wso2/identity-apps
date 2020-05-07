@@ -193,6 +193,22 @@ export interface DevPortalNS {
                         };
                     };
                     placeholder: string;
+                    error: string;
+                };
+                attributes: {
+                    dialectURI: string;
+                };
+                notifications: {
+                    fetchDialects: Notification;
+                };
+                localDialect: string;
+                pageLayout: {
+                    list: {
+                        title: string;
+                        description: string;
+                        primaryAction: string;
+                        view: string;
+                    };
                 };
             };
             external: {

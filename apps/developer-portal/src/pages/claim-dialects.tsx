@@ -43,13 +43,15 @@ import { filterList, sortList } from "../utils";
  */
 export const ClaimDialectsPage = (): ReactElement => {
 
+    const { t } = useTranslation();
+
     /**
      * Sets the attributes by which the list can be sorted.
      */
     const SORT_BY = [
         {
             key: 0,
-            text: "Dialect URI",
+            text: t("devPortal:components.claims.dialects.attributes.dialectURI"),
             value: "dialectURI"
         }
     ];
@@ -71,8 +73,6 @@ export const ClaimDialectsPage = (): ReactElement => {
     const [ resetPagination, setResetPagination ] = useTrigger();
 
     const dispatch = useDispatch();
-
-    const { t } = useTranslation();
 
     /**
      * Fetches all the dialects.
@@ -102,9 +102,11 @@ export const ClaimDialectsPage = (): ReactElement => {
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while getting the dialects",
+                    description: error?.description
+                        || t("devPortal:components.claims.dialects.notifications.fetchDialects.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
+                    message: error?.message
+                        || t("devPortal:components.claims.dialects.notifications.fetchDialects.message")
                 }
             ));
         }).finally(() => {
@@ -191,7 +193,7 @@ export const ClaimDialectsPage = (): ReactElement => {
             dispatch(addAlert({
                 description: error.message,
                 level: AlertLevels.ERROR,
-                message: "Filter query format incorrect"
+                message: t("devPortal:components.claims.dialects.advancedSearch.error")
             }));
         }
     };
@@ -216,8 +218,8 @@ export const ClaimDialectsPage = (): ReactElement => {
             />
             <PageLayout
                 isLoading={ isLoading }
-                title="Attribute Dialects"
-                description="Create and manage attribute dialects"
+                title={ t("devPortal:components.claims.dialects.pageLayout.list.title") }
+                description={ t("devPortal:components.claims.dialects.pageLayout.list.description") }
                 showBottomDivider={ true }
             >
                 {
@@ -243,7 +245,7 @@ export const ClaimDialectsPage = (): ReactElement => {
                                                     </span>
                                                 </Image>
                                                 <List.Header>
-                                                    Local Dialect
+                                                    { t("devPortal:components.claims.dialects.localDialect") }
                                                 </List.Header>
                                                 <List.Description>
                                                     { localURI }
@@ -265,7 +267,8 @@ export const ClaimDialectsPage = (): ReactElement => {
                                                         </span>
                                                     }
                                                     position="top center"
-                                                    content="View local claims"
+                                                    content={ t("devPortal:components.claims.dialects" +
+                                                        ".pageLayout.list.view") }
                                                 />
                                             </Grid.Column>
                                         </Grid.Row>
@@ -283,7 +286,7 @@ export const ClaimDialectsPage = (): ReactElement => {
                             filterAttributeOptions={ [
                                 {
                                     key: 0,
-                                    text: "Dialect URI",
+                                    text: t("devPortal:components.claims.dialects.attributes.dialectURI"),
                                     value: "dialectURI"
                                 }
                             ] }
@@ -319,8 +322,8 @@ export const ClaimDialectsPage = (): ReactElement => {
                                     setAddEditClaim(true);
                                 } }
                             >
-                                <Icon name="add"/>
-                                New External Dialect
+                                <Icon name="add" />
+                                { t("devPortal:components.claims.dialects.pageLayout.list.primaryAction") }
                             </PrimaryButton>
                         )
                     }

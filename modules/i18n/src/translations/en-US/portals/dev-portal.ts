@@ -305,6 +305,7 @@ export const devPortal: DevPortalNS = {
         claims: {
             dialects: {
                 advancedSearch: {
+                    error: "Filter query format incorrect",
                     form: {
                         inputs: {
                             filterAttribute: {
@@ -319,6 +320,26 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     placeholder: "Search by Dialect URI"
+                },
+                attributes: {
+                    dialectURI: "Dialect URI"
+                },
+                localDialect: "Local Dialect",
+                notifications: {
+                    fetchDialects: {
+                        genericError: {
+                            description: "There was an error while getting the dialects",
+                            message: "Something went wrong"
+                        }
+                    }
+                },
+                pageLayout: {
+                    list: {
+                        description: "Create and manage attribute dialects",
+                        primaryAction: "New External Dialect",
+                        title: "Attribute Dialects",
+                        view: "View local claims"
+                    }
                 }
             },
             external: {
