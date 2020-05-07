@@ -1400,6 +1400,39 @@ export const devPortal: DevPortalNS = {
                                 1: "Browser fingerprinting to determine the browser technology or/and version"
                             }
                         }
+                    }
+                },
+                placeholder: "Search by userstore name"
+            },
+            confirmation: {
+                confirm: "Confirm",
+                content: "If you delete this userstore, the user data in this userstore will also be deleted. "
+                    + "Please proceed with caution.",
+                header: "Are you sure?",
+                hint: "Please type {{name}} to confirm.",
+                message: "This action is irreversible and will permanently delete the"
+                    + " selected userstore and the data in it."
+            },
+            dangerZone: {
+                actionTitle: "Delete Userstore",
+                header: "Delete Userstore",
+                subheader: "Once you delete a userstore, there is no going back. "
+                    + "Please be certain."
+            },
+            forms: {
+                connection: {
+                    connectionErrorMessage: "Please ensure the provided connection "
+                        + "URL, name, password and driver name are correct",
+                    testButton: "Test Connection"
+                },
+                custom: {
+                    placeholder: "Enter a {{name}}",
+                    requiredErrorMessage: "{{name}} is required"
+                },
+                general: {
+                    description: {
+                        label: "Description",
+                        placeholder: "Enter a description"
                     },
                     connection: {
                         custom: {
@@ -1453,6 +1486,21 @@ export const devPortal: DevPortalNS = {
                             "for this is that this information can not be used to track you."
                     },
                     heading: "What is personal information?"
+                }
+            },
+            placeholders: {
+                emptyList: {
+                    action: "New Userstore",
+                    subtitles: "There are currently no userstores available."
+                        + "You can add a new userstore easily by following the"
+                        + "steps in the userstore creation wizard." + "Please try a different search term.",
+                    title: "Add a new Userstore"
+                },
+                emptySearch: {
+                    action: "Clear search query",
+                    subtitles: "We couldn't find any results for {{searchQuery}}. "
+                        + "Please try a different search term.",
+                    title: "No results found"
                 }
             },
             wizard: {

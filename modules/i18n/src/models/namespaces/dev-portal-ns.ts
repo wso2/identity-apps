@@ -1004,6 +1004,10 @@ export interface DevPortalNS {
                 };
                 header: string;
             };
+            placeholders: {
+                emptySearch: Placeholder;
+                emptyList: Placeholder;
+            };
         };
         roles: {
             advancedSearch: {
