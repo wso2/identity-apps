@@ -41,18 +41,20 @@ import { filterList, sortList } from "../utils";
  */
 export const LocalClaimsPage = (): ReactElement => {
 
+    const { t } = useTranslation();
+
     /**
      * Sets the attributes by which the list can be sorted
      */
     const SORT_BY = [
         {
             key: 0,
-            text: "Name",
+            text: t("common:name"),
             value: "displayName"
         },
         {
             key: 1,
-            text: "Attribute URI",
+            text: t("devPortal:components.dialects.local.attributes.attributeURI"),
             value: "claimURI"
         }
     ];
@@ -77,7 +79,6 @@ export const LocalClaimsPage = (): ReactElement => {
 
     const initialRender = useRef(true);
 
-    const { t } = useTranslation();
 
     /**
     * Fetches all the local claims.
@@ -101,9 +102,11 @@ export const LocalClaimsPage = (): ReactElement => {
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while fetching the local attribute",
+                    description: error?.description
+                        || t("devPortal:components.dialects.local.notifications.getClaims.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
+                    message: error?.message
+                        || t("devPortal:components.dialects.local.notifications.getClaims.genericError.message")
                 }
             ));
         }).finally(() => {
@@ -126,9 +129,11 @@ export const LocalClaimsPage = (): ReactElement => {
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while fetching the local dialect",
+                    description: error?.description
+                        || t("devPortal:components.dialects.local.notifications.getLocalDialect.genericError.message"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
+                    message: error?.message
+                        || t("devPortal:components.dialects.local.notifications.getLocalDialect.genericError.message")
                 }
             ));
         });
@@ -203,7 +208,7 @@ export const LocalClaimsPage = (): ReactElement => {
             dispatch(addAlert({
                 description: error?.message,
                 level: AlertLevels.ERROR,
-                message: "Filter query format incorrect"
+                message: t("devPortal:components.dialects.local.advancedSearch.error")
             }));
         }
     };
@@ -231,12 +236,12 @@ export const LocalClaimsPage = (): ReactElement => {
             }
             <PageLayout
                 isLoading={ isLoading }
-                title="Local Attributes"
-                description="Create and manage local attributes"
+                title={ t("devPortal:components.dialects.local.pageLayout.local.title") }
+                description={ t("devPortal:components.dialects.local.pageLayout.local.description") }
                 showBottomDivider={ true }
                 backButton={ {
                     onClick: () => { history.push(CLAIM_DIALECTS_PATH) },
-                    text: "Go back to attribute dialects"
+                    text: t("devPortal:components.dialects.local.pageLayout.local.back")
                 } }
             >
                 <ListLayout
@@ -252,7 +257,7 @@ export const LocalClaimsPage = (): ReactElement => {
                                 },
                                 {
                                     key: 1,
-                                    text: "Attribute URI",
+                                    text: t("devPortal:components.dialects.local.advancedSearch.error"),
                                     value: "claimURI"
                                 }
                             ] }
@@ -288,7 +293,8 @@ export const LocalClaimsPage = (): ReactElement => {
                                     setOpenModal(true);
                                 } }
                             >
-                                <Icon name="add"/>New Local Attribute
+                                <Icon name="add" />
+                                { t("devPortal:components.dialects.local.pageLayout.local.action") }
                             </PrimaryButton>
                         )
                     }

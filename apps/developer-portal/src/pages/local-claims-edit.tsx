@@ -86,7 +86,7 @@ export const LocalClaimsEditPage = (props): ReactElement => {
      */
     const panes = [
         {
-            menuItem: t("devPortal:component.dialects.local.pageLayout.tabs.general"),
+            menuItem: t("devPortal:component.dialects.local.pageLayout.edit.tabs.general"),
             render: () => (
                 <EditBasicDetailsLocalClaims
                     claim={ claim }
@@ -94,7 +94,7 @@ export const LocalClaimsEditPage = (props): ReactElement => {
             )
         },
         {
-            menuItem: t("devPortal:component.dialects.local.pageLayout.tabs.mappedAttributes"),
+            menuItem: t("devPortal:component.dialects.local.pageLayout.edit.tabs.mappedAttributes"),
             render: () => (
                 <EditMappedAttributesLocalClaims
                     claim={ claim }
@@ -103,7 +103,7 @@ export const LocalClaimsEditPage = (props): ReactElement => {
             )
         },
         {
-            menuItem: t("devPortal:component.dialects.local.pageLayout.tabs.additionalProperties"),
+            menuItem: t("devPortal:component.dialects.local.pageLayout.edit.tabs.additionalProperties"),
             render: () => (
                 <EditAdditionalPropertiesLocalClaims
                     claim={ claim }
@@ -141,12 +141,12 @@ export const LocalClaimsEditPage = (props): ReactElement => {
                 </Image>
             }
             title={ claim?.displayName }
-            description={ t("devPortal:component.dialects.local.pageLayout.description") }
+            description={ t("devPortal:component.dialects.local.pageLayout.edit.description") }
             backButton={ {
                 onClick: () => {
                     history.push(LOCAL_CLAIMS_PATH);
                 },
-                text: t("devPortal:component.dialects.local.pageLayout.back")
+                text: t("devPortal:component.dialects.local.pageLayout.edit.back")
             } }
             titleTextAlign="left"
             bottomMargin={ false }

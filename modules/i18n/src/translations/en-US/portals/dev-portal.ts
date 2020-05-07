@@ -403,6 +403,7 @@ export const devPortal: DevPortalNS = {
             },
             local: {
                 advancedSearch: {
+                    error: "Filter query format incorrect",
                     form: {
                         inputs: {
                             filterAttribute: {
@@ -418,21 +419,44 @@ export const devPortal: DevPortalNS = {
                     },
                     placeholder: "Search by name"
                 },
+                attributes: {
+                    attributeURI:"Attribute URI"
+                },
                 notifications: {
                     getAClaim: {
                         genericError: {
                             description: "There was an error while fetching the local claim",
                             message: "Something went wrong"
                         }
+                    },
+                    getClaims: {
+                        genericError: {
+                            description: "There was an error while fetching the local attribute",
+                            message: "Something went wrong"
+                        }
+                    },
+                    getLocalDialect: {
+                        genericError: {
+                            description: "There was an error while fetching the local dialect",
+                            message:"Something went wrong"
+                        }
                     }
                 },
                 pageLayout: {
-                    back: "Go back to Local Attributes",
-                    description: "Edit local attribute",
-                    tabs: {
-                        additionalProperties: "Additional Properties",
-                        general: "General",
-                        mappedAttributes: "Mapped Attributes"
+                    edit: {
+                        back: "Go back to Local Attributes",
+                        description: "Edit local attribute",
+                        tabs: {
+                            additionalProperties: "Additional Properties",
+                            general: "General",
+                            mappedAttributes: "Mapped Attributes"
+                        }
+                    },
+                    local: {
+                        action: "New Local Attribute",
+                        back: "Go back to attribute dialects",
+                        description: "Create and manage local attributes",
+                        title: "Local Attributes"
                     }
                 }
             }

@@ -261,19 +261,33 @@ export interface DevPortalNS {
                             };
                         };
                     };
+                    error: string;
                     placeholder: string;
+                };
+                attributes: {
+                    attributeURI: string;
                 };
                 notifications: {
                     getAClaim: Notification;
+                    getClaims: Notification;
+                    getLocalDialect: Notification;
                 };
                 pageLayout: {
-                    tabs: {
-                        general: string;
-                        additionalProperties: string;
-                        mappedAttributes: string;        
+                    edit: {
+                        tabs: {
+                            general: string;
+                            additionalProperties: string;
+                            mappedAttributes: string;
+                        };
+                        description: string;
+                        back: string;
                     };
-                    description: string;
-                    back: string;
+                    local: {
+                        description: string;
+                        title: string;
+                        back: string;
+                        action: string;
+                    };
                 };
             };
         };
