@@ -263,6 +263,18 @@ export interface DevPortalNS {
                     };
                     placeholder: string;
                 };
+                notifications: {
+                    getAClaim: Notification;
+                };
+                pageLayout: {
+                    tabs: {
+                        general: string;
+                        additionalProperties: string;
+                        mappedAttributes: string;        
+                    };
+                    description: string;
+                    back: string;
+                };
             };
         };
         emailTemplateTypes: {

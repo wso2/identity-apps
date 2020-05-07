@@ -417,6 +417,23 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     placeholder: "Search by name"
+                },
+                notifications: {
+                    getAClaim: {
+                        genericError: {
+                            description: "There was an error while fetching the local claim",
+                            message: "Something went wrong"
+                        }
+                    }
+                },
+                pageLayout: {
+                    back: "Go back to Local Attributes",
+                    description: "Edit local attribute",
+                    tabs: {
+                        additionalProperties: "Additional Properties",
+                        general: "General",
+                        mappedAttributes: "Mapped Attributes"
+                    }
                 }
             }
         },
