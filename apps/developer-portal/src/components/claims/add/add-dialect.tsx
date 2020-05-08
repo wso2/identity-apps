@@ -153,7 +153,7 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: t("devPortal:components.claims.dialects.wizard.steps.externalAttributes")
+            title: t("devPortal:components.claims.dialects.wizard.steps.externalAttribute")
         },
         {
             content: (

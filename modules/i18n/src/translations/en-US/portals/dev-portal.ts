@@ -337,6 +337,14 @@ export const devPortal: DevPortalNS = {
                     header: "Delete External Dialect",
                     subheader: "Once you delete an external dialect, there is no going back. " + "Please be certain."
                 },
+                forms: {
+                    dialectURI:{
+                        label: "Dialect URI",
+                        placeholder: "Enter a dialect URI",
+                        requiredErrorMessage:"Enter a dialect URI"
+                    },
+                    submit:"Update"
+                },
                 localDialect: "Local Dialect",
                 notifications: {
                     addDialect: {
@@ -380,6 +388,16 @@ export const devPortal: DevPortalNS = {
                         genericError: {
                             description: "There was an error while fetching the external attributes",
                             message: "Something went wrong"
+                        }
+                    },
+                    updateDialect:{
+                        genericError: {
+                            description:"An error occurred while updating the dialect",
+                            message:"Something went wrong"
+                      },
+                        success:{
+                            description:"The dialect has been successfully updated.",
+                            message:"Dialect update successful"
                         }
                     }
                 },
@@ -471,6 +489,16 @@ export const devPortal: DevPortalNS = {
                     attributeURI:"Attribute URI"
                 },
                 notifications: {
+                    addLocalClaim: {
+                        genericError: {
+                            description: "There was an error while adding the local attribute",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                           description:"The local attribute has been added successfully!",
+                           message:"Local attribute added successfully"
+                       }
+                    },
                     getAClaim: {
                         genericError: {
                             description: "There was an error while fetching the local attribute",
@@ -505,6 +533,14 @@ export const devPortal: DevPortalNS = {
                         back: "Go back to attribute dialects",
                         description: "Create and manage local attributes",
                         title: "Local Attributes"
+                    }
+                },
+                wizard: {
+                    header: "Add Local Attribute",
+                    steps: {
+                        general: "General",
+                        mapAttributes: "Map Attributes",
+                        summary: "Summary"
                     }
                 }
             }

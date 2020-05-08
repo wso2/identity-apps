@@ -204,6 +204,7 @@ export interface DevPortalNS {
                     fetchExternalClaims: Notification;
                     deleteDialect: Notification;
                     addDialect: Notification;
+                    updateDialect: Notification;
                 };
                 localDialect: string;
                 pageLayout: {
@@ -235,6 +236,10 @@ export interface DevPortalNS {
                         summary: string;
                     };
                     header: string;
+                };
+                forms: {
+                    dialectURI: FormField;
+                    submit: string;
                 };
             };
             external: {
@@ -288,6 +293,7 @@ export interface DevPortalNS {
                     getAClaim: Notification;
                     getClaims: Notification;
                     getLocalDialect: Notification;
+                    addLocalClaim: Notification;
                 };
                 pageLayout: {
                     edit: {
@@ -305,6 +311,14 @@ export interface DevPortalNS {
                         back: string;
                         action: string;
                     };
+                };
+                wizard: {
+                    steps: {
+                        general: string;
+                        mapAttributes: string;
+                        summary: string;
+                    };
+                    header: string;
                 };
             };
         };
