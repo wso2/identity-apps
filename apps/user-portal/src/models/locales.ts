@@ -388,6 +388,36 @@ export interface Views {
                     updateMobile: Notification;
                 };
             };
+            biometricAuthentication: {
+                description: string;
+                heading: string;
+                modals: {
+                    deviceRegistrationErrorModal: {
+                        description: string;
+                        heading: string;
+                    };
+                    scan: {
+                        heading: string;
+                        generate: string;
+                        messageHeading: string;
+                        messageBody: string;
+                        authenticatorApps: string;
+                    };
+                    done: string;
+                };
+                notifications: {
+                    removeDevice: Notification;
+                    getDiscoveryData: Notification;
+                    updateDeviceName: Notification;
+                };
+                tryButton: string;
+                form: {
+                    label: string;
+                    placeholder: string;
+                    remove: string;
+                    required: string;
+                };
+            };
             authenticatorApp: {
                 description: string;
                 heading: string;

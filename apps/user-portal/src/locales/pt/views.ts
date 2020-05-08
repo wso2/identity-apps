@@ -590,6 +590,75 @@ export const views: Views = {
                     }
                 }
             },
+            biometricAuthentication: {
+                description: "Biometric Authentication using the WSO2 Verify Mobile App",
+                form: {
+                    label: "Biometric Authentication Device",
+                    placeholder: "Enter a device name",
+                    remove: "Remove the device",
+                    required: "Please enter a name for your mobile device"
+                },
+                heading: "via Mobile Device",
+                modals: {
+                    deviceRegistrationErrorModal: {
+                        description: "The device registration was interrupted. If this was not intentional you may " + "retry the same flow.",
+                        heading: "Device Registration Failed"
+                    },
+                    done: "Sucesso! Agora você pode usar seu aplicativo de autenticação para autenticação de dois fatores",
+                    scan: {
+                        authenticatorApps: "Authenticator Apps",
+                        generate: "Gere um novo código",
+                        heading: "Leia este QR Code usando um aplicativo Authenticator",
+                        messageBody: "Você pode encontrar uma lista de aplicativos autenticadores disponíveis aqui.",
+                        messageHeading: "Não tem um aplicativo autenticador instalado?"
+                    }
+                },
+                notifications: {
+                    removeDevice: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while removing the device"
+                        },
+                        genericError: {
+                            description: "Error occurred while removing the device",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The device was successfully removed from the list",
+                            message: "Your Device Removed Successfully"
+                        }
+                    },
+                    getDiscoveryData: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while retrieving generating the QR Code"
+                        },
+                        genericError: {
+                            description: "Error occurred while generating QR Code",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The device was successfully registered and now you can use it as an" + " authentication factor",
+                            message: "Your Device Registered Successfully"
+                        }
+                    },
+                    updateDeviceName: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while updating the mobile device name"
+                        },
+                        genericError: {
+                            description: "Error occurred while updating the mobile device name",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The name of your mobile device was successfully updated",
+                            message: "Mobile Device name updated successfully"
+                        }
+                    }
+                },
+                tryButton: "Try again"
+            },
             fido: {
                 description: "Autentique-se conectando uma chave FIDO",
                 form: {

@@ -19,12 +19,20 @@
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { List } from "semantic-ui-react";
-import { AUTHENTICATOR_APP, FIDO, MULTI_FACTOR_AUTHENTICATION, SECURITY, SMS } from "../../constants";
+import {
+    AUTHENTICATOR_APP,
+    BIOMETRIC_AUTHENTICATION,
+    FIDO,
+    MULTI_FACTOR_AUTHENTICATION,
+    SECURITY,
+    SMS
+} from "../../constants";
 import { AppConfig } from "../../helpers";
 import { AlertInterface } from "../../models";
 import { checkEnabled } from "../../utils";
 import { SettingsSection } from "../shared";
 import { FIDOAuthenticator, SMSOTPAuthenticator, TOTPAuthenticator } from "./authenticators";
+import {BiometricAuthenticator} from "./authenticators/biometric-authenticator";
 
 /**
  * Prop types for the basic details component.
@@ -64,6 +72,15 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                         checkEnabled(multiFactorConfig, AUTHENTICATOR_APP)
                             ? (
                                 <TOTPAuthenticator onAlertFired={ onAlertFired } />
+                            )
+                            : null
+                    }
+                </List.Item>
+                <List.Item className="inner-list-item">
+                    {
+                        checkEnabled(multiFactorConfig, BIOMETRIC_AUTHENTICATION)
+                            ? (
+                                <BiometricAuthenticator onAlertFired={ onAlertFired } />
                             )
                             : null
                     }

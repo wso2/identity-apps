@@ -22,6 +22,8 @@ interface ServiceResourcesType {
     applications: string;
     associations: string;
     authorize: string;
+    biometricDeviceManagement: string;
+    biometricDiscoveryData: string;
     challenges: string;
     challengeAnswers: string;
     consents: string;
@@ -50,6 +52,8 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     applications: `${GlobalConfig.serverHost}/api/users/v1/me/applications`,
     associations: `${GlobalConfig.serverHost}/api/users/v1/me/associations`,
     authorize: `${GlobalConfig.serverHost}/oauth2/authorize`,
+    biometricDeviceManagement: `${GlobalConfig.serverHost}/api/users/v1/me/biometricdevice`,
+    biometricDiscoveryData: `${GlobalConfig.serverHost}/api/users/v1/me/biometricdevice/discovery-data`,
     challengeAnswers: `${GlobalConfig.serverHost}/api/users/v1/me/challenge-answers`,
     challenges: `${GlobalConfig.serverHost}/api/users/v1/me/challenges`,
     consents: `${GlobalConfig.serverHost}/api/identity/consent-mgt/v1.0/consents`,

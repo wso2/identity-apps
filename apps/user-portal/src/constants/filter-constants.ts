@@ -137,6 +137,14 @@ export const FIDO = "fido";
 export const AUTHENTICATOR_APP = "authenticatorApp";
 
 /**
+* Biometric Authentication.
+* @constant
+* @type {string}
+* @default
+*/
+export const BIOMETRIC_AUTHENTICATION = "biometricAuthentication";
+
+/**
  * ACtive Sessions key.
  * @constant
  * @type {string}

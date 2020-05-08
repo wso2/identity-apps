@@ -592,6 +592,75 @@ export const views: Views = {
                     }
                 }
             },
+            biometricAuthentication: {
+                description: "Biometric Authentication using the WSO2 Verify Mobile App",
+                form: {
+                    label: "Biometric Authentication Device",
+                    placeholder: "Enter a device name",
+                    remove: "Remove the device",
+                    required: "Please enter a name for your mobile device"
+                },
+                heading: "via Mobile Device",
+                modals: {
+                    deviceRegistrationErrorModal: {
+                        description: "The device registration was interrupted. If this was not intentional you may " + "retry the same flow.",
+                        heading: "Device Registration Failed"
+                    },
+                    done: "வெற்றி! இப்போது இரண்டு காரணி உறுதிப்பாட்டிற்கு உங்கள் உறுதிப்பாட்டு செயலியை பயன்படுத்தலாம்",
+                    scan: {
+                        authenticatorApps: "உறுதிப்பாட்டு செயலிகள்",
+                        generate: "புதிய குறியீட்டை உருவாக்கவும்",
+                        heading: "ஒரு உறுதிப்பாட்டு செயலியை பயன்படுத்தி இந்த QR குறியீட்டை பதிவு செய்யுங்கள்",
+                        messageBody: "உறுதிப்பாட்டு செயலிகளின் பட்டியலை இங்கே காணலாம்.",
+                        messageHeading: "உங்களிடம் உறுதிப்பாட்டு செயலி இல்லையா?"
+                    }
+                },
+                notifications: {
+                    removeDevice: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while removing the device"
+                        },
+                        genericError: {
+                            description: "Error occurred while removing the device",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The device was successfully removed from the list",
+                            message: "Your Device Removed Successfully"
+                        }
+                    },
+                    getDiscoveryData: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while retrieving generating the QR Code"
+                        },
+                        genericError: {
+                            description: "Error occurred while generating QR Code",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The device was successfully registered and now you can use it as an" + " authentication factor",
+                            message: "Your Device Registered Successfully"
+                        }
+                    },
+                    updateDeviceName: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while updating the mobile device name"
+                        },
+                        genericError: {
+                            description: "Error occurred while updating the mobile device name",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The name of your mobile device was successfully updated",
+                            message: "Mobile Device name updated successfully"
+                        }
+                    }
+                },
+                tryButton: "Try again"
+            },
             fido: {
                 description: "FIDO கருவியினை இணைப்பதானூடாக உங்களை உறுதிப்படுத்திக் கொள்ளுங்கள்",
                 form: {
