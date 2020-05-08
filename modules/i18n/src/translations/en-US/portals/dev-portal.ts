@@ -439,7 +439,18 @@ export const devPortal: DevPortalNS = {
                             }
                         }
                     },
+                    error: "Filter query format incorrect",
                     placeholder: "Search by Attribute URI"
+                },
+                attributes: {
+                    attributeURI: "Attribute URI",
+                    mappedClaim:"Mapped Local Attribute URI"
+                },
+                pageLayout: {
+                    edit: {
+                        header: "Add External Attribute",
+                        primaryAction: "New External Attribute"
+                    }
                 },
                 forms: {
                     attributeURI: {
@@ -463,6 +474,22 @@ export const devPortal: DevPortalNS = {
                         success: {
                             description: "The external attribute has been added to the dialect successfully!",
                             message: "External attribute added successfully"
+                        }
+                    },
+                    getExternalAttribute: {
+                        genericError:{
+                            description: "There was an error while fetching the external attribute",
+                            message: "Something went wrong"
+                        }
+                    },
+                    updateExternalAttribute:{
+                        genericError: {
+                            description: "There was an error while updating the" + " external attribute",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The external attribute has been updated successfully!",
+                            message: "External attribute updated successfully"
                         }
                     }
                 }

@@ -257,15 +257,28 @@ export interface DevPortalNS {
                             };
                         };
                     };
+                    error: string;
                     placeholder: string;
+                };
+                attributes: {
+                    attributeURI: string;
+                    mappedClaim: string;
                 };
                 notifications: {
                     addExternalAttribute: Notification;
+                    getExternalAttribute: Notification;
+                    updateExternalAttribute: Notification;
                 };
                 forms: {
                     attributeURI: FormField;
                     localAttribute: FormField;
                     submit: string;
+                };
+                pageLayout: {
+                    edit: {
+                        header: string;
+                        primaryAction: string;
+                    };
                 };
             };
             local: {
