@@ -426,6 +426,7 @@ export const devPortal: DevPortalNS = {
             },
             external:{
                 advancedSearch: {
+                    error: "Filter query format incorrect",
                     form: {
                         inputs: {
                             filterAttribute: {
@@ -439,18 +440,11 @@ export const devPortal: DevPortalNS = {
                             }
                         }
                     },
-                    error: "Filter query format incorrect",
                     placeholder: "Search by Attribute URI"
                 },
                 attributes: {
                     attributeURI: "Attribute URI",
-                    mappedClaim:"Mapped Local Attribute URI"
-                },
-                pageLayout: {
-                    edit: {
-                        header: "Add External Attribute",
-                        primaryAction: "New External Attribute"
-                    }
+                    mappedClaim: "Mapped Local Attribute URI"
                 },
                 forms: {
                     attributeURI: {
@@ -477,12 +471,12 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     getExternalAttribute: {
-                        genericError:{
+                        genericError: {
                             description: "There was an error while fetching the external attribute",
                             message: "Something went wrong"
                         }
                     },
-                    updateExternalAttribute:{
+                    updateExternalAttribute: {
                         genericError: {
                             description: "There was an error while updating the" + " external attribute",
                             message: "Something went wrong"
@@ -492,9 +486,22 @@ export const devPortal: DevPortalNS = {
                             message: "External attribute updated successfully"
                         }
                     }
+                },
+                pageLayout: {
+                    edit: {
+                        header: "Add External Attribute",
+                        primaryAction: "New External Attribute"
+                    }
                 }
             },
             local: {
+                additionalProperties: {
+                    hint: "Use when writing an extension using current attributes",
+                    key: "Name",
+                    keyRequiredErrorMessage: "Enter a name",
+                    value: "Value",
+                    valueRequiredErrorMessage: "Enter a value"
+                },
                 advancedSearch: {
                     error: "Filter query format incorrect",
                     form: {
@@ -513,7 +520,7 @@ export const devPortal: DevPortalNS = {
                     placeholder: "Search by name"
                 },
                 attributes: {
-                    attributeURI:"Attribute URI"
+                    attributeURI: "Attribute URI"
                 },
                 notifications: {
                     addLocalClaim: {
@@ -522,9 +529,9 @@ export const devPortal: DevPortalNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                           description:"The local attribute has been added successfully!",
-                           message:"Local attribute added successfully"
-                       }
+                            description: "The local attribute has been added successfully!",
+                            message: "Local attribute added successfully"
+                        }
                     },
                     getAClaim: {
                         genericError: {
@@ -541,7 +548,19 @@ export const devPortal: DevPortalNS = {
                     getLocalDialect: {
                         genericError: {
                             description: "There was an error while fetching the local dialect",
-                            message:"Something went wrong"
+                            message: "Something went wrong"
+                        }
+                    },
+                    updateClaim: {
+                        genericError: {
+                            description: "There was an error while updating the"
+                                + " local attribute",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Additional Properties of this local attribute have been "
+                                + "updated successfully!",
+                            message: "Additional Properties updated successfully"
                         }
                     }
                 },

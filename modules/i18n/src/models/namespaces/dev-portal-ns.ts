@@ -307,6 +307,7 @@ export interface DevPortalNS {
                     getClaims: Notification;
                     getLocalDialect: Notification;
                     addLocalClaim: Notification;
+                    updateClaim: Notification;
                 };
                 pageLayout: {
                     edit: {
@@ -332,6 +333,13 @@ export interface DevPortalNS {
                         summary: string;
                     };
                     header: string;
+                };
+                additionalProperties: {
+                    hint: string;
+                    key: string;
+                    value: string;
+                    keyRequiredErrorMessage: string;
+                    valueRequiredErrorMessage: string;
                 };
             };
         };
