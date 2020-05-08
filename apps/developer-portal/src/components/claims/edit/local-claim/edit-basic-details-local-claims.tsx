@@ -20,6 +20,7 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ConfirmationModal, CopyInputField, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Form, Grid, Popup } from "semantic-ui-react";
 import { deleteAClaim, updateAClaim } from "../../../../api";
@@ -65,9 +66,10 @@ export const EditBasicDetailsLocalClaims = (
     const displayOrderField = useRef<HTMLElement>(null);
 
     const nameTimer = useRef(null);
-    const claimTimer = useRef(null);
     const regExTimer = useRef(null);
     const displayTimer = useRef(null);
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (claim?.supportedByDefault) {
@@ -81,20 +83,26 @@ export const EditBasicDetailsLocalClaims = (
             type="warning"
             open={ confirmDelete }
             assertion={ claim.displayName }
-            assertionHint={ <p>Please type <strong>{ claim.displayName }</strong> to confirm.</p> }
+            assertionHint={
+                t("devPortal:components.claims.local.confirmation.hint",
+                    {
+                        name: <strong> { claim.displayName }</ strong>
+                    })
+            }
             assertionType="input"
-            primaryAction="Confirm"
-            secondaryAction="Cancel"
+            primaryAction={ t("devPortal:components.claims.local.confirmation.primaryAction") }
+            secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
             onPrimaryActionClick={ (): void => deleteLocalClaim(claim.id) }
         >
-            <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+            <ConfirmationModal.Header>
+                { t("devPortal:components.claims.local.confirmation.header") }
+            </ConfirmationModal.Header>
             <ConfirmationModal.Message attached warning>
-                This action is irreversible and will permanently delete the selected local attribute.
-                        </ConfirmationModal.Message>
+                { t("devPortal:components.claims.local.confirmation.message") }
+            </ConfirmationModal.Message>
             <ConfirmationModal.Content>
-                If you delete this local attribute, the user data belonging to this attribute will also be deleted.
-                Please proceed with caution.
+                { t("devPortal:components.claims.local.confirmation.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
@@ -108,17 +116,19 @@ export const EditBasicDetailsLocalClaims = (
             history.push(LOCAL_CLAIMS_PATH);
             dispatch(addAlert(
                 {
-                    description: "The local claim has been deleted successfully!",
+                    description: t("devPortal:components.claims.local.notifications.deleteClaim.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Local attribute deleted successfully"
+                    message: t("devPortal:components.claims.local.notifications.deleteClaim.success.message")
                 }
             ));
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while deleting the local attribute",
+                    description: error?.description
+                        || t("devPortal:components.claims.local.notifications.deleteClaim.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
+                    message: error?.message
+                        || t("devPortal:components.claims.local.notifications.deleteClaim.genericError.message")
                 }
             ));
         })
@@ -159,7 +169,7 @@ export const EditBasicDetailsLocalClaims = (
                     <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                         <Form>
                             <Form.Field>
-                                <label>Attribute URI</label>
+                                <label>{ t("devPortal:components.claims.local.attributes.attributeURI") }</label>
                                 <CopyInputField value={ claim ? claim.claimURI : "" } />
                             </Form.Field>
                         </Form>
@@ -185,19 +195,24 @@ export const EditBasicDetailsLocalClaims = (
                     updateAClaim(claim.id, data).then(() => {
                         dispatch(addAlert(
                             {
-                                description: "The basic details of the local attribute have been updated successfully!",
+                                description: t("devPortal:components.claims.local.notifications." +
+                                    "updateClaim.success.description"),
                                 level: AlertLevels.SUCCESS,
-                                message: "Basic details updated successfully"
+                                message: t("devPortal:components.claims.local.notifications." +
+                                    "updateClaim.success.message")
                             }
                         ));
                         update();
                     }).catch(error => {
                         dispatch(addAlert(
                             {
-                                description: error?.description || "There was an error while updating the " +
-                                    "local attribute",
+                                description: error?.description
+                                    || t("devPortal:components.claims.local.notifications.updateClaim." +
+                                        "genericError.description"),
                                 level: AlertLevels.ERROR,
-                                message: error?.message || "Something went wrong"
+                                message: error?.message
+                                    || t("devPortal:components.claims.local.notifications." +
+                                        "updateClaim.genericError.description")
                             }
                         ));
                     })
@@ -215,16 +230,16 @@ export const EditBasicDetailsLocalClaims = (
                                 } }
                                 type="text"
                                 name="name"
-                                label="Name"
+                                label={ t("devPortal:components.claims.local.forms.name.label") }
                                 required={ true }
-                                requiredErrorMessage="Name is required"
-                                placeholder="Enter a name for the attribute"
+                                requiredErrorMessage={ t("devPortal:components.claims.local.forms." +
+                                    "name.requiredErrorMessage") }
+                                placeholder={ t("devPortal:components.claims.local.forms.name.placeholder") }
                                 value={ claim?.displayName }
                                 ref={ nameField }
                             />
                             <Popup
-                                content={ "Name of the attribute that will be shown on the user profile " +
-                                    "and user registration page" }
+                                content= { t ("devPortal:components.claims.local.forms.nameHint") }
                                 inverted
                                 open={ isShowNameHint }
                                 trigger={ <span></span> }
@@ -238,20 +253,21 @@ export const EditBasicDetailsLocalClaims = (
                             <Field
                                 type="textarea"
                                 name="description"
-                                label="Description"
+                                label={ t("devPortal:components.claims.local.forms.description.label") }
                                 required={ true }
-                                requiredErrorMessage="Description is required"
-                                placeholder="Enter a description"
+                                requiredErrorMessage={ t("devPortal:components.claims.local.forms.description." +
+                                    "requiredErrorMessage") }
+                                placeholder={ t("devPortal:components.claims.local.forms.description.placeholder") }
                                 value={ claim?.description }
                             />
                             <Divider hidden />
                             <Field
                                 type="text"
                                 name="regularExpression"
-                                label="Regular expression"
+                                label={ t("devPortal:components.claims.local.forms.regEx.label") }
                                 required={ false }
                                 requiredErrorMessage=""
-                                placeholder="Enter a regular expression"
+                                placeholder={ t("devPortal:components.claims.local.forms.regEx.placeholder") }
                                 value={ claim?.regEx }
                                 onMouseOver={ () => {
                                     delayPopup(setIsShowRegExHint, regExTimer);
@@ -262,7 +278,7 @@ export const EditBasicDetailsLocalClaims = (
                                 ref={ regExField }
                             />
                             <Popup
-                                content="This regular expression is used to validate the value this attribute can take"
+                                content={ t("devPortal:components.claims.local.forms.description.regExHint") }
                                 inverted
                                 open={ isShowRegExHint }
                                 trigger={ <span></span> }
@@ -279,7 +295,7 @@ export const EditBasicDetailsLocalClaims = (
                                 required={ false }
                                 requiredErrorMessage=""
                                 children={ [ {
-                                    label: "Show this attribute on user profile and user registration page",
+                                    label:  t("devPortal:components.claims.local.forms.supportedByDefault.label"),
                                     value: "Support"
                                 } ] }
                                 value={ claim?.supportedByDefault ? [ "Support" ] : [] }
@@ -295,10 +311,11 @@ export const EditBasicDetailsLocalClaims = (
                                             type="number"
                                             min="0"
                                             name="displayOrder"
-                                            label="Display Order"
+                                            label={ t("devPortal:components.claims.local.forms.displayOrder.label") }
                                             required={ false }
                                             requiredErrorMessage=""
-                                            placeholder="Enter the display order"
+                                            placeholder={ t("devPortal:components.claims.local.forms." +
+                                                "displayOrder.placeholder") }
                                             value={ claim?.displayOrder.toString() }
                                             onMouseOver={ () => {
                                                 delayPopup(setIsShowDisplayOrderHint, displayTimer);
@@ -309,8 +326,7 @@ export const EditBasicDetailsLocalClaims = (
                                             ref={ displayOrderField }
                                         />
                                         <Popup
-                                            content={ "This determines the position at which this attribute is " +
-                                                "displayed in the user profile and the user registration page" }
+                                            content={ t("devPortal:components.claims.local.forms.displayOrderHint") }
                                             inverted
                                             open={ isShowDisplayOrderHint }
                                             trigger={ <span></span> }
@@ -330,7 +346,7 @@ export const EditBasicDetailsLocalClaims = (
                                 required={ false }
                                 requiredErrorMessage=""
                                 children={ [ {
-                                    label: "Make this attribute required during user registration",
+                                    label:  t ("devPortal:components.claims.local.forms.required.label")  ,
                                     value: "Required"
                                 } ] }
                                 value={ claim?.required ? [ "Required" ] : [] }
@@ -342,7 +358,7 @@ export const EditBasicDetailsLocalClaims = (
                                 required={ false }
                                 requiredErrorMessage=""
                                 children={ [ {
-                                    label: "Make this attribute read-only",
+                                    label: t ("devPortal:components.claims.local.forms.readOnly.label") ,
                                     value: "ReadOnly"
                                 } ] }
                                 value={ claim?.readOnly ? [ "ReadOnly" ] : [] }
@@ -353,7 +369,7 @@ export const EditBasicDetailsLocalClaims = (
                         <Grid.Column width={ 6 }>
                             <Field
                                 type="submit"
-                                value="Update"
+                                value={ t("common:update") }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -361,12 +377,11 @@ export const EditBasicDetailsLocalClaims = (
             </Forms>
             <Grid columns={ 1 }>
                 <Grid.Column width={ 16 }>
-                    <DangerZoneGroup sectionHeader="Danger Zone">
+                    <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
                         <DangerZone
-                            actionTitle="Delete Local Attribute"
-                            header="Delete Local Attribute"
-                            subheader={ "Once you delete a local attribute, there is no going back. " +
-                                "Please be certain." }
+                            actionTitle={ t("devPortal:components.claims.local.dangerZone.actionTitle") }
+                            header={ t("devPortal:components.claims.local.dangerZone.header") }
+                            subheader={ t("devPortal:components.claims.local.dangerZone.subheader") }
                             onActionClick={ () => setConfirmDelete(true) }
                         />
                     </DangerZoneGroup>

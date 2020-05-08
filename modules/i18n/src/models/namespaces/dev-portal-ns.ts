@@ -308,6 +308,7 @@ export interface DevPortalNS {
                     getLocalDialect: Notification;
                     addLocalClaim: Notification;
                     updateClaim: Notification;
+                    deleteClaim: Notification;
                 };
                 pageLayout: {
                     edit: {
@@ -341,6 +342,26 @@ export interface DevPortalNS {
                     keyRequiredErrorMessage: string;
                     valueRequiredErrorMessage: string;
                 };
+                confirmation: {
+                    hint: string;
+                    primaryAction: string;
+                    header: string;
+                    message: string;
+                    content: string;
+                };
+                forms: {
+                    name: FormField;
+                    nameHint: string;
+                    description: FormField;
+                    regEx: FormField;
+                    regExHint: string;
+                    supportedByDefault: FormField;
+                    displayOrder: FormField;
+                    displayOrderHint: string;
+                    required: FormField;
+                    readOnly: FormField;
+                };
+                dangerZone: DangerZone;
             };
         };
         emailTemplateTypes: {

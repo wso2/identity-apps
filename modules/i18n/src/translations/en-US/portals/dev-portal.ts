@@ -522,6 +522,53 @@ export const devPortal: DevPortalNS = {
                 attributes: {
                     attributeURI: "Attribute URI"
                 },
+                confirmation: {
+                    content: "If you delete this local attribute, the user data belonging to this attribute "
+                        + "will also be deleted. Please proceed with caution.",
+                    header: "Are you sure?",
+                    hint: "Please type {{name}} to confirm.",
+                    message: "This action is irreversible and will permanently delete the selected local attribute.",
+                    primaryAction: "Confirm"
+                },
+                dangerZone: {
+                    actionTitle: "Delete Local Attribute",
+                    header: "Delete Local Attribute",
+                    subheader: "Once you delete a local attribute, there is no going back. " + "Please be certain."
+                },
+                forms: {
+                    description: {
+                        label: "Description",
+                        placeholder: "Enter a description",
+                        requiredErrorMessage: "Description is required"
+                    },
+                    displayOrder: {
+                        label: "Display Order",
+                        placeholder: "Enter the display order"
+                    },
+                    displayOrderHint: "This determines the position at which this attribute is "
+                        + "displayed in the user profile and the user registration page",
+                    name: {
+                        label: "Name",
+                        placeholder: "Enter a name for the attribute",
+                        requiredErrorMessage: "Name is required"
+                    },
+                    nameHint: "Name of the attribute that will be shown on the user profile "
+                        + "and user registration page",
+                    readOnly: {
+                        label: "Make this attribute read-only"
+                    },
+                    regEx: {
+                        label: "Regular expression",
+                        placeholder: "Enter a regular expression"
+                    },
+                    regExHint: "This regular expression is used to validate the value this attribute can take",
+                    required: {
+                        label: "Make this attribute required during user registration"
+                    },
+                    supportedByDefault: {
+                        label: "Show this attribute on user profile and user registration page"
+                    }
+                },
                 notifications: {
                     addLocalClaim: {
                         genericError: {
@@ -531,6 +578,16 @@ export const devPortal: DevPortalNS = {
                         success: {
                             description: "The local attribute has been added successfully!",
                             message: "Local attribute added successfully"
+                        }
+                    },
+                    deleteClaim: {
+                        genericError: {
+                            description: "There was an error while deleting the local attribute",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The local claim has been deleted successfully!",
+                            message: "Local attribute deleted successfully"
                         }
                     },
                     getAClaim: {
@@ -553,8 +610,7 @@ export const devPortal: DevPortalNS = {
                     },
                     updateClaim: {
                         genericError: {
-                            description: "There was an error while updating the"
-                                + " local attribute",
+                            description: "There was an error while updating the" + " local attribute",
                             message: "Something went wrong"
                         },
                         success: {
