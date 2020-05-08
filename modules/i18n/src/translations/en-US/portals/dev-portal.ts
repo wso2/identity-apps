@@ -536,6 +536,10 @@ export const devPortal: DevPortalNS = {
                     subheader: "Once you delete a local attribute, there is no going back. " + "Please be certain."
                 },
                 forms: {
+                    attribute: {
+                        placeholder: "Enter an attribute to map to",
+                        requiredErrorMessage:"Attribute name is a required field"
+                    },
                     description: {
                         label: "Description",
                         placeholder: "Enter a description",
@@ -568,6 +572,9 @@ export const devPortal: DevPortalNS = {
                     supportedByDefault: {
                         label: "Show this attribute on user profile and user registration page"
                     }
+                },
+                mappedAttributes: {
+                    hint:"Enter the attribute from each userstore that you want to map to this attribute."
                 },
                 notifications: {
                     addLocalClaim: {
@@ -614,9 +621,9 @@ export const devPortal: DevPortalNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Additional Properties of this local attribute have been "
+                            description: "This local attribute has been "
                                 + "updated successfully!",
-                            message: "Additional Properties updated successfully"
+                            message: "Local attribute updated successfully"
                         }
                     }
                 },

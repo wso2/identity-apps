@@ -360,8 +360,12 @@ export interface DevPortalNS {
                     displayOrderHint: string;
                     required: FormField;
                     readOnly: FormField;
+                    attribute: FormField;
                 };
                 dangerZone: DangerZone;
+                mappedAttributes: {
+                    hint: string;
+                };
             };
         };
         emailTemplateTypes: {

@@ -20,6 +20,7 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { getUserStoreList, updateAClaim } from "../../../../api";
@@ -56,6 +57,8 @@ export const EditMappedAttributesLocalClaims = (
     const dispatch = useDispatch();
     const [ submit, setSubmit ] = useTrigger();
 
+    const { t } = useTranslation();
+
     useEffect(() => {
         const userstore = [];
 
@@ -77,7 +80,7 @@ export const EditMappedAttributesLocalClaims = (
             <Grid.Row columns={ 1 }>
                 <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                     <p>
-                        Enter the attribute from each userstore that you want to map to this attribute.
+                        {t("devPortal:components.claims.local.mappedAttributes.hint")}
                     </p>
                     <Divider hidden />
                     <Forms
@@ -99,20 +102,24 @@ export const EditMappedAttributesLocalClaims = (
                             updateAClaim(claim.id, submitData).then(() => {
                                 dispatch(addAlert(
                                     {
-                                        description: "The Attributes Mapping of this local attribute has been" +
-                                            " updated successfully!",
+                                        description: t("devPortal:components.claims.local.notifications." +
+                                            "updateClaim.success.description"),
                                         level: AlertLevels.SUCCESS,
-                                        message: "Attributes Mapping updated successfully"
+                                        message: t("devPortal:components.claims.local.notifications." +
+                                            "updateClaim.success.message")
                                     }
                                 ));
                                 update();
                             }).catch(error => {
                                 dispatch(addAlert(
                                     {
-                                        description: error?.description || "There was an error while updating" +
-                                            " the local attribute",
+                                        description: error?.description
+                                            || t("devPortal:components.claims.local.notifications." +
+                                                "updateClaim.genericError.description"),
                                         level: AlertLevels.ERROR,
-                                        message: error?.message || "Something went wrong"
+                                        message: error?.message
+                                            || t("devPortal:components.claims.local.notifications." +
+                                                "updateClaim.genericError.message")
                                     }
                                 ));
                             })
@@ -129,9 +136,11 @@ export const EditMappedAttributesLocalClaims = (
                                             <Field
                                                 type="text"
                                                 name={ store.name }
-                                                placeholder="Enter an attribute to map to"
+                                                placeholder={ t("devPortal:components.claims.local.forms." +
+                                                    "attribute.placeholder") }
                                                 required={ true }
-                                                requiredErrorMessage="Attribute name is a required field"
+                                                requiredErrorMessage={ t("devPortal:components.claims.local.forms." +
+                                                    "attribute.requiredErrorMessage") }
                                                 value={ claim?.attributeMapping?.find((attribute) => {
                                                     return attribute.userstore
                                                         .toLowerCase() === store.name.toLowerCase()
@@ -153,7 +162,7 @@ export const EditMappedAttributesLocalClaims = (
                             setSubmit();
                         } }
                     >
-                        Update
+                        {t("common:update")}
                     </PrimaryButton>
                 </Grid.Column>
             </Grid.Row>
