@@ -52,22 +52,48 @@ export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props
 
     const { t } = useTranslation();
 
-    const errorMessage = {
-        description: t("devPortal:components.serverConfigs.passwordPolicies.notifications.updateConfigurations." +
-            "error.description"),
-        level: AlertLevels.ERROR,
-        message: t("devPortal:components.serverConfigs.passwordPolicies.notifications.updateConfigurations." +
-            "error.message")
+    const handleUpdateError = (error) => {
+        if (error.response && error.response.data && error.response.data.detail) {
+            dispatch(addAlert({
+                description: t("devPortal:components.serverConfigs.passwordPolicies.notifications." +
+                    "updateConfigurations.error.description", { description: error.response.data.description }),
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.serverConfigs.passwordPolicies.notifications.updateConfigurations." +
+                    "error.message")
+            }));
+        } else {
+            // Generic error message
+            dispatch(addAlert({
+                description: t("devPortal:components.serverConfigs.passwordPolicies.notifications." +
+                    "updateConfigurations.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.serverConfigs.passwordPolicies.notifications.updateConfigurations." +
+                    "genericError.message")
+            }));
+        }
     };
 
-    const genericErrorMessage = {
-        description: t("devPortal:components.serverConfigs.passwordPolicies.notifications.updateConfigurations." +
-            "genericError.description"),
-        level: AlertLevels.ERROR,
-        message: t("devPortal:components.serverConfigs.passwordPolicies.notifications.updateConfigurations." +
-            "genericError.message")
+    const handleRetrievalError = (error) => {
+        if (error.response && error.response.data && error.response.data.detail) {
+            dispatch(addAlert({
+                description: t("devPortal:components.serverConfigs.passwordPolicies.notifications." +
+                    "getConfigurations.error.description", { description: error.response.data.description }),
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.serverConfigs.passwordPolicies.notifications." +
+                    "getConfigurations.error.message")
+            }));
+        } else {
+            // Generic error message
+            dispatch(addAlert({
+                description: t("devPortal:components.serverConfigs.passwordPolicies.notifications." +
+                    "getConfigurations.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.serverConfigs.passwordPolicies.notifications." +
+                    "getConfigurations.genericError.message")
+            }));
+        }
     };
-
+    
     const handleSubAccordionClick = (index) => {
         if (subAccordionActiveIndex === index) {
             setSubAccordionActiveIndex(undefined)
@@ -87,12 +113,7 @@ export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props
                 dispatch(addAlert(successNotification));
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.detail) {
-                    dispatch(addAlert(errorMessage));
-                } else {
-                    // Generic error message
-                    dispatch(addAlert(genericErrorMessage));
-                }
+                handleUpdateError(error);
             });
     };
 
@@ -214,6 +235,9 @@ export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props
                     }
                 });
                 setPasswordPoliciesConfigs(configs);
+            })
+            .catch((error) => {
+                handleRetrievalError(error);
             });
     };
 

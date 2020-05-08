@@ -1407,28 +1407,42 @@ export const devPortal: DevPortalNS = {
                 description: "Configure how account recovery should happen with your users.",
                 heading: "Account Recovery",
                 notifications: {
-                    updateConfigurations: {
+                    getConfigurations: {
                         error: {
-                            description: "An error occurred while updating the account recovery configurations.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "Couldn't update the account recovery configurations.",
+                            description: "An error occurred while retrieving the account recovery configurations.",
                             message: "Something went wrong"
                         },
                         success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    updateConfigurations: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the account recovery configurations.",
+                            message: "Update Error"
+                        },
+                        success: {
                             description: "Successfully updated the account recovery configurations.",
-                            message: "Configurations updated successfully"
+                            message: "Update Successful"
                         }
                     },
                     updateEnableNotificationPasswordRecovery: {
                         error: {
-                            description: "An error occurred while updating the account recovery configurations.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Update Error"
                         },
                         genericError: {
-                            description: "Couldn't update the account recovery configurations.",
-                            message: "Something went wrong"
+                            description: "An error occurred while updating the account recovery configurations.",
+                            message: "Update Error"
                         },
                         success: {
                             description: "Successfully updated notification based password recovery status.",
@@ -1437,12 +1451,12 @@ export const devPortal: DevPortalNS = {
                     },
                     updateEnableUsernameRecovery: {
                         error: {
-                            description: "An error occurred while updating the account recovery configurations.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Update Error"
                         },
                         genericError: {
-                            description: "Couldn't update the account recovery configurations.",
-                            message: "Something went wrong"
+                            description: "An error occurred while updating the account recovery configurations.",
+                            message: "Update Error"
                         },
                         success: {
                             description: "Successfully updated username recovery status.",
@@ -1451,12 +1465,12 @@ export const devPortal: DevPortalNS = {
                     },
                     updateNotificationPasswordRecoveryReCaptcha: {
                         error: {
-                            description: "An error occurred while updating the account recovery configurations.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Update Error"
                         },
                         genericError: {
-                            description: "Couldn't update the account recovery configurations.",
-                            message: "Something went wrong"
+                            description: "An error occurred while updating the account recovery configurations.",
+                            message: "Update Error"
                         },
                         success: {
                             description: "Successfully configured reCaptcha for notification based password recovery.",
@@ -1465,12 +1479,12 @@ export const devPortal: DevPortalNS = {
                     },
                     updateSecurityQuestionPasswordRecoveryReCaptcha: {
                         error: {
-                            description: "An error occurred while updating the account recovery configurations.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Update Error"
                         },
                         genericError: {
-                            description: "Couldn't update the account recovery configurations.",
-                            message: "Something went wrong"
+                            description: "An error occurred while updating the account recovery configurations.",
+                            message: "Update Error"
                         },
                         success: {
                             description: "Successfully configured security question based password recovery status.",
@@ -1479,12 +1493,12 @@ export const devPortal: DevPortalNS = {
                     },
                     updateUsernameRecoveryReCaptcha: {
                         error: {
-                            description: "An error occurred while updating the account recovery configurations.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Update Error"
                         },
                         genericError: {
-                            description: "Couldn't update the account recovery configurations.",
-                            message: "Something went wrong"
+                            description: "An error occurred while updating the account recovery configurations.",
+                            message: "Update Error"
                         },
                         success: {
                             description: "Successfully configured reCaptcha for username recovery.",
@@ -1548,6 +1562,7 @@ export const devPortal: DevPortalNS = {
                             label: "Enable notification based password recovery"
                         },
                         enableReCaptchaForNotificationBasedRecovery: {
+                            hint: "reCaptcha will be prompted during notification based password recovery.",
                             label: "Enable reCaptcha for notification based password recovery"
                         },
                         enableReCaptchaForSecurityQuestionBasedRecovery: {
@@ -1575,6 +1590,7 @@ export const devPortal: DevPortalNS = {
                             label: "Enable username recovery"
                         },
                         enableReCaptcha: {
+                            hint: "reCaptcha will be prompted during the username recovery flow.",
                             label: "Enable reCaptcha for username recovery"
                         }
                     },
@@ -1634,14 +1650,28 @@ export const devPortal: DevPortalNS = {
                 description: "Configure the login policies of the system.",
                 heading: "Login Policies",
                 notifications: {
-                    updateAccountDisableInternalNotificationManagement: {
+                    getConfigurations: {
                         error: {
-                            description: "An error occurred while updating the login policies.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "Couldn't update the login policies.",
-                            message: "Something went wrong"
+                            description: "An error occurred while retrieving the login policies.",
+                            message: "Retrieval Error"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    updateAccountDisableInternalNotificationManagement: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the login policies.",
+                            message: "Update Error"
                         },
                         success: {
                             description: "Successfully updated the account disabling notification settings.",
@@ -1650,12 +1680,12 @@ export const devPortal: DevPortalNS = {
                     },
                     updateAccountDisablingEnable: {
                         error: {
-                            description: "An error occurred while updating the login policies.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Update Error"
                         },
                         genericError: {
-                            description: "Couldn't update the login policies.",
-                            message: "Something went wrong"
+                            description: "An error occurred while updating the login policies.",
+                            message: "Update Error"
                         },
                         success: {
                             description: "Successfully updated the account disabling policy.",
@@ -1664,12 +1694,12 @@ export const devPortal: DevPortalNS = {
                     },
                     updateAccountLockEnable: {
                         error: {
-                            description: "An error occurred while updating the login policies.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Update Error"
                         },
                         genericError: {
-                            description: "Couldn't update the login policies.",
-                            message: "Something went wrong"
+                            description: "An error occurred while updating the login policies.",
+                            message: "Update Error"
                         },
                         success: {
                             description: "Successfully updated the account locking policy.",
@@ -1678,16 +1708,16 @@ export const devPortal: DevPortalNS = {
                     },
                     updateConfigurations: {
                         error: {
-                            description: "An error occurred while updating the login policies.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Update Error"
                         },
                         genericError: {
-                            description: "Couldn't update the login policies.",
-                            message: "Something went wrong"
+                            description: "An error occurred while updating the login policies.",
+                            message: "Update Error"
                         },
                         success: {
                             description: "Successfully updated the login policies.",
-                            message: "Configurations updated successfully"
+                            message: "Update Successful"
                         }
                     }
                 },
@@ -1724,12 +1754,12 @@ export const devPortal: DevPortalNS = {
                 notifications: {
                     accountDisablingEnable: {
                         error: {
-                            description: "An error occurred while updating the password policies.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Update Error"
                         },
                         genericError: {
-                            description: "Couldn't update the password policies.",
-                            message: "Something went wrong"
+                            description: "An error occurred while updating the password policies.",
+                            message: "Update Error"
                         },
                         success: {
                             description: "Successfully updated the account disabling policy.",
@@ -1738,30 +1768,44 @@ export const devPortal: DevPortalNS = {
                     },
                     accountLockEnable: {
                         error: {
-                            description: "An error occurred while updating the password policies.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Update Error"
                         },
                         genericError: {
-                            description: "Couldn't update the password policies.",
-                            message: "Something went wrong"
+                            description: "An error occurred while updating the password policies.",
+                            message: "Update Error"
                         },
                         success: {
                             description: "Successfully updated the account locking policy.",
                             message: ""
                         }
                     },
-                    updateConfigurations: {
+                    getConfigurations: {
                         error: {
-                            description: "An error occurred while updating the password policies.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "Couldn't update the password policies.",
-                            message: "Something went wrong"
+                            description: "An error occurred while retrieving the password policies.",
+                            message: "Retrieval Error"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    updateConfigurations: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the password policies.",
+                            message: "Update Error"
                         },
                         success: {
                             description: "Successfully updated the password policies.",
-                            message: "Configurations updated successfully"
+                            message: "Update Successful"
                         }
                     }
                 },
@@ -1827,10 +1871,10 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     enable: {
-                        label: "Enable user self registration"
+                        label: "User self registration"
                     },
                     enableAccountLockOnCreation: {
-                        label: "Enable account lock on creation"
+                        label: "Lock user account on creation"
                     },
                     enableReCaptcha: {
                         label: "Enable reCaptcha"
@@ -1857,14 +1901,28 @@ export const devPortal: DevPortalNS = {
                 },
                 heading: "User Self Registration",
                 notifications: {
-                    updateAccountLockOnCreation: {
+                    getConfigurations: {
                         error: {
-                            description: "An error occurred while updating the self registration configurations.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
                         },
                         genericError: {
-                            description: "Couldn't update the self registration configurations.",
-                            message: "Something went wrong"
+                            description: "An error occurred while retrieving the self registration configurations.",
+                            message: "Retrieval Error"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    updateAccountLockOnCreation: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the self registration configurations.",
+                            message: "Update Error"
                         },
                         success: {
                             description: "Successfully updated self registration account lock on creation status.",
@@ -1873,26 +1931,26 @@ export const devPortal: DevPortalNS = {
                     },
                     updateConfigurations: {
                         error: {
-                            description: "An error occurred while updating the self registration configurations.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Update Error"
                         },
                         genericError: {
-                            description: "Couldn't update the self registration configurations.",
-                            message: "Something went wrong"
+                            description: "An error occurred while updating the self registration configurations.",
+                            message: "Update Error"
                         },
                         success: {
                             description: "Successfully updated the self registration configurations.",
-                            message: "Configurations updated successfully"
+                            message: "Update Successful"
                         }
                     },
                     updateEnable: {
                         error: {
-                            description: "An error occurred while updating the self registration configurations.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Update Error"
                         },
                         genericError: {
-                            description: "Couldn't update the self registration configurations.",
-                            message: "Something went wrong"
+                            description: "An error occurred while updating the self registration configurations.",
+                            message: "Update Error"
                         },
                         success: {
                             description: "Successfully updated self registration enabled status.",
@@ -1901,12 +1959,12 @@ export const devPortal: DevPortalNS = {
                     },
                     updateInternalNotificationManagement: {
                         error: {
-                            description: "An error occurred while updating the self registration configurations.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Update Error"
                         },
                         genericError: {
-                            description: "Couldn't update the self registration configurations.",
-                            message: "Something went wrong"
+                            description: "An error occurred while updating the self registration configurations.",
+                            message: "Update Error"
                         },
                         success: {
                             description: "Successfully updated self registration internal notification management " +
@@ -1916,12 +1974,12 @@ export const devPortal: DevPortalNS = {
                     },
                     updateReCaptcha: {
                         error: {
-                            description: "An error occurred while updating the self registration configurations.",
-                            message: "Error updating the configurations"
+                            description: "{{ description }}",
+                            message: "Update Error"
                         },
                         genericError: {
-                            description: "Couldn't update the self registration configurations.",
-                            message: "Something went wrong"
+                            description: "An error occurred while updating the self registration configurations.",
+                            message: "Update Error"
                         },
                         success: {
                             description: "Successfully updated self registration enable reCaptcha status.",

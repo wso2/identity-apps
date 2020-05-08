@@ -53,22 +53,48 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 
     const { t } = useTranslation();
 
-    const errorMessage = {
-        description: t("devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
-            "error.description"),
-        level: AlertLevels.ERROR,
-        message: t("devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
-            "error.message")
+    const handleUpdateError = (error) => {
+        if (error.response && error.response.data && error.response.data.detail) {
+            dispatch(addAlert({
+                description: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
+                    "updateConfigurations.error.description", { description: error.response.data.description }),
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
+                    "error.message")
+            }));
+        } else {
+            // Generic error message
+            dispatch(addAlert({
+                description: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
+                    "updateConfigurations.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
+                    "genericError.message")
+            }));
+        }
     };
 
-    const genericErrorMessage = {
-        description: t("devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
-            "genericError.description"),
-        level: AlertLevels.ERROR,
-        message: t("devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
-            "genericError.message")
+    const handleRetrievalError = (error) => {
+        if (error.response && error.response.data && error.response.data.detail) {
+            dispatch(addAlert({
+                description: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
+                    "getConfigurations.error.description", { description: error.response.data.description }),
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
+                    "getConfigurations.error.message")
+            }));
+        } else {
+            // Generic error message
+            dispatch(addAlert({
+                description: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
+                    "getConfigurations.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
+                    "getConfigurations.genericError.message")
+            }));
+        }
     };
-
+    
     /**
      * Calls the API and update the account recovery configurations.
      */
@@ -80,12 +106,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                 dispatch(addAlert(successNotification));
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.detail) {
-                    dispatch(addAlert(errorMessage));
-                } else {
-                    // Generic error message
-                    dispatch(addAlert(genericErrorMessage));
-                }
+                handleUpdateError(error);
             });
     };
 
@@ -266,6 +287,9 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                         property => property.name == ServerConfigurationsConstants.RECOVERY_SMS_EXPIRY_TIME).value
                 };
                 setAccountRecoveryConfigs(configs);
+            })
+            .catch((error) => {
+                handleRetrievalError(error);
             });
     };
 
@@ -308,7 +332,10 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                             }
                         }
                     />
-                    <Hint>reCaptcha will be prompted during the username recovery flow.</Hint>
+                    <Hint>
+                        { t("devPortal:components.serverConfigs.accountRecovery." +
+                            "usernameRecovery.form.enableReCaptcha.hint") }
+                    </Hint>
                 </Grid.Column>
             </Grid.Row>
         </Grid>
@@ -342,7 +369,10 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                             }
                         }
                     />
-                    <Hint>reCaptcha will be prompted during notification based password recovery.</Hint>
+                    <Hint>
+                        { t("devPortal:components.serverConfigs.accountRecovery." +
+                            "passwordRecovery.form.enableReCaptchaForNotificationBasedRecovery.hint") }
+                    </Hint>
                 </Grid.Column>
             </Grid.Row>
         </Grid>

@@ -870,6 +870,7 @@ export interface DevPortalNS {
                     message: string;
                 };
                 notifications: {
+                    getConfigurations: Notification;
                     updateConfigurations: Notification;
                     updateEnable: Notification;
                     updateAccountLockOnCreation: Notification;
@@ -897,6 +898,7 @@ export interface DevPortalNS {
                     message: string;
                 };
                 notifications: {
+                    getConfigurations: Notification;
                     updateConfigurations: Notification;
                     updateEnableUsernameRecovery: Notification;
                     updateUsernameRecoveryReCaptcha: Notification;
@@ -946,6 +948,7 @@ export interface DevPortalNS {
                     message: string;
                 };
                 notifications: {
+                    getConfigurations: Notification;
                     updateConfigurations: Notification;
                     updateAccountLockEnable: Notification;
                     updateAccountDisablingEnable: Notification;
@@ -991,9 +994,10 @@ export interface DevPortalNS {
                     message: string;
                 };
                 notifications: {
-                    updateConfigurations: Notification;
                     accountLockEnable: Notification;
                     accountDisablingEnable: Notification;
+                    getConfigurations: Notification;
+                    updateConfigurations: Notification;
                 };
                 passwordHistory: {
                     heading: string;
