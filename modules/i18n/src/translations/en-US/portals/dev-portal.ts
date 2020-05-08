@@ -421,6 +421,11 @@ export const devPortal: DevPortalNS = {
                         dialectURI: "Dialect URI",
                         externalAttribute: "External attributes",
                         summary: "Summary"
+                    },
+                    summary: {
+                        externalAttribute:"External Attribute URI",
+                        mappedAttribute: "Mapped Local Attribute URI",
+                        notFound:"No external attribute was added."
                     }
                 }
             },
@@ -492,6 +497,13 @@ export const devPortal: DevPortalNS = {
                         header: "Add External Attribute",
                         primaryAction: "New External Attribute"
                     }
+                },
+                placeholders: {
+                    empty: {
+                        subtitle: "Currently, there are no external attributes available for "
+                            + "this dialect.",
+                        title: "No External Attributes"
+                    }
                 }
             },
             local: {
@@ -533,12 +545,20 @@ export const devPortal: DevPortalNS = {
                 dangerZone: {
                     actionTitle: "Delete Local Attribute",
                     header: "Delete Local Attribute",
-                    subheader: "Once you delete a local attribute, there is no going back. " + "Please be certain."
+                    subheader: "Once you delete a local attribute, there is no going back. "
+                        + "Please be certain."
                 },
                 forms: {
                     attribute: {
                         placeholder: "Enter an attribute to map to",
-                        requiredErrorMessage:"Attribute name is a required field"
+                        requiredErrorMessage: "Attribute name is a required field"
+                    },
+                    attributeHint: "A unique ID for the attribute."
+                        + " The ID will be appended to the dialect URI to create a attribute URI",
+                    attributeID: {
+                        label: "Attribute ID",
+                        placeholder: "Enter an attribute ID",
+                        requiredErrorMessage: "Attribute ID is required"
                     },
                     description: {
                         label: "Description",
@@ -650,6 +670,16 @@ export const devPortal: DevPortalNS = {
                         general: "General",
                         mapAttributes: "Map Attributes",
                         summary: "Summary"
+                    },
+                    summary:{
+                        attribute: "Attribute",
+                        attributeURI: "Attribute URI",
+                        displayOrder: "Display Order",
+                        readOnly: "This attribute is read-only",
+                        regEx: "Regular Expression",
+                        required: "This attribute is required during user registration",
+                        supportedByDefault: "This attribute is shown on user profile and user registration page",
+                        userstore: "Userstore"
                     }
                 }
             }

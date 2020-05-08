@@ -23,6 +23,7 @@ import { FormValue, useTrigger } from "@wso2is/forms";
 import { ConfirmationModal, EmptyPlaceholder, LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components"
 import { CopyInputField } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Icon, Image, List, Popup } from "semantic-ui-react";
 import { EditExternalClaim } from "./edit";
@@ -138,6 +139,8 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
     const claimURIText = useRef([]);
     const copyButton = useRef([]);
 
+    const { t } = useTranslation();
+
     list?.forEach((element, index) => {
         claimURIText.current.push(claimURIText.current[ index ] || React.createRef());
         copyButton.current.push(copyButton.current[ index ] || React.createRef())
@@ -149,9 +152,11 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                 setUserStores(response);
             }).catch(error => {
                 dispatch(addAlert({
-                    description: error?.description ?? "An error occurred while fetching the userstores.",
+                    description: error?.description
+                        ?? t("devPortal:components.userstores.notifications.fetchUserstores.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message ?? "Something went wrong"
+                    message: error?.message
+                        ?? t("devPortal:components.userstores.notifications.fetchUserstores.genericError.message")
                 }))
             })
         }
@@ -259,17 +264,19 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
             closeDeleteConfirm();
             dispatch(addAlert(
                 {
-                    description: "The local attribute has been deleted successfully!",
+                    description: t("devPortal:components.claims.local.notifications.deleteClaim.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Local attribute deleted successfully"
+                    message: t("devPortal:components.claims.local.notifications.deleteClaim.success.message")
                 }
             ));
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while deleting the local attribute",
+                    description: error?.description
+                        || t("devPortal:components.claims.local.notifications.deleteClaim.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
+                    message: error?.message
+                        || t("devPortal:components.claims.local.notifications.deleteClaim.genericError.message")
                 }
             ));
         })
@@ -505,7 +512,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                 onClick: () => {
                                                     history.push(`${EDIT_LOCAL_CLAIMS_PATH}/${claim?.id}`)
                                                 },
-                                                popupText: "Edit",
+                                                popupText: t("common:edit"),
                                                 type: "button"
                                             },
                                             {
@@ -514,7 +521,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                     featureConfig?.attributeDialects?.scopes?.delete),
                                                 icon: "trash alternate",
                                                 onClick: () => { initDelete(ListType.LOCAL, claim) },
-                                                popupText: "Delete",
+                                                popupText: t("common:delete"),
                                                 type: "dropdown"
                                             }
                                         ] }
@@ -605,7 +612,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                     onClick: () => {
                                                         history.push(`${EDIT_EXTERNAL_DIALECT}/${dialect.id}`)
                                                     },
-                                                    popupText: "Edit",
+                                                    popupText: t("common:edit"),
                                                     type: "button"
                                                 },
                                                 {
@@ -614,7 +621,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                         featureConfig?.attributeDialects?.scopes?.delete),
                                                     icon: "trash alternate",
                                                     onClick: () => { initDelete(ListType.DIALECT, dialect) },
-                                                    popupText: "Delete",
+                                                    popupText: t("common:delete"),
                                                     type: "dropdown"
                                                 }
                                             ] }
@@ -635,7 +642,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                         onClick: () => {
                                                             setSubmitExternalClaim();
                                                         },
-                                                        popupText: "Update",
+                                                        popupText: t("common:update"),
                                                         type: "button"
                                                     },
                                                     {
@@ -643,7 +650,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                         onClick: () => {
                                                             setEditClaim(editClaim ? "" : claim?.id);
                                                         },
-                                                        popupText: "Edit",
+                                                        popupText: t("common:edit"),
                                                         type: "button"
                                                     },
                                                     {
@@ -652,7 +659,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                             featureConfig?.attributeDialects?.scopes?.delete),
                                                         icon: "trash alternate",
                                                         onClick: () => { initDelete(ListType.EXTERNAL, claim) },
-                                                        popupText: "Delete",
+                                                        popupText: t("common:delete"),
                                                         type: "dropdown"
                                                     }
                                                 ] }
@@ -704,7 +711,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                         onClick: () => {
                                                             setSubmitExternalClaim();
                                                         },
-                                                        popupText: "Update",
+                                                        popupText: t("common:update"),
                                                         type: "button"
                                                     },
                                                     {
@@ -716,13 +723,13 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                                 editExternalClaim !== -1 ? -1 : index
                                                             );
                                                         },
-                                                        popupText: "Edit",
+                                                        popupText: t("common:edit"),
                                                         type: "button"
                                                     },
                                                     {
                                                         icon: "trash alternate",
                                                         onClick: () => { onDelete(index) },
-                                                        popupText: "Delete",
+                                                        popupText: t("common:delete"),
                                                         type: "dropdown"
                                                     }
                                                 ] }

@@ -346,7 +346,7 @@ export const EditBasicDetailsLocalClaims = (
                                 required={ false }
                                 requiredErrorMessage=""
                                 children={ [ {
-                                    label:  t ("devPortal:components.claims.local.forms.required.label")  ,
+                                    label:  t ("devPortal:components.claims.local.forms.required.label"),
                                     value: "Required"
                                 } ] }
                                 value={ claim?.required ? [ "Required" ] : [] }
@@ -358,7 +358,7 @@ export const EditBasicDetailsLocalClaims = (
                                 required={ false }
                                 requiredErrorMessage=""
                                 children={ [ {
-                                    label: t ("devPortal:components.claims.local.forms.readOnly.label") ,
+                                    label: t ("devPortal:components.claims.local.forms.readOnly.label"),
                                     value: "ReadOnly"
                                 } ] }
                                 value={ claim?.readOnly ? [ "ReadOnly" ] : [] }

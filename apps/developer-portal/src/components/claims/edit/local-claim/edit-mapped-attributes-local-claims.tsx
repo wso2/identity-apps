@@ -80,7 +80,7 @@ export const EditMappedAttributesLocalClaims = (
             <Grid.Row columns={ 1 }>
                 <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                     <p>
-                        {t("devPortal:components.claims.local.mappedAttributes.hint")}
+                        { t("devPortal:components.claims.local.mappedAttributes.hint") }
                     </p>
                     <Divider hidden />
                     <Forms
@@ -162,7 +162,7 @@ export const EditMappedAttributesLocalClaims = (
                             setSubmit();
                         } }
                     >
-                        {t("common:update")}
+                        { t("common:update") }
                     </PrimaryButton>
                 </Grid.Column>
             </Grid.Row>

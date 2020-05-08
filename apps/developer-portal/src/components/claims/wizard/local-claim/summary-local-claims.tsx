@@ -18,6 +18,7 @@
 
 import { CopyInputField } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { Form, Grid, Label, List, Table } from "semantic-ui-react";
 import { AttributeMapping, Claim } from "../../../../models";
 
@@ -39,6 +40,8 @@ interface SummaryLocalClaimsPropsInterface {
 export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): ReactElement => {
 
     const { data } = props;
+
+    const { t } = useTranslation();
 
     /**
      * This component returns a row of summary
@@ -104,17 +107,23 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
                 <Grid.Column textAlign="center">
                     <List>
                         { data.supportedByDefault
-                            && generateLabels("This attribute is shown on user profile and user registration page") }
+                            && generateLabels(t("devPortal:components.claims.local." +
+                                "wizard.summary.supportedByDefault")) }
                         { data.required &&
-                            generateLabels("This attribute is required during user registration") }
+                            generateLabels(t("devPortal:components.claims.local." +
+                                "wizard.summary.required")) }
                         { data.readOnly &&
-                            generateLabels("This attribute is read-only") }
+                            generateLabels(t("devPortal:components.claims.local." +
+                                "wizard.summary.readOnly")) }
                     </List>
                 </Grid.Column>
             </Grid.Row>
-            { data.claimURI ? generateSummaryLine("Attribute URI", showClaimURI()) : null }
-            { data.displayOrder ? generateSummaryLine("Display Order", data.displayOrder) : null }
-            { data.regEx ? generateSummaryLine("Regular Expression", data.regEx) : null }
+            { data.claimURI ? generateSummaryLine(t("devPortal:components.claims.local." +
+                "wizard.summary.attributeURI"), showClaimURI()) : null }
+            { data.displayOrder ? generateSummaryLine(t("devPortal:components.claims.local." +
+                "wizard.summary.displayOrder"), data.displayOrder) : null }
+            { data.regEx ? generateSummaryLine(t("devPortal:components.claims.local." +
+                "wizard.summary.regEx"), data.regEx) : null }
             {
                 data.attributeMapping?.length > 0 ? generateSummaryLine("Mapped attributes",
                     (
@@ -122,10 +131,12 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
                             <Table.Header>
                                 <Table.Row>
                                     <Table.HeaderCell>
-                                        Userstore
+                                        { t("devPortal:components.claims.local." +
+                                            "wizard.summary.userstore") }
                                     </Table.HeaderCell>
                                     <Table.HeaderCell>
-                                        Attribute
+                                        { t("devPortal:components.claims.local." +
+                                            "wizard.summary.attribute") }
                                     </Table.HeaderCell>
                                 </Table.Row>
                             </Table.Header>

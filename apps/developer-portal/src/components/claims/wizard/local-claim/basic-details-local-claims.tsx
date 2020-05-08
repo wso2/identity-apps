@@ -18,6 +18,7 @@
 
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid, Label, Popup } from "semantic-ui-react";
 
 /**
@@ -67,6 +68,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     const claimTimer = useRef(null);
     const regExTimer = useRef(null);
     const displayTimer = useRef(null);
+
+    const { t } = useTranslation();
 
     /**
      * Set the if show on profile is selected or not
@@ -133,16 +136,16 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             } }
                             type="text"
                             name="name"
-                            label="Name"
+                            label={ t("devPortal:components.claims.local.forms.name.label") }
                             required={ true }
-                            requiredErrorMessage="Name is required"
-                            placeholder="Enter a name for the attribute"
+                            requiredErrorMessage={ t("devPortal:components.claims.local.forms." +
+                                "name.requiredErrorMessage") }
+                            placeholder={ t("devPortal:components.claims.local.forms.name.placeholder") }
                             value={ values?.get("name")?.toString() }
                             ref={ nameField }
                         />
                         <Popup
-                            content={ "Name of the attribute that will be shown on the user profile " +
-                                "and user registration page" }
+                            content={ t("devPortal:components.claims.local.forms.nameHint") }
                             inverted
                             open={ isShowNameHint }
                             trigger={ <span></span> }
@@ -157,10 +160,11 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         <Field
                             type="text"
                             name="claimURI"
-                            label="Attribute ID"
+                            label={ t("devPortal:components.claims.local.forms.attributeID.label") }
                             required={ true }
-                            requiredErrorMessage="Attribute ID is required"
-                            placeholder="Enter an attribute ID"
+                            requiredErrorMessage={ t("devPortal:components.claims.local.forms." +
+                                "attributeID.requiredErrorMessage") }
+                            placeholder={ t("devPortal:components.claims.local.forms.attributeID.placeholder") }
                             value={ values?.get("claimURI")?.toString() }
                             listen={ (values: Map<string, FormValue>) => {
                                 setClaimID(values.get("claimURI").toString())
@@ -174,8 +178,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             ref={ claimField }
                         />
                         <Popup
-                            content={ "A unique ID for the attribute." +
-                                " The ID will be appended to the dialect URI to create a attribute URI" }
+                            content={ t("devPortal:components.claims.local.forms.attributeHint") }
                             inverted
                             open={ isShowClaimIDHint }
                             trigger={ <p></p> }
@@ -200,10 +203,11 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         <Field
                             type="text"
                             name="description"
-                            label="Description"
+                            label={ t("devPortal:components.claims.local.forms.description.label") }
                             required={ true }
-                            requiredErrorMessage="Description is required"
-                            placeholder="Enter a description"
+                            requiredErrorMessage={ t("devPortal:components.claims.local.forms.description." +
+                                "requiredErrorMessage") }
+                            placeholder={ t("devPortal:components.claims.local.forms.description.placeholder") }
                             value={ values?.get("description")?.toString() }
                         />
                     </Grid.Column>
@@ -211,10 +215,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         <Field
                             type="text"
                             name="regularExpression"
-                            label="Regular expression"
+                            label={ t("devPortal:components.claims.local.forms.regEx.label") }
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder="Enter a regular expression"
+                            placeholder={ t("devPortal:components.claims.local.forms.regEx.placeholder") }
                             value={ values?.get("regularExpression")?.toString() }
                             onMouseOver={ () => {
                                 delayPopup(setIsShowRegExHint, regExTimer);
@@ -225,7 +229,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             ref={ regExField }
                         />
                         <Popup
-                            content="This regular expression is used to validate the value this attribute can take"
+                            content={ t("devPortal:components.claims.local.forms.description.regExHint") }
                             inverted
                             open={ isShowRegExHint }
                             trigger={ <span></span> }
@@ -246,7 +250,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             requiredErrorMessage=""
                             children={ [
                                 {
-                                    label: "Show this attribute on user profile and user registration page",
+                                    label: t("devPortal:components.claims.local.forms.supportedByDefault.label"),
                                     value: "Support"
                                 } ] }
                             value={ values?.get("supportedByDefault") as string[] }
@@ -264,10 +268,11 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     type="number"
                                     min="0"
                                     name="displayOrder"
-                                    label="Display Order"
+                                    label={ t("devPortal:components.claims.local.forms.displayOrder.label") }
                                     required={ false }
-                                    requiredErrorMessage="Display Order is required"
-                                    placeholder="Enter the display order"
+                                    requiredErrorMessage=""
+                                    placeholder={ t("devPortal:components.claims.local.forms." +
+                                        "displayOrder.placeholder") }
                                     value={ values?.get("displayOrder")?.toString() ?? "0" }
                                     onMouseOver={ () => {
                                         delayPopup(setIsShowDisplayOrderHint, displayTimer);
@@ -279,8 +284,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                 />
                                 <Popup
                                     content={
-                                        "This determines the position at which this attribute is displayed" +
-                                        " in the user profile and the user registration page"
+                                        t("devPortal:components.claims.local.forms.displayOrderHint")
                                     }
                                     inverted
                                     open={ isShowDisplayOrderHint }
@@ -303,7 +307,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             required={ false }
                             requiredErrorMessage=""
                             children={ [ {
-                                label: "Make this attribute required during user registration",
+                                label: t("devPortal:components.claims.local.forms.required.label"),
                                 value: "Required"
                             } ] }
                             value={ values?.get("required") as string[] }
@@ -318,7 +322,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             required={ false }
                             requiredErrorMessage=""
                             children={ [ {
-                                label: "Make this attribute read-only",
+                                label: t("devPortal:components.claims.local.forms.readOnly.label"),
                                 value: "ReadOnly"
                             } ] }
                             value={ values?.get("readOnly") as string[] }

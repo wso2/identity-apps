@@ -236,6 +236,11 @@ export interface DevPortalNS {
                         summary: string;
                     };
                     header: string;
+                    summary: {
+                        externalAttribute: string;
+                        mappedAttribute: string;
+                        notFound: string;
+                    };
                 };
                 forms: {
                     dialectURI: FormField;
@@ -278,6 +283,12 @@ export interface DevPortalNS {
                     edit: {
                         header: string;
                         primaryAction: string;
+                    };
+                };
+                placeholders: {
+                    empty: {
+                        title: string;
+                        subtitle: string;
                     };
                 };
             };
@@ -334,6 +345,16 @@ export interface DevPortalNS {
                         summary: string;
                     };
                     header: string;
+                    summary: {
+                        userstore: string;
+                        attribute: string;
+                        supportedByDefault: string;
+                        required: string;
+                        readOnly: string;
+                        attributeURI: string;
+                        displayOrder: string;
+                        regEx: string;
+                    };
                 };
                 additionalProperties: {
                     hint: string;
@@ -350,6 +371,8 @@ export interface DevPortalNS {
                     content: string;
                 };
                 forms: {
+                    attributeID: FormField;
+                    attributeHint: string;
                     name: FormField;
                     nameHint: string;
                     description: FormField;

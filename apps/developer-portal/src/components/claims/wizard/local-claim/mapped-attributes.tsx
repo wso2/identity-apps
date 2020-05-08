@@ -18,6 +18,7 @@
 
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { getUserStoreList } from "../../../../api";
 import { UserStoreListItem } from "../../../../models";
@@ -51,6 +52,8 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): ReactEl
 
     const [ userStore, setUserStore ] = useState<UserStoreListItem[]>([]);
 
+    const { t } = useTranslation();
+
     useEffect(() => {
         const userstore: UserStoreListItem[] = [];
         userstore.push({
@@ -65,14 +68,16 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): ReactEl
         }).catch(() => {
             setUserStore(userstore);
         });
-    }, [])
+    }, []);
+    
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 14 }>
-                    <h4>Map Attributes</h4>
+                    <h4>{ t("devPortal:components.claims.local.wizard." +
+                        "steps.mapAttributes") }</h4>
                     <p>
-                        Enter the attribute from each userstore that you want to map to this attribute.
+                        { t("devPortal:components.claims.local.mappedAttributes.hint") }
                     </p>
                     <Divider hidden />
                     <Divider hidden />
@@ -101,9 +106,11 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): ReactEl
                                             <Field
                                                 type="text"
                                                 name={ store.name }
-                                                placeholder="Enter an attribute to map to"
+                                                placeholder={ t("devPortal:components.claims.local.forms." +
+                                                    "attribute.placeholder") }
                                                 required={ true }
-                                                requiredErrorMessage="Attribute name is a required field"
+                                                requiredErrorMessage={ t("devPortal:components.claims.local.forms." +
+                                                    "attribute.requiredErrorMessage") }
                                                 value={ values?.get(store.name).toString() }
                                             />
                                         </Grid.Column>

@@ -19,6 +19,7 @@
 import { FormValue } from "@wso2is/forms";
 import { EmptyPlaceholder } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { ClaimsList, ListType } from "../..";
 import { EmptyPlaceholderIllustrations } from "../../../../configs";
@@ -56,6 +57,8 @@ export const ExternalClaims = (props: ExternalClaimsPropsInterface): ReactElemen
     const [ claims, setClaims ] = useState<AddExternalClaim[]>([]);
 
     const ref = useRef(true);
+
+    const { t } = useTranslation();
     
     useEffect(() => {
         if (ref.current) {
@@ -108,9 +111,9 @@ export const ExternalClaims = (props: ExternalClaimsPropsInterface): ReactElemen
                             )
                             : (
                                 <EmptyPlaceholder
-                                    title="No External Attributes"
-                                    subtitle={ [ "Currently, there are no external attributes available for " + 
-                                    "this dialect." ] }
+                                    title={ t(":devPortal:components.claims.external.placeholders.empty.title") }
+                                    subtitle={ [ t(":devPortal:components.claims.external." +
+                                        "placeholders.empty.subtitle") ] }
                                     image={ EmptyPlaceholderIllustrations.emptyList }
                                     imageSize="tiny"
                                 />
