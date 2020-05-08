@@ -505,7 +505,7 @@ export const devPortal: DevPortalNS = {
                 advancedConfigs: {
                     alias: {
                         hint: "If the resident identity provider is known by an alias at the federated identity " +
-                            "provider specify it",
+                            "provider, specify it here.",
                         label: "Alias"
                     },
                     certificateType: {
@@ -582,17 +582,17 @@ export const devPortal: DevPortalNS = {
                 },
                 generalDetails: {
                     description: {
-                        hint: "A meaningful description about the identity provider",
+                        hint: "A meaningful description about the identity provider.",
                         label: "Description",
                         placeholder: "This is a sample IDP."
                     },
                     image: {
-                        hint: "A URL to configure the image of the identity provider",
+                        hint: "A URL to query the image of the identity provider.",
                         label: "Identity Provider Image URL",
                         placeholder: "https://example.com/image01"
                     },
                     name: {
-                        hint: "Enter a unique name for this identity provider",
+                        hint: "Enter a unique name for this identity provider.",
                         label: "Identity Provider Name",
                         validations: {
                             duplicate: "An identity provider already exists with this name",
@@ -827,7 +827,7 @@ export const devPortal: DevPortalNS = {
                 getIDPTemplateList: {
                     error: {
                         description: "{{ description }}",
-                        message: "Identity provider Template List Fetch Error"
+                        message: "Retrieval Error"
                     },
                     genericError: {
                         description: "An error occurred while retrieving identity provider template list",
@@ -914,11 +914,11 @@ export const devPortal: DevPortalNS = {
                         message: "Update Error"
                     },
                     genericError: {
-                        description: "An error occurred while the updating claims configurations.",
+                        description: "An error occurred while updating claim configurations.",
                         message: "Update Error"
                     },
                     success: {
-                        description: "Successfully updated attribute configurations.",
+                        description: "Successfully updated claim configurations.",
                         message: "Update successful"
                     }
                 },
@@ -942,11 +942,11 @@ export const devPortal: DevPortalNS = {
                         message: "Update error"
                     },
                     genericError: {
-                        description: "An error occurred while updating the identity provider",
+                        description: "An error occurred while updating the identity provider.",
                         message: "Update Error"
                     },
                     success: {
-                        description: "Successfully updated the advanced configurations.",
+                        description: "Successfully updated the identity provider.",
                         message: "Update successful"
                     }
                 },
@@ -956,7 +956,7 @@ export const devPortal: DevPortalNS = {
                         message: "Update Error"
                     },
                     genericError: {
-                        description: "There was an error while updating outbound provisioning role configurations",
+                        description: "An error occurred while updating outbound provisioning role configurations.",
                         message: "Update Error"
                     },
                     success: {
@@ -974,7 +974,7 @@ export const devPortal: DevPortalNS = {
                         message: "Update Error"
                     },
                     success: {
-                        description: "Successfully updated JIT provisioning configurations.",
+                        description: "Successfully updated the JIT provisioning configurations.",
                         message: "Update successful"
                     }
                 },
@@ -1004,7 +1004,7 @@ export const devPortal: DevPortalNS = {
                 },
                 emptyConnectorList: {
                     subtitles: {
-                        0: "This IDP has no outbound provisioning connectors configured",
+                        0: "This IDP has no outbound provisioning connectors configured.",
                         1: "Add a connector to view it here."
                     },
                     title: "No outbound provisioning connectors"
@@ -1036,7 +1036,7 @@ export const devPortal: DevPortalNS = {
             },
             wizards: {
                 addAuthenticator: {
-                    header: "Fill the basic information about your authenticator.",
+                    header: "Fill the basic information about the authenticator.",
                     steps: {
                         authenticatorConfiguration: {
                             title: "Authenticator Configuration"
@@ -1047,7 +1047,7 @@ export const devPortal: DevPortalNS = {
                                 title: "Manual Setup"
                             },
                             quickSetup: {
-                                subTitle: "Predefined authenticator templates to speed up your add operation.",
+                                subTitle: "Predefined authenticator templates to speed up the process.",
                                 title: "Quick Setup"
                             },
                             title: "Authenticator Selection"
@@ -1058,7 +1058,7 @@ export const devPortal: DevPortalNS = {
                     }
                 },
                 addIDP: {
-                    header: "Fill the basic information about your identity provider.",
+                    header: "Fill the basic information about the identity provider.",
                     steps: {
                         authenticatorConfiguration: {
                             title: "Authenticator Configuration"
@@ -1075,7 +1075,7 @@ export const devPortal: DevPortalNS = {
                     }
                 },
                 addProvisioningConnector: {
-                    header: "Fill the following details",
+                    header: "Fill the basic information about the provisioning connector.",
                     steps: {
                         connectorConfiguration: {
                             title: "Connector Details"
