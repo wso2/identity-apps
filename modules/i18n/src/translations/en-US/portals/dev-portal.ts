@@ -406,7 +406,7 @@ export const devPortal: DevPortalNS = {
                     }
                 }
             },
-            external: {
+            external:{
                 advancedSearch: {
                     form: {
                         inputs: {
@@ -422,6 +422,31 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     placeholder: "Search by Attribute URI"
+                },
+                forms: {
+                    attributeURI: {
+                        label: "Attribute URI",
+                        placeholder: "Enter an attribute URI",
+                        requiredErrorMessage: "Attribute URI is required"
+                    },
+                    localAttribute: {
+                        label: "Local attribute URI to map to",
+                        placeholder: "Select a Local Attribute",
+                        requiredErrorMessage: "Select a local attribute to map to"
+                    },
+                    submit: "Add External Attribute"
+                },
+                notifications: {
+                    addExternalAttribute: {
+                        genericError: {
+                            description: "An error occurred while adding the external attribute.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The external attribute has been added to the dialect successfully!",
+                            message: "External attribute added successfully"
+                        }
+                    }
                 }
             },
             local: {
@@ -448,13 +473,13 @@ export const devPortal: DevPortalNS = {
                 notifications: {
                     getAClaim: {
                         genericError: {
-                            description: "There was an error while fetching the local claim",
+                            description: "There was an error while fetching the local attribute",
                             message: "Something went wrong"
                         }
                     },
                     getClaims: {
                         genericError: {
-                            description: "There was an error while fetching the local attribute",
+                            description: "There was an error while fetching the local attributes",
                             message: "Something went wrong"
                         }
                     },

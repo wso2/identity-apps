@@ -254,6 +254,14 @@ export interface DevPortalNS {
                     };
                     placeholder: string;
                 };
+                notifications: {
+                    addExternalAttribute: Notification;
+                };
+                forms: {
+                    attributeURI: FormField;
+                    localAttribute: FormField;
+                    submit: string;
+                };
             };
             local: {
                 advancedSearch: {
