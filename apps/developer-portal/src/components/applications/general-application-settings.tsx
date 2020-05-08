@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/dist/src/helpers";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";

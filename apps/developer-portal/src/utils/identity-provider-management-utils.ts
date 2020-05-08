@@ -17,7 +17,7 @@
  *
  */
 
-import { IdentityAppsApiException } from "@wso2is/core/dist/src/exceptions";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AxiosHttpClientInstance } from "@wso2is/http";
