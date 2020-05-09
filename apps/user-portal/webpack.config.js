@@ -29,7 +29,7 @@ module.exports = (env) => {
     const devServerPort = 9000;
     const publicPath = `/${basename}`;
 
-    const isProd = env.NODE_ENV === "prod";
+    const isProd = env.NODE_ENV === "production";
 
     /**
      * Deployment configurations
