@@ -18,6 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { Checkbox, Table, TableProps } from "semantic-ui-react";
 import { EmptyPlaceholder } from "../placeholder";
 
@@ -47,6 +48,8 @@ export interface TransferListPropsInterface extends TableProps, TestableComponen
 export const TransferList: FunctionComponent<TransferListPropsInterface> = (
     props: TransferListPropsInterface
 ): ReactElement => {
+
+    const { t } = useTranslation();
 
     const {
         children,
@@ -91,7 +94,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                     <div className={ "empty-placeholder-center" }>
                         <EmptyPlaceholder
                             data-testid={ `${ testId }-placeholder` }
-                            subtitle={ [ "There are no items in this list at the moment." ] }
+                            subtitle={ t("devPortal:components.transferList.list.emptyPlaceholder") }
                         />
                     </div>
                 )

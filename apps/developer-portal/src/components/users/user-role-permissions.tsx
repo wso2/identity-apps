@@ -16,8 +16,10 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid, Modal } from "semantic-ui-react";
 import { getRoleById } from "../../api";
 import { RolesInterface } from "../../models";
@@ -26,8 +28,7 @@ import { PermissionList } from "../roles";
 /**
  * Proptypes for the user role permission component.
  */
-interface UserRolePermissionsInterface {
-    [ "data-testid" ]?: string;
+interface UserRolePermissionsInterface extends TestableComponentInterface {
     openRolePermissionModal: boolean;
     handleCloseRolePermissionModal: () => void;
     roleId: string;
@@ -46,8 +47,11 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
     const {
         openRolePermissionModal,
         handleCloseRolePermissionModal,
-        roleId
+        roleId,
+        [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const [ isRoleSet, setRoleCheck ] = useState(false);
     const [ role, setRole ] = useState<RolesInterface>();
@@ -85,13 +89,16 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
     return (
         isRoleSet && (
             <Modal
-                data-testid={ props[ `data-testid` ] }
+                data-testid={ testId }
                 open={ openRolePermissionModal }
                 size="small"
                 className="user-roles"
             >
                 <Modal.Header>
-                    Permissions for { role?.displayName }
+                    {
+                        t("devPortal:components.user.updateUser.roles.viewPermissionModal.heading",
+                            { role: role.displayName })
+                    }
                 </Modal.Header>
                 <Modal.Content image>
                     <div className="permissions-edit-container">
@@ -103,7 +110,7 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
                         <Grid.Row column={ 1 }>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                 <LinkButton
-                                    data-testid={ `${ props[ `data-testid` ] }_back_button` }
+                                    data-testid={ `${ testId }-back-button` }
                                     floated="left"
                                     onClick={ handleCloseRolePermissionModal }
                                 >

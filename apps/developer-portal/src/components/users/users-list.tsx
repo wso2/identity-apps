@@ -27,6 +27,7 @@ import {
     UserAvatar
 } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid, Icon, List, SemanticWIDTHS } from "semantic-ui-react";
 import { EmptyPlaceholderIllustrations } from "../../configs";
 import { UIConstants } from "../../constants";
@@ -40,11 +41,12 @@ import { CommonUtils } from "../../utils";
 interface UsersListProps extends LoadableComponentInterface, TestableComponentInterface {
     /**
      * User delete callback.
+     *
      * @param {string} userId - ID of the deleting user.
      */
     handleUserDelete: (userId: string) => void;
     /**
-     * Callback to be fired when clicked on the empty list placeholder action.
+     * Callback to be fired when the empty list placeholder action is clicked.
      */
     onEmptyListPlaceholderActionClick: () => void;
     /**
@@ -56,11 +58,11 @@ interface UsersListProps extends LoadableComponentInterface, TestableComponentIn
      */
     searchQuery: string;
     /**
-     * Meta for the user list.
+     * Meta column list for the user list.
      */
     userMetaListContent: Map<string, string>;
     /**
-     * User list.
+     * Users list.
      */
     usersList: UserListInterface;
 }
@@ -81,6 +83,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         usersList,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
@@ -177,14 +181,17 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             return (
                 <EmptyPlaceholder
                     action={ (
-                        <LinkButton onClick={ onSearchQueryClear }>Clear search query</LinkButton>
+                        <LinkButton onClick={ onSearchQueryClear }>
+                            { t("devPortal:components.users.usersList.search.emptyResultPlaceholder.clearButton") }
+                        </LinkButton>
                     ) }
                     image={ EmptyPlaceholderIllustrations.emptySearch }
                     imageSize="tiny"
-                    title={ "No results found" }
+                    title={ t("devPortal:components.users.usersList.search.emptyResultPlaceholder.title") }
                     subtitle={ [
-                        `We couldn't find any results for ${ searchQuery }`,
-                        "Please try a different search term."
+                        t("devPortal:components.users.usersList.search.emptyResultPlaceholder.subTitle.0",
+                            { query: searchQuery }),
+                        t("devPortal:components.users.usersList.search.emptyResultPlaceholder.subTitle.1")
                     ] }
                 />
             );
@@ -200,16 +207,16 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             onClick={ () => onEmptyListPlaceholderActionClick() }
                         >
                             <Icon name="add"/>
-                            New User
+                            { t("devPortal:components.users.usersList.list.emptyResultPlaceholder.addButton") }
                         </PrimaryButton>
                     ) }
                     image={ EmptyPlaceholderIllustrations.newList }
                     imageSize="tiny"
-                    title={ "Add a new User" }
+                    title={ t("devPortal:components.users.usersList.list.emptyResultPlaceholder.title") }
                     subtitle={ [
-                        "There are currently no users available.",
-                        "You can add a new user easily by following the",
-                        "steps in the user creation wizard."
+                        t("devPortal:components.users.usersList.list.emptyResultPlaceholder.subTitle.0"),
+                        t("devPortal:components.users.usersList.list.emptyResultPlaceholder.subTitle.1"),
+                        t("devPortal:components.users.usersList.list.emptyResultPlaceholder.subTitle.2")
                     ] }
                 />
             );
@@ -238,7 +245,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                         "data-testid": `${ testId }-edit-user-${ user.userName }-button`,
                                         icon: "pencil alternate",
                                         onClick: () => handleUserEdit(user.id),
-                                        popupText: "Edit",
+                                        popupText: t("devPortal:components.users.usersList.list.iconPopups.edit"),
                                         type: "button"
                                     },
                                     {
@@ -249,7 +256,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                             setShowDeleteConfirmationModal(true);
                                             setDeletingUser(user);
                                         },
-                                        popupText: "Delete user",
+                                        popupText: t("devPortal:components.users.usersList.list.iconPopups.delete"),
                                         type: "button"
                                     }
                                 ] }
@@ -291,18 +298,17 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         onPrimaryActionClick={ (): void => deleteUser(deletingUser.id) }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            Are you sure?
+                            { t("devPortal:components.user.deleteUser.confirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-testid={ `${ testId }-confirmation-modal-message` }
                             attached
                             warning
                         >
-                            This action is irreversible and will permanently delete the user.
+                            { t("devPortal:components.user.deleteUser.confirmationModal.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${ testId }-confirmation-modal-content` }>
-                            If you delete this user, the user will not be able to login to the developer portal or any
-                            other application the user was subscribed before. Please proceed with caution.
+                            { t("devPortal:components.user.deleteUser.confirmationModal.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

@@ -102,7 +102,7 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                     />
                     :
                     <Button
-                        data-testid={ `${ testId }-button` }
+                        data-testid={ testId + "-delete-button" }
                         fluid={ window.innerWidth <= Responsive.onlyTablet.maxWidth }
                         negative
                         className={

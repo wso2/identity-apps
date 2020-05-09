@@ -1726,7 +1726,7 @@ export const devPortal: DevPortalNS = {
                     content: "If you delete this user, the user will not be able to login to the developer portal or " +
                         "any other application the user was subscribed before. Please proceed with caution.",
                     header: "Are you sure?",
-                    message: "This action is irreversible and will permanently delete the user.",
+                    message: "This action is irreversible and will permanently delete the user."
                 }
             },
             editUser: {
@@ -1850,7 +1850,21 @@ export const devPortal: DevPortalNS = {
                         summary: "Summary"
                     },
                     subTitle: "Follow the steps to create the new user",
-                    title: "Create User"
+                    title: "Create User",
+                    wizardSummary: {
+                        domain: "Userstore",
+                        groups: "Group(s)",
+                        name: "Name",
+                        passwordOption: {
+                            label: "Password option",
+                            message: {
+                                0: "An email will be sent to {{email}} with the link to set the password.",
+                                1: "The password was set by the administrator."
+                            }
+                        },
+                        roles: "Role(s)",
+                        username: "Username"
+                    }
                 }
             },
             profile: {
@@ -1977,6 +1991,158 @@ export const devPortal: DevPortalNS = {
                         heading: "This feature is not available for your account"
                     }
                 }
+            },
+            updateUser: {
+                groups: {
+                    addGroupsModal: {
+                        heading: "Update User Groups",
+                        subHeading: "Add new groups or remove existing groups assigned to the user."
+                    },
+                    editGroups: {
+                        groupList: {
+                            emptyListPlaceholder: {
+                                subTitle: {
+                                    0: "There are no groups assigned to the user at the moment.",
+                                    1: "This might restrict user from performing certain",
+                                    2: "tasks like accessing certain applications."
+                                },
+                                title: "No Groups Assigned"
+                            },
+                            headers: {
+                                0: "Domain",
+                                1: "Name"
+                            }
+                        },
+                        heading: "Assigned Groups",
+                        popups: {
+                            viewPermissions: "View Permissions"
+                        },
+                        searchPlaceholder: "Search groups",
+                        subHeading: "Add or remove the groups user is assigned with and note that this will affect " +
+                            "performing certain tasks."
+                    },
+                    notifications: {
+                        addUserGroups: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Error occurred while updating user groups"
+                            },
+                            genericError: {
+                                description: "An error occurred while updating user groups",
+                                message: "Something went wrong"
+                            },
+                            success: {
+                                description: "Assigning new groups for the user successful",
+                                message: "Update user groups successful"
+                            }
+                        },
+                        fetchUserGroups: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Error occurred while fetching the groups list"
+                            },
+                            genericError: {
+                                description: "Error occurred while fetching the groups list",
+                                message: "Something went wrong"
+                            },
+                            success: {
+                                description: "The groups list was successfully retrieved",
+                                message: "User groups list retrieved successfully"
+                            }
+                        },
+                        removeUserGroups: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Error occurred while updating the groups of the user"
+                            },
+                            genericError: {
+                                description: "An error occurred while updating user groups",
+                                message: "Something went wrong"
+                            },
+                            success: {
+                                description: "Removing assigned groups for the user successful",
+                                message: "Update user groups successful"
+                            }
+                        }
+                    }
+                },
+                roles: {
+                    addRolesModal: {
+                        heading: "Update User Roles",
+                        subHeading: "Add new roles or remove existing roles assigned to the user."
+                    },
+                    editRoles: {
+                        heading: "Assigned Roles",
+                        popups: {
+                            viewPermissions: "View Permissions"
+                        },
+                        roleList: {
+                            emptyListPlaceholder: {
+                                subTitle: {
+                                    0: "There are no roles assigned to the user at the moment.",
+                                    1: "This might restrict user from performing certain",
+                                    2: "tasks like accessing certain applications."
+                                },
+                                title: "No Roles Assigned"
+                            },
+                            headers: {
+                                0: "Domain",
+                                1: "Name"
+                            }
+                        },
+                        searchPlaceholder: "Search Roles",
+                        subHeading: "Add or remove the roles user is assigned with and note that this will affect " +
+                            "performing certain tasks."
+                    },
+                    notifications: {
+                        addUserRoles: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Error occurred while updating user roles"
+                            },
+                            genericError: {
+                                description: "An error occurred while updating user roles",
+                                message: "Something went wrong"
+                            },
+                            success: {
+                                description: "Assigning new roles for the user successful",
+                                message: "Update user roles successful"
+                            }
+                        },
+                        fetchUserRoles: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Error occurred while fetching the roles list"
+                            },
+                            genericError: {
+                                description: "Error occurred while fetching the roles list",
+                                message: "Something went wrong"
+                            },
+                            success: {
+                                description: "The roles list was successfully retrieved",
+                                message: "User roles list retrieved successfully"
+                            }
+                        },
+                        removeUserRoles: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Error occurred while updating the roles of the user"
+                            },
+                            genericError: {
+                                description: "An error occurred while updating user roles",
+                                message: "Something went wrong"
+                            },
+                            success: {
+                                description: "Removing assigned roles for the user successful",
+                                message: "Update user roles successful"
+                            }
+                        }
+                    },
+                    viewPermissionModal: {
+                        backButton: "Back to list",
+                        heading: "Permissions for {{role}}"
+                    }
+                }
             }
         },
         users: {
@@ -1984,8 +2150,8 @@ export const devPortal: DevPortalNS = {
                 form: {
                     dropdown: {
                         filterAttributeOptions: {
-                            username: "Username",
-                            email: "Email"
+                            email: "Email",
+                            username: "Username"
                         }
                     },
                     inputs: {
@@ -2061,6 +2227,43 @@ export const devPortal: DevPortalNS = {
                         1: "Something went wrong while fetching the user list"
                     },
                     title: "No Users Found"
+                }
+            },
+            usersList: {
+                list: {
+                    emptyResultPlaceholder: {
+                        addButton: "New User",
+                        subTitle: {
+                            0: "There are currently no users available.",
+                            1: "You can add a new user easily by following the",
+                            2: "steps in the user creation wizard."
+                        },
+                        title: "Add a new User"
+                    },
+                    iconPopups: {
+                        delete: "Delete",
+                        edit: "Edit"
+                    }
+                },
+                metaOptions: {
+                    columns: {
+                        emails: "Email",
+                        id: "User id",
+                        lastModified: "Last modified",
+                        name: "Name",
+                        userName: "Username"
+                    },
+                    heading: "Show Columns"
+                },
+                search: {
+                    emptyResultPlaceholder: {
+                        clearButton: "Clear search query",
+                        subTitle: {
+                            0: "We couldn't find any results for {{query}}",
+                            1: "Please try a different search term."
+                        },
+                        title: "No results found"
+                    }
                 }
             },
             userstores: {

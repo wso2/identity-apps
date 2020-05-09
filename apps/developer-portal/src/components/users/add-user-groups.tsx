@@ -20,6 +20,7 @@ import { Forms } from "@wso2is/forms";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { RolesInterface } from "../../models";
 
 /**
@@ -54,6 +55,8 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         handleInitialGroupListChange,
         handleSetGroupId
     } = props;
+
+    const { t } = useTranslation();
 
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesInterface[]>([]);
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<RolesInterface[]>([]);
@@ -173,7 +176,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         handleInitialGroupListChange(removedGroups);
         handleTempListChange(initialValues?.tempGroupList?.filter(x => !removedGroups.includes(x)));
         handleInitialTempListChange(initialValues?.tempGroupList?.filter(x => !removedGroups.includes(x)));
-        setCheckedAssignedListItems(checkedAssignedListItems?.filter(x => !removedGroups.includes(x)))
+        setCheckedAssignedListItems(checkedAssignedListItems?.filter(x => !removedGroups.includes(x)));
         setIsSelectAssignedAllGroupsChecked(false);
     };
 
@@ -217,20 +220,24 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
             submitState={ triggerSubmit }
         >
             <TransferComponent
-                searchPlaceholder="Search groups"
+                searchPlaceholder={ t("devPortal:components.transferList.searchPlaceholder",
+                    { type: "Groups" }) }
                 addItems={ addGroups }
                 removeItems={ removeGroups }
                 handleUnelectedListSearch={ handleUnselectedListSearch }
                 handleSelectedListSearch={ handleSelectedListSearch }
-                data-testid="user_mgt_add_user_wizard_modal"
+                data-testid="user-mgt-add-user-wizard-modal"
             >
                 <TransferList
                     isListEmpty={ !(initialValues?.groupList?.length > 0) }
                     listType="unselected"
-                    listHeaders={ [ "Domain", "Name", "" ] }
+                    listHeaders={ [
+                        t("devPortal:components.transferList.list.headers.0"),
+                        t("devPortal:components.transferList.list.headers.1"), ""
+                    ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedGroupsAllRolesChecked }
-                    data-testid="user_mgt_add_user_wizard_modal_unselected_groups_select_all_checkbox"
+                    data-testid="user-mgt-add-user-wizard-modal-unselected-groups-select-all-checkbox"
                 >
                     {
                         initialValues?.groupList?.map((group, index)=> {
@@ -245,7 +252,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                                     isItemChecked={ checkedUnassignedListItems.includes(group) }
                                     showSecondaryActions={ true }
                                     handleOpenPermissionModal={ () => handleSetGroupId(group.id) }
-                                    data-testid="user_mgt_add_user_wizard_modal_unselected_groups"
+                                    data-testid="user-mgt-add-user-wizard-modal-unselected-groups"
                                 />
                             )
                         })
@@ -254,10 +261,13 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                 <TransferList
                     isListEmpty={ !(initialValues.tempGroupList.length > 0) }
                     listType="selected"
-                    listHeaders={ [ "Domain", "Name" ] }
+                    listHeaders={ [
+                        t("devPortal:components.transferList.list.headers.0"),
+                        t("devPortal:components.transferList.list.headers.1")
+                    ] }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
                     isHeaderCheckboxChecked={ isSelectAssignedAllGroupsChecked }
-                    data-testid="user_mgt_add_user_wizard_modal_selected_groups_select_all_checkbox"
+                    data-testid="user-mgt-add-user-wizard-modal-selected-groups-select-all-checkbox"
                 >
                     {
                         initialValues?.tempGroupList?.map((group, index)=> {
@@ -271,7 +281,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                                     listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
                                     isItemChecked={ checkedAssignedListItems.includes(group) }
                                     showSecondaryActions={ false }
-                                    data-testid="user_mgt_add_user_wizard_modal_selected_groups"
+                                    data-testid="user-mgt-add-user-wizard-modal-selected-groups"
                                 />
                             )
                         })

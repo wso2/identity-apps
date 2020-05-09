@@ -26,9 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-ui-react";
 import { deleteUser, getUserStoreList, getUsersList } from "../api";
-import { AdvancedSearchWithBasicFilters } from "../components";
-import { UsersList, UsersListOptionsComponent } from "../components/users";
-import { AddUserWizard } from "../components/users/wizard";
+import { AddUserWizard, AdvancedSearchWithBasicFilters, UsersList, UsersListOptionsComponent } from "../components";
 import { UIConstants, UserConstants } from "../constants";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertInterface, AlertLevels, UserListInterface } from "../models";
@@ -105,12 +103,12 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
         const storeOptions = [
                 {
                     key: -2,
-                    text: "All userstores",
+                    text: t("devPortal:components.users.userstores.userstoreOptions.all"),
                     value: "all"
                 },
                 {
                     key: -1,
-                    text: "Primary",
+                    text: t("devPortal:components.users.userstores.userstoreOptions.primary"),
                     value: "primary"
                 }
             ];
@@ -303,8 +301,8 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
 
     return (
         <PageLayout
-            title="Users"
-            description="Create and manage users, user access, and user profiles."
+            title={ t("devPortal:pages.users.title") }
+            description={ t("devPortal:pages.users.subTitle") }
             showBottomDivider={ true }
         >
             <ListLayout
@@ -315,12 +313,14 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
                         filterAttributeOptions={ [
                             {
                                 key: 0,
-                                text: "Username",
+                                text: t("devPortal:components.users.advancedSearch.form.dropdown." +
+                                    "filterAttributeOptions.username"),
                                 value: "userName"
                             },
                             {
                                 key: 1,
-                                text: "Email",
+                                text: t("devPortal:components.users.advancedSearch.form.dropdown." +
+                                    "filterAttributeOptions.email"),
                                 value: "emails"
                             }
                         ] }
@@ -349,7 +349,7 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
                 rightActionPanel={
                     (
                         <PrimaryButton
-                            data-testid="user-mgt-user-ist-add-user-button"
+                            data-testid="user-mgt-user-list-add-user-button"
                             onClick={ () => setShowWizard(true) }
                         >
                             <Icon name="add"/>
@@ -364,10 +364,13 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
                                 className={ "list-options-popup" }
                                 flowing
                                 basic
-                                content={ <UsersListOptionsComponent
-                                    handleMetaColumnChange={ handleMetaColumnChange }
-                                    userListMetaContent={ userListMetaContent }
-                                /> }
+                                content={
+                                    <UsersListOptionsComponent
+                                        data-testid="user-mgt-user-list-meta-columns"
+                                        handleMetaColumnChange={ handleMetaColumnChange }
+                                        userListMetaContent={ userListMetaContent }
+                                    />
+                                }
                                 position="bottom left"
                                 on='click'
                                 pinned
@@ -410,6 +413,7 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
                 {
                     showWizard && (
                     <AddUserWizard
+                        data-testid="user-mgt-add-user-wizard-modal"
                         closeWizard={ () => setShowWizard(false) }
                         listOffset={ listOffset }
                         listItemLimit={ listItemLimit }

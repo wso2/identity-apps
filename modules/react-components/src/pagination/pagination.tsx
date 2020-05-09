@@ -101,7 +101,6 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
         showItemsPerPageDropdown,
         showListSummary,
         totalListSize,
-        itemsPerPageDropDownTestId,
         [ "data-testid" ]: testId,
         ...rest
     } = props;

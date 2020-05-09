@@ -219,7 +219,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             data.Operations.push(operation);
         });
 
-        updateUserInfo(user.id, data).then((response) => {
+        updateUserInfo(user.id, data).then(() => {
             onAlertFired({
                     description: t(
                         "devPortal:components.user.profile.notifications.updateProfileInfo.success.description"
@@ -322,12 +322,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 )
             }
             <Divider hidden />
-            <DangerZoneGroup sectionHeader="Danger Zone">
+            <DangerZoneGroup sectionHeader={ t("devPortal:components.user.editUser.dangerZoneGroup.header") }>
                 <DangerZone
                     data-testid={ `${ testId }-danger-zone` }
-                    actionTitle="Delete User"
-                    header="Delete user"
-                    subheader="Once you delete a user, there is no going back. Please be certain."
+                    actionTitle={ t("devPortal:components.user.editUser.dangerZoneGroup.dangerZone.actionTitle") }
+                    header={ t("devPortal:components.user.editUser.dangerZoneGroup.dangerZone.header") }
+                    subheader={ t("devPortal:components.user.editUser.dangerZoneGroup.dangerZone.subheader") }
                     onActionClick={ (): void => {
                         setShowDeleteConfirmationModal(true);
                         setDeletingUser(user);
@@ -344,24 +344,23 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         assertion={ deletingUser.userName }
                         assertionHint={ <p>Please type <strong>{ deletingUser.userName }</strong> to confirm.</p> }
                         assertionType="input"
-                        primaryAction="Confirm"
-                        secondaryAction="Cancel"
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => handleUserDelete(deletingUser.id) }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            Are you sure?
+                            { t("devPortal:components.user.deleteUser.confirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-testid={ `${ testId }-confirmation-modal-message` }
                             attached
                             warning
-                        >
-                            This action is irreversible and will permanently delete the user.
+                         >
+                            { t("devPortal:components.user.deleteUser.confirmationModal.message") }
                         </ConfirmationModal.Message>
-                        <ConfirmationModal.Content data-testid={ `${ testId }-confirmation-modal-content` }>
-                            If you delete this user, the user will not be able to login to the developer portal or any
-                            other application the user was subscribed before. Please proceed with caution.
+                        <ConfirmationModal.Content>
+                            { t("devPortal:components.user.deleteUser.confirmationModal.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

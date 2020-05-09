@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import _ from "lodash";
@@ -27,9 +28,9 @@ import { RolePermissions } from "./user-role-permissions";
 import { AddUserWizardSummary } from "./wizard-summary";
 import { addUser, addUserRole, getGravatarImage, getRolesList } from "../../../api";
 import { UserWizardStepIcons } from "../../../configs";
-import { AlertLevels } from "../../../models";
 import {
     AddUserWizardStateInterface,
+    AlertLevels,
     RolesInterface,
     UserDetailsInterface,
     createEmptyUserDetails
@@ -39,7 +40,7 @@ import { AddUser } from "../add-user";
 import { AddUserGroup } from "../add-user-groups";
 import { AddUserRole } from "../add-user-role";
 
-interface AddUserWizardPropsInterface {
+interface AddUserWizardPropsInterface extends TestableComponentInterface {
     closeWizard: () => void;
     currentStep?: number;
     listOffset: number;
@@ -79,7 +80,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const {
         updateList,
         closeWizard,
-        currentStep
+        currentStep,
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -576,7 +578,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             content: (
                 viewGroupPermissions
                      ? <RolePermissions
-                            data-testid="user_mgt_add_user_wizard_modal_group_permission"
+                            data-testid={ `${ testId }-group-permission` }
                             handleNavigateBack={ handleViewGroupPermission }
                             roleId={ selectedGroupId }
                         />
@@ -605,7 +607,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             content: (
                 viewRolePermissions
                 ? <RolePermissions
-                        data-testid="user_mgt_add_user_wizard_modal_role_permission"
+                        data-testid={ `${ testId }-role-permission` }
                         handleNavigateBack={ handleViewRolePermission }
                         roleId={ selectedRoleId }
                     />
@@ -615,9 +617,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         initialValues={
                             {
                                 initialRoleList: initialRoleList,
+                                initialTempRoleList: initialTempRoleList,
                                 roleList: roleList,
-                                tempRoleList: tempRoleList,
-                                initialTempRoleList: initialTempRoleList
+                                tempRoleList: tempRoleList
                             }
                         }
                         handleRoleListChange={ (roles) => handleRoleListChange(roles) }
@@ -645,7 +647,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     return (
         <Modal
-            data-testid="user_mgt_add_user_wizard_modal"
+            data-testid={ testId }
             open={ true }
             className="wizard application-create-wizard"
             dimmer="blurring"
@@ -679,7 +681,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton
-                                data-testid="user_mgt_add_user_wizard_modal_cancel_button"
+                                data-testid={ `${ testId }-cancel-button` }
                                 floated="left"
                                 onClick={ () => closeWizard() }
                             >
@@ -689,7 +691,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
                                 <PrimaryButton
-                                    data-testid="user_mgt_add_user_wizard_modal_next_button"
+                                    data-testid={ `${ testId }-next-button` }
                                     floated="right"
                                     onClick={ navigateToNext }
                                 >
@@ -699,7 +701,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             ) }
                             { currentWizardStep === STEPS.length - 1 && (
                                 <PrimaryButton
-                                    data-testid="user_mgt_add_user_wizard_modal_finish_button"
+                                    data-testid={ `${ testId }-finish-button` }
                                     floated="right"
                                     onClick={ navigateToNext }
                                 >
@@ -707,7 +709,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             ) }
                             { currentWizardStep > 0 && (
                                 <LinkButton
-                                    data-testid="user_mgt_add_user_wizard_modal_previous_button"
+                                    data-testid={ `${ testId }-previous-button` }
                                     floated="right"
                                     onClick={ navigateToPrevious }
                                 >

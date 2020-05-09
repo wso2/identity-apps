@@ -102,8 +102,14 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     }, []);
 
     const passwordOptions = [
-        { label: "Set user password", value: "createPw" },
-        { label: "Invite user to set password", value: "askPw" }
+        {
+            label: t("devPortal:components.user.forms.addUserForm.buttons.radioButton.options.createPassword"),
+            value: "createPw"
+        },
+        {
+            label: t("devPortal:components.user.forms.addUserForm.buttons.radioButton.options.askPassword"),
+            value: "askPw"
+        }
     ];
 
     /**
@@ -148,8 +154,19 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      * The following function fetch the user store list and set it to the state.
      */
     const getUserStores = (): void => {
-        const storeOptions = [{ text: "Primary", key: -1, value: "primary" }];
-        let storeOption = { text: "", key: null, value: "" };
+        const storeOptions = [
+                {
+                    key: -1,
+                    text: t("devPortal:components.users.userstores.userstoreOptions.primary"),
+                    value: "primary"
+                }
+            ];
+        let storeOption =
+            {
+                key: null,
+                text: "",
+                value: ""
+            };
         getUserStoreList()
             .then((response) => {
                 if (storeOptions === []) {
@@ -172,14 +189,14 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
     const getFormValues = (values: Map<string, FormValue>): BasicUserDetailsInterface => {
         return {
+            confirmPassword: values.get("confirmPassword") && values.get("confirmPassword") !== undefined  ?
+                values.get("confirmPassword").toString() : "",
             domain: values.get("domain").toString(),
             email: values.get("email").toString(),
             firstName: values.get("firstName").toString(),
             lastName: values.get("lastName").toString(),
             newPassword: values.get("newPassword") && values.get("newPassword") !== undefined  ?
                 values.get("newPassword").toString() : "",
-            confirmPassword: values.get("confirmPassword") && values.get("confirmPassword") !== undefined  ?
-                values.get("confirmPassword").toString() : "",
             passwordOption: values.get("passwordOption").toString(),
             userName: values.get("userName").toString()
         };
@@ -192,7 +209,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
-                                data-testid="user_mgt_add_user_form_newPassword_input"
+                                data-testid="user-mgt-add-user-form-newPassword-input"
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
                                     "devPortal:components.user.forms.addUserForm.inputs.newPassword.label"
@@ -225,7 +242,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
-                                data-testid="user_mgt_add_user_form_confirmPassword_input"
+                                data-testid="user-mgt-add-user-form-confirmPassword-input"
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
                                     "devPortal:components.user.forms.addUserForm.inputs.confirmPassword.label"
@@ -280,7 +297,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     const addUserBasicForm = () => (
         <Forms
-            data-testid="user_mgt_add_user_form"
+            data-testid="user-mgt-add-user-form"
             onSubmit={ (values) => {
                 onSubmit(getFormValues(values));
             } }
@@ -290,7 +307,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
-                            data-testid="user_mgt_add_user_form_domain_dropdown"
+                            data-testid="user-mgt-add-user-form-domain-dropdown"
                             type="dropdown"
                             label={ t(
                                 "devPortal:components.user.forms.addUserForm.inputs.domain.label"
@@ -307,7 +324,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
-                            data-testid="user_mgt_add_user_form_username_input"
+                            data-testid="user-mgt-add-user-form-username-input"
                             label={ t(
                                 "devPortal:components.user.forms.addUserForm.inputs.username.label"
                             ) }
@@ -325,7 +342,9 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             validation={ (value: string, validation: Validation) => {
                                 if (isUsernameValid === false) {
                                     validation.isValid = false;
-                                    validation.errorMessages.push("A user already exists with this username.");
+                                    validation.errorMessages.push( t("devPortal:components.user.forms." +
+                                        "addUserForm.inputs.username.validations.invalid"
+                                    ) );
                                 }
                             } }
                             value={ initialValues && initialValues.userName }
@@ -336,7 +355,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
-                            data-testid="user_mgt_add_user_form_firstName_input"
+                            data-testid="user-mgt-add-user-form-firstName-input"
                             label={ t(
                                 "devPortal:components.user.forms.addUserForm.inputs.firstName.label"
                             ) }
@@ -356,7 +375,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
-                            data-testid="user_mgt_add_user_form_lastName_input"
+                            data-testid="user-mgt-add-user-form-lastName-input"
                             label={ t(
                                 "devPortal:components.user.forms.addUserForm.inputs.lastName.label"
                             ) }
@@ -378,7 +397,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
-                            data-testid="user_mgt_add_user_form_email_input"
+                            data-testid="user-mgt-add-user-form-email-input"
                             label={ t(
                                 "devPortal:components.user.forms.addUserForm.inputs.email.label"
                             ) }
@@ -411,9 +430,9 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Field
-                            data-testid="user_mgt_add_user_form_passwordOption_radio_button"
+                            data-testid="user-mgt-add-user-form-passwordOption-radio-button"
                             type="radio"
-                            label="Select the method to set the user password"
+                            label={ t("devPortal:components.user.forms.addUserForm.buttons.radioButton.label") }
                             name="passwordOption"
                             default="createPw"
                             listen={ (values) => { setPasswordOption(values.get("passwordOption").toString()); } }

@@ -308,7 +308,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                         {
                             (secondaryAction && onSecondaryActionClick) && (
                                     <LinkButton
-                                        data-testid={ `${ testId }-secondary-action` }
+                                        data-testid={ testId + "-cancel-button" }
                                         positive={ type === "positive" }
                                         neagtive={ type === "negative" }
                                         warning={ type === "warning" }
@@ -322,7 +322,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                         {
                             (primaryAction && onPrimaryActionClick) && (
                                 <Button
-                                    data-testid={ `${ testId }-primary-action` }
+                                    data-testid={ testId + "-confirm-button" }
                                     className={ `${ type } ${ primaryActionFluid ? "fluid" : "" }` }
                                     disabled={ !(!assertionType || confirmed) }
                                     onClick={ onPrimaryActionClick }

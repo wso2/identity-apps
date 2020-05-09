@@ -18,6 +18,7 @@
 
 import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
@@ -43,6 +44,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         user,
         handleUserUpdate
     } = props;
+
+    const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const handleAlerts = (alert: AlertInterface) => {
@@ -51,7 +54,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     const panes = () => ([
         {
-            menuItem: "Profile",
+            menuItem: t("devPortal:components.user.editUser.menu.menuItems.0"),
             render: () => (
                 <ResourceTab.Pane attached={ false }>
                     <UserProfile
@@ -63,7 +66,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             )
         },
         {
-            menuItem: "Groups",
+            menuItem: t("devPortal:components.user.editUser.menu.menuItems.1"),
             render: () => (
                 <ResourceTab.Pane attached={ false }>
                     <UserGroupsList
@@ -75,7 +78,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             )
         },
         {
-            menuItem: "Roles",
+            menuItem: t("devPortal:components.user.editUser.menu.menuItems.2"),
             render: () => (
                 <ResourceTab.Pane attached={ false }>
                     <UserRolesList
