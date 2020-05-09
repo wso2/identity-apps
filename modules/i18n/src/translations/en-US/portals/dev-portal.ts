@@ -475,6 +475,16 @@ export const devPortal: DevPortalNS = {
                             message: "External attribute added successfully"
                         }
                     },
+                    deleteExternalClaim:{
+                        genericError: {
+                            description: "There was an error while deleting the external attribute",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The external attribute has been deleted successfully!",
+                            message: "External attribute deleted successfully"
+                        }
+                    },
                     getExternalAttribute: {
                         genericError: {
                             description: "There was an error while fetching the external attribute",
@@ -505,6 +515,53 @@ export const devPortal: DevPortalNS = {
                         title: "No External Attributes"
                     }
                 }
+            },
+            list:{
+                confirmation: {
+                    action: "confirm",
+                    content: "{{message}} Please proceed with caution.",
+                    dialect: {
+                        message: "If you delete this external dialect, all the"
+                            + " associated external attributes will also be deleted.",
+                        name: "external dialect"
+                    },
+                    external: {
+                        message: "This will permanently delete the external attribute.",
+                        name: "external attribute"
+                    },
+                    header: "Are you sure?",
+                    hint: "Please type {assertion} to confirm.",
+                    local: {
+                        message: "If you delete this local attribute, the user data belonging "
+                            + "to this attribute will also be deleted.",
+                        name: "local attribute"
+                    },
+                    message: "This action is irreversible and will permanently delete the selected {{name}}."
+                },
+                placeholders: {
+                    emptyList: {
+                        action: {
+                            dialect: "New External Attribute",
+                            external: "New External Attribute",
+                            local: "New Local Attribute"
+                        },
+                        subtitle: "There are currently no results available."
+                            + "You can add a new item easily by following the" + "steps in the creation wizard.",
+                        title: {
+                            dialect: "Add an External Dialect",
+                            external: "Add an External Attribute",
+                            local: "Add a Local Attribute"
+                        }
+                    },
+                    emptySearch: {
+                        action: "Clear search query",
+                        subtitle: "We couldn't find any results for {{searchQuery}}."
+                            + "Please try a different search term.",
+                        title: "No results found"
+                    }
+                },
+                warning:"This attribute has not been mapped to an attribute"+
+                        " in the following userstores:"
             },
             local: {
                 additionalProperties: {

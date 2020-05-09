@@ -273,6 +273,7 @@ export interface DevPortalNS {
                     addExternalAttribute: Notification;
                     getExternalAttribute: Notification;
                     updateExternalAttribute: Notification;
+                    deleteExternalClaim: Notification;
                 };
                 forms: {
                     attributeURI: FormField;
@@ -389,6 +390,48 @@ export interface DevPortalNS {
                 mappedAttributes: {
                     hint: string;
                 };
+            };
+            list: {
+                confirmation: {
+                    local: {
+                        message: string;
+                        name: string;
+                    };
+                    dialect: {
+                        message: string;
+                        name: string;
+                    };
+                    external: {
+                        message: string;
+                        name: string;
+                    };
+                    hint: string;
+                    header: string;
+                    message: string;
+                    content: string;
+                    action: string;
+                };
+                placeholders: {
+                    emptySearch: {
+                        title: string;
+                        subtitle: string;
+                        action: string;
+                    };
+                    emptyList: {
+                        title: {
+                            local: string;
+                            dialect: string;
+                            external: string;
+                        };
+                        subtitle: string;
+                        action: {
+                            local: string;
+                            dialect: string;
+                            external: string;
+                        };
+                    };
+                };
+                warning: string;
             };
         };
         emailTemplateTypes: {
