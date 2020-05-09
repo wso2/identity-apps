@@ -161,7 +161,34 @@ export interface DevPortalNS {
                     alias: string;
                 };
                 notifications: {
+                    addCertificate: Notification;
                     getCertificates: Notification;
+                    getAlias: Notification;
+                    getPublicCertificate: Notification;
+                    getCertificate: Notification;
+                    deleteCertificate: Notification;
+                    download: Notification;
+                };
+                certificateModalHeader: string;
+                placeholders: {
+                    emptySearch: {
+                        action: string;
+                        title: string;
+                        subtitle: string;
+                    };
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitle: string;
+                    };
+                };
+                confirmation: {
+                    hint: string;
+                    primaryAction: string;
+                    header: string;
+                    content: string;
+                    message: string;
+                    tenantContent: string;
                 };
                 pageLayout: {
                     title: string;
@@ -181,6 +208,11 @@ export interface DevPortalNS {
                         upload: string;
                         paste: string;
                     };
+                    steps: {
+                        upload: string;
+                        summary: string;
+                    };
+                    header: string;
                     dropZone: {
                         description: string;
                         action: string;

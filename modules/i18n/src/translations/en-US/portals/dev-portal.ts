@@ -286,6 +286,18 @@ export const devPortal: DevPortalNS = {
                 attributes: {
                     alias: "Alias"
                 },
+                certificateModalHeader: "View Certificate",
+                confirmation: {
+                    content: "This action is irreversible and will permanently delete the certificate.",
+                    header: "Are you sure?",
+                    hint: "Please type {{id}} to confirm.",
+                    message: "This action is irreversible and will permanently delete the certificate.",
+                    primaryAction: "Confirm",
+                    tenantContent: "This will delete the tenant certificate permanently."
+                        + "Once deleted, unless you import a new tenant certificate,"
+                        + "you won't be able to access the portal applications."
+                        + "To continue deleting, enter the alias of the certificate and click delete."
+                },
                 errorCertificate: "An error occurred while decoding the certificate."
                     + " Please ensure the certificate is valid.",
                 errorEmpty: "Either add a certificate file or paste the content of a PEM-encoded certificate.",
@@ -297,10 +309,55 @@ export const devPortal: DevPortalNS = {
                     }
                 },
                 notifications: {
+                    addCertificate:{
+                        genericError: {
+                            description: "An error occurred while importing the certificate.",
+                            message: "Something went wrong!"
+                        },
+                        success: {
+                            description: "The certificate has been imported successfully.",
+                            message: "Certificate import success"
+                        }
+                    },
+                    deleteCertificate: {
+                        genericError: {
+                            description: "There was an error while deleting the certificate",
+                            message: "Something went wrong!"
+                        },
+                        success: {
+                            description: "The certificate has been successfully deleted.",
+                            message: "Certificate deleted successfully"
+                        }
+                    },
+                    download: {
+                        success: {
+                            description: "The certificate has started downloading.",
+                            message: "Certificate download started"
+                        }
+                    },
+                    getAlias: {
+                        genericError: {
+                            description: "An error occurred while fetching the certificate.",
+                            message: "Something went wrong"
+                        }
+                    },
+                    getCertificate: {
+                        genericError: {
+                            description: "There was an error while fetching "
+                                + "the certificate",
+                            message: "Something went wrong!"
+                        }
+                    },
                     getCertificates: {
                         genericError: {
                             description: "An error occurred while fetching certificates",
                             message: "Something went wrong"
+                        }
+                    },
+                    getPublicCertificate: {
+                        genericError: {
+                            description: "There was an error while fetching the tenant certificate.",
+                            message: "Something went wrong!"
                         }
                     }
                 },
@@ -308,6 +365,21 @@ export const devPortal: DevPortalNS = {
                     description: "Create and manage certificates in the keystore",
                     primaryAction: "Import Certificate",
                     title: "Certificates"
+                },
+                placeholders: {
+                    emptyList: {
+                        action: "Import Certificate",
+                        subtitle: "There are currently no certificates available."
+                            + "You can import a new certificate by clicking on"
+                            + "the button below.",
+                        title: "Import Certificate"
+                    },
+                    emptySearch: {
+                        action: "Clear search query",
+                        subtitle: "We couldn't find any results for {{searchQuery}},"
+                            + "Please try a different search term.",
+                        title: "No results found"
+                    }
                 },
                 summary: {
                     issuerDN: "Issuer DN",
@@ -322,11 +394,16 @@ export const devPortal: DevPortalNS = {
                         action: "Upload Certificate",
                         description: "Drag and drop a certificate file here"
                     },
+                    header: "Import Certificate",
                     panes: {
                         paste: "Paste",
                         upload: "Upload"
                     },
-                    pastePlaceholder: "Paste the content of a PEM certificate"
+                    pastePlaceholder: "Paste the content of a PEM certificate",
+                    steps: {
+                        summary: "Summary",
+                        upload: "Upload certificate"
+                    }
                 }
             },
             truststore: {
