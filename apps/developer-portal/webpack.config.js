@@ -28,7 +28,7 @@ module.exports = (env) => {
     const basename = "developer-portal";
     const devServerPort = 9001;
     const publicPath = `/${basename}`;
-    const isProd = env.NODE_ENV === "prod";
+    const isProd = env.NODE_ENV === "production";
     const debug = false;
 
     // user-portal related variables
