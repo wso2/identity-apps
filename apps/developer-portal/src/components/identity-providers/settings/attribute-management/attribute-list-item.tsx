@@ -18,6 +18,7 @@
 
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { Input, Label, Table } from "semantic-ui-react";
 import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../../models";
 
@@ -43,6 +44,8 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         mapping,
         placeholder
     } = props;
+
+    const { t } = useTranslation();
 
     const handleClaimMapping = (e) => {
         const mappingValue = e.target.value;
@@ -71,7 +74,8 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             <Label
                                 basic color='red'
                                 pointing='left'>
-                                Please enter a value
+                                { t("devPortal:components.idp.forms.attributeSettings." +
+                                    "attributeListItem.validation.empty") }
                             </Label>
                         ) }
                     </Table.Cell>

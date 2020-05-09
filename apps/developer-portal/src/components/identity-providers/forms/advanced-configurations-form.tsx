@@ -96,7 +96,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             toggle
                         />
                         <Hint>
-                            { t("devPortal.components.idp.forms.advancedConfigs.federationHub.hint") }
+                            { t("devPortal:components.idp.forms.advancedConfigs.federationHub.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

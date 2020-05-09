@@ -18,7 +18,8 @@
 
 import { Heading, Hint } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "../attribute-settings";
 
@@ -44,9 +45,11 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
         updateSubject
     } = props;
 
+    const { t } = useTranslation();
+
     const getValidatedInitialValue = (initialValue: string) => {
         return _.find(dropDownOptions, option => option?.value === initialValue) !== undefined ? initialValue : "";
-    }
+    };
 
     return (
         <>
@@ -56,7 +59,9 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                     <Divider hidden/>
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    <Heading as="h5">Subject</Heading>
+                    <Heading as="h5">
+                        { t("devPortal:components.idp.forms.uriAttributeSettings.subject.heading") }
+                    </Heading>
                     <Divider hidden/>
                     <Form>
                         <Form.Select
@@ -64,7 +69,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             required={ true }
                             options={ dropDownOptions }
                             value={ getValidatedInitialValue(initialSubjectUri) }
-                            placeholder={ "Select Attribute" }
+                            placeholder={ t("devPortal:components.idp.forms.uriAttributeSettings.subject.placeHolder") }
                             onChange={
                                 (event, data) => {
                                     updateSubject(data.value.toString())
@@ -73,14 +78,15 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             search
                             fullTextSearch={ false }
                             error={ _.isEmpty(getValidatedInitialValue(initialSubjectUri)) && {
-                                content: "Please select an attribute for subject",
+                                content: t("devPortal:components.idp.forms.uriAttributeSettings." +
+                                    "subject.validation.empty"),
                                 pointing: "above"
                             } }
-                            label={ "Subject Attribute" }
+                            label={ t("devPortal:components.idp.forms.uriAttributeSettings.subject.label") }
                         />
                     </Form>
                     <Hint>
-                        Specifies the attribute that identifies the user at the identity provider
+                        { t("devPortal:components.idp.forms.uriAttributeSettings.subject.hint") }
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
@@ -92,7 +98,9 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                         <Divider hidden/>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Heading as="h5">Role</Heading>
+                        <Heading as="h5">
+                            { t("devPortal:components.idp.forms.uriAttributeSettings.role.heading") }
+                        </Heading>
                         <Divider hidden/>
                         <Form>
                             <Form.Select
@@ -100,7 +108,8 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 required={ true }
                                 options={ dropDownOptions }
                                 value={ getValidatedInitialValue(initialRoleUri) }
-                                placeholder={ "Select Attribute" }
+                                placeholder={ t("devPortal:components.idp.forms.uriAttributeSettings." +
+                                    "role.placeHolder") }
                                 onChange={
                                     (event, data) => {
                                         updateRole(data.value.toString())
@@ -109,14 +118,15 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 search
                                 fullTextSearch={ false }
                                 error={ _.isEmpty(getValidatedInitialValue(initialRoleUri)) && {
-                                    content: "Please select an attribute for role",
+                                    content: t("devPortal:components.idp.forms.uriAttributeSettings." +
+                                        "role.validation.empty"),
                                     pointing: "above"
                                 } }
-                                label={ "Role Attribute" }
+                                label={ t("devPortal:components.idp.forms.uriAttributeSettings.role.label") }
                             />
                         </Form>
                         <Hint>
-                            Specifies the attribute that identifies the Roles at the Identity Provider
+                            { t("devPortal:components.idp.forms.uriAttributeSettings.role.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

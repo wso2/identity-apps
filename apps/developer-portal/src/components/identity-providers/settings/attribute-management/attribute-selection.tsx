@@ -19,12 +19,12 @@
 import { EmptyPlaceholder, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
 import { AttributeListItem } from "./attribute-list-item";
 import { AttributeSelectionWizard } from "./attribute-selection-wizard";
 import { EmptyPlaceholderIllustrations } from "../../../../configs";
 import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../../models";
-
 
 interface AttributeSelectionPropsInterface {
     attributeList: IdentityProviderClaimInterface[];
@@ -57,6 +57,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         selectedAttributesWithMapping,
         uiProps
     } = props;
+
+    const { t } = useTranslation();
     
     const [showSelectionModal, setShowSelectionModal] = useState<boolean>(false);
 
@@ -117,7 +119,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                         <Input
                                                             icon={ <Icon name="search"/> }
                                                             onChange={ handleSearch }
-                                                            placeholder="Search attributes"
+                                                            placeholder={ t("devPortal:components.idp.forms." +
+                                                                "attributeSettings.attributeSelection." +
+                                                                "searchAttributes.placeHolder") }
                                                             floated="left"
                                                             size="small"
                                                         />
@@ -179,13 +183,13 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                         ) : (
                             <Segment>
                                 <EmptyPlaceholder
-                                    title="No attributes added"
+                                    title={ t("devPortal:components.idp.placeHolders.noAttributes.title") }
                                     subtitle={ [
-                                        "There are no attributes selected at the moment."
+                                        t("devPortal:components.idp.placeHolders.noAttributes.subtitles.0")
                                     ] }
                                     action={
                                         <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">
-                                            Add Attribute
+                                            { t("devPortal:components.idp.buttons.addAttribute") }
                                         </PrimaryButton>
                                     }
                                     image={ EmptyPlaceholderIllustrations.emptyList }

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { LoadableComponentInterface } from "@wso2is/core/dist/src/models";
+import { LoadableComponentInterface } from "@wso2is/core/models";
 import {
     ConfirmationModal,
     EmptyPlaceholder,

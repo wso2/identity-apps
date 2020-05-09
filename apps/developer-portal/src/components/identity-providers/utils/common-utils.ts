@@ -20,6 +20,7 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { store } from "../../../store";
+import { updateIDPRoleMappings, updateOutboundProvisioningConnector } from "../../../api";
 
 export const handleIDPDeleteError = (error) => {
     if (error.response && error.response.data && error.response.data.description) {
@@ -71,8 +72,94 @@ export const handleGetRoleListError = (error) => {
     }
 
     store.dispatch(addAlert({
-        description: I18n.instance.t("devPortal.components.idp.notifications.getRolesList.genericError.description"),
+        description: I18n.instance.t("devPortal:components.idp.notifications.getRolesList.genericError.description"),
         level: AlertLevels.ERROR,
         message: I18n.instance.t("devPortal:components.idp.notifications.getRolesList.genericError.message")
+    }));
+};
+
+export const handleUpdateIDPRoleMappingsError = (error) => {
+    if (error.response && error.response.data && error.response.data.description) {
+        store.dispatch(addAlert({
+            description: I18n.instance.t("devPortal:components.idp.notifications." +
+                "updateIDPRoleMappings.error.description",
+                { description: error.response.data.description }),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t("devPortal:components.idp.notifications.updateIDPRoleMappings.error.message")
+        }));
+    }
+
+    store.dispatch(addAlert({
+        description: I18n.instance.t("devPortal:components.idp.notifications.updateIDPRoleMappings." +
+            "genericError.description"),
+        level: AlertLevels.ERROR,
+        message: I18n.instance.t("devPortal:components.idp.notifications.updateIDPRoleMappings.genericError.message")
+    }));
+};
+
+export const handleGetFederatedAuthenticatorMetadataAPICallError = (error) => {
+    if (error.response && error.response.data && error.response.data.description) {
+        store.dispatch(addAlert({
+            description: I18n.instance.t("devPortal:components.idp.notifications.getFederatedAuthenticatorMetadata." +
+                "error.description", { description: error.response.data.description }),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t("devPortal:components.idp.notifications." +
+                "getFederatedAuthenticatorMetadata.error.message")
+        }));
+
+        return;
+    }
+
+    store.dispatch(addAlert({
+        description: I18n.instance.t("devPortal:components.idp.notifications.getFederatedAuthenticatorMetadata." +
+            "genericError.description"),
+        level: AlertLevels.ERROR,
+        message: I18n.instance.t("devPortal:components.idp.notifications." +
+            "getFederatedAuthenticatorMetadata.genericError.message")
+    }));
+};
+
+export const handleGetOutboundProvisioningConnectorMetadataError = (error) => {
+    if (error?.response?.data?.description) {
+        store.dispatch(addAlert({
+            description: I18n.instance.t("devPortal:components.idp.notifications." +
+                "getOutboundProvisioningConnectorMetadata.error.description",
+                { description: error.response.data.description } ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t("devPortal:components.idp.notifications." +
+                "getOutboundProvisioningConnectorMetadata.error.message")
+        }));
+
+        return;
+    }
+
+    store.dispatch(addAlert({
+        description: I18n.instance.t("devPortal:components.idp.notifications." +
+            "getOutboundProvisioningConnectorMetadata.genericError.description"),
+        level: AlertLevels.ERROR,
+        message: I18n.instance.t("devPortal:components.idp.notifications." +
+            "getOutboundProvisioningConnectorMetadata.genericError.message")
+    }));
+};
+
+export const handleUpdateOutboundProvisioningConnectorError = (error) => {
+    if (error.response && error.response.data && error.response.data.description) {
+        store.dispatch(addAlert({
+            description: I18n.instance.t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
+                "error.description", { description: error.response.data.description } ),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
+                "error.message")
+        }));
+
+        return;
+    }
+
+    store.dispatch(addAlert({
+        description: I18n.instance.t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
+            "genericError.description"),
+        level: AlertLevels.ERROR,
+        message: I18n.instance.t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
+            "genericError.message")
     }));
 };

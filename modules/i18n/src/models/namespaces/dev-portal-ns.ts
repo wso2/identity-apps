@@ -245,6 +245,7 @@ export interface DevPortalNS {
                 addIDP: string;
                 addAuthenticator: string;
                 addConnector: string;
+                addAttribute: string;
             };
             confirmations: {
                 deleteIDP: Confirmation;
@@ -286,6 +287,16 @@ export interface DevPortalNS {
                         componentHeading: string;
                         hint: string;
                     };
+                    attributeListItem: {
+                        validation: {
+                            empty: string;
+                        };
+                    };
+                    attributeSelection: {
+                        searchAttributes: {
+                            placeHolder: string;
+                        };
+                    };
                 };
                 authenticatorAccordion: {
                     default: {
@@ -325,6 +336,46 @@ export interface DevPortalNS {
                         };
                     };
                 };
+                roleMapping: {
+                    heading: string;
+                    keyName: string;
+                    valueName: string;
+                    validation: {
+                        keyRequiredMessage: string;
+                        valueRequiredErrorMessage: string;
+                        duplicateKeyErrorMsg: string;
+                    };
+                    hint: string;
+                };
+                uriAttributeSettings: {
+                    subject: {
+                        heading: string;
+                        hint: string;
+                        placeHolder: string;
+                        label: string;
+                        validation: {
+                            empty: string;
+                        };
+                    };
+                    role: {
+                        heading: string;
+                        hint: string;
+                        placeHolder: string;
+                        label: string;
+                        validation: {
+                            empty: string;
+                        };
+                    };
+                };
+                outboundProvisioningRoles: {
+                    heading: string;
+                    hint: string;
+                    placeHolder: string;
+                    label: string;
+                    popup: {
+                        content: string;
+                    };
+                };
             };
             templates: {
                 manualSetup: {
@@ -341,28 +392,112 @@ export interface DevPortalNS {
                     title: string;
                     subTitle: string;
                 };
+                addProvisioningConnector: {
+                    title: string;
+                    subTitle: string;
+                };
+                attributeSelection: {
+                    title: string;
+                    subTitle: string;
+                    content: {
+                        searchPlaceholder: string;
+                    };
+                };
             };
             notifications: {
+                addFederatedAuthenticator: Notification;
+                addIDP: Notification;
                 deleteIDP: Notification;
+                disableAuthenticator: Notification;
+                disableOutboundProvisioningConnector: Notification;
                 getIDP: Notification;
-                updateIDP: Notification;
-                submitAttributeSettings: Notification;
-                updateFederatedAuthenticator: Notification;
-                getIDPTemplateList: Notification;
                 getIDPTemplate: Notification;
+                getIDPTemplateList: Notification;
                 getFederatedAuthenticator: Notification;
                 getFederatedAuthenticatorMetadata: Notification;
-                disableAuthenticator: Notification;
-                updateJITProvisioning: Notification;
-                getOutboundProvisioningConnectorMetadata: Notification;
                 getOutboundProvisioningConnector: Notification;
+                getOutboundProvisioningConnectorsList: Notification;
+                getOutboundProvisioningConnectorMetadata: Notification;
+                getAllLocalClaims: Notification;
+                getRolesList: Notification;
+                submitAttributeSettings: Notification;
+                updateClaimsConfigs: Notification;
+                updateFederatedAuthenticator: Notification;
+                updateIDP: Notification;
+                updateIDPRoleMappings: Notification;
+                updateJITProvisioning: Notification;
                 updateOutboundProvisioningConnector: Notification;
-                disableOutboundProvisioningConnector: Notification;
             };
             placeHolders: {
                 emptyIDPList: Placeholder;
                 emptyAuthenticatorList: Placeholder;
                 emptyConnectorList: Placeholder;
+                noAttributes: Placeholder;
+            };
+            wizards: {
+                addAuthenticator: {
+                    header: string;
+                    steps: {
+                        authenticatorSelection: {
+                            title: string;
+                            quickSetup: {
+                                title: string;
+                                subTitle: string;
+                            };
+                            manualSetup: {
+                                title: string;
+                                subTitle: string;
+                            };
+                        };
+                        authenticatorConfiguration: {
+                            title: string;
+                        };
+                        summary: {
+                            title: string;
+                        };
+                    };
+                };
+                addIDP: {
+                    header: string;
+                    steps: {
+                        generalSettings: {
+                            title: string;
+                        };
+                        authenticatorConfiguration: {
+                            title: string;
+                        };
+                        provisioningConfiguration: {
+                            title: string;
+                        };
+                        summary: {
+                            title: string;
+                        };
+                    };
+                };
+                addProvisioningConnector: {
+                    header: string;
+                    steps: {
+                        connectorSelection: {
+                            title: string;
+                            defaultSetup: {
+                                title: string;
+                                subTitle: string;
+                            };
+                        };
+                        connectorConfiguration: {
+                            title: string;
+                        };
+                        summary: {
+                            title: string;
+                        };
+                    };
+                };
+                buttons: {
+                    next: string;
+                    finish: string;
+                    previous: string;
+
+                };
             };
         };
         users: {
@@ -858,6 +993,7 @@ export interface DevPortalNS {
                     message: string;
                 };
                 notifications: {
+                    getConfigurations: Notification;
                     updateConfigurations: Notification;
                     updateEnable: Notification;
                     updateAccountLockOnCreation: Notification;
@@ -885,6 +1021,7 @@ export interface DevPortalNS {
                     message: string;
                 };
                 notifications: {
+                    getConfigurations: Notification;
                     updateConfigurations: Notification;
                     updateEnableUsernameRecovery: Notification;
                     updateUsernameRecoveryReCaptcha: Notification;
@@ -934,6 +1071,7 @@ export interface DevPortalNS {
                     message: string;
                 };
                 notifications: {
+                    getConfigurations: Notification;
                     updateConfigurations: Notification;
                     updateAccountLockEnable: Notification;
                     updateAccountDisablingEnable: Notification;
@@ -979,9 +1117,10 @@ export interface DevPortalNS {
                     message: string;
                 };
                 notifications: {
-                    updateConfigurations: Notification;
                     accountLockEnable: Notification;
                     accountDisablingEnable: Notification;
+                    getConfigurations: Notification;
+                    updateConfigurations: Notification;
                 };
                 passwordHistory: {
                     heading: string;

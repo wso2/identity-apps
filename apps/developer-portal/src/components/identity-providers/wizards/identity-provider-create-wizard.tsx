@@ -22,10 +22,10 @@ import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { AuthenticatorSettings, GeneralSettings, WizardSummary } from "./steps";
-import { OutboundProvisioningSettings } from "./steps";
+import { AuthenticatorSettings, GeneralSettings, OutboundProvisioningSettings, WizardSummary } from "./steps";
 import {
     createIdentityProvider,
     getFederatedAuthenticatorMetadata,
@@ -42,8 +42,12 @@ import {
     OutboundProvisioningConnectorMetaInterface,
     ProvisioningInterface
 } from "../../../models";
-import { AppState, store } from "../../../store";
+import { AppState } from "../../../store";
 import { IdentityProviderManagementUtils } from "../../../utils";
+import {
+    handleGetFederatedAuthenticatorMetadataAPICallError,
+    handleGetOutboundProvisioningConnectorMetadataError
+} from "../utils";
 
 /**
  * Proptypes for the identity provider creation wizard component.
@@ -125,6 +129,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         useState<OutboundProvisioningConnectorMetaInterface>(undefined);
 
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const availableAuthenticators = useSelector((state: AppState) =>
         state.identityProvider.meta.authenticators);
@@ -144,9 +149,9 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         createIdentityProvider(identityProvider)
             .then((response) => {
                 dispatch(addAlert({
-                    description: "Successfully created the identity provider",
+                    description: t("devPortal:components.idp.notifications.addIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Creation successful"
+                    message: t("devPortal:components.idp.notifications.addIDP.success.message")
                 }));
 
                 // The created resource's id is sent as a location header.
@@ -165,18 +170,19 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
-                        description: error.response.data.description,
+                        description: t("devPortal:components.idp.notifications.addIDP.error.description",
+                            { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: "Identity provider Create Error"
+                        message: t("devPortal:components.idp.notifications.addIDP.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while creating the identity provider",
+                    description: t("devPortal:components.idp.notifications.addIDP.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Creation Error"
+                    message: t("devPortal:components.idp.notifications.addIDP.genericError.message")
                 }));
             });
     };
@@ -355,25 +361,13 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      *
      * @param authenticatorId
      */
-    const getAuthenticatorMetadata = (authenticatorId: string): Promise<void> => {
-        return getFederatedAuthenticatorMetadata(authenticatorId)
+    const setAuthenticatorMetadata = (authenticatorId: string) => {
+        getFederatedAuthenticatorMetadata(authenticatorId)
             .then((response) => {
                 setDefaultAuthenticatorMetadata(response);
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    store.dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Retrieval error"
-                    }));
-                    return;
-                }
-                store.dispatch(addAlert({
-                    description: "An error occurred retrieving the authenticator: ." + authenticatorId,
-                    level: AlertLevels.ERROR,
-                    message: "Retrieval error"
-                }));
+                handleGetFederatedAuthenticatorMetadataAPICallError(error);
             });
     };
 
@@ -388,19 +382,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 setDefaultOutboundProvisioningConnectorMetadata(response);
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    store.dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Retrieval error"
-                    }));
-                    return;
-                }
-                store.dispatch(addAlert({
-                    description: "An error occurred retrieving the outbound provisioning connector: ." + connectorId,
-                    level: AlertLevels.ERROR,
-                    message: "Retrieval error"
-                }));
+                handleGetOutboundProvisioningConnectorMetadataError(error);
             });
     };
 
@@ -410,7 +392,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     useEffect(() => {
         if (availableAuthenticators?.find(eachAuthenticator => eachAuthenticator.authenticatorId ===
             template?.federatedAuthenticators?.defaultAuthenticatorId)) {
-            getAuthenticatorMetadata(template?.federatedAuthenticators?.defaultAuthenticatorId);
+            setAuthenticatorMetadata(template?.federatedAuthenticators?.defaultAuthenticatorId);
         }
     }, [availableAuthenticators]);
 
@@ -503,7 +485,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 icon: IdentityProviderWizardStepIcons.general,
                 name: WizardSteps.GENERAL_DETAILS,
                 submitCallback: setSubmitGeneralSettings,
-                title: "General settings"
+                title: t("devPortal:components.idp.wizards.addIDP.steps.generalSettings.title")
             }
         ];
 
@@ -514,7 +496,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     icon: IdentityProviderWizardStepIcons.authenticatorSettings,
                     name: WizardSteps.AUTHENTICATOR_SETTINGS,
                     submitCallback: setSubmitAuthenticator,
-                    title: "Authenticator Configuration"
+                    title: t("devPortal:components.idp.wizards.addIDP.steps.authenticatorConfiguration.title")
                 }
             ];
         }
@@ -526,7 +508,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     icon: IdentityProviderWizardStepIcons.outboundProvisioningSettings,
                     name: WizardSteps.OUTBOUND_PROVISIONING_SETTINGS,
                     submitCallback: setSubmitOutboundProvisioningSettings(),
-                    title: "Provisioning Configuration"
+                    title: t("devPortal:components.idp.wizards.addIDP.steps.provisioningConfiguration.title")
                 }
             ];
         }
@@ -537,7 +519,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 icon: IdentityProviderWizardStepIcons.summary,
                 name: WizardSteps.SUMMARY,
                 submitCallback: setFinishSubmit,
-                title: "Summary"
+                title: t("devPortal:components.idp.wizards.addIDP.steps.summary.title")
             }
         ];
         return STEPS;
@@ -639,7 +621,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     {subTitle && <Heading as="h6">{subTitle}</Heading>}
                 </Modal.Header>
                 <Modal.Content className="steps-container">
-                    <Steps.Group header="Fill the basic information about your identity provider."
+                    <Steps.Group header={ t("devPortal:components.idp.wizards.addIDP.header") }
                                  current={ currentWizardStep }>
                         {wizardSteps.map((step, index) => (
                             <Steps.Step
@@ -656,20 +638,26 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     <Grid>
                         <Grid.Row column={ 1 }>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                <LinkButton floated="left" onClick={ handleWizardClose }>Cancel</LinkButton>
+                                <LinkButton floated="left" onClick={ handleWizardClose }>
+                                    { t("common:cancel") }
+                                </LinkButton>
                             </Grid.Column>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                 {currentWizardStep < wizardSteps.length - 1 && (
                                     <PrimaryButton floated="right" onClick={ navigateToNext }>
-                                        Next<Icon name="arrow right"/>
+                                        { t("devPortal:components.idp.wizards.buttons.next") }
+                                        <Icon name="arrow right"/>
                                     </PrimaryButton>
                                 )}
                                 {currentWizardStep === wizardSteps.length - 1 && (
-                                    <PrimaryButton floated="right" onClick={ navigateToNext }>Finish</PrimaryButton>
+                                    <PrimaryButton floated="right" onClick={ navigateToNext }>
+                                        { t("devPortal:components.idp.wizards.buttons.finish") }
+                                    </PrimaryButton>
                                 )}
                                 {currentWizardStep > 0 && (
                                     <LinkButton floated="right" onClick={ navigateToPrevious }>
-                                        <Icon name="arrow left"/> Previous
+                                        <Icon name="arrow left"/>
+                                        { t("devPortal:components.idp.wizards.buttons.previous") }
                                     </LinkButton>
                                 )}
                             </Grid.Column>

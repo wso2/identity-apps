@@ -16,15 +16,14 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/dist/src/models";
-import { addAlert } from "@wso2is/core/dist/src/store";
 import { Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { getRolesList } from "../../../../api";
 import { IdentityProviderRoleMappingInterface, RoleListInterface, RolesInterface } from "../../../../models";
 import { DynamicField } from "../../../shared";
+import { handleGetRoleListError } from "../../utils";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -65,7 +64,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
         initialRoleMappings
     } = props;
 
-    const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     /**
      * Filter out Application related and Internal roles
@@ -93,12 +92,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                 }
             })
             .catch((error) => {
-                dispatch(addAlert({
-                    description: error?.response?.data?.description ? error.response.data.description : "An error " +
-                        "occurred while retrieving roles.",
-                    level: AlertLevels.ERROR,
-                    message: "Get Error"
-                }));
+                handleGetRoleListError(error);
             });
     }, [initialRoleMappings]);
 
@@ -107,7 +101,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                     <Divider/>
-                    <Heading as="h5">Role Mapping</Heading>
+                    <Heading as="h5">{ t("devPortal:components.idp.forms.roleMapping.heading") }</Heading>
                     <DynamicField
                         data={
                             initialRoleMappings ?
@@ -120,11 +114,14 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                         }
                         keyType="dropdown"
                         keyData={ roleList ? getFilteredRoles() : [] }
-                        keyName="Local Role"
-                        valueName="Identity Provider Role"
-                        keyRequiredMessage="Please enter the local role"
-                        valueRequiredErrorMessage="Please enter an IDP role to map to"
-                        duplicateKeyErrorMsg="This role is already mapped. Please select another role"
+                        keyName={ t("devPortal:components.idp.forms.roleMapping.keyName") }
+                        valueName={ t("devPortal:components.idp.forms.roleMapping.valueName") }
+                        keyRequiredMessage={ t("devPortal:components.idp.forms.roleMapping." +
+                            "validation.keyRequiredMessage") }
+                        valueRequiredErrorMessage={ t("devPortal:components.idp.forms.roleMapping." +
+                            "validation.valueRequiredErrorMessage") }
+                        duplicateKeyErrorMsg={ t("devPortal:components.idp.forms.roleMapping." +
+                            "validation.duplicateKeyErrorMsg") }
                         submit={ triggerSubmit }
                         update={ (data) => {
                             if (data.length > 0) {
@@ -140,7 +137,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                             }
                         } }
                     />
-                    <Hint>Map local roles with the Identity Provider roles</Hint>
+                    <Hint>{ t("devPortal:components.idp.forms.roleMapping.hint") }</Hint>
                 </Grid.Column>
             </Grid.Row>
         </>

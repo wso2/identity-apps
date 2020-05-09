@@ -125,7 +125,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const [triggerSubmission, setTriggerSubmission] = useTrigger();
 
     useEffect(() => {
-        updateAvailableLocalClaims(setAvailableLocalClaims, dispatch);
+        updateAvailableLocalClaims(setAvailableLocalClaims);
     }, []);
 
     const setInitialValues = () => {
@@ -227,7 +227,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
 
         if (canSubmit) {
-            handleAttributeSettingsFormSubmit(idpId, claimConfigurations, roleMapping, onUpdate, dispatch);
+            handleAttributeSettingsFormSubmit(idpId, claimConfigurations, roleMapping, onUpdate);
         } else {
             dispatch(addAlert(
                 {

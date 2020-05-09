@@ -53,20 +53,46 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
 
     const { t } = useTranslation();
 
-    const errorMessage = {
-        description: t("devPortal:components.serverConfigs.loginPolicies.notifications.updateConfigurations." +
-            "error.description"),
-        level: AlertLevels.ERROR,
-        message: t("devPortal:components.serverConfigs.loginPolicies.notifications.updateConfigurations." +
-            "error.message")
+    const handleUpdateError = (error) => {
+        if (error.response && error.response.data && error.response.data.detail) {
+            dispatch(addAlert({
+                description: t("devPortal:components.serverConfigs.loginPolicies.notifications." +
+                    "updateConfigurations.error.description", { description: error.response.data.description }),
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.serverConfigs.loginPolicies.notifications.updateConfigurations." +
+                    "error.message")
+            }));
+        } else {
+            // Generic error message
+            dispatch(addAlert({
+                description: t("devPortal:components.serverConfigs.loginPolicies.notifications." +
+                    "updateConfigurations.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.serverConfigs.loginPolicies.notifications.updateConfigurations." +
+                    "genericError.message")
+            }));
+        }
     };
 
-    const genericErrorMessage = {
-        description: t("devPortal:components.serverConfigs.loginPolicies.notifications.updateConfigurations." +
-            "genericError.description"),
-        level: AlertLevels.ERROR,
-        message: t("devPortal:components.serverConfigs.loginPolicies.notifications.updateConfigurations." +
-            "genericError.message")
+    const handleRetrievalError = (error) => {
+        if (error.response && error.response.data && error.response.data.detail) {
+            dispatch(addAlert({
+                description: t("devPortal:components.serverConfigs.loginPolicies.notifications." +
+                    "getConfigurations.error.description", { description: error.response.data.description }),
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.serverConfigs.loginPolicies.notifications." +
+                    "getConfigurations.error.message")
+            }));
+        } else {
+            // Generic error message
+            dispatch(addAlert({
+                description: t("devPortal:components.serverConfigs.loginPolicies.notifications." +
+                    "getConfigurations.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.serverConfigs.loginPolicies.notifications." +
+                    "getConfigurations.genericError.message")
+            }));
+        }
     };
 
     /**
@@ -80,12 +106,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
                 dispatch(addAlert(successNotification));
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.detail) {
-                    dispatch(addAlert(errorMessage));
-                } else {
-                    // Generic error message
-                    dispatch(addAlert(genericErrorMessage));
-                }
+                handleUpdateError(error);
             });
     };
 
@@ -205,10 +226,10 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
             ]
         };
         const successNotification = {
-            description: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
+            description: t("devPortal:components.serverConfigs.loginPolicies.notifications." +
                 "updateConfigurations.success.description"),
             level: AlertLevels.SUCCESS,
-            message: t("devPortal:components.serverConfigs.accountRecovery.notifications." +
+            message: t("devPortal:components.serverConfigs.loginPolicies.notifications." +
                 "updateConfigurations.success.message")
         };
         makeLoginPoliciesPatchCall(data, successNotification);
@@ -265,6 +286,9 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
                     }
                 });
                 setLoginPoliciesConfigs(configs);
+            })
+            .catch((error) => {
+                handleRetrievalError(error);
             });
     };
 

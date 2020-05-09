@@ -24,7 +24,7 @@ import { ApplicationWizardStepIcons } from "../../../configs";
 import { useTrigger } from "@wso2is/forms";
 import { createNewTemplateType } from "../../../api";
 import { AxiosResponse } from "axios";
-import { AlertLevels, AlertInterface } from "@wso2is/core/dist/src/models";
+import { AlertLevels, AlertInterface } from "@wso2is/core/models";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { addAlert } from "@wso2is/core/store";

@@ -16,30 +16,34 @@
  * under the License.
  */
 
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { useTrigger } from "@wso2is/forms";
+import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import {
-    IdentityProviderInterface, OutboundProvisioningConnectorInterface,
-    OutboundProvisioningConnectorListItemInterface,
-    OutboundProvisioningConnectorMetaInterface
-} from "../../../models";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useTrigger } from "@wso2is/forms";
-import { OutboundProvisioningConnectorWizard } from "../../../configs";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { OutboundProvisioningSettings, WizardSummary } from "./steps";
 import {
     OutboundProvisioningConnectors
 } from "./steps/outbound-provisioning-connector-create-wizard-steps";
-import { addAlert } from "@wso2is/core/dist/src/store";
-import { AlertLevels } from "@wso2is/core/dist/src/models";
 import {
     getOutboundProvisioningConnectorMetadata,
     getOutboundProvisioningConnectorsList,
     updateOutboundProvisioningConnector
 } from "../../../api";
-import { OutboundProvisioningSettings, WizardSummary } from "./steps";
-import _ from "lodash";
+import { OutboundProvisioningConnectorWizard } from "../../../configs";
+import {
+    IdentityProviderInterface, OutboundProvisioningConnectorInterface,
+    OutboundProvisioningConnectorListItemInterface,
+    OutboundProvisioningConnectorMetaInterface
+} from "../../../models";
+import {
+    handleGetOutboundProvisioningConnectorMetadataError,
+    handleUpdateOutboundProvisioningConnectorError
+} from "../utils";
 
 /**
  * Interface for the outbound provisioning create wizard props.
@@ -70,7 +74,8 @@ enum WizardStepsFormTypes {
     SUMMARY = "summary"
 }
 
-export const OutboundProvisioningConnectorCreateWizard: FunctionComponent<OutboundProvisioningConnectorCreateWizardPropsInterface> = (
+export const OutboundProvisioningConnectorCreateWizard:
+    FunctionComponent<OutboundProvisioningConnectorCreateWizardPropsInterface> = (
     props: OutboundProvisioningConnectorCreateWizardPropsInterface
 ): ReactElement => {
 
@@ -95,7 +100,8 @@ export const OutboundProvisioningConnectorCreateWizard: FunctionComponent<Outbou
     const [ connectorList, setConnectorList ] = useState<OutboundProvisioningConnectorListItemInterface[]>([]);
     const [ connectorMetaData, setConnectorMetaData ] = useState<OutboundProvisioningConnectorMetaInterface>(undefined);
     const [ newConnector, setNewConnector ] = useState(undefined);
-    const [ defaultConnector, setDefaultConnector ] = useState<OutboundProvisioningConnectorListItemInterface>(undefined);
+    const [ defaultConnector, setDefaultConnector ] =
+        useState<OutboundProvisioningConnectorListItemInterface>(undefined);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -128,29 +134,17 @@ export const OutboundProvisioningConnectorCreateWizard: FunctionComponent<Outbou
         updateOutboundProvisioningConnector(identityProvider.id, connector)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully added the new outbound provisioning connector.",
+                    description: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
+                        "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Update successful"
+                    message: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
+                        "message.description")
                 }));
 
                 onUpdate(identityProvider.id);
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Update error"
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: "An error occurred while adding new outbound provisioning connector.",
-                    level: AlertLevels.ERROR,
-                    message: "Update error"
-                }));
+                handleUpdateOutboundProvisioningConnectorError(error);
             });
     }, [ newConnector ]);
 
@@ -163,20 +157,24 @@ export const OutboundProvisioningConnectorCreateWizard: FunctionComponent<Outbou
                 setConnectorList(response);
         })
             .catch(error => {
-                if (error?.response?.data?.description) {
+                if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
-                        description: error.response.data.description,
+                        description: t("devPortal:components.idp.notifications.getOutboundProvisioningConnectorsList." +
+                            "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: "Retrieval error"
+                        message: t("devPortal:components.idp.notifications." +
+                            "getOutboundProvisioningConnectorsList.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred retrieving the outbound provisioning connectors list.",
+                    description: t("devPortal:components.idp.notifications.getOutboundProvisioningConnectorsList." +
+                        "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Retrieval error"
+                    message: t("devPortal:components.idp.notifications.getOutboundProvisioningConnectorsList." +
+                        "genericError.message")
                 }));
             });
     }, []);
@@ -201,21 +199,7 @@ export const OutboundProvisioningConnectorCreateWizard: FunctionComponent<Outbou
                 setConnectorMetaData(response);
             })
             .catch(error => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Retrieval error"
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: "An error occurred retrieving the outbound provisioning connector meta data.",
-                    level: AlertLevels.ERROR,
-                    message: "Retrieval error"
-                }));
+                handleGetOutboundProvisioningConnectorMetadataError(error);
             });
     }, [ wizardState && wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId ]);
 
@@ -303,7 +287,8 @@ export const OutboundProvisioningConnectorCreateWizard: FunctionComponent<Outbou
         {
             content: (
                 <OutboundProvisioningConnectors
-                    initialSelection={ wizardState && wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId }
+                    initialSelection={
+                        wizardState && wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId }
                     triggerSubmit={ submitConnectorSelection }
                     onSubmit={ (values): void => handleWizardFormSubmit(values,
                         WizardStepsFormTypes.CONNECTOR_SELECTION) }
@@ -311,7 +296,7 @@ export const OutboundProvisioningConnectorCreateWizard: FunctionComponent<Outbou
                 />
             ),
             icon: OutboundProvisioningConnectorWizard.connectorSelection,
-            title: t("Connector selection")
+            title: t("devPortal:components.idp.wizards.addProvisioningConnector.steps.connectorSelection.title")
         },
         {
             content: (
@@ -326,12 +311,13 @@ export const OutboundProvisioningConnectorCreateWizard: FunctionComponent<Outbou
                 />
             ),
             icon: OutboundProvisioningConnectorWizard.connectorDetails,
-            title: t("Connector Details")
+            title: t("devPortal:components.idp.wizards.addProvisioningConnector.steps.connectorConfiguration.title")
         },
         {
             content: (
                 <WizardSummary
-                    provisioningConnectorMetadata={ wizardState && wizardState[ WizardStepsFormTypes.CONNECTOR_DETAILS ] }
+                    provisioningConnectorMetadata={
+                        wizardState && wizardState[ WizardStepsFormTypes.CONNECTOR_DETAILS ] }
                     authenticatorMetadata={ undefined }
                     triggerSubmit={ finishSubmit }
                     identityProvider={ generateWizardSummary() }
@@ -339,7 +325,7 @@ export const OutboundProvisioningConnectorCreateWizard: FunctionComponent<Outbou
                 />
             ),
             icon: OutboundProvisioningConnectorWizard.summary,
-            title: t("Summary")
+            title: t("devPortal:components.idp.wizards.addProvisioningConnector.steps.summary.title")
         }
     ];
 
@@ -354,12 +340,14 @@ export const OutboundProvisioningConnectorCreateWizard: FunctionComponent<Outbou
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
-                Create outbound provisioning connector
-                <Heading as="h6">Follow the steps to add new outbound provisioning connector</Heading>
+                { t("devPortal:components.idp.modals.addProvisioningConnector.title") }
+                <Heading as="h6">
+                    { t("devPortal:components.idp.modals.addProvisioningConnector.subTitle") }
+                </Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group
-                    header="Fill the following details"
+                    header={ t("devPortal:components.idp.wizards.addProvisioningConnector.header") }
                     current={ currentWizardStep }
                 >
                     { STEPS.map((step, index) => (
@@ -378,37 +366,26 @@ export const OutboundProvisioningConnectorCreateWizard: FunctionComponent<Outbou
                 <Grid>
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton
-                                floated="left"
-                                onClick={ () => closeWizard() }
-                            >
+                            <LinkButton floated="left" onClick={ () => closeWizard() }>
                                 { t("common:cancel") }
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
-                                <PrimaryButton
-                                    floated="right"
-                                    onClick={ navigateToNext }
-                                >
-                                    Next
+                                <PrimaryButton floated="right" onClick={ navigateToNext }>
+                                    { t("devPortal:components.idp.wizards.buttons.next") }
                                     <Icon name="arrow right"/>
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep === STEPS.length - 1 && (
-                                <PrimaryButton
-                                    floated="right"
-                                    onClick={ navigateToNext }
-                                >
-                                    Finish</PrimaryButton>
+                                <PrimaryButton floated="right" onClick={ navigateToNext }>
+                                    { t("devPortal:components.idp.wizards.buttons.finish") }
+                                </PrimaryButton>
                             ) }
                             { currentWizardStep > 0 && (
-                                <LinkButton
-                                    floated="right"
-                                    onClick={ navigateToPrevious }
-                                >
+                                <LinkButton floated="right" onClick={ navigateToPrevious }>
                                     <Icon name="arrow left"/>
-                                    Previous
+                                    { t("devPortal:components.idp.wizards.buttons.previous") }
                                 </LinkButton>
                             ) }
                         </Grid.Column>

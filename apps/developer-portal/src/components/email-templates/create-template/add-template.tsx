@@ -26,7 +26,7 @@ import { EmailTemplateEditor } from "../email-code-editor";
 import { EmailTemplate, EmailTemplateType, AlertInterface, AlertLevels } from "../../../models";
 import { createLocaleTemplate, getTemplateDetails, replaceLocaleTemplateContent } from "../../../api";
 import { AxiosResponse, AxiosError } from "axios";
-import { addAlert } from "@wso2is/core/dist/src/store";
+import { addAlert } from "@wso2is/core/store";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 

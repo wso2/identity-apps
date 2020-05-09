@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityAppsApiException } from "@wso2is/core/dist/src/exceptions";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AxiosHttpClient } from "@wso2is/http";
 import { AxiosResponse } from "axios";
 import { ApplicationManagementConstants } from "../constants";

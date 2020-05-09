@@ -19,6 +19,7 @@
 import { Forms } from "@wso2is/forms";
 import { Heading, Hint, SelectionCard } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { IdPIcons } from "../../../../../configs";
 import {
@@ -57,7 +58,8 @@ export const AuthenticatorTemplateSelection:
 
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderInterface>(undefined);
     const [ selectedManualModeOption, setSelectedManualModeOption ] = useState<any>(undefined);
-
+    const { t } = useTranslation();
+    
     /**
      * Handles template selection.
      *
@@ -99,9 +101,13 @@ export const AuthenticatorTemplateSelection:
                         authenticatorTemplates.length > 0) &&
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <Heading as="h4">Quick Setup</Heading>
+                            <Heading as="h4">
+                                { t("devPortal:components.idp.wizards.addAuthenticator.steps." +
+                                    "authenticatorSelection.quickSetup.title") }
+                            </Heading>
                             <Hint icon={ null }>
-                                Predefined authenticator templates to speed up your add operation.
+                                { t("devPortal:components.idp.wizards.addAuthenticator.steps." +
+                                    "authenticatorSelection.quickSetup.subTitle") }
                             </Hint>
                             { authenticatorTemplates.map((template, index) => (
                                 <SelectionCard
@@ -122,8 +128,14 @@ export const AuthenticatorTemplateSelection:
                     &&
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <Heading as="h4">Manual Setup</Heading>
-                            <Hint icon={ null }>Add a new authenticator with custom configurations.</Hint>
+                            <Heading as="h4">
+                                { t("devPortal:components.idp.wizards.addAuthenticator.steps." +
+                                    "authenticatorSelection.manualSetup.title") }
+                            </Heading>
+                            <Hint icon={ null }>
+                                { t("devPortal:components.idp.wizards.addAuthenticator.steps." +
+                                    "authenticatorSelection.manualSetup.subTitle") }
+                            </Hint>
                             { manualModeOptions.map((option, index) => (
                                 <SelectionCard
                                     inline

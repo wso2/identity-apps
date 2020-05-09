@@ -53,20 +53,46 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 
     const { t } = useTranslation();
 
-    const errorMessage = {
-        description: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
-            "updateConfigurations.error.description"),
-        level: AlertLevels.ERROR,
-        message: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
-            "updateConfigurations.error.message")
+    const handleUpdateError = (error) => {
+        if (error.response && error.response.data && error.response.data.detail) {
+            dispatch(addAlert({
+                description: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
+                    "updateConfigurations.error.description", { description: error.response.data.description }),
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+                    "error.message")
+            }));
+        } else {
+            // Generic error message
+            dispatch(addAlert({
+                description: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
+                    "updateConfigurations.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+                    "genericError.message")
+            }));
+        }
     };
 
-    const genericErrorMessage = {
-        description: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
-            "updateConfigurations.genericError.description"),
-        level: AlertLevels.ERROR,
-        message: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
-            "updateConfigurations.genericError.message")
+    const handleRetrievalError = (error) => {
+        if (error.response && error.response.data && error.response.data.detail) {
+            dispatch(addAlert({
+                description: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
+                    "getConfigurations.error.description", { description: error.response.data.description }),
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
+                    "getConfigurations.error.message")
+            }));
+        } else {
+            // Generic error message
+            dispatch(addAlert({
+                description: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
+                    "getConfigurations.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.serverConfigs.selfRegistration.notifications." +
+                    "getConfigurations.genericError.message")
+            }));
+        }
     };
 
     /**
@@ -83,12 +109,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
                 dispatch(addAlert(successNotification));
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.detail) {
-                    dispatch(addAlert(errorMessage));
-                } else {
-                    // Generic error message
-                    dispatch(addAlert(genericErrorMessage));
-                }
+                handleUpdateError(error);
             });
     };
 
@@ -175,6 +196,9 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
                         property => property.name == ServerConfigurationsConstants.VERIFICATION_CODE_EXPIRY_TIME).value
                 };
                 setSelfSignUpConfigs(configs);
+            })
+            .catch((error) => {
+                handleRetrievalError(error);
             });
     };
 
@@ -206,7 +230,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
             <Grid padded={ true } className="middle aligned">
                 <Grid.Row columns={ 2 } className="inner-list-item">
                     <Grid.Column className="first-column" mobile={ 14 } tablet={ 14 } computer={ 14 } >
-                        <label>User self registration</label>
+                        <label>{ t("devPortal:components.serverConfigs.selfRegistration.form.enable.label") }</label>
                     </Grid.Column>
                     <Grid.Column mobile={ 2 } tablet={ 2 } computer={ 2 }>
                         <Field
@@ -237,7 +261,8 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
                 <Grid.Row columns={ 2 } className="inner-list-item">
                     <Grid.Column className="first-column" mobile={ 14 } tablet={ 14 } computer={ 14 } >
                         <label className={ selfSignUpConfigs?.enable?.length > 0 ? "" : "meta" }>
-                            Lock user account on creation
+                            { t("devPortal:components.serverConfigs.selfRegistration.form." +
+                                "enableAccountLockOnCreation.label") }
                         </label>
                     </Grid.Column>
                     <Grid.Column mobile={ 2 } tablet={ 2 } computer={ 2 }>
@@ -270,7 +295,8 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
                 <Grid.Row columns={ 2 } className="inner-list-item">
                     <Grid.Column className="first-column" mobile={ 14 } tablet={ 14 } computer={ 14 } >
                         <label className={ selfSignUpConfigs?.enable?.length > 0 ? "" : "meta" }>
-                            Internal notification management
+                            { t("devPortal:components.serverConfigs.selfRegistration.form." +
+                                "internalNotificationManagement.label") }
                         </label>
                     </Grid.Column>
                     <Grid.Column mobile={ 2 } tablet={ 2 } computer={ 2 }>
@@ -303,7 +329,8 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
                 <Grid.Row columns={ 2 } className="inner-list-item">
                     <Grid.Column className="first-column" mobile={ 14 } tablet={ 14 } computer={ 14 } >
                         <label className={ selfSignUpConfigs?.enable?.length > 0 ? "" : "meta" }>
-                            Enable reCaptcha
+                            { t("devPortal:components.serverConfigs.selfRegistration.form." +
+                                "enableReCaptcha.label") }
                         </label>
                     </Grid.Column>
                     <Grid.Column mobile={ 2 } tablet={ 2 } computer={ 2 }>
