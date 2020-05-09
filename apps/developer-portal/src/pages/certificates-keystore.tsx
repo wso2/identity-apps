@@ -39,13 +39,15 @@ import { filterList, sortList } from "../utils";
  */
 export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
 
+    const { t } = useTranslation();
+    
     /**
      * Sets the attributes by which the list can be sorted.
      */
     const SORT_BY = [
         {
             key: 0,
-            text: "Alias",
+            text: t("devPortal:components.certificates.keystore.attributes.alias"),
             value: "alias"
         }
     ];
@@ -69,8 +71,6 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
 
     const dispatch = useDispatch();
 
-    const { t } = useTranslation();
-
     useEffect(() => {
         if (tenantDomain === "carbon.super") {
             setIsSuper(true);
@@ -93,9 +93,13 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                 setIsLoading(false);
                 dispatch(addAlert(
                     {
-                        description: error?.description || "An error occurred while fetching certificates",
+                        description: error?.description
+                            || t("devPortal:components.certificates.keystore.notifications." +
+                                "getCertificates.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: error?.message || "Something went wrong"
+                        message: error?.message
+                            || t("devPortal:components.certificates.keystore.notifications." +
+                                "getCertificates.genericError.message")
                     }
                 ));
             })
@@ -181,7 +185,7 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
             dispatch(addAlert({
                 description: error.message,
                 level: AlertLevels.ERROR,
-                message: "Filter query format incorrect"
+                message: t("devPortal:components.certificates.keystore.advancedSearch.error")
             }));
         }
     };
@@ -209,8 +213,8 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
             }
             <PageLayout
                 isLoading={ isLoading }
-                title="Certificates"
-                description="Create and manage certificates in the keystore"
+                title={ t("devPortal:components.certificates.keystore.pageLayout.title") }
+                description={ t("devPortal:components.certificates.keystore.pageLayout.description") }
                 showBottomDivider={ true }
             >
                 <ListLayout
@@ -260,7 +264,8 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                                     setOpenModal(true);
                                 } }
                             >
-                                <Icon name="cloud upload"/>Import Certificate
+                                <Icon name="cloud upload" />
+                                { t("devPortal:components.certificates.keystore.pageLayout.primaryAction") }
                             </PrimaryButton>
                         )
                     }

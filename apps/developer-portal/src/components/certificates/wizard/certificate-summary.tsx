@@ -17,6 +17,7 @@
 */
 
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { DisplayCertificate, DistinguishedName } from "../../../models";
 
@@ -46,6 +47,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
 ): ReactElement => {
 
     const { name, certificate } = props;
+    const { t } = useTranslation();
 
     return (
         <Grid className="wizard-summary">
@@ -53,13 +55,16 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details">
                         <h3>{ name }</h3>
-                        <div className="description">Serial Number: { certificate?.serialNumber }</div>
+                        <div className="description">
+                            { t("devPortal:components.certificates.keystore.summary")
+                                + " " + certificate?.serialNumber }
+                        </div>
                     </div>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">Not valid before</div>
+                    <div className="label">{ t("devPortal:components.certificates.keystore.validFrom")}</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value">{
@@ -78,7 +83,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
             </Grid.Row>
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">Not valid after</div>
+                    <div className="label">{t("devPortal:components.certificates.keystore.validTill")}</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value">{
@@ -97,7 +102,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
             </Grid.Row>
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">Issuer DN</div>
+                    <div className="label">{t("devPortal:components.certificates.keystore.issuerDN")}</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value">{ certificate.issuerDN.map((attribute: DistinguishedName) => {
@@ -108,7 +113,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
             </Grid.Row>
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">Subject DN</div>
+                    <div className="label">{t("devPortal:components.certificates.keystore.subjectDN")}</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value">{ certificate.subjectDN.map((attribute: DistinguishedName) => {
@@ -119,7 +124,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
             </Grid.Row>
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">Version</div>
+                    <div className="label">{t("devPortal:components.certificates.keystore.version")}</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value">

@@ -267,6 +267,7 @@ export const devPortal: DevPortalNS = {
         certificates: {
             keystore: {
                 advancedSearch: {
+                    error: "Filter query format incorrect",
                     form: {
                         inputs: {
                             filterAttribute: {
@@ -281,6 +282,51 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     placeholder: "Search by alias"
+                },
+                attributes: {
+                    alias: "Alias"
+                },
+                errorCertificate: "An error occurred while decoding the certificate."
+                    + " Please ensure the certificate is valid.",
+                errorEmpty: "Either add a certificate file or paste the content of a PEM-encoded certificate.",
+                forms: {
+                    alias: {
+                        label: "Alias",
+                        placeholder: "Enter an alias",
+                        requiredErrorMessage: "Alias is required"
+                    }
+                },
+                notifications: {
+                    getCertificates: {
+                        genericError: {
+                            description: "An error occurred while fetching certificates",
+                            message: "Something went wrong"
+                        }
+                    }
+                },
+                pageLayout: {
+                    description: "Create and manage certificates in the keystore",
+                    primaryAction: "Import Certificate",
+                    title: "Certificates"
+                },
+                summary: {
+                    issuerDN: "Issuer DN",
+                    sn: "Serial Number:",
+                    subjectDN: "Subject DN",
+                    validFrom: "Not valid before",
+                    validTill: "Not valid after",
+                    version: "Version"
+                },
+                wizard: {
+                    dropZone: {
+                        action: "Upload Certificate",
+                        description: "Drag and drop a certificate file here"
+                    },
+                    panes: {
+                        paste: "Paste",
+                        upload: "Upload"
+                    },
+                    pastePlaceholder: "Paste the content of a PEM certificate"
                 }
             },
             truststore: {

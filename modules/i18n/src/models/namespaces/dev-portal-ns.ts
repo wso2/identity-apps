@@ -154,8 +154,44 @@ export interface DevPortalNS {
                             };
                         };
                     };
+                    error: string;
                     placeholder: string;
                 };
+                attributes: {
+                    alias: string;
+                };
+                notifications: {
+                    getCertificates: Notification;
+                };
+                pageLayout: {
+                    title: string;
+                    description: string;
+                    primaryAction: string;
+                };
+                summary: {
+                    sn: string;
+                    validFrom: string;
+                    validTill: string;
+                    issuerDN: string;
+                    subjectDN: string;
+                    version: string;
+                };
+                wizard: {
+                    panes: {
+                        upload: string;
+                        paste: string;
+                    };
+                    dropZone: {
+                        description: string;
+                        action: string;
+                    };
+                    pastePlaceholder: string;
+                };
+                forms: {
+                    alias: FormField;
+                };
+                errorEmpty: string;
+                errorCertificate: string;
             };
             truststore: {
                 advancedSearch: {

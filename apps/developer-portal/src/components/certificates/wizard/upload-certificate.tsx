@@ -18,6 +18,7 @@
 
 import * as forge from "node-forge";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Icon, Message, Segment, Tab, TextArea } from "semantic-ui-react";
 import { CertificateIllustrations } from "../../../configs";
 import { CERTIFICATE_BEGIN, CERTIFICATE_END, END_LINE } from "../../../constants";
@@ -105,6 +106,8 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
 
     const fileUpload = useRef(null);
     const init = useRef(true);
+
+    const { t } = useTranslation();
 
 
     /**
@@ -384,7 +387,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
      */
     const panes = [
         {
-            menuItem: "Upload",
+            menuItem: t("devPortal:components.certificates.keystore.wizard.panes.upload"),
             render: () => (
                 !file
                     ? (
@@ -411,13 +414,16 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                             <Segment placeholder className={ `drop-zone ${dragOver ? "drag-over" : ""}` }>
                                 <div className="certificate-upload-placeholder">
                                     <CertificateIllustrations.uploadPlaceholder.ReactComponent />
-                                    <p className="description">Drag and drop a certificate file here</p>
+                                    <p className="description">
+                                        { t("devPortal:components.certificates." +
+                                            "keystore.wizard.dropZone.description") }
+                                    </p>
                                     <p className="description">– or –</p>
                                 </div>
                                 <Button basic primary onClick={ () => {
                                     fileUpload.current.click();
                                 } }>
-                                    Upload Certificate
+                                    {t("devPortal:components.certificates.keystore.wizard.dropZone.action")}    
                                 </Button>
                             </Segment>
                         </div >
@@ -438,12 +444,12 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             )
         },
         {
-            menuItem: "Paste",
+            menuItem: t("devPortal:components.certificates.keystore.wizard.panes.paste"),
             render: () => (
                 <Form>
                     <TextArea
                         rows={ 13 }
-                        placeholder="Paste the content of a PEM certificate"
+                        placeholder={ t("devPortal:components.certificates.keystore.wizard.pastePlaceholder") }
                         value={ pem }
                         onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
                             setPem(event.target.value);
@@ -497,13 +503,14 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 <Form.Input
                     fluid
                     type="text"
-                    placeholder="Enter an alias"
-                    label="Alias"
+                    placeholder={ t("devPortal:components.certificates.keystore.forms.alias.placeholder") }
+                    label={ t("devPortal:components.certificates.keystore.forms.alias.label") }
                     required={ true }
                     error={
                         nameError
                             ? {
-                                content: "Alias is required"
+                                content: t("devPortal:components.certificates.keystore." +
+                                    "forms.alias.requiredErrorMessage")
                             }
                             : false
                     }
@@ -532,9 +539,8 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 (fileError || certEmpty) &&
                 <Message error attached="bottom">
                     { fileError
-                        ? "An error occurred while decoding the certificate." +
-                        " Please ensure the certificate is valid."
-                        : "Either add a certificate file or paste the content of a PEM-encoded certificate."
+                        ? t("devPortal:components.certificates.keystore.errorCertificate")
+                        : t("devPortal:components.certificates.keystore.errorEmpty")
                     }
                 </Message>
             }
