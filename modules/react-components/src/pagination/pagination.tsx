@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import {
     Dropdown,
     DropdownItemProps,
@@ -175,7 +175,6 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
                 data-testid={ `${ testId }-steps` }
                 { ...rest }
                 activePage={ activePage }
-                className="list-pagination"
                 onPageChange={ pageChangeHandler }
             />
         </div>

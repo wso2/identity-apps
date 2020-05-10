@@ -461,12 +461,12 @@ export const devPortal: DevPortalNS = {
                     subheader: "Once you delete an external dialect, there is no going back. " + "Please be certain."
                 },
                 forms: {
-                    dialectURI:{
+                    dialectURI: {
                         label: "Dialect URI",
                         placeholder: "Enter a dialect URI",
-                        requiredErrorMessage:"Enter a dialect URI"
+                        requiredErrorMessage: "Enter a dialect URI"
                     },
-                    submit:"Update"
+                    submit: "Update"
                 },
                 localDialect: "Local Dialect",
                 notifications: {
@@ -513,14 +513,14 @@ export const devPortal: DevPortalNS = {
                             message: "Something went wrong"
                         }
                     },
-                    updateDialect:{
+                    updateDialect: {
                         genericError: {
-                            description:"An error occurred while updating the dialect",
-                            message:"Something went wrong"
-                      },
-                        success:{
-                            description:"The dialect has been successfully updated.",
-                            message:"Dialect update successful"
+                            description: "An error occurred while updating the dialect",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The dialect has been successfully updated.",
+                            message: "Dialect update successful"
                         }
                     }
                 },
@@ -546,13 +546,13 @@ export const devPortal: DevPortalNS = {
                         summary: "Summary"
                     },
                     summary: {
-                        externalAttribute:"External Attribute URI",
+                        externalAttribute: "External Attribute URI",
                         mappedAttribute: "Mapped Local Attribute URI",
-                        notFound:"No external attribute was added."
+                        notFound: "No external attribute was added."
                     }
                 }
             },
-            external:{
+            external: {
                 advancedSearch: {
                     error: "Filter query format incorrect",
                     form: {
@@ -598,7 +598,7 @@ export const devPortal: DevPortalNS = {
                             message: "External attribute added successfully"
                         }
                     },
-                    deleteExternalClaim:{
+                    deleteExternalClaim: {
                         genericError: {
                             description: "There was an error while deleting the external attribute",
                             message: "Something went wrong"
@@ -639,7 +639,7 @@ export const devPortal: DevPortalNS = {
                     }
                 }
             },
-            list:{
+            list: {
                 confirmation: {
                     action: "confirm",
                     content: "{{message}} Please proceed with caution.",
@@ -683,8 +683,8 @@ export const devPortal: DevPortalNS = {
                         title: "No results found"
                     }
                 },
-                warning:"This attribute has not been mapped to an attribute"+
-                        " in the following userstores:"
+                warning: "This attribute has not been mapped to an attribute" +
+                    " in the following userstores:"
             },
             local: {
                 additionalProperties: {
@@ -774,7 +774,7 @@ export const devPortal: DevPortalNS = {
                     }
                 },
                 mappedAttributes: {
-                    hint:"Enter the attribute from each userstore that you want to map to this attribute."
+                    hint: "Enter the attribute from each userstore that you want to map to this attribute."
                 },
                 notifications: {
                     addLocalClaim: {
@@ -851,7 +851,7 @@ export const devPortal: DevPortalNS = {
                         mapAttributes: "Map Attributes",
                         summary: "Summary"
                     },
-                    summary:{
+                    summary: {
                         attribute: "Attribute",
                         attributeURI: "Attribute URI",
                         displayOrder: "Display Order",
@@ -1806,7 +1806,6 @@ export const devPortal: DevPortalNS = {
                         heading: "Legal process"
                     }
                 },
-<<<<<<< HEAD
                 heading: "Privacy Policy",
                 moreInfo: {
                     changesToPolicy: {
@@ -1906,67 +1905,6 @@ export const devPortal: DevPortalNS = {
                                 1: "Browser fingerprinting to determine the browser technology or/and version"
                             }
                         }
-                    }
-                },
-                placeholder: "Search by userstore name"
-            },
-            confirmation: {
-                confirm: "Confirm",
-                content: "If you delete this userstore, the user data in this userstore will also be deleted. "
-                    + "Please proceed with caution.",
-                header: "Are you sure?",
-                hint: "Please type <1>{{name}}</1> to confirm.",
-                message: "This action is irreversible and will permanently delete the"
-                    + " selected userstore and the data in it."
-            },
-            dangerZone: {
-                actionTitle: "Delete Userstore",
-                header: "Delete Userstore",
-                subheader: "Once you delete a userstore, there is no going back. "
-                    + "Please be certain."
-            },
-            forms: {
-                connection: {
-                    connectionErrorMessage: "Please ensure the provided connection "
-                        + "URL, name, password and driver name are correct",
-                    testButton: "Test Connection"
-                },
-                custom: {
-                    placeholder: "Enter a {{name}}",
-                    requiredErrorMessage: "{{name}} is required"
-                },
-                general: {
-                    description: {
-                        label: "Description",
-                        placeholder: "Enter a description"
-                    },
-                    connection: {
-                        custom: {
-                            requiredErrorMessage: "{{name}} is required"
-                        }
-                    }
-                }
-            },
-            notifications: {
-                addUserstore: {
-                    genericError: {
-                        description: "There was an error while creating the userstore",
-                        message: "Something went wrong!"
-                    },
-                    success: {
-                        description: "The userstore has been added successfully!",
-                        message: "Userstore added successfully!"
-                    }
-                },
-                delay: {
-                    description: "It may take a while for the userstore list to be updated. "
-                        + "Refresh in a few seconds to get the updated userstore list.",
-                    message: "Updating Userstore list takes time"
-                },
-                deleteUserstore: {
-                    genericError: {
-                        description: "There was an error while deleting the userstore",
-                        message: "Something went wrong!"
                     },
                     heading: "Use of personal information"
                 },
@@ -1992,39 +1930,6 @@ export const devPortal: DevPortalNS = {
                             "for this is that this information can not be used to track you."
                     },
                     heading: "What is personal information?"
-                }
-            },
-            placeholders: {
-                emptyList: {
-                    action: "New Userstore",
-                    subtitles: "There are currently no userstores available."
-                        + "You can add a new userstore easily by following the"
-                        + "steps in the userstore creation wizard." + "Please try a different search term.",
-                    title: "Add a new Userstore"
-                },
-                emptySearch: {
-                    action: "Clear search query",
-                    subtitles: "We couldn't find any results for {{searchQuery}}. "
-                        + "Please try a different search term.",
-                    title: "No results found"
-                }
-            },
-            sqlEditor: {
-                create: "Create",
-                darkMode: "Dark Mode",
-                delete: "Delete",
-                read: "Read",
-                reset: "Reset",
-                title: "SQL Query Types",
-                update: "Update"
-            },
-            wizard: {
-                header: "Add {{type}} Userstore",
-                steps: {
-                    general: "General",
-                    group: "Group",
-                    summary: "Summary",
-                    user: "User"
                 }
             }
         },
@@ -3284,6 +3189,7 @@ export const devPortal: DevPortalNS = {
         },
         userstores: {
             advancedSearch: {
+                error: "Filter query format incorrect",
                 form: {
                     inputs: {
                         filterAttribute: {
@@ -3298,6 +3204,175 @@ export const devPortal: DevPortalNS = {
                     }
                 },
                 placeholder: "Search by userstore name"
+            },
+            confirmation: {
+                confirm: "Confirm",
+                content: "If you delete this userstore, the user data in this userstore will also be deleted. "
+                    + "Please proceed with caution.",
+                header: "Are you sure?",
+                hint: "Please type <1>{{name}}</1> to confirm.",
+                message: "This action is irreversible and will permanently delete the"
+                    + " selected userstore and the data in it."
+            },
+            dangerZone: {
+                actionTitle: "Delete Userstore",
+                header: "Delete Userstore",
+                subheader: "Once you delete a userstore, there is no going back. "
+                    + "Please be certain."
+            },
+            forms: {
+                connection: {
+                    connectionErrorMessage: "Please ensure the provided connection "
+                        + "URL, name, password and driver name are correct",
+                    testButton: "Test Connection"
+                },
+                custom: {
+                    placeholder: "Enter a {{name}}",
+                    requiredErrorMessage: "{{name}} is required"
+                },
+                general: {
+                    description: {
+                        label: "Description",
+                        placeholder: "Enter a description"
+                    },
+                    name: {
+                        label: "Name",
+                        placeholder: "Enter a name",
+                        requiredErrorMessage: "Name is a required field"
+                    },
+                    type: {
+                        label: "Type",
+                        requiredErrorMessage: "Select a Type"
+                    }
+                }
+            },
+            notifications: {
+                addUserstore: {
+                    genericError: {
+                        description: "There was an error while creating the userstore",
+                        message: "Something went wrong!"
+                    },
+                    success: {
+                        description: "The userstore has been added successfully!",
+                        message: "Userstore added successfully!"
+                    }
+                },
+                delay: {
+                    description: "It may take a while for the userstore list to be updated. "
+                        + "Refresh in a few seconds to get the updated userstore list.",
+                    message: "Updating Userstore list takes time"
+                },
+                deleteUserstore: {
+                    genericError: {
+                        description: "There was an error while deleting the userstore",
+                        message: "Something went wrong!"
+                    },
+                    success: {
+                        description: "The userstore has been deleted successfully!",
+                        message: "Userstore deleted successfully!"
+                    }
+                },
+                fetchUserstoreMetadata: {
+                    genericError: {
+                        description: "An error occurred while fetching the type meta data.",
+                        message: "Something went wrong"
+                    }
+                },
+                fetchUserstoreTemplates: {
+                    genericError: {
+                        description: "An error occurred while fetching the userstore type details.",
+                        message: "Something went wrong"
+                    }
+                },
+                fetchUserstoreTypes: {
+                    genericError: {
+                        description: "An error occurred while fetching the userstore types.",
+                        message: "Something went wrong"
+                    }
+                },
+                fetchUserstores: {
+                    genericError: {
+                        description: "An error occurred while fetching userstores",
+                        message: "Something went wrong"
+                    }
+                },
+                testConnection: {
+                    genericError: {
+                        description: "An error occurred while testing the " + "connection to the userstore",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The connection is healthy",
+                        message: "Connection successful!"
+                    }
+                },
+                updateUserstore: {
+                    genericError: {
+                        description: "An error occurred while updating the userstore.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "This userstore has been updated successfully!",
+                        message: "Userstore updated successfully!"
+                    }
+                }
+            },
+            pageLayout: {
+                edit: {
+                    back: "Go back to userstores",
+                    description: "Edit userstore",
+                    tabs: {
+                        connection: "Connection",
+                        general: "General",
+                        group: "Group",
+                        user: "User"
+                    }
+                },
+                list: {
+                    description: "Create and manage userstores",
+                    primaryAction: "New Userstore",
+                    title: "Userstores"
+                },
+                templates: {
+                    back: "Go back to userstores",
+                    description: "Please choose one of the following userstore types.",
+                    templateHeading: "Quick Setup",
+                    templateSubHeading: "Predefined set of templates to speed up your userstore creation.",
+                    title: "Select Userstore Type"
+                }
+            },
+            placeholders: {
+                emptyList: {
+                    action: "New Userstore",
+                    subtitles: "There are currently no userstores available."
+                        + "You can add a new userstore easily by following the"
+                        + "steps in the userstore creation wizard." + "Please try a different search term.",
+                    title: "Add a new Userstore"
+                },
+                emptySearch: {
+                    action: "Clear search query",
+                    subtitles: "We couldn't find any results for {{searchQuery}}. "
+                        + "Please try a different search term.",
+                    title: "No results found"
+                }
+            },
+            sqlEditor: {
+                create: "Create",
+                darkMode: "Dark Mode",
+                delete: "Delete",
+                read: "Read",
+                reset: "Reset",
+                title: "SQL Query Types",
+                update: "Update"
+            },
+            wizard: {
+                header: "Add {{type}} Userstore",
+                steps: {
+                    general: "General",
+                    group: "Group",
+                    summary: "Summary",
+                    user: "User"
+                }
             }
         }
     },
