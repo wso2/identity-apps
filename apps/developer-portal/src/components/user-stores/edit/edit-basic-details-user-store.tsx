@@ -20,7 +20,7 @@ import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { DangerZoneGroup } from "@wso2is/react-components/src";
 import React, { ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
@@ -99,10 +99,13 @@ export const EditBasicDetailsUserStore = (
             type="warning"
             open={ confirmDelete }
             assertion={ userStore?.name }
-            assertionHint={ <p>{
-                t("devPortal:components.userstores.confirmation.hint",
-                    { name: <strong>{ userStore?.name }</strong> })
-            }</p> }
+            assertionHint={
+                <p>
+                    <Trans i18nKey="devPortal:components.userstores.confirmation.hint">
+                        Please type <strong>{ { name: userStore?.name } }</strong > to confirm.
+                    </Trans>
+                </p>
+            }
             assertionType="input"
             primaryAction={ t("devPortal:components.userstores.confirmation.confirm") }
             secondaryAction={ t("common:cancel") }

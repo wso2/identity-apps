@@ -290,7 +290,7 @@ export const devPortal: DevPortalNS = {
                 confirmation: {
                     content: "This action is irreversible and will permanently delete the certificate.",
                     header: "Are you sure?",
-                    hint: "Please type {{id}} to confirm.",
+                    hint: "Please type <1>{{id}}</1> to confirm.",
                     message: "This action is irreversible and will permanently delete the certificate.",
                     primaryAction: "Confirm",
                     tenantContent: "This will delete the tenant certificate permanently."
@@ -452,7 +452,7 @@ export const devPortal: DevPortalNS = {
                     content: "If you delete this external dialect, all the associated external attributes will "
                         + "also be deleted.Please proceed with caution.",
                     header: "Are you sure?",
-                    hint: "Please type {{confirm}} to confirm.",
+                    hint: "Please type <1>{{confirm}}</1> to confirm.",
                     message: "This action is irreversible and will permanently delete the selected external dialect."
                 },
                 dangerZone: {
@@ -653,7 +653,7 @@ export const devPortal: DevPortalNS = {
                         name: "external attribute"
                     },
                     header: "Are you sure?",
-                    hint: "Please type {{assertion}} to confirm.",
+                    hint: "Please type <1>{{assertion}}</1> to confirm.",
                     local: {
                         message: "If you delete this local attribute, the user data belonging "
                             + "to this attribute will also be deleted.",
@@ -718,7 +718,7 @@ export const devPortal: DevPortalNS = {
                     content: "If you delete this local attribute, the user data belonging to this attribute "
                         + "will also be deleted. Please proceed with caution.",
                     header: "Are you sure?",
-                    hint: "Please type {{name}} to confirm.",
+                    hint: "Please type <1>{{name}}</1> to confirm.",
                     message: "This action is irreversible and will permanently delete the selected local attribute.",
                     primaryAction: "Confirm"
                 },
@@ -1915,7 +1915,7 @@ export const devPortal: DevPortalNS = {
                 content: "If you delete this userstore, the user data in this userstore will also be deleted. "
                     + "Please proceed with caution.",
                 header: "Are you sure?",
-                hint: "Please type {{name}} to confirm.",
+                hint: "Please type <1>{{name}}</1> to confirm.",
                 message: "This action is irreversible and will permanently delete the"
                     + " selected userstore and the data in it."
             },

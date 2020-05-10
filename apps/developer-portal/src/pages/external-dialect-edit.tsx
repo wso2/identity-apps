@@ -18,7 +18,7 @@
 
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react"
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Header, Image, Segment } from "semantic-ui-react";
 import { deleteADialect, getADialect, getAllExternalClaims } from "../api";
@@ -59,11 +59,9 @@ export const ExternalDialectEditPage = (props): ReactElement => {
             assertion={ dialect.dialectURI }
             assertionHint={
                 <p>
-                    { t("devPortal:components.claims.dialects.confirmations.hint",
-                        {
-                            confirm: <strong>{ dialect.dialectURI }</strong>
-                        }
-                    ) }
+                <Trans i18nKey="devPortal:components.claims.dialects.confirmations.hint">
+                        Please type <strong>{ { confirm: dialect.dialectURI } }</strong> to confirm.
+                    </Trans>
                 </p>
             }
             assertionType="input"

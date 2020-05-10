@@ -27,7 +27,7 @@ import {
     ResourceList
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Icon, Image } from "semantic-ui-react";
 import { deleteUserStore } from "../../api";
@@ -121,9 +121,12 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             open={ deleteConfirm }
             assertion={ deleteName }
             assertionHint={
-                t("devPortal:components.userstores.confirmation.hint", {
-                    name: <strong> { deleteName }</ strong>
-                }) }
+                <p>
+                    <Trans i18nKey="devPortal:components.userstores.confirmation.hint">
+                        Please type <strong>{ { name: deleteName } }</strong > to confirm.
+                    </Trans>
+                </p>
+            }
             assertionType="input"
             primaryAction={ t("common:confirm") }
             secondaryAction={ t("common:cancel") }

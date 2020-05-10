@@ -25,7 +25,7 @@ import { ConfirmationModal } from "@wso2is/react-components";
 import { saveAs } from "file-saver";
 import * as forge from "node-forge";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon, Modal } from "semantic-ui-react";
 import { Certificate as CertificateDisplay } from ".";
@@ -202,11 +202,10 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 open={ deleteConfirm }
                 assertion={ isTenantCertificate ? deleteID : null }
                 assertionHint={
-                    <p>{
-                        t("devPortal:components.certificates.keystore.confirmation.hint", {
-                            id: <strong>{ deleteID }</strong>
-                        })
-                    }
+                    <p>
+                        <Trans i18nKey="devPortal:components.certificates.keystore.confirmation.hint">
+                           Please type <strong>{{ id:deleteID }}</strong> to confirm. 
+                        </Trans>
                     </p>
                 }
                 assertionType={ isTenantCertificate ? "input" : null }

@@ -23,7 +23,7 @@ import { FormValue, useTrigger } from "@wso2is/forms";
 import { ConfirmationModal, EmptyPlaceholder, LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components"
 import { CopyInputField } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Icon, Image, List, Popup } from "semantic-ui-react";
 import { EditExternalClaim } from "./edit";
@@ -382,9 +382,13 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                 type="warning"
                 open={ deleteConfirm }
                 assertion={ listItem.assertion }
-                assertionHint={ <p>{t("devPortal:components.claims.list.confirmation.hint",{
-                    assertion:<strong>{ listItem.assertion }</strong>
-                })}</p> }
+                assertionHint={
+                    <p>
+                        <Trans i18nKey="devPortal: components.claims.list.confirmation.hint">
+                            Please type <strong>{ { assertion: listItem.assertion } }</strong> to confirm.
+                        </Trans>
+                    </p>
+                }
                 assertionType="input"
                 primaryAction={ t("devPortal:components.claims.list.confirmation.action") }
                 secondaryAction={ t("common:cancel") }

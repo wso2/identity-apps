@@ -20,7 +20,7 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ConfirmationModal, CopyInputField, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Form, Grid, Popup } from "semantic-ui-react";
 import { deleteAClaim, updateAClaim } from "../../../../api";
@@ -84,10 +84,11 @@ export const EditBasicDetailsLocalClaims = (
             open={ confirmDelete }
             assertion={ claim.displayName }
             assertionHint={
-                t("devPortal:components.claims.local.confirmation.hint",
-                    {
-                        name: <strong> { claim.displayName }</ strong>
-                    })
+                <p>
+                    <Trans i18nKey="devPortal:components.claims.local.confirmation.hint">
+                        Please type <strong>{ { name: claim.displayName } }</strong> to confirm.
+                    </Trans>
+                </p>
             }
             assertionType="input"
             primaryAction={ t("devPortal:components.claims.local.confirmation.primaryAction") }
@@ -239,7 +240,7 @@ export const EditBasicDetailsLocalClaims = (
                                 ref={ nameField }
                             />
                             <Popup
-                                content= { t ("devPortal:components.claims.local.forms.nameHint") }
+                                content={ t("devPortal:components.claims.local.forms.nameHint") }
                                 inverted
                                 open={ isShowNameHint }
                                 trigger={ <span></span> }
@@ -295,7 +296,7 @@ export const EditBasicDetailsLocalClaims = (
                                 required={ false }
                                 requiredErrorMessage=""
                                 children={ [ {
-                                    label:  t("devPortal:components.claims.local.forms.supportedByDefault.label"),
+                                    label: t("devPortal:components.claims.local.forms.supportedByDefault.label"),
                                     value: "Support"
                                 } ] }
                                 value={ claim?.supportedByDefault ? [ "Support" ] : [] }
@@ -346,7 +347,7 @@ export const EditBasicDetailsLocalClaims = (
                                 required={ false }
                                 requiredErrorMessage=""
                                 children={ [ {
-                                    label:  t ("devPortal:components.claims.local.forms.required.label"),
+                                    label: t("devPortal:components.claims.local.forms.required.label"),
                                     value: "Required"
                                 } ] }
                                 value={ claim?.required ? [ "Required" ] : [] }
@@ -358,7 +359,7 @@ export const EditBasicDetailsLocalClaims = (
                                 required={ false }
                                 requiredErrorMessage=""
                                 children={ [ {
-                                    label: t ("devPortal:components.claims.local.forms.readOnly.label"),
+                                    label: t("devPortal:components.claims.local.forms.readOnly.label"),
                                     value: "ReadOnly"
                                 } ] }
                                 value={ claim?.readOnly ? [ "ReadOnly" ] : [] }
