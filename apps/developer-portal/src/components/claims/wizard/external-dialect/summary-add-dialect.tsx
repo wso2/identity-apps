@@ -76,10 +76,10 @@ export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): React
                                 <Table.HeaderCell>
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    { t("devPortal:components.claims.dialect.wizard.summary.externalAttribute") }
+                                    { t("devPortal:components.claims.dialects.wizard.summary.externalAttribute") }
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    { t("devPortal:components.claims.dialect.wizard.summary.mappedAttribute") }
+                                    { t("devPortal:components.claims.dialects.wizard.summary.mappedAttribute") }
                                 </Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
@@ -115,7 +115,7 @@ export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): React
                                     <Table.Row>
                                         <Table.Cell colSpan={ 3 } textAlign='center'>
                                             <Message warning>
-                                                { t("devPortal:components.claims.dialect.wizard.summary.notFound") }
+                                                { t("devPortal:components.claims.dialects.wizard.summary.notFound") }
                                             </Message>
                                         </Table.Cell>
                                     </Table.Row>

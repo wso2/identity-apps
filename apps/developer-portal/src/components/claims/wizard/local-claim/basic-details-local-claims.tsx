@@ -229,7 +229,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             ref={ regExField }
                         />
                         <Popup
-                            content={ t("devPortal:components.claims.local.forms.description.regExHint") }
+                            content={ t("devPortal:components.claims.local.forms.regExHint") }
                             inverted
                             open={ isShowRegExHint }
                             trigger={ <span></span> }

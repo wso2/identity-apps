@@ -64,11 +64,11 @@ export const DialectDetails = (props: DialectDetailsPropsInterface): ReactElemen
             <Field
                 type="text"
                 name="dialectURI"
-                label={ t("devPortal:components.claims.dialect.forms.dialectURI.label") }
+                label={ t("devPortal:components.claims.dialects.forms.dialectURI.label") }
                 required={ true }
-                requiredErrorMessage={ t("devPortal:components.claims.dialect." +
+                requiredErrorMessage={ t("devPortal:components.claims.dialects." +
                     "forms.dialectURI.requiredErrorMessage") }
-                placeholder={ t("devPortal:components.claims.dialect.forms.dialectURI.placeholder") }
+                placeholder={ t("devPortal:components.claims.dialects.forms.dialectURI.placeholder") }
                 value={ values?.get("dialectURI")?.toString() }
             />
         </Forms >

@@ -653,7 +653,7 @@ export const devPortal: DevPortalNS = {
                         name: "external attribute"
                     },
                     header: "Are you sure?",
-                    hint: "Please type {assertion} to confirm.",
+                    hint: "Please type {{assertion}} to confirm.",
                     local: {
                         message: "If you delete this local attribute, the user data belonging "
                             + "to this attribute will also be deleted.",

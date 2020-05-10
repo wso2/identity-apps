@@ -322,14 +322,14 @@ export const EditBasicDetailsUserStore = (
                                                     required={ true }
                                                     label={ name }
                                                     requiredErrorMessage={
-                                                        t("devPortal:components.userstores.forms.general." +
+                                                        t("devPortal:components.userstores.forms." +
                                                             "custom.requiredErrorMessage",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
                                                             })
                                                     }
                                                     placeholder={
-                                                        t("devPortal:components.userstores.forms.general." +
+                                                        t("devPortal:components.userstores.forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
@@ -349,14 +349,14 @@ export const EditBasicDetailsUserStore = (
                                                         required={ false }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
-                                                            t("devPortal:components.userstores.forms.general." +
+                                                            t("devPortal:components.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("devPortal:components.userstores.forms.general." +
+                                                            t("devPortal:components.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
@@ -374,14 +374,14 @@ export const EditBasicDetailsUserStore = (
                                                         required={ true }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
-                                                            t("devPortal:components.userstores.forms.general." +
+                                                            t("devPortal:components.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("devPortal:components.userstores.forms.general." +
+                                                            t("devPortal:components.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
@@ -444,7 +444,7 @@ export const EditBasicDetailsUserStore = (
                                                                     })
                                                             }
                                                             placeholder={
-                                                                t("devPortal:components.userstores.forms.general." +
+                                                                t("devPortal:components.userstores.forms." +
                                                                     "custom.placeholder",
                                                                     {
                                                                         name: property.description.split("#")[ 0 ]
@@ -471,7 +471,7 @@ export const EditBasicDetailsUserStore = (
                                                                         })
                                                                 }
                                                                 placeholder={
-                                                                    t("devPortal:components.userstores.forms.general." +
+                                                                    t("devPortal:components.userstores.forms." +
                                                                         "custom.placeholder",
                                                                         {
                                                                             name: property.description.split("#")[ 0 ]
@@ -496,7 +496,7 @@ export const EditBasicDetailsUserStore = (
                                                                         })
                                                                 }
                                                                 placeholder={
-                                                                    t("devPortal:components.userstores.forms.general." +
+                                                                    t("devPortal:components.userstores.forms." +
                                                                         "custom.placeholder",
                                                                         {
                                                                             name: property.description.split("#")[ 0 ]

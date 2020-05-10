@@ -95,7 +95,7 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("devPortal:components.userstores.forms.general." +
+                                                            t("devPortal:components.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: name
@@ -129,7 +129,7 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("devPortal:components.userstores.forms.general." +
+                                                            t("devPortal:components.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: name
@@ -158,7 +158,7 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                                                             })
                                                     }
                                                     placeholder={
-                                                        t("devPortal:components.userstores.forms.general." +
+                                                        t("devPortal:components.userstores.forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: name

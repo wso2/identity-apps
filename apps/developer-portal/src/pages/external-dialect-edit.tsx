@@ -59,7 +59,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
             assertion={ dialect.dialectURI }
             assertionHint={
                 <p>
-                    { t("devPortal:components.claims.dialects.confirmations.header",
+                    { t("devPortal:components.claims.dialects.confirmations.hint",
                         {
                             confirm: <strong>{ dialect.dialectURI }</strong>
                         }

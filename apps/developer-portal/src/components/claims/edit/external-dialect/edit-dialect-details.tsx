@@ -58,10 +58,10 @@ export const EditDialectDetails = (props: EditDialectDetailsPropsInterface): Rea
                             updateADialect(dialect.id, dialectURI)
                                 .then(() => {
                                     dispatch(addAlert({
-                                        description: t("devPortal:components.claims.dialect.notifications" +
+                                        description: t("devPortal:components.claims.dialects.notifications" +
                                             ".updateDialect.success.description"),
                                         level: AlertLevels.SUCCESS,
-                                        message: t("devPortal:components.claims.dialect.notifications" +
+                                        message: t("devPortal:components.claims.dialects.notifications" +
                                             ".updateDialect.success.message")
                                     }));
                                     history.push(
@@ -71,11 +71,11 @@ export const EditDialectDetails = (props: EditDialectDetailsPropsInterface): Rea
                                 .catch((error) => {
                                     dispatch(addAlert({
                                         description: error?.description
-                                            || t("devPortal:components.claims.dialect.notifications" +
+                                            || t("devPortal:components.claims.dialects.notifications" +
                                                 ".updateDialect.genericError.description"),
                                         level: AlertLevels.ERROR,
                                         message: error?.message
-                                            || t("devPortal:components.claims.dialect.notifications" +
+                                            || t("devPortal:components.claims.dialects.notifications" +
                                                 ".updateDialect.genericError.message")
                                     }))
                                 });
@@ -83,17 +83,17 @@ export const EditDialectDetails = (props: EditDialectDetailsPropsInterface): Rea
                     >
                         <Field
                             type="text"
-                            placeholder={ t("devPortal:components.claims.dialect.forms.dialectURI.placeholder") }
+                            placeholder={ t("devPortal:components.claims.dialects.forms.dialectURI.placeholder") }
                             value={ dialect?.dialectURI }
                             required={ true }
-                            requiredErrorMessage={ t("devPortal:components.claims.dialect." +
+                            requiredErrorMessage={ t("devPortal:components.claims.dialects." +
                                 "forms.dialectURI.requiredErrorMessage") }
-                            label={ t("devPortal:components.claims.dialect.forms.dialectURI.label") }
+                            label={ t("devPortal:components.claims.dialects.forms.dialectURI.label") }
                             name="dialectURI"
                         />
                         <Divider hidden />
                         <PrimaryButton type="submit">
-                            { t("devPortal:components.claims.dialect.forms.submit") }
+                            { t("devPortal:components.claims.dialects.forms.submit") }
                         </PrimaryButton>
                     </Forms>
                 </Grid.Column>

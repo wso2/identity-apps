@@ -184,7 +184,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                             })
                                                     }
                                                     placeholder={
-                                                        t("devPortal:components.userstores.forms.general." +
+                                                        t("devPortal:components.userstores.forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: name
@@ -214,7 +214,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("devPortal:components.userstores.forms.general." +
+                                                            t("devPortal:components.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: name
@@ -242,7 +242,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("devPortal:components.userstores.forms.general." +
+                                                            t("devPortal:components.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: name
@@ -283,7 +283,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                             })
                                                     }
                                                     placeholder={
-                                                        t("devPortal:components.userstores.forms.general." +
+                                                        t("devPortal:components.userstores.forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: name
@@ -313,7 +313,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("devPortal:components.userstores.forms.general." +
+                                                            t("devPortal:components.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: name
@@ -341,7 +341,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("devPortal:components.userstores.forms.general." +
+                                                            t("devPortal:components.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: name

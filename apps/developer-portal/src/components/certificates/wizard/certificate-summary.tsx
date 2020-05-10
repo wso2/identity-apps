@@ -56,7 +56,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
                     <div className="general-details">
                         <h3>{ name }</h3>
                         <div className="description">
-                            { t("devPortal:components.certificates.keystore.summary")
+                            { t("devPortal:components.certificates.keystore.summary.sn")
                                 + " " + certificate?.serialNumber }
                         </div>
                     </div>
@@ -64,7 +64,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
             </Grid.Row>
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">{ t("devPortal:components.certificates.keystore.validFrom")}</div>
+                    <div className="label">{ t("devPortal:components.certificates.keystore.summary.validFrom")}</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value">{
@@ -83,7 +83,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
             </Grid.Row>
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">{t("devPortal:components.certificates.keystore.validTill")}</div>
+                    <div className="label">{t("devPortal:components.certificates.keystore.summary.validTill")}</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value">{
@@ -102,7 +102,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
             </Grid.Row>
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">{t("devPortal:components.certificates.keystore.issuerDN")}</div>
+                    <div className="label">{t("devPortal:components.certificates.keystore.summary.issuerDN")}</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value">{ certificate.issuerDN.map((attribute: DistinguishedName) => {
@@ -113,7 +113,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
             </Grid.Row>
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">{t("devPortal:components.certificates.keystore.subjectDN")}</div>
+                    <div className="label">{t("devPortal:components.certificates.keystore.summary.subjectDN")}</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value">{ certificate.subjectDN.map((attribute: DistinguishedName) => {
@@ -124,7 +124,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
             </Grid.Row>
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">{t("devPortal:components.certificates.keystore.version")}</div>
+                    <div className="label">{t("devPortal:components.certificates.keystore.summary.version")}</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value">

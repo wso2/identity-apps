@@ -216,7 +216,7 @@ export const EditGroupDetails = (
                                                 showPassword={ t("common:showPassword") }
                                                 hidePassword={ t("common:hidePassword") }
                                                 placeholder={
-                                                    t("devPortal:components.userstores.forms.general." +
+                                                    t("devPortal:components.userstores.forms." +
                                                         "custom.placeholder",
                                                         {
                                                             name: property.description.split("#")[ 0 ]
@@ -249,7 +249,7 @@ export const EditGroupDetails = (
                                                         } }
                                                         toggle
                                                         placeholder={
-                                                            t("devPortal:components.userstores.forms.general." +
+                                                            t("devPortal:components.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
@@ -275,7 +275,7 @@ export const EditGroupDetails = (
                                                         disabled={ disabled }
                                                         toggle
                                                         placeholder={
-                                                            t("devPortal:components.userstores.forms.general." +
+                                                            t("devPortal:components.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
@@ -300,7 +300,7 @@ export const EditGroupDetails = (
                                                     }
                                                     disabled={ disabled }
                                                     placeholder={
-                                                        t("devPortal:components.userstores.forms.general." +
+                                                        t("devPortal:components.userstores.forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
@@ -368,7 +368,7 @@ export const EditGroupDetails = (
                                                         showPassword={ t("common:showPassword") }
                                                         hidePassword={ t("common:hidePassword") }
                                                         placeholder={
-                                                            t("devPortal:components.userstores.forms.general." +
+                                                            t("devPortal:components.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
@@ -395,7 +395,7 @@ export const EditGroupDetails = (
                                                             disabled={ disabled }
                                                             toggle
                                                             placeholder={
-                                                                t("devPortal:components.userstores.forms.general." +
+                                                                t("devPortal:components.userstores.forms." +
                                                                     "custom.placeholder",
                                                                     {
                                                                         name: property.description.split("#")[ 0 ]
@@ -420,7 +420,7 @@ export const EditGroupDetails = (
                                                             }
                                                             disabled={ disabled }
                                                             placeholder={
-                                                                t("devPortal:components.userstores.forms.general." +
+                                                                t("devPortal:components.userstores.forms." +
                                                                     "custom.placeholder",
                                                                     {
                                                                         name: property.description.split("#")[ 0 ]

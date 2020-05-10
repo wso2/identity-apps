@@ -111,8 +111,8 @@ export const ExternalClaims = (props: ExternalClaimsPropsInterface): ReactElemen
                             )
                             : (
                                 <EmptyPlaceholder
-                                    title={ t(":devPortal:components.claims.external.placeholders.empty.title") }
-                                    subtitle={ [ t(":devPortal:components.claims.external." +
+                                    title={ t("devPortal:components.claims.external.placeholders.empty.title") }
+                                    subtitle={ [ t("devPortal:components.claims.external." +
                                         "placeholders.empty.subtitle") ] }
                                     image={ EmptyPlaceholderIllustrations.emptyList }
                                     imageSize="tiny"

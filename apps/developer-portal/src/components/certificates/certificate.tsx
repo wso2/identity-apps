@@ -67,13 +67,13 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
             <Header>
                 <Header.Content>{ alias }</Header.Content>
                 <Header.Subheader>
-                    <span>{ t("devPortal:components.certificates.keystore.summary") }</span>
+                    <span>{ t("devPortal:components.certificates.keystore.summary.sn") }</span>
                     { serialNumber }
                 </Header.Subheader>
             </Header>
 
             <p className="certificate-field">
-                <span>{ t("devPortal:components.certificates.keystore.validFrom") }</span> {
+                <span>{ t("devPortal:components.certificates.keystore.summary.validFrom") }</span> {
                     validFrom.toLocaleString("en-us", {
                         day: "numeric",
                         hour: "numeric",
@@ -88,7 +88,7 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
             </p>
 
             <p className="certificate-field">
-                <span>{ t("devPortal:components.certificates.keystore.validTill") }</span> {
+                <span>{ t("devPortal:components.certificates.keystore.summary.validTill") }</span> {
                     validTill.toLocaleString("en-us", {
                         day: "numeric",
                         hour: "numeric",
@@ -106,7 +106,7 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
 
             <p className="certificate-field">
                 <span>
-                    { t("devPortal:components.certificates.keystore.issuerDN") }
+                    { t("devPortal:components.certificates.keystore.summary.issuerDN") }
                 </span> { issuerDN.map((attribute: DistinguishedName) => {
                     return `${Object.entries(attribute)[ 0 ][ 0 ]}=${Object.entries(attribute)[ 0 ][ 1 ]}`;
                 }).join((", ")) }
@@ -116,14 +116,14 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
 
             <p className="certificate-field">
                 <span>
-                    { t("devPortal:components.certificates.keystore.subjectDN") }
+                    { t("devPortal:components.certificates.keystore.summary.subjectDN") }
                 </span> { subjectDN.map((attribute: DistinguishedName) => {
                     return `${Object.entries(attribute)[ 0 ][ 0 ]}=${Object.entries(attribute)[ 0 ][ 1 ]}`;
                 }).join(", ") }
             </p>
 
             <p className="certificate-version">
-                <span>{ t("devPortal:components.certificates.keystore.version") }</span> { version + " " }
+                <span>{ t("devPortal:components.certificates.keystore.summary.version") }</span> { version + " " }
                 <Label color={ isValid ? "green" : "red" } size="mini">
                     <Icon name={ isValid ? "calendar check outline" : "calendar times outline" } />
                     { isValid ? "Valid" : "Expired" }

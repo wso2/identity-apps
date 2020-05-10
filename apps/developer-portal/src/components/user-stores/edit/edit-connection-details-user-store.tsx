@@ -268,7 +268,7 @@ export const EditConnectionDetails = (
                                                 showPassword={ t("common:showPassword") }
                                                 hidePassword={ t("common:hidePassword") }
                                                 placeholder={
-                                                    t("devPortal:components.userstores.forms.general." +
+                                                    t("devPortal:components.userstores.forms." +
                                                         "custom.placeholder",
                                                         {
                                                             name: property.description.split("#")[ 0 ]
@@ -293,7 +293,7 @@ export const EditConnectionDetails = (
                                                             })
                                                     }
                                                     placeholder={
-                                                        t("devPortal:components.userstores.forms.general." +
+                                                        t("devPortal:components.userstores.forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
@@ -318,7 +318,7 @@ export const EditConnectionDetails = (
                                                             })
                                                     }
                                                     placeholder={
-                                                        t("devPortal:components.userstores.forms.general." +
+                                                        t("devPortal:components.userstores.forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
@@ -460,7 +460,7 @@ export const EditConnectionDetails = (
                                                     showPassword={ t("common:showPassword") }
                                                     hidePassword={ t("common:hidePassword") }
                                                     placeholder={
-                                                        t("devPortal:components.userstores.forms.general." +
+                                                        t("devPortal:components.userstores.forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
@@ -485,7 +485,7 @@ export const EditConnectionDetails = (
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("devPortal:components.userstores.forms.general." +
+                                                            t("devPortal:components.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
@@ -510,7 +510,7 @@ export const EditConnectionDetails = (
                                                                 })
                                                         }
                                                         placeholder={
-                                                            t("devPortal:components.userstores.forms.general." +
+                                                            t("devPortal:components.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]

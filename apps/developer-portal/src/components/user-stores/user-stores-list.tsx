@@ -120,10 +120,13 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             type="warning"
             open={ deleteConfirm }
             assertion={ deleteName }
-            assertionHint={ <p>Please type <strong>{ deleteName }</strong> to confirm.</p> }
+            assertionHint={
+                t("devPortal:components.userstores.confirmation.hint", {
+                    name: <strong> { deleteName }</ strong>
+                }) }
             assertionType="input"
-            primaryAction="Confirm"
-            secondaryAction="Cancel"
+            primaryAction={ t("common:confirm") }
+            secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ closeDeleteConfirm }
             onPrimaryActionClick={ (): void => {
                 deleteUserStore(deleteID)
