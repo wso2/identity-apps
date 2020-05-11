@@ -342,6 +342,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                     icon: {
                                         icon: (
                                             <UserAvatar
+                                                data-testid={ `${ testId }-${ protocol }-icon` }
                                                 name={ protocol }
                                                 size="mini"
                                             />
