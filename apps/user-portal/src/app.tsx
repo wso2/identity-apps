@@ -22,7 +22,7 @@ import { Provider } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
 import { SignIn, SignOut } from "./components/authentication";
-import { GlobalConfig, i18n } from "./configs";
+import { i18n } from "./configs";
 import { AppConfig, history } from "./helpers";
 import { AppConfigInterface } from "./models";
 import { store } from "./store";
@@ -53,15 +53,15 @@ export const App = (): JSX.Element => {
                     <Provider store={ store }>
                         <AppConfig.Provider value={ appConfig }>
                             <Switch>
-                                <Redirect exact={ true } path="/" to={ GlobalConfig.appLoginPath } />
+                                <Redirect exact={ true } path="/" to={ window["AppUtils"].getConfig().routes.login } />
                                 <Route
-                                    path={ GlobalConfig.appLoginPath }
+                                    path={ window["AppUtils"].getConfig().routes.login }
                                     render={ (props) => {
                                         return <SignIn { ...props } />;
                                     } }
                                 />
                                 <Route
-                                    path={ APP_LOGOUT_PATH }
+                                    path={ window["AppUtils"].getConfig().routes.logout }
                                     render={ () => {
                                         return <SignOut />;
                                     } }

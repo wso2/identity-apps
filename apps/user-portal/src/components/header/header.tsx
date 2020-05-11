@@ -262,7 +262,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                         : null
                                 }
                                 <Dropdown.Item className="action-panel">
-                                    <Link className="action-button" to={ APP_LOGOUT_PATH }>
+                                    <Link className="action-button" to={ window["AppUtils"].getConfig().routes.logout }>
                                         { t("common:logout") }
                                     </Link>
                                 </Dropdown.Item>

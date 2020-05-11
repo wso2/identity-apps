@@ -175,12 +175,12 @@ const identityManager = (() => {
  
     const createInstance = () => {
         return new IdentityClient({
-            callbackURL: GlobalConfig.loginCallbackUrl,
-            clientHost: GlobalConfig.clientHost,
-            clientID: GlobalConfig.clientID,
-            serverOrigin: GlobalConfig.serverOrigin,
-            tenant: GlobalConfig.tenant,
-            tenantPath: GlobalConfig.tenantPath
+            callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
+            clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
+            clientID: window["AppUtils"].getConfig().clientID,
+            serverOrigin: window["AppUtils"].getConfig().serverOrigin,
+            tenant: window["AppUtils"].getConfig().tenant,
+            tenantPath: window["AppUtils"].getConfig().tenantPath
         });
     };
  
