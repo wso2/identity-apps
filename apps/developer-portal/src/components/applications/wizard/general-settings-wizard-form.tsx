@@ -16,16 +16,17 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Divider, Grid } from "semantic-ui-react";
 
 /**
  * Proptypes for the general settings wizard form component.
  */
-interface GeneralSettingsWizardFormPropsInterface {
+interface GeneralSettingsWizardFormPropsInterface extends TestableComponentInterface {
     initialValues: any;
     triggerSubmit: boolean;
     templateValues: any;
@@ -36,17 +37,19 @@ interface GeneralSettingsWizardFormPropsInterface {
  * General settings wizard form component.
  *
  * @param {GeneralSettingsWizardFormPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
 export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardFormPropsInterface> = (
     props: GeneralSettingsWizardFormPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         initialValues,
         templateValues,
         triggerSubmit,
-        onSubmit
+        onSubmit,
+        [ "data-testid" ]: testId
     } = props;
 
     // Check whether discoverableByEndUsers option is selected or not
@@ -86,6 +89,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                             placeholder={ "Enter Application Name" }
                             value={ initialValues?.name }
                             type="text"
+                            data-testid={ `${ testId }-application-name-input` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -99,6 +103,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                             placeholder="Enter a description for the application"
                             type="textarea"
                             value={ initialValues ? initialValues?.description : templateValues?.description }
+                            data-testid={ `${ testId }-application-description-textarea` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -118,6 +123,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                             } }
                             value={ initialValues ? initialValues?.imageUrl : templateValues?.imageUrl }
                             type="text"
+                            data-testid={ `${ testId }-application-image-url-input` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -149,6 +155,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                                         : templateValues?.advancedConfigurations?.discoverableByEndUsers
                                         ? ["discoverableByEndUsers"] : []
                                 }
+                                data-testid={ `${ testId }-application-discoverable-checkbox` }
                             />
                             <Hint>
                                 Applications flagged as discoverable are visible for end users.
@@ -169,6 +176,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                                 placeholder="Enter access url for the application login page"
                                 type="text"
                                 value={ initialValues ? initialValues?.accessUrl : templateValues?.accessUrl }
+                                data-testid={ `${ testId }-application-access-url-input` }
                             />
                         </Grid.Column>
                     </Grid.Column>
@@ -176,4 +184,11 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
             </Grid>
         </Forms>
     );
+};
+
+/**
+ * Default props for the application general settings wizard form component.
+ */
+GeneralSettingsWizardForm.defaultProps = {
+    "data-testid": "application-general-settings-wizard-form"
 };

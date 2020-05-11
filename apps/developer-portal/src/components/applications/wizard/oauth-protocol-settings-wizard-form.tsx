@@ -16,11 +16,12 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
-import React, { FunctionComponent, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { MainApplicationInterface } from "../../../models";
 import { URLInputComponent } from "../components";
@@ -28,7 +29,7 @@ import { URLInputComponent } from "../components";
 /**
  * Proptypes for the oauth protocol settings wizard form component.
  */
-interface OAuthProtocolSettingsWizardFormPropsInterface {
+interface OAuthProtocolSettingsWizardFormPropsInterface extends TestableComponentInterface {
     initialValues: any;
     templateValues: MainApplicationInterface;
     triggerSubmit: boolean;
@@ -40,18 +41,20 @@ interface OAuthProtocolSettingsWizardFormPropsInterface {
  * Oauth protocol settings wizard form component.
  *
  * @param {OAuthProtocolSettingsWizardFormPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
 export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSettingsWizardFormPropsInterface> = (
     props: OAuthProtocolSettingsWizardFormPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         initialValues,
         triggerSubmit,
         onSubmit,
         templateValues,
-        showCallbackURL
+        showCallbackURL,
+        [ "data-testid" ]: testId
     } = props;
 
     const [callBackUrls, setCallBackUrls] = useState("");
@@ -204,16 +207,14 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                         placeholder={ "Enter callbackUrl" }
                         validationErrorMsg={ "Please add valid URL." }
                         validation={ (value: string) => {
-                            if (FormValidation.url(value)) {
-                                return true;
-                            }
-                            return false;
+                            return FormValidation.url(value);
                         } }
                         computerWidth={ 10 }
                         setShowError={ setShowURLError }
                         showError={ showURLError }
                         hint={ " After the authentication, we will only redirect to the above callback URLs " +
                         "and you can specify multiple URLs" }
+                        data-testid={ `${ testId }-callback-url-input` }
                     />
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
@@ -230,6 +231,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         value: "supportPublicClients"
                                     }
                                 ] }
+                                data-testid={ `${ testId }-public-client-checkbox` }
                             />
                             <Hint>
                                 This option will allow the client to authenticate without a client secret.
@@ -252,6 +254,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         value: "refreshToken"
                                     }
                                 ] }
+                                data-testid={ `${ testId }-renew-refresh-token-checkbox` }
                             />
                             <Hint>Issue a new refresh token per request when Refresh Token Grant is used.</Hint>
                         </Grid.Column>
@@ -264,8 +267,9 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 };
 
 /**
- * Default props for the .
+ * Default props for the oauth protocol settings wizard form component.
  */
 OauthProtocolSettingsWizardForm.defaultProps = {
+    "data-testid": "oauth-protocol-settings-wizard-form",
     showCallbackURL: false
 };

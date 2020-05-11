@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     Heading,
     LinkButton,
@@ -28,8 +29,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Modal } from "semantic-ui-react";
 import { ExtendedClaimInterface } from "./attribute-settings";
 
-
-interface AttributeSelectionWizardPropsInterface {
+interface AttributeSelectionWizardPropsInterface extends TestableComponentInterface {
     availableClaims: ExtendedClaimInterface[];
     setAvailableClaims: any;
     selectedClaims: ExtendedClaimInterface[];
@@ -61,7 +61,8 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
         setAvailableClaims,
         setInitialSelectedClaims,
         createMapping,
-        removeMapping
+        removeMapping,
+        [ "data-testid" ]: testId
     } = props;
 
 
@@ -249,7 +250,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
 
 
     return (
-        <Modal open={ showAddModal } size="small" className="user-roles">
+        <Modal open={ showAddModal } size="small" className="user-roles" data-testid={ testId }>
             <Modal.Header>
                 Update Attribute Selection
                 <Heading subHeading ellipsis as="h6">
@@ -263,6 +264,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                     removeItems={ removeAttributes }
                     handleUnelectedListSearch={ searchTempAvailable }
                     handleSelectedListSearch={ searchTempSelected }
+                    data-testid={ `${ testId }-transfer-component` }
                 >
                     <TransferList
                         isListEmpty={ !(filterTempAvailableClaims.length > 0) }
@@ -270,9 +272,10 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                         listHeaders={ ["Attribute"] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectUnassignedClaimsAllClaimsChecked }
+                        data-testid={ `${ testId }-unselected-transfer-list` }
                     >
                         {
-                            filterTempAvailableClaims?.map((claim) => {
+                            filterTempAvailableClaims?.map((claim, index) => {
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () => handleUnassignedItemCheckboxChange(claim) }
@@ -284,6 +287,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                                         showSecondaryActions={ false }
                                         showListSubItem={ true }
                                         listSubItem={ claim.claimURI }
+                                        data-testid={ `${ testId }-unselected-transfer-list-item-${ index }` }
                                     />
                                 )
                             })
@@ -295,9 +299,10 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                         listHeaders={ ["Attribute"] }
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
+                        data-testid={ `${ testId }-selected-transfer-list` }
                     >
                         {
-                            filterTempSelectedClaims?.map((claim) => {
+                            filterTempSelectedClaims?.map((claim, index) => {
 
                                 return (
                                     <TransferListItem
@@ -310,6 +315,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                                         showSecondaryActions={ false }
                                         showListSubItem={ true }
                                         listSubItem={ claim.claimURI }
+                                        data-testid={ `${ testId }-selected-transfer-list-item-${ index }` }
                                     />
                                 )
                             })
@@ -320,15 +326,24 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
             <Modal.Actions>
                 <LinkButton
                     onClick={ handleAttributeModal }
+                    data-testid={ `${ testId }-cancel-button` }
                 >
                     Cancel
                 </LinkButton>
                 <PrimaryButton
                     onClick={ updateSelectedClaims }
+                    data-testid={ `${ testId }-save-button` }
                 >
                     Save
                 </PrimaryButton>
             </Modal.Actions>
         </Modal>
     )
+};
+
+/**
+ * Default props for the application attribute selection wizard component.
+ */
+AttributeSelectionWizard.defaultProps = {
+    "data-testid": "application-attribute-selection-wizard"
 };

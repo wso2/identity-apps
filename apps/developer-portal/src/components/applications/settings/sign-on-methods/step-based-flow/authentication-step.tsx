@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, Heading, LabeledCard } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -32,7 +33,7 @@ import {
 /**
  * Proptypes for the authentication step component.
  */
-interface AuthenticationStepPropsInterface {
+interface AuthenticationStepPropsInterface extends TestableComponentInterface {
     /**
      * List of all available authenticators.
      */
@@ -82,7 +83,7 @@ interface AuthenticationStepPropsInterface {
  *
  * @param {AuthenticationStepPropsInterface} props - Props injected to the component.
  *
- * @return {ReactElement}
+ * @return {React.ReactElement}
  */
 export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterface> = (
     props: AuthenticationStepPropsInterface
@@ -97,7 +98,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         onStepOptionDelete,
         readOnly,
         step,
-        stepIndex
+        stepIndex,
+        [ "data-testid" ]: testId
     } = props;
 
     const classes = classNames("authentication-step-container", className);
@@ -141,7 +143,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                             && authenticator.authenticators.length > 1)
                     }
                     trigger={ (
-                        <div className="inline">
+                        <div className="inline" data-testid={ `${ testId }-option` }>
                             <LabeledCard
                                 image={ authenticator.image }
                                 label={ authenticator.displayName }
@@ -160,7 +162,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                         (
                             <>
                                 <Label attached="top">Select an Authenticator</Label>
-                                <Form className="mt-3 mb-3">
+                                <Form className="mt-3 mb-3" data-testid={ `${ testId }-authenticator-selection` }>
                                     {
                                         authenticator?.authenticators?.map((item) => {
                                             return (
@@ -200,9 +202,15 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                     ref={ provided.innerRef }
                     { ...provided.droppableProps }
                     className={ classes }
+                    data-testid={ testId }
                 >
                     <Heading className="step-header" as="h6">Step { step.id }</Heading>
-                    <Icon className="delete-button" name="cancel" onClick={ (): void => onStepDelete(stepIndex) }/>
+                    <Icon
+                        className="delete-button"
+                        name="cancel"
+                        onClick={ (): void => onStepDelete(stepIndex) }
+                        data-testid={ `${ testId }-delete-button` }
+                    />
                     <div className="authentication-step">
                         {
                             (step.options && step.options instanceof Array && step.options.length > 0)
@@ -212,7 +220,9 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                     <EmptyPlaceholder
                                         subtitle={ [ "Drag and drop any of the above authenticators",
                                             "to build an authentication sequence." ]
-                                        }/>
+                                        }
+                                        data-testid={ `${ testId }-empty-placeholder` }
+                                    />
                                 )
                         }
                         { provided.placeholder }
@@ -221,4 +231,11 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
             ) }
         </Droppable>
     );
+};
+
+/**
+ * Default props for the authentication step component.
+ */
+AuthenticationStep.defaultProps = {
+    "data-testid": "authentication-step"
 };

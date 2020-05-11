@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { Heading, Hint, LinkButton } from "@wso2is/react-components";
@@ -32,7 +32,7 @@ import { Certificate as CertificateDisplay } from "../../certificates";
 /**
  *  Advanced Configurations for the Application.
  */
-interface AdvancedConfigurationsFormPropsInterface {
+interface AdvancedConfigurationsFormPropsInterface extends TestableComponentInterface {
     config: AdvancedConfigurationsInterface;
     onSubmit: (values: any) => void;
     /**
@@ -55,7 +55,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
     const {
         config,
         onSubmit,
-        readOnly
+        readOnly,
+        [ "data-testid" ]: testId
     } = props;
 
     const [ isPEMSelected, setPEMSelected ] = useState<boolean>(false);
@@ -112,6 +113,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 onClose={ () => {
                     setCertificateModal(false)
                 } }
+                data-testid={ `${ testId }-view-certificate-modal` }
             >
                 <Modal.Header>
                     View certificate
@@ -171,6 +173,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                 }
                             ] }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-sass-checkbox` }
                         />
                         <Hint>
                             Applications are by default restricted for usage by users of the service provider&apos;s
@@ -195,6 +198,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                 }
                             ] }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-skip-login-consent-checkbox` }
                         />
                         <Hint>
                             User consent will be skipped during login flows.
@@ -217,6 +221,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                 }
                             ] }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-skip-logout-consent-checkbox` }
                         />
                         <Hint>
                             User consent will be skipped during logout flows.
@@ -239,6 +244,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                 }
                             ] }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-return-authenticated-idp-list-checkbox` }
                         />
                         <Hint>
                             The list of authenticated Identity Providers will be returned in the authentication
@@ -262,6 +268,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                 }
                             ] }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-enable-authorization-checkbox` }
                         />
                         <Hint>
                             Decides whether authorization policies needs to be engaged during authentication
@@ -295,6 +302,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                 }
                             ] }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-certificate-type-radio-group` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -324,6 +332,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                 }
                                             }
                                             readOnly={ readOnly }
+                                            data-testid={ `${ testId }-certificate-textarea` }
                                         />
                                         < Hint>
                                             The certificate (in PEM format) of the application.
@@ -332,6 +341,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                             className="certificate-info-link-button"
                                             onClick={ handleCertificateView }
                                             disabled={ _.isEmpty(PEMValue) }
+                                            data-testid={ `${ testId }-certificate-info-button` }
                                         >
                                             View certificate info
                                         </LinkButton>
@@ -357,6 +367,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                 && config?.certificate?.value
                                             }
                                             readOnly={ readOnly }
+                                            data-testid={ `${ testId }-jwks-input` }
                                         />
                                     </>
                                 )
@@ -369,7 +380,13 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                     !readOnly && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Button primary type="submit" size="small" className="form-button">
+                                <Button
+                                    primary
+                                    type="submit"
+                                    size="small"
+                                    className="form-button"
+                                    data-testid={ `${ testId }-submit-button` }
+                                >
                                     Update
                                 </Button>
                             </Grid.Column>
@@ -379,4 +396,11 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
             </Grid>
         </Forms>
     );
+};
+
+/**
+ * Default props for the application advanced configurations form component.
+ */
+AdvancedConfigurationsForm.defaultProps = {
+    "data-testid": "application-advanced-configurations-form"
 };

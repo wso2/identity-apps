@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -28,7 +29,7 @@ import { URLInputComponent } from "../components";
 /**
  * Proptypes for the oauth protocol settings wizard form component.
  */
-interface SAMLProtocolAllSettingsWizardFormPropsInterface {
+interface SAMLProtocolAllSettingsWizardFormPropsInterface extends TestableComponentInterface {
     initialValues: any;
     updateSelectedSAMLMetaFile: (selected: boolean) => void;
     triggerSubmit: boolean;
@@ -45,7 +46,8 @@ enum SAMLConfigModes {
  * SAML protocol settings wizard form component.
  *
  * @param {SAMLProtocolAllSettingsWizardFormPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ *
+ * @return {React.ReactElement}
  */
 export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAllSettingsWizardFormPropsInterface> = (
     props: SAMLProtocolAllSettingsWizardFormPropsInterface
@@ -55,7 +57,8 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
         initialValues,
         updateSelectedSAMLMetaFile,
         triggerSubmit,
-        onSubmit
+        onSubmit,
+        [ "data-testid" ]: testId
     } = props;
 
     const [assertionConsumerUrls, setAssertionConsumerUrls] = useState("");
@@ -120,8 +123,8 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                 inboundProtocolConfiguration: {
                     saml: {
                         manualConfiguration: {
-                            issuer: values.get("issuer") as string,
                             assertionConsumerUrls: (assertionConsumerUrls.split(",")),
+                            issuer: values.get("issuer") as string,
                             serviceProviderQualifier: values.get("applicationQualifier")
                         }
                     }
@@ -139,9 +142,9 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
             result = {
                 inboundProtocolConfiguration: {
                     saml: {
-                        metadataFile: fileContent,
                         file: file,
                         fileName: fileName,
+                        metadataFile: fileContent,
                         pasteValue: filePasteContent
                     }
                 }
@@ -194,6 +197,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                         setConfigureMode(values.get("mode") as string)
                                     }
                                 }
+                                data-testid={ `${ testId }-mode-radio-group` }
                             />
                             <Hint>
                                 { "Select the mode to configure saml." }
@@ -215,6 +219,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                             placeholder={ "Enter the issuer name" }
                                             value={ initialValues?.inboundProtocolConfiguration
                                                 .saml?.manualConfiguration?.issuer }
+                                            data-testid={ `${ testId }-issuer-input` }
                                         />
                                         <Hint>
                                             { `This specifies the issuer. This is the "saml:Issuer" element 
@@ -237,6 +242,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                                 initialValues?.inboundProtocolConfiguration
                                                     .saml?.manualConfiguration?.serviceProviderQualifier
                                             }
+                                            data-testid={ `${ testId }-application-qualifier-input` }
                                         />
                                         <Hint>
                                             This value is needed only if you have to configure multiple SAML SSO
@@ -266,6 +272,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                     hint={ "This specifies the assertion Consumer URLs that the browser " +
                                     "should be redirected to after the authentication is successful. " +
                                     "This is the Assertion Consumer Service (ACS) URL of the Application" }
+                                    data-testid={ `${ testId }-assertion-consumer-url-input` }
                                 />
                             </>
                         )
@@ -289,6 +296,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                             }
                                         } }
                                         value={ initialValues?.inboundProtocolConfiguration?.saml?.metadataURL }
+                                        data-testid={ `${ testId }-meta-url-input` }
                                     />
                                     <Hint>
                                         { "URL for the meta file" }
@@ -312,10 +320,18 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                             initialPasteValue={ filePasteContent }
                             initialContent={ fileContent }
                             triggerEmptyFileError={ emptyFileError }
+                            data-testid={ `${ testId }-meta-file-upload` }
                         />
                     )
                 }
             </Forms>
             : <ContentLoader/>
     );
+};
+
+/**
+ * Default props for the all saml protocol settings wizard form component.
+ */
+SAMLProtocolAllSettingsWizardForm.defaultProps = {
+    "data-testid": "saml-protocol-all-settings-wizard-form"
 };

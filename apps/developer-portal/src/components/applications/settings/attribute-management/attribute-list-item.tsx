@@ -21,7 +21,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Checkbox, Input, Label, Popup, Table } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
 
-
 interface AttributeListItemPropInterface {
     displayName: string;
     mappedURI: string;

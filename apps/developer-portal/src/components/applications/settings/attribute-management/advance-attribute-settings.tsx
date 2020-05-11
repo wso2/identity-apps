@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -23,7 +24,7 @@ import { Divider, Grid } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
 import { RoleConfigInterface, SubjectConfigInterface } from "../../../../models";
 
-interface AdvanceAttributeSettingsPropsInterface {
+interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterface {
     dropDownOptions: any;
     setSubmissionValues: any;
     triggerSubmission: boolean;
@@ -54,7 +55,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         initialSubject,
         initialRole,
         claimMappingOn,
-        readOnly
+        readOnly,
+        [ "data-testid" ]: testId
     } = props;
 
     /**
@@ -114,6 +116,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             value={ initialSubject?.claim?.uri || dropDownOptions[0]?.value }
                             children={ dropDownOptions }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-subject-attribute-dropdown` }
                         />
                         <Hint>
                             Choose the attribute
@@ -138,6 +141,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 ]
                             }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-subject-iInclude-user-domain-checkbox` }
                         />
                         <Hint>This option will append the user store domain that the user resides in
                             the local subject identifier</Hint>
@@ -161,6 +165,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 ]
                             }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-subject-include-tenant-domain-checkbox` }
                         />
                         <Hint>
                             This option will append the tenant domain to the local subject identifier
@@ -185,6 +190,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 ]
                             }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-subject-use-mapped-local-subject-checkbox` }
                         />
                         <Hint>
                             This option will use the local subject identifier when asserting the identity
@@ -208,6 +214,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             value={ initialRole?.claim?.uri }
                             children={ dropDownOptions }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-role-attribute-dropdown` }
                         />
                         <Hint>
                             Choose the attribute
@@ -232,6 +239,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 ]
                             }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-role-checkbox` }
                         />
                         <Hint>This option will append the user store domain that the user resides to role</Hint>
                     </Grid.Column>
@@ -239,4 +247,11 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             </Grid>
         </Forms>
     )
+};
+
+/**
+ * Default props for the application advanced attribute settings component.
+ */
+AdvanceAttributeSettings.defaultProps = {
+    "data-testid": "application-advanced-attribute-settings-form"
 };

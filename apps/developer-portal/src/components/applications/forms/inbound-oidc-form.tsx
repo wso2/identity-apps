@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { ConfirmationModal, CopyInputField, Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -36,7 +37,7 @@ import { URLInputComponent } from "../components";
 /**
  * Proptypes for the inbound OIDC form component.
  */
-interface InboundOIDCFormPropsInterface {
+interface InboundOIDCFormPropsInterface extends TestableComponentInterface {
     metadata: OIDCMetadataInterface;
     initialValues: OIDCDataInterface;
     onSubmit: (values: any) => void;
@@ -65,7 +66,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         onSubmit,
         onApplicationRegenerate,
         onApplicationRevoke,
-        readOnly
+        readOnly,
+        [ "data-testid" ]: testId
     } = props;
 
     const [isEncryptionEnabled, setEncryptionEnable] = useState(false);
@@ -265,7 +267,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                         <Form.Field>
                                             <label>Client ID</label>
-                                            <CopyInputField value={ initialValues?.clientId }/>
+                                            <CopyInputField
+                                                value={ initialValues?.clientId }
+                                                data-testid={ `${ testId }-client-id-readonly-input` }
+                                            />
                                         </Form.Field>
                                     </Grid.Column>
                                 </Grid.Row>
@@ -285,6 +290,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             placeholder="Enter Client Secret"
                                             type="password"
                                             value={ initialValues.clientSecret }
+                                            data-testid={ `${ testId }-client-secret-readonly-input` }
                                             readOnly
                                         />
                                     </Grid.Column>
@@ -302,6 +308,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                         color="red"
                                                         className="oidc-regenerate-button"
                                                         onClick={ handleRegenerateButton }
+                                                        data-testid={ `${ testId }-oidc-regenerate-button` }
                                                     >
                                                         Regenerate
                                                     </Button>
@@ -310,6 +317,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                         className="oidc-revoke-button"
                                                         onClick={ handleRevokeButton }
                                                         disabled={ (initialValues?.state === State.REVOKED) }
+                                                        data-testid={ `${ testId }-oidc-revoke-button` }
                                                     >
                                                         Revoke
                                                     </Button>
@@ -335,14 +343,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         onPrimaryActionClick={ (): void => {
                                             onApplicationRegenerate();
                                             setShowRegenerateConfirmationModal(false);
-                                        }
-                                        }
+                                        } }
+                                        data-testid={ `${ testId }-oidc-regenerate-confirmation-modal` }
                                     >
-                                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
-                                        <ConfirmationModal.Message attached warning>
+                                        <ConfirmationModal.Header
+                                            data-testid={ `${ testId }-oidc-regenerate-confirmation-modal-header` }
+                                        >
+                                            Are you sure?
+                                        </ConfirmationModal.Header>
+                                        <ConfirmationModal.Message
+                                            attached
+                                            warning
+                                            data-testid={ `${ testId }-oidc-regenerate-confirmation-modal-message` }
+                                        >
                                             This action is irreversible and permanently change the client secret.
                                         </ConfirmationModal.Message>
-                                        <ConfirmationModal.Content>
+                                        <ConfirmationModal.Content
+                                            data-testid={ `${ testId }-oidc-regenerate-confirmation-modal-content` }
+                                        >
                                             If you regenerate this application, All the applications
                                             depending on this also might stop working. Please proceed with caution.
                                         </ConfirmationModal.Content>
@@ -363,12 +381,23 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             onApplicationRevoke();
                                             setShowRevokeConfirmationModal(false);
                                         } }
+                                        data-testid={ `${ testId }-oidc-revoke-confirmation-modal` }
                                     >
-                                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
-                                        <ConfirmationModal.Message attached warning>
+                                        <ConfirmationModal.Header
+                                            data-testid={ `${ testId }-oidc-revoke-confirmation-modal-header` }
+                                        >
+                                            Are you sure?
+                                        </ConfirmationModal.Header>
+                                        <ConfirmationModal.Message
+                                            attached
+                                            warning
+                                            data-testid={ `${ testId }-oidc-revoke-confirmation-modal-message` }
+                                        >
                                             This action is can be reversed by regenerating client secret.
                                         </ConfirmationModal.Message>
-                                        <ConfirmationModal.Content>
+                                        <ConfirmationModal.Content
+                                            data-testid={ `${ testId }-oidc-revoke-confirmation-modal-content` }
+                                        >
                                             If you Revoke this application, All the applications
                                             depending on this also might stop working. Please proceed with caution.
                                         </ConfirmationModal.Content>
@@ -391,6 +420,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     children={ getAllowedGranTypeList(metadata.allowedGrantTypes) }
                                     value={ initialValues.grantTypes }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-grant-type-checkbox-group` }
                                 />
                                 <Hint>This will determine how the application communicates with the token service</Hint>
                             </Grid.Column>
@@ -411,6 +441,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             hint={ " After the authentication, we will only redirect to the above callback URLs " +
                             "and you can specify multiple URLs" }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-callback-url-input` }
                         />
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -452,6 +483,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         }
                                     ] }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-public-client-checkbox` }
                                 />
                                 <Hint>
                                     Allow the client to authenticate without a client secret.
@@ -490,6 +522,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         }
                                     ] }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-pkce-checkbox-group` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -515,6 +548,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     type="radio"
                                     children={ getAllowedList(metadata.accessTokenType, true) }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-access-token-type-radio-group` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -531,6 +565,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     placeholder="Enter the user access token expiry time "
                                     type="number"
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-access-token-expiry-time-input` }
                                 />
                                 <Hint>Configure the user access token expiry time (in seconds).</Hint>
                             </Grid.Column>
@@ -577,6 +612,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         }
                                     ] }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-renew-refresh-token-checkbox` }
                                 />
                                 <Hint>Issue a new refresh token per request when Refresh Token Grant is used.</Hint>
                             </Grid.Column>
@@ -594,6 +630,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         metadata.defaultRefreshTokenExpiryTime }
                                     type="number"
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-refresh-token-expiry-time-input` }
                                 />
                                 <Hint>Configure the refresh token expiry time (in seconds).</Hint>
                             </Grid.Column>
@@ -617,6 +654,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     value={ initialValues.idToken?.audience.toString() }
                                     type="textarea"
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-audience-textarea` }
                                 />
                                 <Hint>The recipients that the ID token is intended for.</Hint>
                             </Grid.Column>
@@ -644,6 +682,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         }
                                     ] }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-encryption-checkbox` }
                                 />
                                 <Hint>Enable ID token encryption.</Hint>
                             </Grid.Column>
@@ -661,6 +700,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     placeholder="Select Algorithm"
                                     children={ getAllowedList(metadata.idTokenEncryptionAlgorithm) }
                                     disabled={ !isEncryptionEnabled }
+                                    data-testid={ `${ testId }-encryption-algorithm-dropdown` }
                                 />
                                 <Hint disabled={ !isEncryptionEnabled }>
                                     Choose encryption algorithm of ID token for the client.
@@ -681,6 +721,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     children={ getAllowedList(metadata.idTokenEncryptionMethod) }
                                     disabled={ !isEncryptionEnabled }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-encryption-method-dropdown` }
                                 />
                                 <Hint disabled={ !isEncryptionEnabled }>
                                     Choose the method for the ID token encryption.
@@ -699,6 +740,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         metadata.defaultIdTokenExpiryTime }
                                     type="number"
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-id-token-expiry-time-input` }
                                 />
                                 <Hint>Configure the ID token expiry time (in seconds).</Hint>
                             </Grid.Column>
@@ -726,6 +768,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     } }
                                     value={ initialValues.logout?.backChannelLogoutUrl }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-back-channel-logout-url-input` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -744,6 +787,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     } }
                                     value={ initialValues.logout?.frontChannelLogoutUrl }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-front-channel-logout-url-input` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -764,6 +808,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         }
                                     ] }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-request-object-signature-validation-checkbox` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -785,6 +830,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     value={ initialValues.scopeValidators }
                                     children={ getAllowedList(metadata.scopeValidators, true) }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-scope-validator-checkbox` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -792,7 +838,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             !readOnly && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                        <Button primary type="submit" size="small" className="form-button">
+                                        <Button
+                                            primary
+                                            type="submit"
+                                            size="small"
+                                            className="form-button"
+                                            data-testid={ `${ testId }-submit-button` }
+                                        >
                                             Update
                                         </Button>
                                     </Grid.Column>
@@ -810,5 +862,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
  * Default props for the Inbound OIDC form component.
  */
 InboundOIDCForm.defaultProps = {
+    "data-testid": "inbound-oidc-form",
     initialValues: emptyOIDCConfig
 };

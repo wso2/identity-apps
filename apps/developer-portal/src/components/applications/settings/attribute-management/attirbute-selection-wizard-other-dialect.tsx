@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     Heading,
     LinkButton,
@@ -28,8 +29,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Modal } from "semantic-ui-react";
 import { ExtendedExternalClaimInterface } from "./attribute-settings";
 
-
-interface AttributeSelectionWizardOtherDialectPropsInterface {
+interface AttributeSelectionWizardOtherDialectPropsInterface extends TestableComponentInterface {
     availableExternalClaims: ExtendedExternalClaimInterface[];
     setAvailableExternalClaims: any;
     selectedExternalClaims: ExtendedExternalClaimInterface[];
@@ -59,7 +59,8 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
         setInitialSelectedExternalClaims,
         showAddModal,
         setShowAddModal,
-        availableExternalClaims
+        availableExternalClaims,
+        [ "data-testid" ]: testId
     } = props;
 
 
@@ -241,7 +242,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
 
 
     return (
-        <Modal open={ showAddModal } size="small" className="user-roles">
+        <Modal open={ showAddModal } size="small" className="user-roles" data-testid={ testId }>
             <Modal.Header>
                 Update attribute selection
                 <Heading subHeading ellipsis as="h6">
@@ -255,6 +256,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
                     removeItems={ removeRoles }
                     handleUnelectedListSearch={ searchTempAvailable }
                     handleSelectedListSearch={ searchTempSelected }
+                    data-testid={ `${ testId }-transfer-component` }
                 >
                     <TransferList
                         isListEmpty={ !(filterTempAvailableClaims.length > 0) }
@@ -262,9 +264,10 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
                         listHeaders={ ["Attribute"] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectUnassignedClaimsAllClaimsChecked }
+                        data-testid={ `${ testId }-unselected-transfer-list` }
                     >
                         {
-                            filterTempAvailableClaims?.map((claim) => {
+                            filterTempAvailableClaims?.map((claim, index) => {
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () => handleUnassignedItemCheckboxChange(claim) }
@@ -274,6 +277,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
                                         listItemIndex={ claim.claimURI }
                                         isItemChecked={ checkedUnassignedListItems.includes(claim) }
                                         showSecondaryActions={ false }
+                                        data-testid={ `${ testId }-unselected-transfer-list-item-${ index }` }
                                     />
                                 )
                             })
@@ -285,9 +289,10 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
                         listHeaders={ ["Attribute"] }
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
+                        data-testid={ `${ testId }-selected-transfer-list` }
                     >
                         {
-                            filterTempSelectedClaims?.map((claim) => {
+                            filterTempSelectedClaims?.map((claim, index) => {
 
                                 return (
                                     <TransferListItem
@@ -298,6 +303,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
                                         listItemIndex={ claim.claimURI }
                                         isItemChecked={ checkedAssignedListItems.includes(claim) }
                                         showSecondaryActions={ false }
+                                        data-testid={ `${ testId }-selected-transfer-list-item-${ index }` }
                                     />
                                 )
                             })
@@ -308,15 +314,24 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
             <Modal.Actions>
                 <LinkButton
                     onClick={ handleAttributeModal }
+                    data-testid={ `${ testId }-cancel-button` }
                 >
                     Cancel
                 </LinkButton>
                 <PrimaryButton
                     onClick={ updateSelectedClaims }
+                    data-testid={ `${ testId }-save-button` }
                 >
                     Save
                 </PrimaryButton>
             </Modal.Actions>
         </Modal>
     )
+};
+
+/**
+ * Default props for the application attribute selection wizard other dialects component.
+ */
+AttributeSelectionWizardOtherDialect.defaultProps = {
+    "data-testid": "application-attribute-selection-wizard-other-dialects"
 };

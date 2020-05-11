@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { SBACInterface } from "@wso2is/core/models";
+import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider } from "semantic-ui-react";
 import { InboundProvisioningConfigurations } from "./inbound-provisioning-configuration";
@@ -31,7 +31,9 @@ import {
 /**
  * Proptypes for the provision settings component.
  */
-interface ProvisioningSettingsPropsInterface extends SBACInterface<FeatureConfigInterface> {
+interface ProvisioningSettingsPropsInterface extends SBACInterface<FeatureConfigInterface>,
+    TestableComponentInterface {
+
     /**
      * Editing application.
      */
@@ -51,7 +53,7 @@ interface ProvisioningSettingsPropsInterface extends SBACInterface<FeatureConfig
  *
  * @param {ProvisioningSettingsPropsInterface} props - Props injected to the component.
  *
- * @return {ReactElement}
+ * @return {React.ReactElement}
  */
 export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsInterface> = (
     props: ProvisioningSettingsPropsInterface
@@ -61,7 +63,8 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
         application,
         featureConfig,
         provisioningConfigurations,
-        onUpdate
+        onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     return (
@@ -73,6 +76,7 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
                 readOnly={
                     !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
                 }
+                data-testid={ `${ testId }-inbound-configuration` }
             />
             <Divider hidden/>
             <Divider/>
@@ -81,7 +85,15 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
                 application={ application }
                 provisioningConfigurations={ provisioningConfigurations }
                 onUpdate={ onUpdate }
+                data-testid={ `${ testId }-outbound-configuration` }
             />
         </>
     );
+};
+
+/**
+ * Default props for the application provisioning settings component.
+ */
+ProvisioningSettings.defaultProps = {
+    "data-testid": "provisioning-settings"
 };

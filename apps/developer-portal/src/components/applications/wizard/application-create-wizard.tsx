@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
@@ -24,11 +24,13 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
+import { InboundCustomProtocolWizardForm } from "./custom-protcol-settings-wizard-form";
 import { GeneralSettingsWizardForm } from "./general-settings-wizard-form";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
 import { ProtocolSelectionWizardForm } from "./protocol-selection-wizard-form";
 import { ProtocolWizardSummary } from "./protocol-wizard-summary";
+import { SAMLProtocolAllSettingsWizardForm } from "./saml-protcol-settings-all-option-wizard-form";
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
 import { WizardSummary } from "./wizard-summary";
 import { WSTrustProtocolSettingsWizardForm } from "./ws-trust-protocol-settings-wizard-form";
@@ -39,36 +41,36 @@ import {
     updateAuthProtocolConfig
 } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
-import { history } from "../../../helpers";
 import { ApplicationConstants } from "../../../constants";
+import { history } from "../../../helpers";
 import {
-    PassiveStsProtocolTemplate,
-    PassiveStsProtocolTemplateItem,
+    ApplicationTemplateInterface,
+    ApplicationTemplateListItemInterface,
+    DefaultProtocolTemplate,
+    MainApplicationInterface,
+    SupportedAuthProtocolMetaTypes,
+    SupportedAuthProtocolTypes,
+    emptyApplication
+} from "../../../models";
+import { AppState } from "../../../store";
+import { setAuthProtocolMeta } from "../../../store/actions";
+import { ApplicationManagementUtils } from "../../../utils";
+import {
     OAuthProtocolTemplate,
     OAuthProtocolTemplateItem,
+    PassiveStsProtocolTemplate,
+    PassiveStsProtocolTemplateItem,
     SAMLProtocolTemplate,
     SAMLProtocolTemplateItem,
     WSTrustProtocolTemplate,
     WSTrustProtocolTemplateItem
 } from "../meta";
-import {
-    ApplicationTemplateInterface,
-    ApplicationTemplateListItemInterface,
-    MainApplicationInterface,
-    SupportedAuthProtocolTypes,
-    DefaultProtocolTemplate, emptyApplication, SupportedAuthProtocolMetaTypes
-} from "../../../models";
-import { ApplicationManagementUtils } from "../../../utils";
-import { SAMLProtocolAllSettingsWizardForm } from "./saml-protcol-settings-all-option-wizard-form";
-import { AppState } from "../../../store";
-import { InboundCustomProtocolWizardForm } from "./custom-protcol-settings-wizard-form";
-import { setAuthProtocolMeta } from "../../../store/actions";
 
 
 /**
  * Proptypes for the application creation wizard component.
  */
-interface ApplicationCreateWizardPropsInterface {
+interface ApplicationCreateWizardPropsInterface extends TestableComponentInterface {
     currentStep?: number;
     title: string;
     closeWizard: () => void;
@@ -116,23 +118,23 @@ enum WizardStepsFormTypes {
 const STEPS: WizardStepInterface[] = [
     {
         icon: ApplicationWizardStepIcons.protocolSelection,
-        title: "Protocol Selection",
-        name: WizardStepsFormTypes.PROTOCOL_SELECTION
+        name: WizardStepsFormTypes.PROTOCOL_SELECTION,
+        title: "Protocol Selection"
     },
     {
         icon: ApplicationWizardStepIcons.general,
-        title: "General Settings",
-        name: WizardStepsFormTypes.GENERAL_SETTINGS
+        name: WizardStepsFormTypes.GENERAL_SETTINGS,
+        title: "General Settings"
     },
     {
         icon: ApplicationWizardStepIcons.protocolConfig,
-        title: "Protocol Configuration",
-        name: WizardStepsFormTypes.PROTOCOL_SETTINGS
+        name: WizardStepsFormTypes.PROTOCOL_SETTINGS,
+        title: "Protocol Configuration"
     },
     {
         icon: ApplicationWizardStepIcons.summary,
-        title: "Summary",
-        name: WizardStepsFormTypes.SUMMARY
+        name: WizardStepsFormTypes.SUMMARY,
+        title: "Summary"
     }
 ];
 
@@ -155,7 +157,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         addProtocol,
         selectedProtocols,
         appId,
-        onUpdate
+        onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
@@ -322,9 +325,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      * Navigates to the next wizard step.
      */
     const navigateToNext = (): void => {
-        const step = currentWizardStep;
-
-        switch (wizardSteps[step]?.name) {
+        switch (wizardSteps[currentWizardStep]?.name) {
             case WizardStepsFormTypes.PROTOCOL_SELECTION:
                 setTriggerProtocolSelectionSubmit(true);
                 break;
@@ -460,6 +461,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                         triggerSubmit={ triggerProtocolSelectionSubmit }
                         selectedProtocols={ selectedProtocols }
                         setSelectedCustomInboundProtocol={ setSelectedCustomInboundProtocol }
+                        data-testid={ `${ testId }-protocol-selection-form` }
                     />
                 );
             case WizardStepsFormTypes.GENERAL_SETTINGS:
@@ -472,17 +474,18 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                 handleCustomAppWizardFinish(values)
                             } }
                             templateValues={ templateSettings }
+                            data-testid={ `${ testId }-general-settings-form` }
                         />
                     );
                 } else {
                     return (
                         <GeneralSettingsWizardForm
                             triggerSubmit={ submitGeneralSettings }
-
                             initialValues={ wizardState && wizardState[WizardStepsFormTypes.GENERAL_SETTINGS] }
                             onSubmit={ (values): void => handleWizardFormSubmit(values,
                                 WizardStepsFormTypes.GENERAL_SETTINGS) }
                             templateValues={ templateSettings }
+                            data-testid={ `${ testId }-general-settings-form` }
                         />
                     );
                 }
@@ -498,10 +501,12 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                 metadata={ authProtocolMeta[selectedTemplate.id] }
                                 onSubmit={ (values): void => handleWizardFormSubmit(values,
                                     WizardStepsFormTypes.PROTOCOL_SETTINGS) }
+                                data-testid={ `${ testId }-custom-protocol-settings-form` }
                             />
                         )
                     } else if (wizardState[WizardStepsFormTypes.PROTOCOL_SELECTION] ===
                         SupportedAuthProtocolTypes.OIDC) {
+
                         return (
                             <OauthProtocolSettingsWizardForm
                                 triggerSubmit={ submitOAuth }
@@ -511,26 +516,38 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                     WizardStepsFormTypes.PROTOCOL_SETTINGS) }
                                 // TODO remove if not needed
                                 showCallbackURL={ true }
+                                data-testid={ `${ testId }-oauth-protocol-settings-form` }
                             />
                         )
                     } else if (wizardState[WizardStepsFormTypes.PROTOCOL_SELECTION] ===
                         SupportedAuthProtocolTypes.SAML) {
+
                         return (
-                            (selectedTemplate.id === DefaultProtocolTemplate.SAML) ?
-                                <SAMLProtocolAllSettingsWizardForm
-                                    triggerSubmit={ submitOAuth }
-                                    initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
-                                    updateSelectedSAMLMetaFile={ setSelectedSAMLMetaFile }
-                                    onSubmit={ (values): void => handleWizardFormSubmit(values,
-                                        WizardStepsFormTypes.PROTOCOL_SETTINGS) }
-                                /> :
-                                <SAMLProtocolSettingsWizardForm
-                                    triggerSubmit={ submitOAuth }
-                                    initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
-                                    templateValues={ templateSettings }
-                                    onSubmit={ (values): void => handleWizardFormSubmit(values,
-                                        WizardStepsFormTypes.PROTOCOL_SETTINGS) }
-                                />
+                            (selectedTemplate.id === DefaultProtocolTemplate.SAML)
+                                ? (
+                                    <SAMLProtocolAllSettingsWizardForm
+                                        triggerSubmit={ submitOAuth }
+                                        initialValues={
+                                            wizardState && wizardState[ WizardStepsFormTypes.PROTOCOL_SETTINGS ]
+                                        }
+                                        updateSelectedSAMLMetaFile={ setSelectedSAMLMetaFile }
+                                        onSubmit={ (values): void => handleWizardFormSubmit(values,
+                                            WizardStepsFormTypes.PROTOCOL_SETTINGS) }
+                                        data-testid={ `${ testId }-saml-protocol-all-settings-form` }
+                                    />
+                                )
+                                : (
+                                    <SAMLProtocolSettingsWizardForm
+                                        triggerSubmit={ submitOAuth }
+                                        initialValues={
+                                            wizardState && wizardState[ WizardStepsFormTypes.PROTOCOL_SETTINGS ]
+                                        }
+                                        templateValues={ templateSettings }
+                                        onSubmit={ (values): void => handleWizardFormSubmit(values,
+                                            WizardStepsFormTypes.PROTOCOL_SETTINGS) }
+                                        data-testid={ `${ testId }-saml-protocol-settings-form` }
+                                    />
+                                )
                         )
                     } else if (wizardState[WizardStepsFormTypes.PROTOCOL_SELECTION] ===
                         SupportedAuthProtocolTypes.WS_TRUST) {
@@ -541,6 +558,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                 templateValues={ templateSettings }
                                 onSubmit={ (values): void => handleWizardFormSubmit(values,
                                     WizardStepsFormTypes.PROTOCOL_SETTINGS) }
+                                data-testid={ `${ testId }-ws-trust-protocol-settings-form` }
                             />
                         )
                     } else if (wizardState[WizardStepsFormTypes.PROTOCOL_SELECTION] ===
@@ -552,6 +570,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                 templateValues={ templateSettings }
                                 onSubmit={ (values): void => handleWizardFormSubmit(values,
                                     WizardStepsFormTypes.PROTOCOL_SETTINGS) }
+                                data-testid={ `${ testId }-passive-sts-protocol-settings-form` }
                             />
                         )
                     }
@@ -568,6 +587,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                             image={ selectedTemplate.authenticationProtocol }
                             customProtocol={ selectedCustomInboundProtocol }
                             samlMetaFileSelected={ selectedSAMLMetaFile }
+                            data-testid={ `${ testId }-protocol-summary` }
                         />
                     )
                 } else {
@@ -576,6 +596,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                             triggerSubmit={ finishSubmit }
                             summary={ generateWizardSummary() }
                             onSubmit={ handleWizardFormFinish }
+                            data-testid={ `${ testId }-summary` }
                         />
                     )
                 }
@@ -703,18 +724,20 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     onClose={ handleWizardClose }
                     closeOnDimmerClick
                     closeOnEscape
+                    data-testid={ `${ testId }-modal` }
                 >
                     <Modal.Header className="wizard-header">
                         { title }
                         { subTitle && <Heading as="h6">{ subTitle }</Heading> }
                     </Modal.Header>
-                    <Modal.Content className="steps-container">
+                    <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
                         <Steps.Group current={ currentWizardStep }>
                             { wizardSteps.map((step, index) => (
                                 <Steps.Step
                                     key={ index }
                                     icon={ step.icon }
                                     title={ step.title }
+                                    data-testid={ `${ testId }-step-${ index }` }
                                 />
                             )) }
                         </Steps.Group>
@@ -728,16 +751,32 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                 </Grid.Column>
                                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                     { currentWizardStep < wizardSteps.length - 1 && (
-                                        <PrimaryButton floated="right" onClick={ navigateToNext }>
-                                            Next <Icon name="arrow right"/>
+                                        <PrimaryButton
+                                            floated="right"
+                                            onClick={ navigateToNext }
+                                            data-testid={ `${ testId }-next-button` }
+                                        >
+                                            Next
+                                            <Icon name="arrow right"/>
                                         </PrimaryButton>
                                     ) }
                                     { currentWizardStep === wizardSteps.length - 1 && (
-                                        <PrimaryButton floated="right" onClick={ navigateToNext }>Finish</PrimaryButton>
+                                        <PrimaryButton
+                                            floated="right"
+                                            onClick={ navigateToNext }
+                                            data-testid={ `${ testId }-finish-button` }
+                                        >
+                                            Finish
+                                        </PrimaryButton>
                                     ) }
                                     { currentWizardStep > 0 && (
-                                        <LinkButton floated="right" onClick={ navigateToPrevious }>
-                                            <Icon name="arrow left"/> Previous
+                                        <LinkButton
+                                            floated="right"
+                                            onClick={ navigateToPrevious }
+                                            data-testid={ `${ testId }-previous-button` }
+                                        >
+                                            <Icon name="arrow left"/>
+                                            Previous
                                         </LinkButton>
                                     ) }
                                 </Grid.Column>
@@ -754,5 +793,6 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
  * Default props for the application creation wizard.
  */
 ApplicationCreateWizard.defaultProps = {
-    currentStep: 0
+    currentStep: 0,
+    "data-testid": "application-create-wizard"
 };

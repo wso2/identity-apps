@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
 
-
 /**
  * Proptypes for the oauth protocol settings wizard form component.
  */
-interface PassiveStsSettingsWizardFormPropsInterface {
+interface PassiveStsSettingsWizardFormPropsInterface extends TestableComponentInterface {
     initialValues: any;
     templateValues: any;
     triggerSubmit: boolean;
@@ -37,7 +37,8 @@ interface PassiveStsSettingsWizardFormPropsInterface {
  * SAML protocol settings wizard form component.
  *
  * @param {PassiveStsSettingsWizardFormPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ *
+ * @return {React.ReactElement}
  */
 export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsSettingsWizardFormPropsInterface> = (
     props: PassiveStsSettingsWizardFormPropsInterface
@@ -47,7 +48,8 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
         initialValues,
         templateValues,
         triggerSubmit,
-        onSubmit
+        onSubmit,
+        [ "data-testid" ]: testId
     } = props;
 
     /**
@@ -86,6 +88,7 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
                                 placeholder="Enter realm."
                                 type="text"
                                 value={ initialValues ? initialValues?.realm : templateValues?.realm }
+                                data-testid={ `${ testId }-realm-input` }
                             />
                             <Hint>Enter realm identifier for passive sts</Hint>
                         </Grid.Column>
@@ -106,6 +109,7 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
                                 } }
                                 type="text"
                                 value={ initialValues ? initialValues?.replyTo : templateValues?.replyTo }
+                                data-testid={ `${ testId }-reply-url-input` }
                             />
                             <Hint>Enter RP endpoint URL that handles the response.</Hint>
                         </Grid.Column>
@@ -114,4 +118,11 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
             </Forms>
             : <ContentLoader/>
     );
+};
+
+/**
+ * Default props for the passive-sts protocol settings wizard form component.
+ */
+PassiveStsProtocolSettingsWizardForm.defaultProps = {
+    "data-testid": "passive-sts-protocol-settings-wizard-form"
 };

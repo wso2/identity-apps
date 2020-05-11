@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -28,7 +29,7 @@ import {
 /**
  *  Provisioning Configurations for the Application.
  */
-interface ProvisioningConfigurationFormPropsInterface {
+interface ProvisioningConfigurationFormPropsInterface extends TestableComponentInterface {
     config: ProvisioningConfigurationInterface;
     onSubmit: (values: any) => void;
     useStoreList: SimpleUserStoreListItemInterface[];
@@ -40,7 +41,7 @@ interface ProvisioningConfigurationFormPropsInterface {
  *
  * @param {ProvisioningConfigurationFormPropsInterface} props - Props injected to the component.
  *
- * @return {ReactElement}
+ * @return {React.ReactElement}
  */
 export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfigurationFormPropsInterface> = (
     props: ProvisioningConfigurationFormPropsInterface
@@ -50,7 +51,8 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
         config,
         onSubmit,
         readOnly,
-        useStoreList
+        useStoreList,
+        [ "data-testid" ]: testId
     } = props;
 
     const [isProxyModeOn, setIsProxyModeOn] = useState<boolean>(false);
@@ -121,6 +123,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                                 }
                             ] }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-proxy-mode-checkbox` }
                         />
                         <Hint>
                             Users/Groups are not provisioned to the user store. They are only outbound provisioned.
@@ -140,6 +143,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                             children={ getUserStoreOption() }
                             disabled={ isProxyModeOn }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-provisioning-userstore-domain-dropdown` }
                         />
                         <Hint>
                             Select userstore domain name to provision users and groups.
@@ -150,7 +154,13 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                     !readOnly && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Button primary type="submit" size="small" className="form-button">
+                                <Button
+                                    primary
+                                    type="submit"
+                                    size="small"
+                                    className="form-button"
+                                    data-testid={ `${ testId }-submit-button` }
+                                >
                                     Update
                                 </Button>
                             </Grid.Column>
@@ -160,4 +170,11 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
             </Grid>
         </Forms>
     );
+};
+
+/**
+ * Default props for the application provisioning configurations form component.
+ */
+ProvisioningConfigurationsForm.defaultProps = {
+    "data-testid": "application-inbound-provisioning-configurations-form"
 };

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Divider, Label, List, Message, Popup } from "semantic-ui-react";
@@ -39,7 +40,7 @@ interface KeyData {
 /**
  * Prop types of `DynamicField` component
  */
-interface DynamicFieldPropsInterface {
+interface DynamicFieldPropsInterface extends TestableComponentInterface {
     /**
      * An array of  key-value pairs
      */
@@ -114,7 +115,8 @@ export const DynamicField = (props: DynamicFieldPropsInterface): ReactElement =>
         listen,
         requiredField,
         duplicateKeyErrorMsg,
-        readOnly
+        readOnly,
+        [ "data-testid" ]: testId
     } = props;
 
     const [fields, setFields] = useState<Map<number, KeyValue>>();
@@ -251,6 +253,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): ReactElement =>
                                                         }
                                                     }
                                                     readOnly={ readOnly }
+                                                    data-testid={ `${ testId }-${ keyType }` }
                                                 />
                                             )
                                             : (
@@ -261,6 +264,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): ReactElement =>
                                                     requiredErrorMessage={ keyRequiredMessage }
                                                     name="key"
                                                     readOnly={ readOnly }
+                                                    data-testid={ `${ testId }-${ keyType }` }
                                                 />
                                             )
                                         }
@@ -273,6 +277,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): ReactElement =>
                                             requiredErrorMessage={ valueRequiredErrorMessage }
                                             name="value"
                                             readOnly={ readOnly }
+                                            data-testid={ `${ testId }-input` }
                                         />
                                     </List.Item>
                                     <List.Item>
@@ -385,6 +390,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): ReactElement =>
                                                                                 }
                                                                             }
                                                                         }
+                                                                        data-testid={ `${ testId }-${ keyType }` }
                                                                     />
                                                                 )
                                                                 : (
@@ -397,6 +403,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): ReactElement =>
                                                                         }
                                                                         name={ "editKey" }
                                                                         value={ editKey }
+                                                                        data-testid={ `${ testId }-${ keyType }` }
                                                                     />
                                                                 )
                                                         )
@@ -530,6 +537,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): ReactElement =>
 
 // Set default props
 DynamicField.defaultProps = {
+    "data-testid": "dynamic-field",
     duplicateKeyErrorMsg: "This is key is already selected. Please choose another key.",
     requiredField: false
 };

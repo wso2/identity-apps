@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Checkbox, Divider, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
@@ -35,7 +36,7 @@ import {
     RequestedClaimConfigurationInterface
 } from "../../../../models";
 
-interface AttributeSelectionPropsInterface {
+interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     claims: ExtendedClaimInterface[];
     setClaims: any;
     externalClaims: ExtendedExternalClaimInterface[];
@@ -93,7 +94,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         claimMappingOn,
         setClaimMappingOn,
         claimMappingError,
-        readOnly
+        readOnly,
+        [ "data-testid" ]: testId
     } = props;
 
 
@@ -371,17 +373,20 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const addSelectionModal = (() => {
             if (selectedDialect.localDialect) {
-                return <AttributeSelectionWizard
-                    selectedClaims={ selectedClaims }
-                    setSelectedClaims={ setFilterSelectedClaims }
-                    setInitialSelectedClaims={ setSelectedClaims }
-                    showAddModal={ showSelectionModal }
-                    setShowAddModal={ setShowSelectionModal }
-                    availableClaims={ claims }
-                    setAvailableClaims={ setClaims }
-                    createMapping={ createMapping }
-                    removeMapping={ removeMapping }
-                />
+                return (
+                    <AttributeSelectionWizard
+                        selectedClaims={ selectedClaims }
+                        setSelectedClaims={ setFilterSelectedClaims }
+                        setInitialSelectedClaims={ setSelectedClaims }
+                        showAddModal={ showSelectionModal }
+                        setShowAddModal={ setShowSelectionModal }
+                        availableClaims={ claims }
+                        setAvailableClaims={ setClaims }
+                        createMapping={ createMapping }
+                        removeMapping={ removeMapping }
+                        data-testid={ `${ testId }-wizard` }
+                    />
+                )
             }
             return (
 
@@ -393,6 +398,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     setShowAddModal={ setShowSelectionModal }
                     availableExternalClaims={ externalClaims }
                     setAvailableExternalClaims={ setExternalClaims }
+                    data-testid={ `${ testId }-wizard-other-dialects` }
                 />
             )
         }
@@ -576,4 +582,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             </>
             : <ContentLoader/>
     );
+};
+
+/**
+ * Default props for the application attribute selection component.
+ */
+AttributeSelection.defaultProps = {
+    "data-testid": "application-attribute-selection"
 };

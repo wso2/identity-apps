@@ -17,7 +17,7 @@
  */
 
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, ResourceTab } from "@wso2is/react-components";
 import _ from "lodash";
@@ -48,7 +48,7 @@ import { ApplicationManagementUtils } from "../../utils";
 /**
  * Proptypes for the applications edit component.
  */
-interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInterface> {
+interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     /**
      * Editing application.
      */
@@ -88,7 +88,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         isLoading,
         onDelete,
         onUpdate,
-        template
+        template,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -217,6 +218,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onUpdate={ onUpdate }
                 featureConfig={ featureConfig }
                 template={ template }
+                data-testid={ `${ testId }-general-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -232,6 +234,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 inboundProtocolConfig={ inboundProtocolConfig }
                 inboundProtocols={ inboundProtocolList }
                 featureConfig={ featureConfig }
+                data-testid={ `${ testId }-general-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -246,6 +249,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     inboundProtocolList.length === 1 && (inboundProtocolList[0] === SupportedAuthProtocolTypes.OIDC)
                 }
                 onUpdate={ onUpdate }
+                data-testid={ `${ testId }-attribute-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -259,6 +263,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 featureConfig={ featureConfig }
+                data-testid={ `${ testId }-sign-on-methods` }
             />
         </ResourceTab.Pane>
     );
@@ -270,6 +275,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 advancedConfigurations={ application.advancedConfigurations }
                 onUpdate={ onUpdate }
                 featureConfig={ featureConfig }
+                data-testid={ `${ testId }-advanced-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -281,6 +287,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 provisioningConfigurations={ application.provisioningConfigurations }
                 onUpdate={ onUpdate }
                 featureConfig={ featureConfig }
+                data-testid={ `${ testId }-provisioning-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -375,7 +382,15 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     };
 
     return (
-        application && !isInboundProtocolsRequestLoading ?
-            <ResourceTab panes={ resolveTabPanes() }/> : <ContentLoader/>
+        application && !isInboundProtocolsRequestLoading
+            ? <ResourceTab panes={ resolveTabPanes() }/>
+            : <ContentLoader/>
     );
+};
+
+/**
+ * Default props for the application edit component.
+ */
+EditApplication.defaultProps = {
+    "data-testid": "edit-application"
 };

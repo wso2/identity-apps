@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -49,7 +49,7 @@ import { ApplicationCreateWizard } from "../wizard";
 /**
  * Proptypes for the applications settings component.
  */
-interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigInterface> {
+interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     /**
      * Currently editing application id.
      */
@@ -98,7 +98,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         inboundProtocolConfig,
         inboundProtocols,
         isLoading,
-        onUpdate
+        onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -307,6 +308,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     featureConfig?.applications?.scopes?.update
                                                 )
                                             }
+                                            data-testid={ `${ testId }-inbound-${ protocol }-form` }
                                         />
                                     ),
                                     icon: { icon: InboundProtocolLogos[protocol], size: "micro" } as GenericIconProps,
@@ -334,6 +336,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     featureConfig?.applications?.scopes?.update
                                                 )
                                             }
+                                            data-testid={ `${ testId }-inbound-custom-form` }
                                         />
                                     ),
                                     icon: {
@@ -351,6 +354,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                             }
                         })
                     }
+                    data-testid={ `${ testId }-protocol-accordion` }
                 /> : <ContentLoader/>
         )
     };
@@ -414,6 +418,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         floated="right"
                                         primary
                                         onClick={ () => setShowWizard(true) }
+                                        data-testid={ `${ testId }-new-protocol-button` }
                                     >
                                         <Icon name="add"/>New Protocol
                                     </Button>
@@ -438,6 +443,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                 "You can add protocol easily by using the",
                                                 "predefined templates."
                                             ] }
+                                            data-testid={ `${ testId }-protocol-empty-placeholder` }
                                         />
                                     )
                             }
@@ -458,6 +464,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                 selectedProtocols={ inboundProtocols }
                                 onUpdate={ onUpdate }
                                 appId={ appId }
+                                data-testid={ `${ testId }-protocol-add-wizard` }
                             />
                         )
                     }
@@ -481,12 +488,23 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         setShowDeleteConfirmationModal(false);
                                     }
                                 }
+                                data-testid={ `${ testId }-protocol-delete-confirmation-modal` }
                             >
-                                <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
-                                <ConfirmationModal.Message attached warning>
+                                <ConfirmationModal.Header
+                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal-header` }
+                                >
+                                    Are you sure?
+                                </ConfirmationModal.Header>
+                                <ConfirmationModal.Message
+                                    attached
+                                    warning
+                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal-message` }
+                                >
                                     This action is irreversible and will permanently delete the protocol.
                                 </ConfirmationModal.Message>
-                                <ConfirmationModal.Content>
+                                <ConfirmationModal.Content
+                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal-content` }
+                                >
                                     If you delete this protocol, you will not be able to get it back. All the
                                     applications depending on this also might stop working. Please proceed with caution.
                                 </ConfirmationModal.Content>
@@ -497,4 +515,11 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             )
             : <ContentLoader/>
     );
+};
+
+/**
+ * Default props for the application access configuration component.
+ */
+AccessConfiguration.defaultProps = {
+    "data-testid": "application-access-configuration"
 };

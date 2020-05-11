@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, LabeledCard } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, {
@@ -38,7 +39,7 @@ import { GenericAuthenticatorInterface } from "../../../../../models";
 /**
  * Proptypes for the authenticators component.
  */
-interface AuthenticatorsPropsInterface {
+interface AuthenticatorsPropsInterface extends TestableComponentInterface {
     /**
      * List of authenticators.
      */
@@ -104,7 +105,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         emptyPlaceholder,
         heading,
         isDropDisabled,
-        readOnly
+        readOnly,
+        [ "data-testid" ]: testId
     } = props;
 
     const classes = classNames("authenticators", className);
@@ -155,8 +157,12 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     { heading && <Heading as="h6">{ heading }</Heading> }
                     <Droppable droppableId={ droppableId } direction="horizontal" isDropDisabled={ isDropDisabled }>
                         { (provided: DroppableProvided): React.ReactElement<HTMLElement> => (
-                            <div ref={ provided.innerRef } { ...provided.droppableProps } className={ classes }>
-
+                            <div
+                                ref={ provided.innerRef }
+                                { ...provided.droppableProps }
+                                className={ classes }
+                                data-testid={ testId }
+                            >
                                 {
                                     authenticators.map((authenticator, index) => (
                                         <Draggable
@@ -180,6 +186,9 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                                             image={ authenticator.image }
                                                             label={ authenticator.displayName || defaultName }
                                                             labelEllipsis={ true }
+                                                            data-testid={
+                                                                `${ testId }-authenticator-${ authenticator.name }`
+                                                            }
                                                         />
                                                     </PortalAwareDraggable>
                                                 )
@@ -201,6 +210,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
  * Default props for the authenticators component.
  */
 Authenticators.defaultProps = {
+    "data-testid": "authenticators",
     defaultName: "Unknown",
     isDropDisabled: true
 };

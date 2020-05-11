@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ContentLoader, Hint } from "@wso2is/react-components";
@@ -30,7 +30,7 @@ import { MetadataPropertyInterface, SupportedAuthProtocolMetaTypes, WSTrustMetaD
 /**
  * Proptypes for the oauth protocol settings wizard form component.
  */
-interface WSTrustSettingsWizardFormPropsInterface {
+interface WSTrustSettingsWizardFormPropsInterface extends TestableComponentInterface {
     initialValues: any;
     templateValues: any;
     triggerSubmit: boolean;
@@ -41,7 +41,8 @@ interface WSTrustSettingsWizardFormPropsInterface {
  * SAML protocol settings wizard form component.
  *
  * @param {WSTrustSettingsWizardFormPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ *
+ * @return {React.ReactElement}
  */
 export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSettingsWizardFormPropsInterface> = (
     props: WSTrustSettingsWizardFormPropsInterface
@@ -51,7 +52,8 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
         initialValues,
         templateValues,
         triggerSubmit,
-        onSubmit
+        onSubmit,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -91,7 +93,7 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
         const allowedOptions = [];
         if (metadataProp) {
             metadataProp.options.map((ele) => {
-                allowedOptions.push({ text: ele, value: ele, key: metadataProp.options.indexOf(ele) });
+                allowedOptions.push({ key: metadataProp.options.indexOf(ele), text: ele, value: ele });
             });
         }
 
@@ -144,6 +146,7 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
                                     }
                                 } }
                                 value={ initialValues ? initialValues?.audience : templateValues?.audience }
+                                data-testid={ `${ testId }-audience-input` }
                             />
                             {/* eslint-disable-next-line react/no-unescaped-entities */ }
                             <Hint>The trusted relying party's endpoint address.</Hint>
@@ -163,6 +166,7 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
                                         initialValues?.certificateAlias : templateValues?.certificateAlias
                                 }
                                 children={ getCertificateOptions(showWSTrustMetaData?.certificateAlias) }
+                                data-testid={ `${ testId }-certificate-alias-dropdown` }
                             />
                             <Hint>Public certificate of the trusted relying party.</Hint>
                         </Grid.Column>
@@ -171,4 +175,11 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
             </Forms>
             : <ContentLoader/>
     )
+};
+
+/**
+ * Default props for the ws-trust protocol settings wizard form component.
+ */
+WSTrustProtocolSettingsWizardForm.defaultProps = {
+    "data-testid": "ws-trust-protocol-settings-wizard-form"
 };

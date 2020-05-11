@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
@@ -36,7 +36,9 @@ import { GeneralDetailsForm } from "../forms";
 /**
  * Proptypes for the applications general details component.
  */
-interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfigInterface> {
+interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfigInterface>,
+    TestableComponentInterface {
+
     /**
      * Application access URL.
      */
@@ -101,7 +103,8 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         isLoading,
         onDelete,
         onUpdate,
-        template
+        template,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -205,6 +208,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                 subheader={ "Once you delete an application, there is no going back. " +
                                 "Please be certain." }
                                 onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
+                                data-testid={ `${ testId }-danger-zone` }
                             />
                         )
                     }
@@ -232,6 +236,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                 featureConfig?.applications, featureConfig?.applications?.scopes?.update
                             )
                         }
+                        data-testid={ `${ testId }-form` }
                     />
                     { resolveDangerActions() }
                     <ConfirmationModal
@@ -245,12 +250,23 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         secondaryAction="Cancel"
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => handleApplicationDelete() }
+                        data-testid={ `${ testId }-application-delete-confirmation-modal` }
                     >
-                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
+                        <ConfirmationModal.Header
+                            data-testid={ `${ testId }-application-delete-confirmation-modal-header` }
+                        >
+                            Are you sure?
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message
+                            attached
+                            warning
+                            data-testid={ `${ testId }-application-delete-confirmation-modal-message` }
+                        >
                             This action is irreversible and will permanently delete the application.
                         </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
+                        <ConfirmationModal.Content
+                            data-testid={ `${ testId }-application-delete-confirmation-modal-content` }
+                        >
                             If you delete this application, you will not be able to get it back. All the applications
                             depending on this also might stop working. Please proceed with caution.
                         </ConfirmationModal.Content>
@@ -259,4 +275,11 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
             )
             : <ContentLoader/>
     );
+};
+
+/**
+ * Default props for the application general settings component.
+ */
+GeneralApplicationSettings.defaultProps = {
+    "data-testid": "application-general-settings"
 };

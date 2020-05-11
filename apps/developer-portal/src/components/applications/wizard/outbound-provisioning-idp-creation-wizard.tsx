@@ -16,26 +16,26 @@
  * under the License.
  */
 
-import { ApplicationWizardStepIcons } from "../../../configs";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
+import { useTrigger } from "@wso2is/forms";
+import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Grid, Icon, Modal } from "semantic-ui-react";
+import { OutboundProvisioningWizardIdpForm } from "./outbound-provisioining-idp-wizard-form";
+import { getIdentityProviderList, updateApplicationConfigurations } from "../../../api";
+import { ApplicationWizardStepIcons } from "../../../configs";
 import {
     IdentityProviderInterface,
     OutboundProvisioningConfigurationInterface
 } from "../../../models";
-import { Grid, Icon, Modal } from "semantic-ui-react";
-import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
-import { OutboundProvisioningWizardIdpForm } from "./outbound-provisioining-idp-wizard-form";
-import { getIdentityProviderList, updateApplicationConfigurations } from "../../../api";
-import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { useTrigger } from "@wso2is/forms";
 
 /**
  * Interface for the outbound provisioning IDP create wizard props.
  */
-interface OutboundProvisioningIdpCreateWizardPropsInterface {
+interface OutboundProvisioningIdpCreateWizardPropsInterface extends TestableComponentInterface {
     application: any;
     closeWizard: () => void;
     currentStep?: number;
@@ -57,7 +57,8 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
         application,
         closeWizard,
         currentStep,
-        onUpdate
+        onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -180,6 +181,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
                         handleWizardFormFinish(values)
                     } }
                     idpList={ idpList }
+                    data-testid={ `${ testId }-form` }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
@@ -194,6 +196,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
             dimmer="blurring"
             size="small"
             onClose={ closeWizard }
+            data-testid={ testId }
             closeOnDimmerClick
             closeOnEscape
         >
@@ -204,12 +207,14 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
             <Modal.Content className="steps-container">
                 <Steps.Group
                     current={ currentWizardStep }
+                    data-testid={ `${ testId }-steps` }
                 >
                     { STEPS.map((step, index) => (
                         <Steps.Step
                             key={ index }
                             icon={ step.icon }
                             title={ step.title }
+                            data-testid={ `${ testId }-step-${ index }` }
                         />
                     )) }
                 </Steps.Group>
@@ -224,6 +229,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
                             <LinkButton
                                 floated="left"
                                 onClick={ () => closeWizard() }
+                                data-testid={ `${ testId }-cancel-button` }
                             >
                                 { t("common:cancel") }
                             </LinkButton>
@@ -233,6 +239,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
                                 <PrimaryButton
                                     floated="right"
                                     onClick={ navigateToNext }
+                                    data-testid={ `${ testId }-next-button` }
                                 >
                                     Next
                                     <Icon name="arrow right"/>
@@ -242,6 +249,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
                                 <PrimaryButton
                                     floated="right"
                                     onClick={ navigateToNext }
+                                    data-testid={ `${ testId }-finish-button` }
                                 >
                                     Finish</PrimaryButton>
                             ) }
@@ -249,6 +257,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
                                 <LinkButton
                                     floated="right"
                                     onClick={ navigateToPrevious }
+                                    data-testid={ `${ testId }-previous-button` }
                                 >
                                     <Icon name="arrow left"/>
                                     Previous
@@ -266,5 +275,6 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
  * Default props for the outbound provisioning IDP create wizard.
  */
 OutboundProvisioningIdpCreateWizard.defaultProps = {
-    currentStep: 0
+    currentStep: 0,
+    "data-testid": "outbound-provisioning-idp-create-wizard"
 };

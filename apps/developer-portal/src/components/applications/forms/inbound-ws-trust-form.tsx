@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import _ from "lodash";
@@ -26,7 +27,7 @@ import { MetadataPropertyInterface, WSTrustConfigurationInterface, WSTrustMetaDa
 /**
  * Proptypes for the inbound WS Trust form component.
  */
-interface InboundWSTrustFormPropsInterface {
+interface InboundWSTrustFormPropsInterface extends TestableComponentInterface {
     metadata: WSTrustMetaDataInterface;
     initialValues: WSTrustConfigurationInterface;
     onSubmit: (values: any) => void;
@@ -41,7 +42,7 @@ interface InboundWSTrustFormPropsInterface {
  *
  * @param {InboundWSTrustFormPropsInterface} props - Props injected to the component.
  *
- * @return {ReactElement}
+ * @return {React.ReactElement}
  */
 export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterface> = (
     props: InboundWSTrustFormPropsInterface
@@ -51,7 +52,8 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
         metadata,
         initialValues,
         onSubmit,
-        readOnly
+        readOnly,
+        [ "data-testid" ]: testId
     } = props;
 
     /**
@@ -103,6 +105,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                     type="text"
                                     value={ initialValues?.audience }
                                     readOnly={ readOnly || !(_.isEmpty(initialValues?.audience)) }
+                                    data-testid={ `${ testId }-audience-input` }
                                 />
 
                                 <Hint disabled={ !(_.isEmpty(initialValues?.audience)) }>
@@ -125,6 +128,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                     }
                                     children={ getCertificateOptions(metadata?.certificateAlias) }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-certificate-alias-dropdown` }
                                 />
                                 <Hint>Public certificate of the trusted relying party.</Hint>
                             </Grid.Column>
@@ -133,7 +137,13 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                             !readOnly && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                        <Button primary type="submit" size="small" className="form-button">
+                                        <Button
+                                            primary
+                                            type="submit"
+                                            size="small"
+                                            className="form-button"
+                                            data-testid={ `${ testId }-submit-button` }
+                                        >
                                             Update
                                         </Button>
                                     </Grid.Column>
@@ -145,4 +155,11 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
             )
             : null
     );
+};
+
+/**
+ * Default props for the inbound ws-trust form component.
+ */
+InboundWSTrustForm.defaultProps = {
+    "data-testid": "inbound-ws-trust-form"
 };

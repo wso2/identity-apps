@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -35,7 +35,9 @@ import { ProvisioningConfigurationsForm } from "../../forms";
 /**
  *  Inbound Provisioning Configurations for the Application.
  */
-interface InboundProvisioningConfigurationsPropsInterface extends SBACInterface<FeatureConfigInterface> {
+interface InboundProvisioningConfigurationsPropsInterface extends SBACInterface<FeatureConfigInterface>,
+    TestableComponentInterface {
+
     /**
      * Currently editing application id.
      */
@@ -68,7 +70,8 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
         appId,
         provisioningConfigurations,
         onUpdate,
-        featureConfig
+        featureConfig,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -141,6 +144,7 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
                                                     !hasRequiredScopes(featureConfig?.applications,
                                                         featureConfig?.applications?.scopes?.update)
                                                 }
+                                                data-testid={ `${ testId }-form` }
                                             />
                                         ),
                                         id: "scim",
@@ -148,6 +152,7 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
                                     }
                                 ]
                             }
+                            data-testid={ `${ testId }-inbound-connector-accordion` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -155,4 +160,11 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
 
         </>
     )
+};
+
+/**
+ * Default props for the application inbound provisioning configurations component.
+ */
+InboundProvisioningConfigurations.defaultProps = {
+    "data-testid": "application-inbound-provisioning-configurations"
 };

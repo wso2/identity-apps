@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { ContentLoader } from "@wso2is/react-components";
@@ -72,7 +72,7 @@ export interface AdvanceSettingsSubmissionInterface {
     role: RoleConfigInterface;
 }
 
-interface AttributeSelectionPropsInterface extends SBACInterface<FeatureConfigInterface> {
+interface AttributeSelectionPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     /**
      * Id of the application.
      */
@@ -123,7 +123,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         featureConfig,
         claimConfigurations,
         onlyOIDCConfigured,
-        onUpdate
+        onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -592,6 +593,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     readOnly={
                         !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
                     }
+                    data-testid={ `${ testId }-attribute-selection` }
                 />
                 <AdvanceAttributeSettings
                     dropDownOptions={ createDropdownOption() }
@@ -603,6 +605,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     readOnly={
                         !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
                     }
+                    data-testid={ `${ testId }-advanced-attribute-settings-form` }
                 />
                 <RoleMapping
                     submitState={ triggerAdvanceSettingFormSubmission }
@@ -611,6 +614,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     readOnly={
                         !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
                     }
+                    data-testid={ `${ testId }-role-mapping` }
                 />
                 {
                     hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update) && (
@@ -620,6 +624,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     primary
                                     size="small"
                                     onClick={ updateValues }
+                                    data-testid={ `${ testId }-submit-button` }
                                 >
                                     Update
                                 </Button>
@@ -630,4 +635,11 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             </Grid>
             : <ContentLoader/>
     );
+};
+
+/**
+ * Default props for the application attribute settings component.
+ */
+AttributeSettings.defaultProps = {
+    "data-testid": "application-attribute-settings"
 };

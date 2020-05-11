@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, useEffect, useState } from "react";
@@ -26,7 +26,7 @@ import { getRolesList } from "../../../../api";
 import { RoleListInterface, RoleMappingInterface, RolesInterface } from "../../../../models";
 import { DynamicField } from "../../../shared"
 
-interface RoleMappingPropsInterface {
+interface RoleMappingPropsInterface extends TestableComponentInterface {
     /**
      *  Trigger submission or not
      */
@@ -61,7 +61,8 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
         onSubmit,
         submitState,
         initialMappings,
-        readOnly
+        readOnly,
+        [ "data-testid" ]: testId
     } = props;
 
     const [roleList, setRoleList] = useState<RolesInterface[]>();
@@ -144,9 +145,17 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                             }
                         } }
                         readOnly={ readOnly }
+                        data-testid={ `${ testId }-dynamic-field` }
                     />
                 </Grid.Column>
             </Grid.Row>
         </>
     )
+};
+
+/**
+ * Default props for the application role mapping component.
+ */
+RoleMapping.defaultProps = {
+    "data-testid": "application-role-mapping"
 };
