@@ -17,6 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
@@ -24,20 +25,31 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { listCertificateAliases } from "../api";
-import { AdvancedSearchWithBasicFilters, CertificatesList, ImportCertificate } from "../components";
-import { UIConstants } from "../constants";
-import { ListLayout, PageLayout } from "../layouts";
-import { AlertLevels, Certificate, FeatureConfigInterface } from "../models";
-import { AppState } from "../store";
-import { filterList, sortList } from "../utils";
+import { listCertificateAliases } from "../../api";
+import { AdvancedSearchWithBasicFilters, CertificatesList, ImportCertificate } from "../../components";
+import { UIConstants } from "../../constants";
+import { ListLayout, PageLayout } from "../../layouts";
+import { AlertLevels, Certificate, FeatureConfigInterface } from "../../models";
+import { AppState } from "../../store";
+import { filterList, sortList } from "../../utils";
 
 /**
- * This renders the Userstores page.
+ * Props for the Certificates Keystore page.
+ */
+type CertificatesKeystorePageInterface = TestableComponentInterface
+
+/**
+ * This renders the Certificates Keystore page.
  *
  * @return {ReactElement}
  */
-export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
+export const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface> = (
+    props: CertificatesKeystorePageInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
     
@@ -208,6 +220,7 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                         open={ openModal }
                         onClose={ () => setOpenModal(false) }
                         update={ fetchCertificatesKeystore }
+                        data-testid={ `${ testId }-import-wizard` }
                     />
                 )
             }
@@ -216,6 +229,7 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                 title={ t("devPortal:components.certificates.keystore.pageLayout.title") }
                 description={ t("devPortal:components.certificates.keystore.pageLayout.description") }
                 showBottomDivider={ true }
+                data-testid={ `${ testId }-page-layout` }
             >
                 <ListLayout
                     advancedSearch={
@@ -246,6 +260,7 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                             defaultSearchAttribute="alias"
                             defaultSearchOperator="co"
                             triggerClearQuery={ triggerClearQuery }
+                            data-testid={ `${ testId }-advanced-search` }
                         />
                     }
                     currentListSize={ listItemLimit }
@@ -263,6 +278,7 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                                 onClick={ () => {
                                     setOpenModal(true);
                                 } }
+                                data-testid={ `${ testId }-list-layout-upload-button` }
                             >
                                 <Icon name="cloud upload" />
                                 { t("devPortal:components.certificates.keystore.pageLayout.primaryAction") }
@@ -276,6 +292,7 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                     showTopActionPanel={ isLoading || !(!searchQuery && certificatesKeystore?.length <= 0) }
                     totalPages={ Math.ceil(filteredCertificatesKeystore?.length / listItemLimit) }
                     totalListSize={ filteredCertificatesKeystore?.length }
+                    data-testid={ `${ testId }-list-layout` }
                 >
                     <CertificatesList
                         isLoading={ isLoading }
@@ -286,9 +303,17 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                         update={ fetchCertificatesKeystore }
                         type="keystore"
                         featureConfig={ featureConfig }
+                        data-testid={ `${ testId }-list` }
                     />
                 </ListLayout>
             </PageLayout>
         </>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+CertificatesKeystore.defaultProps = {
+    "data-testid": "certificate-keystore"
 };

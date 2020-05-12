@@ -16,6 +16,7 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
@@ -32,7 +33,7 @@ import { AlertLevels, Certificate, DisplayCertificate } from "../../models";
 /**
  * Prop types of the `ImportCertificate` component.
  */
-interface ImportCertificatePropsInterface {
+interface ImportCertificatePropsInterface extends TestableComponentInterface {
     /**
      * Specifies if the modal should be opened or not.
      */
@@ -58,7 +59,12 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
     props: ImportCertificatePropsInterface
 ): ReactElement => {
 
-    const { open, onClose, update } = props;
+    const {
+        open,
+        onClose,
+        update,
+        [ "data-testid" ]: testId
+    } = props;
 
     const dispatch = useDispatch();
     
@@ -139,7 +145,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
         setFile(file);
         setCertificate(forgeCertificate);
         decodeCertificate(data, forgeCertificate);
-    }
+    };
 
     /**
      * This serializes the certificate object.
@@ -169,7 +175,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
         };
 
         setCertificateDisplay(displayCertificate);
-    }
+    };
 
     /**
      * This contains the wizard steps
@@ -185,6 +191,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                     fileDecodedData={ fileDecoded }
                     fileData={ file }
                     forgeCertificateData={ certificate }
+                    data-testid={ `${ testId }-upload` }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
@@ -192,7 +199,11 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
         },
         {
             content: (
-                <CertificateSummary name={ data?.alias } certificate={ certificateDisplay } />
+                <CertificateSummary
+                    name={ data?.alias }
+                    certificate={ certificateDisplay }
+                    data-testid={ `${ testId }-summary` }
+                />
             ),
             icon: ApplicationWizardStepIcons.general,
             title: t("devPortal:components.certificates.keystore.wizard.steps.summary")
@@ -212,14 +223,14 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                 handleSubmit();
                 break;
         }
-    }
+    };
 
     /**
      * Moves to the previous step in the wizard
      */
     const previous = (): void => {
         setCurrentWizardStep(currentWizardStep - 1);
-    }
+    };
 
     return (
         <Modal
@@ -228,11 +239,12 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
             dimmer="blurring"
             size="small"
             className="wizard application-create-wizard"
+            data-testid={ `${ testId }-modal` }
         >
             <Modal.Header className="wizard-header">
                 { t("devPortal:components.certificates.keystore.wizard.header")}
             </Modal.Header>
-            <Modal.Content className="steps-container">
+            <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
                 <Steps.Group
                     header="Import certificate into keystore."
                     current={ currentWizardStep }
@@ -242,6 +254,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                             key={ index }
                             icon={ step.icon }
                             title={ step.title }
+                            data-testid={ `${ testId }-step-${ index }` }
                         />
                     )) }
                 </Steps.Group>
@@ -265,11 +278,20 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep === STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ next }>
-                                    { t("common:import") }</PrimaryButton>
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ next }
+                                    data-testid={ `${ testId }-import-button` }
+                                >
+                                    { t("common:import") }
+                                </PrimaryButton>
                             ) }
                             { currentWizardStep > 0 && (
-                                <LinkButton floated="right" onClick={ previous }>
+                                <LinkButton
+                                    floated="right"
+                                    onClick={ previous }
+                                    data-testid={ `${ testId }-previous-button` }
+                                >
                                     <Icon name="arrow left" /> { t("common:previous") }
                                 </LinkButton>
                             ) }
@@ -279,4 +301,11 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
             </Modal.Actions>
         </Modal>
     )
+};
+
+/**
+ * Default props for the component.
+ */
+ImportCertificate.defaultProps = {
+    "data-testid": "import-certificate-wizard"
 };

@@ -16,6 +16,7 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
@@ -24,7 +25,7 @@ import { DisplayCertificate, DistinguishedName } from "../../../models";
 /**
  * Prop types of the of the `CertificateSummary` component 
  */
-interface CertificateSummaryPropsInterface {
+interface CertificateSummaryPropsInterface extends TestableComponentInterface {
     /**
      * The alias of the certificate.
      */
@@ -46,11 +47,16 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
     props: CertificateSummaryPropsInterface
 ): ReactElement => {
 
-    const { name, certificate } = props;
+    const {
+        name,
+        certificate,
+        [ "data-testid" ]: testId
+    } = props;
+
     const { t } = useTranslation();
 
     return (
-        <Grid className="wizard-summary">
+        <Grid className="wizard-summary" data-testid={ testId }>
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details">
@@ -134,4 +140,11 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
             </Grid.Row>
         </Grid>
     )
-}
+};
+
+/**
+ * Default props for the component.
+ */
+CertificateSummary.defaultProps = {
+    "data-testid": "certificate-summary"
+};

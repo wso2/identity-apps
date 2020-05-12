@@ -17,6 +17,7 @@
  */
 
 export * from "./applications";
+export * from "./certificates";
 export * from "./customize";
 export * from "./errors";
 export * from "./email-locale-add";
@@ -39,6 +40,4 @@ export * from "./user-stores-edit";
 export * from "./role-edit";
 export * from "./server-configurations";
 export * from "./external-dialect-edit";
-export * from "./certificates-keystore";
-export * from "./certificates-truststore";
 export * from "./userstores-templates";

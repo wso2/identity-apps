@@ -16,6 +16,7 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Header, Icon, Label, Segment } from "semantic-ui-react";
@@ -25,7 +26,7 @@ import { DisplayCertificate, DistinguishedName } from "../../models";
 /**
  * Prop types of the `Certificate` component.
  */
-interface CertificatePropsInterface {
+interface CertificatePropsInterface extends TestableComponentInterface {
     /**
      * The decoded certificate details
      */
@@ -45,6 +46,10 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
 ): ReactElement => {
 
     const {
+        [ "data-testid" ]: testId
+    } = props;
+
+    const {
         alias,
         serialNumber,
         version,
@@ -59,7 +64,7 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
     const isValid = new Date() >= validFrom && new Date() <= validTill;
 
     return (
-        <Segment className="certificate" compact padded="very">
+        <Segment className="certificate" compact padded="very" data-testid={ testId }>
             <div className="certificate-ribbon">
                 <CertificateIllustrations.ribbon.ReactComponent />
             </div>
@@ -132,4 +137,11 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
             <div className="certificate-badge"><CertificateIllustrations.badge.ReactComponent /></div>
         </Segment>
     )
-}
+};
+
+/**
+ * Default props for the component.
+ */
+Certificate.defaultProps = {
+    "data-testid": "certificate"
+};
