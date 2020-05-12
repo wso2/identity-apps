@@ -29,6 +29,10 @@ import {
     getIdentityProviderTemplateList
 } from "../api";
 import { ExpertModeTemplate } from "../components/identity-providers/meta";
+import {
+    handleGetIDPTemplateAPICallError,
+    handleGetIDPTemplateListError
+} from "../components/identity-providers/utils";
 import { IdentityProviderCreateWizard } from "../components/identity-providers/wizards";
 import { EmptyPlaceholderIllustrations, IdPCapabilityIcons, IdPIcons } from "../configs";
 import { history } from "../helpers";
@@ -38,9 +42,9 @@ import {
     IdentityProviderTemplateListItemInterface,
     IdentityProviderTemplateListItemResponseInterface,
     IdentityProviderTemplateListResponseInterface,
-    SupportedServices
+    SupportedServices,
+    SupportedServicesInterface
 } from "../models";
-import { SupportedServicesInterface } from "../models";
 import { AppState } from "../store";
 import { setAvailableAuthenticatorsMeta } from "../store/actions/identity-provider";
 
@@ -78,13 +82,13 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
             switch (serviceIdentifier) {
                 case SupportedServices.AUTHENTICATION:
                     return {
-                        displayName: "Authentication",
+                        displayName: t("devPortal:pages.idpTemplate.supportServices.authenticationDisplayName"),
                         logo: IdPCapabilityIcons[SupportedServices.AUTHENTICATION],
                         name: SupportedServices.AUTHENTICATION
                     };
                 case SupportedServices.PROVISIONING:
                     return {
-                        displayName: "Provisioning",
+                        displayName: t("devPortal:pages.idpTemplate.supportServices.provisioningDisplayName"),
                         logo: IdPCapabilityIcons[SupportedServices.PROVISIONING],
                         name: SupportedServices.PROVISIONING
                     }
@@ -139,20 +143,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
                 setAvailableTemplates(availableTemplates);
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Identity provider Template List Fetch Error"
-                    }));
-
-                    return;
-                }
-                dispatch(addAlert({
-                    description: "An error occurred while retrieving identity provider template list",
-                    level: AlertLevels.ERROR,
-                    message: "Retrieval Error"
-                }));
+                handleGetIDPTemplateListError(error);
             })
             .finally(() => {
                 setIDPTemplateRequestLoadingStatus(false);
@@ -169,20 +160,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
                 setSelectedTemplate(response as IdentityProviderTemplateListItemInterface);
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Identity provider Template List Fetch Error"
-                    }));
-
-                    return;
-                }
-                dispatch(addAlert({
-                    description: "An error occurred while retrieving identity provider template list",
-                    level: AlertLevels.ERROR,
-                    message: "Retrieval Error"
-                }));
+                handleGetIDPTemplateAPICallError(error);
             })
     };
 

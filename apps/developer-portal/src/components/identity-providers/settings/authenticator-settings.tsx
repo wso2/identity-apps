@@ -42,8 +42,12 @@ import {
 import { AuthenticatorAccordion } from "../../shared";
 import { AuthenticatorFormFactory } from "../forms";
 import { FederatedAuthenticators } from "../meta/authenticators";
+import {
+    handleGetFederatedAuthenticatorMetadataAPICallError,
+    handleGetIDPTemplateAPICallError,
+    handleGetIDPTemplateListError
+} from "../utils";
 import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizard";
-import { handleGetFederatedAuthenticatorMetadataAPICallError } from "../utils";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -147,25 +151,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         "genericError.message")
                 }));
             });
-    };
-
-    const handleGetIDPTemplateAPICallError = (error) => {
-        if (error.response && error.response.data && error.response.data.description) {
-            dispatch(addAlert({
-                description: t("devPortal:components.idp.notifications.getIDPTemplate.error.description",
-                    { description: error.response.data.description }),
-                level: AlertLevels.ERROR,
-                message: t("devPortal:components.idp.notifications.getIDPTemplate.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("devPortal:components.idp.notifications.getIDPTemplate.genericError.description"),
-            level: AlertLevels.ERROR,
-            message: t("devPortal:components.idp.notifications.getIDPTemplate.genericError.message")
-        }));
     };
 
     const handleGetFederatedAuthenticatorAPICallError = (error) => {
@@ -353,23 +338,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     });
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: t("devPortal:components.idp.notifications.getIDPTemplateList." +
-                            "error.description", { description: error.response.data.description }),
-                        level: AlertLevels.ERROR,
-                        message: t("devPortal:components.idp.notifications.getIDPTemplateList.error.message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.getIDPTemplateList." +
-                        "genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("devPortal:components.idp.notifications.getIDPTemplateList.genericError.message")
-                }));
+                handleGetIDPTemplateListError(error);
             })
             .finally(() => {
                 setIsTemplatesLoading(false);
@@ -411,7 +380,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             <EmptyPlaceholder
                 action={ (
                     <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }>
-                        <Icon name="add"/>New Authenticator
+                        <Icon name="add"/>{ t("devPortal:components.idp.buttons.addAuthenticator") }
                     </PrimaryButton>
                 ) }
                 image={ EmptyPlaceholderIllustrations.newList }

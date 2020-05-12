@@ -266,9 +266,7 @@ export interface DevPortalNS {
                         };
                     };
                 };
-                placeHolders: {
-                    emptyIDPList: Placeholder;
-                };
+                placeholder: string;
             };
             buttons: {
                 addIDP: string;
@@ -440,9 +438,11 @@ export interface DevPortalNS {
                 disableAuthenticator: Notification;
                 disableOutboundProvisioningConnector: Notification;
                 getIDP: Notification;
+                getIDPList: Notification;
                 getIDPTemplate: Notification;
                 getIDPTemplateList: Notification;
                 getFederatedAuthenticator: Notification;
+                getFederatedAuthenticatorsList: Notification;
                 getFederatedAuthenticatorMetadata: Notification;
                 getOutboundProvisioningConnector: Notification;
                 getOutboundProvisioningConnectorsList: Notification;
@@ -459,6 +459,7 @@ export interface DevPortalNS {
             };
             placeHolders: {
                 emptyIDPList: Placeholder;
+                emptyIDPSearchResults: Placeholder;
                 emptyAuthenticatorList: Placeholder;
                 emptyConnectorList: Placeholder;
                 noAttributes: Placeholder;
@@ -1342,10 +1343,20 @@ export interface DevPortalNS {
         applicationTemplate: EditPage;
         applications: Page;
         applicationsEdit: EditPage;
-        idpTemplate: EditPage;
+        idp: Page;
+        idpTemplate: {
+            title: string;
+            subTitle: string;
+            backButton: string;
+            supportServices: {
+                authenticationDisplayName: string;
+                provisioningDisplayName: string;
+            };
+        };
         overView: Page;
         users: Page;
         usersEdit: EditPage;
+        serverConfigurations: Page;
     };
     placeholders: {
         404: Placeholder;

@@ -20,7 +20,6 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { store } from "../../../store";
-import { updateIDPRoleMappings, updateOutboundProvisioningConnector } from "../../../api";
 
 export const handleIDPDeleteError = (error) => {
     if (error.response && error.response.data && error.response.data.description) {
@@ -163,3 +162,62 @@ export const handleUpdateOutboundProvisioningConnectorError = (error) => {
             "genericError.message")
     }));
 };
+
+export const handleGetIDPTemplateListError = (error) => {
+    if (error.response && error.response.data && error.response.data.description) {
+        store.dispatch(addAlert({
+            description: I18n.instance.t("devPortal:components.idp.notifications.getIDPTemplateList." +
+                "error.description", { description: error.response.data.description }),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t("devPortal:components.idp.notifications.getIDPTemplateList.error.message")
+        }));
+
+        return;
+    }
+
+    store.dispatch(addAlert({
+        description: I18n.instance.t("devPortal:components.idp.notifications.getIDPTemplateList." +
+            "genericError.description"),
+        level: AlertLevels.ERROR,
+        message: I18n.instance.t("devPortal:components.idp.notifications.getIDPTemplateList.genericError.message")
+    }));
+};
+
+export const handleGetIDPTemplateAPICallError = (error) => {
+    if (error.response && error.response.data && error.response.data.description) {
+        store.dispatch(addAlert({
+            description: I18n.instance.t("devPortal:components.idp.notifications.getIDPTemplate.error.description",
+                { description: error.response.data.description }),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t("devPortal:components.idp.notifications.getIDPTemplate.error.message")
+        }));
+
+        return;
+    }
+
+    store.dispatch(addAlert({
+        description: I18n.instance.t("devPortal:components.idp.notifications.getIDPTemplate.genericError.description"),
+        level: AlertLevels.ERROR,
+        message: I18n.instance.t("devPortal:components.idp.notifications.getIDPTemplate.genericError.message")
+    }));
+};
+
+export const handleGetIDPListCallError = (error) => {
+    if (error?.response?.data?.description) {
+        store.dispatch(addAlert({
+            description: I18n.instance.t("devPortal:components.idp.notifications.getIDPList.error.message",
+                { description: error.response.data.description }),
+            level: AlertLevels.ERROR,
+            message: I18n.instance.t("devPortal:components.idp.notifications.getIDPList.error.message")
+        }));
+
+        return;
+    }
+    store.dispatch(addAlert({
+        description: I18n.instance.t("devPortal:components.idp.notifications.getIDPList.genericError.description"),
+        level: AlertLevels.ERROR,
+        message: I18n.instance.t("devPortal:components.idp.notifications.getIDPList.genericError.message")
+    }));
+    return;
+};
+

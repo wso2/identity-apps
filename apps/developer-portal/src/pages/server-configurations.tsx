@@ -19,11 +19,10 @@
 import { AlertInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { AccountRecovery, UserSelfRegistration } from "../components";
-import { LoginPolicies } from "../components";
-import { PasswordPolicies } from "../components";
+import { AccountRecovery, UserSelfRegistration, LoginPolicies, PasswordPolicies } from "../components";
 import { PageLayout } from "../layouts";
 
 /**
@@ -34,6 +33,7 @@ import { PageLayout } from "../layouts";
 export const ServerConfigurationsPage: FunctionComponent<{}> = (): ReactElement => {
 
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     /**
      * Dispatches the alert object to the redux store.
@@ -45,8 +45,8 @@ export const ServerConfigurationsPage: FunctionComponent<{}> = (): ReactElement 
 
     return (
         <PageLayout
-            title="General Configurations"
-            description="Manage general configurations of the server."
+            title={ t("devPortal:pages.serverConfigurations.title") }
+            description={ t("devPortal:pages.serverConfigurations.subTitle") }
             showBottomDivider={ true }
         >
             <Grid>

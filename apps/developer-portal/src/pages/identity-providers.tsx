@@ -30,6 +30,7 @@ import { IdentityProviderConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
 import { IdentityProviderListResponseInterface } from "../models";
+import { handleGetIDPListCallError } from "../components/identity-providers/utils";
 
 const IDENTITY_PROVIDER_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -90,21 +91,7 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
                 setIdPList(response);
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "An error occurred while retrieving identity providers"
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: "An error occurred while retrieving identity providers",
-                    level: AlertLevels.ERROR,
-                    message: "Retrieval Error"
-                }));
+                handleGetIDPListCallError(error);
             })
             .finally(() => {
                 setIdPListRequestLoading(false);
@@ -181,8 +168,8 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
 
     return (
         <PageLayout
-            title="Identity Providers"
-            description="Create and manage identity providers based on templates and configure authentication."
+            title={ t("devPortal:pages.idp.title") }
+            description={ t("devPortal:pages.idp.subTitle") }
             showBottomDivider={ true }
         >
             <ListLayout
@@ -200,12 +187,10 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
                             t("devPortal:components.idp.advancedSearch.form.inputs.filterAttribute.placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("devPortal:components.idp.advancedSearch.form.inputs.filterCondition" +
-                                ".placeholder")
+                            t("devPortal:components.idp.advancedSearch.form.inputs.filterCondition.placeholder")
                         }
                         filterValuePlaceholder={
-                            t("devPortal:components.idp.advancedSearch.form.inputs.filterValue" +
-                                ".placeholder")
+                            t("devPortal:components.idp.advancedSearch.form.inputs.filterValue.placeholder")
                         }
                         placeholder={ t("devPortal:components.idp.advancedSearch.placeholder") }
                         defaultSearchAttribute="name"
@@ -225,7 +210,7 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
                                 history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDER_TEMPLATES"));
                             } }
                         >
-                            <Icon name="add"/>New Identity Provider
+                            <Icon name="add"/>{ t("devPortal:components.idp.buttons.addIDP") }
                         </PrimaryButton>
                     )
                 }

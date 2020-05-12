@@ -27,6 +27,7 @@ import { useDispatch } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
 import { getIdentityProviderList } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";
+import { handleGetIDPListCallError } from "../utils";
 
 /**
  * Proptypes for the identity provider general details form component.
@@ -110,22 +111,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 setIsNameValid(response?.totalResults === 0);
             })
             .catch((error) => {
-                if (error?.response?.data?.description) {
-                    dispatch(addAlert({
-                        description: t("devPortal:components.idp.notifications.getIDP.error.message",
-                            { description: error.response.data.description }),
-                        level: AlertLevels.ERROR,
-                        message: t("devPortal:components.idp.notifications.getIDP.error.message")
-                    }));
-
-                    return;
-                }
-                dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.getIDP.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("devPortal:components.idp.notifications.getIDP.genericError.message")
-                }));
-                return;
+                handleGetIDPListCallError(error);
             })
     };
 
