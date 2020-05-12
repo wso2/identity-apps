@@ -147,7 +147,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
      * @param {React.MouseEvent<HTMLAnchorElement, MouseEvent>} event Mouse event.
      * @param {PaginationProps} data Semantic pagination props.
      */
-    const pageChangeHandler = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: PaginationProps) => {
+    const pageChangeHandler = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: PaginationProps): void => {
         setActivePage(parseInt(data.activePage.toString()));
         onPageChange(event, data);
     };
