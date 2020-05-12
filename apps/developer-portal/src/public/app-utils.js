@@ -121,28 +121,32 @@ var AppUtils = AppUtils || (function() {
 
             _config = _default;
 
-            if (!_args.deploymentConfigFile) throw "AppUtils.init({deploymentConfigFile: value}) missing.";
-            
-            loadUserConfig(_args.deploymentConfigFile, function(response) {
-                var configResponse = JSON.parse(response);
+            var userConfigFile = (_config.clientOrigin + "/" + _args.deploymentConfigFile);
 
-                if (!{}.hasOwnProperty.call(configResponse, "accountAppURL"))
-                    throw "'accountAppURL' config is missing in " + _args.deploymentConfigFile;
-                if (!{}.hasOwnProperty.call(configResponse, "appBaseName"))
-                    throw "'appBaseName' config is missing in " + _args.deploymentConfigFile;
-                if (!{}.hasOwnProperty.call(configResponse, "clientID"))
-                    throw "'clientID' config is missing in " + _args.deploymentConfigFile;
-                if (!{}.hasOwnProperty.call(configResponse, "loginCallbackPath"))
-                    throw "'loginCallbackPath' config is missing in " + _args.deploymentConfigFile;
-                if (!{}.hasOwnProperty.call(configResponse, "logoutCallbackPath"))
-                    throw "'logoutCallbackPath' config is missing in " + _args.deploymentConfigFile;
-                if (!{}.hasOwnProperty.call(configResponse, "routePaths"))
-                    throw "'routePaths' config is missing in " + _args.deploymentConfigFile;
-                if (!{}.hasOwnProperty.call(configResponse, "ui"))
-                    throw "'ui' config is missing in " + _args.deploymentConfigFile;
+            if (!userConfigFile) {
+                throw "AppUtils.init({deploymentConfigFile: value}) missing.";
+            } else {
+                loadUserConfig(userConfigFile, function(response) {
+                    var configResponse = JSON.parse(response);
 
-                _config = extend({}, _default, JSON.parse(response));
-            });
+                    if (!{}.hasOwnProperty.call(configResponse, "accountAppURL"))
+                        throw "'accountAppURL' config is missing in " + _args.deploymentConfigFile;
+                    if (!{}.hasOwnProperty.call(configResponse, "appBaseName"))
+                        throw "'appBaseName' config is missing in " + _args.deploymentConfigFile;
+                    if (!{}.hasOwnProperty.call(configResponse, "clientID"))
+                        throw "'clientID' config is missing in " + _args.deploymentConfigFile;
+                    if (!{}.hasOwnProperty.call(configResponse, "loginCallbackPath"))
+                        throw "'loginCallbackPath' config is missing in " + _args.deploymentConfigFile;
+                    if (!{}.hasOwnProperty.call(configResponse, "logoutCallbackPath"))
+                        throw "'logoutCallbackPath' config is missing in " + _args.deploymentConfigFile;
+                    if (!{}.hasOwnProperty.call(configResponse, "routePaths"))
+                        throw "'routePaths' config is missing in " + _args.deploymentConfigFile;
+                    if (!{}.hasOwnProperty.call(configResponse, "ui"))
+                        throw "'ui' config is missing in " + _args.deploymentConfigFile;
+    
+                    _config = extend({}, _default, JSON.parse(response));   
+                });
+            }
         },
 
         isSuperTenant: function(){

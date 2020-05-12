@@ -176,7 +176,7 @@ export const App = (): ReactElement => {
                                     <Suspense fallback={ <ContentLoader dimmer/> }>
                                         <Helmet>
                                             <link
-                                                href={ `${window["AppUtils"].getConfig().clientOriginWithTenant}/` + 
+                                                href={ `${window["AppUtils"].getConfig().clientOrigin}/` + 
                                                     `${window["AppUtils"].getConfig().appBase}/libs/themes/` + 
                                                     `${ state.theme }/theme.min.css` }
                                                 rel="stylesheet"
