@@ -21,6 +21,7 @@ import { useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import * as forge from "node-forge";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { CertificateSummary, UploadCertificate } from "./wizard";
@@ -60,6 +61,8 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
     const { open, onClose, update } = props;
 
     const dispatch = useDispatch();
+    
+    const { t } = useTranslation();
 
     const [ data, setData ] = useState<Certificate>(null);
     const [ currentWizardStep, setCurrentWizardStep ] = useState(0);
@@ -86,17 +89,23 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
     const handleSubmit = (): void => {
         createKeystoreCertificate(data).then(() => {
             dispatch(addAlert({
-                description: "The certificate has been imported successfully.",
+                description: t("devPortal:components.certificates.keystore.notifications." +
+                    "addCertificate.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Certificate import success"
+                message: t("devPortal:components.certificates.keystore.notifications." +
+                    "addCertificate.success.message")
             }));
             update();
             onClose();
         }).catch(error => {
             dispatch(addAlert({
-                description: error?.description || "An error occurred while importing the certificate.",
+                description: error?.description
+                    || t("devPortal:components.certificates.keystore.notifications." +
+                        "addCertificate.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: error?.message || "Something went wrong!"
+                message: error?.message
+                    || t("devPortal:components.certificates.keystore.notifications." +
+                        "addCertificate.genericError.message")
             }));
         })
     };
@@ -179,14 +188,14 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Upload certificate"
+            title: t("devPortal:components.certificates.keystore.wizard.steps.upload")
         },
         {
             content: (
                 <CertificateSummary name={ data?.alias } certificate={ certificateDisplay } />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Summary"
+            title: t("devPortal:components.certificates.keystore.wizard.steps.summary")
 
         }
     ];
@@ -221,7 +230,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
             className="wizard application-create-wizard"
         >
             <Modal.Header className="wizard-header">
-                Import Certificate
+                { t("devPortal:components.certificates.keystore.wizard.header")}
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group
@@ -247,21 +256,21 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                 <Grid>
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton floated="left" onClick={ () => onClose() }>Cancel</LinkButton>
+                            <LinkButton floated="left" onClick={ () => onClose() }>{t("common:cancel")}</LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
                                 <PrimaryButton floated="right" onClick={ next }>
-                                    Next <Icon name="arrow right" />
+                                    { t("common:next") } <Icon name="arrow right" />
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep === STEPS.length - 1 && (
                                 <PrimaryButton floated="right" onClick={ next }>
-                                    Import</PrimaryButton>
+                                    { t("common:import") }</PrimaryButton>
                             ) }
                             { currentWizardStep > 0 && (
                                 <LinkButton floated="right" onClick={ previous }>
-                                    <Icon name="arrow left" /> Previous
+                                    <Icon name="arrow left" /> { t("common:previous") }
                                 </LinkButton>
                             ) }
                         </Grid.Column>

@@ -27,6 +27,7 @@ import {
     ResourceList
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Icon, Image } from "semantic-ui-react";
 import { deleteUserStore } from "../../api";
@@ -86,6 +87,8 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
 
     const dispatch = useDispatch();
 
+    const { t } = useTranslation();
+
     /**
      * Delete a userstore.
      * 
@@ -117,47 +120,60 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             type="warning"
             open={ deleteConfirm }
             assertion={ deleteName }
-            assertionHint={ <p>Please type <strong>{ deleteName }</strong> to confirm.</p> }
+            assertionHint={
+                <p>
+                    <Trans i18nKey="devPortal:components.userstores.confirmation.hint">
+                        Please type <strong>{ { name: deleteName } }</strong > to confirm.
+                    </Trans>
+                </p>
+            }
             assertionType="input"
-            primaryAction="Confirm"
-            secondaryAction="Cancel"
+            primaryAction={ t("common:confirm") }
+            secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ closeDeleteConfirm }
             onPrimaryActionClick={ (): void => {
                 deleteUserStore(deleteID)
                     .then(() => {
                         dispatch(addAlert({
-                            description: "The userstore has been deleted successfully!",
+                            description: t("devPortal:components.userstores.notifications." +
+                                "deleteUserstore.success.description"),
                             level: AlertLevels.SUCCESS,
-                            message: "Userstore deleted successfully!"
+                            message: t("devPortal:components.userstores.notifications." +
+                                "deleteUserstore.success.message")
 
                         }));
                         dispatch(addAlert({
-                            description: "It may take a while for the userstore list to be updated. " +
-                                "Refresh in a few seconds to get the updated userstore list.",
+                            description: t("devPortal:components.userstores.notifications." +
+                                "delay.description"),
                             level: AlertLevels.WARNING,
-                            message: "Updating Userstore list takes time"
+                            message: t("devPortal:components.userstores.notifications." +
+                                "delay.message")
                         }));
                         update();
                     })
                     .catch(error => {
                         dispatch(addAlert({
                             description: error?.description
-                                ?? "There was an error while deleting the userstore",
+                                ?? t("devPortal:components.userstores.notifications." +
+                                    "deleteUserstore.genericError.description"),
                             level: AlertLevels.ERROR,
-                            message: error?.message ?? "Something went wrong!"
+                            message: error?.message
+                                ?? t("devPortal:components.userstores.notifications." +
+                                    "deleteUserstore.genericError.message")
                         }));
                     }).finally(() => {
                         closeDeleteConfirm();
                     });
             } }
         >
-            <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+            <ConfirmationModal.Header>
+                { t("devPortal:components.userstores.confirmation.header") }
+            </ConfirmationModal.Header>
             <ConfirmationModal.Message attached warning>
-                This action is irreversible and will permanently delete the selected userstore and the data in it.
-                        </ConfirmationModal.Message>
+                { t("devPortal:components.userstores.confirmation.message") }
+            </ConfirmationModal.Message>
             <ConfirmationModal.Content>
-                If you delete this userstore, the user data in this userstore will also be deleted.
-                Please proceed with caution.
+                { t("devPortal:components.userstores.confirmation.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
@@ -173,14 +189,18 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             return (
                 <EmptyPlaceholder
                     action={ (
-                        <LinkButton onClick={ onSearchQueryClear }>Clear search query</LinkButton>
+                        <LinkButton onClick={ onSearchQueryClear }>
+                            { t("devPortal:components.userstores.placeholders.emptySearch.action") }
+                        </LinkButton>
                     ) }
                     image={ EmptyPlaceholderIllustrations.emptySearch }
                     imageSize="tiny"
-                    title={ "No results found" }
+                    title={ t("devPortal:components.userstores.placeholders.emptySearch.title") }
                     subtitle={ [
-                        `We couldn't find any results for ${ searchQuery }`,
-                        "Please try a different search term."
+                        t("devPortal:components.userstores.placeholders.emptySearch.subtitles",
+                            {
+                                searchQuery: searchQuery
+                            })
                     ] }
                 />
             );
@@ -192,16 +212,14 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                     action={ (
                         <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
                             <Icon name="add" />
-                            New Userstore
+                            { t("devPortal:components.userstores.placeholders.emptyList.action") }
                         </PrimaryButton>
                     ) }
                     image={ EmptyPlaceholderIllustrations.newList }
                     imageSize="tiny"
-                    title={ "Add a new Userstore" }
+                    title={ t("devPortal:components.userstores.placeholders.emptyList.title") }
                     subtitle={ [
-                        "There are currently no userstores available.",
-                        "You can add a new userstore easily by following the",
-                        "steps in the userstore creation wizard."
+                        t("devPortal:components.userstores.placeholders.emptyList.subtitles")
                     ] }
                 />
             );
@@ -242,7 +260,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                                         onClick: () => {
                                             history.push(`${EDIT_USER_STORE_PATH}/${userStore?.id}`);
                                         },
-                                        popupText: "Edit",
+                                        popupText: t("common:edit"),
                                         type: "button"
                                     },
                                     {
@@ -253,7 +271,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                                         onClick: () => {
                                             initDelete(userStore?.id, userStore?.name)
                                         },
-                                        popupText: "Delete",
+                                        popupText: t("common:delete"),
                                         type: "dropdown"
                                     }
                                 ] }

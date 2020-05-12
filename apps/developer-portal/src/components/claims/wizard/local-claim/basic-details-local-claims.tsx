@@ -18,6 +18,7 @@
 
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid, Label, Popup } from "semantic-ui-react";
 
 /**
@@ -63,6 +64,13 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     const regExField = useRef<HTMLElement>(null);
     const displayOrderField = useRef<HTMLElement>(null);
 
+    const nameTimer = useRef(null);
+    const claimTimer = useRef(null);
+    const regExTimer = useRef(null);
+    const displayTimer = useRef(null);
+
+    const { t } = useTranslation();
+
     /**
      * Set the if show on profile is selected or not
      * and the claim ID from the received `values` prop
@@ -71,6 +79,33 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
         setIsShow(values?.get("supportedByDefault").length > 0)
         setClaimID(values?.get("claimURI").toString())
     }, [ values ]);
+
+    /**
+     * This shows a popup with a delay of 500 ms.
+     * 
+     * @param {React.Dispatch<React.SetStateAction<boolean>>} callback The state dispatch method.
+     * @param {React.MutableRefObject<any>} ref The ref object carrying the `setTimeout` ID.
+     */
+    const delayPopup = (
+        callback: React.Dispatch<React.SetStateAction<boolean>>,
+        ref: React.MutableRefObject<any>
+    ): void => {
+        ref.current = setTimeout(() => callback(true), 500);
+    };
+
+    /**
+     * This closes the popup.
+     * 
+     * @param {React.Dispatch<React.SetStateAction<boolean>>} callback The state dispatch method.
+     * @param {React.MutableRefObject<any>} ref The ref object carrying the `setTimeout` ID.
+     */
+    const closePopup = (
+        callback: React.Dispatch<React.SetStateAction<boolean>>,
+        ref: React.MutableRefObject<any>
+    ): void => {
+        clearTimeout(ref.current);
+        callback(false);
+    }
 
     return (
         <Forms
@@ -94,28 +129,28 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                     <Grid.Column width={ 8 }>
                         <Field
                             onMouseOver={ () => {
-                                setIsShowNameHint(true);
+                                delayPopup(setIsShowNameHint, nameTimer);
                             } }
                             onMouseOut={ () => {
-                                setIsShowNameHint(false);
+                                closePopup(setIsShowNameHint, nameTimer);
                             } }
                             type="text"
                             name="name"
-                            label="Name"
+                            label={ t("devPortal:components.claims.local.forms.name.label") }
                             required={ true }
-                            requiredErrorMessage="Name is required"
-                            placeholder="Enter a name for the attribute"
+                            requiredErrorMessage={ t("devPortal:components.claims.local.forms." +
+                                "name.requiredErrorMessage") }
+                            placeholder={ t("devPortal:components.claims.local.forms.name.placeholder") }
                             value={ values?.get("name")?.toString() }
                             ref={ nameField }
                         />
                         <Popup
-                            content={ "Name of the attribute that will be shown on the user profile " +
-                                "and user registration page" }
+                            content={ t("devPortal:components.claims.local.forms.nameHint") }
                             inverted
                             open={ isShowNameHint }
                             trigger={ <span></span> }
                             onClose={ () => {
-                                setIsShowNameHint(false);
+                                closePopup(setIsShowNameHint, nameTimer);
                             } }
                             position="bottom left"
                             context={ nameField }
@@ -125,30 +160,30 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         <Field
                             type="text"
                             name="claimURI"
-                            label="Attribute ID"
+                            label={ t("devPortal:components.claims.local.forms.attributeID.label") }
                             required={ true }
-                            requiredErrorMessage="Attribute ID is required"
-                            placeholder="Enter an attribute ID"
+                            requiredErrorMessage={ t("devPortal:components.claims.local.forms." +
+                                "attributeID.requiredErrorMessage") }
+                            placeholder={ t("devPortal:components.claims.local.forms.attributeID.placeholder") }
                             value={ values?.get("claimURI")?.toString() }
                             listen={ (values: Map<string, FormValue>) => {
                                 setClaimID(values.get("claimURI").toString())
                             } }
                             onMouseOver={ () => {
-                                setIsShowClaimIDHint(true);
+                                delayPopup(setIsShowClaimIDHint, claimTimer);
                             } }
                             onMouseOut={ () => {
-                                setIsShowClaimIDHint(false);
+                                closePopup(setIsShowClaimIDHint, claimTimer);
                             } }
                             ref={ claimField }
                         />
                         <Popup
-                            content={ "A unique ID for the attribute." +
-                                " The ID will be appended to the dialect URI to create a attribute URI" }
+                            content={ t("devPortal:components.claims.local.forms.attributeHint") }
                             inverted
                             open={ isShowClaimIDHint }
                             trigger={ <p></p> }
                             onClose={ () => {
-                                setIsShowClaimIDHint(false);
+                                closePopup(setIsShowClaimIDHint, claimTimer);
                             } }
                             position="bottom left"
                             context={ claimField }
@@ -168,10 +203,11 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         <Field
                             type="text"
                             name="description"
-                            label="Description"
+                            label={ t("devPortal:components.claims.local.forms.description.label") }
                             required={ true }
-                            requiredErrorMessage="Description is required"
-                            placeholder="Enter a description"
+                            requiredErrorMessage={ t("devPortal:components.claims.local.forms.description." +
+                                "requiredErrorMessage") }
+                            placeholder={ t("devPortal:components.claims.local.forms.description.placeholder") }
                             value={ values?.get("description")?.toString() }
                         />
                     </Grid.Column>
@@ -179,26 +215,26 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         <Field
                             type="text"
                             name="regularExpression"
-                            label="Regular expression"
+                            label={ t("devPortal:components.claims.local.forms.regEx.label") }
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder="Enter a regular expression"
+                            placeholder={ t("devPortal:components.claims.local.forms.regEx.placeholder") }
                             value={ values?.get("regularExpression")?.toString() }
                             onMouseOver={ () => {
-                                setIsShowRegExHint(true);
+                                delayPopup(setIsShowRegExHint, regExTimer);
                             } }
                             onMouseOut={ () => {
-                                setIsShowRegExHint(false);
+                                closePopup(setIsShowRegExHint, regExTimer);
                             } }
                             ref={ regExField }
                         />
                         <Popup
-                            content="This regular expression is used to validate the value this attribute can take"
+                            content={ t("devPortal:components.claims.local.forms.regExHint") }
                             inverted
                             open={ isShowRegExHint }
                             trigger={ <span></span> }
                             onClose={ () => {
-                                setIsShowRegExHint(false);
+                                closePopup(setIsShowRegExHint, regExTimer);
                             } }
                             position="bottom left"
                             context={ regExField }
@@ -214,7 +250,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             requiredErrorMessage=""
                             children={ [
                                 {
-                                    label: "Show this attribute on user profile and user registration page",
+                                    label: t("devPortal:components.claims.local.forms.supportedByDefault.label"),
                                     value: "Support"
                                 } ] }
                             value={ values?.get("supportedByDefault") as string[] }
@@ -232,29 +268,29 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     type="number"
                                     min="0"
                                     name="displayOrder"
-                                    label="Display Order"
+                                    label={ t("devPortal:components.claims.local.forms.displayOrder.label") }
                                     required={ false }
-                                    requiredErrorMessage="Display Order is required"
-                                    placeholder="Enter the display order"
+                                    requiredErrorMessage=""
+                                    placeholder={ t("devPortal:components.claims.local.forms." +
+                                        "displayOrder.placeholder") }
                                     value={ values?.get("displayOrder")?.toString() ?? "0" }
                                     onMouseOver={ () => {
-                                        setIsShowDisplayOrderHint(true);
+                                        delayPopup(setIsShowDisplayOrderHint, displayTimer);
                                     } }
                                     onMouseOut={ () => {
-                                        setIsShowDisplayOrderHint(false);
+                                        closePopup(setIsShowDisplayOrderHint, displayTimer);
                                     } }
                                     ref={ displayOrderField }
                                 />
                                 <Popup
                                     content={
-                                        "This determines the position at which this attribute is displayed" +
-                                        " in the user profile and the user registration page"
+                                        t("devPortal:components.claims.local.forms.displayOrderHint")
                                     }
                                     inverted
                                     open={ isShowDisplayOrderHint }
                                     trigger={ <span></span> }
                                     onClose={ () => {
-                                        setIsShowDisplayOrderHint(false);
+                                        closePopup(setIsShowDisplayOrderHint, displayTimer);
                                     } }
                                     position="bottom left"
                                     context={ displayOrderField }
@@ -271,7 +307,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             required={ false }
                             requiredErrorMessage=""
                             children={ [ {
-                                label: "Make this attribute required during user registration",
+                                label: t("devPortal:components.claims.local.forms.required.label"),
                                 value: "Required"
                             } ] }
                             value={ values?.get("required") as string[] }
@@ -286,7 +322,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             required={ false }
                             requiredErrorMessage=""
                             children={ [ {
-                                label: "Make this attribute read-only",
+                                label: t("devPortal:components.claims.local.forms.readOnly.label"),
                                 value: "ReadOnly"
                             } ] }
                             value={ values?.get("readOnly") as string[] }

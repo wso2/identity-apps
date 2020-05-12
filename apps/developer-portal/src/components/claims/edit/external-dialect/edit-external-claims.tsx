@@ -58,18 +58,20 @@ interface EditExternalClaimsPropsInterface {
  */
 export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): ReactElement => {
 
+    const { t } = useTranslation();
+
     /**
      * Attributes to sort the list by
      */
     const SORT_BY = [
         {
             key: 0,
-            text: "Attribute URI",
+            text: t("devPortal:components.claims.external.attributes.attributeURI"),
             value: "claimURI"
         },
         {
             key: 1,
-            text: "Mapped Local Attribute URI",
+            text: t("devPortal:components.claims.external.attributes.mappedClaim"),
             value: "mappedLocalClaimURI"
         }
     ];
@@ -84,8 +86,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const [ triggerAddExternalClaim, setTriggerAddExternalClaim ] = useTrigger();
-
-    const { t } = useTranslation();
+    const [ resetPagination, setResetPagination ] = useTrigger();
 
     const dispatch = useDispatch();
 
@@ -165,11 +166,13 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
             );
             setFilteredClaims(filteredList);
             setSearchQuery(query);
+            setOffset(0);
+            setResetPagination();
         } catch (error) {
             dispatch(addAlert({
                 description: error?.message,
                 level: AlertLevels.ERROR,
-                message: "Filter query format incorrect"
+                message: t("devPortal:components.claims.external.advancedSearch.error")
             }));
         }
     };
@@ -191,12 +194,12 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                     filterAttributeOptions={ [
                         {
                             key: 0,
-                            text: "Attribute URI",
+                            text: t("devPortal:components.claims.external.attributes.attributeURI"),
                             value: "claimURI"
                         },
                         {
                             key: 1,
-                            text: "Mapped Local Attribute URI",
+                            text: t("devPortal:components.claims.external.attributes.mappedClaim"),
                             value: "mappedLocalClaimURI"
                         }
                     ] }
@@ -224,6 +227,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
             onPageChange={ handlePaginationChange }
             onSortStrategyChange={ handleSortStrategyChange }
             onSortOrderChange={ handleSortOrderChange }
+            resetPagination={ resetPagination }
             showPagination={ true }
             sortOptions={ SORT_BY }
             sortStrategy={ sortBy }
@@ -237,8 +241,8 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                     } }
                     disabled={ showAddExternalClaim }
                 >
-                    <Icon name="add"/>
-                    New External Attribute
+                    <Icon name="add" />
+                    { t("devPortal:components.claims.external.pageLayout.edit.primaryAction") }
                 </PrimaryButton>
             }
         >
@@ -251,7 +255,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                         size="small"
                     >
                         <Modal.Header>
-                            Add External Attribute
+                            { t("devPortal:components.claims.external.pageLayout.edit.header") }
                         </Modal.Header>
                         <Modal.Content>
                             <AddExternalClaims
@@ -264,16 +268,16 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                         </Modal.Content>
                         <Modal.Actions>
                             <LinkButton onClick={ () => { setShowAddExternalClaim(false) } }>
-                                Cancel
-                                    </LinkButton>
+                                { t("common:cancel") }
+                            </LinkButton>
                             <PrimaryButton
                                 onClick={ () => {
                                     setTriggerAddExternalClaim();
                                 }
                                 }
                             >
-                                Save
-                                    </PrimaryButton>
+                                { t("common:save") }
+                            </PrimaryButton>
                         </Modal.Actions>
                     </Modal>
                 )

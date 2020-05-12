@@ -18,6 +18,7 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
+import { useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -38,13 +39,15 @@ import { filterList, sortList } from "../utils";
  */
 export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
 
+    const { t } = useTranslation();
+    
     /**
      * Sets the attributes by which the list can be sorted.
      */
     const SORT_BY = [
         {
             key: 0,
-            text: "Alias",
+            text: t("devPortal:components.certificates.keystore.attributes.alias"),
             value: "alias"
         }
     ];
@@ -64,9 +67,9 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
     const tenantDomain: string = useSelector<AppState, string>((state: AppState) => state.config.deployment.tenant);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
 
-    const dispatch = useDispatch();
+    const [ resetPagination, setResetPagination ] = useTrigger();
 
-    const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (tenantDomain === "carbon.super") {
@@ -90,9 +93,13 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                 setIsLoading(false);
                 dispatch(addAlert(
                     {
-                        description: error?.description || "An error occurred while fetching certificates",
+                        description: error?.description
+                            || t("devPortal:components.certificates.keystore.notifications." +
+                                "getCertificates.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: error?.message || "Something went wrong"
+                        message: error?.message
+                            || t("devPortal:components.certificates.keystore.notifications." +
+                                "getCertificates.genericError.message")
                     }
                 ));
             })
@@ -167,10 +174,20 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
      * @param {string} query - Search query.
      */
     const handleKeystoreFilter = (query: string): void => {
-        // TODO: Implement once the API is ready
-        // fetchCertificatesKeystore(null, null, null, searchQuery);
-        setFilteredCertificatesKeystore(filterList(certificatesKeystore, query, "alias", true));
-        setSearchQuery(query);
+        try {
+            // TODO: Implement once the API is ready
+            // fetchCertificatesKeystore(null, null, null, searchQuery);
+            setFilteredCertificatesKeystore(filterList(certificatesKeystore, query, "alias", true));
+            setSearchQuery(query);
+            setOffset(0);
+            setResetPagination();
+        } catch (error) {
+            dispatch(addAlert({
+                description: error.message,
+                level: AlertLevels.ERROR,
+                message: t("devPortal:components.certificates.keystore.advancedSearch.error")
+            }));
+        }
     };
 
     /**
@@ -195,8 +212,9 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                 )
             }
             <PageLayout
-                title="Certificates"
-                description="Create and manage certificates in the keystore"
+                isLoading={ isLoading }
+                title={ t("devPortal:components.certificates.keystore.pageLayout.title") }
+                description={ t("devPortal:components.certificates.keystore.pageLayout.description") }
                 showBottomDivider={ true }
             >
                 <ListLayout
@@ -236,6 +254,7 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                     onPageChange={ handlePaginationChange }
                     onSortStrategyChange={ handleSortStrategyChange }
                     onSortOrderChange={ handleSortOrderChange }
+                    resetPagination={ resetPagination }
                     rightActionPanel={
                         (hasRequiredScopes(featureConfig?.certificates,
                             featureConfig?.certificates?.scopes?.create)
@@ -245,7 +264,8 @@ export const CertificatesKeystore: FunctionComponent<{}> = (): ReactElement => {
                                     setOpenModal(true);
                                 } }
                             >
-                                <Icon name="cloud upload"/>Import Certificate
+                                <Icon name="cloud upload" />
+                                { t("devPortal:components.certificates.keystore.pageLayout.primaryAction") }
                             </PrimaryButton>
                         )
                     }

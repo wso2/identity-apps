@@ -18,6 +18,7 @@
 
 import React, { useState } from "react";
 import { Form, Icon, Popup, SemanticWIDTHS } from "semantic-ui-react";
+import { filterPassedProps } from "../utils";
 
 /**
  * Password prop types
@@ -50,9 +51,11 @@ export const Password: React.FunctionComponent<PasswordPropsInterface> = (
 ): JSX.Element => {
     const [isShow, setIsShow] = useState(false);
 
+    const filteredProps = filterPassedProps({ ...props });
+
     return (
         <Form.Input
-            { ...props }
+            { ...filteredProps }
             label={ props.label }
             value={ props.value }
             error={ props.error }

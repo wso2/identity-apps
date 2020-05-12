@@ -17,6 +17,7 @@
 */
 
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { TypeProperty, UserStorePostData, UserStoreProperty } from "../../../models";
 
@@ -61,6 +62,7 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
 
     const { data, connectionProperties, userProperties, groupProperties, basicProperties, type } = props;
 
+    const { t } = useTranslation();
     /**
      * This generates a summary row
      * @param {string} title 
@@ -74,10 +76,10 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
         return (
             <Grid.Row key={ key } className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">{title}</div>
+                    <div className="label">{ title }</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                    <div className="value">{description}</div>
+                    <div className="value">{ description }</div>
                 </Grid.Column>
             </Grid.Row>
         )
@@ -88,14 +90,14 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details">
-                        <h3>{data?.name}</h3>
-                        <div className="description">{data?.description}</div>
+                        <h3>{ data?.name }</h3>
+                        <div className="description">{ data?.description }</div>
                     </div>
                 </Grid.Column>
             </Grid.Row>
             { type ? generateSummaryLine("Userstore Type", type) : null }
 
-            <Divider horizontal>General</Divider>
+            <Divider horizontal>{ t("devPortal:components.userstores.wizard.steps.general") }</Divider>
 
             {
                 basicProperties?.map((property: TypeProperty, index: number) => {
@@ -114,10 +116,10 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
             }
             {
                 connectionProperties?.map((property: TypeProperty, index: number) => {
-                    if (!(property.attributes.find(attribute=>attribute.name==="type")?.value==="password")) {
+                    if (!(property.attributes.find(attribute => attribute.name === "type")?.value === "password")) {
                         return (
                             generateSummaryLine(
-                                property.description.split("#")[0],
+                                property.description.split("#")[ 0 ],
                                 data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
                                     return userStoreProperty.name === property.name
                                 }))[ 0 ]?.value,
@@ -128,7 +130,7 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
                 })
             }
 
-            <Divider horizontal>User</Divider>
+            <Divider horizontal>{ t("devPortal:components.userstores.wizard.steps.user") }</Divider>
 
             {
                 userProperties?.map((property: TypeProperty, index: number) => {
@@ -146,7 +148,7 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
                 })
             }
 
-            <Divider horizontal>Group</Divider>
+            <Divider horizontal>{ t("devPortal:components.userstores.wizard.steps.group") }</Divider>
 
             {
                 groupProperties?.map((property: TypeProperty) => {

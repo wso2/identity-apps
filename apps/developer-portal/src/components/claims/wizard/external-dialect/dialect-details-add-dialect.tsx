@@ -1,4 +1,3 @@
-
 /**
 * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
@@ -19,6 +18,7 @@
 
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 
 /**
  * Prop types of `DialectDetails` component.
@@ -49,6 +49,8 @@ export const DialectDetails = (props: DialectDetailsPropsInterface): ReactElemen
 
     const { submitState, onSubmit, values } = props;
 
+    const { t } = useTranslation();
+
     return (
         <Forms
             onSubmit={
@@ -62,10 +64,11 @@ export const DialectDetails = (props: DialectDetailsPropsInterface): ReactElemen
             <Field
                 type="text"
                 name="dialectURI"
-                label="Dialect URI"
+                label={ t("devPortal:components.claims.dialects.forms.dialectURI.label") }
                 required={ true }
-                requiredErrorMessage="Enter a dialect URI"
-                placeholder="Enter a dialect URI"
+                requiredErrorMessage={ t("devPortal:components.claims.dialects." +
+                    "forms.dialectURI.requiredErrorMessage") }
+                placeholder={ t("devPortal:components.claims.dialects.forms.dialectURI.placeholder") }
                 value={ values?.get("dialectURI")?.toString() }
             />
         </Forms >

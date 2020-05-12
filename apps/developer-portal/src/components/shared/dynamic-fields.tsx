@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
+import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Divider, Label, List, Message, Popup } from "semantic-ui-react";
 
@@ -236,8 +236,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): ReactElement =>
                                                     displayErrorOn="submit"
                                                     validation={
                                                         (
-                                                            value: string,
-                                                            validation: Validation
+                                                            value: string
                                                         ) => {
                                                             let isSameUserStore = false;
                                                             for (const mapping of fields) {
@@ -371,8 +370,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): ReactElement =>
                                                                         displayErrorOn="blur"
                                                                         validation={
                                                                             (
-                                                                                value: string,
-                                                                                validation: Validation
+                                                                                value: string
                                                                             ) => {
                                                                                 let isSameUserStore = false;
                                                                                 for (const mapping of fields) {
@@ -399,7 +397,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): ReactElement =>
                                                                         placeholder={ `Enter a ${ keyName }` }
                                                                         required={ requiredField }
                                                                         requiredErrorMessage={
-                                                                            valueRequiredErrorMessage
+                                                                            keyRequiredMessage
                                                                         }
                                                                         name={ "editKey" }
                                                                         value={ editKey }
@@ -422,8 +420,8 @@ export const DynamicField = (props: DynamicFieldPropsInterface): ReactElement =>
                                                         ? (
                                                             <Field
                                                                 name={ "editValue" }
-                                                                required={ true }
-                                                                requiredErrorMessage=""
+                                                                required={ requiredField }
+                                                                requiredErrorMessage= { valueRequiredErrorMessage }
                                                                 type="text"
                                                                 value={ editValue }
                                                                 placeholder={ `Enter a ${ valueName }` }

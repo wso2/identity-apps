@@ -20,9 +20,11 @@ import {
     Confirmation,
     DangerZone,
     EditPage,
+    FormField,
     FormAttributes,
     HelpPanelInterface,
     Notification,
+    NotificationItem,
     Page,
     Placeholder
 } from "../common";
@@ -154,8 +156,76 @@ export interface DevPortalNS {
                             };
                         };
                     };
+                    error: string;
                     placeholder: string;
                 };
+                attributes: {
+                    alias: string;
+                };
+                notifications: {
+                    addCertificate: Notification;
+                    getCertificates: Notification;
+                    getAlias: Notification;
+                    getPublicCertificate: Notification;
+                    getCertificate: Notification;
+                    deleteCertificate: Notification;
+                    download: Notification;
+                };
+                certificateModalHeader: string;
+                placeholders: {
+                    emptySearch: {
+                        action: string;
+                        title: string;
+                        subtitle: string;
+                    };
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitle: string;
+                    };
+                };
+                confirmation: {
+                    hint: string;
+                    primaryAction: string;
+                    header: string;
+                    content: string;
+                    message: string;
+                    tenantContent: string;
+                };
+                pageLayout: {
+                    title: string;
+                    description: string;
+                    primaryAction: string;
+                };
+                summary: {
+                    sn: string;
+                    validFrom: string;
+                    validTill: string;
+                    issuerDN: string;
+                    subjectDN: string;
+                    version: string;
+                };
+                wizard: {
+                    panes: {
+                        upload: string;
+                        paste: string;
+                    };
+                    steps: {
+                        upload: string;
+                        summary: string;
+                    };
+                    header: string;
+                    dropZone: {
+                        description: string;
+                        action: string;
+                    };
+                    pastePlaceholder: string;
+                };
+                forms: {
+                    alias: FormField;
+                };
+                errorEmpty: string;
+                errorCertificate: string;
             };
             truststore: {
                 advancedSearch: {
@@ -193,6 +263,58 @@ export interface DevPortalNS {
                         };
                     };
                     placeholder: string;
+                    error: string;
+                };
+                attributes: {
+                    dialectURI: string;
+                };
+                notifications: {
+                    fetchDialects: Notification;
+                    fetchADialect: Notification;
+                    fetchExternalClaims: Notification;
+                    deleteDialect: Notification;
+                    addDialect: Notification;
+                    updateDialect: Notification;
+                };
+                localDialect: string;
+                pageLayout: {
+                    list: {
+                        title: string;
+                        description: string;
+                        primaryAction: string;
+                        view: string;
+                    };
+                    edit: {
+                        description: string;
+                        back: string;
+                        updateDialectURI: string;
+                        updateExternalAttributes: string;
+                    };
+                };
+                dangerZone: DangerZone;
+                confirmations: {
+                    header: string;
+                    message: string;
+                    content: string;
+                    hint: string;
+                    action: string;
+                };
+                wizard: {
+                    steps: {
+                        dialectURI: string;
+                        externalAttribute: string;
+                        summary: string;
+                    };
+                    header: string;
+                    summary: {
+                        externalAttribute: string;
+                        mappedAttribute: string;
+                        notFound: string;
+                    };
+                };
+                forms: {
+                    dialectURI: FormField;
+                    submit: string;
                 };
             };
             external: {
@@ -210,7 +332,35 @@ export interface DevPortalNS {
                             };
                         };
                     };
+                    error: string;
                     placeholder: string;
+                };
+                attributes: {
+                    attributeURI: string;
+                    mappedClaim: string;
+                };
+                notifications: {
+                    addExternalAttribute: Notification;
+                    getExternalAttribute: Notification;
+                    updateExternalAttribute: Notification;
+                    deleteExternalClaim: Notification;
+                };
+                forms: {
+                    attributeURI: FormField;
+                    localAttribute: FormField;
+                    submit: string;
+                };
+                pageLayout: {
+                    edit: {
+                        header: string;
+                        primaryAction: string;
+                    };
+                };
+                placeholders: {
+                    empty: {
+                        title: string;
+                        subtitle: string;
+                    };
                 };
             };
             local: {
@@ -228,8 +378,130 @@ export interface DevPortalNS {
                             };
                         };
                     };
+                    error: string;
                     placeholder: string;
                 };
+                attributes: {
+                    attributeURI: string;
+                };
+                notifications: {
+                    getAClaim: Notification;
+                    getClaims: Notification;
+                    getLocalDialect: Notification;
+                    addLocalClaim: Notification;
+                    updateClaim: Notification;
+                    deleteClaim: Notification;
+                };
+                pageLayout: {
+                    edit: {
+                        tabs: {
+                            general: string;
+                            additionalProperties: string;
+                            mappedAttributes: string;
+                        };
+                        description: string;
+                        back: string;
+                    };
+                    local: {
+                        description: string;
+                        title: string;
+                        back: string;
+                        action: string;
+                    };
+                };
+                wizard: {
+                    steps: {
+                        general: string;
+                        mapAttributes: string;
+                        summary: string;
+                    };
+                    header: string;
+                    summary: {
+                        userstore: string;
+                        attribute: string;
+                        supportedByDefault: string;
+                        required: string;
+                        readOnly: string;
+                        attributeURI: string;
+                        displayOrder: string;
+                        regEx: string;
+                    };
+                };
+                additionalProperties: {
+                    hint: string;
+                    key: string;
+                    value: string;
+                    keyRequiredErrorMessage: string;
+                    valueRequiredErrorMessage: string;
+                };
+                confirmation: {
+                    hint: string;
+                    primaryAction: string;
+                    header: string;
+                    message: string;
+                    content: string;
+                };
+                forms: {
+                    attributeID: FormField;
+                    attributeHint: string;
+                    name: FormField;
+                    nameHint: string;
+                    description: FormField;
+                    regEx: FormField;
+                    regExHint: string;
+                    supportedByDefault: FormField;
+                    displayOrder: FormField;
+                    displayOrderHint: string;
+                    required: FormField;
+                    readOnly: FormField;
+                    attribute: FormField;
+                };
+                dangerZone: DangerZone;
+                mappedAttributes: {
+                    hint: string;
+                };
+            };
+            list: {
+                confirmation: {
+                    local: {
+                        message: string;
+                        name: string;
+                    };
+                    dialect: {
+                        message: string;
+                        name: string;
+                    };
+                    external: {
+                        message: string;
+                        name: string;
+                    };
+                    hint: string;
+                    header: string;
+                    message: string;
+                    content: string;
+                    action: string;
+                };
+                placeholders: {
+                    emptySearch: {
+                        title: string;
+                        subtitle: string;
+                        action: string;
+                    };
+                    emptyList: {
+                        title: {
+                            local: string;
+                            dialect: string;
+                            external: string;
+                        };
+                        subtitle: string;
+                        action: {
+                            local: string;
+                            dialect: string;
+                            external: string;
+                        };
+                    };
+                };
+                warning: string;
             };
         };
         emailTemplateTypes: {
@@ -938,6 +1210,84 @@ export interface DevPortalNS {
                     };
                 };
                 placeholder: string;
+                error: string;
+            };
+            notifications: {
+                fetchUserstores: Notification;
+                fetchUserstoreTemplates: Notification;
+                fetchUserstoreTypes: Notification;
+                fetchUserstoreMetadata: Notification;
+                deleteUserstore: Notification;
+                delay: NotificationItem;
+                updateUserstore: Notification;
+                testConnection: Notification;
+                addUserstore: Notification;
+            };
+            confirmation: {
+                hint: string;
+                header: string;
+                message: string;
+                content: string;
+                confirm: string;
+            };
+            pageLayout: {
+                list: {
+                    title: string;
+                    description: string;
+                    primaryAction: string;
+                };
+                templates: {
+                    title: string;
+                    description: string;
+                    back: string;
+                    templateHeading: string;
+                    templateSubHeading: string;
+                };
+                edit: {
+                    description: string;
+                    back: string;
+                    tabs: {
+                        general: string;
+                        connection: string;
+                        user: string;
+                        group: string;
+                    };
+                };
+            };
+            forms: {
+                general: {
+                    name: FormField;
+                    type: FormField;
+                    description: FormField;
+                };
+                connection: {
+                    testButton: string;
+                    connectionErrorMessage: string;
+                };
+                custom: FormField;
+            };
+            dangerZone: DangerZone;
+            wizard: {
+                steps: {
+                    general: string;
+                    user: string;
+                    group: string;
+                    summary: string;
+                };
+                header: string;
+            };
+            placeholders: {
+                emptySearch: Placeholder;
+                emptyList: Placeholder;
+            };
+            sqlEditor: {
+                reset: string;
+                title: string;
+                create: string;
+                update: string;
+                read: string;
+                delete: string;
+                darkMode: string;
             };
         };
         roles: {

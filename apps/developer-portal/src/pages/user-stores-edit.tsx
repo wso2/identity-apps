@@ -16,8 +16,10 @@
 * under the License.
 */
 
+import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react"
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Image } from "semantic-ui-react";
 import { getAType, getAUserStore } from "../api";
@@ -31,7 +33,6 @@ import { DatabaseAvatarGraphic } from "../configs";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts"
 import { AlertLevels, CategorizedProperties, UserStore, UserstoreType } from "../models";
-import { addAlert } from "@wso2is/core/store";
 import { reOrganizeProperties } from "../utils";
 
 /**
@@ -49,6 +50,8 @@ export const UserStoresEditPage = (props): ReactElement => {
 
     const dispatch = useDispatch();
 
+    const { t } = useTranslation();
+
     /**
      * Fetches the suer store by its id
      */
@@ -58,9 +61,11 @@ export const UserStoresEditPage = (props): ReactElement => {
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description,
+                    description: error?.description
+                        || t("devPortal:components.userstores.notifications.fetchUserstores.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
+                        || t("devPortal:components.userstores.notifications.fetchUserstores.genericError.message")
                 }
             ));
         })
@@ -76,9 +81,13 @@ export const UserStoresEditPage = (props): ReactElement => {
                 setType(response);
             }).catch(error => {
                 dispatch(addAlert({
-                    description: error?.description || "An error occurred while fetching the type meta data.",
+                    description: error?.description
+                        || t("devPortal:components.userstores.notifications.fetchUserstoreMetadata." +
+                            "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
+                    message: error?.message
+                        || t("devPortal:components.userstores.notifications.fetchUserstoreMetadata" +
+                            ".genericError.message")
                 }));
             });
         }
@@ -95,7 +104,7 @@ export const UserStoresEditPage = (props): ReactElement => {
      */
     const panes = [
         {
-            menuItem: "General",
+            menuItem:  t ("devPortal:components.userstores.pageLayout.edit.tabs.general"),
             render: () => (
                 <EditBasicDetailsUserStore
                     properties={ properties?.basic }
@@ -106,7 +115,7 @@ export const UserStoresEditPage = (props): ReactElement => {
             )
         },
         {
-            menuItem: "Connection",
+            menuItem: t("devPortal:components.userstores.pageLayout.edit.tabs.connection"),
             render: () => (
                 <EditConnectionDetails
                     update={ getUserStore }
@@ -117,7 +126,7 @@ export const UserStoresEditPage = (props): ReactElement => {
             )
         },
         {
-            menuItem: "User",
+            menuItem: t("devPortal:components.userstores.pageLayout.edit.tabs.user"),
             render: () => (
                 <EditUserDetails
                     update={ getUserStore }
@@ -128,7 +137,7 @@ export const UserStoresEditPage = (props): ReactElement => {
             )
         },
         {
-            menuItem: "Group",
+            menuItem: t("devPortal:components.userstores.pageLayout.edit.tabs.group"),
             render: () => (
                 <EditGroupDetails
                     update={ getUserStore }
@@ -154,12 +163,12 @@ export const UserStoresEditPage = (props): ReactElement => {
                 </Image>
             }
             title={ userStore?.name }
-            description={ "Edit userstore" }
+            description={ t("devPortal:components.userstores.pageLayout.edit.description") }
             backButton={ {
                 onClick: () => {
                     history.push("/user-stores");
                 },
-                text: "Go back to userstores"
+                text: t ("devPortal:components.userstores.pageLayout.edit.back") 
             } }
             titleTextAlign="left"
             bottomMargin={ false }

@@ -18,6 +18,7 @@
 
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { TypeProperty } from "../../../models";
 
@@ -54,6 +55,8 @@ export const UserDetails: FunctionComponent<UserDetailsPropsInterface> = (
 
     const { submitState, onSubmit, values, properties } = props;
 
+    const { t } = useTranslation();
+
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
@@ -79,7 +82,20 @@ export const UserDetails: FunctionComponent<UserDetailsPropsInterface> = (
                                                     name={ selectedTypeDetail.name }
                                                     type="toggle"
                                                     required={ false }
-                                                    requiredErrorMessage={ name + " is a required field" }
+                                                    requiredErrorMessage={
+                                                        t("devPortal:components.userstores.forms." +
+                                                            "custom.requiredErrorMessage",
+                                                            {
+                                                                name: name
+                                                            })
+                                                    }
+                                                    placeholder={
+                                                        t("devPortal:components.userstores.forms." +
+                                                            "custom.placeholder",
+                                                            {
+                                                                name: name
+                                                            })
+                                                    }
                                                     value={
                                                         values?.get(selectedTypeDetail?.name)?.toString()
                                                         ?? selectedTypeDetail.defaultValue
@@ -94,8 +110,20 @@ export const UserDetails: FunctionComponent<UserDetailsPropsInterface> = (
                                                     name={ selectedTypeDetail.name }
                                                     type="text"
                                                     required={ true }
-                                                    requiredErrorMessage={ name + " is a required field" }
-                                                    placeholder={ "Enter a " + name }
+                                                    requiredErrorMessage={
+                                                        t("devPortal:components.userstores.forms." +
+                                                            "custom.requiredErrorMessage",
+                                                            {
+                                                                name: name
+                                                            })
+                                                    }
+                                                    placeholder={
+                                                        t("devPortal:components.userstores.forms." +
+                                                            "custom.placeholder",
+                                                            {
+                                                                name: name
+                                                            })
+                                                    }
                                                     value={
                                                         values?.get(selectedTypeDetail?.name)?.toString()
                                                         ?? selectedTypeDetail.defaultValue

@@ -18,6 +18,7 @@
 
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react"
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Header, Image, Segment } from "semantic-ui-react";
 import { deleteADialect, getADialect, getAllExternalClaims } from "../api";
@@ -48,32 +49,41 @@ export const ExternalDialectEditPage = (props): ReactElement => {
 
     const dispatch = useDispatch();
 
+    const { t } = useTranslation();
+
     const deleteConfirmation = (): ReactElement => (
         <ConfirmationModal
             onClose={ (): void => setConfirmDelete(false) }
             type="warning"
             open={ confirmDelete }
             assertion={ dialect.dialectURI }
-            assertionHint={ <p>Please type <strong>{ dialect.dialectURI }</strong> to confirm.</p> }
+            assertionHint={
+                <p>
+                <Trans i18nKey="devPortal:components.claims.dialects.confirmations.hint">
+                        Please type <strong>{ { confirm: dialect.dialectURI } }</strong> to confirm.
+                    </Trans>
+                </p>
+            }
             assertionType="input"
-            primaryAction="Confirm"
-            secondaryAction="Cancel"
+            primaryAction={ t("devPortal:components.claims.dialects.confirmations.action") }
+            secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
             onPrimaryActionClick={ (): void => deleteDialect(dialect.id) }
         >
-            <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+            <ConfirmationModal.Header>
+                { t("devPortal:components.claims.dialects.confirmations.header") }
+            </ConfirmationModal.Header>
             <ConfirmationModal.Message attached warning>
-                This action is irreversible and will permanently delete the selected external dialect.
-                        </ConfirmationModal.Message>
+                { t("devPortal:components.claims.dialects.confirmations.message") }
+            </ConfirmationModal.Message>
             <ConfirmationModal.Content>
-                If you delete this external dialect, all the associated external attributes will also be deleted.
-                Please proceed with caution.
+                { t("devPortal:components.claims.dialects.confirmations.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
 
     /**
-     * Fetches the local claim
+     * Fetch the dialect.
      */
     const getDialect = () => {
         getADialect(dialectId).then(response => {
@@ -81,9 +91,13 @@ export const ExternalDialectEditPage = (props): ReactElement => {
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while fetching the external dialect",
+                    description: error?.description
+                        || t("devPortal:components.claims.dialects.notifications." +
+                            "fetchADialect.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
+                    message: error?.message 
+                        || t("devPortal:components.claims.dialects.notifications." +
+                            "fetchADialect.genericError.message")
                 }
             ));
         })
@@ -113,9 +127,13 @@ export const ExternalDialectEditPage = (props): ReactElement => {
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while fetching the external attribute",
+                    description: error?.description
+                        || t("devPortal:components.claims.dialects.notifications." +
+                            "fetchExternalClaims.genericError.description") ,
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
+                    message: error?.message
+                        || t("devPortal:components.claims.dialects.notifications." +
+                            "fetchExternalClaims.genericError.message") 
                 }
             ));
         }).finally(() => {
@@ -146,17 +164,23 @@ export const ExternalDialectEditPage = (props): ReactElement => {
             history.push(CLAIM_DIALECTS_PATH);
             dispatch(addAlert(
                 {
-                    description: "The dialect has been deleted successfully!",
+                    description: t("devPortal:components.claims.dialects.notifications." +
+                        "deleteDialect.success.description") ,
                     level: AlertLevels.SUCCESS,
-                    message: "Dialect deleted successfully"
+                    message: t("devPortal:components.claims.dialects.notifications." +
+                        "deleteDialect.success.message")
                 }
             ));
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while deleting the dialect",
+                    description: error?.description
+                        || t("devPortal:components.claims.dialects.notifications." +
+                            "deleteDialect.genericError.description") ,
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
+                    message: error?.message
+                        || t("devPortal:components.claims.dialects.notifications." +
+                            "deleteDialect.genericError.message")
                 }
             ));
         })
@@ -180,23 +204,25 @@ export const ExternalDialectEditPage = (props): ReactElement => {
                 </Image>
             }
             title={ dialect?.dialectURI }
-            description={ "Edit external dialect and its attributes" }
+            description={ t("devPortal:components.claims.dialects.pageLayout.edit.description") }
             backButton={ {
                 onClick: () => {
                     history.push(CLAIM_DIALECTS_PATH);
                 },
-                text: "Go back to attribute dialects"
+                text: t ("devPortal:components.claims.dialects.pageLayout.edit.back")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
         >
-            
+
             <Divider />
 
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 8 }>
-                        <Header as="h5">Update Dialect URI</Header>
+                        <Header as="h5">
+                            { t("devPortal:components.claims.dialects.pageLayout.edit.updateDialectURI") }
+                        </Header>
                         <EditDialectDetails
                             dialect={ dialect }
                         />
@@ -207,7 +233,9 @@ export const ExternalDialectEditPage = (props): ReactElement => {
             <Divider />
             <Grid columns={ 1 }>
                 <Grid.Column width={ 16 }>
-                    <Header as="h5">Update External Attributes</Header>
+                    <Header as="h5">
+                        { t("devPortal:components.claims.dialects.pageLayout.edit.updateExternalAttributes") }
+                    </Header>
                 </Grid.Column>
             </Grid>
 
@@ -227,12 +255,11 @@ export const ExternalDialectEditPage = (props): ReactElement => {
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
-                        <DangerZoneGroup sectionHeader="Danger Zone">
+                        <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
                             <DangerZone
-                                actionTitle="Delete External Dialect"
-                                header="Delete External Dialect"
-                                subheader={ "Once you delete an external dialect, there is no going back. " +
-                                    "Please be certain." }
+                                actionTitle={ t("devPortal:components.claims.dialects.dangerZone.actionTitle") }
+                                header={ t("devPortal:components.claims.dialects.dangerZone.header") }
+                                subheader={ t("devPortal:components.claims.dialects.dangerZone.subheader") }
                                 onActionClick={ () => setConfirmDelete(true) }
                             />
                         </DangerZoneGroup>

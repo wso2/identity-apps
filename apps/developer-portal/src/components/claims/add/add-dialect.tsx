@@ -20,6 +20,7 @@ import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { addDialect, addExternalClaim } from "../../../api";
@@ -66,6 +67,8 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
 
     const dispatch = useDispatch();
 
+    const { t } = useTranslation();
+
     /**
      * Submit handler that sends the API request to add the local claim.
      */
@@ -78,16 +81,17 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
             });
             Promise.all(externalClaimPromises).then(() => {
                 dispatch(addAlert({
-                    description: "The external dialect has been added successfully",
+                    description: t("devPortal:components.claims.dialects.notifications.addDialect.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "External Dialect added successfully"
+                    message: t("devPortal:components.claims.dialects.notifications.addDialect.success.message")
                 }))
             }).catch(() => {
                 dispatch(addAlert({
-                    description: "The external dialect has been added but not all external " +
-                        "attributes were added successfully",
+                    description: t("devPortal:components.claims.dialects.notifications." +
+                        "addDialect.genericError.description"),
                     level: AlertLevels.WARNING,
-                    message: "External attributes couldn't be added"
+                    message: t("devPortal:components.claims.dialects.notifications." +
+                        "addDialect.genericError.message")
                 }))
             }).finally(() => {
                 onClose();
@@ -95,9 +99,12 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
             });
         }).catch(error => {
             dispatch(addAlert({
-                description: error?.description || "An error occurred while adding the external dialect",
+                description: error?.description
+                    || t("devPortal:components.claims.dialects.notifications." +
+                        "addDialect.error.description"),
                 level: AlertLevels.ERROR,
-                message: error?.message || "Something went wrong"
+                message: error?.message
+                    || t("devPortal:components.claims.dialects.notifications.addDialect.success.description")
             }));
         })
     }
@@ -135,7 +142,7 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Dialect URI"
+            title: t("devPortal:components.claims.dialects.wizard.steps.dialectURI")
         },
         {
             content: (
@@ -146,7 +153,7 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "External attributes"
+            title: t("devPortal:components.claims.dialects.wizard.steps.externalAttribute")
         },
         {
             content: (
@@ -156,7 +163,7 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Summary"
+            title: t("devPortal:components.claims.dialects.wizard.steps.summary")
 
         }
     ];
@@ -194,7 +201,7 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
             onClose={ onClose }
         >
             <Modal.Header className="wizard-header">
-                Add External Dialect
+                { t("devPortal:components.claims.dialects.wizard.header") }
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group
@@ -221,16 +228,16 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
                                 <PrimaryButton floated="right" onClick={ next }>
-                                    Next <Icon name="arrow right" />
+                                    { t("common:next") } <Icon name="arrow right" />
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep === STEPS.length - 1 && (
                                 <PrimaryButton floated="right" onClick={ next }>
-                                    Finish</PrimaryButton>
+                                    { t("common:finish") }</PrimaryButton>
                             ) }
                             { currentWizardStep > 0 && (
                                 <LinkButton floated="right" onClick={ previous }>
-                                    <Icon name="arrow left" /> Previous
+                                    <Icon name="arrow left" /> { t("common:previous") }
                                 </LinkButton>
                             ) }
                         </Grid.Column>

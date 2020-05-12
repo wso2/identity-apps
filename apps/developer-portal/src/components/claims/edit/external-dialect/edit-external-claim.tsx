@@ -19,6 +19,7 @@
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { getAllLocalClaims, getAnExternalClaim, updateAnExternalClaim } from "../../../../api";
@@ -60,6 +61,10 @@ interface EditExternalClaimsPropsInterface {
      * Claim data if called from wizard
      */
     addedClaim?: AddExternalClaim;
+    /**
+     * The list of external claims belonging to the dialect.
+     */
+    externalClaims: ExternalClaim[] | AddExternalClaim[];
 }
 
 /**
@@ -69,13 +74,15 @@ interface EditExternalClaimsPropsInterface {
  */
 export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): ReactElement => {
 
-    const { claimID, update, dialectID, submit, claimURI, wizard, onSubmit, addedClaim } = props;
+    const { claimID, update, dialectID, submit, claimURI, wizard, onSubmit, addedClaim, externalClaims } = props;
 
     const [ localClaims, setLocalClaims ] = useState<Claim[]>();
     const [ claim, setClaim ] = useState<ExternalClaim>(null);
-
+    const [ filteredLocalClaims, setFilteredLocalClaims ] = useState<Claim[]>();
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         getAllLocalClaims(null).then(response => {
@@ -83,9 +90,11 @@ export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): Reac
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while fetching local attributes",
+                    description: error?.description
+                        || t("devPortal:components.claims.local.notifications.getClaims.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
+                    message: error?.message
+                        || t("devPortal:components.claims.local.notifications.getClaims.genericError.message")
                 }
             ));
         });
@@ -96,14 +105,60 @@ export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): Reac
             }).catch(error => {
                 dispatch(addAlert(
                     {
-                        description: error?.description || "There was an error while fetching the external attribute",
+                        description: error?.description
+                            || t("devPortal:components.claims.external.notifications." +
+                                "getExternalAttribute.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: error?.message || "Something went wrong"
+                        message: error?.message
+                            || t("devPortal:components.claims.external.notifications." +
+                                "getExternalAttribute.genericError.message")
                     }
                 ));
             })
         }
     }, []);
+
+    /**
+     * Remove local claims that have already been mapped. 
+     */
+    useEffect(() => {
+        if (externalClaims && localClaims && (claim || addedClaim)) {
+            let tempLocalClaims: Claim[] = [ ...localClaims ];
+            externalClaims.forEach((externalClaim: ExternalClaim) => {
+                tempLocalClaims = [ ...removeMappedLocalClaim(externalClaim.mappedLocalClaimURI, tempLocalClaims) ];
+            });
+            tempLocalClaims.unshift(getLocalClaimMappedToSelectedExternalClaim());
+            setFilteredLocalClaims(tempLocalClaims);
+        }
+    }, [ externalClaims, localClaims, claim, addedClaim ]);
+
+    /**
+     * This removes the mapped local claims from the local claims list.
+     * 
+     * @param {string} claimURI The claim URI of the mapped local claim.
+     * 
+     * @returns {Claim[]} The array of filtered Claims.
+     */
+    const removeMappedLocalClaim = (claimURI: string, filteredLocalClaims?: Claim[]): Claim[] => {
+        const claimsToFilter = filteredLocalClaims ? filteredLocalClaims : localClaims;
+
+        return claimsToFilter?.filter((claim: Claim) => {
+            return claim.claimURI !== claimURI;
+        });
+    };
+
+    /**
+     * Returns the local claim that is mapped to the external claim.
+     * 
+     * @returns {Claim} The Local Claim mapped to the selected external claim.
+     */
+    const getLocalClaimMappedToSelectedExternalClaim = (): Claim => {
+        return localClaims.find((localClaim: Claim) => {
+            return wizard
+                ? localClaim?.claimURI === addedClaim?.mappedLocalClaimURI
+                : localClaim?.claimURI === claim?.mappedLocalClaimURI
+        })
+    }
 
     return (
         <Forms
@@ -115,19 +170,24 @@ export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): Reac
                     }).then(() => {
                         dispatch(addAlert(
                             {
-                                description: "The external attribute has been updated successfully!",
+                                description: t("devPortal:components.claims.external.notifications." +
+                                    "updateExternalAttribute.success.description"),
                                 level: AlertLevels.SUCCESS,
-                                message: "External attribute updated successfully"
+                                message: t("devPortal:components.claims.external.notifications." +
+                                    "updateExternalAttribute.success.message")
                             }
                         ));
                         update();
                     }).catch(error => {
                         dispatch(addAlert(
                             {
-                                description: error?.description || "There was an error while updating the" +
-                                    " external attribute",
+                                description: error?.description
+                                    || t("devPortal:components.claims.external.notifications." +
+                                        "updateExternalAttribute.genericError.description"),
                                 level: AlertLevels.ERROR,
-                                message: error?.message || "Something went wrong"
+                                message: error?.message
+                                    || t("devPortal:components.claims.external.notifications." +
+                                        "updateExternalAttribute.genericError.message")
                             }
                         ));
                     })
@@ -146,10 +206,11 @@ export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): Reac
                             <Grid.Column width={ 8 }>
                                 <Field
                                     name="claimURI"
-                                    label="Attribute URI"
+                                    label={ t("devPortal:components.claims.external.forms.attributeURI.label") }
                                     required={ true }
-                                    requiredErrorMessage="Attribute URI is required"
-                                    placeholder="Enter an attribute URI"
+                                    requiredErrorMessage={ t("devPortal:components.claims.external.forms." +
+                                        "attributeURI.label") }
+                                    placeholder={ t("devPortal:components.claims.external.forms.attributeURI.label") }
                                     type="text"
                                     value={ addedClaim.claimURI }
                                 />
@@ -160,14 +221,15 @@ export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): Reac
                         <Field
                             type="dropdown"
                             name="localClaim"
-                            label="Local attribute URI"
+                            label={ t("devPortal:components.claims.external.forms.attributeURI.label") }
                             required={ true }
-                            requiredErrorMessage="Select a local attribute to map to"
-                            placeholder="Select a local attribute"
+                            requiredErrorMessage={ t("devPortal:components.claims.external.forms." +
+                                "attributeURI.requiredErrorMessage") }
+                            placeholder={ t("devPortal:components.claims.external.forms.attributeURI.placeholder") }
                             search
                             value={ wizard ? addedClaim.mappedLocalClaimURI : claim?.mappedLocalClaimURI }
                             children={
-                                localClaims?.map((claim: Claim, index) => {
+                                filteredLocalClaims?.map((claim: Claim, index) => {
                                     return {
                                         key: index,
                                         text: claim?.displayName,

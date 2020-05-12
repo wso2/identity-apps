@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import {
     Dropdown,
     DropdownItemProps,
@@ -77,6 +77,8 @@ export interface PaginationPropsInterface extends PaginationProps, TestableCompo
      * Total size of the list.
      */
     totalListSize?: number;
+    onPageChange: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: PaginationProps) => void;
+    resetPagination?: boolean;
 }
 
 /**
@@ -90,6 +92,10 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
     props: PaginationPropsInterface
 ): ReactElement => {
 
+    const [ activePage, setActivePage ] = useState<number>(1);
+
+    const init = useRef(true);
+    
     const {
         className,
         currentListSize,
@@ -98,6 +104,8 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
         itemsPerPageDropdownMultiple,
         itemsPerPageDropdownUpperLimit,
         onItemsPerPageDropdownChange,
+        onPageChange,
+        resetPagination,
         showItemsPerPageDropdown,
         showListSummary,
         totalListSize,
@@ -110,6 +118,14 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
         className
     );
 
+    useEffect(() => {
+        if (init.current) {
+            init.current = false;
+        } else {
+            setActivePage(1);
+        }
+    }, [ resetPagination ]);
+    
     const generatePageCountDropdownOptions = (): DropdownItemProps[] => {
         const options = [];
 
@@ -123,6 +139,17 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
         }
 
         return options;
+    };
+
+    /**
+     * This is called when page change occurs.
+     * 
+     * @param {React.MouseEvent<HTMLAnchorElement, MouseEvent>} event Mouse event.
+     * @param {PaginationProps} data Semantic pagination props.
+     */
+    const pageChangeHandler = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: PaginationProps): void => {
+        setActivePage(parseInt(data.activePage.toString()));
+        onPageChange(event, data);
     };
 
     return (
@@ -147,6 +174,8 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
                 className="list-pagination"
                 data-testid={ `${ testId }-steps` }
                 { ...rest }
+                activePage={ activePage }
+                onPageChange={ pageChangeHandler }
             />
         </div>
     );
@@ -156,6 +185,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
  * Prop types for the Pagination component.
  */
 Pagination.defaultProps =  {
+	activePage: 1,
     "data-testid": "pagination",
     defaultActivePage: 1,
     float: "right",

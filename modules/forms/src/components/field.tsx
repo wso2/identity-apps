@@ -67,7 +67,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
 
     const formField: FormField = { ...passedProps };
 
-    const filteredProps = filterPassedProps(passedProps);
+    const filteredProps = filterPassedProps({ ...passedProps });
 
     const { checkError, handleBlur, handleChange, handleToggle, handleChangeCheckBox, handleReset, form } = formProps;
 
@@ -88,7 +88,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
             if (isPasswordField(inputField)) {
                 return (
                     <Password
-                        { ...filteredProps }
+                        { ...passedProps }
                         label={ inputField.label !== "" ? inputField.label : null }
                         width={ inputField.width }
                         error={

@@ -20,6 +20,7 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon } from "semantic-ui-react";
 import { addExternalClaim, getAllLocalClaims } from "../../../api";
@@ -48,7 +49,7 @@ interface AddExternalClaimsPropsInterface {
     /**
      * The list of external claims belonging to the dialect.
      */
-    externalClaims?: ExternalClaim[] | AddExternalClaim[];
+    externalClaims: ExternalClaim[] | AddExternalClaim[];
     /**
      * Triggers submit externally.
      */
@@ -78,6 +79,8 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
 
     const dispatch = useDispatch();
 
+    const { t } = useTranslation();
+
     /**
      * Gets the list of local claims.
      */
@@ -88,9 +91,11 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while fetching local attributes",
+                    description: error?.description
+                        || t("devPortal:components.claims.local.notifications.getClaims.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
+                    message: error?.message
+                        || t("devPortal:components.claims.local.notifications.getClaims.genericError.message")
                 }
             ));
         });
@@ -144,9 +149,11 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                     }).then(() => {
                         dispatch(addAlert(
                             {
-                                description: "The external attribute has been added to the dialect successfully!",
+                                description: t("devPortal:components.claims.external.notifications." +
+                                    "addExternalAttribute.success.description"),
                                 level: AlertLevels.SUCCESS,
-                                message: "External attribute added successfully"
+                                message: t("devPortal:components.claims.external.notifications." +
+                                    "addExternalAttribute.success.message")
                             }
                         ));
                         setReset();
@@ -155,9 +162,13 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                     }).catch(error => {
                         dispatch(addAlert(
                             {
-                                description: error?.description,
+                                description: error?.description
+                                    || t("devPortal:components.claims.external.notifications." +
+                                    "addExternalAttribute.genericError.description"),
                                 level: AlertLevels.ERROR,
-                                message: error?.message || "Something went wrong"
+                                message: error?.message 
+                                    || t("devPortal:components.claims.external.notifications." +
+                                        "addExternalAttribute.genericError.message")
                             }
                         ));
                     })
@@ -171,10 +182,11 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                     <Grid.Column width={ 7 }>
                         <Field
                             name="claimURI"
-                            label="Attribute URI"
+                            label={ t("devPortal:components.claims.external.forms.attributeURI.label") }
                             required={ true }
-                            requiredErrorMessage="Attribute URI is required"
-                            placeholder="Enter an attribute URI"
+                            requiredErrorMessage={ t("devPortal:components.claims.external.forms." +
+                                "attributeURI.requiredErrorMessage") }
+                            placeholder={ t("devPortal:components.claims.external.forms.attributeURI.placeholder") }
                             type="text"
                         />
                     </Grid.Column>
@@ -185,10 +197,11 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                         <Field
                             type="dropdown"
                             name="localClaim"
-                            label="Local attribute URI to map to"
+                            label={ t("devPortal:components.claims.external.forms.localAttribute.label") }
                             required={ true }
-                            requiredErrorMessage="Select a local attribute to map to"
-                            placeholder="Select a Local Attribute"
+                            requiredErrorMessage={ t("devPortal:components.claims.external.forms." +
+                                "attributeURI.requiredErrorMessage") }
+                            placeholder={ t("devPortal:components.claims.external.forms.attributeURI.placeholder") }
                             search
                             children={
                                 filteredLocalClaims?.map((claim: Claim, index) => {
@@ -206,8 +219,8 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                     wizard && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 } textAlign="right" verticalAlign="top">
-                                <PrimaryButton type="submit">
-                                    Add External Attribute
+                            <PrimaryButton type="submit">
+                                    { t("devPortal:components.claims.external.forms.submit") }
                             </PrimaryButton>
                             </Grid.Column>
                         </Grid.Row>

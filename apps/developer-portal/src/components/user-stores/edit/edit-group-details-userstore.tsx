@@ -20,6 +20,7 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
@@ -59,6 +60,8 @@ export const EditGroupDetails = (
     const [ sql, setSql ] = useState<Map<string, string>>(null);
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (properties) {
@@ -163,17 +166,21 @@ export const EditGroupDetails = (
 
         patchUserStore(id, data).then(() => {
             dispatch(addAlert({
-                description: "This userstore has been updated successfully!",
+                description: t("devPortal:components.userstores.notifications." +
+                    "updateUserstore.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Userstore updated successfully!"
+                message: t("devPortal:components.userstores.notifications." +
+                    "updateUserstore.success.message")
             }));
             update();
         }).catch(error => {
             dispatch(addAlert({
                 description: error?.description
-                    || "An error occurred while updating the userstore.",
+                    || t("devPortal:components.userstores.notifications." +
+                        "updateUserstore.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: error?.message || "Something went wrong"
+                message: error?.message || t("devPortal:components.userstores.notifications." +
+                    "updateUserstore.genericError.message")
             }));
         });
     };
@@ -206,8 +213,15 @@ export const EditGroupDetails = (
                                                 requiredErrorMessage={
                                                     `${property.description.split("#")[ 0 ]} is  required`
                                                 }
-                                                showPassword="Show Password"
-                                                hidePassword="Hide Password"
+                                                showPassword={ t("common:showPassword") }
+                                                hidePassword={ t("common:hidePassword") }
+                                                placeholder={
+                                                    t("devPortal:components.userstores.forms." +
+                                                        "custom.placeholder",
+                                                        {
+                                                            name: property.description.split("#")[ 0 ]
+                                                        })
+                                                }
                                             />
                                         )
                                         : toggle
@@ -221,7 +235,11 @@ export const EditGroupDetails = (
                                                         required={ false }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
-                                                            `${property.description.split("#")[ 0 ]} is  required`
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
                                                         }
                                                         listen={ (values: Map<string, FormValue>) => {
                                                             setDisabled(
@@ -230,6 +248,13 @@ export const EditGroupDetails = (
                                                             )
                                                         } }
                                                         toggle
+                                                        placeholder={
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.placeholder",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
+                                                        }
                                                     />
                                                 )
                                                 : (
@@ -241,10 +266,21 @@ export const EditGroupDetails = (
                                                         required={ false }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
-                                                            `${property.description.split("#")[ 0 ]} is  required`
+                                                            t("devPortal:components.userstores.forms.edit." +
+                                                                "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
                                                         }
                                                         disabled={ disabled }
                                                         toggle
+                                                        placeholder={
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.placeholder",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
+                                                        }
                                                     />
                                                 )
                                             : (
@@ -256,9 +292,20 @@ export const EditGroupDetails = (
                                                     required={ !disabled }
                                                     label={ property.description.split("#")[ 0 ] }
                                                     requiredErrorMessage={
-                                                        `${property.description.split("#")[ 0 ]} is  required`
+                                                        t("devPortal:components.userstores.forms.edit." +
+                                                            "custom.requiredErrorMessage",
+                                                            {
+                                                                name: property.description.split("#")[ 0 ]
+                                                            })
                                                     }
                                                     disabled={ disabled }
+                                                    placeholder={
+                                                        t("devPortal:components.userstores.forms." +
+                                                            "custom.placeholder",
+                                                            {
+                                                                name: property.description.split("#")[ 0 ]
+                                                            })
+                                                    }
                                                 />
                                             )
                                 );
@@ -283,7 +330,7 @@ export const EditGroupDetails = (
                                 onClick={ () => { setShowMore(!showMore) } }
                             >
                                 <Icon name={ showMore ? "chevron up" : "chevron down" } />
-                                { `Show ${showMore ? "Less" : "More"}` }
+                                { showMore ? t("common:showLess") : t("common:showMore") }
                             </LinkButton>
                         </Grid.Column>
                     </Grid>
@@ -312,10 +359,21 @@ export const EditGroupDetails = (
                                                         required={ false }
                                                         label={ name }
                                                         requiredErrorMessage={
-                                                            `${property.description.split("#")[ 0 ]} is  required`
+                                                            t("devPortal:components.userstores.forms.edit." +
+                                                                "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
                                                         }
-                                                        showPassword="Show Password"
-                                                        hidePassword="Hide Password"
+                                                        showPassword={ t("common:showPassword") }
+                                                        hidePassword={ t("common:hidePassword") }
+                                                        placeholder={
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.placeholder",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
+                                                        }
                                                     />
                                                 )
                                                 : toggle
@@ -328,10 +386,21 @@ export const EditGroupDetails = (
                                                             required={ false }
                                                             label={ property.description.split("#")[ 0 ] }
                                                             requiredErrorMessage={
-                                                                `${property.description.split("#")[ 0 ]} is  required`
+                                                                t("devPortal:components.userstores.forms." +
+                                                                    "custom.requiredErrorMessage",
+                                                                    {
+                                                                        name: property.description.split("#")[ 0 ]
+                                                                    })
                                                             }
                                                             disabled={ disabled }
                                                             toggle
+                                                            placeholder={
+                                                                t("devPortal:components.userstores.forms." +
+                                                                    "custom.placeholder",
+                                                                    {
+                                                                        name: property.description.split("#")[ 0 ]
+                                                                    })
+                                                            }
                                                         />
                                                     ) :
                                                     (
@@ -343,9 +412,20 @@ export const EditGroupDetails = (
                                                             required={ false }
                                                             label={ property.description.split("#")[ 0 ] }
                                                             requiredErrorMessage={
-                                                                `${property.description.split("#")[ 0 ]} is  required`
+                                                                t("devPortal:components.userstores.forms" +
+                                                                    ".custom.requiredErrorMessage",
+                                                                    {
+                                                                        name: property.description.split("#")[ 0 ]
+                                                                    })
                                                             }
                                                             disabled={ disabled }
+                                                            placeholder={
+                                                                t("devPortal:components.userstores.forms." +
+                                                                    "custom.placeholder",
+                                                                    {
+                                                                        name: property.description.split("#")[ 0 ]
+                                                                    })
+                                                            }
                                                         />
                                                     )
                                         );

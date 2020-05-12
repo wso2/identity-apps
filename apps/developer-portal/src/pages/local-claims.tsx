@@ -18,6 +18,7 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
+import { useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -40,18 +41,20 @@ import { filterList, sortList } from "../utils";
  */
 export const LocalClaimsPage = (): ReactElement => {
 
+    const { t } = useTranslation();
+
     /**
      * Sets the attributes by which the list can be sorted
      */
     const SORT_BY = [
         {
             key: 0,
-            text: "Name",
+            text: t("common:name"),
             value: "displayName"
         },
         {
             key: 1,
-            text: "Attribute URI",
+            text: t("devPortal:components.claims.local.attributes.attributeURI"),
             value: "claimURI"
         }
     ];
@@ -70,11 +73,12 @@ export const LocalClaimsPage = (): ReactElement => {
     const [ isLoading, setIsLoading ] = useState(true);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
+    const [ resetPagination, setResetPagination ] = useTrigger();
+
     const dispatch = useDispatch();
 
     const initialRender = useRef(true);
 
-    const { t } = useTranslation();
 
     /**
     * Fetches all the local claims.
@@ -98,9 +102,11 @@ export const LocalClaimsPage = (): ReactElement => {
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while fetching the local attribute",
+                    description: error?.description
+                        || t("devPortal:components.claims.local.notifications.getClaims.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
+                    message: error?.message
+                        || t("devPortal:components.claims.local.notifications.getClaims.genericError.message")
                 }
             ));
         }).finally(() => {
@@ -123,9 +129,11 @@ export const LocalClaimsPage = (): ReactElement => {
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while fetching the local dialect",
+                    description: error?.description
+                        || t("devPortal:components.claims.local.notifications.getLocalDialect.genericError.message"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
+                    message: error?.message
+                        || t("devPortal:components.claims.local.notifications.getLocalDialect.genericError.message")
                 }
             ));
         });
@@ -194,11 +202,13 @@ export const LocalClaimsPage = (): ReactElement => {
             const filteredClaims = filterList(claims, query, sortBy.value as string, sortOrder);
             setFilteredClaims(filteredClaims);
             setSearchQuery(query);
+            setOffset(0);
+            setResetPagination();
         } catch (error) {
             dispatch(addAlert({
                 description: error?.message,
                 level: AlertLevels.ERROR,
-                message: "Filter query format incorrect"
+                message: t("devPortal:components.claims.local.advancedSearch.error")
             }));
         }
     };
@@ -226,15 +236,16 @@ export const LocalClaimsPage = (): ReactElement => {
             }
             <PageLayout
                 isLoading={ isLoading }
-                title="Local Attributes"
-                description="Create and manage local attributes"
+                title={ t("devPortal:components.claims.local.pageLayout.local.title") }
+                description={ t("devPortal:components.claims.local.pageLayout.local.description") }
                 showBottomDivider={ true }
                 backButton={ {
                     onClick: () => { history.push(CLAIM_DIALECTS_PATH) },
-                    text: "Go back to attribute dialects"
+                    text: t("devPortal:components.claims.local.pageLayout.local.back")
                 } }
             >
                 <ListLayout
+                    resetPagination={ resetPagination }
                     advancedSearch={
                         <AdvancedSearchWithBasicFilters
                             onFilter={ handleLocalClaimsFilter }
@@ -246,7 +257,7 @@ export const LocalClaimsPage = (): ReactElement => {
                                 },
                                 {
                                     key: 1,
-                                    text: "Attribute URI",
+                                    text: t("devPortal:components.claims.local.advancedSearch.error"),
                                     value: "claimURI"
                                 }
                             ] }
@@ -282,7 +293,8 @@ export const LocalClaimsPage = (): ReactElement => {
                                     setOpenModal(true);
                                 } }
                             >
-                                <Icon name="add"/>New Local Attribute
+                                <Icon name="add" />
+                                { t("devPortal:components.claims.local.pageLayout.local.action") }
                             </PrimaryButton>
                         )
                     }

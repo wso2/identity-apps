@@ -17,6 +17,7 @@
 */
 
 import React, { ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid, Image, Message, Table } from "semantic-ui-react";
 import { AvatarBackground } from "../../..";
 import { AddExternalClaim } from "../../../../models";
@@ -56,6 +57,8 @@ export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): React
 
     const { dialectURI, claims } = props;
 
+    const { t } = useTranslation();
+
     return (
         <Grid className="wizard-summary">
             <Grid.Row columns={ 1 }>
@@ -71,14 +74,13 @@ export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): React
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell>
-
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    External Attribute URI
-                                    </Table.HeaderCell>
+                                    { t("devPortal:components.claims.dialects.wizard.summary.externalAttribute") }
+                                </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    Mapped Local Attribute URI
-                                    </Table.HeaderCell>
+                                    { t("devPortal:components.claims.dialects.wizard.summary.mappedAttribute") }
+                                </Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
@@ -112,7 +114,9 @@ export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): React
                                 claims.length === 0 && (
                                     <Table.Row>
                                         <Table.Cell colSpan={ 3 } textAlign='center'>
-                                            <Message warning>No external attribute was added.</Message>
+                                            <Message warning>
+                                                { t("devPortal:components.claims.dialects.wizard.summary.notFound") }
+                                            </Message>
                                         </Table.Cell>
                                     </Table.Row>
                                 )

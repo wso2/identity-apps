@@ -18,6 +18,7 @@
 
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { TypeProperty } from "../../../models";
 
@@ -56,6 +57,8 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
 
     const [ disabled, setDisabled ] = useState(false);
 
+    const { t } = useTranslation();
+
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
@@ -84,7 +87,20 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                                                         name={ selectedTypeDetail.name }
                                                         type="toggle"
                                                         required={ false }
-                                                        requiredErrorMessage={ name + " is a required field" }
+                                                        requiredErrorMessage={
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: name
+                                                                })
+                                                        }
+                                                        placeholder={
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.placeholder",
+                                                                {
+                                                                    name: name
+                                                                })
+                                                        }
                                                         value={
                                                             values?.get(selectedTypeDetail?.name)?.toString()
                                                             ?? selectedTypeDetail.defaultValue
@@ -105,7 +121,20 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                                                         name={ selectedTypeDetail.name }
                                                         type="toggle"
                                                         required={ false }
-                                                        requiredErrorMessage={ name + " is a required field" }
+                                                        requiredErrorMessage={
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: name
+                                                                })
+                                                        }
+                                                        placeholder={
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.placeholder",
+                                                                {
+                                                                    name: name
+                                                                })
+                                                        }
                                                         value={
                                                             values?.get(selectedTypeDetail?.name)?.toString()
                                                             ?? selectedTypeDetail.defaultValue
@@ -121,8 +150,20 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                                                     name={ selectedTypeDetail.name }
                                                     type="text"
                                                     required={ !disabled }
-                                                    requiredErrorMessage={ name + " is a required field" }
-                                                    placeholder={ "Enter a " + name }
+                                                    requiredErrorMessage={
+                                                        t("devPortal:components.userstores.forms." +
+                                                            "custom.requiredErrorMessage",
+                                                            {
+                                                                name: name
+                                                            })
+                                                    }
+                                                    placeholder={
+                                                        t("devPortal:components.userstores.forms." +
+                                                            "custom.placeholder",
+                                                            {
+                                                                name: name
+                                                            })
+                                                    }
                                                     value={
                                                         values?.get(selectedTypeDetail?.name)?.toString()
                                                         ?? selectedTypeDetail.defaultValue

@@ -19,6 +19,7 @@
 import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react"
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Image } from "semantic-ui-react";
 import { getAClaim } from "../api";
@@ -49,8 +50,10 @@ export const LocalClaimsEditPage = (props): ReactElement => {
 
     const dispatch = useDispatch();
 
+    const { t } = useTranslation();
+
     /**
-     * Fetches the local claim
+     * Fetches the local claim.
      */
     const getClaim = () => {
         setIsLocalClaimDetailsRequestLoading(true);
@@ -61,10 +64,12 @@ export const LocalClaimsEditPage = (props): ReactElement => {
             })
             .catch((error) => {
                 dispatch(addAlert({
-                        description: error?.description || "There was an error while fetching the local claim",
-                        level: AlertLevels.ERROR,
-                        message: error?.message || "Something went wrong"
-                    })
+                    description: error?.description
+                        || t("devPortal:components.claims.local.notifications.getAClaim.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                        || t("devPortal:components.claims.local.notifications.getAClaim.genericError.message")
+                })
                 );
             })
             .finally(() => {
@@ -81,7 +86,7 @@ export const LocalClaimsEditPage = (props): ReactElement => {
      */
     const panes = [
         {
-            menuItem: "Basic Details",
+            menuItem: t("devPortal:components.claims.local.pageLayout.edit.tabs.general"),
             render: () => (
                 <EditBasicDetailsLocalClaims
                     claim={ claim }
@@ -89,7 +94,7 @@ export const LocalClaimsEditPage = (props): ReactElement => {
             )
         },
         {
-            menuItem: "Mapped Attributes",
+            menuItem: t("devPortal:components.claims.local.pageLayout.edit.tabs.mappedAttributes"),
             render: () => (
                 <EditMappedAttributesLocalClaims
                     claim={ claim }
@@ -98,7 +103,7 @@ export const LocalClaimsEditPage = (props): ReactElement => {
             )
         },
         {
-            menuItem: "Additional Properties",
+            menuItem: t("devPortal:components.claims.local.pageLayout.edit.tabs.additionalProperties"),
             render: () => (
                 <EditAdditionalPropertiesLocalClaims
                     claim={ claim }
@@ -136,12 +141,12 @@ export const LocalClaimsEditPage = (props): ReactElement => {
                 </Image>
             }
             title={ claim?.displayName }
-            description={ "Edit local attribute" }
+            description={ t("devPortal:components.claims.local.pageLayout.edit.description") }
             backButton={ {
                 onClick: () => {
                     history.push(LOCAL_CLAIMS_PATH);
                 },
-                text: "Go back to Local Attributes"
+                text: t("devPortal:components.claims.local.pageLayout.edit.back")
             } }
             titleTextAlign="left"
             bottomMargin={ false }

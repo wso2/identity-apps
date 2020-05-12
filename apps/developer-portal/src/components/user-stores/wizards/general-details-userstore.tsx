@@ -18,6 +18,7 @@
 
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Header, Icon } from "semantic-ui-react";
 import { testConnection } from "../../../api";
 import { JDBC } from "../../../constants";
@@ -68,6 +69,8 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
     const [ connectionSuccessful, setConnectionSuccessful ] = useState(false);
     const [ formValue, setFormValue ] = useState<Map<string, FormValue>>(null);
     const [ isTesting, setIsTesting ] = useState(false);
+
+    const { t } = useTranslation();
 
     /**
      * Enum containing the icons a test connection button can have 
@@ -137,21 +140,23 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                         } }
                     >
                         <Field
-                            label="Name"
+                            label={ t("devPortal:components.userstores.forms.general.name.label") }
                             name="name"
                             type="text"
                             required={ true }
-                            requiredErrorMessage="Name is a required field"
-                            placeholder="Enter a name"
+                            requiredErrorMessage={ t("devPortal:components.userstores.forms.general." +
+                                "name.requiredErrorMessage") }
+                            placeholder={ t("devPortal:components.userstores.forms.general.name.placeholder") }
                             value={ values?.get("name")?.toString() }
                         />
                         <Field
-                            label="Description"
+                            label={ t("devPortal:components.userstores.forms.general.type.label") }
                             name="description"
                             type="text"
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder="Enter a description"
+                            placeholder={ t("devPortal:components.userstores.forms.general." +
+                                "description.placeholder") }
                             value={ values?.get("description")?.toString() }
                         />
                         {
@@ -171,10 +176,22 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                     name={ selectedTypeDetail.name }
                                                     type="password"
                                                     required={ true }
-                                                    requiredErrorMessage={ name + " is a required field" }
-                                                    placeholder={ "Enter a " + name }
-                                                    showPassword="Show Password"
-                                                    hidePassword='Hide Password'
+                                                    requiredErrorMessage={
+                                                        t("devPortal:components.userstores.forms." +
+                                                            "custom.requiredErrorMessage",
+                                                            {
+                                                                name: name
+                                                            })
+                                                    }
+                                                    placeholder={
+                                                        t("devPortal:components.userstores.forms." +
+                                                            "custom.placeholder",
+                                                            {
+                                                                name: name
+                                                            })
+                                                    }
+                                                    showPassword={ t("common:showPassword") }
+                                                    hidePassword={ t("common:hidePassword") }
                                                     value={
                                                         values?.get(selectedTypeDetail?.name)?.toString()
                                                         ?? selectedTypeDetail.defaultValue
@@ -189,7 +206,20 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                         name={ selectedTypeDetail.name }
                                                         type="toggle"
                                                         required={ false }
-                                                        requiredErrorMessage={ name + " is a required field" }
+                                                        requiredErrorMessage={
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: name
+                                                                })
+                                                        }
+                                                        placeholder={
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.placeholder",
+                                                                {
+                                                                    name: name
+                                                                })
+                                                        }
                                                         value={
                                                             values?.get(selectedTypeDetail?.name)?.toString()
                                                             ?? selectedTypeDetail.defaultValue
@@ -204,8 +234,20 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                         name={ selectedTypeDetail.name }
                                                         type="text"
                                                         required={ true }
-                                                        requiredErrorMessage={ name + " is a required field" }
-                                                        placeholder={ "Enter a " + name }
+                                                        requiredErrorMessage={
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: name
+                                                                })
+                                                        }
+                                                        placeholder={
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.placeholder",
+                                                                {
+                                                                    name: name
+                                                                })
+                                                        }
                                                         value={
                                                             values?.get(selectedTypeDetail?.name)?.toString()
                                                             ?? selectedTypeDetail.defaultValue
@@ -215,7 +257,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                     );
                                 })
                         }
-                        <Divider hidden/>
+                        <Divider hidden />
                         {
                             connectionProperties?.map(
                                 (selectedTypeDetail: TypeProperty, index: number) => {
@@ -233,10 +275,22 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                     name={ selectedTypeDetail.name }
                                                     type="password"
                                                     required={ true }
-                                                    requiredErrorMessage={ name + " is a required field" }
-                                                    placeholder={ "Enter a " + name }
-                                                    showPassword="Show Password"
-                                                    hidePassword='Hide Password'
+                                                    requiredErrorMessage={
+                                                        t("devPortal:components.userstores.forms." +
+                                                            "custom.requiredErrorMessage",
+                                                            {
+                                                                name: name
+                                                            })
+                                                    }
+                                                    placeholder={
+                                                        t("devPortal:components.userstores.forms." +
+                                                            "custom.placeholder",
+                                                            {
+                                                                name: name
+                                                            })
+                                                    }
+                                                    showPassword={ t("common:showPassword") }
+                                                    hidePassword={ t("common:hidePassword") }
                                                     value={
                                                         values?.get(selectedTypeDetail?.name)?.toString()
                                                         ?? selectedTypeDetail.defaultValue
@@ -251,7 +305,20 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                         name={ selectedTypeDetail.name }
                                                         type="toggle"
                                                         required={ false }
-                                                        requiredErrorMessage={ name + " is a required field" }
+                                                        requiredErrorMessage={
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: name
+                                                                })
+                                                        }
+                                                        placeholder={
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.placeholder",
+                                                                {
+                                                                    name: name
+                                                                })
+                                                        }
                                                         value={
                                                             values?.get(selectedTypeDetail?.name)?.toString()
                                                             ?? selectedTypeDetail.defaultValue
@@ -266,8 +333,20 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                         name={ selectedTypeDetail.name }
                                                         type="text"
                                                         required={ true }
-                                                        requiredErrorMessage={ name + " is a required field" }
-                                                        placeholder={ "Enter a " + name }
+                                                        requiredErrorMessage={
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: name
+                                                                })
+                                                        }
+                                                        placeholder={
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.placeholder",
+                                                                {
+                                                                    name: name
+                                                                })
+                                                        }
                                                         value={
                                                             values?.get(selectedTypeDetail?.name)?.toString()
                                                             ?? selectedTypeDetail.defaultValue
@@ -325,15 +404,14 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                 : null
                                     }
                                 />
-                                Test Connection
+                                { t("devPortal:components.userstores.forms.connection.testButton") }
                             </Button>
                         )
                     }
                     { connectionFailed
                         && (
                             <Header as="h6" color="red">
-                                Please ensure the provided connection URL, name, password and driver
-                                name are accurate
+                                { t("devPortal:components.userstores.forms.connection.connectionErrorMessage") }
                             </Header>
                         )
                     }

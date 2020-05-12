@@ -20,6 +20,7 @@ import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { addLocalClaim } from "../../../api";
@@ -57,15 +58,17 @@ interface AddLocalClaimsPropsInterface {
 export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElement => {
 
     const { open, onClose, update, claimURIBase } = props;
-    const [currentWizardStep, setCurrentWizardStep] = useState(0);
-    const [data, setData] = useState<Claim>(null);
-    const [basicDetailsData, setBasicDetailsData] = useState<Map<string, FormValue>>(null);
+    const [ currentWizardStep, setCurrentWizardStep ] = useState(0);
+    const [ data, setData ] = useState<Claim>(null);
+    const [ basicDetailsData, setBasicDetailsData ] = useState<Map<string, FormValue>>(null);
     const [ mappedAttributesData, setMappedAttributesData ] = useState<Map<string, FormValue>>(null);
 
-    const [firstStep, setFirstStep] = useTrigger();
-    const [secondStep, setSecondStep] = useTrigger();
+    const [ firstStep, setFirstStep ] = useTrigger();
+    const [ secondStep, setSecondStep ] = useTrigger();
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     /**
      * Submit handler that sends the API request to add the local claim
@@ -74,9 +77,9 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
         addLocalClaim(data).then(() => {
             dispatch(addAlert(
                 {
-                    description: "The local attribute has been added successfully!",
+                    description: t("devPortal:components.claims.local.notifications.addLocalClaim.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Local attribute added successfully"
+                    message: t("devPortal:components.claims.local.notifications.addLocalClaim.success.message")
                 }
             ));
             onClose();
@@ -84,9 +87,11 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description || "There was an error while adding the local attribute",
+                    description: error?.description
+                        || t("devPortal:components.claims.local.notifications.addLocalClaim.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
+                    message: error?.message
+                        || t("devPortal:components.claims.local.notifications.addLocalClaim.genericError.message")
                 }
             ));
         })
@@ -105,7 +110,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
     }
 
     /**
-     * Handler that is called when the `MApped Attributes` step of the wizard is completed
+     * Handler that is called when the `Mapped Attributes` step of the wizard is completed
      * @param {Claim} dataFromForm 
      * @param {KeyValue[]} values 
      */
@@ -130,7 +135,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Basic attribute details"
+            title: t("devPortal:components.claims.local.wizard.steps.general")
         },
         {
             content: (
@@ -141,14 +146,14 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Map attributes"
+            title: t("devPortal:components.claims.local.wizard.steps.mapAttributes")
         },
         {
             content: (
                 <SummaryLocalClaims data={ data } />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Summary"
+            title: t("devPortal:components.claims.local.wizard.steps.summary")
 
         }
     ];
@@ -186,23 +191,23 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
             onClose={ onClose }
         >
             <Modal.Header className="wizard-header">
-                Add Local Attribute
+                { t("devPortal:components.claims.local.wizard.header") }
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group
                     current={ currentWizardStep }
                 >
-                    {STEPS.map((step, index) => (
+                    { STEPS.map((step, index) => (
                         <Steps.Step
                             key={ index }
                             icon={ step.icon }
                             title={ step.title }
                         />
-                    ))}
+                    )) }
                 </Steps.Group>
             </Modal.Content >
             <Modal.Content className="content-container" scrolling>
-                {STEPS[currentWizardStep].content}
+                { STEPS[ currentWizardStep ].content }
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
@@ -211,20 +216,20 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
                             <LinkButton floated="left" onClick={ () => onClose() }>Cancel</LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            {currentWizardStep < STEPS.length - 1 && (
+                            { currentWizardStep < STEPS.length - 1 && (
                                 <PrimaryButton floated="right" onClick={ next }>
-                                    Next <Icon name="arrow right" />
+                                    { t("common:next") } <Icon name="arrow right" />
                                 </PrimaryButton>
-                            )}
-                            {currentWizardStep === STEPS.length - 1 && (
+                            ) }
+                            { currentWizardStep === STEPS.length - 1 && (
                                 <PrimaryButton floated="right" onClick={ next }>
-                                    Finish</PrimaryButton>
-                            )}
-                            {currentWizardStep > 0 && (
+                                    { t("common:finish") }</PrimaryButton>
+                            ) }
+                            { currentWizardStep > 0 && (
                                 <LinkButton floated="right" onClick={ previous }>
-                                    <Icon name="arrow left" /> Previous
+                                    <Icon name="arrow left" /> { t("common:previous") }
                                 </LinkButton>
-                            )}
+                            ) }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

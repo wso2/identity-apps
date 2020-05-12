@@ -20,6 +20,7 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { updateADialect } from "../../../../api";
@@ -45,6 +46,8 @@ export const EditDialectDetails = (props: EditDialectDetailsPropsInterface): Rea
 
     const dispatch = useDispatch();
 
+    const { t } = useTranslation();
+
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
@@ -55,9 +58,11 @@ export const EditDialectDetails = (props: EditDialectDetailsPropsInterface): Rea
                             updateADialect(dialect.id, dialectURI)
                                 .then(() => {
                                     dispatch(addAlert({
-                                        description: "The dialect has been successfully updated.",
+                                        description: t("devPortal:components.claims.dialects.notifications" +
+                                            ".updateDialect.success.description"),
                                         level: AlertLevels.SUCCESS,
-                                        message: "Dialect update successful"
+                                        message: t("devPortal:components.claims.dialects.notifications" +
+                                            ".updateDialect.success.message")
                                     }));
                                     history.push(
                                         `${EDIT_EXTERNAL_DIALECT}/${window.btoa(dialectURI).replace(/=/g, "")}`
@@ -66,25 +71,29 @@ export const EditDialectDetails = (props: EditDialectDetailsPropsInterface): Rea
                                 .catch((error) => {
                                     dispatch(addAlert({
                                         description: error?.description
-                                            || "An error occurred while updating the dialect",
+                                            || t("devPortal:components.claims.dialects.notifications" +
+                                                ".updateDialect.genericError.description"),
                                         level: AlertLevels.ERROR,
-                                        message: error?.message || "Something went wrong"
+                                        message: error?.message
+                                            || t("devPortal:components.claims.dialects.notifications" +
+                                                ".updateDialect.genericError.message")
                                     }))
                                 });
                         } }
                     >
                         <Field
                             type="text"
-                            placeholder="Enter a dialect URI"
+                            placeholder={ t("devPortal:components.claims.dialects.forms.dialectURI.placeholder") }
                             value={ dialect?.dialectURI }
                             required={ true }
-                            requiredErrorMessage="Enter a dialect URI"
-                            label="Dialect URI"
+                            requiredErrorMessage={ t("devPortal:components.claims.dialects." +
+                                "forms.dialectURI.requiredErrorMessage") }
+                            label={ t("devPortal:components.claims.dialects.forms.dialectURI.label") }
                             name="dialectURI"
                         />
                         <Divider hidden />
                         <PrimaryButton type="submit">
-                            Update
+                            { t("devPortal:components.claims.dialects.forms.submit") }
                         </PrimaryButton>
                     </Forms>
                 </Grid.Column>

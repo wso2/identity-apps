@@ -20,6 +20,7 @@ import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { updateAClaim } from "../../../../api";
@@ -51,23 +52,27 @@ export const EditAdditionalPropertiesLocalClaims = (
 
     const { claim, update } = props;
 
-    const [submit, setSubmit] = useTrigger();
+    const [ submit, setSubmit ] = useTrigger();
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
                 <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
-                    <p>Use when writing an extension using current attributes</p>
+                    <p>{ t("devPortal:components.claims.local.additionalProperties.hint") }</p>
                     <DynamicField
                         data={ claim.properties }
                         keyType="text"
-                        keyName="Name"
-                        valueName="Value"
+                        keyName={ t("devPortal:components.claims.local.additionalProperties.key") }
+                        valueName={ t("devPortal:components.claims.local.additionalProperties.value") }
                         submit={ submit }
-                        keyRequiredMessage="Enter a name"
-                        valueRequiredErrorMessage="Enter a value"
+                        keyRequiredMessage={ t("devPortal:components.claims.local.additionalProperties." +
+                            "keyRequiredErrorMessage") }
+                        valueRequiredErrorMessage={ t("devPortal:components.claims.local.additionalProperties." +
+                            "valueRequiredErrorMessage") }
                         requiredField={ true }
                         update={ (data) => {
                             const claimData = { ...claim };
@@ -75,26 +80,30 @@ export const EditAdditionalPropertiesLocalClaims = (
                             delete claimData.dialectURI;
                             const submitData = {
                                 ...claimData,
-                                properties: [...data]
+                                properties: [ ...data ]
                             }
 
                             updateAClaim(claim.id, submitData).then(() => {
                                 dispatch(addAlert(
                                     {
-                                        description: "Additional Properties of this local attribute have been " +
-                                            "updated successfully!",
+                                        description: t("devPortal:components.claims.local.notifications." +
+                                            "updateClaim.success.description"),
                                         level: AlertLevels.SUCCESS,
-                                        message: "Additional Properties updated successfully"
+                                        message: t("devPortal:components.claims.local.notifications." +
+                                            "updateClaim.success.message")
                                     }
                                 ));
                                 update();
                             }).catch(error => {
                                 dispatch(addAlert(
                                     {
-                                        description: error?.description || "There was an error while updating the" +
-                                            " local attribute",
+                                        description: error?.description
+                                            || t("devPortal:components.claims.local.notifications." +
+                                                "updateClaim.genericError.description"),
                                         level: AlertLevels.ERROR,
-                                        message: error?.message || "Something went wrong"
+                                        message: error?.message
+                                            || t("devPortal:components.claims.local.notifications." +
+                                                "updateClaim.genericError.message")
                                     }
                                 ));
                             })
@@ -109,7 +118,7 @@ export const EditAdditionalPropertiesLocalClaims = (
                             setSubmit();
                         } }
                     >
-                        Update
+                        { t("common:update") }
                     </PrimaryButton>
                 </Grid.Column>
             </Grid.Row>

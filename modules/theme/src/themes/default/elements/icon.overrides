@@ -37,7 +37,7 @@ i.icon {
 
     &.notification-icon {
         position: absolute;
-        z-index: 99;
+        z-index: 1;
         top: -1px;
         left: 43px;
     }

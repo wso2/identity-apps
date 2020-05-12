@@ -44,15 +44,15 @@ export interface EditPage extends Page {
  * Model for notification set
  */
 export interface Notification {
-    error: NotificationItem;
-    genericError: NotificationItem;
-    success: NotificationItem;
+    error?: NotificationItem;
+    genericError?: NotificationItem;
+    success?: NotificationItem;
 }
 
 /**
  * Model for notification
  */
-interface NotificationItem {
+export interface NotificationItem {
     message: string;
     description: string;
 }
@@ -107,4 +107,13 @@ interface HelpPanelTabsInterface {
 interface HelpPanelTabInterface {
     content: any;
     heading: string;
+}
+
+export interface FormField {
+    label?: string;
+    placeholder?: string;
+    requiredErrorMessage?: string;
+    validationErrorMessages?: {
+        [ key: string ]: string;
+    };
 }

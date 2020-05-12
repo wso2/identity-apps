@@ -20,6 +20,7 @@ import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { DangerZoneGroup } from "@wso2is/react-components/src";
 import React, { ReactElement, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
@@ -64,6 +65,8 @@ export const EditBasicDetailsUserStore = (
     const [ showMore, setShowMore ] = useState(false);
     const [ confirmDelete, setConfirmDelete ] = useState(false);
 
+    const { t } = useTranslation();
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -96,47 +99,59 @@ export const EditBasicDetailsUserStore = (
             type="warning"
             open={ confirmDelete }
             assertion={ userStore?.name }
-            assertionHint={ <p>Please type <strong>{ userStore?.name }</strong> to confirm.</p> }
+            assertionHint={
+                <p>
+                    <Trans i18nKey="devPortal:components.userstores.confirmation.hint">
+                        Please type <strong>{ { name: userStore?.name } }</strong > to confirm.
+                    </Trans>
+                </p>
+            }
             assertionType="input"
-            primaryAction="Confirm"
-            secondaryAction="Cancel"
+            primaryAction={ t("devPortal:components.userstores.confirmation.confirm") }
+            secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
             onPrimaryActionClick={ (): void => {
                 deleteUserStore(id)
                     .then(() => {
                         dispatch(addAlert({
-                            description: "The userstore has been deleted successfully!",
+                            description: t("devPortal:components.userstores.notifications." +
+                                "deleteUserstore.success.description"),
                             level: AlertLevels.SUCCESS,
-                            message: "Userstore deleted successfully!"
+                            message: t("devPortal:components.userstores.notifications." +
+                                "deleteUserstore.success.message")
 
                         }));
                         dispatch(addAlert({
-                            description: "It may take a while for the userstore list to be updated. " +
-                                "Refresh in a few seconds to get the updated userstore list.",
+                            description: t("devPortal:components.userstores.notifications." +
+                                "delay.description"),
                             level: AlertLevels.WARNING,
-                            message: "Updating Userstore list takes time"
+                            message: t("devPortal:components.userstores.notifications." +
+                                "delay.message")
                         }));
                         update();
                     })
                     .catch(error => {
                         dispatch(addAlert({
                             description: error?.description
-                                ?? "There was an error while deleting the userstore",
+                                ?? t("devPortal:components.userstores.notifications." +
+                                    "deleteUserstore.genericError.description"),
                             level: AlertLevels.ERROR,
-                            message: error?.message ?? "Something went wrong!"
+                            message: error?.message ?? t("devPortal:components.userstores.notifications." +
+                                "deleteUserstore.genericError.message")
                         }));
                     }).finally(() => {
                         setConfirmDelete(false);
                     });
             } }
         >
-            <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+            <ConfirmationModal.Header>
+                { t("devPortal:components.userstores.confirmation.header") }
+            </ConfirmationModal.Header>
             <ConfirmationModal.Message attached warning>
-                This action is irreversible and will permanently delete the selected userstore and the data in it.
-                        </ConfirmationModal.Message>
+                { t("devPortal:components.userstores.confirmation.message") }
+            </ConfirmationModal.Message>
             <ConfirmationModal.Content>
-                If you delete this userstore, the user data in this userstore will also be deleted.
-                Please proceed with caution.
+                { t("devPortal:components.userstores.confirmation.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
@@ -220,24 +235,30 @@ export const EditBasicDetailsUserStore = (
         updateUserStore(id, data).then(() => {
             patchUserStore(id, patchData).then(() => {
                 dispatch(addAlert({
-                    description: "This userstore has been updated successfully!",
+                    description: t("devPortal:components.userstores.notifications." +
+                        "updateUserstore.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Userstore updated successfully!"
+                    message: t("devPortal:components.userstores.notifications." +
+                        "updateUserstore.success.message")
                 }));
                 update();
             }).catch(error => {
                 dispatch(addAlert({
                     description: error?.description
-                        || "An error occurred while updating the userstore.",
+                        || t("devPortal:components.userstores.notifications." +
+                            "updateUserstore.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || "Something went wrong"
+                    message: error?.message || t("devPortal:components.userstores.notifications." +
+                        "updateUserstore.genericError.message")
                 }));
             });
         }).catch((error) => {
             dispatch(addAlert({
-                description: error?.description ?? "An error occurred while updating the Userstore",
+                description: error?.description ?? t("devPortal:components.userstores.notifications." +
+                    "updateUserstore.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: error?.message ?? "Something went wrong"
+                message: error?.message ?? t("devPortal:components.userstores.notifications." +
+                    "updateUserstore.genericError.message")
             }));
         });
     };
@@ -252,31 +273,34 @@ export const EditBasicDetailsUserStore = (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 8 }>
                             <Field
-                                label="Name"
+                                label={ t("devPortal:components.userstores.forms.general.name.label") }
                                 name="name"
                                 type="text"
                                 required={ false }
-                                requiredErrorMessage="Name is a required field"
-                                placeholder="Enter a name"
+                                requiredErrorMessage={ t("devPortal:components.userstores.forms.general." +
+                                    "name.requiredErrorMessage") }
+                                placeholder={ t("devPortal:components.userstores.forms.general.name.placeholder") }
                                 value={ userStore?.name }
                                 disabled
                             />
                             <Field
-                                label="Type"
+                                label={ t("devPortal:components.userstores.forms.general.type.label") }
                                 name="type"
                                 type="text"
                                 disabled
                                 required={ false }
-                                requiredErrorMessage="Select a Type"
+                                requiredErrorMessage={ t("devPortal:components.userstores.forms.general" +
+                                    ".type.requiredErrorMessage") }
                                 value={ userStore?.typeName }
                             />
                             <Field
-                                label="Description"
+                                label={ t("devPortal:components.userstores.forms.general.description.label") }
                                 name="description"
                                 type="textarea"
                                 required={ false }
                                 requiredErrorMessage=""
-                                placeholder="Enter a description"
+                                placeholder={ t("devPortal:components.userstores.forms.general." +
+                                    "description.placeholder") }
                                 value={ userStore?.description }
                             />
                         </Grid.Column>
@@ -301,10 +325,21 @@ export const EditBasicDetailsUserStore = (
                                                     required={ true }
                                                     label={ name }
                                                     requiredErrorMessage={
-                                                        `${property.description.split("#")[ 0 ]} is  required`
+                                                        t("devPortal:components.userstores.forms." +
+                                                            "custom.requiredErrorMessage",
+                                                            {
+                                                                name: property.description.split("#")[ 0 ]
+                                                            })
                                                     }
-                                                    showPassword="Show Password"
-                                                    hidePassword="Hide Password"
+                                                    placeholder={
+                                                        t("devPortal:components.userstores.forms." +
+                                                            "custom.placeholder",
+                                                            {
+                                                                name: property.description.split("#")[ 0 ]
+                                                            })
+                                                    }
+                                                    showPassword={ t("common:showPassword") }
+                                                    hidePassword={ t("common:hidePassword") }
                                                 />
                                             )
                                             : toggle
@@ -317,7 +352,18 @@ export const EditBasicDetailsUserStore = (
                                                         required={ false }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
-                                                            `${property.description.split("#")[ 0 ]} is  required`
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
+                                                        }
+                                                        placeholder={
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.placeholder",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
                                                         }
                                                         toggle
                                                     />
@@ -331,7 +377,18 @@ export const EditBasicDetailsUserStore = (
                                                         required={ true }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
-                                                            `${property.description.split("#")[ 0 ]} is  required`
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
+                                                        }
+                                                        placeholder={
+                                                            t("devPortal:components.userstores.forms." +
+                                                                "custom.placeholder",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
                                                         }
                                                     />
                                                 )
@@ -355,7 +412,7 @@ export const EditBasicDetailsUserStore = (
                                         onClick={ () => { setShowMore(!showMore) } }
                                     >
                                         <Icon name={ showMore ? "chevron up" : "chevron down" } />
-                                        { `Show ${showMore ? "Less" : "More"}` }
+                                        { showMore ? t("common:showLess") : t("common:showMore") }
                                     </LinkButton>
                                 </Grid.Column>
                             </Grid.Row>
@@ -383,10 +440,21 @@ export const EditBasicDetailsUserStore = (
                                                             required={ false }
                                                             label={ name }
                                                             requiredErrorMessage={
-                                                                `${property.description.split("#")[ 0 ]} is  required`
+                                                                t("devPortal:components.userstores.forms." +
+                                                                    "custom.requiredErrorMessage",
+                                                                    {
+                                                                        name: property.description.split("#")[ 0 ]
+                                                                    })
                                                             }
-                                                            showPassword="Show Password"
-                                                            hidePassword="Hide Password"
+                                                            placeholder={
+                                                                t("devPortal:components.userstores.forms." +
+                                                                    "custom.placeholder",
+                                                                    {
+                                                                        name: property.description.split("#")[ 0 ]
+                                                                    })
+                                                            }
+                                                            showPassword={ t("common:showPassword") }
+                                                            hidePassword={ t("common:hidePassword") }
                                                         />
                                                     )
                                                     : toggle
@@ -399,8 +467,18 @@ export const EditBasicDetailsUserStore = (
                                                                 required={ false }
                                                                 label={ property.description.split("#")[ 0 ] }
                                                                 requiredErrorMessage={
-                                                                    `${property.description
-                                                                        .split("#")[ 0 ]} is  required`
+                                                                    t("devPortal:components.userstores.forms." +
+                                                                        "custom.requiredErrorMessage",
+                                                                        {
+                                                                            name: property.description.split("#")[ 0 ]
+                                                                        })
+                                                                }
+                                                                placeholder={
+                                                                    t("devPortal:components.userstores.forms." +
+                                                                        "custom.placeholder",
+                                                                        {
+                                                                            name: property.description.split("#")[ 0 ]
+                                                                        })
                                                                 }
                                                                 toggle
                                                             />
@@ -414,8 +492,18 @@ export const EditBasicDetailsUserStore = (
                                                                 required={ false }
                                                                 label={ property.description.split("#")[ 0 ] }
                                                                 requiredErrorMessage={
-                                                                    `${property.description
-                                                                        .split("#")[ 0 ]} is  required`
+                                                                    t("devPortal:components.userstores.forms." +
+                                                                        "custom.requiredErrorMessage",
+                                                                        {
+                                                                            name: property.description.split("#")[ 0 ]
+                                                                        })
+                                                                }
+                                                                placeholder={
+                                                                    t("devPortal:components.userstores.forms." +
+                                                                        "custom.placeholder",
+                                                                        {
+                                                                            name: property.description.split("#")[ 0 ]
+                                                                        })
                                                                 }
                                                             />
                                                         )
@@ -451,7 +539,7 @@ export const EditBasicDetailsUserStore = (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 8 }>
                             <PrimaryButton>
-                                Update
+                                { t("common:update") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>
@@ -462,12 +550,11 @@ export const EditBasicDetailsUserStore = (
 
             <Grid columns={ 1 }>
                 <Grid.Column width={ 16 }>
-                    <DangerZoneGroup sectionHeader="Danger Zone">
+                    <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
                         <DangerZone
-                            actionTitle="Delete Userstore"
-                            header="Delete Userstore"
-                            subheader={ "Once you delete a userstore, there is no going back. " +
-                                "Please be certain." }
+                            actionTitle={ t("devPortal:components.userstores.dangerZone.actionTitle") }
+                            header={ t("devPortal:components.userstores.dangerZone.header") }
+                            subheader={ t("devPortal:components.userstores.dangerZone.subheader") }
                             onActionClick={ () => setConfirmDelete(true) }
                         />
                     </DangerZoneGroup>

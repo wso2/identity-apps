@@ -18,6 +18,7 @@
 
 import * as forge from "node-forge";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Icon, Message, Segment, Tab, TextArea } from "semantic-ui-react";
 import { CertificateIllustrations } from "../../../configs";
 import { CERTIFICATE_BEGIN, CERTIFICATE_END, END_LINE } from "../../../constants";
@@ -26,7 +27,7 @@ import { Certificate } from "../../../models";
 /**
  * The model of the object returned by the `convertFromPem()` function.
  */
-interface PemCertificate{
+interface PemCertificate {
     /**
      * The PEM string.
      */
@@ -106,6 +107,8 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
     const fileUpload = useRef(null);
     const init = useRef(true);
 
+    const { t } = useTranslation();
+
 
     /**
      * This checks if this isn't and the initial call and then submits.
@@ -179,7 +182,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         if (forgeCertificateData) {
             setForgeCertificate(forgeCertificateData);
         }
-    }, [forgeCertificateData]);
+    }, [ forgeCertificateData ]);
 
     /**
      * Gets the browser color scheme so that the color scheme of the textarea can be decided.
@@ -203,13 +206,13 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
     }, []);
 
     /**
-     * This takes in an ArrayBuffer and converts it to PEM.
+     * This takes in a `.cer` file and converts it to PEM.
      * 
-     * @param {ArrayBuffer} value .cer `File` converted to `ArrayBuffer`.
+     * @param {File} value .cer `File`.
      * 
      * @returns {Promise<string>} The PEM encoded string.
      */
-    const convertFromDerToPem = (file: File): Promise<string> => {
+    const convertFromCerToPem = (file: File): Promise<string> => {
         return file.arrayBuffer().then((value: ArrayBuffer) => {
             const byteString = forge.util.createBuffer(value);
             const asn1 = forge.asn1.fromDer(byteString);
@@ -262,13 +265,16 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         // adds -----BEGIN CERTIFICATE----- if not present.
         !pemValue[ 0 ]?.includes(CERTIFICATE_BEGIN) && pemValue.unshift(CERTIFICATE_BEGIN);
 
-        // adds -----END CERTIFICATE----- if present.
-        !pemValue[ pemValue.length - 1 ]?.includes(CERTIFICATE_END)
-            && pemValue.push(CERTIFICATE_END);
-
         // adds "\n" if not present.
         !(pemValue[ pemValue.length - 1 ] === END_LINE)
             && pemValue.push(END_LINE);
+        
+        // adds -----END CERTIFICATE----- if not present.
+        if (!pemValue[ pemValue.length - 2 ]?.includes(CERTIFICATE_END)) {
+            const lastLine = pemValue.pop();
+            pemValue.push(CERTIFICATE_END);
+            pemValue.push(lastLine);
+        }
 
         return pemValue.join("\n");
     }
@@ -307,12 +313,20 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
     const checkCertType = (file: File): Promise<string> => {
         const extension = file.name.split(".").pop();
         if (extension === "cer") {
-            return convertFromDerToPem(file);
-        } else if (extension === "pem") {
+            return convertFromCerToPem(file);
+        } else if (extension==="crt"){ 
+            return file.arrayBuffer().then((value: ArrayBuffer) => {
+                const byteString = forge.util.createBuffer(value);
+
+                return convertFromPem(byteString?.data).value;
+            }).catch((error) => {
+                throw Error(error);
+            })
+        }else if (extension === "pem") {
             return file.text().then((value: string) => {
                 return convertFromPem(value).value;
-            }).catch(() => {
-                throw Error();
+            }).catch((error) => {
+                throw Error(error);
             })
         }
 
@@ -373,7 +387,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
      */
     const panes = [
         {
-            menuItem: "Upload",
+            menuItem: t("devPortal:components.certificates.keystore.wizard.panes.upload"),
             render: () => (
                 !file
                     ? (
@@ -400,13 +414,16 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                             <Segment placeholder className={ `drop-zone ${dragOver ? "drag-over" : ""}` }>
                                 <div className="certificate-upload-placeholder">
                                     <CertificateIllustrations.uploadPlaceholder.ReactComponent />
-                                    <p className="description">Drag and drop a certificate file here</p>
+                                    <p className="description">
+                                        { t("devPortal:components.certificates." +
+                                            "keystore.wizard.dropZone.description") }
+                                    </p>
                                     <p className="description">– or –</p>
                                 </div>
                                 <Button basic primary onClick={ () => {
                                     fileUpload.current.click();
                                 } }>
-                                    Upload Certificate
+                                    {t("devPortal:components.certificates.keystore.wizard.dropZone.action")}    
                                 </Button>
                             </Segment>
                         </div >
@@ -427,12 +444,12 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             )
         },
         {
-            menuItem: "Paste",
+            menuItem: t("devPortal:components.certificates.keystore.wizard.panes.paste"),
             render: () => (
                 <Form>
                     <TextArea
                         rows={ 13 }
-                        placeholder="Paste the content of a PEM certificate"
+                        placeholder={ t("devPortal:components.certificates.keystore.wizard.pastePlaceholder") }
                         value={ pem }
                         onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
                             setPem(event.target.value);
@@ -486,13 +503,14 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 <Form.Input
                     fluid
                     type="text"
-                    placeholder="Enter an alias"
-                    label="Alias"
+                    placeholder={ t("devPortal:components.certificates.keystore.forms.alias.placeholder") }
+                    label={ t("devPortal:components.certificates.keystore.forms.alias.label") }
                     required={ true }
                     error={
                         nameError
                             ? {
-                                content: "Alias is required"
+                                content: t("devPortal:components.certificates.keystore." +
+                                    "forms.alias.requiredErrorMessage")
                             }
                             : false
                     }
@@ -521,9 +539,8 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 (fileError || certEmpty) &&
                 <Message error attached="bottom">
                     { fileError
-                        ? "An error occurred while decoding the certificate." +
-                        " Please ensure the certificate is valid."
-                        : "Either add a certificate file or paste the content of a PEM-encoded certificate."
+                        ? t("devPortal:components.certificates.keystore.errorCertificate")
+                        : t("devPortal:components.certificates.keystore.errorEmpty")
                     }
                 </Message>
             }

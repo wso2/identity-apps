@@ -39,8 +39,10 @@ export interface ListLayoutPropsInterface extends PaginationProps, TestableCompo
     advancedSearch?: React.ReactNode;
     leftActionPanel?: React.ReactNode;
     listItemLimit?: number;
+    onPageChange: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: PaginationProps) => void;
     onSortStrategyChange?: (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => void;
     onSortOrderChange?: (isAscending: boolean) => void;
+    resetPagination?: boolean;
     rightActionPanel?: React.ReactNode;
     showPagination?: boolean;
     showTopActionPanel?: boolean;
@@ -64,8 +66,10 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         children,
         leftActionPanel,
         listItemLimit,
+        onPageChange,
         onSortStrategyChange,
         onSortOrderChange,
+        resetPagination,
         rightActionPanel,
         showPagination,
         showTopActionPanel,
@@ -166,9 +170,10 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                         ? (
                             <Pagination
                                 data-testid={ `${ testId }-pagination` }
+                                resetPagination={ resetPagination }
                                 totalListSize={ totalListSize }
                                 totalPages={ totalPages }
-                                { ...rest }
+                                onPageChange={ onPageChange }
                             />
                         )
                         : null

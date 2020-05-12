@@ -267,6 +267,7 @@ export const devPortal: DevPortalNS = {
         certificates: {
             keystore: {
                 advancedSearch: {
+                    error: "Filter query format incorrect",
                     form: {
                         inputs: {
                             filterAttribute: {
@@ -281,6 +282,128 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     placeholder: "Search by alias"
+                },
+                attributes: {
+                    alias: "Alias"
+                },
+                certificateModalHeader: "View Certificate",
+                confirmation: {
+                    content: "This action is irreversible and will permanently delete the certificate.",
+                    header: "Are you sure?",
+                    hint: "Please type <1>{{id}}</1> to confirm.",
+                    message: "This action is irreversible and will permanently delete the certificate.",
+                    primaryAction: "Confirm",
+                    tenantContent: "This will delete the tenant certificate permanently."
+                        + "Once deleted, unless you import a new tenant certificate,"
+                        + "you won't be able to access the portal applications."
+                        + "To continue deleting, enter the alias of the certificate and click delete."
+                },
+                errorCertificate: "An error occurred while decoding the certificate."
+                    + " Please ensure the certificate is valid.",
+                errorEmpty: "Either add a certificate file or paste the content of a PEM-encoded certificate.",
+                forms: {
+                    alias: {
+                        label: "Alias",
+                        placeholder: "Enter an alias",
+                        requiredErrorMessage: "Alias is required"
+                    }
+                },
+                notifications: {
+                    addCertificate:{
+                        genericError: {
+                            description: "An error occurred while importing the certificate.",
+                            message: "Something went wrong!"
+                        },
+                        success: {
+                            description: "The certificate has been imported successfully.",
+                            message: "Certificate import success"
+                        }
+                    },
+                    deleteCertificate: {
+                        genericError: {
+                            description: "There was an error while deleting the certificate",
+                            message: "Something went wrong!"
+                        },
+                        success: {
+                            description: "The certificate has been successfully deleted.",
+                            message: "Certificate deleted successfully"
+                        }
+                    },
+                    download: {
+                        success: {
+                            description: "The certificate has started downloading.",
+                            message: "Certificate download started"
+                        }
+                    },
+                    getAlias: {
+                        genericError: {
+                            description: "An error occurred while fetching the certificate.",
+                            message: "Something went wrong"
+                        }
+                    },
+                    getCertificate: {
+                        genericError: {
+                            description: "There was an error while fetching "
+                                + "the certificate",
+                            message: "Something went wrong!"
+                        }
+                    },
+                    getCertificates: {
+                        genericError: {
+                            description: "An error occurred while fetching certificates",
+                            message: "Something went wrong"
+                        }
+                    },
+                    getPublicCertificate: {
+                        genericError: {
+                            description: "There was an error while fetching the tenant certificate.",
+                            message: "Something went wrong!"
+                        }
+                    }
+                },
+                pageLayout: {
+                    description: "Create and manage certificates in the keystore",
+                    primaryAction: "Import Certificate",
+                    title: "Certificates"
+                },
+                placeholders: {
+                    emptyList: {
+                        action: "Import Certificate",
+                        subtitle: "There are currently no certificates available."
+                            + "You can import a new certificate by clicking on"
+                            + "the button below.",
+                        title: "Import Certificate"
+                    },
+                    emptySearch: {
+                        action: "Clear search query",
+                        subtitle: "We couldn't find any results for {{searchQuery}},"
+                            + "Please try a different search term.",
+                        title: "No results found"
+                    }
+                },
+                summary: {
+                    issuerDN: "Issuer DN",
+                    sn: "Serial Number:",
+                    subjectDN: "Subject DN",
+                    validFrom: "Not valid before",
+                    validTill: "Not valid after",
+                    version: "Version"
+                },
+                wizard: {
+                    dropZone: {
+                        action: "Upload Certificate",
+                        description: "Drag and drop a certificate file here"
+                    },
+                    header: "Import Certificate",
+                    panes: {
+                        paste: "Paste",
+                        upload: "Upload"
+                    },
+                    pastePlaceholder: "Paste the content of a PEM certificate",
+                    steps: {
+                        summary: "Summary",
+                        upload: "Upload certificate"
+                    }
                 }
             },
             truststore: {
@@ -305,6 +428,7 @@ export const devPortal: DevPortalNS = {
         claims: {
             dialects: {
                 advancedSearch: {
+                    error: "Filter query format incorrect",
                     form: {
                         inputs: {
                             filterAttribute: {
@@ -319,10 +443,118 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     placeholder: "Search by Dialect URI"
+                },
+                attributes: {
+                    dialectURI: "Dialect URI"
+                },
+                confirmations: {
+                    action: "Confirm",
+                    content: "If you delete this external dialect, all the associated external attributes will "
+                        + "also be deleted.Please proceed with caution.",
+                    header: "Are you sure?",
+                    hint: "Please type <1>{{confirm}}</1> to confirm.",
+                    message: "This action is irreversible and will permanently delete the selected external dialect."
+                },
+                dangerZone: {
+                    actionTitle: "Delete External Dialect",
+                    header: "Delete External Dialect",
+                    subheader: "Once you delete an external dialect, there is no going back. " + "Please be certain."
+                },
+                forms: {
+                    dialectURI: {
+                        label: "Dialect URI",
+                        placeholder: "Enter a dialect URI",
+                        requiredErrorMessage: "Enter a dialect URI"
+                    },
+                    submit: "Update"
+                },
+                localDialect: "Local Dialect",
+                notifications: {
+                    addDialect: {
+                        error: {
+                            description: "An error occurred while adding the external dialect",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "The external dialect has been added but not all external "
+                                + "attributes were added successfully",
+                            message: "External attributes couldn't be added"
+                        },
+                        success: {
+                            description: "The external dialect has been added successfully",
+                            message: "External Dialect added successfully"
+                        }
+                    },
+                    deleteDialect: {
+                        genericError: {
+                            description: "There was an error while deleting the dialect",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The dialect has been deleted successfully!",
+                            message: "Dialect deleted successfully"
+                        }
+                    },
+                    fetchADialect: {
+                        genericError: {
+                            description: "There was an error while fetching the external dialect",
+                            message: "Something went wrong"
+                        }
+                    },
+                    fetchDialects: {
+                        genericError: {
+                            description: "There was an error while getting the dialects",
+                            message: "Something went wrong"
+                        }
+                    },
+                    fetchExternalClaims: {
+                        genericError: {
+                            description: "There was an error while fetching the external attributes",
+                            message: "Something went wrong"
+                        }
+                    },
+                    updateDialect: {
+                        genericError: {
+                            description: "An error occurred while updating the dialect",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The dialect has been successfully updated.",
+                            message: "Dialect update successful"
+                        }
+                    }
+                },
+                pageLayout: {
+                    edit: {
+                        back: "Go back to attribute dialects",
+                        description: "Edit external dialect and its attributes",
+                        updateDialectURI: "Update Dialect URI",
+                        updateExternalAttributes: "Update External Attributes"
+                    },
+                    list: {
+                        description: "Create and manage attribute dialects",
+                        primaryAction: "New External Dialect",
+                        title: "Attribute Dialects",
+                        view: "View local claims"
+                    }
+                },
+                wizard: {
+                    header: "Add External Dialect",
+                    steps: {
+                        dialectURI: "Dialect URI",
+                        externalAttribute: "External attributes",
+                        summary: "Summary"
+                    },
+                    summary: {
+                        externalAttribute: "External Attribute URI",
+                        mappedAttribute: "Mapped Local Attribute URI",
+                        notFound: "No external attribute was added."
+                    }
                 }
             },
             external: {
                 advancedSearch: {
+                    error: "Filter query format incorrect",
                     form: {
                         inputs: {
                             filterAttribute: {
@@ -337,10 +569,133 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     placeholder: "Search by Attribute URI"
+                },
+                attributes: {
+                    attributeURI: "Attribute URI",
+                    mappedClaim: "Mapped Local Attribute URI"
+                },
+                forms: {
+                    attributeURI: {
+                        label: "Attribute URI",
+                        placeholder: "Enter an attribute URI",
+                        requiredErrorMessage: "Attribute URI is required"
+                    },
+                    localAttribute: {
+                        label: "Local attribute URI to map to",
+                        placeholder: "Select a Local Attribute",
+                        requiredErrorMessage: "Select a local attribute to map to"
+                    },
+                    submit: "Add External Attribute"
+                },
+                notifications: {
+                    addExternalAttribute: {
+                        genericError: {
+                            description: "An error occurred while adding the external attribute.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The external attribute has been added to the dialect successfully!",
+                            message: "External attribute added successfully"
+                        }
+                    },
+                    deleteExternalClaim: {
+                        genericError: {
+                            description: "There was an error while deleting the external attribute",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The external attribute has been deleted successfully!",
+                            message: "External attribute deleted successfully"
+                        }
+                    },
+                    getExternalAttribute: {
+                        genericError: {
+                            description: "There was an error while fetching the external attribute",
+                            message: "Something went wrong"
+                        }
+                    },
+                    updateExternalAttribute: {
+                        genericError: {
+                            description: "There was an error while updating the" + " external attribute",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The external attribute has been updated successfully!",
+                            message: "External attribute updated successfully"
+                        }
+                    }
+                },
+                pageLayout: {
+                    edit: {
+                        header: "Add External Attribute",
+                        primaryAction: "New External Attribute"
+                    }
+                },
+                placeholders: {
+                    empty: {
+                        subtitle: "Currently, there are no external attributes available for "
+                            + "this dialect.",
+                        title: "No External Attributes"
+                    }
                 }
             },
+            list: {
+                confirmation: {
+                    action: "confirm",
+                    content: "{{message}} Please proceed with caution.",
+                    dialect: {
+                        message: "If you delete this external dialect, all the"
+                            + " associated external attributes will also be deleted.",
+                        name: "external dialect"
+                    },
+                    external: {
+                        message: "This will permanently delete the external attribute.",
+                        name: "external attribute"
+                    },
+                    header: "Are you sure?",
+                    hint: "Please type <1>{{assertion}}</1> to confirm.",
+                    local: {
+                        message: "If you delete this local attribute, the user data belonging "
+                            + "to this attribute will also be deleted.",
+                        name: "local attribute"
+                    },
+                    message: "This action is irreversible and will permanently delete the selected {{name}}."
+                },
+                placeholders: {
+                    emptyList: {
+                        action: {
+                            dialect: "New External Attribute",
+                            external: "New External Attribute",
+                            local: "New Local Attribute"
+                        },
+                        subtitle: "There are currently no results available."
+                            + "You can add a new item easily by following the" + "steps in the creation wizard.",
+                        title: {
+                            dialect: "Add an External Dialect",
+                            external: "Add an External Attribute",
+                            local: "Add a Local Attribute"
+                        }
+                    },
+                    emptySearch: {
+                        action: "Clear search query",
+                        subtitle: "We couldn't find any results for {{searchQuery}}."
+                            + "Please try a different search term.",
+                        title: "No results found"
+                    }
+                },
+                warning: "This attribute has not been mapped to an attribute" +
+                    " in the following userstores:"
+            },
             local: {
+                additionalProperties: {
+                    hint: "Use when writing an extension using current attributes",
+                    key: "Name",
+                    keyRequiredErrorMessage: "Enter a name",
+                    value: "Value",
+                    valueRequiredErrorMessage: "Enter a value"
+                },
                 advancedSearch: {
+                    error: "Filter query format incorrect",
                     form: {
                         inputs: {
                             filterAttribute: {
@@ -355,6 +710,157 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     placeholder: "Search by name"
+                },
+                attributes: {
+                    attributeURI: "Attribute URI"
+                },
+                confirmation: {
+                    content: "If you delete this local attribute, the user data belonging to this attribute "
+                        + "will also be deleted. Please proceed with caution.",
+                    header: "Are you sure?",
+                    hint: "Please type <1>{{name}}</1> to confirm.",
+                    message: "This action is irreversible and will permanently delete the selected local attribute.",
+                    primaryAction: "Confirm"
+                },
+                dangerZone: {
+                    actionTitle: "Delete Local Attribute",
+                    header: "Delete Local Attribute",
+                    subheader: "Once you delete a local attribute, there is no going back. "
+                        + "Please be certain."
+                },
+                forms: {
+                    attribute: {
+                        placeholder: "Enter an attribute to map to",
+                        requiredErrorMessage: "Attribute name is a required field"
+                    },
+                    attributeHint: "A unique ID for the attribute."
+                        + " The ID will be appended to the dialect URI to create a attribute URI",
+                    attributeID: {
+                        label: "Attribute ID",
+                        placeholder: "Enter an attribute ID",
+                        requiredErrorMessage: "Attribute ID is required"
+                    },
+                    description: {
+                        label: "Description",
+                        placeholder: "Enter a description",
+                        requiredErrorMessage: "Description is required"
+                    },
+                    displayOrder: {
+                        label: "Display Order",
+                        placeholder: "Enter the display order"
+                    },
+                    displayOrderHint: "This determines the position at which this attribute is "
+                        + "displayed in the user profile and the user registration page",
+                    name: {
+                        label: "Name",
+                        placeholder: "Enter a name for the attribute",
+                        requiredErrorMessage: "Name is required"
+                    },
+                    nameHint: "Name of the attribute that will be shown on the user profile "
+                        + "and user registration page",
+                    readOnly: {
+                        label: "Make this attribute read-only"
+                    },
+                    regEx: {
+                        label: "Regular expression",
+                        placeholder: "Enter a regular expression"
+                    },
+                    regExHint: "This regular expression is used to validate the value this attribute can take",
+                    required: {
+                        label: "Make this attribute required during user registration"
+                    },
+                    supportedByDefault: {
+                        label: "Show this attribute on user profile and user registration page"
+                    }
+                },
+                mappedAttributes: {
+                    hint: "Enter the attribute from each userstore that you want to map to this attribute."
+                },
+                notifications: {
+                    addLocalClaim: {
+                        genericError: {
+                            description: "There was an error while adding the local attribute",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The local attribute has been added successfully!",
+                            message: "Local attribute added successfully"
+                        }
+                    },
+                    deleteClaim: {
+                        genericError: {
+                            description: "There was an error while deleting the local attribute",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The local claim has been deleted successfully!",
+                            message: "Local attribute deleted successfully"
+                        }
+                    },
+                    getAClaim: {
+                        genericError: {
+                            description: "There was an error while fetching the local attribute",
+                            message: "Something went wrong"
+                        }
+                    },
+                    getClaims: {
+                        genericError: {
+                            description: "There was an error while fetching the local attributes",
+                            message: "Something went wrong"
+                        }
+                    },
+                    getLocalDialect: {
+                        genericError: {
+                            description: "There was an error while fetching the local dialect",
+                            message: "Something went wrong"
+                        }
+                    },
+                    updateClaim: {
+                        genericError: {
+                            description: "There was an error while updating the" + " local attribute",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "This local attribute has been "
+                                + "updated successfully!",
+                            message: "Local attribute updated successfully"
+                        }
+                    }
+                },
+                pageLayout: {
+                    edit: {
+                        back: "Go back to Local Attributes",
+                        description: "Edit local attribute",
+                        tabs: {
+                            additionalProperties: "Additional Properties",
+                            general: "General",
+                            mappedAttributes: "Mapped Attributes"
+                        }
+                    },
+                    local: {
+                        action: "New Local Attribute",
+                        back: "Go back to attribute dialects",
+                        description: "Create and manage local attributes",
+                        title: "Local Attributes"
+                    }
+                },
+                wizard: {
+                    header: "Add Local Attribute",
+                    steps: {
+                        general: "General",
+                        mapAttributes: "Map Attributes",
+                        summary: "Summary"
+                    },
+                    summary: {
+                        attribute: "Attribute",
+                        attributeURI: "Attribute URI",
+                        displayOrder: "Display Order",
+                        readOnly: "This attribute is read-only",
+                        regEx: "Regular Expression",
+                        required: "This attribute is required during user registration",
+                        supportedByDefault: "This attribute is shown on user profile and user registration page",
+                        userstore: "Userstore"
+                    }
                 }
             }
         },
@@ -2683,6 +3189,7 @@ export const devPortal: DevPortalNS = {
         },
         userstores: {
             advancedSearch: {
+                error: "Filter query format incorrect",
                 form: {
                     inputs: {
                         filterAttribute: {
@@ -2697,6 +3204,175 @@ export const devPortal: DevPortalNS = {
                     }
                 },
                 placeholder: "Search by userstore name"
+            },
+            confirmation: {
+                confirm: "Confirm",
+                content: "If you delete this userstore, the user data in this userstore will also be deleted. "
+                    + "Please proceed with caution.",
+                header: "Are you sure?",
+                hint: "Please type <1>{{name}}</1> to confirm.",
+                message: "This action is irreversible and will permanently delete the"
+                    + " selected userstore and the data in it."
+            },
+            dangerZone: {
+                actionTitle: "Delete Userstore",
+                header: "Delete Userstore",
+                subheader: "Once you delete a userstore, there is no going back. "
+                    + "Please be certain."
+            },
+            forms: {
+                connection: {
+                    connectionErrorMessage: "Please ensure the provided connection "
+                        + "URL, name, password and driver name are correct",
+                    testButton: "Test Connection"
+                },
+                custom: {
+                    placeholder: "Enter a {{name}}",
+                    requiredErrorMessage: "{{name}} is required"
+                },
+                general: {
+                    description: {
+                        label: "Description",
+                        placeholder: "Enter a description"
+                    },
+                    name: {
+                        label: "Name",
+                        placeholder: "Enter a name",
+                        requiredErrorMessage: "Name is a required field"
+                    },
+                    type: {
+                        label: "Type",
+                        requiredErrorMessage: "Select a Type"
+                    }
+                }
+            },
+            notifications: {
+                addUserstore: {
+                    genericError: {
+                        description: "There was an error while creating the userstore",
+                        message: "Something went wrong!"
+                    },
+                    success: {
+                        description: "The userstore has been added successfully!",
+                        message: "Userstore added successfully!"
+                    }
+                },
+                delay: {
+                    description: "It may take a while for the userstore list to be updated. "
+                        + "Refresh in a few seconds to get the updated userstore list.",
+                    message: "Updating Userstore list takes time"
+                },
+                deleteUserstore: {
+                    genericError: {
+                        description: "There was an error while deleting the userstore",
+                        message: "Something went wrong!"
+                    },
+                    success: {
+                        description: "The userstore has been deleted successfully!",
+                        message: "Userstore deleted successfully!"
+                    }
+                },
+                fetchUserstoreMetadata: {
+                    genericError: {
+                        description: "An error occurred while fetching the type meta data.",
+                        message: "Something went wrong"
+                    }
+                },
+                fetchUserstoreTemplates: {
+                    genericError: {
+                        description: "An error occurred while fetching the userstore type details.",
+                        message: "Something went wrong"
+                    }
+                },
+                fetchUserstoreTypes: {
+                    genericError: {
+                        description: "An error occurred while fetching the userstore types.",
+                        message: "Something went wrong"
+                    }
+                },
+                fetchUserstores: {
+                    genericError: {
+                        description: "An error occurred while fetching userstores",
+                        message: "Something went wrong"
+                    }
+                },
+                testConnection: {
+                    genericError: {
+                        description: "An error occurred while testing the " + "connection to the userstore",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The connection is healthy",
+                        message: "Connection successful!"
+                    }
+                },
+                updateUserstore: {
+                    genericError: {
+                        description: "An error occurred while updating the userstore.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "This userstore has been updated successfully!",
+                        message: "Userstore updated successfully!"
+                    }
+                }
+            },
+            pageLayout: {
+                edit: {
+                    back: "Go back to userstores",
+                    description: "Edit userstore",
+                    tabs: {
+                        connection: "Connection",
+                        general: "General",
+                        group: "Group",
+                        user: "User"
+                    }
+                },
+                list: {
+                    description: "Create and manage userstores",
+                    primaryAction: "New Userstore",
+                    title: "Userstores"
+                },
+                templates: {
+                    back: "Go back to userstores",
+                    description: "Please choose one of the following userstore types.",
+                    templateHeading: "Quick Setup",
+                    templateSubHeading: "Predefined set of templates to speed up your userstore creation.",
+                    title: "Select Userstore Type"
+                }
+            },
+            placeholders: {
+                emptyList: {
+                    action: "New Userstore",
+                    subtitles: "There are currently no userstores available."
+                        + "You can add a new userstore easily by following the"
+                        + "steps in the userstore creation wizard." + "Please try a different search term.",
+                    title: "Add a new Userstore"
+                },
+                emptySearch: {
+                    action: "Clear search query",
+                    subtitles: "We couldn't find any results for {{searchQuery}}. "
+                        + "Please try a different search term.",
+                    title: "No results found"
+                }
+            },
+            sqlEditor: {
+                create: "Create",
+                darkMode: "Dark Mode",
+                delete: "Delete",
+                read: "Read",
+                reset: "Reset",
+                title: "SQL Query Types",
+                update: "Update"
+            },
+            wizard: {
+                header: "Add {{type}} Userstore",
+                steps: {
+                    general: "General",
+                    group: "Group",
+                    summary: "Summary",
+                    user: "User"
+                }
             }
         }
     },

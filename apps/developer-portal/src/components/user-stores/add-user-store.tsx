@@ -16,9 +16,11 @@
 * under the License.
 */
 
+import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails } from "./wizards";
@@ -33,7 +35,6 @@ import {
     UserStoreProperty,
     UserstoreType
 } from "../../models";
-import { addAlert } from "@wso2is/core/store";
 import { reOrganizeProperties } from "../../utils";
 
 /**
@@ -76,6 +77,8 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
 
     const dispatch = useDispatch();
 
+    const { t } = useTranslation();
+
     useEffect(() => {
         type && setProperties(reOrganizeProperties(type.properties));
     }, [ type ]);
@@ -94,23 +97,24 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
     const handleSubmit = () => {
         addUserStore(userStore).then(() => {
             dispatch(addAlert({
-                description: "The userstore has been added successfully!",
+                description: t("devPortal:components.userstores.notifications.addUserstore.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Userstore added successfully!"
+                message: t("devPortal:components.userstores.notifications.addUserstore.success.message")
             }))
             dispatch(addAlert({
-                description: "It may take a while for the userstore list to be updated. " +
-                    "Refresh in a few seconds to get the updated userstore list.",
+                description: t("devPortal:components.userstores.notifications.delay.description"),
                 level: AlertLevels.WARNING,
-                message: "Updating Userstore list takes time"
+                message: t("devPortal:components.userstores.notifications.delay.message")
             }));
             onClose();
             history.push(USER_STORES_PATH);
         }).catch(error => {
             dispatch(addAlert({
-                description: error?.description ?? "There was an error while creating the userstore",
+                description: error?.description ?? t("devPortal:components.userstores.notifications.addUserstore" +
+                    ".genericError.description"),
                 level: AlertLevels.ERROR,
-                message: error?.message ?? "Something went wrong!"
+                message: error?.message ?? t("devPortal:components.userstores.notifications.addUserstore" +
+                    ".genericError.description")
             }))
         })
     };
@@ -192,7 +196,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "General"
+            title: t ("devPortal:components.userstores.wizard.steps.general")
         },
         {
             content: (
@@ -204,7 +208,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "User"
+            title: t("devPortal:components.userstores.wizard.steps.user")
         },
         {
             content: (
@@ -216,7 +220,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Group"
+            title: t("devPortal:components.userstores.wizard.steps.group")
         },
         {
             content: (
@@ -230,7 +234,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Summary"
+            title: t("devPortal:components.userstores.wizard.steps.summary")
         }
     ];
 
@@ -270,7 +274,11 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             className="wizard application-create-wizard"
         >
             <Modal.Header className="wizard-header">
-                { "Add " + USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ] + " Userstore" }
+                { t("devPortal:components.userstores.wizard.header",
+                    {
+                        type: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ]
+                    })
+                }
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group
@@ -292,21 +300,21 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 <Grid>
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton floated="left" onClick={ () => onClose() }>Cancel</LinkButton>
+                            <LinkButton floated="left" onClick={ () => onClose() }>{t("common:cancel")}</LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
                                 <PrimaryButton floated="right" onClick={ next }>
-                                    Next <Icon name="arrow right" />
+                                    { t("common:next") } <Icon name="arrow right" />
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep === STEPS.length - 1 && (
                                 <PrimaryButton floated="right" onClick={ next }>
-                                    Finish</PrimaryButton>
+                                    { t("common:finish") }</PrimaryButton>
                             ) }
                             { currentWizardStep > 0 && (
                                 <LinkButton floated="right" onClick={ previous }>
-                                    <Icon name="arrow left" /> Previous
+                                    <Icon name="arrow left" /> { t("common:previous") }
                                 </LinkButton>
                             ) }
                         </Grid.Column>

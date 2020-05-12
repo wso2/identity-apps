@@ -17,6 +17,7 @@
 */
 
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { Divider, Header, Icon, Label, Segment } from "semantic-ui-react";
 import { CertificateIllustrations } from "../../configs";
 import { DisplayCertificate, DistinguishedName } from "../../models";
@@ -53,6 +54,8 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
         validTill
     } = props.certificate;
 
+    const { t } = useTranslation();
+
     const isValid = new Date() >= validFrom && new Date() <= validTill;
 
     return (
@@ -63,11 +66,14 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
 
             <Header>
                 <Header.Content>{ alias }</Header.Content>
-                <Header.Subheader><span>Serial Number:</span> { serialNumber }</Header.Subheader>
+                <Header.Subheader>
+                    <span>{ t("devPortal:components.certificates.keystore.summary.sn") }</span>
+                    { serialNumber }
+                </Header.Subheader>
             </Header>
 
             <p className="certificate-field">
-                <span>Not valid before:</span> {
+                <span>{ t("devPortal:components.certificates.keystore.summary.validFrom") }</span> {
                     validFrom.toLocaleString("en-us", {
                         day: "numeric",
                         hour: "numeric",
@@ -82,7 +88,7 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
             </p>
 
             <p className="certificate-field">
-                <span>Not valid after:</span> {
+                <span>{ t("devPortal:components.certificates.keystore.summary.validTill") }</span> {
                     validTill.toLocaleString("en-us", {
                         day: "numeric",
                         hour: "numeric",
@@ -99,7 +105,9 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
             <Divider hidden />
 
             <p className="certificate-field">
-                <span>Issuer DN:</span> { issuerDN.map((attribute: DistinguishedName) => {
+                <span>
+                    { t("devPortal:components.certificates.keystore.summary.issuerDN") }
+                </span> { issuerDN.map((attribute: DistinguishedName) => {
                     return `${Object.entries(attribute)[ 0 ][ 0 ]}=${Object.entries(attribute)[ 0 ][ 1 ]}`;
                 }).join((", ")) }
             </p>
@@ -107,13 +115,15 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
             <Divider hidden />
 
             <p className="certificate-field">
-                <span>Subject DN:</span> { subjectDN.map((attribute: DistinguishedName) => {
+                <span>
+                    { t("devPortal:components.certificates.keystore.summary.subjectDN") }
+                </span> { subjectDN.map((attribute: DistinguishedName) => {
                     return `${Object.entries(attribute)[ 0 ][ 0 ]}=${Object.entries(attribute)[ 0 ][ 1 ]}`;
                 }).join(", ") }
             </p>
 
             <p className="certificate-version">
-                <span>Version:</span> { version + " " }
+                <span>{ t("devPortal:components.certificates.keystore.summary.version") }</span> { version + " " }
                 <Label color={ isValid ? "green" : "red" } size="mini">
                     <Icon name={ isValid ? "calendar check outline" : "calendar times outline" } />
                     { isValid ? "Valid" : "Expired" }
