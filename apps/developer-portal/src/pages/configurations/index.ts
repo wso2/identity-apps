@@ -16,23 +16,4 @@
  * under the License.
  */
 
-export * from "./applications";
-export * from "./certificates";
-export * from "./claims";
-export * from "./configurations";
-export * from "./email-templates";
-export * from "./customize";
-export * from "./errors";
-export * from "./groups";
-export * from "./home";
-export * from "./privacy";
-export * from "./users";
-export * from "./user-edit";
-export * from "./role";
-export * from "./identity-providers";
-export * from "./identity-provider-edit";
-export * from "./identity-provider-template";
-export * from "./user-stores";
-export * from "./user-stores-edit";
-export * from "./role-edit";
-export * from "./userstores-templates";
+export * from "./server-configurations";

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import { EditSection, GenericIcon, Hint, LinkButton, Section } from "@wso2is/react-components";
@@ -32,7 +32,7 @@ import { SelfSignUpConfigurationsInterface } from "../../models/server-configura
 /**
  * Prop types for the change password component.
  */
-interface UserSelfRegistrationProps {
+interface UserSelfRegistrationProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -40,10 +40,16 @@ interface UserSelfRegistrationProps {
  * User Self Registration component.
  *
  * @param {UserSelfRegistrationProps} props - Props injected to the change password component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
-export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> = (props: UserSelfRegistrationProps):
-    JSX.Element => {
+export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> = (
+    props: UserSelfRegistrationProps
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const [selfSignUpConfigs, setSelfSignUpConfigs] = useState<SelfSignUpConfigurationsInterface>({});
     const [ accordionState, setAccordionState ] = useState<boolean>(false);
@@ -254,6 +260,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
                                 }
                             }
                             toggle
+                            data-testid={ `${ testId }-form-enable-toggle` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -288,6 +295,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
                             }
                             disabled={ !(selfSignUpConfigs?.enable?.length > 0) }
                             toggle
+                            data-testid={ `${ testId }-form-account-lock-toggle` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -322,6 +330,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
                             }
                             disabled={ !(selfSignUpConfigs?.enable?.length > 0) }
                             toggle
+                            data-testid={ `${ testId }-form-internal-notification-mgt-toggle` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -356,6 +365,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
                             }
                             disabled={ !(selfSignUpConfigs?.enable?.length > 0) }
                             toggle
+                            data-testid={ `${ testId }-form-recaptcha-toggle` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -387,6 +397,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
                                 type="number"
                                 value={ selfSignUpConfigs.verificationCodeExpiryTime }
                                 width={ 9 }
+                                data-testid={ `${ testId }-form-verification-code-expiry-input` }
                             />
                             <Hint>
                                 { t("devPortal:components.serverConfigs.selfRegistration.form." +
@@ -408,6 +419,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
                                 type="number"
                                 value={ selfSignUpConfigs.smsOTPExpiryTime }
                                 width={ 9 }
+                                data-testid={ `${ testId }-form-sms-otp-expiry-input` }
                             />
                             <Hint>
                                 { t("devPortal:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.hint") }
@@ -428,6 +440,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
                                 type="text"
                                 value={ selfSignUpConfigs.callbackRegex }
                                 width={ 9 }
+                                data-testid={ `${ testId }-form-callback-url-regex-input` }
                             />
                             <Hint>
                                 { t("devPortal:components.serverConfigs.selfRegistration.form." +
@@ -445,6 +458,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
                                     size="small"
                                     type="submit"
                                     value={ t("common:save").toString() }
+                                    data-testid={ `${ testId }-form-submit-button` }
                                 />
                             </Form.Group>
                         </Grid.Column>
@@ -459,7 +473,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
     };
 
     const accordion: ReactElement = (
-        <Accordion fluid styled>
+        <Accordion fluid styled data-testid={ `${ testId }-main-accordion` }>
             <Accordion.Title
                 active={ accordionState }
                 index={ 0 }
@@ -502,6 +516,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
             iconStyle="colored"
             iconFloated="right"
             accordion={ accordion }
+            data-testid={ `${ testId }-section` }
         >
             <Divider className="m-0 mb-2"/>
             <div className="main-content-inner">
@@ -509,4 +524,11 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
             </div>
         </Section>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+UserSelfRegistration.defaultProps = {
+    "data-testid": "user-self-registration"
 };
