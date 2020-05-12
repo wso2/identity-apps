@@ -21,15 +21,15 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useS
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import { ApplicationCreateWizard } from "../components";
-import { CustomApplicationTemplate } from "../components/applications/meta";
-import { ApplicationTemplateIllustrations, EmptyPlaceholderIllustrations } from "../configs";
-import { ApplicationConstants } from "../constants";
-import { history } from "../helpers";
-import { PageLayout } from "../layouts";
-import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../models";
-import { AppState } from "../store";
-import { ApplicationManagementUtils } from "../utils";
+import { ApplicationCreateWizard } from "../../components";
+import { CustomApplicationTemplate } from "../../components/applications/meta";
+import { ApplicationTemplateIllustrations, EmptyPlaceholderIllustrations } from "../../configs";
+import { ApplicationConstants } from "../../constants";
+import { history } from "../../helpers";
+import { PageLayout } from "../../layouts";
+import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../../models";
+import { AppState } from "../../store";
+import { ApplicationManagementUtils } from "../../utils";
 
 /**
  * Choose the application template from this page.

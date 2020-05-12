@@ -33,13 +33,13 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { getApplicationList } from "../api";
-import { AdvancedSearchWithBasicFilters, ApplicationList } from "../components";
-import { ApplicationConstants, UIConstants } from "../constants";
-import { history } from "../helpers";
-import { ListLayout, PageLayout } from "../layouts";
-import { ApplicationListInterface, FeatureConfigInterface } from "../models";
-import { AppState } from "../store";
+import { getApplicationList } from "../../api";
+import { AdvancedSearchWithBasicFilters, ApplicationList } from "../../components";
+import { ApplicationConstants, UIConstants } from "../../constants";
+import { history } from "../../helpers";
+import { ListLayout, PageLayout } from "../../layouts";
+import { ApplicationListInterface, FeatureConfigInterface } from "../../models";
+import { AppState } from "../../store";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
