@@ -21,6 +21,7 @@ import { Field, Forms } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
 import { MetadataPropertyInterface, WSTrustConfigurationInterface, WSTrustMetaDataInterface } from "../../../models";
 
@@ -55,6 +56,8 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
         readOnly,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     /**
      * Create drop down options.
@@ -98,10 +101,19 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="audience"
-                                    label="Audience"
+                                    label={
+                                        t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                            ".audience.label")
+                                    }
                                     required={ true }
-                                    requiredErrorMessage="Enter the audience."
-                                    placeholder="Enter audience"
+                                    requiredErrorMessage={
+                                        t("devPortal:components.applications.forms.inboundWSTrust" +
+                                            ".fields.audience.validations.empty")
+                                    }
+                                    placeholder={
+                                        t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                            ".audience.placeholder")
+                                    }
                                     type="text"
                                     value={ initialValues?.audience }
                                     readOnly={ readOnly || !(_.isEmpty(initialValues?.audience)) }
@@ -109,19 +121,25 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                 />
 
                                 <Hint disabled={ !(_.isEmpty(initialValues?.audience)) }>
-                                    {/* eslint-disable-next-line react/no-unescaped-entities */ }
-                                    The trusted relying party's endpoint address.
+                                    { t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                        ".audience.hint") }
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
-                                    label="Certificate alias"
+                                    label={
+                                        t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                            ".certificateAlias.label")
+                                    }
                                     name="certificateAlias"
                                     type="dropdown"
                                     required={ true }
-                                    requiredErrorMessage="Select the certificate alias"
+                                    requiredErrorMessage={
+                                        t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                            ".certificateAlias.validations.empty")
+                                    }
                                     default={ metadata?.certificateAlias.defaultValue }
                                     value={
                                         initialValues?.certificateAlias
@@ -130,7 +148,10 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-certificate-alias-dropdown` }
                                 />
-                                <Hint>Public certificate of the trusted relying party.</Hint>
+                                <Hint>
+                                    { t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                        ".certificateAlias.hint") }
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                         {
@@ -144,7 +165,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                             className="form-button"
                                             data-testid={ `${ testId }-submit-button` }
                                         >
-                                            Update
+                                            { t("common:update") }
                                         </Button>
                                     </Grid.Column>
                                 </Grid.Row>

@@ -22,6 +22,7 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { getAuthProtocolMetadata } from "../../../api";
@@ -55,6 +56,8 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
         onSubmit,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const dispatch = useDispatch();
 
@@ -134,32 +137,52 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 name="audience"
-                                label="Audience"
+                                label={
+                                    t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                        ".audience.label")
+                                }
                                 required={ true }
-                                requiredErrorMessage="Enter the audience."
-                                placeholder="Enter audience"
+                                requiredErrorMessage={
+                                    t("devPortal:components.applications.forms.inboundWSTrust" +
+                                        ".fields.audience.validations.empty")
+                                }
+                                placeholder={
+                                    t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                        ".audience.placeholder")
+                                }
                                 type="text"
                                 validation={ (value: string, validation: Validation) => {
                                     if (!FormValidation.url(value)) {
                                         validation.isValid = false;
-                                        validation.errorMessages.push("This is not a valid URL");
+                                        validation.errorMessages.push(
+                                            t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                                ".audience.validations.invalid")
+                                        );
                                     }
                                 } }
                                 value={ initialValues ? initialValues?.audience : templateValues?.audience }
                                 data-testid={ `${ testId }-audience-input` }
                             />
-                            {/* eslint-disable-next-line react/no-unescaped-entities */ }
-                            <Hint>The trusted relying party's endpoint address.</Hint>
+                            <Hint>
+                                { t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                    ".audience.hint") }
+                            </Hint>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
-                                label="Certificate alias"
+                                label={
+                                    t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                        ".certificateAlias.label")
+                                }
                                 name="certificateAlias"
                                 type="dropdown"
                                 required={ true }
-                                requiredErrorMessage="Select the certificate alias"
+                                requiredErrorMessage={
+                                    t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                        ".certificateAlias.validations.empty")
+                                }
                                 default={ showWSTrustMetaData.certificateAlias.defaultValue }
                                 value={
                                     initialValues ?
@@ -168,7 +191,10 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
                                 children={ getCertificateOptions(showWSTrustMetaData?.certificateAlias) }
                                 data-testid={ `${ testId }-certificate-alias-dropdown` }
                             />
-                            <Hint>Public certificate of the trusted relying party.</Hint>
+                            <Hint>
+                                { t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                    ".certificateAlias.hint") }
+                            </Hint>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

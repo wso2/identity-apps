@@ -20,6 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { getIdentityProviderDetail } from "../../../api";
 
@@ -59,6 +60,8 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
         isEdit,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const [ idpListOptions, setIdpListOptions ] = useState<DropdownOptionsInterface[]>([]);
     const [ connectorListOptions, setConnectorListOptions ] = useState<DropdownOptionsInterface[]>([]);
@@ -174,11 +177,20 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <Field
                                     type="dropdown"
-                                    label="Identity Provider"
-                                    placeholder="Select identity provider"
+                                    label={
+                                        t("devPortal:components.applications.forms.outboundProvisioning.fields" +
+                                            ".idp.label")
+                                    }
+                                    placeholder={
+                                        t("devPortal:components.applications.forms.outboundProvisioning.fields" +
+                                            ".idp.placeholder")
+                                    }
                                     name="idp"
                                     children={ idpListOptions }
-                                    requiredErrorMessage="It is mandatory to select an IDP."
+                                    requiredErrorMessage={
+                                        t("devPortal:components.applications.forms.outboundProvisioning.fields" +
+                                            ".idp.validations.empty")
+                                    }
                                     required={ false }
                                     value={ initialValues?.idp }
                                     listen={ handleIdpChange }
@@ -192,11 +204,20 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Field
                             type="dropdown"
-                            label="Provisioning Connector"
-                            placeholder="Select provisioning connector"
+                            label={
+                                t("devPortal:components.applications.forms.outboundProvisioning.fields.connector" +
+                                    ".label")
+                            }
+                            placeholder={
+                                t("devPortal:components.applications.forms.outboundProvisioning.fields.connector" +
+                                    ".placeholder")
+                            }
                             name="connector"
                             children={ connectorListOptions }
-                            requiredErrorMessage="It is mandatory to select a provisioning connector."
+                            requiredErrorMessage={
+                                t("devPortal:components.applications.forms.outboundProvisioning.fields" +
+                                    ".connector.validations.empty")
+                            }
                             required={ false }
                             value={ initialValues?.connector }
                             listen={
@@ -217,7 +238,8 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             type="checkbox"
                             children={ [
                                 {
-                                    label: "Enable Rules",
+                                    label: t("devPortal:components.applications.forms.outboundProvisioning" +
+                                        ".fields.rules.label"),
                                     value: "rules"
                                 }
                             ] }
@@ -230,7 +252,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             data-testid={ `${ testId }-rules-checkbox` }
                         />
                         <Hint>
-                            Provision users based on the pre-defined XACML rules
+                            { t("devPortal:components.applications.forms.outboundProvisioning.fields.rules.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -243,7 +265,8 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             type="checkbox"
                             children={ [
                                 {
-                                    label: "Blocking",
+                                    label: t("devPortal:components.applications.forms.outboundProvisioning" +
+                                        ".fields.blocking.label"),
                                     value: "blocking"
                                 }
                             ] }
@@ -256,7 +279,8 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             data-testid={ `${ testId }-blocking-checkbox` }
                         />
                         <Hint>
-                            Block the authentication flow until the provisioning is completed.
+                            { t("devPortal:components.applications.forms.outboundProvisioning.fields.blocking" +
+                                ".hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -269,7 +293,8 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             type="checkbox"
                             children={ [
                                 {
-                                    label: "JIT Outbound",
+                                    label: t("devPortal:components.applications.forms.outboundProvisioning" +
+                                        ".fields.jit.label"),
                                     value: "jit"
                                 }
                             ] }
@@ -282,7 +307,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             data-testid={ `${ testId }-jit-checkbox` }
                         />
                         <Hint>
-                            Provision users to the store authenticated using just-in-time provisioning.
+                            { t("devPortal:components.applications.forms.outboundProvisioning.fields.jit.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -296,7 +321,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                     className="form-button"
                                     data-testid={ `${ testId }-submit-button` }
                                 >
-                                    Update
+                                    { t("common:update") }
                                 </PrimaryButton>
                             </Grid.Column>
                         </Grid.Row>

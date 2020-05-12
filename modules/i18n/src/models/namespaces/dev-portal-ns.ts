@@ -20,13 +20,14 @@ import {
     Confirmation,
     DangerZone,
     EditPage,
-    FormField,
     FormAttributes,
+    FormField,
     HelpPanelInterface,
     Notification,
     NotificationItem,
     Page,
-    Placeholder
+    Placeholder,
+    TransferList
 } from "../common";
 
 /**
@@ -77,6 +78,69 @@ export interface DevPortalNS {
             resultsIndicator: string;
         };
         applications: {
+            addWizard: {
+                steps: {
+                    generalSettings: {
+                        heading: string;
+                    };
+                    protocolConfig: {
+                        heading: string;
+                    };
+                    protocolSelection: {
+                        heading: string;
+                    };
+                    summary: {
+                        heading: string;
+                        sections: {
+                            accessURL: {
+                                heading: string;
+                            };
+                            applicationQualifier: {
+                                heading: string;
+                            };
+                            assertionURLs: {
+                                heading: string;
+                            };
+                            audience: {
+                                heading: string;
+                            };
+                            callbackURLs: {
+                                heading: string;
+                            };
+                            certificateAlias: {
+                                heading: string;
+                            };
+                            discoverable: {
+                                heading: string;
+                            };
+                            grantType: {
+                                heading: string;
+                            };
+                            issuer: {
+                                heading: string;
+                            };
+                            metaFile: {
+                                heading: string;
+                            };
+                            metadataURL: {
+                                heading: string;
+                            };
+                            public: {
+                                heading: string;
+                            };
+                            realm: {
+                                heading: string;
+                            };
+                            renewRefreshToken: {
+                                heading: string;
+                            };
+                            replyTo: {
+                                heading: string;
+                            };
+                        };
+                    };
+                };
+            };
             advancedSearch: {
                 form: {
                     inputs: {
@@ -93,15 +157,90 @@ export interface DevPortalNS {
                 };
                 placeholder: string;
             };
+            confirmations: {
+                deleteApplication: Confirmation;
+                deleteOutboundProvisioningIDP: Confirmation;
+                deleteProtocol: Confirmation;
+                regenerateSecret: Confirmation;
+                revokeApplication: Confirmation;
+            };
+            dangerZoneGroup: {
+                header: string;
+                deleteApplication: DangerZone;
+            };
             edit: {
                 sections: {
                     access: {
+                        addProtocolWizard: {
+                            heading: string;
+                            subHeading: string;
+                            steps: {
+                                protocolSelection: {
+                                    manualSetup: {
+                                        emptyPlaceholder: Placeholder;
+                                        heading: string;
+                                        subHeading: string;
+                                    };
+                                    quickSetup: {
+                                        emptyPlaceholder: Placeholder;
+                                        heading: string;
+                                        subHeading: string;
+                                    };
+                                };
+                            };
+                        };
                         tabName: string;
                     };
                     advanced: {
                         tabName: string;
                     };
                     attributes: {
+                        forms: {
+                            fields: {
+                                dynamic: {
+                                    localRole: FormAttributes;
+                                    applicationRole: FormAttributes;
+                                };
+                            };
+                        };
+                        selection: {
+                            addWizard: {
+                                header: string;
+                                subHeading: string;
+                                steps: {
+                                    select: {
+                                        transfer: TransferList;
+                                    };
+                                };
+                            };
+                            heading: string;
+                            mappingTable: {
+                                actions: {
+                                    enable: string;
+                                };
+                                columns: {
+                                    appAttribute: string;
+                                    attribute: string;
+                                    mandatory: string;
+                                    requested: string;
+                                };
+                                listItem: {
+                                    actions: {
+                                        makeMandatory: string;
+                                        makeRequested: string;
+                                        removeMandatory: string;
+                                        removeRequested: string;
+                                    };
+                                    fields: {
+                                        claim: FormAttributes;
+                                    };
+                                };
+                                searchPlaceholder: string;
+                            };
+                        };
+                        roleMapping: {
+                            heading: string;
+                        };
                         tabName: string;
                     };
                     general: {
@@ -109,25 +248,324 @@ export interface DevPortalNS {
                     };
                     provisioning: {
                         tabName: string;
+                        inbound: {
+                            heading: string;
+                            subHeading: string;
+                        };
+                        outbound: {
+                            actions: {
+                                addIdp: string;
+                            };
+                            addIdpWizard: {
+                                heading: string;
+                                subHeading: string;
+                                steps: {
+                                    details: string;
+                                };
+                            };
+                            heading: string;
+                            subHeading: string;
+                        };
                     };
                     signOnMethod: {
                         tabName: string;
+                        sections: {
+                            authenticationFlow: {
+                                heading: string;
+                                sections: {
+                                    scriptBased: {
+                                        heading: string;
+                                        hint: string;
+                                        editor: {
+                                            templates: {
+                                                heading: string;
+                                                darkMode: string;
+                                            };
+                                        };
+                                    };
+                                    stepBased: {
+                                        actions: {
+                                            addStep: string;
+                                            selectAuthenticator: string;
+                                        };
+                                        heading: string;
+                                        hint: string;
+                                        forms: {
+                                            fields: {
+                                                attributesFrom: FormAttributes;
+                                                subjectIdentifierFrom: FormAttributes;
+                                            };
+                                        };
+                                    };
+                                };
+                            };
+                        };
+                    };
+                };
+            };
+            forms: {
+                advancedAttributeSettings: {
+                    sections: {
+                        subject: {
+                            fields: {
+                                subjectAttribute: FormAttributes;
+                                subjectIncludeTenantDomain: FormAttributes;
+                                subjectIncludeUserDomain: FormAttributes;
+                                subjectUseMappedLocalSubject: FormAttributes;
+                            };
+                            heading: string;
+                        };
+                        role: {
+                            heading: string;
+                            fields: {
+                                roleAttribute: FormAttributes;
+                                role: FormAttributes;
+                            };
+                        };
+                    };
+                };
+                advancedConfig: {
+                    fields: {
+                        enableAuthorization: FormAttributes;
+                        returnAuthenticatedIdpList: FormAttributes;
+                        saas: FormAttributes;
+                        skipConsentLogin: FormAttributes;
+                        skipConsentLogout: FormAttributes;
+                    };
+                    sections: {
+                        certificate: {
+                            heading: string;
+                            fields: {
+                                jwksValue: FormAttributes;
+                                pemValue: FormAttributes;
+                                type: FormAttributes;
+                            };
+                        };
+                    };
+                };
+                generalDetails: {
+                    fields: {
+                        name: FormAttributes;
+                        description: FormAttributes;
+                        imageUrl: FormAttributes;
+                        discoverable: FormAttributes;
+                        accessUrl: FormAttributes;
+                    };
+                };
+                inboundCustom: {
+                    fields: {
+                        checkbox: FormAttributes;
+                        dropdown: FormAttributes;
+                        generic: FormAttributes;
+                        password: FormAttributes;
+                    };
+                };
+                inboundOIDC: {
+                    fields: {
+                        callBackUrls: FormAttributes;
+                        clientID: FormAttributes;
+                        clientSecret: FormAttributes;
+                        grant: FormAttributes;
+                        public: FormAttributes;
+                    };
+                    sections: {
+                        accessToken: {
+                            heading: string;
+                            hint: string;
+                            fields: {
+                                expiry: FormAttributes;
+                                type: FormAttributes;
+                            };
+                        };
+                        idToken: {
+                            heading: string;
+                            fields: {
+                                expiry: FormAttributes;
+                                algorithm: FormAttributes;
+                                audience: FormAttributes;
+                                encryption: FormAttributes;
+                                method: FormAttributes;
+                            };
+                        };
+                        logoutURLs: {
+                            heading: string;
+                            fields: {
+                                back: FormAttributes;
+                                front: FormAttributes;
+                                signatureValidation: FormAttributes;
+                            };
+                        };
+                        pkce: {
+                            heading: string;
+                            hint: string;
+                            fields: {
+                                pkce: FormAttributes;
+                            };
+                        };
+                        refreshToken: {
+                            heading: string;
+                            fields: {
+                                expiry: FormAttributes;
+                                renew: FormAttributes;
+                            };
+                        };
+                        scopeValidators: {
+                            heading: string;
+                            fields: {
+                                validator: FormAttributes;
+                            };
+                        };
+                    };
+                };
+                inboundSAML: {
+                    fields: {
+                        assertionURLs: FormAttributes;
+                        defaultAssertionURL: FormAttributes;
+                        idpEntityIdAlias: FormAttributes;
+                        issuer: FormAttributes;
+                        metaURL: FormAttributes;
+                        mode: FormAttributes;
+                        qualifier: FormAttributes;
+                    };
+                    sections: {
+                        assertion: {
+                            heading: string;
+                            fields: {
+                                audience: FormAttributes;
+                                nameIdFormat: FormAttributes;
+                                recipients: FormAttributes;
+                            };
+                        };
+                        attributeProfile: {
+                            heading: string;
+                            fields: {
+                                enable: FormAttributes;
+                                includeAttributesInResponse: FormAttributes;
+                                serviceIndex: FormAttributes;
+                            };
+                        };
+                        encryption: {
+                            heading: string;
+                            fields: {
+                                assertionEncryption: FormAttributes;
+                                assertionEncryptionAlgorithm: FormAttributes;
+                                keyEncryptionAlgorithm: FormAttributes;
+                            };
+                        };
+                        idpInitiatedSLO: {
+                            heading: string;
+                            fields: {
+                                enable: FormAttributes;
+                                returnToURLs: FormAttributes;
+                            };
+                        };
+                        responseSigning: {
+                            heading: string;
+                            fields: {
+                                digestAlgorithm: FormAttributes;
+                                responseSigning: FormAttributes;
+                                signingAlgorithm: FormAttributes;
+                            };
+                        };
+                        requestProfile: {
+                            heading: string;
+                            fields: {
+                                enable: FormAttributes;
+                            };
+                        };
+                        requestValidation: {
+                            heading: string;
+                            fields: {
+                                signatureValidation: FormAttributes;
+                                signatureValidationCertAlias: FormAttributes;
+                            };
+                        };
+                        sloProfile: {
+                            heading: string;
+                            fields: {
+                                enable: FormAttributes;
+                                logoutMethod: FormAttributes;
+                                requestURL: FormAttributes;
+                                responseURL: FormAttributes;
+                            };
+                        };
+                        ssoProfile: {
+                            heading: string;
+                            fields: {
+                                artifactBinding: FormAttributes;
+                                bindings: FormAttributes;
+                                idpInitiatedSSO: FormAttributes;
+                            };
+                        };
+                    };
+                };
+                inboundSTS: {
+                    fields: {
+                        realm: FormAttributes;
+                        replyTo: FormAttributes;
+                    };
+                };
+                inboundWSTrust: {
+                    fields: {
+                        audience: FormAttributes;
+                        certificateAlias: FormAttributes;
+                    };
+                };
+                outboundProvisioning: {
+                    fields: {
+                        blocking: FormAttributes;
+                        connector: FormAttributes;
+                        idp: FormAttributes;
+                        jit: FormAttributes;
+                        rules: FormAttributes;
+                    };
+                };
+                provisioningConfig: {
+                    fields: {
+                        proxyMode: FormAttributes;
+                        userstoreDomain: FormAttributes;
                     };
                 };
             };
             helpPanel: HelpPanelInterface;
+            list: {
+                actions: {
+                    add: string;
+                };
+            };
             notifications: {
                 addApplication: Notification;
+                authenticationStepMin: Notification;
+                deleteApplication: Notification;
+                deleteProtocolConfig: Notification;
+                duplicateAuthenticationStep: Notification;
+                emptyAuthenticationStep: Notification;
                 fetchApplication: Notification;
                 fetchApplications: Notification;
                 fetchCustomInboundProtocols: Notification;
                 fetchInboundProtocols: Notification;
+                fetchProtocolMeta: Notification;
+                fetchTemplate: Notification;
                 fetchTemplates: Notification;
                 getInboundProtocolConfig: Notification;
+                regenerateSecret: Notification;
+                revokeApplication: Notification;
+                updateAdvancedConfig: Notification;
                 updateApplication: Notification;
+                updateAuthenticationFlow: Notification;
+                updateClaimConfig: Notification;
+                updateInboundProtocolConfig: Notification;
+                updateInboundProvisioningConfig: Notification;
+                updateOutboundProvisioning: Notification;
+                updateProtocol: Notification;
             };
             placeholders: {
+                emptyAttributesList: Placeholder;
+                emptyAuthenticatorStep: Placeholder;
+                emptyAuthenticatorsList: Placeholder;
+                emptyOutboundProvisioningIDPs: Placeholder;
                 emptyList: Placeholder;
+                emptyProtocolList: Placeholder;
             };
             templates: {
                 manualSetup: {
@@ -341,6 +779,7 @@ export interface DevPortalNS {
                 };
                 notifications: {
                     addExternalAttribute: Notification;
+                    fetchExternalClaims: Notification;
                     getExternalAttribute: Notification;
                     updateExternalAttribute: Notification;
                     deleteExternalClaim: Notification;
@@ -385,6 +824,7 @@ export interface DevPortalNS {
                     attributeURI: string;
                 };
                 notifications: {
+                    fetchLocalClaims: Notification;
                     getAClaim: Notification;
                     getClaims: Notification;
                     getLocalDialect: Notification;
@@ -1320,6 +1760,7 @@ export interface DevPortalNS {
             };
             notifications: {
                 deleteRole: Notification;
+                fetchRoles: Notification;
                 updateRole: Notification;
                 createRole: Notification;
                 createPermission: Notification;

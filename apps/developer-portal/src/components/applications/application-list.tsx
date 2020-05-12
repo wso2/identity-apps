@@ -29,11 +29,12 @@ import {
     ResourceListActionInterface
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon, Label } from "semantic-ui-react";
 import { deleteApplication } from "../../api";
 import { EmptyPlaceholderIllustrations } from "../../configs";
-import { ApplicationManagementConstants, UIConstants } from "../../constants";
+import { ApplicationConstants, ApplicationManagementConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import {
     ApplicationListInterface,
@@ -92,6 +93,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         searchQuery
     } = props;
 
+    const { t } = useTranslation();
+
     const dispatch = useDispatch();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -127,7 +130,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      * @param {string} appId - Application id.
      */
     const handleApplicationEdit = (appId: string): void => {
-        history.push(`applications/${ appId }`);
+        history.push(ApplicationConstants.PATHS.get("APPLICATION_EDIT").replace(":id", appId));
     };
 
     /**
@@ -139,9 +142,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         deleteApplication(appId)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully deleted the application",
+                    description: t("devPortal:components.applications.notifications.deleteApplication.success" +
+                        ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Delete successful"
+                    message: t("devPortal:components.applications.notifications.deleteApplication.success.message")
                 }));
 
                 setShowDeleteConfirmationModal(false);
@@ -152,16 +156,19 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Application Delete Error"
+                        message: t("devPortal:components.applications.notifications.deleteApplication.error" +
+                            ".message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while deleting the application",
+                    description: t("devPortal:components.applications.notifications.deleteApplication" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Application Delete Error"
+                    message: t("devPortal:components.applications.notifications.deleteApplication.genericError" +
+                        ".message")
                 }));
             });
     };
@@ -181,7 +188,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: "pencil alternate",
                 onClick: (): void => handleApplicationEdit(app.id),
-                popupText: "Edit",
+                popupText: t("common:edit"),
                 type: "button"
             }
         ];
@@ -196,7 +203,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 setShowDeleteConfirmationModal(true);
                 setDeletingApplication(app);
             },
-            popupText: "Delete",
+            popupText: t("common:delete"),
             type: "button"
         });
 
@@ -214,14 +221,16 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             return (
                 <EmptyPlaceholder
                     action={ (
-                        <LinkButton onClick={ onSearchQueryClear }>Clear search query</LinkButton>
+                        <LinkButton onClick={ onSearchQueryClear }>
+                            { t("devPortal:placeholders.emptySearchResult.action") }
+                        </LinkButton>
                     ) }
                     image={ EmptyPlaceholderIllustrations.emptySearch }
                     imageSize="tiny"
-                    title={ "No results found" }
+                    title={ t("devPortal:placeholders.emptySearchResult.title") }
                     subtitle={ [
-                        `We couldn't find any results for ${ searchQuery }`,
-                        "Please try a different search term."
+                        t("devPortal:placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
+                        t("devPortal:placeholders.emptySearchResult.subtitles.1")
                     ] }
                 />
             );
@@ -233,16 +242,16 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     action={ (
                         <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
                             <Icon name="add"/>
-                            New Application
+                            { t("devPortal:components.applications.placeholders.emptyList.action") }
                         </PrimaryButton>
                     ) }
                     image={ EmptyPlaceholderIllustrations.newList }
                     imageSize="tiny"
-                    title={ "Add a new Application" }
+                    title={ t("devPortal:components.applications.placeholders.emptyList.title") }
                     subtitle={ [
-                        "Currently there are no applications available.",
-                        "You can add a new application easily by following the",
-                        "steps in the application creation wizard."
+                        t("devPortal:components.applications.placeholders.emptyList.subtitles.0"),
+                        t("devPortal:components.applications.placeholders.emptyList.subtitles.1"),
+                        t("devPortal:components.applications.placeholders.emptyList.subtitles.2")
                     ] }
                 />
             );
@@ -318,20 +327,33 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         type="warning"
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingApplication.name }
-                        assertionHint={ <p>Please type <strong>{ deletingApplication.name }</strong> to confirm.</p> }
+                        assertionHint={ (
+                            <p>
+                                <Trans
+                                    i18nKey={
+                                        "devPortal:components.applications.confirmations.deleteApplication" +
+                                        ".assertionHint"
+                                    }
+                                    tOptions={ { name: deletingApplication.name } }
+                                >
+                                    Please type <strong>{ deletingApplication.name }</strong> to confirm.
+                                </Trans>
+                            </p>
+                        ) }
                         assertionType="input"
-                        primaryAction="Confirm"
-                        secondaryAction="Cancel"
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => handleApplicationDelete(deletingApplication.id) }
                     >
-                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+                        <ConfirmationModal.Header>
+                            { t("devPortal:components.applications.confirmations.deleteApplication.header") }
+                        </ConfirmationModal.Header>
                         <ConfirmationModal.Message attached warning>
-                            This action is irreversible and will permanently delete the application.
+                            { t("devPortal:components.applications.confirmations.deleteApplication.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            If you delete this application, you will not be able to get it back. All the applications
-                            depending on this also might stop working. Please proceed with caution.
+                            { t("devPortal:components.applications.confirmations.deleteApplication.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

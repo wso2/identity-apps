@@ -79,14 +79,32 @@ export interface Placeholder {
 /**
  * Model for form attributes.
  */
-export interface FormAttributes {
+export interface FormAttributes extends StrictFormAttributes {
+    [ key: string ]: any;
+}
+
+/**
+ * Model for strict form attributes.
+ */
+export interface StrictFormAttributes {
+    actions?: FormAttributeActions;
+    children?: FormAttributeChildren;
     hint?: string;
     label: string;
     placeholder?: string;
     validations?: {
         empty?: string;
         duplicate?: string;
+        invalid?: string;
     };
+}
+
+export interface FormAttributeChildren {
+    [ key: string ]: FormAttributes;
+}
+
+export interface FormAttributeActions {
+    [ key: string ]: string;
 }
 
 /**
@@ -116,4 +134,17 @@ export interface FormField {
     validationErrorMessages?: {
         [ key: string ]: string;
     };
+}
+
+export interface TransferList {
+    searchPlaceholders: TransferListSearchPlaceholders;
+    headers: TransferListHeaders;
+}
+
+interface TransferListHeaders {
+    [ key: string ]: any;
+}
+
+interface TransferListSearchPlaceholders {
+    [ key: string ]: any;
 }

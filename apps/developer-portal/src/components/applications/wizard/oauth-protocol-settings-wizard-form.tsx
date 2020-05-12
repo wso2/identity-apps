@@ -22,6 +22,7 @@ import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { MainApplicationInterface } from "../../../models";
 import { URLInputComponent } from "../components";
@@ -56,6 +57,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         showCallbackURL,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const [callBackUrls, setCallBackUrls] = useState("");
     const [publicClient, setPublicClient] = useState<string[]>([]);
@@ -203,17 +206,26 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                     <URLInputComponent
                         urlState={ callBackUrls }
                         setURLState={ setCallBackUrls }
-                        labelName={ "Callback URL" }
-                        placeholder={ "Enter callbackUrl" }
-                        validationErrorMsg={ "Please add valid URL." }
+                        labelName={
+                            t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.label")
+                        }
+                        placeholder={
+                            t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
+                                ".placeholder")
+                        }
+                        validationErrorMsg={
+                            t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
+                                ".validations.empty")
+                        }
                         validation={ (value: string) => {
                             return FormValidation.url(value);
                         } }
                         computerWidth={ 10 }
                         setShowError={ setShowURLError }
                         showError={ showURLError }
-                        hint={ " After the authentication, we will only redirect to the above callback URLs " +
-                        "and you can specify multiple URLs" }
+                        hint={
+                            t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.hint")
+                        }
                         data-testid={ `${ testId }-callback-url-input` }
                     />
                     <Grid.Row columns={ 1 }>
@@ -227,14 +239,15 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                 value={ publicClient }
                                 children={ [
                                     {
-                                        label: "Public client",
+                                        label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                            ".fields.public.label"),
                                         value: "supportPublicClients"
                                     }
                                 ] }
                                 data-testid={ `${ testId }-public-client-checkbox` }
                             />
                             <Hint>
-                                This option will allow the client to authenticate without a client secret.
+                                { t("devPortal:components.applications.forms.inboundOIDC.fields.public.hint") }
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>
@@ -245,18 +258,25 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                 name="RefreshToken"
                                 label=""
                                 required={ false }
-                                requiredErrorMessage="this is needed"
+                                requiredErrorMessage={
+                                    t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                        ".refreshToken.fields.renew.validations.empty")
+                                }
                                 type="checkbox"
                                 value={ refreshToken }
                                 children={ [
                                     {
-                                        label: "Renew refresh token",
+                                        label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                            ".sections.refreshToken.fields.renew.label"),
                                         value: "refreshToken"
                                     }
                                 ] }
                                 data-testid={ `${ testId }-renew-refresh-token-checkbox` }
                             />
-                            <Hint>Issue a new refresh token per request when Refresh Token Grant is used.</Hint>
+                            <Hint>
+                                { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                    ".refreshToken.fields.renew.hint") }
+                            </Hint>
                         </Grid.Column>
                     </Grid.Row>
                     }

@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, TemplateGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
     ApplicationTemplateIllustrations,
@@ -61,6 +62,8 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
         triggerSubmit,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
@@ -228,14 +231,20 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                             template.category === ApplicationTemplateCategories.DEFAULT)
                     }
                     templateIcons={ ApplicationTemplateIllustrations }
-                    heading="Quick Setup"
-                    subHeading={ "Get protocol configuration from a template" }
+                    heading={
+                        t("devPortal:components.applications.edit.sections.access.addProtocolWizard.steps" +
+                            ".protocolSelection.quickSetup.heading")
+                    }
+                    subHeading={
+                        t("devPortal:components.applications.edit.sections.access.addProtocolWizard.steps" +
+                            ".protocolSelection.quickSetup.subHeading")
+                    }
                     onTemplateSelect={ handleTemplateSelection }
                     paginate={ true }
                     paginationLimit={ 4 }
                     paginationOptions={ {
-                        showLessButtonLabel: "Show Less",
-                        showMoreButtonLabel: "Show More"
+                        showLessButtonLabel: t("common:showLess"),
+                        showMoreButtonLabel: t("common:showMore")
                     } }
                     selectedTemplate={ selectedTemplate }
                     useSelectionCard={ true }
@@ -243,8 +252,14 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                         <EmptyPlaceholder
                             image={ EmptyPlaceholderIllustrations.newList }
                             imageSize="tiny"
-                            title="No templates available"
-                            subtitle="All the protocols have been configured"
+                            title={
+                                t("devPortal:components.applications.edit.sections.access.addProtocolWizard" +
+                                    ".steps.protocolSelection.quickSetup.emptyPlaceholder.title")
+                            }
+                            subtitle={
+                                t("devPortal:components.applications.edit.sections.access.addProtocolWizard" +
+                                    ".steps.protocolSelection.quickSetup.emptyPlaceholder.subtitles")
+                            }
                         />
                     ) }
                     data-testid={ `${ testId }-default-template-grid` }
@@ -256,16 +271,22 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                     templates={ availableDefaultTemplates }
                     secondaryTemplates={ availableCustomInboundTemplates }
                     templateIcons={ InboundProtocolLogos }
-                    heading="Manual Setup"
-                    subHeading={ "Add an protocol with custom configurations" }
+                    heading={
+                        t("devPortal:components.applications.edit.sections.access.addProtocolWizard.steps" +
+                            ".protocolSelection.manualSetup.heading")
+                    }
+                    subHeading={
+                        t("devPortal:components.applications.edit.sections.access.addProtocolWizard.steps" +
+                            ".protocolSelection.manualSetup.subHeading")
+                    }
                     onTemplateSelect={ handleTemplateSelection }
                     onSecondaryTemplateSelect={ handleTemplateCustomProtocolSelection }
                     useNameInitialAsImage={ true }
                     paginate={ true }
                     paginationLimit={ 4 }
                     paginationOptions={ {
-                        showLessButtonLabel: "Show Less",
-                        showMoreButtonLabel: "Show More"
+                        showLessButtonLabel: t("common:showLess"),
+                        showMoreButtonLabel: t("common:showMore")
                     } }
                     selectedTemplate={ selectedTemplate }
                     useSelectionCard={ true }
@@ -273,8 +294,14 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                         <EmptyPlaceholder
                             image={ EmptyPlaceholderIllustrations.newList }
                             imageSize="tiny"
-                            title="No protocols available"
-                            subtitle="All the protocols have been configured"
+                            title={
+                                t("devPortal:components.applications.edit.sections.access.addProtocolWizard" +
+                                    ".steps.protocolSelection.quickSetup.emptyPlaceholder.title")
+                            }
+                            subtitle={
+                                t("devPortal:components.applications.edit.sections.access.addProtocolWizard" +
+                                    ".steps.protocolSelection.quickSetup.emptyPlaceholder.subtitles")
+                            }
                         />
                     ) }
                     data-testid={ `${ testId }-custom-template-grid` }

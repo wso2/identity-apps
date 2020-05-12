@@ -26,6 +26,7 @@ import {
     TransferListItem
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
 import { ExtendedClaimInterface } from "./attribute-settings";
 
@@ -65,6 +66,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
 
     const [tempAvailableClaims, setTempAvailableClaims] = useState<ExtendedClaimInterface[]>([]);
     const [tempSelectedClaims, setTempSelectedClaims] = useState<ExtendedClaimInterface[]>([]);
@@ -252,14 +254,18 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     return (
         <Modal open={ showAddModal } size="small" className="user-roles" data-testid={ testId }>
             <Modal.Header>
-                Update Attribute Selection
+                { t("devPortal:components.applications.edit.sections.attributes.selection.addWizard.header") }
                 <Heading subHeading ellipsis as="h6">
-                    Add new attributes or remove existing attributes.
+                    { t("devPortal:components.applications.edit.sections.attributes.selection.addWizard." +
+                        "subHeading") }
                 </Heading>
             </Modal.Header>
             <Modal.Content image>
                 <TransferComponent
-                    searchPlaceholder="Search attribute"
+                    searchPlaceholder={
+                        t("devPortal:components.applications.edit.sections.attributes.selection.addWizard.steps" +
+                            ".select.transfer.searchPlaceholders.attribute")
+                    }
                     addItems={ addAttributes }
                     removeItems={ removeAttributes }
                     handleUnelectedListSearch={ searchTempAvailable }
@@ -269,7 +275,10 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                     <TransferList
                         isListEmpty={ !(filterTempAvailableClaims.length > 0) }
                         listType="unselected"
-                        listHeaders={ ["Attribute"] }
+                        listHeaders={ [
+                            t("devPortal:components.applications.edit.sections.attributes.selection.addWizard.steps" +
+                                ".select.transfer.headers.attribute")
+                        ] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectUnassignedClaimsAllClaimsChecked }
                         data-testid={ `${ testId }-unselected-transfer-list` }
@@ -296,7 +305,10 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                     <TransferList
                         isListEmpty={ !(filterTempSelectedClaims.length > 0) }
                         listType="selected"
-                        listHeaders={ ["Attribute"] }
+                        listHeaders={ [
+                            t("devPortal:components.applications.edit.sections.attributes.selection.addWizard.steps" +
+                                ".select.transfer.headers.attribute")
+                        ] }
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
                         data-testid={ `${ testId }-selected-transfer-list` }
@@ -328,13 +340,13 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                     onClick={ handleAttributeModal }
                     data-testid={ `${ testId }-cancel-button` }
                 >
-                    Cancel
+                    { t("common:cancel") }
                 </LinkButton>
                 <PrimaryButton
                     onClick={ updateSelectedClaims }
                     data-testid={ `${ testId }-save-button` }
                 >
-                    Save
+                    { t("common:save") }
                 </PrimaryButton>
             </Modal.Actions>
         </Modal>

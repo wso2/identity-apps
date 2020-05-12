@@ -20,11 +20,11 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import { AppAvatar, UserAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
 import { InboundProtocolLogos } from "../../../configs";
 import { SubmitFormCustomPropertiesInterface, SupportedAuthProtocolTypes } from "../../../models";
 import { ApplicationManagementUtils } from "../../../utils";
-
 
 /**
  * Proptypes for the wizard summary component.
@@ -58,6 +58,8 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
         samlMetaFileSelected,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const [protocolImage, setProtocolImage] = useState<string>("");
 
@@ -118,7 +120,10 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Issuer</div>
+                            <div className="label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections.issuer" +
+                                    ".heading")}
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             <div className="value">
@@ -133,7 +138,10 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Application qualifier</div>
+                            <div className="label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                    ".applicationQualifier.heading") }
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             <div className="value">
@@ -150,7 +158,10 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                     ? (
                         <Grid.Row className="summary-field" columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                                <div className="label">Grant Type(s)</div>
+                                <div className="label">
+                                    { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                        ".grantType.heading") }
+                                </div>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                                 <Label.Group>
@@ -171,7 +182,10 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Assertion consumer URL(s)</div>
+                            <div className="label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                    ".assertionURLs.heading") }
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             {
@@ -189,7 +203,10 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Metadata URL</div>
+                            <div className="label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                    ".metadataURL.heading") }
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             <div className="value url">{ summary?.metadataURL }</div>
@@ -202,7 +219,10 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Meta File(Base64Encoded)</div>
+                            <div className="label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                    ".metaFile.heading") }
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             <div className="value constrain">{ summary?.metadataFile }</div>
@@ -215,7 +235,10 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Callback URL(s)</div>
+                            <div className="label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                    ".callbackURLs.heading") }
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             {
@@ -237,7 +260,10 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Audience</div>
+                            <div className="label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                    ".audience.heading") }
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             <div
@@ -251,7 +277,10 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Certificate alias</div>
+                            <div className="label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                    ".certificateAlias.heading") }
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             <div className="value">{ summary?.certificateAlias }</div>
@@ -264,7 +293,10 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Realm</div>
+                            <div className="label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                    ".realm.heading") }
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             <div className="value">{ summary?.realm }</div>
@@ -277,7 +309,10 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
                 (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Audience</div>
+                            <div className="label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                    ".audience.heading") }
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             <div className="value url">{ summary?.replyTo }</div>

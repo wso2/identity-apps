@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { DevPortalNS } from "../../../models";
 
 export const devPortal: DevPortalNS = {
@@ -62,6 +63,69 @@ export const devPortal: DevPortalNS = {
             resultsIndicator: "Showing results for the query \"{{query}}\""
         },
         applications: {
+            addWizard: {
+                steps: {
+                    generalSettings: {
+                        heading: "General Settings"
+                    },
+                    protocolConfig: {
+                        heading: "Protocol Configuration"
+                    },
+                    protocolSelection: {
+                        heading: "Protocol Selection"
+                    },
+                    summary: {
+                        heading: "Summary",
+                        sections: {
+                            accessURL: {
+                                heading: "Access URL"
+                            },
+                            applicationQualifier: {
+                                heading: "Application qualifier"
+                            },
+                            assertionURLs: {
+                                heading: "Assertion consumer URL(s)"
+                            },
+                            audience: {
+                                heading: "Audience"
+                            },
+                            callbackURLs: {
+                                heading: "Callback URL(s)"
+                            },
+                            certificateAlias: {
+                                heading: "Certificate alias"
+                            },
+                            discoverable: {
+                                heading: "Discoverable"
+                            },
+                            grantType: {
+                                heading: "Grant Type(s)"
+                            },
+                            issuer: {
+                                heading: "Issuer"
+                            },
+                            metaFile: {
+                                heading: "Meta File(Base64Encoded)"
+                            },
+                            metadataURL: {
+                                heading: "Metadata URL"
+                            },
+                            public: {
+                                heading: "Public"
+                            },
+                            realm: {
+                                heading: "Realm"
+                            },
+                            renewRefreshToken: {
+                                heading: "Renew RefreshToken"
+                            },
+                            replyTo: {
+                                heading: "Reply To"
+                            }
+                        }
+                    }
+                }
+            },
             advancedSearch: {
                 form: {
                     inputs: {
@@ -78,25 +142,981 @@ export const devPortal: DevPortalNS = {
                 },
                 placeholder: "Search by application name"
             },
+            confirmations: {
+                deleteApplication: {
+                    assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                    content: "If you delete this application, you will not be able to get it back. All the " +
+                        "applications depending on this also might stop working. Please proceed with caution.",
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will permanently delete the application."
+                },
+                deleteOutboundProvisioningIDP: {
+                    assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                    content: "If you delete this outbound provisioning IDP, you will not be able to get it back. " +
+                        "Please proceed with caution.",
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will remove the IDP."
+                },
+                deleteProtocol: {
+                    assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                    content: "If you delete this protocol, you will not be able to get it back. All the " +
+                        "applications depending on this also might stop working. Please proceed with caution.",
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will permanently delete the protocol."
+                },
+                regenerateSecret: {
+                    assertionHint: "Please type <1>{{ id }}</1> to confirm.",
+                    content: "If you regenerate this application, All the applications depending on this also might " +
+                        "stop working. Please proceed with caution.",
+                    header: "Are you sure?",
+                    message: "This action is irreversible and permanently change the client secret."
+                },
+                revokeApplication: {
+                    assertionHint: "Please type <1>{{ id }}</1> to confirm.",
+                    content: "If you Revoke this application, All the applications depending on this also might stop " +
+                        "working. Please proceed with caution.",
+                    header: "Are you sure?",
+                    message: "This action is can be reversed by regenerating client secret."
+                }
+            },
+            dangerZoneGroup: {
+                deleteApplication: {
+                    actionTitle: "Delete",
+                    header: "Delete application",
+                    subheader: "Once you delete an application, there is no going back. Please be certain."
+                },
+                header: "Danger Zone"
+            },
             edit: {
                 sections: {
                     access: {
+                        addProtocolWizard: {
+                            heading: "Add Protocol",
+                            steps: {
+                                protocolSelection: {
+                                    manualSetup: {
+                                        emptyPlaceholder: {
+                                            subtitles: "All the protocols have been configured",
+                                            title: "No templates available"
+                                        },
+                                        heading: "Manual Setup",
+                                        subHeading: "Add an protocol with custom configurations"
+                                    },
+                                    quickSetup: {
+                                        emptyPlaceholder: {
+                                            subtitles: "All the protocols have been configured",
+                                            title: "No templates available"
+                                        },
+                                        heading: "Quick Setup",
+                                        subHeading: "Get protocol configuration from a template"
+                                    }
+                                }
+                            },
+                            subHeading: "Add new protocol to {{appName}} application"
+                        },
                         tabName: "Access"
                     },
                     advanced: {
                         tabName: "Advanced"
                     },
                     attributes: {
+                        forms: {
+                            fields: {
+                                dynamic: {
+                                    applicationRole: {
+                                        label: "Application Role",
+                                        validations: {
+                                            duplicate: "This role is already mapped. Please select another role",
+                                            empty: "Please enter an attribute to map to"
+                                        }
+                                    },
+                                    localRole: {
+                                        label: "Local Role",
+                                        validations: {
+                                            empty: "Please enter the local role"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        roleMapping: {
+                            heading: "Role Mapping"
+                        },
+                        selection: {
+                            addWizard: {
+                                header: "Update Attribute Selection",
+                                steps: {
+                                    select: {
+                                        transfer: {
+                                            headers: {
+                                                attribute: "Attribute"
+                                            },
+                                            searchPlaceholders: {
+                                                attribute: "Search attribute",
+                                                role: "Search Role"
+                                            }
+                                        }
+                                    }
+                                },
+                                subHeading: "Add new attributes or remove existing attributes."
+                            },
+                            heading: "Attribute Selection",
+                            mappingTable: {
+                                actions: {
+                                    enable: "Enable mapping"
+                                },
+                                columns: {
+                                    appAttribute: "Application attribute",
+                                    attribute: "Attribute",
+                                    mandatory: "Mandatory",
+                                    requested: "Requested"
+                                },
+                                listItem: {
+                                    actions: {
+                                        makeMandatory: "Make mandatory",
+                                        makeRequested: "Make requested",
+                                        removeMandatory: "Remove mandatory",
+                                        removeRequested: "Remove requested"
+                                    },
+                                    fields: {
+                                        claim: {
+                                            label: "Please enter a value",
+                                            placeholder: "eg: custom {{name}}, new {{name}}"
+                                        }
+                                    }
+                                },
+                                searchPlaceholder: "Search attributes"
+                            }
+                        },
                         tabName: "Attributes"
                     },
                     general: {
                         tabName: "General"
                     },
                     provisioning: {
+                        inbound: {
+                            heading: "Inbound Provisioning",
+                            subHeading: "Provision users or groups to a WSO2 Identity Server’s userstore via this " +
+                                "application."
+                        },
+                        outbound: {
+                            actions: {
+                                addIdp: "New Identity Provider"
+                            },
+                            addIdpWizard: {
+                                heading: "Add Outbound Provisioning IDP",
+                                steps: {
+                                    details: "IDP Details"
+                                },
+                                subHeading: "Select the IDP to provision users that self-register to your application."
+                            },
+                            heading: "Outbound Provisioning",
+                            subHeading: "Configure an identity provider to outbound provision the users of this " +
+                                "application."
+                        },
                         tabName: "Provisioning"
                     },
                     signOnMethod: {
+                        sections: {
+                            authenticationFlow: {
+                                heading: "Authentication flow",
+                                sections: {
+                                    scriptBased: {
+                                        editor: {
+                                            templates: {
+                                                darkMode: "Dark Mode",
+                                                heading: "Templates"
+                                            }
+                                        },
+                                        heading: "Script based configuration",
+                                        hint: "Define the authentication flow via an adaptive script. You can select " +
+                                            "one of the templates fom the panel to get started."
+                                    },
+                                    stepBased: {
+                                        actions: {
+                                            addStep: "New Authentication Step",
+                                            selectAuthenticator: "Select an Authenticator"
+                                        },
+                                        forms: {
+                                            fields: {
+                                                attributesFrom: {
+                                                    label: "Use Attributes from",
+                                                    placeholder: "Select step"
+                                                },
+                                                subjectIdentifierFrom: {
+                                                    label: "Use Subject identifier from",
+                                                    placeholder: "Select step"
+                                                }
+                                            }
+                                        },
+                                        heading: "Step based configuration",
+                                        hint: "Create authentication steps by dragging the local/federated " +
+                                            "authenticators on to the relevant steps."
+                                    }
+                                }
+                            }
+                        },
                         tabName: "Sign-on Method"
+                    }
+                }
+            },
+            forms: {
+                advancedAttributeSettings: {
+                    sections: {
+                        role: {
+                            fields: {
+                                role: {
+                                    hint: "This option will append the user store domain that the user resides to " +
+                                        "role",
+                                    label: "Include userDomain",
+                                    validations: {
+                                        empty: "Select the role attribute"
+                                    }
+                                },
+                                roleAttribute: {
+                                    hint: "Choose the attribute",
+                                    label: "Role attribute",
+                                    validations: {
+                                        empty: "Select the role attribute"
+                                    }
+                                }
+                            },
+                            heading: "Role"
+                        },
+                        subject: {
+                            fields:{
+                                subjectAttribute: {
+                                    hint: "Choose the attribute",
+                                    label: "Subject attribute",
+                                    validations: {
+                                        empty: "Select the subject attribute"
+                                    }
+                                },
+                                subjectIncludeTenantDomain: {
+                                    hint: "This option will append the tenant domain to the local subject identifier",
+                                    label: "Include Tenant Domain",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                },
+                                subjectIncludeUserDomain: {
+                                    hint: "This option will append the user store domain that the user resides in " +
+                                        "the local subject identifier",
+                                    label: "Include User Domain",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                },
+                                subjectUseMappedLocalSubject: {
+                                    hint: "This option will use the local subject identifier when asserting the " +
+                                        "identity",
+                                    label: "Use mapped local subject",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                }
+                            },
+                            heading: "Subject"
+                        }
+                    }
+                },
+                advancedConfig: {
+                    fields: {
+                        enableAuthorization: {
+                            hint: "Decides whether authorization policies needs to be engaged during authentication " +
+                                "flows.",
+                            label: "Enable authorization",
+                            validations: {
+                                empty: "This is a required field."
+                            }
+                        },
+                        returnAuthenticatedIdpList: {
+                            hint: " The list of authenticated Identity Providers will be returned in the " +
+                                "authentication response.",
+                            label: "Return authenticated idP list",
+                            validations: {
+                                empty: "This is a required field."
+                            }
+                        },
+                        saas: {
+                            hint: "Applications are by default restricted for usage by users of the service" +
+                                "provider&apos;s tenant. If this application is SaaS enabled it is opened up for " +
+                                "all the users of all the tenants.",
+                            label: "SaaS application",
+                            validations: {
+                                empty: "This is a required field."
+                            }
+                        },
+                        skipConsentLogin: {
+                            hint: "User consent will be skipped during login flows.",
+                            label: "Skip login consent",
+                            validations: {
+                                empty: "This is a required field."
+                            }
+                        },
+                        skipConsentLogout: {
+                            hint: "User consent will be skipped during logout flows.",
+                            label: "Skip logout consent",
+                            validations: {
+                                empty: "This is a required field."
+                            }
+                        }
+                    },
+                    sections: {
+                        certificate: {
+                            fields: {
+                                jwksValue: {
+                                    label: "Value",
+                                    placeholder: "Application JWKS endpoint URL.",
+                                    validations: {
+                                        empty: "This is a required field.",
+                                        invalid: "This is not a valid URL"
+                                    }
+                                },
+                                pemValue: {
+                                    actions: {
+                                        view: "View certificate info"
+                                    },
+                                    hint: "The certificate (in PEM format) of the application.",
+                                    label: "Value",
+                                    placeholder: "Certificate in PEM format.",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                },
+                                type: {
+                                    children: {
+                                        jwks: {
+                                            label: "Use JWKS endpoint"
+                                        },
+                                        pem: {
+                                            label: "Provide certificate"
+                                        }
+                                    },
+                                    label: "Type"
+                                }
+                            },
+                            heading: "Certificate"
+                        }
+                    }
+                },
+                generalDetails: {
+                    fields: {
+                        accessUrl: {
+                            hint: "Applications flagged as discoverable are visible for end users.",
+                            label: "Access URL",
+                            placeholder: "Enter access url for the application login page",
+                            validations: {
+                                empty: "A valid access URL needs to be defined for an application to be marked as " +
+                                    "discoverable",
+                                invalid: "This is not a valid URL"
+                            }
+                        },
+                        description: {
+                            label: "Description",
+                            placeholder: "Enter a description for the application"
+                        },
+                        discoverable: {
+                            label: "Discoverable application"
+                        },
+                        imageUrl: {
+                            label: "Application image",
+                            placeholder: "Enter a image url for the application",
+                            validations: {
+                                invalid: "This is not a valid image URL"
+                            }
+                        },
+                        name: {
+                            label: "Name",
+                            placeholder: "Enter a name for the application. E.g. Zoom, Salesforce, etc.",
+                            validations: {
+                                empty: "This is a required field."
+                            }
+                        }
+                    }
+                },
+                inboundCustom: {
+                    fields: {
+                        checkbox: {
+                            label: "{{label}}",
+                            validations: {
+                                empty: "Provide {{name}}"
+                            }
+                        },
+                        dropdown: {
+                            label: "{{label}}",
+                            placeholder: "Enter {{name}}",
+                            validations: {
+                                empty: "Provide {{name}}"
+                            }
+                        },
+                        generic: {
+                            label: "{{label}}",
+                            validations: {
+                                empty: "Select the {{name}}"
+                            }
+                        },
+                        password: {
+                            label: "{{label}}",
+                            placeholder: "Enter {{name}}",
+                            validations: {
+                                empty: "Provide {{name}}"
+                            }
+                        }
+                    }
+                },
+                inboundOIDC: {
+                    fields: {
+                        callBackUrls: {
+                            hint: "After the authentication, we will only redirect to the above callback URLs " +
+                                "and you can specify multiple URLs",
+                            label: "Callback URL",
+                            placeholder: "Enter callback URL",
+                            validations: {
+                                empty: "Please add valid URL."
+                            }
+                        },
+                        clientID: {
+                            label: "Client ID"
+                        },
+                        clientSecret: {
+                            hideSecret: "Hide secret",
+                            label: "Client secret",
+                            placeholder: "Enter Client Secret",
+                            showSecret: "Show secret",
+                            validations: {
+                                empty: "This is a required field."
+                            }
+                        },
+                        grant: {
+                            label: "Allowed grant type",
+                            validations: {
+                                empty: "Select at least a  grant type"
+                            }
+                        },
+                        public: {
+                            hint: "Allow the client to authenticate without a client secret.",
+                            label: "Public client",
+                            validations: {
+                                empty: "This is a required field."
+                            }
+                        }
+                    },
+                    sections: {
+                        accessToken: {
+                            fields: {
+                                expiry: {
+                                    hint: "Configure the user access token expiry time (in seconds).",
+                                    label: "User access token expiry time",
+                                    placeholder: "Enter the user access token expiry time",
+                                    validations: {
+                                        empty: "Please fill the user access token expiry time"
+                                    }
+                                },
+                                type: {
+                                    label: "Token type"
+                                }
+                            },
+                            heading: "Access Token",
+                            hint: " Configure the access token issuer, user access token expiry time, application " +
+                                "access token expiry time etc."
+                        },
+                        idToken: {
+                            fields: {
+                                algorithm: {
+                                    hint: "Choose encryption algorithm of ID token for the client.",
+                                    label: "Algorithm",
+                                    placeholder: "Select Algorithm",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                },
+                                audience: {
+                                    hint: "The recipients that the ID token is intended for.",
+                                    label: "Audience",
+                                    placeholder: "Enter Audience",
+                                    validations: {
+                                        empty: "Please fill the audience"
+                                    }
+                                },
+                                encryption: {
+                                    label: "Enable encryption",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                },
+                                expiry: {
+                                    hint: "Configure the ID token expiry time (in seconds).",
+                                    label: "Id token expiry time",
+                                    placeholder: "Enter the ID token expiry time",
+                                    validations: {
+                                        empty: "Please fill the ID token expiry time"
+                                    }
+                                },
+                                method: {
+                                    hint: "Choose the method for the ID token encryption.",
+                                    label: "Encryption method",
+                                    placeholder: "Select Method",
+                                    validations: {
+                                        empty:  "This is a required field."
+                                    }
+                                }
+                            },
+                            heading: "ID Token"
+                        },
+                        logoutURLs: {
+                            fields: {
+                                back: {
+                                    label: "Back channel logout URL",
+                                    placeholder: "Enter the Back Channel Logout URL",
+                                    validations: {
+                                        empty: "Please fill the Back Channel Logout URL",
+                                        invalid: "Please add valid URL"
+                                    }
+                                },
+                                front: {
+                                    label: "Front channel logout URL",
+                                    placeholder: "Enter the Front Channel Logout URL",
+                                    validations: {
+                                        empty: "Please fill the Front Channel Logout URL",
+                                        invalid: "Please add valid URL"
+                                    }
+                                },
+                                signatureValidation: {
+                                    label: "Enable request object signature validation"
+                                }
+                            },
+                            heading: "PKCE"
+                        },
+                        pkce: {
+                            fields: {
+                                pkce: {
+                                    children: {
+                                        mandatory: {
+                                            label: "PKCE mandatory"
+                                        },
+                                        plainAlg: {
+                                            label: "Support PKCE 'Plain' Transform Algorithm"
+                                        }
+                                    },
+                                    label: "{{label}}",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                }
+                            },
+                            heading: "PKCE",
+                            hint: "PKCE (RFC 7636) is an extension to the Authorization Code flow to prevent " +
+                                "certain attacks and to be able to securely perform the OAuth exchange from public " +
+                                "clients."
+                        },
+                        refreshToken: {
+                            fields: {
+                                expiry: {
+                                    hint: "Configure the refresh token expiry time (in seconds).",
+                                    label: "Refresh token expiry time",
+                                    placeholder: "Enter the refresh token expiry time",
+                                    validations: {
+                                        empty: "Please fill the refresh token expiry time"
+                                    }
+                                },
+                                renew: {
+                                    hint: "Issue a new refresh token per request when Refresh Token Grant is used.",
+                                    label: "Renew refresh token",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                }
+                            },
+                            heading: "Refresh Token"
+                        },
+                        scopeValidators: {
+                            fields: {
+                                validator: {
+                                    label: "{{label}}",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                }
+                            },
+                            heading: "Scope validators"
+                        }
+                    }
+                },
+                inboundSAML: {
+                    fields: {
+                        assertionURLs: {
+                            hint: "This specifies the assertion Consumer URLs that the browser " +
+                                "should be redirected to after the authentication is successful. " +
+                                "This is the Assertion Consumer Service (ACS) URL of the Application.",
+                            label: "Assertion consumer URLs",
+                            placeholder: "Enter Assertion URL",
+                            validations: {
+                                invalid: "Please add valid URL"
+                            }
+                        },
+                        defaultAssertionURL: {
+                            hint: "As there can be multiple assertion consumer URLs, you must define a " +
+                                "Default Assertion Consumer URL in case you are unable to retrieve " +
+                                "it from the authentication request.",
+                            label: "Default assertion consumer URL",
+                            validations: {
+                                empty: "This is a required field."
+                            }
+                        },
+                        idpEntityIdAlias: {
+                            hint: "This value can override identity provider entity Id that is specified under " +
+                                "SAML SSO inbound authentication configuration of the resident identity provider. " +
+                                "The Identity Provider Entity Id is used as the issuer of " +
+                                "the SAML response that is generated.",
+                            label: "Idp entityId alias",
+                            placeholder: "Enter alias",
+                            validations: {
+                                empty: "This is a required field."
+                            }
+                        },
+                        issuer: {
+                            hint: "This specifies the issuer. This is the &quot;saml:Issuer&quot; element that " +
+                                "contains the unique identifier of the Application. This is also the issuer value" +
+                                "specified in the SAML Authentication Request issued by the Application.",
+                            label: "Issuer",
+                            placeholder: "Enter the issuer name",
+                            validations: {
+                                empty: "Please provide the issuer"
+                            }
+                        },
+                        metaURL: {
+                            hint: "URL for the meta file",
+                            label: "Meta URL",
+                            placeholder: "Enter the meta file url",
+                            validations: {
+                                empty: "Please provide the meta file url",
+                                invalid: "This is not a valid URL"
+                            }
+                        },
+                        mode: {
+                            children: {
+                                manualConfig: {
+                                    label: "Manual Configuration"
+                                },
+                                metadataFile: {
+                                    label: "Metadata File"
+                                },
+                                metadataURL: {
+                                    label: "Metadata URL"
+                                }
+                            },
+                            hint: "Select the mode to configure saml.",
+                            label: "Mode"
+                        },
+                        qualifier: {
+                            hint: "This value is needed only if you have to configure multiple SAML SSO " +
+                                "inbound authentication configurations for the same Issuer value. Qualifier " +
+                                "that is defined here will be appended to the issuer internally to " +
+                                "identify a application uniquely at runtime.",
+                            label: "Application qualifier",
+                            placeholder: "Enter the application qualifier",
+                            validations: {
+                                empty: "This is a required field."
+                            }
+                        }
+                    },
+                    sections: {
+                        assertion: {
+                            fields: {
+                                audience: {
+                                    hint: "Restrict the audience.",
+                                    label: "Audience",
+                                    placeholder: "Enter audience",
+                                    validations: {
+                                        invalid: "Please add valid URL"
+                                    }
+                                },
+                                nameIdFormat: {
+                                    hint: "This defines the name identifier formats that are supported by " +
+                                        "the identity provider. Name identifiers are used to provide information\n" +
+                                        "regarding a user.",
+                                    label: "Name ID format",
+                                    placeholder: "Enter name ID format",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                },
+                                recipients: {
+                                    hint:  "Validate the recipients of the response.",
+                                    label: "Recipients",
+                                    placeholder: "Enter recipients",
+                                    validations: {
+                                        invalid: "Please add valid URL"
+                                    }
+                                }
+                            },
+                            heading: "Assertion"
+                        },
+                        attributeProfile: {
+                            fields: {
+                                enable: {
+                                    hint: "The Identity Server provides support for a basic attribute profile where " +
+                                        "the identity provider can include the user’s attributes in the SAML " +
+                                        "Assertions as part of the attribute statement.",
+                                    label: "Enable"
+                                },
+                                includeAttributesInResponse: {
+                                    hint: "Once you select the checkbox to Include Attributes in the Response " +
+                                        "Always, the identity provider always includes the attribute values related " +
+                                        "to the selected claims in the SAML attribute statement.",
+                                    label: "Always include attributes in response"
+                                },
+                                serviceIndex: {
+                                    hint: "This is an optional field if not provided a value will be generated " +
+                                        "automatically.",
+                                    label: "Attribute consuming service index",
+                                    placeholder: "Enter attribute consuming service index",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                }
+                            },
+                            heading: "Attribute Profile"
+                        },
+                        encryption: {
+                            fields: {
+                                assertionEncryption: {
+                                    label: "Enable",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                },
+                                assertionEncryptionAlgorithm: {
+                                    label: "Assertion encryption algorithm",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                },
+                                keyEncryptionAlgorithm: {
+                                    label: "Key encryption algorithm",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                }
+                            },
+                            heading: "Encryption"
+                        },
+                        idpInitiatedSLO: {
+                            fields: {
+                                enable: {
+                                    hint: "When this is enabled, the service provider is not required to send " +
+                                        "the SAML request.",
+                                    label: "Enable",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                },
+                                returnToURLs: {
+                                    label: "Return to URLs",
+                                    placeholder: "Enter URL",
+                                    validations: {
+                                        invalid: "Please add valid URL"
+                                    }
+                                }
+                            },
+                            heading: "Idp Initiated SingleLogout"
+                        },
+                        requestProfile: {
+                            fields: {
+                                enable: {
+                                    label: "Enable assertion query profile",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                }
+                            },
+                            heading: "Assertion Query/Request Profile"
+                        },
+                        requestValidation: {
+                            fields: {
+                                signatureValidation: {
+                                    hint: "This specifies whether the identity provider must validate the signature " +
+                                        "of the SAML2 authentication request and the SAML2 logout request " +
+                                        "that are sent by the application.",
+                                    label: "Enable request signature validation",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                },
+                                signatureValidationCertAlias: {
+                                    hint: "If application certificate is provided then it will be used and above " +
+                                        "selected certificate will be ignored.",
+                                    label: "Request validation certificate alias",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                }
+                            },
+                            heading: "Request Validation"
+                        },
+                        responseSigning: {
+                            fields: {
+                                digestAlgorithm: {
+                                    label: "Digest algorithm",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                },
+                                responseSigning: {
+                                    hint: "Sign the SAML2 Responses returned after the authentication process.",
+                                    label: "Sign SAML responses"
+                                },
+                                signingAlgorithm: {
+                                    label: "Signing algorithm",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                }
+                            },
+                            heading: "Assertion/Response Signing"
+                        },
+                        sloProfile: {
+                            fields: {
+                                enable: {
+                                    label: "Enable",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                },
+                                logoutMethod: {
+                                    label: "Logout method",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                },
+                                requestURL: {
+                                    label: "Single logout request URL",
+                                    placeholder: "Enter single logout request URL",
+                                    validations: {
+                                        empty: "This is a required field.",
+                                        invalid: "This is not a valid URL"
+                                    }
+                                },
+                                responseURL: {
+                                    label: "Single logout response URL",
+                                    placeholder: "Enter single logout response URL",
+                                    validations: {
+                                        empty: "This is a required field.",
+                                        invalid: "This is not a valid URL"
+                                    }
+                                }
+                            },
+                            heading: "Single Logout Profile"
+                        },
+                        ssoProfile: {
+                            fields: {
+                                artifactBinding: {
+                                    hint: "Artifact resolve request signature will be validated against " +
+                                        "the Application certificate.",
+                                    label: "Enable signature validation for artifact binding"
+                                },
+                                bindings: {
+                                    hint: "The mechanisms to transport SAML messages.",
+                                    label: "Bindings",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                },
+                                idpInitiatedSSO: {
+                                    label: "Enable idP initiated SSO",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                }
+                            },
+                            heading: "Single SignOn Profile"
+                        }
+                    }
+                },
+                inboundSTS: {
+                    fields: {
+                        realm: {
+                            hint: "Enter realm identifier for passive sts",
+                            label: "Realm",
+                            placeholder: "Enter realm.",
+                            validations: {
+                                empty: "This is a required field."
+                            }
+                        },
+                        replyTo: {
+                            hint: "Enter RP endpoint URL that handles the response.",
+                            label: "Reply URL",
+                            placeholder: "Enter Reply URL",
+                            validations: {
+                                empty: "This is a required field.",
+                                invalid: "This is not a valid URL"
+                            }
+                        }
+                    }
+                },
+                inboundWSTrust: {
+                    fields: {
+                        audience: {
+                            hint: "The trusted relying party's endpoint address.",
+                            label: "Audience",
+                            placeholder: "Enter audience",
+                            validations: {
+                                empty: "Enter the audience.",
+                                invalid: "This is not a valid URL"
+                            }
+                        },
+                        certificateAlias: {
+                            hint: "Public certificate of the trusted relying party.",
+                            label: "Certificate alias",
+                            placeholder: "Enter audience",
+                            validations: {
+                                empty: "Select the certificate alias"
+                            }
+                        }
+                    }
+                },
+                outboundProvisioning: {
+                    fields: {
+                        blocking: {
+                            hint: "Block the authentication flow until the provisioning is completed.",
+                            label: "Blocking"
+                        },
+                        connector: {
+                            label: "Provisioning Connector",
+                            placeholder: "Select provisioning connector",
+                            validations: {
+                                empty: "It is mandatory to select a provisioning connector."
+                            }
+                        },
+                        idp: {
+                            label: "Identity Provider",
+                            placeholder: "Select identity provider",
+                            validations: {
+                                empty: "It is mandatory to select an IDP."
+                            }
+                        },
+                        jit: {
+                            hint: "Provision users to the store authenticated using just-in-time provisioning.",
+                            label: "JIT Outbound"
+                        },
+                        rules: {
+                            hint: "Provision users based on the pre-defined XACML rules",
+                            label: "Enable Rules"
+                        }
+                    }
+                },
+                provisioningConfig: {
+                    fields: {
+                        proxyMode: {
+                            hint: "Users/Groups are not provisioned to the user store. They are only outbound " +
+                                "provisioned.",
+                            label: "Proxy mode"
+                        },
+                        userstoreDomain: {
+                            hint: "Select userstore domain name to provision users and groups.",
+                            label: "Provisioning userstore domain"
+                        }
                     }
                 }
             },
@@ -128,6 +1148,11 @@ export const devPortal: DevPortalNS = {
                     }
                 }
             },
+            list: {
+                actions: {
+                    add: "New Application"
+                }
+            },
             notifications: {
                 addApplication: {
                     error: {
@@ -141,6 +1166,53 @@ export const devPortal: DevPortalNS = {
                     success: {
                         description: "Successfully created the application.",
                         message: "Creation successful"
+                    }
+                },
+                authenticationStepMin: {
+                    genericError: {
+                        description: "At least one authentication step is required.",
+                        message: "Removal error"
+                    }
+                },
+                deleteApplication: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Removal Error"
+                    },
+                    genericError: {
+                        description: "Failed to delete the application",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully deleted the application.",
+                        message: "Removal successful"
+                    }
+                },
+                deleteProtocolConfig: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Removal Error"
+                    },
+                    genericError: {
+                        description: "An error occurred while deleting inbound protocol configurations.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully deleted the {{protocol}} protocol configurations.",
+                        message: "Removal successful"
+                    }
+                },
+                duplicateAuthenticationStep: {
+                    genericError: {
+                        description: "The same authenticator is not allowed to repeated in a single step.",
+                        message: "Not allowed"
+                    }
+                },
+                emptyAuthenticationStep: {
+                    genericError: {
+                        description: "There is an empty authentication step. Please remove it or add authenticators " +
+                            "to proceed.",
+                        message: "Update error"
                     }
                 },
                 fetchApplication: {
@@ -199,6 +1271,34 @@ export const devPortal: DevPortalNS = {
                         message: "Retrieval successful"
                     }
                 },
+                fetchProtocolMeta: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "An error occurred retrieving the protocol metadata.",
+                        message: "Retrieval error"
+                    },
+                    success: {
+                        description: "Successfully retrieved the protocol metadata.",
+                        message: "Retrieval successful"
+                    }
+                },
+                fetchTemplate: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving application template data",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved the application template data.",
+                        message: "Retrieval successful"
+                    }
+                },
                 fetchTemplates: {
                     error: {
                         description: "{{description}}",
@@ -227,6 +1327,48 @@ export const devPortal: DevPortalNS = {
                         message: "Retrieval successful"
                     }
                 },
+                regenerateSecret: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Regenerate error"
+                    },
+                    genericError: {
+                        description: "An error occurred while regenerating the application",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully regenerated the application",
+                        message: "Regenerate successful"
+                    }
+                },
+                revokeApplication: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Revoke error"
+                    },
+                    genericError: {
+                        description: "An error occurred while revoking the application",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully revoked the application",
+                        message: "Revoke successful"
+                    }
+                },
+                updateAdvancedConfig: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Update error"
+                    },
+                    genericError: {
+                        description: "An error occurred while the advanced configurations.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully updated the advanced configurations.",
+                        message: "Update successful"
+                    }
+                },
                 updateApplication: {
                     error: {
                         description: "{{description}}",
@@ -240,17 +1382,124 @@ export const devPortal: DevPortalNS = {
                         description: "Successfully updated the application.",
                         message: "Update successful"
                     }
+                },
+                updateAuthenticationFlow: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Update error"
+                    },
+                    genericError: {
+                        description: "An error occurred while updating authentication flow of the application",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully updated the authentication flow of the application",
+                        message: "Update successful"
+                    }
+                },
+                updateClaimConfig: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Update error"
+                    },
+                    genericError: {
+                        description: "An error occurred while updating the claim configuration",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully updated the claim configuration",
+                        message: "Update successful"
+                    }
+                },
+                updateInboundProtocolConfig: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Update Error"
+                    },
+                    genericError: {
+                        description: "An error occurred while updating inbound protocol configurations.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully updated the inbound protocol configurations.",
+                        message: "Update successful"
+                    }
+                },
+                updateInboundProvisioningConfig: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Update Error"
+                    },
+                    genericError: {
+                        description: "An error occurred while the provisioning configurations.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully updated the provisioning configurations.",
+                        message: "Update successful"
+                    }
+                },
+                updateOutboundProvisioning: {
+                    genericError: {
+                        description: "The outbound provisioning IDP already exists.",
+                        message: "Update Error"
+                    }
+                },
+                updateProtocol: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Update Error"
+                    },
+                    genericError: {
+                        description: "An error occurred while updating the application",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully added new protocol configurations.",
+                        message: "Update successful"
+                    }
                 }
             },
             placeholders: {
-                emptyList: {
-                    action: "Refresh list",
+                emptyAttributesList: {
+                    action: "Add Attribute",
+                    subtitles: "There are no attributes selected to the application at the moment.",
+                    title: "No attributes added"
+                },
+                emptyAuthenticatorStep: {
                     subtitles: {
-                        0: "The applications list returned empty.",
-                        1: "This could be due to having no discoverable applications.",
-                        2: "Please ask an admin to enable discoverability for applications."
+                        0: "Drag and drop any of the above authenticators",
+                        1: "to build an authentication sequence."
                     },
-                    title: "No Applications"
+                    title: null
+                },
+                emptyAuthenticatorsList: {
+                    subtitles: "Could not find any {{type}} authenticators",
+                    title: null
+                },
+                emptyList: {
+                    action: "New Application",
+                    subtitles: {
+                        0: "Currently there are no applications available.",
+                        1: "You can add a new application easily by following the",
+                        2: "steps in the application creation wizard."
+                    },
+                    title: "Add a new Application"
+                },
+                emptyOutboundProvisioningIDPs: {
+                    action: "New IDP",
+                    subtitles: "This Application has no outbound provisioning IDPs configured." +
+                        " Add an IDP to view it here.",
+                    title: "No outbound provisioning IDPs"
+                },
+                emptyProtocolList: {
+                    action: "New Protocol",
+                    subtitles: {
+                        0: "There are currently no protocols available.",
+                        1: "You can add protocol easily by using the",
+                        2: "predefined templates."
+                    },
+                    title: "Add a protocol"
                 }
             },
             templates: {
@@ -502,9 +1751,17 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     fetchDialects: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Retrieval error"
+                        },
                         genericError: {
-                            description: "There was an error while getting the dialects",
+                            description: "Couldn't retrieve claim dialects.",
                             message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully retrieved claim dialects.",
+                            message: "Retrieval successful"
                         }
                     },
                     fetchExternalClaims: {
@@ -606,6 +1863,20 @@ export const devPortal: DevPortalNS = {
                         success: {
                             description: "The external attribute has been deleted successfully!",
                             message: "External attribute deleted successfully"
+                        }
+                    },
+                    fetchExternalClaims: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Retrieval error"
+                        },
+                        genericError: {
+                            description: "Couldn't retrieve external claims.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully retrieved external claims.",
+                            message: "Retrieval successful"
                         }
                     },
                     getExternalAttribute: {
@@ -795,6 +2066,20 @@ export const devPortal: DevPortalNS = {
                         success: {
                             description: "The local claim has been deleted successfully!",
                             message: "Local attribute deleted successfully"
+                        }
+                    },
+                    fetchLocalClaims: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Retrieval error"
+                        },
+                        genericError: {
+                            description: "Couldn't retrieve local claims.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully retrieved local claims.",
+                            message: "Retrieval successful"
                         }
                     },
                     getAClaim: {
@@ -1049,8 +2334,6 @@ export const devPortal: DevPortalNS = {
         helpPanel: {
             notifications: {
                 pin: {
-                    error: null,
-                    genericError: null,
                     success: {
                         description: "Help panel will always appear {{state}} unless you change explicitly.",
                         message: "Help panel {{state}}"
@@ -2003,6 +3286,12 @@ export const devPortal: DevPortalNS = {
                     success: {
                         description: "The selected role was deleted successfully.",
                         message: "Role deleted successfully"
+                    }
+                },
+                fetchRoles: {
+                    genericError: {
+                        description: "An error occurred while retrieving roles.",
+                        message: "Something went wrong"
                     }
                 },
                 updateRole: {

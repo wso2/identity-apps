@@ -20,6 +20,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { getRolesList } from "../../../../api";
@@ -65,8 +66,11 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
-    const [roleList, setRoleList] = useState<RolesInterface[]>();
+    const { t } = useTranslation();
+
     const dispatch = useDispatch();
+
+    const [roleList, setRoleList] = useState<RolesInterface[]>();
 
     /**
      * Filter out Application related and Internal roles
@@ -77,14 +81,12 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                 return !(role.displayName.includes("Application/") || role.displayName.includes("Internal/"))
             });
 
-        const finalRoles = filterRole.map(role => {
+        return filterRole.map(role => {
             return {
                 id: role.displayName,
                 value: role.displayName
             }
         });
-
-        return finalRoles;
     };
 
     useEffect(() => {
@@ -97,9 +99,9 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: "An error occurred while retrieving roles.",
+                    description: t("devPortal:components.roles.notifications.fetchRoles.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Get Error"
+                    message: t("devPortal:components.roles.notifications.fetchRoles.genericError.message")
                 }));
             });
     }, [initialMappings]);
@@ -112,7 +114,9 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                     <Divider hidden/>
                 </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    <Heading as="h5">Role Mapping</Heading>
+                    <Heading as="h5">
+                        { t("devPortal:components.applications.edit.sections.attributes.roleMapping.heading") }
+                    </Heading>
                     <DynamicField
                         data={
                             initialMappings ?
@@ -125,11 +129,26 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                         }
                         keyType="dropdown"
                         keyData={ roleList ? getFilteredRoles() : [] }
-                        keyName="Local Role"
-                        valueName="Application Role"
-                        keyRequiredMessage="Please enter the local role"
-                        valueRequiredErrorMessage="Please enter an attribute to map to"
-                        duplicateKeyErrorMsg="This role is already mapped. Please select another role"
+                        keyName={
+                            t("devPortal:components.applications.edit.sections.attributes.forms.fields.dynamic" +
+                                ".localRole.label")
+                        }
+                        valueName={
+                            t("devPortal:components.applications.edit.sections.attributes.forms.fields.dynamic" +
+                                ".applicationRole.label")
+                        }
+                        keyRequiredMessage={
+                            t("devPortal:components.applications.edit.sections.attributes.forms.fields.dynamic" +
+                                ".localRole.validations.empty")
+                        }
+                        valueRequiredErrorMessage={
+                            t("devPortal:components.applications.edit.sections.attributes.forms.fields.dynamic" +
+                                ".applicationRole.validations.empty")
+                        }
+                        duplicateKeyErrorMsg={
+                            t("devPortal:components.applications.edit.sections.attributes.forms.fields.dynamic" +
+                                ".applicationRole.validations.duplicate")
+                        }
                         submit={ submitState }
                         update={ (data) => {
                             if (data.length > 0) {

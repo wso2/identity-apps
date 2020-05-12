@@ -29,6 +29,7 @@ import {
 } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
 import {
@@ -102,6 +103,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
     const dispatch = useDispatch();
 
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
@@ -118,9 +121,11 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         deleteProtocol(appId, protocol)
             .then(() => {
                 dispatch(addAlert({
-                    description: `Successfully deleted the ${ protocol } protocol configurations.`,
+                    description: t("devPortal:components.applications.notifications.deleteProtocolConfig" +
+                        ".success.description", { protocol: protocol }),
                     level: AlertLevels.SUCCESS,
-                    message: "Delete successful"
+                    message: t("devPortal:components.applications.notifications.deleteProtocolConfig" +
+                        ".success.message")
                 }));
 
                 onUpdate(appId);
@@ -130,16 +135,19 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     dispatch(addAlert({
                         description: error?.response?.data?.description,
                         level: AlertLevels.ERROR,
-                        message: "Delete error"
+                        message: t("devPortal:components.applications.notifications.deleteProtocolConfig.error" +
+                            ".message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while deleting inbound protocol configurations.",
+                    description: t("devPortal:components.applications.notifications.deleteProtocolConfig" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Delete error"
+                    message: t("devPortal:components.applications.notifications.deleteProtocolConfig" +
+                        ".genericError.message")
                 }));
             });
     };
@@ -154,9 +162,11 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         updateAuthProtocolConfig(appId, values, protocol)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully updated the inbound protocol configurations.",
+                    description: t("devPortal:components.applications.notifications.updateInboundProtocolConfig" +
+                        ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Update successful"
+                    message: t("devPortal:components.applications.notifications.updateInboundProtocolConfig" +
+                        ".success.message")
                 }));
 
                 onUpdate(appId);
@@ -166,16 +176,19 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Update error"
+                        message: t("devPortal:components.applications.notifications.updateInboundProtocolConfig" +
+                            ".error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while updating inbound protocol configurations.",
+                    description: t("devPortal:components.applications.notifications.updateInboundProtocolConfig" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Update error"
+                    message: t("devPortal:components.applications.notifications.updateInboundProtocolConfig" +
+                        ".genericError.message")
                 }));
             });
     };
@@ -187,9 +200,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         regenerateClientSecret(appId)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully regenerated the application",
+                    description: t("devPortal:components.applications.notifications.regenerateSecret.success" +
+                        ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Regenerate successful"
+                    message: t("devPortal:components.applications.notifications.regenerateSecret.success.message")
                 }));
                 onUpdate(appId);
             })
@@ -198,16 +212,17 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Application Regenerate Error"
+                        message: t("devPortal:components.applications.notifications.regenerateSecret.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while regenerating the application",
+                    description: t("devPortal:components.applications.notifications.regenerateSecret" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Application Regenerate Error"
+                    message: t("devPortal:components.applications.notifications.regenerateSecret.genericError.message")
                 }));
             });
     };
@@ -219,9 +234,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         revokeClientSecret(appId)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully revoked the application",
+                    description: t("devPortal:components.applications.notifications.revokeApplication.success" +
+                        ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Revoke successful"
+                    message: t("devPortal:components.applications.notifications.revokeApplication.success.message")
                 }));
                 onUpdate(appId);
             })
@@ -230,16 +246,18 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Application revoke Error"
+                        message: t("devPortal:components.applications.notifications.revokeApplication.error" +
+                            ".message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while revoking the application",
+                    description: t("devPortal:components.applications.notifications.revokeApplication.success" +
+                        ".description"),
                     level: AlertLevels.ERROR,
-                    message: "Application Revoke Error"
+                    message: t("devPortal:components.applications.notifications.revokeApplication.success.message")
                 }));
             });
     };
@@ -388,16 +406,19 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                             dispatch(addAlert({
                                 description: error.response.data.description,
                                 level: AlertLevels.ERROR,
-                                message: "Retrieval error"
+                                message: t("devPortal:components.applications.notifications.fetchProtocolMeta" +
+                                    ".error.message")
                             }));
 
                             return;
                         }
 
                         dispatch(addAlert({
-                            description: "An error occurred retrieving the protocol metadata.",
+                            description: t("devPortal:components.applications.notifications.fetchProtocolMeta" +
+                                ".genericError.description"),
                             level: AlertLevels.ERROR,
-                            message: "Retrieval error"
+                            message: t("devPortal:components.applications.notifications.fetchProtocolMeta" +
+                                ".genericError.message")
                         }));
                     });
             }
@@ -432,17 +453,24 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     featureConfig?.applications?.scopes?.update) && (
                                                     <PrimaryButton onClick={ () => setShowWizard(true) }>
                                                         <Icon name="add"/>
-                                                        New Protocol
+                                                        { t("devPortal:components.applications.placeholders" +
+                                                            ".emptyProtocolList.action") }
                                                     </PrimaryButton>
                                                 )
                                             }
                                             image={ EmptyPlaceholderIllustrations.newList }
                                             imageSize="tiny"
-                                            title={ "Add a protocol" }
+                                            title={
+                                                t("devPortal:components.applications.placeholders" +
+                                                    ".emptyProtocolList.title")
+                                            }
                                             subtitle={ [
-                                                "There are currently no protocols available.",
-                                                "You can add protocol easily by using the",
-                                                "predefined templates."
+                                                t("devPortal:components.applications.placeholders" +
+                                                    ".emptyProtocolList.subtitles.0"),
+                                                t("devPortal:components.applications.placeholders" +
+                                                    ".emptyProtocolList.subtitles.1"),
+                                                t("devPortal:components.applications.placeholders" +
+                                                    ".emptyProtocolList.subtitles.2")
                                             ] }
                                             data-testid={ `${ testId }-protocol-empty-placeholder` }
                                         />
@@ -458,8 +486,15 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     {
                         showWizard && (
                             <ApplicationCreateWizard
-                                title={ "Add Protocol" }
-                                subTitle={ `Add new protocol to ${ appName } application` }
+                                title={
+                                    t("devPortal:components.applications.edit.sections.access.addProtocolWizard" +
+                                        ".heading")
+                                }
+                                subTitle={
+                                    t("devPortal:components.applications.edit.sections.access.addProtocolWizard" +
+                                        ".subHeading",
+                                        { appName: appName })
+                                }
                                 closeWizard={ (): void => setShowWizard(false) }
                                 addProtocol={ true }
                                 selectedProtocols={ inboundProtocols }
@@ -477,11 +512,21 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                 open={ showDeleteConfirmationModal }
                                 assertion={ protocolToDelete }
                                 assertionHint={ (
-                                    <p>Please type <strong>{ protocolToDelete }</strong> to confirm.</p>
+                                    <p>
+                                        <Trans
+                                            i18nKey={
+                                                "devPortal:components.applications.confirmations.deleteProtocol" +
+                                                ".assertionHint"
+                                            }
+                                            tOptions={ { name: protocolToDelete } }
+                                        >
+                                            Please type <strong>{ protocolToDelete }</strong> to confirm.
+                                        </Trans>
+                                    </p>
                                 ) }
                                 assertionType="input"
-                                primaryAction="Confirm"
-                                secondaryAction="Cancel"
+                                primaryAction={ t("common:confirm") }
+                                secondaryAction={ t("common:cancel") }
                                 onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                                 onPrimaryActionClick={
                                     (): void => {
@@ -494,20 +539,19 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                 <ConfirmationModal.Header
                                     data-testid={ `${ testId }-protocol-delete-confirmation-modal-header` }
                                 >
-                                    Are you sure?
+                                    { t("devPortal:components.applications.confirmations.deleteProtocol.header") }
                                 </ConfirmationModal.Header>
                                 <ConfirmationModal.Message
                                     attached
                                     warning
                                     data-testid={ `${ testId }-protocol-delete-confirmation-modal-message` }
                                 >
-                                    This action is irreversible and will permanently delete the protocol.
+                                    { t("devPortal:components.applications.confirmations.deleteProtocol.message") }
                                 </ConfirmationModal.Message>
                                 <ConfirmationModal.Content
                                     data-testid={ `${ testId }-protocol-delete-confirmation-modal-content` }
                                 >
-                                    If you delete this protocol, you will not be able to get it back. All the
-                                    applications depending on this also might stop working. Please proceed with caution.
+                                   { t("devPortal:components.applications.confirmations.deleteProtocol.content") }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
                         )

@@ -23,6 +23,7 @@ import { Heading, Hint, LinkButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Grid, Modal } from "semantic-ui-react";
 import { AdvancedConfigurationsInterface, CertificateTypeInterface, DisplayCertificate } from "../../../models";
@@ -58,6 +59,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
         readOnly,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const [ isPEMSelected, setPEMSelected ] = useState<boolean>(false);
     const [ PEMValue, setPEMValue ] = useState<string>(undefined);
@@ -163,12 +166,16 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             name="saas"
                             label=""
                             required={ false }
-                            requiredErrorMessage="this is needed"
+                            requiredErrorMessage={
+                                t("devPortal:components.applications.forms.advancedConfig.fields.saas" +
+                                    ".validations.empty")
+                            }
                             value={ config?.saas ? [ "saas" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
-                                    label: "SaaS application",
+                                    label: t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                        ".saas.label"),
                                     value: "saas"
                                 }
                             ] }
@@ -176,9 +183,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             data-testid={ `${ testId }-sass-checkbox` }
                         />
                         <Hint>
-                            Applications are by default restricted for usage by users of the service provider&apos;s
-                            tenant. If this application is SaaS enabled it is opened up for all the users of all the
-                            tenants.
+                            { t("devPortal:components.applications.forms.advancedConfig.fields.saas.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -188,12 +193,16 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             name="skipConsentLogin"
                             label=""
                             required={ false }
-                            requiredErrorMessage="this is needed"
+                            requiredErrorMessage={
+                                t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                    ".skipConsentLogin.validations.empty")
+                            }
                             value={ config?.skipLoginConsent ? [ "skipLoginConsent" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
-                                    label: "Skip login consent",
+                                    label: t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                        ".skipConsentLogin.label"),
                                     value: "skipLoginConsent"
                                 }
                             ] }
@@ -201,7 +210,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             data-testid={ `${ testId }-skip-login-consent-checkbox` }
                         />
                         <Hint>
-                            User consent will be skipped during login flows.
+                            { t("devPortal:components.applications.forms.advancedConfig.fields.skipConsentLogin" +
+                                ".hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -211,12 +221,16 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             name="skipConsentLogout"
                             label=""
                             required={ false }
-                            requiredErrorMessage="this is needed"
+                            requiredErrorMessage={
+                                t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                    ".skipConsentLogout.validations.empty")
+                            }
                             value={ config?.skipLogoutConsent ? [ "skipLogoutConsent" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
-                                    label: "Skip logout consent",
+                                    label: t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                        ".skipConsentLogout.label"),
                                     value: "skipLogoutConsent"
                                 }
                             ] }
@@ -224,7 +238,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             data-testid={ `${ testId }-skip-logout-consent-checkbox` }
                         />
                         <Hint>
-                            User consent will be skipped during logout flows.
+                            { t("devPortal:components.applications.forms.advancedConfig.fields.skipConsentLogout" +
+                                ".hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -234,12 +249,16 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             name="returnAuthenticatedIdpList"
                             label=""
                             required={ false }
-                            requiredErrorMessage="this is needed"
+                            requiredErrorMessage={
+                                t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                    ".returnAuthenticatedIdpList.validations.empty")
+                            }
                             value={ config?.returnAuthenticatedIdpList ? [ "returnAuthenticatedIdpList" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
-                                    label: "Return authenticated idP list",
+                                    label: t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                        ".returnAuthenticatedIdpList.label"),
                                     value: "returnAuthenticatedIdpList"
                                 }
                             ] }
@@ -247,8 +266,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             data-testid={ `${ testId }-return-authenticated-idp-list-checkbox` }
                         />
                         <Hint>
-                            The list of authenticated Identity Providers will be returned in the authentication
-                            response.
+                            { t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                ".returnAuthenticatedIdpList.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -258,12 +277,16 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             name="enableAuthorization"
                             label=""
                             required={ false }
-                            requiredErrorMessage="this is needed"
+                            requiredErrorMessage={
+                                t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                    ".enableAuthorization.validations.empty")
+                            }
                             value={ config?.enableAuthorization ? [ "enableAuthorization" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
-                                    label: "Enable authorization",
+                                    label: t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                        ".enableAuthorization.label"),
                                     value: "enableAuthorization"
                                 }
                             ] }
@@ -271,17 +294,23 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             data-testid={ `${ testId }-enable-authorization-checkbox` }
                         />
                         <Hint>
-                            Decides whether authorization policies needs to be engaged during authentication
-                            flows.
+                            { t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                ".enableAuthorization.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Divider/>
-                        <Heading as="h5">Certificate</Heading>
+                        <Heading as="h5">
+                            { t("devPortal:components.applications.forms.advancedConfig.sections.certificate" +
+                                ".heading") }
+                        </Heading>
                         <Field
-                            label="Type"
+                            label={
+                                t("devPortal:components.applications.forms.advancedConfig.sections.certificate" +
+                                    ".fields.type.label")
+                            }
                             name="type"
                             default={ CertificateTypeInterface.JWKS }
                             listen={
@@ -293,11 +322,13 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             value={ config?.certificate?.type }
                             children={ [
                                 {
-                                    label: "Use JWKS endpoint",
+                                    label: t("devPortal:components.applications.forms.advancedConfig.sections" +
+                                        ".certificate.fields.type.children.jwks.label"),
                                     value: CertificateTypeInterface.JWKS
                                 },
                                 {
-                                    label: "Provide certificate",
+                                    label: t("devPortal:components.applications.forms.advancedConfig.sections" +
+                                        ".certificate.fields.type.children.pem.label"),
                                     value: CertificateTypeInterface.PEM
                                 }
                             ] }
@@ -315,10 +346,19 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                     <>
                                         <Field
                                             name="certificateValue"
-                                            label="Value"
+                                            label={
+                                                t("devPortal:components.applications.forms.advancedConfig" +
+                                                    ".sections.certificate.fields.pemValue.label")
+                                            }
                                             required={ false }
-                                            requiredErrorMessage="Certificate value is required"
-                                            placeholder={ "Certificate in PEM format." }
+                                            requiredErrorMessage={
+                                                t("devPortal:components.applications.forms.advancedConfig" +
+                                                    ".sections.certificate.fields.pemValue.validations.empty")
+                                            }
+                                            placeholder={
+                                                t("devPortal:components.applications.forms.advancedConfig" +
+                                                    ".sections.certificate.fields.pemValue.placeholder")
+                                            }
                                             type="textarea"
                                             value={
                                                 (CertificateTypeInterface.PEM === config?.certificate?.type)
@@ -335,7 +375,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                             data-testid={ `${ testId }-certificate-textarea` }
                                         />
                                         < Hint>
-                                            The certificate (in PEM format) of the application.
+                                            { t("devPortal:components.applications.forms.advancedConfig.sections" +
+                                                ".certificate.fields.pemValue.hint") }
                                         </Hint>
                                         <LinkButton
                                             className="certificate-info-link-button"
@@ -343,7 +384,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                             disabled={ _.isEmpty(PEMValue) }
                                             data-testid={ `${ testId }-certificate-info-button` }
                                         >
-                                            View certificate info
+                                            { t("devPortal:components.applications.forms.advancedConfig.sections" +
+                                                ".certificate.fields.pemValue.actions.view") }
                                         </LinkButton>
                                     </>
                                 )
@@ -351,15 +393,29 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                     <>
                                         <Field
                                             name="jwksValue"
-                                            label="Value"
+                                            label={
+                                                t("devPortal:components.applications.forms.advancedConfig" +
+                                                    ".sections.certificate.fields.jwksValue.label")
+                                            }
                                             required={ false }
-                                            requiredErrorMessage="Certificate value is required"
-                                            placeholder={ "Application JWKS endpoint URL." }
+                                            requiredErrorMessage={
+                                                t("devPortal:components.applications.forms.advancedConfig" +
+                                                    ".sections.certificate.fields.jwksValue.validations.empty")
+                                            }
+                                            placeholder={
+                                                t("devPortal:components.applications.forms.advancedConfig" +
+                                                    ".sections.certificate.fields.jwksValue.placeholder") }
                                             type="text"
                                             validation={ (value: string, validation: Validation) => {
                                                 if (!FormValidation.url(value)) {
                                                     validation.isValid = false;
-                                                    validation.errorMessages.push("This is not a valid URL");
+                                                    validation.errorMessages.push(
+                                                        t(
+                                                            "devPortal:components.applications.forms" +
+                                                            ".advancedConfig.sections.certificate.fields.jwksValue" +
+                                                            ".validations.invalid"
+                                                        )
+                                                    );
                                                 }
                                             } }
                                             value={
@@ -387,7 +443,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                     className="form-button"
                                     data-testid={ `${ testId }-submit-button` }
                                 >
-                                    Update
+                                    { t("common:update") }
                                 </Button>
                             </Grid.Column>
                         </Grid.Row>

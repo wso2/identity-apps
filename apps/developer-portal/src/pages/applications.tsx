@@ -19,6 +19,7 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { I18n } from "@wso2is/i18n";
 import { PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, {
@@ -43,22 +44,22 @@ import { AppState } from "../store";
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
         key: 1,
-        text: "Name",
+        text: I18n.instance.t("common:name"),
         value: "name"
     },
     {
         key: 2,
-        text: "Type",
+        text: I18n.instance.t("common:type"),
         value: "type"
     },
     {
         key: 3,
-        text: "Created date",
+        text: I18n.instance.t("common:createdOn"),
         value: "createdDate"
     },
     {
         key: 4,
-        text: "Last updated",
+        text: I18n.instance.t("common:lastUpdatedOn"),
         value: "lastUpdated"
     }
 ];
@@ -239,7 +240,8 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                                     history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
                                 } }
                             >
-                                <Icon name="add"/>New Application
+                                <Icon name="add"/>
+                                { t("devPortal:components.applications.list.actions.add") }
                             </PrimaryButton>
                         )
                         : null

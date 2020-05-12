@@ -20,6 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
 import {
     ProvisioningConfigurationInterface,
@@ -54,6 +55,8 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
         useStoreList,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const [isProxyModeOn, setIsProxyModeOn] = useState<boolean>(false);
 
@@ -118,7 +121,8 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                             }
                             children={ [
                                 {
-                                    label: "Proxy mode",
+                                    label: t("devPortal:components.applications.forms.provisioningConfig.fields" +
+                                        ".proxyMode.label"),
                                     value: "modeOn"
                                 }
                             ] }
@@ -126,7 +130,8 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                             data-testid={ `${ testId }-proxy-mode-checkbox` }
                         />
                         <Hint>
-                            Users/Groups are not provisioned to the user store. They are only outbound provisioned.
+                            { t("devPortal:components.applications.forms.provisioningConfig.fields.proxyMode" +
+                                ".hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -134,7 +139,10 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="provisioningUserstoreDomain"
-                            label="Provisioning userstore domain"
+                            label={
+                                t("devPortal:components.applications.forms.provisioningConfig.fields" +
+                                    ".userstoreDomain.label")
+                            }
                             required={ false }
                             requiredErrorMessage=""
                             type="dropdown"
@@ -146,7 +154,8 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                             data-testid={ `${ testId }-provisioning-userstore-domain-dropdown` }
                         />
                         <Hint>
-                            Select userstore domain name to provision users and groups.
+                            { t("devPortal:components.applications.forms.provisioningConfig.fields" +
+                                ".userstoreDomain.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -161,7 +170,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                                     className="form-button"
                                     data-testid={ `${ testId }-submit-button` }
                                 >
-                                    Update
+                                    { t("common:update") }
                                 </Button>
                             </Grid.Column>
                         </Grid.Row>

@@ -92,9 +92,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
-
     const { t } = useTranslation();
+
+    const dispatch = useDispatch();
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);

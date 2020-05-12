@@ -20,6 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import { AppAvatar, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
 import { MainApplicationInterface } from "../../../models";
 
@@ -50,6 +51,8 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
     /**
      * Submits the form programmatically if triggered from outside.
      */
@@ -75,13 +78,22 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                             <Heading size="small" className="name">{ summary.name }</Heading>
                         ) }
                         { summary?.advancedConfigurations?.discoverableByEndUsers && (
-                            <Label className="info-label">Discoverable</Label>
+                            <Label className="info-label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                    ".discoverable.heading") }
+                            </Label>
                         ) }
                         { summary?.inboundProtocolConfiguration?.oidc?.publicClient && (
-                            <Label className="info-label">Public</Label>
+                            <Label className="info-label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                    ".public.heading") }
+                            </Label>
                         ) }
                         { summary?.inboundProtocolConfiguration?.oidc?.refreshToken?.renewRefreshToken && (
-                            <Label className="info-label">Renew RefreshToken</Label>
+                            <Label className="info-label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                    ".renewRefreshToken.heading") }
+                            </Label>
                         ) }
                         { summary?.description && (
                             <div className="description">{ summary.description }</div>
@@ -92,7 +104,10 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
             { summary?.accessUrl && (
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                        <div className="label">Access URL</div>
+                        <div className="label">
+                            { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                ".accessURL.heading") }
+                        </div>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                         <div className="value url">{ summary.accessUrl }</div>
@@ -102,7 +117,10 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
             { summary?.inboundProtocolConfiguration?.saml?.manualConfiguration?.issuer && (
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                        <div className="label">Issuer</div>
+                        <div className="label">
+                            { t("devPortal:components.applications.addWizard.steps.summary.sections.issuer" +
+                                ".heading") }
+                        </div>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                         <div className="value">
@@ -114,7 +132,10 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
             { summary?.inboundProtocolConfiguration?.saml?.manualConfiguration?.serviceProviderQualifier && (
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                        <div className="label">Application qualifier</div>
+                        <div className="label">
+                            { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                ".applicationQualifier.heading") }
+                        </div>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                         <div className="value">
@@ -130,7 +151,10 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                     ? (
                         <Grid.Row className="summary-field" columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                                <div className="label">Grant Type(s)</div>
+                                <div className="label">
+                                    { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                        ".grantType.heading")}
+                                </div>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                                 <Label.Group>
@@ -150,7 +174,10 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                 summary?.inboundProtocolConfiguration?.saml?.manualConfiguration?.assertionConsumerUrls && (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Assertion consumer URL(s)</div>
+                            <div className="label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                    ".assertionURLs.heading") }
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             {
@@ -167,7 +194,10 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                 summary?.inboundProtocolConfiguration?.oidc?.callbackURLs && (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Callback URL(s)</div>
+                            <div className="label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                    ".callbackURLs.heading") }
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             {
@@ -188,7 +218,10 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                 summary?.inboundProtocolConfiguration?.wsTrust?.audience && (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Audience</div>
+                            <div className="label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                    ".audience.heading") }
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             <div
@@ -201,7 +234,10 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                 summary?.inboundProtocolConfiguration?.wsTrust?.certificateAlias && (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Certificate alias</div>
+                            <div className="label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                    ".certificateAlias.heading") }
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             <div className="value">{ summary?.inboundProtocolConfiguration?.wsTrust
@@ -214,7 +250,10 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                 summary?.inboundProtocolConfiguration?.passiveSts?.realm && (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Realm</div>
+                            <div className="label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections" +
+                                    ".realm.heading") }
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             <div className="value">{ summary?.inboundProtocolConfiguration?.passiveSts.realm }</div>
@@ -226,7 +265,10 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                 summary?.inboundProtocolConfiguration?.passiveSts?.replyTo && (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">Audience</div>
+                            <div className="label">
+                                { t("devPortal:components.applications.addWizard.steps.summary.sections.audience" +
+                                    ".heading") }
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             <div className="value url">{ summary?.inboundProtocolConfiguration?.passiveSts

@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, Input, Label, Popup } from "semantic-ui-react";
 
 interface URLInputComponentInterface extends TestableComponentInterface {
@@ -71,6 +72,8 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
         readOnly,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const [changeUrl, setChangeUrl] = useState<string>("");
     const [predictValue, setPredictValue] = useState<string[]>([]);
@@ -249,7 +252,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                                 )
                             }
                             position="top center"
-                            content="Add URL"
+                            content={ t("common:addURL") }
                             inverted
                         />
                     </Input>
@@ -265,7 +268,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                         duplicateURL &&
                         (
                             <Label basic color="red" pointing>
-                                This URL is already added
+                                { t("common:duplicateURLError") }
                             </Label>
                         )
                     }

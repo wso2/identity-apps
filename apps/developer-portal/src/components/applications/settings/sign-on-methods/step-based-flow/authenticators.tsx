@@ -91,11 +91,11 @@ document.body.appendChild(portal);
  * Component to render the list of authenticators.
  *
  * @param {AuthenticatorsPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
 export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     props: AuthenticatorsPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         authenticators,

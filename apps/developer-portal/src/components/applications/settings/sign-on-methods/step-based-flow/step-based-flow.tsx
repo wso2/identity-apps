@@ -22,6 +22,7 @@ import { GenericIcon, Heading, Hint, PrimaryButton } from "@wso2is/react-compone
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Card, Divider, DropdownProps, Form, Grid, Icon, Popup } from "semantic-ui-react";
 import { AuthenticationStep } from "./authentication-step";
@@ -106,6 +107,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         triggerUpdate,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const dispatch = useDispatch();
 
@@ -194,9 +197,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         if (options.find((option) => option.authenticator === authenticator?.defaultAuthenticator?.name)) {
             dispatch(addAlert({
-                description: "The same authenticator is not allowed to repeated in a single step.",
+                description: t("devPortal:components.applications.notifications.duplicateAuthenticationStep" +
+                    ".genericError.description"),
                 level: AlertLevels.WARNING,
-                message: "Not allowed"
+                message: t("devPortal:components.applications.notifications.duplicateAuthenticationStep" +
+                    ".genericError.message")
             }));
 
             return false;
@@ -296,9 +301,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         if (steps.length <= 1) {
             dispatch(addAlert({
-                description: "At least one authentication step is required.",
+                description: t("devPortal:components.applications.notifications.authenticationStepMin" +
+                    ".genericError.description"),
                 level: AlertLevels.WARNING,
-                message: "Removal error"
+                message: t("devPortal:components.applications.notifications.authenticationStepMin.genericError" +
+                    ".message")
             }));
 
             return;
@@ -362,10 +369,11 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         if (found) {
             dispatch(addAlert({
-                description: "There is an empty authentication step. Please remove it or add authenticators to " +
-                    "proceed.",
+                description: t("devPortal:components.applications.notifications.emptyAuthenticationStep" +
+                    ".genericError.description"),
                 level: AlertLevels.WARNING,
-                message: "Update error"
+                message: t("devPortal:components.applications.notifications.emptyAuthenticationStep.genericError" +
+                    ".message")
             }));
 
             return false;
@@ -391,11 +399,17 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                     <Grid>
                         <Grid.Row>
                             <Grid.Column computer={ showAuthenticatorsSidePanel ? 16 : 14 }>
-                                <Heading as="h4">Authentication flow</Heading>
-                                <Heading as="h5">Step based configuration</Heading>
+                                <Heading as="h4">
+                                    { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
+                                        ".authenticationFlow.heading") }
+                                </Heading>
+                                <Heading as="h5">
+                                    { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
+                                        ".authenticationFlow.sections.stepBased.heading") }
+                                </Heading>
                                 <Hint>
-                                    Create authentication steps by dragging the local/federated authenticators on to the
-                                    relevant steps.
+                                    { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
+                                        ".authenticationFlow.sections.stepBased.hint") }
                                 </Hint>
                             </Grid.Column>
                             {
@@ -403,7 +417,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                     <Grid.Column computer={ 2 }>
                                         <Card>
                                             <Card.Content>
-                                                <Heading as="h6" floated="left" compact>Authenticators</Heading>
+                                                <Heading as="h6" floated="left" compact>
+                                                    { t("common:authenticator_plural") }
+                                                </Heading>
                                                 <Popup
                                                     trigger={ (
                                                         <div
@@ -422,7 +438,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                         </div>
                                                     ) }
                                                     position="top center"
-                                                    content="Maximize"
+                                                    content={ t("common:maximize") }
                                                     inverted
                                                 />
                                             </Card.Content>
@@ -440,9 +456,18 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                 <Form.Select
                                                     inline
                                                     compact
-                                                    label="Use Subject identifier from"
+                                                    label={
+                                                        t("devPortal:components.applications.edit.sections" +
+                                                            ".signOnMethod.sections.authenticationFlow.sections" +
+                                                            ".stepBased.forms.fields.subjectIdentifierFrom.label")
+                                                    }
                                                     className="mr-2"
-                                                    placeholder="Select step"
+                                                    placeholder={
+                                                        t("devPortal:components.applications.edit.sections" +
+                                                            ".signOnMethod.sections.authenticationFlow.sections" +
+                                                            ".stepBased.forms.fields.subjectIdentifierFrom" +
+                                                            ".placeholder")
+                                                    }
                                                     scrolling
                                                     options={
                                                         authenticationSteps
@@ -451,7 +476,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                         && authenticationSteps.map((step, index) => {
                                                             return {
                                                                 key: step.id,
-                                                                text: `Step ${ index + 1 }`,
+                                                                text: `${ t("common:step") } ${ index + 1 }`,
                                                                 value: index + 1
                                                             }
                                                         })
@@ -471,9 +496,17 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                 <Form.Select
                                                     inline
                                                     compact
-                                                    label="Use Attributes from"
+                                                    label={
+                                                        t("devPortal:components.applications.edit.sections" +
+                                                            ".signOnMethod.sections.authenticationFlow.sections" +
+                                                            ".stepBased.forms.fields.attributesFrom.label")
+                                                    }
                                                     className="mr-2"
-                                                    placeholder="Select step"
+                                                    placeholder={
+                                                        t("devPortal:components.applications.edit.sections" +
+                                                            ".signOnMethod.sections.authenticationFlow.sections" +
+                                                            ".stepBased.forms.fields.attributesFrom.placeholder")
+                                                    }
                                                     scrolling
                                                     options={
                                                         authenticationSteps
@@ -482,7 +515,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                         && authenticationSteps.map((step, index) => {
                                                             return {
                                                                 key: step.id,
-                                                                text: `Step ${ index + 1 }`,
+                                                                text: `${ t("common:step") } ${ index + 1 }`,
                                                                 value: index + 1
                                                             }
                                                         })
@@ -499,7 +532,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                             onClick={ handleAuthenticationStepAdd }
                                             data-testid={ `${ testId }-new-authentication-step-button` }
                                         >
-                                            <Icon name="add"/>New Authentication Step
+                                            <Icon name="add"/>
+                                            { t("devPortal:components.applications.edit.sections.signOnMethod" +
+                                                ".sections.authenticationFlow.sections.stepBased.actions.addStep") }
                                         </PrimaryButton>
                                     </Grid.Column>
                                 </Grid.Row>
@@ -543,7 +578,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                     </Grid>
                 </div>
                 <AuthenticatorSidePanel
-                    heading="Authenticators"
+                    heading={ t("common:authenticator_plural") }
                     onSidePanelVisibilityToggle={ toggleAuthenticatorsSidePanelVisibility }
                     readOnly={ readOnly }
                     ref={ authenticatorsSidePanelRef }

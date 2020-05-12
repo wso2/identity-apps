@@ -27,6 +27,7 @@ import React, {
     forwardRef,
     useState
 } from "react";
+import { useTranslation } from "react-i18next";
 import { Accordion, Icon, Menu, Popup, Segment, Sidebar } from "semantic-ui-react";
 import { AdaptiveAuthTemplateInterface } from "../../../../../models";
 
@@ -90,6 +91,8 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
             readOnly,
             [ "data-testid" ]: testId
         } = props;
+
+        const { t } = useTranslation();
 
         const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
 
@@ -183,7 +186,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                                                                 />
                                                                             ) }
                                                                             position="top center"
-                                                                            content="Add"
+                                                                            content={ t("common:add") }
                                                                             inverted
                                                                         />
                                                                     )

@@ -22,6 +22,7 @@ import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
 import { PassiveStsConfigurationInterface } from "../../../models";
 
@@ -55,6 +56,8 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
     /**
      * Prepares form values for submit.
      *
@@ -80,17 +83,24 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="realm"
-                            label="Realm"
+                            label={
+                                t("devPortal:components.applications.forms.inboundSTS.fields.realm.label")
+                            }
                             required={ true }
-                            requiredErrorMessage="Enter the realm."
-                            placeholder="Enter realm."
+                            requiredErrorMessage={
+                                t("devPortal:components.applications.forms.inboundSTS.fields.realm.validations" +
+                                    ".empty")
+                            }
+                            placeholder={
+                                t("devPortal:components.applications.forms.inboundSTS.fields.realm.placeholder")
+                            }
                             type="text"
                             value={ initialValues?.realm }
                             readOnly={ readOnly || !(_.isEmpty(initialValues?.realm)) }
                             data-testid={ `${ testId }-realm-input` }
                         />
                         <Hint disabled={ !(_.isEmpty(initialValues?.realm)) }>
-                            Enter realm identifier for passive sts
+                            { t("devPortal:components.applications.forms.inboundSTS.fields.realm.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -98,14 +108,22 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="replyTo"
-                            label="Reply URL"
+                            label={ t("devPortal:components.applications.forms.inboundSTS.fields.replyTo.label") }
                             required={ true }
-                            requiredErrorMessage="Enter the reply url."
-                            placeholder="Enter url"
+                            requiredErrorMessage={
+                                t("devPortal:components.applications.forms.inboundSTS.fields.replyTo.validations" +
+                                    ".empty")
+                            }
+                            placeholder={
+                                t("devPortal:components.applications.forms.inboundSTS.fields.replyTo.placeholder")
+                            }
                             validation={ (value: string, validation: Validation) => {
                                 if (!FormValidation.url(value)) {
                                     validation.isValid = false;
-                                    validation.errorMessages.push("This is not a valid URL");
+                                    validation.errorMessages.push(
+                                        t("devPortal:components.applications.forms.inboundSTS.fields.replyTo" +
+                                            ".validations.invalid")
+                                    );
                                 }
                             } }
                             type="text"
@@ -113,7 +131,9 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                             readOnly={ readOnly }
                             data-testid={ `${ testId }-reply-to-url-input` }
                         />
-                        <Hint>Enter RP endpoint URL that handles the response.</Hint>
+                        <Hint>
+                            { t("devPortal:components.applications.forms.inboundSTS.fields.replyTo.hint") }
+                        </Hint>
                     </Grid.Column>
                 </Grid.Row>
                 {
@@ -127,7 +147,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                                     className="form-button"
                                     data-testid={ `${ testId }-submit-button` }
                                 >
-                                    Update
+                                    { t("common:update") }
                                 </Button>
                             </Grid.Column>
                         </Grid.Row>
