@@ -24,7 +24,7 @@ import {
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 
 export type ConfigInterface = CommonConfigInterface<
-    DeploymentConfigInterface,
+    CommonDeploymentConfigInterface,
     ServiceResourceEndpointsInterface,
     FeatureConfigInterface,
     I18nModuleOptionsInterface,
@@ -77,22 +77,6 @@ export interface FeatureConfigInterface {
 }
 
 /**
- * Deployment config interface for dev portal.
- */
-export interface DeploymentConfigInterface extends CommonDeploymentConfigInterface {
-    /**
-     * Base name of the user portal.
-     * ex: `/user-portal` ot `/t/wos2.com/user-portal`
-     */
-    userPortalBaseName: string;
-    /**
-     * User portal host.
-     * ex: `https://localhost:9000`
-     */
-    userPortalClientHost: string;
-}
-
-/**
  * Dev portal UI config interface.
  */
 export interface UIConfigInterface {
@@ -108,10 +92,6 @@ export interface UIConfigInterface {
      * Application(SPs) that shouldn't be allowed to delete.
      */
     doNotDeleteIdentityProviders?: string[];
-    /**
-     * Path for the user portal personal info page.
-     */
-    myAccountPath?: string;
     /**
      * Title text.
      * ex: `WSO2 Identity Server`

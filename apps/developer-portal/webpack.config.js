@@ -23,40 +23,14 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const WriteFilePlugin = require("write-file-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const deploymentConfig = require("./src/public/deployment.config.json");
 
 module.exports = (env) => {
-    const basename = "developer-portal";
+    const basename = deploymentConfig.appBaseName;
     const devServerPort = 9001;
     const publicPath = `/${basename}`;
+
     const isProd = env.NODE_ENV === "production";
-    const debug = false;
-
-    // user-portal related variables
-    const userPortalBaseName = "user-portal";
-    const userPortalDevServerPort = 9000;
-
-    /**
-     * Deployment configurations
-     */
-    const serverHostDefault = "https://localhost:9443";
-    const serverOriginDefault = serverHostDefault;
-    const clientHostDefault = isProd ? serverHostDefault : `https://localhost:${devServerPort}`;
-    const clientOriginDefault = clientHostDefault;
-    const clientIdDefault = "DEVELOPER_PORTAL";
-    const applicationName = "Developer Portal";
-    const tenantDefault = "carbon.super";
-    const tenantPathDefault = "";
-
-    const userPortalClientHostDefault =
-        env.NODE_ENV === "prod" ? serverHostDefault : `https://localhost:${userPortalDevServerPort}`;
-
-    /**
-     * App configurations
-     */
-    const loginPagePath = "/login";
-    const logoutPagePath = "/logout";
-    const homePagePath = "/applications";
-    const externalLoginCallbackURL = `${publicPath}${loginPagePath}`;
 
     /**
      * Build configurations
@@ -64,9 +38,7 @@ module.exports = (env) => {
     const distFolder = path.resolve(__dirname, "build", basename);
     const faviconImage = path.resolve(__dirname, "node_modules",
         "@wso2is/theme/dist/lib/themes/default/assets/images/favicon.ico");
-    const titleText = "WSO2 Identity Server";
-    const copyrightText = `${titleText} \u00A9 ${ new Date().getFullYear() }`;
-    const i18nResourcePath = path.join("resources", "i18n");
+    const titleText = deploymentConfig.ui.appTitle;
 
     const compileAppIndex = () => {
         if (isProd) {
@@ -117,7 +89,7 @@ module.exports = (env) => {
             rules: [
                 {
                     test: /\.css$/,
-                    use: ['style-loader', 'css-loader']
+                    use: ["style-loader", "css-loader"]
                 },
                 {
                     test: /\.(png|jpg|cur|gif|eot|ttf|woff|woff2)$/,
@@ -214,52 +186,28 @@ module.exports = (env) => {
                     to: "libs"
                 },
                 {
-                    context: path.resolve(__dirname, 'node_modules', '@wso2is', 'theme'),
-                    from: 'src',
-                    to: 'themes-less'
+                    context: path.resolve(__dirname, "node_modules", "@wso2is", "theme"),
+                    from: "src",
+                    to: "themes-less"
                 },
                 {
                     context: path.join(__dirname, "node_modules", "@wso2is", "i18n"),
                     from: path.join("dist", "bundle"),
-                    to: i18nResourcePath
+                    to: path.join("resources", "i18n")
                 },
                 {
                     context: path.join(__dirname, "src"),
                     from: "public",
                     to: ".",
                     force: true
-                },
-                {
-                    from: "./app.config.json",
-                    to: "./app.config.json",
-                    force: true
                 }
             ]),
             compileAppIndex(),
             new webpack.DefinePlugin({
-                APP_BASENAME: JSON.stringify(basename),
-                APP_HOME_PATH: JSON.stringify(homePagePath),
-                APP_LOGIN_PATH: JSON.stringify(loginPagePath),
-                APP_LOGOUT_PATH: JSON.stringify(logoutPagePath),
-                APP_NAME: JSON.stringify(applicationName),
-                COPYRIGHT_TEXT_DEFAULT: JSON.stringify(copyrightText),
-                CLIENT_ID_DEFAULT: JSON.stringify(clientIdDefault),
-                CLIENT_HOST_DEFAULT: JSON.stringify(clientHostDefault),
-                CLIENT_ORIGIN_DEFAULT: JSON.stringify(clientOriginDefault),
-                DEBUG_MODE: JSON.stringify(debug),
-                I18N_RESOURCE_PATH: JSON.stringify(i18nResourcePath),
-                LOGIN_CALLBACK_URL: JSON.stringify(externalLoginCallbackURL),
-                SERVER_HOST_DEFAULT: JSON.stringify(serverHostDefault),
-                SERVER_ORIGIN_DEFAULT: JSON.stringify(serverOriginDefault),
-                TENANT_DEFAULT: JSON.stringify(tenantDefault),
-                TENANT_PATH_DEFAULT: JSON.stringify(tenantPathDefault),
-                TITLE_TEXT_DEFAULT: JSON.stringify(titleText),
-                USER_PORTAL_BASENAME: JSON.stringify(userPortalBaseName),
-                USER_PORTAL_CLIENT_HOST_DEFAULT: JSON.stringify(userPortalClientHostDefault),
-                "typeof window": JSON.stringify("object"),
                 "process.env": {
                     NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-                }
+                },
+                "typeof window": JSON.stringify("object")
             })
         ],
         devtool: "eval",

@@ -1,0 +1,22 @@
+{
+    "accountAppURL": {
+        "origin": "https://localhost:9443",
+        "path": "/overview"
+    },
+    "appBaseName": "developer-portal",
+    "clientID": "ADMIN_PORTAL",
+    "debug": false,
+    "i18nResourcePath": "",
+    "loginCallbackPath": "/login",
+    "logoutCallbackPath": "/login",
+    "routePaths": {
+        "home": "/applications",
+        "login": "/login",
+        "logout": "/logout"
+    },
+    "ui": {
+        "appCopyright": "WSO2 Identity Server",
+        "appTitle": "WSO2 Identity Server | Identity Server - Developer Dashboard",
+        "appName": "Identity Server - Developer Dashboard"
+    }
+}

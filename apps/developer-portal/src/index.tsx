@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { ContextUtils, HttpUtils } from "@wso2is/core/utils";
-import { StringUtils } from "@wso2is/core/utils";
+import { ContextUtils, HttpUtils, StringUtils } from "@wso2is/core/utils";
 import {
     I18n,
     I18nInstanceInitException,
@@ -46,7 +45,7 @@ HttpUtils.setupHttpClient(true, onHttpRequestStart, onHttpRequestSuccess, onHttp
 // Set up the i18n module.
 I18n.init({
     ...Config.getI18nConfig()?.initOptions,
-    debug: Config.getDeploymentConfig().debug
+    debug: window["AppUtils"].getConfig().debug
     },
     Config.getI18nConfig()?.overrideOptions,
     Config.getI18nConfig()?.langAutoDetectEnabled,
