@@ -163,10 +163,14 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                             data-testid={ `${ testId }-image` }
                         />
                     ) }
-                    <Header className="page-header ellipsis" as={ titleAs } textAlign={ titleTextAlign }>
-                        {
-                            isLoading
-                                ? (
+
+                    {
+                        isLoading
+                            ? (
+                                <Header className="page-header ellipsis"
+                                    as={ titleAs }
+                                    textAlign={ titleTextAlign }
+                                >
                                     <div style={ { width: "250px" } }>
                                         <Placeholder fluid>
                                             <Placeholder.Header>
@@ -175,27 +179,28 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                                             </Placeholder.Header>
                                         </Placeholder>
                                     </div>
-                                )
-                                : (
-                                    <Header
-                                        className="page-header ellipsis"
-                                        as={ titleAs }
-                                        textAlign={ titleTextAlign }
-                                        data-testid={ `${ testId }-header` }
-                                    >
-                                        { title && title }
-                                        { description && (
-                                            <Header.Subheader
-                                                className="sub-header ellipsis"
-                                                data-testid={ `${ testId }-sub-header` }
-                                            >
-                                                { description }
-                                            </Header.Subheader>
-                                        ) }
-                                    </Header>
-                                )
-                        }
-                    </Header>
+                                </Header>
+                            )
+                            : (
+                                <Header
+                                    className="page-header ellipsis"
+                                    as={ titleAs }
+                                    textAlign={ titleTextAlign }
+                                    data-testid={ `${ testId }-header` }
+                                >
+                                    { title && title }
+                                    { description && (
+                                        <Header.Subheader
+                                            className="sub-header ellipsis"
+                                            data-testid={ `${ testId }-sub-header` }
+                                        >
+                                            { description }
+                                        </Header.Subheader>
+                                    ) }
+                                </Header>
+                            )
+                    }
+                    
                 </div>
                 {
                     bottomMargin && <Divider hidden/>
