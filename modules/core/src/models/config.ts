@@ -85,10 +85,6 @@ export interface CommonDeploymentConfigInterface {
      */
     clientOrigin: string;
     /**
-     * Debug mode toggle.
-     */
-    debug: boolean;
-    /**
      * Callback to directed on successful login.
      * ex: `/developer-portal/login`
      */

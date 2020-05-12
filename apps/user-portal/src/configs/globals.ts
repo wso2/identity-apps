@@ -34,7 +34,7 @@ interface RuntimeConfigInterface {
 }
 
 export const GlobalConfig: RuntimeConfigInterface = {
-    appBaseName: window["AppUtils"].getConfig().appBaseName,
+    appBaseName: window["AppUtils"].getConfig().appBaseWithTenant,
     appHomePath: window["AppUtils"].getConfig().routes.home,
     appLoginPath: window["AppUtils"].getConfig().routes.login,
     applicationName: window["AppUtils"].getConfig().ui.appName,

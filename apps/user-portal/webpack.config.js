@@ -198,10 +198,10 @@ module.exports = (env) => {
             ]),
             compileAppIndex(),
             new webpack.DefinePlugin({
-                "typeof window": JSON.stringify("object"),
                 "process.env": {
                     NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-                }
+                },
+                "typeof window": JSON.stringify("object")
             })
         ],
         devtool: "eval",

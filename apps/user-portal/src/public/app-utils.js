@@ -48,8 +48,9 @@ function extend(out) {
         continue;
 
         for (var key in arguments[i]) {
-        if (arguments[i].hasOwnProperty(key))
-            out[key] = arguments[i][key];
+            if ({}.hasOwnProperty.call(arguments[i], key)) {
+                out[key] = arguments[i][key];
+            }
         }
     }
 
@@ -57,45 +58,30 @@ function extend(out) {
 }
 
 var AppUtils = AppUtils || (function() {
-    var _args = {};
+    var _args = {},
+        _default = {},
+        _config = {};
 
     return {
-        init: function(Args) {
-            _args = Args;
-
-            _default = {
-                "clientOrigin": window.location.origin,
-                "serverOrigin": _args.serverOrigin || "https://localhost:9443"
+        getConfig: function() {
+            return {
+                appBase: _config.appBaseName,
+                appBaseWithTenant: this.getTenantPath() + "/" + _config.appBaseName,
+                clientID: (this.isSuperTenant()) ?
+                _config.clientID : _config.clientID + "_" + this.getTenantName(),
+                clientOrigin: _config.clientOrigin,
+                clientOriginWithTenant: _config.clientOrigin + this.getTenantPath(),
+                loginCallbackURL: _config.clientOrigin + this.getTenantPath() + "/" + _config.appBaseName + 
+                    _config.loginCallbackPath,
+                logoutCallbackURL: _config.clientOrigin + this.getTenantPath() + "/" + _config.appBaseName + 
+                    _config.logoutCallbackPath,
+                routes: _config.routePaths,
+                serverOrigin: _config.serverOrigin,
+                serverOriginWithTenant: _config.serverOrigin + this.getTenantPath(),
+                tenant: (this.isSuperTenant()) ? this.getSuperTenant() : this.getTenantName(),
+                tenantPath: this.getTenantPath(),
+                ui: _config.ui
             };
-
-            _config = _default;
-            
-            loadUserConfig(_args.deploymentConfigFile, function(response) {
-                var configResponse = JSON.parse(response);
-
-                if (!configResponse.hasOwnProperty("appBaseName"))
-                    throw "'appBaseName' config is missing in " + _args.deploymentConfigFile;
-                if (!configResponse.hasOwnProperty("clientID"))
-                    throw "'clientID' config is missing in " + _args.deploymentConfigFile;
-                if (!configResponse.hasOwnProperty("loginCallbackPath"))
-                    throw "'loginCallbackPath' config is missing in " + _args.deploymentConfigFile;
-                if (!configResponse.hasOwnProperty("logoutCallbackPath"))
-                    throw "'logoutCallbackPath' config is missing in " + _args.deploymentConfigFile;
-                if (!configResponse.hasOwnProperty("routePaths"))
-                    throw "'routePaths' config is missing in " + _args.deploymentConfigFile;
-                if (!configResponse.hasOwnProperty("ui"))
-                    throw "'ui' config is missing in " + _args.deploymentConfigFile;
-
-                _config = extend({}, _default, JSON.parse(response));     
-            });
-        },
-
-        isSuperTenant: function(){
-            return (this.getTenantName() === "");
-        },
-
-        getTenantPrefix: function() {
-            return _args.tenantPrefix || "t";
         },
 
         getSuperTenant: function() {
@@ -116,27 +102,47 @@ var AppUtils = AppUtils || (function() {
 
         getTenantPath: function() {
             return (this.getTenantName() !== "") ?
-                "/" + getTenantPrefix() + "/" + this.getTenantName() : "";
+                "/" + this.getTenantPrefix() + "/" + this.getTenantName() : "";
         },
 
-        getConfig: function() {
-            return {
-                appBase: this.getTenantPath() + "/" + _config.appBaseName,
-                clientID: (this.isSuperTenant()) ?
-                _config.clientID : _config.clientID + "_" + this.getTenantName(),
-                clientOrigin: _config.clientOrigin,
-                clientOriginWithTenant: _config.clientOrigin + this.getTenantPath(),
-                loginCallbackURL: _config.clientOrigin + this.getTenantPath() + "/" + _config.appBaseName + 
-                    _config.loginCallbackPath,
-                logoutCallbackURL: _config.clientOrigin + this.getTenantPath() + "/" + _config.appBaseName + 
-                    _config.logoutCallbackPath,
-                routes: _config.routePaths,
-                serverOrigin: _config.serverOrigin,
-                serverOriginWithTenant: _config.serverOrigin + this.getTenantPath(),
-                tenant: (this.isSuperTenant()) ? this.getSuperTenant() : this.getTenantName(),
-                tenantPath: this.getTenantPath(),
-                ui: _config.ui
+        getTenantPrefix: function() {
+            return _args.tenantPrefix || "t";
+        },
+
+        init: function(Args) {
+            _args = Args;
+
+            _default = {
+                "clientOrigin": window.location.origin,
+                "serverOrigin": _args.serverOrigin || "https://localhost:9443"
             };
+
+            _config = _default;
+
+            if (!_args.deploymentConfigFile) throw "AppUtils.init({deploymentConfigFile: value}) missing.";
+            
+            loadUserConfig(_args.deploymentConfigFile, function(response) {
+                var configResponse = JSON.parse(response);
+
+                if (!{}.hasOwnProperty.call(configResponse, "appBaseName"))
+                    throw "'appBaseName' config is missing in " + _args.deploymentConfigFile;
+                if (!{}.hasOwnProperty.call(configResponse, "clientID"))
+                    throw "'clientID' config is missing in " + _args.deploymentConfigFile;
+                if (!{}.hasOwnProperty.call(configResponse, "loginCallbackPath"))
+                    throw "'loginCallbackPath' config is missing in " + _args.deploymentConfigFile;
+                if (!{}.hasOwnProperty.call(configResponse, "logoutCallbackPath"))
+                    throw "'logoutCallbackPath' config is missing in " + _args.deploymentConfigFile;
+                if (!{}.hasOwnProperty.call(configResponse, "routePaths"))
+                    throw "'routePaths' config is missing in " + _args.deploymentConfigFile;
+                if (!{}.hasOwnProperty.call(configResponse, "ui"))
+                    throw "'ui' config is missing in " + _args.deploymentConfigFile;
+
+                _config = extend({}, _default, JSON.parse(response));     
+            });
+        },
+
+        isSuperTenant: function(){
+            return (this.getTenantName() === "");
         }
     };
 }());
