@@ -16,9 +16,7 @@
  * under the License.
  */
 
-export * from "./create-template/add-template";
-export * from "./create-template/add-template-type";
-export * from "./create-template/add-template-type-wizard";
+export * from "./create-template";
 export * from "./template-list";
 export * from "./template-type-list";
 export * from "./view-template";

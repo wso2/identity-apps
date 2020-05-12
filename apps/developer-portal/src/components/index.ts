@@ -17,6 +17,7 @@
  */
 
 export * from "./applications";
+export * from "./email-templates";
 export * from "./identity-providers";
 export * from "./page-header";
 export * from "./notification";
