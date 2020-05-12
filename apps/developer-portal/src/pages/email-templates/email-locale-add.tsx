@@ -16,6 +16,7 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
 import * as CountryLanguage from "country-language";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -27,11 +28,26 @@ import { PageLayout } from "../../layouts";
 import { EmailTemplateDetails } from "../../models";
 
 /**
- * Component will render add view for a email template based on 
- * locale for selected email template type.
+ * Props for the add Templates Locale page.
  */
-export const AddTemplateLocale: FunctionComponent = (): ReactElement => {
-    
+type AddTemplateLocalePageInterface = TestableComponentInterface
+
+/**
+ * Component will render add view for a email template based on
+ * locale for selected email template type.
+ *
+ * @param {AddTemplateLocalePageInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const AddTemplateLocale: FunctionComponent<AddTemplateLocalePageInterface> = (
+    props: AddTemplateLocalePageInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
+
     const [ templateTypeId, setTemplateTypeId ] = useState<string>("");
     const [ templateId, setTemplateId ] = useState<string>("");
     const [ localeName, setLocaleName ] = useState<string>("");
@@ -96,8 +112,20 @@ export const AddTemplateLocale: FunctionComponent = (): ReactElement => {
             titleTextAlign="left"
             showBottomDivider={ true }
             bottomMargin={ false }
+            data-testid={ `${ testId }-page-layout` }
         >
-            <AddLocaleTemplate templateId={ templateId } templateTypeId={ templateTypeId } />
+            <AddLocaleTemplate
+                templateId={ templateId }
+                templateTypeId={ templateTypeId }
+                data-testid={ `${ testId }-form` }
+            />
         </PageLayout>
     )
+};
+
+/**
+ * Default props for the component.
+ */
+AddTemplateLocale.defaultProps = {
+    "data-testid": "email-locale-add"
 };

@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
@@ -31,10 +31,27 @@ import { ListLayout, PageLayout } from "../../layouts";
 import { AlertInterface, EmailTemplateType } from "../../models";
 
 /**
- * Component to list available email template types.
+ * Props for the Email Templates Types page.
  */
-export const EmailTemplateTypes = (): ReactElement => {
+type EmailTemplateTypesPageInterface = TestableComponentInterface
+
+/**
+ * Component to list available email template types.
+ *
+ * @param {EmailTemplateTypesPageInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const EmailTemplateTypes: FunctionComponent<EmailTemplateTypesPageInterface> = (
+    props: EmailTemplateTypesPageInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
+
     const dispatch = useDispatch();
+
     const { t } = useTranslation();
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -136,7 +153,8 @@ export const EmailTemplateTypes = (): ReactElement => {
             isLoading={ isTemplateTypesFetchRequestLoading }
             title="Email Templates Types"
             description="Create and manage templates types."
-            showBottomDivider={ true } 
+            showBottomDivider={ true }
+            data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
                 currentListSize={ listItemLimit }
@@ -148,18 +166,23 @@ export const EmailTemplateTypes = (): ReactElement => {
                 totalListSize={ emailTemplateTypes?.length }
                 rightActionPanel={
                     (
-                        <PrimaryButton onClick={ () => setShowNewTypeWizard(true) }>
+                        <PrimaryButton
+                            onClick={ () => setShowNewTypeWizard(true) }
+                            data-testid={ `${ testId }-list-layout-add-button` }
+                        >
                             <Icon name="add"/>
                             New Template Type
                         </PrimaryButton>
                     )
                 }
+                data-testid={ `${ testId }-list-layout` }
             >
                 <EmailTemplateTypeList
                     isLoading={ isTemplateTypesFetchRequestLoading }
                     onDelete={ deleteTemplateType }
                     onEmptyListPlaceholderActionClick={ () => setShowNewTypeWizard(true) }
-                    templateTypeList={ paginatedEmailTemplateTypes } 
+                    templateTypeList={ paginatedEmailTemplateTypes }
+                    data-testid={ `${ testId }-list` }
                 />
                 {
                     showNewTypeWizard && (
@@ -168,10 +191,18 @@ export const EmailTemplateTypes = (): ReactElement => {
                                 getTemplateTypes();
                                 setShowNewTypeWizard(false);
                             } }
+                            data-testid={ `${ testId }-add-wizard` }
                         />
                     ) 
                 }
             </ListLayout>
         </PageLayout>
     )
+};
+
+/**
+ * Default props for the component.
+ */
+EmailTemplateTypes.defaultProps = {
+    "data-testid": "email-template-types"
 };

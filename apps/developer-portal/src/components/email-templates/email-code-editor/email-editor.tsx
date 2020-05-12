@@ -16,11 +16,12 @@
 * under the License.
 */
 
-import React, { ReactElement, FunctionComponent, useEffect, useState } from "react";
-import { ResourceTab, CodeEditor } from "@wso2is/react-components";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { CodeEditor, ResourceTab } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { EMAIL_STARTER_TEMPLATE } from "../../../constants";
 
-interface EmailTemplateEditorPropsInterface {
+interface EmailTemplateEditorPropsInterface extends TestableComponentInterface {
     htmlContent: string;
     isReadOnly: boolean;
     isPreviewOnly?: boolean;
@@ -34,7 +35,9 @@ interface EmailTemplateEditorPropsInterface {
  * Util component to handle email template editing functionality and 
  * rendering the html content on an Iframe.
  * 
- * @param props - props required to edit email template
+ * @param {EmailTemplateEditorPropsInterface} props - props required to edit email template.
+ *
+ * @return {React.ReactElement}
  */
 export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInterface> = (
     props: EmailTemplateEditorPropsInterface
@@ -47,10 +50,11 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
         customClass,
         isPreviewOnly,
         isAddFlow,
-        isSignature
+        isSignature,
+        [ "data-testid" ]: testId
     } = props;
 
-    const [ content, setContent ] = useState<string>('')
+    const [ content, setContent ] = useState<string>("");
 
     useEffect(() => {
         if (isAddFlow && isSignature) {
@@ -58,15 +62,17 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
         } else {
             setContent(htmlContent);
         }
-    }, [htmlContent])
+    }, [htmlContent]);
 
     return (
-        <div className={ "email-code-editor " + customClass } >
+        <div className={ "email-code-editor " + customClass } data-testid={ testId }>
             {
                 isPreviewOnly ? 
-                    <div className="render-view">
+                    <div className="render-view" data-testid={ `${ testId }-preview-only-render-view` }>
                         <iframe id="iframe" srcDoc={ content }>
-                            <p>Your browser does not support iframes.</p>
+                            <p data-testid={ `${ testId }-iframe-unsupported-error` }>
+                                Your browser does not support iframes.
+                            </p>
                         </iframe>
                     </div>
                 :
@@ -76,12 +82,18 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                             {
                                 menuItem: "Preview",
                                 render: () => (
-                                    <ResourceTab.Pane className="render-view" attached={ false }>
+                                    <ResourceTab.Pane
+                                        className="render-view"
+                                        attached={ false }
+                                        data-testid={ `${ testId }-render-view` }
+                                    >
                                         <iframe id="iframe" srcDoc={ content }>
-                                            <p>Your browser does not support iframes.</p>
+                                            <p data-testid={ `${ testId }-iframe-unsupported-error` }>
+                                                Your browser does not support iframes.
+                                            </p>
                                         </iframe>
                                     </ResourceTab.Pane>
-                                ),
+                                )
                             },
                             {
                                 menuItem: "HTML Code",
@@ -101,17 +113,23 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                                             } }
                                             readOnly={ isReadOnly }
                                             theme={  "dark" }
+                                            data-testid={ `${ testId }-code-editor` }
                                         />
                                     </ResourceTab.Pane>
-                                ),
+                                )
                             }
-                        ] } 
+                        ] }
+                        data-testid={ `${ testId }-tabs` }
                     />
             }
         </div>
     )
-}
+};
 
+/**
+ * Default props for the component.
+ */
 EmailTemplateEditor.defaultProps = {
+    "data-testid": "email-template-editor",
     isPreviewOnly: false
-}
+};

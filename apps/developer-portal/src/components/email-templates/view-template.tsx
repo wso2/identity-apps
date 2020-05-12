@@ -16,16 +16,17 @@
 * under the License.
 */
 
-import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
-import { Modal, Grid } from "semantic-ui-react";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { ApplicationWizardStepIcons } from "../../configs";
+import { AxiosResponse } from "axios";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Grid, Modal } from "semantic-ui-react";
 import { EmailTemplateEditor } from "./email-code-editor";
 import { getTemplateDetails } from "../../api";
-import { AxiosResponse } from "axios";
+import { ApplicationWizardStepIcons } from "../../configs";
 import { EmailTemplate } from "../../models";
 
-interface ViewLocaleTemplatePropsInterface {
+interface ViewLocaleTemplatePropsInterface extends TestableComponentInterface {
     onCloseHandler: () => void;
     onEditHandler: () => void;
     templateTypeId: string;
@@ -35,7 +36,9 @@ interface ViewLocaleTemplatePropsInterface {
 /**
  * Component will render an output of the selected email template.
  * 
- * @param props - props required to render html email template
+ * @param {ViewLocaleTemplatePropsInterface} props - props required to render html email template
+ *
+ * @return {React.ReactElement}
  */
 export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterface> = (
     props: ViewLocaleTemplatePropsInterface
@@ -47,7 +50,8 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
         onCloseHandler,
         onEditHandler,
         templateTypeId,
-        templateId
+        templateId,
+        [ "data-testid" ]: testId
     } = props;
 
     useEffect(() => {
@@ -57,7 +61,7 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
                     setTemplateData(response.data);
                 }
             })
-    },[templateData !== undefined])
+    },[templateData !== undefined]);
 
     const WIZARD_STEPS = [{
         content: (
@@ -67,10 +71,12 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
                 isReadOnly
                 isAddFlow={ false }
                 isSignature={ false }
+                data-testid={ `${ testId }-email-template-editor` }
             />
         ),
         icon: ApplicationWizardStepIcons.general
-    }]
+    }];
+
     return (
         <Modal
             open={ true }
@@ -80,6 +86,7 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
             onClose={ onCloseHandler }
             closeOnDimmerClick={ false }
             closeOnEscape={ false }
+            data-testid={ `${ testId }-modal` }
         >
             <Modal.Header className="wizard-header template-type-wizard">
                 { templateData?.subject }
@@ -92,10 +99,20 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
                 <Grid>
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton floated="left" onClick={ () => { onCloseHandler() } }>Cancel</LinkButton>
+                            <LinkButton
+                                floated="left"
+                                onClick={ () => { onCloseHandler() } }
+                                data-testid={ `${ testId }-modal-cancel-button` }
+                            >
+                                Cancel
+                            </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <PrimaryButton floated="right" onClick={ () => { onEditHandler() } }>
+                            <PrimaryButton
+                                floated="right"
+                                onClick={ () => { onEditHandler() } }
+                                data-testid={ `${ testId }-modal-edit-button` }
+                            >
                                 Edit Template
                             </PrimaryButton>
                         </Grid.Column>
@@ -104,4 +121,11 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
             </Modal.Actions>
         </Modal>
     )
-}
+};
+
+/**
+ * Default props for the component.
+ */
+ViewLocaleTemplate.defaultProps = {
+    "data-testid": "view-locale-template"
+};

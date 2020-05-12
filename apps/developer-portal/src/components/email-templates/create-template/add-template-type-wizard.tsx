@@ -16,22 +16,22 @@
 * under the License.
 */
 
-import React, { ReactElement, FunctionComponent, useState } from "react";
-import { Modal, Grid } from "semantic-ui-react";
-import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { AddEmailTemplateType } from "./add-template-type";
-import { ApplicationWizardStepIcons } from "../../../configs";
-import { useTrigger } from "@wso2is/forms";
-import { createNewTemplateType } from "../../../api";
-import { AxiosResponse } from "axios";
-import { AlertLevels, AlertInterface } from "@wso2is/core/models";
-import { useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { history } from "../../../helpers";
+import { useTrigger } from "@wso2is/forms";
+import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
+import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Grid, Modal } from "semantic-ui-react";
+import { AddEmailTemplateType } from "./add-template-type";
+import { createNewTemplateType } from "../../../api";
+import { ApplicationWizardStepIcons } from "../../../configs";
 import { EMAIL_TEMPLATE_VIEW_PATH } from "../../../constants";
+import { history } from "../../../helpers";
 
-interface EmailTemplateTypeWizardProps {
+interface EmailTemplateTypeWizardProps extends TestableComponentInterface {
     onCloseHandler: () => void;
 }
 
@@ -39,24 +39,29 @@ interface EmailTemplateTypeWizardProps {
  * Wizard component to add a new email template type.
  * TODO : This component is still WIP.
  * 
- * @param props - props required for the wizard component.
+ * @param {EmailTemplateTypeWizardProps} props - props required for the wizard component.
+ *
+ * @return {React.ReactElement}
  */
 export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardProps> = (
     props: EmailTemplateTypeWizardProps
 ): ReactElement => {
-    const dispatch = useDispatch();
-    const { t } = useTranslation();
 
     const {
-        onCloseHandler
+        onCloseHandler,
+        [ "data-testid" ]: testId
     } = props;
+
+    const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     const [ currentStep, setCurrentWizardStep ] = useState<number>(0);
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
     const handleFormSubmit = (values: any): void => {
         createTemplateType(values.templateType);
-    }
+    };
 
     /**
      * Dispatches the alert object to the redux store.
@@ -72,11 +77,12 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
             <AddEmailTemplateType 
                 onSubmit={ (values) =>  handleFormSubmit(values) }
                 triggerSubmit={ finishSubmit }
+                data-testid={ `${ testId }-form` }
             />
         ),
         icon: ApplicationWizardStepIcons.general,
         title: "Template Type"
-    }]
+    }];
 
     const createTemplateType = (templateTypeName: string): void => {
         createNewTemplateType(templateTypeName).then((response: AxiosResponse) => {
@@ -102,7 +108,7 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
                 )
             });
         })
-    }
+    };
 
     return (
         <Modal
@@ -113,6 +119,7 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
             onClose={ onCloseHandler }
             closeOnDimmerClick={ false }
             closeOnEscape={ false }
+            data-testid={ testId }
         >
             <Modal.Header className="wizard-header template-type-wizard">
                 Create Email Template Type
@@ -125,10 +132,20 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
                 <Grid>
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton floated="left" onClick={ () => { onCloseHandler() } }>Cancel</LinkButton>
+                            <LinkButton
+                                floated="left"
+                                onClick={ () => { onCloseHandler() } }
+                                data-testid={ `${ testId }-cancel-button` }
+                            >
+                                Cancel
+                            </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <PrimaryButton floated="right" onClick={ setFinishSubmit }>
+                            <PrimaryButton
+                                floated="right"
+                                onClick={ setFinishSubmit }
+                                data-testid={ `${ testId }-create-button` }
+                            >
                                 Create Template Type
                             </PrimaryButton>
                         </Grid.Column>
@@ -137,4 +154,11 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
             </Modal.Actions>
         </Modal>
     )
-}
+};
+
+/**
+ * Default props for the component.
+ */
+EmailTemplateTypeWizard.defaultProps = {
+    "data-testid": "email-template-type-add-wizard"
+};

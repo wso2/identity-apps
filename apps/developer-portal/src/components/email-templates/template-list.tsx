@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { LoadableComponentInterface } from "@wso2is/core/models";
+import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import {
     ConfirmationModal,
     EmptyPlaceholder,
@@ -33,7 +33,7 @@ import { EMAIL_TEMPLATE_VIEW_PATH, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import { EmailTemplate } from "../../models";
 
-interface EmailTemplateListPropsInterface extends LoadableComponentInterface {
+interface EmailTemplateListPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
     templateTypeId: string;
     templateList: EmailTemplate[];
     onDelete: (templateTypeId: string, templateId: string,) => void;
@@ -46,7 +46,9 @@ interface EmailTemplateListPropsInterface extends LoadableComponentInterface {
 /**
  * List component to render email template types.
  *
- * @param props props required to render the email template list
+ * @param {EmailTemplateListPropsInterface} props - Props required to render the email template list.
+ *
+ * @return {React.ReactElement}
  */
 export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterface> = (
     props: EmailTemplateListPropsInterface
@@ -57,7 +59,8 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
         onEmptyListPlaceholderActionClick,
         onDelete,
         templateList,
-        templateTypeId
+        templateTypeId,
+        [ "data-testid" ]: testId
     } = props;
 
     const [ showViewLocaleWizArd, setShowViewLocaleWizard ] = useState<boolean>(false);
@@ -93,6 +96,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                     ] }
                     image={ EmailTemplateIllustrations.emptyEmailListing }
                     imageSize="tiny"
+                    data-testid={ `${ testId }-empty-placeholder` }
                 />
             );
         }
@@ -109,6 +113,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                     count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
+                data-testid={ testId }
             >
                 {
                     templateList && templateList instanceof Array && templateList.length > 0
@@ -158,10 +163,12 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                                             <Flag
                                                 className="email-template-flag "
                                                 name={ countryCode.toLowerCase() as FlagNameValues }
+                                                data-testid={ `${ testId }-flag-image` }
                                             />
                                             { country ? language + " (" + country + ")" : language }
                                         </>
                                     }
+                                    data-testid={ `${ testId }-item` }
                                 />
                             );
                         })
@@ -175,38 +182,58 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                         templateId={ currentViewTemplate }
                         onCloseHandler={ () => setShowViewLocaleWizard(false) }
                         onEditHandler={ () => handleEditTemplate(templateTypeId, currentViewTemplate) }
+                        data-testid={ `${ testId }-view-locale-template` }
                     />
                 )
             }
             {
-                showTemplateDeleteConfirmation &&
-                <ConfirmationModal
-                    onClose={ (): void => setShowTemplateDeleteConfirmation(false) }
-                    type="warning"
-                    open={ showTemplateDeleteConfirmation }
-                    assertion={ currentDeletingTemplate.id }
-                    assertionHint={
-                        <p>Please type <strong>{ currentDeletingTemplate.id }</strong> to confirm. </p>
-                    }
-                    assertionType="input"
-                    primaryAction="Confirm"
-                    secondaryAction="Cancel"
-                    onSecondaryActionClick={ (): void => setShowTemplateDeleteConfirmation(false) }
-                    onPrimaryActionClick={ (): void => {
-                        onDelete(templateTypeId, currentDeletingTemplate.id);
-                        setShowTemplateDeleteConfirmation(false);
-                    } }
-                >
-                    <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
-                    <ConfirmationModal.Message attached warning>
-                        This action is irreversible and will permanently delete the selected email template.
-                    </ConfirmationModal.Message>
-                    <ConfirmationModal.Content>
-                        If you delete this email template, all associated work flows will no longer
-                        have a valid email template to work with. Please proceed cautiously.
-                    </ConfirmationModal.Content>
-                </ConfirmationModal>
+                showTemplateDeleteConfirmation && (
+                    <ConfirmationModal
+                        onClose={ (): void => setShowTemplateDeleteConfirmation(false) }
+                        type="warning"
+                        open={ showTemplateDeleteConfirmation }
+                        assertion={ currentDeletingTemplate.id }
+                        assertionHint={
+                            <p>Please type <strong>{ currentDeletingTemplate.id }</strong> to confirm. </p>
+                        }
+                        assertionType="input"
+                        primaryAction="Confirm"
+                        secondaryAction="Cancel"
+                        onSecondaryActionClick={ (): void => setShowTemplateDeleteConfirmation(false) }
+                        onPrimaryActionClick={ (): void => {
+                            onDelete(templateTypeId, currentDeletingTemplate.id);
+                            setShowTemplateDeleteConfirmation(false);
+                        } }
+                        data-testid={ `${ testId }-delete-confirmation-modal` }
+                    >
+                        <ConfirmationModal.Header
+                            data-testid={ `${ testId }-delete-confirmation-modal-header` }
+                        >
+                            Are you sure?
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message
+                            attached
+                            warning
+                            data-testid={ `${ testId }-delete-confirmation-modal-message` }
+                        >
+                            This action is irreversible and will permanently delete the selected email template.
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content
+                            data-testid={ `${ testId }-delete-confirmation-modal-content` }
+                        >
+                            If you delete this email template, all associated work flows will no longer
+                            have a valid email template to work with. Please proceed cautiously.
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
             }
         </>
     )
+};
+
+/**
+ * Default props for the component.
+ */
+EmailTemplateList.defaultProps = {
+    "data-testid": "email-template-list"
 };

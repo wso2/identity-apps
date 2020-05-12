@@ -16,46 +16,52 @@
 * under the License.
 */
 
-import React, { FunctionComponent, ReactElement, useEffect, useState, SyntheticEvent } from "react";
-import { history } from "../../../helpers";
-import { EMAIL_TEMPLATE_VIEW_PATH } from "../../../constants";
-import { Forms, Field, FormValue } from "@wso2is/forms";
-import { Grid, Button, DropdownItemProps, Form, Dropdown, DropdownProps } from "semantic-ui-react";
-import * as CountryLanguage from "country-language";
-import { EmailTemplateEditor } from "../email-code-editor";
-import { EmailTemplate, EmailTemplateType, AlertInterface, AlertLevels } from "../../../models";
-import { createLocaleTemplate, getTemplateDetails, replaceLocaleTemplateContent } from "../../../api";
-import { AxiosResponse, AxiosError } from "axios";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { useDispatch } from "react-redux";
+import { Field, FormValue, Forms } from "@wso2is/forms";
+import { AxiosError, AxiosResponse } from "axios";
+import * as CountryLanguage from "country-language";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid } from "semantic-ui-react";
+import { createLocaleTemplate, getTemplateDetails, replaceLocaleTemplateContent } from "../../../api";
+import { EMAIL_TEMPLATE_VIEW_PATH } from "../../../constants";
+import { history } from "../../../helpers";
+import { AlertInterface, AlertLevels, EmailTemplate, EmailTemplateType } from "../../../models";
+import { EmailTemplateEditor } from "../email-code-editor";
 
-interface AddLocaleTemplatePropsInterface {
+interface AddLocaleTemplatePropsInterface extends TestableComponentInterface {
     templateId: string;
     templateTypeId: string;
 }
 
 /**
  * Component to handle ADD/EDIT of a locale based email template.
- * 
- * @param props - props required for component
+ *
+ * @param {AddLocaleTemplatePropsInterface} props - props required for component.
+ *
+ * @return {React.ReactElement}
  */
 export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterface> = (
     props: AddLocaleTemplatePropsInterface
 ): ReactElement => {
-    const dispatch = useDispatch();
-    const { t } = useTranslation();
-
-    const [ localeList, setLocaleList ] = useState<DropdownItemProps[]>([]);
-    const [ subject, setSubject ] = useState<string>('');
-    const [ locale, setLocale ] = useState<string>('');
-    const [ htmlBodyContent, setHtmlBodyContent ] = useState<string>('');
-    const [ htmlFooterContent, setHtmlFooterContent ] = useState<string>('');
 
     const {
         templateId,
-        templateTypeId
+        templateTypeId,
+        [ "data-testid" ]: testId
     } = props;
+
+    const dispatch = useDispatch();
+
+    const { t } = useTranslation();
+
+    const [ localeList, setLocaleList ] = useState<DropdownItemProps[]>([]);
+    const [ subject, setSubject ] = useState<string>("");
+    const [ locale, setLocale ] = useState<string>("");
+    const [ htmlBodyContent, setHtmlBodyContent ] = useState<string>("");
+    const [ htmlFooterContent, setHtmlFooterContent ] = useState<string>("");
 
     /**
      * This will load the locales to the dropdown.
@@ -72,10 +78,10 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
             const country = CountryLanguage.getCountry(countryCode).name;
 
             localeDropDown.push({
-                key: index,
-                value: locale,
                 flag: countryCode.toLowerCase(),
+                key: index,
                 text: country ? language + " (" + country + ")" : language,
+                value: locale
             })
         });
 
@@ -97,7 +103,7 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                 setHtmlFooterContent(templateDetails.footer);
             }
         })
-    },[templateId != ''])
+    },[templateId != ""]);
 
     /**
      * Dispatches the alert object to the redux store.
@@ -115,12 +121,12 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
      */
     const createTemplate = (values: Map<string, FormValue>) => {
         const templateDate: EmailTemplate = {
-            contentType: "text/html",
-            subject: values.get("emailSubject").toString(),
             body: htmlBodyContent,
+            contentType: "text/html",
             footer: htmlFooterContent,
             id: locale,
-        }
+            subject: values.get("emailSubject").toString()
+        };
 
         createLocaleTemplate(templateTypeId, templateDate).then((response: AxiosResponse<EmailTemplateType>) => {
             if (response.status === 201) {
@@ -144,7 +150,7 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                 )
             });
         })
-    }
+    };
 
     /**
      * Util method to handle update/replace content in template based on the form data
@@ -154,12 +160,12 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
      */
     const updateTemplate = (values: Map<string, FormValue>) => {
         const templateDate: EmailTemplate = {
-            contentType: "text/html",
-            subject: values.get("emailSubject").toString(),
             body: htmlBodyContent,
+            contentType: "text/html",
             footer: htmlFooterContent,
-            id: templateId
-        }
+            id: templateId,
+            subject: values.get("emailSubject").toString()
+        };
 
         replaceLocaleTemplateContent(templateTypeId, templateId, templateDate).then((response: AxiosResponse) => {
             if (response.status === 200) {
@@ -182,7 +188,7 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                 )
             });
         });
-    }
+    };
 
     return (
         <Forms 
@@ -216,6 +222,7 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                                     selection
                                     fluid
                                     scrolling
+                                    data-testid={ `${ testId }-locale-select` }
                                 />
                             </Form.Field>
                         </Grid.Column>
@@ -232,6 +239,7 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                             placeholder={ "Enter your email subject" }
                             type="text"
                             value={ subject }
+                            data-testid={ `${ testId }-subject-input` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -245,6 +253,7 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                                 isSignature
                                 isAddFlow={ templateId === "" }
                                 updateHtmlContent={ setHtmlBodyContent }
+                                data-testid={ `${ testId }-email-template-body-editor` }
                             />
                         </Form.Field>
                     </Grid.Column>
@@ -260,18 +269,32 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                                 isAddFlow={ templateId === "" }
                                 customClass="mail-signature"
                                 updateHtmlContent={ setHtmlFooterContent }
+                                data-testid={ `${ testId }-email-template-footer-editor` }
                             />
                         </Form.Field>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Button primary type="submit" size="small" className="form-button">
-                            {templateId === '' ? "Add Locale Template" : "Save Changes" }
+                        <Button
+                            primary
+                            type="submit"
+                            size="small"
+                            className="form-button"
+                            data-testid={ `${ testId }-submit-button` }
+                        >
+                            {templateId === "" ? "Add Locale Template" : "Save Changes" }
                         </Button>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
         </Forms>
     )
-}
+};
+
+/**
+ * Default props for the component.
+ */
+AddLocaleTemplate.defaultProps = {
+    "data-testid": "add-locale-template-form"
+};

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
@@ -31,11 +32,28 @@ import { ListLayout, PageLayout } from "../../layouts";
 import { AlertInterface, AlertLevels, EmailTemplate, EmailTemplateDetails } from "../../models";
 
 /**
- * Component will list all available locale based email templates for 
- * the selected email template type.
+ * Props for the Email Templates page.
  */
-export const EmailTemplates: FunctionComponent = (): ReactElement => {
+type EmailTemplatesPageInterface = TestableComponentInterface
+
+/**
+ * Component will list all available locale based email templates for
+ * the selected email template type.
+ *
+ * @param {EmailTemplatesPageInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
+    props: EmailTemplatesPageInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
+
     const dispatch = useDispatch();
+
     const { t } = useTranslation();
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -178,6 +196,7 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
             } }
             titleTextAlign="left"
             bottomMargin={ false }
+            data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
                 currentListSize={ listItemLimit }
@@ -189,12 +208,16 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
                 totalListSize={ emailTemplates?.length }
                 rightActionPanel={
                     (
-                        <PrimaryButton onClick={ () => handleAddNewTemplate() }>
+                        <PrimaryButton
+                            onClick={ () => handleAddNewTemplate() }
+                            data-testid={ `${ testId }-list-layout-add-button` }
+                        >
                             <Icon name="add"/>
                             New Template
                         </PrimaryButton>
                     )
                 }
+                data-testid={ `${ testId }-list-layout` }
             >
                 <EmailTemplateList
                     isLoading={ isEmailTemplatesFetchRequestLoading }
@@ -202,8 +225,16 @@ export const EmailTemplates: FunctionComponent = (): ReactElement => {
                     onDelete={ deleteTemplateType }
                     templateTypeId={ templateTypeId }
                     templateList={ paginatedEmailTemplates }
+                    data-testid={ `${ testId }-list` }
                 />
             </ListLayout>
         </PageLayout>
     )
+};
+
+/**
+ * Default props for the component.
+ */
+EmailTemplates.defaultProps = {
+    "data-testid": "email-templates"
 };
