@@ -16,11 +16,13 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react"
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { RouteComponentProps } from "react-router";
 import { Image } from "semantic-ui-react";
 import { getAClaim } from "../../api";
 import {
@@ -35,15 +37,34 @@ import { PageLayout } from "../../layouts"
 import { AlertLevels, Claim } from "../../models";
 
 /**
+ * Props for the Local Claims edit page.
+ */
+type LocalClaimsEditPageInterface = TestableComponentInterface
+
+/**
+ * Route parameters interface.
+ */
+interface RouteParams {
+    id: string;
+}
+
+/**
  * This renders the edit local claims page
  *
- * @param props - Props injected to the component.
+ * @param {LocalClaimsEditPageInterface & RouteComponentProps<RouteParams>} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const LocalClaimsEditPage = (props): ReactElement => {
+export const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
+    props: LocalClaimsEditPageInterface & RouteComponentProps<RouteParams>
+): ReactElement => {
 
-    const claimID = props.match.params.id;
+    const {
+        match,
+        [ "data-testid" ]: testId
+    } = props;
+
+    const claimID = match.params.id;
 
     const [ claim, setClaim ] = useState<Claim>(null);
     const [ isLocalClaimDetailsRequestLoading, setIsLocalClaimDetailsRequestLoading ] = useState<boolean>(false);
@@ -90,7 +111,9 @@ export const LocalClaimsEditPage = (props): ReactElement => {
             render: () => (
                 <EditBasicDetailsLocalClaims
                     claim={ claim }
-                    update={ getClaim } />
+                    update={ getClaim }
+                    data-testid="local-claims-basic-details-edit"
+                />
             )
         },
         {
@@ -99,6 +122,7 @@ export const LocalClaimsEditPage = (props): ReactElement => {
                 <EditMappedAttributesLocalClaims
                     claim={ claim }
                     update={ getClaim }
+                    data-testid={ `${ testId }-edit-local-claims-mapped-attributes` }
                 />
             )
         },
@@ -108,6 +132,7 @@ export const LocalClaimsEditPage = (props): ReactElement => {
                 <EditAdditionalPropertiesLocalClaims
                     claim={ claim }
                     update={ getClaim }
+                    data-testid={ `${ testId }-edit-local-claims-additional-properties` }
                 />
             )
         }
@@ -150,8 +175,16 @@ export const LocalClaimsEditPage = (props): ReactElement => {
             } }
             titleTextAlign="left"
             bottomMargin={ false }
+            data-testid={ `${ testId }-page-layout` }
         >
-            <ResourceTab panes={ panes } />
+            <ResourceTab panes={ panes } data-testid={ `${ testId }-tabs` } />
         </PageLayout>
     )
+};
+
+/**
+ * Default proptypes for the application edit page component.
+ */
+LocalClaimsEditPage.defaultProps = {
+    "data-testid": "edit-local-claims"
 };

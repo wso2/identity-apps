@@ -16,10 +16,11 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon } from "semantic-ui-react";
@@ -29,7 +30,7 @@ import { AddExternalClaim, AlertLevels, Claim, ExternalClaim } from "../../../mo
 /**
  * Prop types for the `AddExternalClaims` component.
  */
-interface AddExternalClaimsPropsInterface {
+interface AddExternalClaimsPropsInterface extends TestableComponentInterface {
     /**
      * The dialect ID.
      */
@@ -63,13 +64,24 @@ interface AddExternalClaimsPropsInterface {
 /**
  * A component that lets you add an external claim.
  * 
- * @param {AddExternalClaimsPropsInterface} props
+ * @param {AddExternalClaimsPropsInterface} props - Props injected to the component.
  * 
- * @return {ReactElement} Component.
+ * @return {React.ReactElement} Component.
  */
-export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): ReactElement => {
+export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterface> = (
+    props: AddExternalClaimsPropsInterface
+): ReactElement => {
 
-    const { dialectId, update, wizard, onSubmit, externalClaims, triggerSubmit, cancel } = props;
+    const {
+        dialectId,
+        update,
+        wizard,
+        onSubmit,
+        externalClaims,
+        triggerSubmit,
+        cancel,
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ localClaims, setLocalClaims ] = useState<Claim[]>();
     const [ filteredLocalClaims, setFilteredLocalClaims ] = useState<Claim[]>();
@@ -125,7 +137,8 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
      * This removes the mapped local claims from the local claims list.
      * 
      * @param {string} claimURI The claim URI of the mapped local claim.
-     * 
+     * @param {Claim[]} filteredLocalClaims - Filtered claims.
+     *
      * @returns {Claim[]} The array of filtered Claims.
      */
     const removeMappedLocalClaim = (claimURI: string, filteredLocalClaims?: Claim[]): Claim[] => {
@@ -188,6 +201,7 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                                 "attributeURI.requiredErrorMessage") }
                             placeholder={ t("devPortal:components.claims.external.forms.attributeURI.placeholder") }
                             type="text"
+                            data-testid={ `${ testId }-form-claim-uri-input` }
                         />
                     </Grid.Column>
                     <Grid.Column width={ 2 } textAlign="center" verticalAlign="middle">
@@ -212,6 +226,7 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                                     }
                                 })
                             }
+                            data-testid={ `${ testId }-form-local-claim-dropdown` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -219,7 +234,7 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                     wizard && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 } textAlign="right" verticalAlign="top">
-                            <PrimaryButton type="submit">
+                            <PrimaryButton type="submit" data-testid={ `${ testId }-form-submit-button` }>
                                     { t("devPortal:components.claims.external.forms.submit") }
                             </PrimaryButton>
                             </Grid.Column>
@@ -229,4 +244,11 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
             </Grid>
         </Forms>
     )
+};
+
+/**
+ * Default props for the component.
+ */
+AddExternalClaims.defaultProps = {
+    "data-testid": "add-external-claims"
 };

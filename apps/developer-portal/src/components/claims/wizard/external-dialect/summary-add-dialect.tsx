@@ -16,7 +16,8 @@
 * under the License.
 */
 
-import React, { ReactElement } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Image, Message, Table } from "semantic-ui-react";
 import { AvatarBackground } from "../../..";
@@ -25,7 +26,7 @@ import { AddExternalClaim } from "../../../../models";
 /**
  * Prop types of the `SummaryAddDialect` component.
  */
-interface SummaryAddDialectPropsInterface {
+interface SummaryAddDialectPropsInterface extends TestableComponentInterface {
     /**
      * The dialectURI added.
      */
@@ -44,23 +45,29 @@ interface SummaryAddDialectPropsInterface {
 const generateClaimLetter = (name: string): string => {
     const stringArray = name.replace("http://", "").split("/");
     return stringArray[ stringArray.length - 1 ][ 0 ].toLocaleUpperCase();
-}
+};
 
 /**
  * Renders teh summary step of the add dialect wizard.
  * 
- * @param {SummaryAddDialectPropsInterface} props
+ * @param {SummaryAddDialectPropsInterface} props - Props injected to the component.
  * 
- * @return {ReactElement}
+ * @return {React.ReactElement}
  */
-export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): ReactElement => {
+export const SummaryAddDialect: FunctionComponent<SummaryAddDialectPropsInterface> = (
+    props: SummaryAddDialectPropsInterface
+): ReactElement => {
 
-    const { dialectURI, claims } = props;
+    const {
+        dialectURI,
+        claims,
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
 
     return (
-        <Grid className="wizard-summary">
+        <Grid className="wizard-summary" data-testid={ testId }>
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details">
@@ -127,4 +134,11 @@ export const SummaryAddDialect = (props: SummaryAddDialectPropsInterface): React
             </Grid.Row>
         </Grid>
     )
+};
+
+/**
+ * Default props for the application creation wizard.
+ */
+SummaryAddDialect.defaultProps = {
+    "data-testid": "add-dialect-summary"
 };

@@ -17,10 +17,11 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
@@ -40,11 +41,24 @@ import { AppState } from "../../store";
 import { filterList, sortList } from "../../utils";
 
 /**
+ * Props for the Claim Dialects page.
+ */
+type ClaimDialectsPageInterface = TestableComponentInterface
+
+/**
  * This displays a list fo claim dialects.
+ *
+ * @param {ClaimDialectsPageInterface} props - Props injected to the component.
  *
  * @return {ReactElement}
  */
-export const ClaimDialectsPage = (): ReactElement => {
+export const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
+    props: ClaimDialectsPageInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
 
@@ -218,18 +232,20 @@ export const ClaimDialectsPage = (): ReactElement => {
                     setAddEditClaim(false);
                 } }
                 update={ getDialect }
+                data-testid={ `${ testId }-add-dialect-wizard` }
             />
             <PageLayout
                 isLoading={ isLoading }
                 title={ t("devPortal:components.claims.dialects.pageLayout.list.title") }
                 description={ t("devPortal:components.claims.dialects.pageLayout.list.description") }
                 showBottomDivider={ true }
+                data-testid={ `${ testId }-page-layout` }
             >
                 {
                     hasRequiredScopes(
                         featureConfig?.attributeDialects,
                         featureConfig?.attributeDialects?.scopes?.read) && (
-                        <Segment>
+                        <Segment data-testid={ `${ testId }-local-dialect-container` } >
                             <List>
                                 <List.Item>
                                     <Grid>
@@ -250,7 +266,7 @@ export const ClaimDialectsPage = (): ReactElement => {
                                                 <List.Header>
                                                     { t("devPortal:components.claims.dialects.localDialect") }
                                                 </List.Header>
-                                                <List.Description>
+                                                <List.Description data-testid={ `${ testId }-local-dialect` }>
                                                     { localURI }
                                                 </List.Description>
                                             </Grid.Column>
@@ -263,6 +279,7 @@ export const ClaimDialectsPage = (): ReactElement => {
                                                             onClick={ () => {
                                                                 history.push(LOCAL_CLAIMS_PATH);
                                                             } }
+                                                            data-testid={ `${ testId }-local-dialect-view-button` }
                                                         >
                                                             <Icon
                                                                 name="arrow right"
@@ -309,6 +326,7 @@ export const ClaimDialectsPage = (): ReactElement => {
                             defaultSearchAttribute="dialectURI"
                             defaultSearchOperator="co"
                             triggerClearQuery={ triggerClearQuery }
+                            data-testid={ `${ testId }-advanced-search` }
                         />
                     }
                     currentListSize={ listItemLimit }
@@ -324,6 +342,7 @@ export const ClaimDialectsPage = (): ReactElement => {
                                 onClick={ () => {
                                     setAddEditClaim(true);
                                 } }
+                                data-testid={ `${ testId }-list-layout-add-button` }
                             >
                                 <Icon name="add" />
                                 { t("devPortal:components.claims.dialects.pageLayout.list.primaryAction") }
@@ -345,9 +364,17 @@ export const ClaimDialectsPage = (): ReactElement => {
                         onEmptyListPlaceholderActionClick={ () => setAddEditClaim(true) }
                         onSearchQueryClear={ handleSearchQueryClear }
                         searchQuery={ searchQuery }
+                        data-testid={ `${ testId }-list` }
                     />
                 </ListLayout>
             </PageLayout>
         </>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+ClaimDialectsPage.defaultProps = {
+    "data-testid": "claim-dialects"
 };

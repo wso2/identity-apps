@@ -16,10 +16,11 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
@@ -30,7 +31,7 @@ import { DynamicField } from "../../../shared/";
 /**
  * Prop types for `EditAdditionalPropertiesLocalClaims` component
  */
-interface EditAdditionalPropertiesLocalClaimsPropsInterface {
+interface EditAdditionalPropertiesLocalClaimsPropsInterface extends TestableComponentInterface {
     /**
      * The Local claim to be edited
      */
@@ -42,15 +43,21 @@ interface EditAdditionalPropertiesLocalClaimsPropsInterface {
 }
 
 /**
- * This component renders the additional properties pane
- * @param {EditAdditionalPropertiesLocalClaimsPropsInterface} props
- * @return {ReactElement}
+ * This component renders the additional properties pane.
+ *
+ * @param {EditAdditionalPropertiesLocalClaimsPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const EditAdditionalPropertiesLocalClaims = (
-    props: EditAdditionalPropertiesLocalClaimsPropsInterface
-): ReactElement => {
+export const EditAdditionalPropertiesLocalClaims: FunctionComponent<
+    EditAdditionalPropertiesLocalClaimsPropsInterface
+    > = (props: EditAdditionalPropertiesLocalClaimsPropsInterface): ReactElement => {
 
-    const { claim, update } = props;
+    const {
+        claim,
+        update,
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ submit, setSubmit ] = useTrigger();
 
@@ -108,6 +115,7 @@ export const EditAdditionalPropertiesLocalClaims = (
                                 ));
                             })
                         } }
+                        data-testid={ `${ testId }-form-properties-dynamic-field` }
                     />
                 </Grid.Column>
             </Grid.Row>
@@ -117,6 +125,7 @@ export const EditAdditionalPropertiesLocalClaims = (
                         onClick={ () => {
                             setSubmit();
                         } }
+                        data-testid={ `${ testId }-submit-button` }
                     >
                         { t("common:update") }
                     </PrimaryButton>
@@ -125,4 +134,11 @@ export const EditAdditionalPropertiesLocalClaims = (
         </Grid>
 
     );
+};
+
+/**
+ * Default props for the component.
+ */
+EditAdditionalPropertiesLocalClaims.defaultProps = {
+    "data-testid": "edit-local-claims-additional-properties"
 };

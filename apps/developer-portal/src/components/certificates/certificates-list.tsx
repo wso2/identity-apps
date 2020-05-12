@@ -418,6 +418,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                     subtitle={ [
                         t("devPortal:components.certificates.keystore.placeholders.emptySearch.subtitle")
                     ] }
+                    data-testid={ `${ testId }-empty-search-placeholder` }
                 />
             );
         }
@@ -437,6 +438,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                     subtitle={ [
                         t("devPortal:components.certificates.keystore.placeholders.emptyList.subtitle")
                     ] }
+                    data-testid={ `${ testId }-empty-placeholder` }
                 />
             );
         }

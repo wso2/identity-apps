@@ -16,8 +16,9 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { CopyInputField } from "@wso2is/react-components";
-import React, { ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Grid, Label, List, Table } from "semantic-ui-react";
 import { AttributeMapping, Claim } from "../../../../models";
@@ -25,7 +26,7 @@ import { AttributeMapping, Claim } from "../../../../models";
 /**
  * Prop types of `SummaryLocalClaims` component
  */
-interface SummaryLocalClaimsPropsInterface {
+interface SummaryLocalClaimsPropsInterface extends TestableComponentInterface {
     /**
      * The complete Claim data
      */
@@ -33,13 +34,20 @@ interface SummaryLocalClaimsPropsInterface {
 }
 
 /**
- * This component renders the summary view of the wizard
- * @param {SummaryLocalClaimsPropsInterface} props
- * @return {ReactElement}
+ * This component renders the summary view of the wizard.
+ *
+ * @param {SummaryLocalClaimsPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): ReactElement => {
+export const SummaryLocalClaims: FunctionComponent<SummaryLocalClaimsPropsInterface> = (
+    props: SummaryLocalClaimsPropsInterface
+): ReactElement => {
 
-    const { data } = props;
+    const {
+        data,
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
 
@@ -67,8 +75,7 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
 
     /**
      * This components generates labels for boolean types
-     * @param {string} name 
-     * @param {boolean} boolean
+     * @param {string} name
      * @return {ReactElement} 
      */
     const generateLabels = (name: string): ReactElement => {
@@ -94,7 +101,7 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
     };
 
     return (
-        <Grid className="wizard-summary">
+        <Grid className="wizard-summary" data-testid={ testId }>
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details">
@@ -160,4 +167,11 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
             }
         </Grid>
     )
-}
+};
+
+/**
+ * Default props for the application creation wizard.
+ */
+SummaryLocalClaims.defaultProps = {
+    "data-testid": "local-claims-summary"
+};

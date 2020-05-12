@@ -16,10 +16,11 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
-import React, { ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
@@ -31,7 +32,7 @@ import { BasicDetailsLocalClaims, MappedAttributes, SummaryLocalClaims } from ".
 /**
  * Prop types for `AddLocalClaims` component
  */
-interface AddLocalClaimsPropsInterface {
+interface AddLocalClaimsPropsInterface extends TestableComponentInterface {
     /**
      * Open the modal
      */
@@ -52,12 +53,23 @@ interface AddLocalClaimsPropsInterface {
 
 /**
  * A component that lets you add a local claim
- * @param {AddLocalClaimsPropsInterface} props
- * @return {ReactElement} component
+ *
+ * @param {AddLocalClaimsPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElement => {
+export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
+    props: AddLocalClaimsPropsInterface
+): ReactElement => {
 
-    const { open, onClose, update, claimURIBase } = props;
+    const {
+        open,
+        onClose,
+        update,
+        claimURIBase,
+        [ "data-testid" ]: testId
+    } = props;
+
     const [ currentWizardStep, setCurrentWizardStep ] = useState(0);
     const [ data, setData ] = useState<Claim>(null);
     const [ basicDetailsData, setBasicDetailsData ] = useState<Map<string, FormValue>>(null);
@@ -95,7 +107,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
                 }
             ));
         })
-    }
+    };
 
     /**
      * Handler that is called when the `Basic Details` wizard step is completed
@@ -107,7 +119,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
         const tempData = { ...data, ...dataFromForm };
         setData(tempData);
         setBasicDetailsData(values);
-    }
+    };
 
     /**
      * Handler that is called when the `Mapped Attributes` step of the wizard is completed
@@ -119,7 +131,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
         const tempData = { ...data, ...dataFromForm };
         setData(tempData);
         setMappedAttributesData(values);
-    }
+    };
 
     /**
      * An array of objects that contains data of each step of the wizard
@@ -132,6 +144,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
                     onSubmit={ onSubmitBasicDetails }
                     values={ basicDetailsData }
                     claimURIBase={ claimURIBase }
+                    data-testid={ `${ testId }-local-claims-basic-details` }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
@@ -143,6 +156,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
                     submitState={ secondStep }
                     onSubmit={ onSubmitMappedAttributes }
                     values={ mappedAttributesData }
+                    data-testid={ `${ testId }-mapped-attributes` }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
@@ -150,7 +164,10 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
         },
         {
             content: (
-                <SummaryLocalClaims data={ data } />
+                <SummaryLocalClaims
+                    data={ data }
+                    data-testid={ `${ testId }-local-claims-summary` }
+                />
             ),
             icon: ApplicationWizardStepIcons.general,
             title: t("devPortal:components.claims.local.wizard.steps.summary")
@@ -173,14 +190,14 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
                 handleSubmit();
                 break;
         }
-    }
+    };
 
     /**
      * Moves wizard to teh previous step
      */
     const previous = () => {
         setCurrentWizardStep(currentWizardStep - 1);
-    }
+    };
 
     return (
         <Modal
@@ -189,11 +206,12 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
             className="wizard application-create-wizard"
             open={ open }
             onClose={ onClose }
+            data-testid={ testId }
         >
             <Modal.Header className="wizard-header">
                 { t("devPortal:components.claims.local.wizard.header") }
             </Modal.Header>
-            <Modal.Content className="steps-container">
+            <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
                 <Steps.Group
                     current={ currentWizardStep }
                 >
@@ -202,6 +220,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
                             key={ index }
                             icon={ step.icon }
                             title={ step.title }
+                            data-testid={ `${ testId }-step-${ index }` }
                         />
                     )) }
                 </Steps.Group>
@@ -217,16 +236,28 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ next }>
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ next }
+                                    data-testid={ `${ testId }-next-button` }
+                                >
                                     { t("common:next") } <Icon name="arrow right" />
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep === STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ next }>
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ next }
+                                    data-testid={ `${ testId }-finish-button` }
+                                >
                                     { t("common:finish") }</PrimaryButton>
                             ) }
                             { currentWizardStep > 0 && (
-                                <LinkButton floated="right" onClick={ previous }>
+                                <LinkButton
+                                    floated="right"
+                                    onClick={ previous }
+                                    data-testid={ `${ testId }-previous-button` }
+                                >
                                     <Icon name="arrow left" /> { t("common:previous") }
                                 </LinkButton>
                             ) }
@@ -236,4 +267,12 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): ReactElemen
             </Modal.Actions>
         </Modal >
     )
-}
+};
+
+/**
+ * Default props for the component.
+ */
+AddLocalClaims.defaultProps = {
+    "data-testid": "add-local-claims-wizard"
+};
+

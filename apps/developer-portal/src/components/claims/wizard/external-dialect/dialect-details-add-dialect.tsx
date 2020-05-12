@@ -16,14 +16,15 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import React, { ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 
 /**
  * Prop types of `DialectDetails` component.
  */
-interface DialectDetailsPropsInterface {
+interface DialectDetailsPropsInterface extends TestableComponentInterface {
     /**
      * Triggers submit.
      */
@@ -41,13 +42,20 @@ interface DialectDetailsPropsInterface {
 /**
  * This renders the dialect details step of the add dialect wizard.
  * 
- * @param {DialectDetailsPropsInterface} props
+ * @param {DialectDetailsPropsInterface} props - Props injected to the component.
  * 
- * @return {ReactElement}
+ * @return {React.ReactElement}
  */
-export const DialectDetails = (props: DialectDetailsPropsInterface): ReactElement => {
+export const DialectDetails: FunctionComponent<DialectDetailsPropsInterface> = (
+    props: DialectDetailsPropsInterface
+): ReactElement => {
 
-    const { submitState, onSubmit, values } = props;
+    const {
+        submitState,
+        onSubmit,
+        values,
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
 
@@ -70,7 +78,15 @@ export const DialectDetails = (props: DialectDetailsPropsInterface): ReactElemen
                     "forms.dialectURI.requiredErrorMessage") }
                 placeholder={ t("devPortal:components.claims.dialects.forms.dialectURI.placeholder") }
                 value={ values?.get("dialectURI")?.toString() }
+                data-testid={ `${ testId }-form-dialect-uri-input` }
             />
         </Forms >
     )
+};
+
+/**
+ * Default props for the application creation wizard.
+ */
+DialectDetails.defaultProps = {
+    "data-testid": "dialect-details"
 };
