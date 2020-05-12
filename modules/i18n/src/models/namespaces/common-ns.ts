@@ -57,6 +57,7 @@ export interface CommonNS {
     edit: string;
     endsWith: string;
     equals: string;
+    export: string;
     filter: string;
     finish: string;
     goBackHome: string;
@@ -123,4 +124,5 @@ export interface CommonNS {
     update: string;
     user: string;
     verify: string;
+    view: string;
 }
