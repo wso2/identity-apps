@@ -65,7 +65,7 @@ var AppUtils = AppUtils || (function() {
     return {
         getConfig: function() {
             return {
-                accountAppURL: _config.accountAppURL.origin + this.getTenantPath() + "/" + _config.accountAppURL.path,
+                accountAppURL: _config.accountAppURL.origin + this.getTenantPath() + _config.accountAppURL.path,
                 appBase: _config.appBaseName,
                 appBaseWithTenant: this.getTenantPath() + "/" + _config.appBaseName,
                 clientID: (this.isSuperTenant()) ?
