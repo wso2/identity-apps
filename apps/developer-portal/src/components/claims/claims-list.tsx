@@ -117,7 +117,7 @@ interface ClaimsListPropsInterface extends SBACInterface<FeatureConfigInterface>
  *
  * @param {ClaimsListPropsInterface} props - Props injected to the component.
  *
- * @return {ReactElement}
+ * @return {React.ReactElement}
  */
 export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     props: ClaimsListPropsInterface
@@ -411,24 +411,24 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                         ? listItem.delete(dialectID, deleteItem.id)
                         : listItem.delete(deleteItem.id)
                 } }
-                data-testid={ `${ testId }-confirmation-modal` }
+                data-testid={ `${ testId }-delete-confirmation-modal` }
             >
                 <ConfirmationModal.Header
-                    data-testid={ `${ testId }-confirmation-modal-header` }
+                    data-testid={ `${ testId }-delete-confirmation-modal-header` }
                 >
                     { t("devPortal:components.claims.list.confirmation.header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
                     warning
-                    data-testid={ `${ testId }-confirmation-modal-message` }
+                    data-testid={ `${ testId }-delete-confirmation-modal-message` }
                 >
                     { t("devPortal:components.claims.list.confirmation.message", {
                         name: listItem.name
                     }) }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content
-                    data-testid={ `${ testId }-confirmation-modal-content` }
+                    data-testid={ `${ testId }-delete-confirmation-modal-content` }
                 >
                     { t("devPortal:components.claims.list.confirmation.content", {
                         message: listItem.message
@@ -543,7 +543,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
-                data-testid={ `${ testId }-list` }
+                data-testid={ testId }
             >
                 {
                     list && list instanceof Array && list.length > 0
@@ -613,7 +613,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                                     rounded
                                                     centered
                                                     size="mini"
-                                                    data-testid={ `${ testId }-list-item-image` }
+                                                    data-testid={ `${ testId }-item-image` }
                                                 >
                                                     <AvatarBackground />
                                                     <span className="claims-letter">
@@ -632,7 +632,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                                 />
                                             )
                                         ] }
-                                        data-testid={ `${ testId }-list-item` }
+                                        data-testid={ `${ testId }-item` }
                                     />
                                 )
                             })
@@ -648,7 +648,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                                     rounded
                                                     centered
                                                     size="mini"
-                                                    data-testid={ `${ testId }-list-item-image` }
+                                                    data-testid={ `${ testId }-item-image` }
                                                 >
                                                     <AvatarBackground />
                                                     <span className="claims-letter">
@@ -677,7 +677,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                             ] }
                                             actionsFloated="right"
                                             itemHeader={ dialect.dialectURI }
-                                            data-testid={ `${ testId }-list-item` }
+                                            data-testid={ `${ testId }-item` }
                                         />
                                     );
                                 })
@@ -721,7 +721,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                                         rounded
                                                         centered
                                                         size="mini"
-                                                        data-testid={ `${ testId }-list-item-image` }
+                                                        data-testid={ `${ testId }-item-image` }
                                                     >
                                                         <AvatarBackground />
                                                         <span className="claims-letter">
@@ -752,7 +752,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                                             : null
                                                     ].filter(meta => meta !== null)
                                                 }
-                                                data-testid={ `${ testId }-list-item` }
+                                                data-testid={ `${ testId }-item` }
                                             />
                                         )
                                     })
@@ -798,7 +798,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                                                 rounded
                                                                 centered
                                                                 size="mini"
-                                                                data-testid={ `${ testId }-list-item-image` }
+                                                                data-testid={ `${ testId }-item-image` }
                                                             >
                                                                 <AvatarBackground />
                                                                 <span className="claims-letter">
@@ -836,7 +836,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                                         />
                                                     )
                                                 ] }
-                                                data-testid={ `${ testId }-list-item` }
+                                                data-testid={ `${ testId }-item` }
                                             />
                                         )
                                     })

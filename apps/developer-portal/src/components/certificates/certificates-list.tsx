@@ -90,9 +90,11 @@ interface CertificatesListPropsInterface extends SBACInterface<FeatureConfigInte
 }
 
 /**
- * This component renders the certificate List
- * @param {CertificatesListPropsInterface} props
- * @return {ReactElement}
+ * This component renders the certificate List.
+ *
+ * @param {CertificatesListPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const CertificatesList: FunctionComponent<CertificatesListPropsInterface> = (
     props: CertificatesListPropsInterface
@@ -243,24 +245,34 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                     }).finally(() => {
                         closeDeleteConfirm();
                     });
-                }
-                }
+                } }
+                data-testid={ `${ testId }-delete-confirmation-modal` }
             >
-                <ConfirmationModal.Header>
+                <ConfirmationModal.Header
+                    data-testid={ `${ testId }-delete-confirmation-modal-header` }
+                >
                     { t("devPortal:components.certificates.keystore.confirmation.header") }
                 </ConfirmationModal.Header>
                 { isTenantCertificate
                     ? (
                         <>
-                            <ConfirmationModal.Message attached warning>
+                            <ConfirmationModal.Message
+                                attached
+                                warning
+                                data-testid={ `${ testId }-delete-confirmation-modal-message` }
+                            >
                                 { t("devPortal:components.certificates.keystore.confirmation.message") }
                             </ConfirmationModal.Message>
-                            < ConfirmationModal.Content >
+                            < ConfirmationModal.Content
+                                data-testid={ `${ testId }-delete-confirmation-modal-content` }
+                            >
                                 { t("devPortal:components.certificates.keystore.confirmation.tenantContent") }
                             </ConfirmationModal.Content>
                         </>
                     ) : (
-                        < ConfirmationModal.Content >
+                        < ConfirmationModal.Content
+                            data-testid={ `${ testId }-delete-confirmation-modal-content` }
+                        >
                             { t("devPortal:components.certificates.keystore.confirmation.content") }
                         </ConfirmationModal.Content>
                     )
@@ -472,7 +484,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                     count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
-                data-testid={ `${ testId }-list` }
+                data-testid={ testId }
             >
                 {
                     list && list instanceof Array && list.length > 0
@@ -487,7 +499,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                                                 avatarType="app"
                                                 spaced="right"
                                                 floated="left"
-                                                data-testid={ `${ testId }-list-item-image` }
+                                                data-testid={ `${ testId }-item-image` }
                                             />
                                         }
                                         key={ index }
@@ -591,7 +603,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                                         ] }
                                         actionsFloated="right"
                                         itemHeader={ certificate.alias }
-                                        data-testid={ `${ testId }-list-item` }
+                                        data-testid={ `${ testId }-item` }
                                     />
                                 )
                             })

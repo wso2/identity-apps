@@ -41,7 +41,9 @@ type CertificatesKeystorePageInterface = TestableComponentInterface
 /**
  * This renders the Certificates Keystore page.
  *
- * @return {ReactElement}
+ * @param {CertificatesKeystorePageInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface> = (
     props: CertificatesKeystorePageInterface

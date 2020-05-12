@@ -37,7 +37,9 @@ type CertificatesTruststorePageInterface = TestableComponentInterface
 /**
  * This renders the Certificates Truststore page.
  *
- * @return {ReactElement}
+ * @param {CertificatesTruststorePageInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterface> = (
     props: CertificatesTruststorePageInterface
