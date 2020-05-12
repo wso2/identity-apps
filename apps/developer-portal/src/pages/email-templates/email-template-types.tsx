@@ -24,11 +24,11 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { deleteEmailTemplateType, getEmailTemplateTypes } from "../api";
-import { EmailTemplateTypeList, EmailTemplateTypeWizard } from "../components/email-templates";
-import { UIConstants } from "../constants";
-import { ListLayout, PageLayout } from "../layouts";
-import { AlertInterface, EmailTemplateType } from "../models";
+import { deleteEmailTemplateType, getEmailTemplateTypes } from "../../api";
+import { EmailTemplateTypeList, EmailTemplateTypeWizard } from "../../components";
+import { UIConstants } from "../../constants";
+import { ListLayout, PageLayout } from "../../layouts";
+import { AlertInterface, EmailTemplateType } from "../../models";
 
 /**
  * Component to list available email template types.

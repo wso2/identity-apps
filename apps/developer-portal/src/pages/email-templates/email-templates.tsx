@@ -23,12 +23,12 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { deleteLocaleTemplate, getEmailTemplate } from "../api";
-import { EmailTemplateList } from "../components/email-templates";
-import { EMAIL_TEMPLATE_VIEW_PATH, UIConstants } from "../constants";
-import { history } from "../helpers";
-import { ListLayout, PageLayout } from "../layouts";
-import { AlertInterface, AlertLevels, EmailTemplate, EmailTemplateDetails } from "../models";
+import { deleteLocaleTemplate, getEmailTemplate } from "../../api";
+import { EmailTemplateList } from "../../components";
+import { EMAIL_TEMPLATE_VIEW_PATH, UIConstants } from "../../constants";
+import { history } from "../../helpers";
+import { ListLayout, PageLayout } from "../../layouts";
+import { AlertInterface, AlertLevels, EmailTemplate, EmailTemplateDetails } from "../../models";
 
 /**
  * Component will list all available locale based email templates for 

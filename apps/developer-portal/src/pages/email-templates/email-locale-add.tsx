@@ -16,15 +16,15 @@
 * under the License.
 */
 
-import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
 import { AxiosResponse } from "axios";
-import { EmailTemplateDetails } from "../models";
-import { EMAIL_TEMPLATE_VIEW_PATH } from "../constants";
-import { getEmailTemplate } from "../api";
-import { PageLayout } from "../layouts";
-import { history } from "../helpers";
-import { AddLocaleTemplate } from "../components/email-templates";
 import * as CountryLanguage from "country-language";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { getEmailTemplate } from "../../api";
+import { AddLocaleTemplate } from "../../components";
+import { EMAIL_TEMPLATE_VIEW_PATH } from "../../constants";
+import { history } from "../../helpers";
+import { PageLayout } from "../../layouts";
+import { EmailTemplateDetails } from "../../models";
 
 /**
  * Component will render add view for a email template based on 
@@ -32,11 +32,11 @@ import * as CountryLanguage from "country-language";
  */
 export const AddTemplateLocale: FunctionComponent = (): ReactElement => {
     
-    const [ templateTypeId, setTemplateTypeId ] = useState<string>('');
-    const [ templateId, setTemplateId ] = useState<string>('');
-    const [ localeName, setLocaleName ] = useState<string>('');
+    const [ templateTypeId, setTemplateTypeId ] = useState<string>("");
+    const [ templateId, setTemplateId ] = useState<string>("");
+    const [ localeName, setLocaleName ] = useState<string>("");
     const [ emailTemplateTypeDetails, setEmailTemplateTypeDetails ] = useState<EmailTemplateDetails>(undefined);
-    const [ emailTemplateName, setEmailTemplateName ] = useState<string>('');
+    const [ emailTemplateName, setEmailTemplateName ] = useState<string>("");
 
     /**
      * Util to handle back button event.
@@ -47,8 +47,8 @@ export const AddTemplateLocale: FunctionComponent = (): ReactElement => {
 
     useEffect(() => {
         const path: string[] = history.location.pathname.split("/");
-        let templateTypeId = '';
-        let templateId = '';
+        let templateTypeId = "";
+        let templateId = "";
         let countryCode = "";
         let languageCode = "";
         
@@ -100,4 +100,4 @@ export const AddTemplateLocale: FunctionComponent = (): ReactElement => {
             <AddLocaleTemplate templateId={ templateId } templateTypeId={ templateTypeId } />
         </PageLayout>
     )
-}
+};
