@@ -20,12 +20,12 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-  Avatar,
-  ConfirmationModal,
-  EmptyPlaceholder,
-  LinkButton,
-  PrimaryButton,
-  ResourceList
+    Avatar,
+    ConfirmationModal,
+    EmptyPlaceholder,
+    LinkButton,
+    PrimaryButton,
+    ResourceList
 } from "@wso2is/react-components";
 import { saveAs } from "file-saver";
 import * as forge from "node-forge";
