@@ -22,17 +22,17 @@ import React, { ReactElement, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Image } from "semantic-ui-react";
-import { getAClaim } from "../api";
+import { getAClaim } from "../../api";
 import {
     AvatarBackground,
     EditAdditionalPropertiesLocalClaims,
     EditBasicDetailsLocalClaims,
     EditMappedAttributesLocalClaims
-} from "../components";
-import { LOCAL_CLAIMS_PATH } from "../constants";
-import { history } from "../helpers";
-import { PageLayout } from "../layouts"
-import { AlertLevels, Claim } from "../models";
+} from "../../components";
+import { LOCAL_CLAIMS_PATH } from "../../constants";
+import { history } from "../../helpers";
+import { PageLayout } from "../../layouts"
+import { AlertLevels, Claim } from "../../models";
 
 /**
  * This renders the edit local claims page

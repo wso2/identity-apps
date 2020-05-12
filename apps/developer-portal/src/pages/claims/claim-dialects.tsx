@@ -24,17 +24,20 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
-import { getDialects } from "../api";
-import { AddDialect, AvatarBackground } from "../components";
-import { ClaimsList, ListType } from "../components";
-import { AdvancedSearchWithBasicFilters } from "../components";
-import { LOCAL_CLAIMS_PATH, UIConstants } from "../constants";
-import { history } from "../helpers";
-import { ListLayout } from "../layouts";
-import { PageLayout } from "../layouts";
-import { AlertLevels, ClaimDialect, FeatureConfigInterface } from "../models";
-import { AppState } from "../store";
-import { filterList, sortList } from "../utils";
+import { getDialects } from "../../api";
+import {
+    AddDialect,
+    AdvancedSearchWithBasicFilters,
+    AvatarBackground,
+    ClaimsList,
+    ListType
+} from "../../components";
+import { LOCAL_CLAIMS_PATH, UIConstants } from "../../constants";
+import { history } from "../../helpers";
+import { ListLayout, PageLayout } from "../../layouts";
+import { AlertLevels, ClaimDialect, FeatureConfigInterface } from "../../models";
+import { AppState } from "../../store";
+import { filterList, sortList } from "../../utils";
 
 /**
  * This displays a list fo claim dialects.

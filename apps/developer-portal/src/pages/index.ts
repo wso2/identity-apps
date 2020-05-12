@@ -18,6 +18,7 @@
 
 export * from "./applications";
 export * from "./certificates";
+export * from "./claims";
 export * from "./customize";
 export * from "./errors";
 export * from "./email-locale-add";
@@ -29,9 +30,6 @@ export * from "./privacy";
 export * from "./users";
 export * from "./user-edit";
 export * from "./role";
-export * from "./local-claims";
-export * from "./claim-dialects";
-export * from "./local-claims-edit";
 export * from "./identity-providers";
 export * from "./identity-provider-edit";
 export * from "./identity-provider-template";
@@ -39,5 +37,4 @@ export * from "./user-stores";
 export * from "./user-stores-edit";
 export * from "./role-edit";
 export * from "./server-configurations";
-export * from "./external-dialect-edit";
 export * from "./userstores-templates";

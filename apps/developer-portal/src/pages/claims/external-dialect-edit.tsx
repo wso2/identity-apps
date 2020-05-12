@@ -16,22 +16,22 @@
 * under the License.
 */
 
+import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react"
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Header, Image, Segment } from "semantic-ui-react";
-import { deleteADialect, getADialect, getAllExternalClaims } from "../api";
+import { deleteADialect, getADialect, getAllExternalClaims } from "../../api";
 import {
     AvatarBackground,
     EditDialectDetails,
     EditExternalClaims
-} from "../components";
-import { CLAIM_DIALECTS_PATH } from "../constants";
-import { history } from "../helpers";
-import { PageLayout } from "../layouts"
-import { AlertLevels, ClaimDialect, ExternalClaim } from "../models";
-import { addAlert } from "../store/actions";
+} from "../../components";
+import { CLAIM_DIALECTS_PATH } from "../../constants";
+import { history } from "../../helpers";
+import { PageLayout } from "../../layouts"
+import { AlertLevels, ClaimDialect, ExternalClaim } from "../../models";
 
 /**
  * This renders the edit external dialect page
@@ -101,7 +101,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
                 }
             ));
         })
-    }
+    };
 
     useEffect(() => {
         getDialect();
@@ -139,7 +139,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
         }).finally(() => {
             setIsLoading(false);
         });
-    }
+    };
 
     useEffect(() => {
         getExternalClaims();
@@ -153,7 +153,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
     const generateDialectLetter = (name: string): string => {
         const stringArray = name.replace("http://", "").split("/");
         return stringArray[ 0 ][ 0 ].toLocaleUpperCase();
-    }
+    };
 
     /**
      * This deletes a dialect
@@ -269,4 +269,4 @@ export const ExternalDialectEditPage = (props): ReactElement => {
             { confirmDelete && deleteConfirmation() }
         </PageLayout>
     )
-}
+};

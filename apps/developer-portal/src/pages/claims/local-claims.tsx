@@ -24,15 +24,14 @@ import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { getADialect, getAllLocalClaims } from "../api";
-import { AdvancedSearchWithBasicFilters, ClaimsList, ListType } from "../components";
-import { AddLocalClaims } from "../components";
-import { CLAIM_DIALECTS_PATH, UIConstants } from "../constants";
-import { history } from "../helpers";
-import { ListLayout, PageLayout } from "../layouts";
-import { AlertLevels, Claim, ClaimsGetParams, FeatureConfigInterface } from "../models";
-import { AppState } from "../store";
-import { filterList, sortList } from "../utils";
+import { getADialect, getAllLocalClaims } from "../../api";
+import { AddLocalClaims, AdvancedSearchWithBasicFilters, ClaimsList, ListType } from "../../components";
+import { CLAIM_DIALECTS_PATH, UIConstants } from "../../constants";
+import { history } from "../../helpers";
+import { ListLayout, PageLayout } from "../../layouts";
+import { AlertLevels, Claim, ClaimsGetParams, FeatureConfigInterface } from "../../models";
+import { AppState } from "../../store";
+import { filterList, sortList } from "../../utils";
 
 /**
  * This returns the list of local claims.
