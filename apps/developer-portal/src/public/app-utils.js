@@ -141,7 +141,7 @@ var AppUtils = AppUtils || (function() {
                 if (!{}.hasOwnProperty.call(configResponse, "ui"))
                     throw "'ui' config is missing in " + _args.deploymentConfigFile;
 
-                _config = extend({}, _default, JSON.parse(response));     
+                _config = extend({}, _default, JSON.parse(response));
             });
         },
 
