@@ -4,7 +4,7 @@
         "path": "/overview"
     },
     "appBaseName": "developer-portal",
-    "clientID": "ADMIN_PORTAL",
+    "clientID": "DEVELOPER_PORTAL",
     "debug": false,
     "i18nResourcePath": "",
     "loginCallbackPath": "/login",
