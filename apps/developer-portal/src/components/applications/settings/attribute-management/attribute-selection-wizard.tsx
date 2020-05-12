@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     Heading,
     LinkButton,
@@ -26,42 +27,54 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Modal } from "semantic-ui-react";
-import { ExtendedExternalClaimInterface } from "./attribute-settings";
+import { ExtendedClaimInterface } from "./attribute-settings";
 
-
-interface AttributeSelectionWizardOtherDialectPropsInterface {
-    availableExternalClaims: ExtendedExternalClaimInterface[];
-    setAvailableExternalClaims: any;
-    selectedExternalClaims: ExtendedExternalClaimInterface[];
-    setSelectedExternalClaims: any;
-    setInitialSelectedExternalClaims: any;
+interface AttributeSelectionWizardPropsInterface extends TestableComponentInterface {
+    availableClaims: ExtendedClaimInterface[];
+    setAvailableClaims: any;
+    selectedClaims: ExtendedClaimInterface[];
+    setSelectedClaims: any;
+    setInitialSelectedClaims: any;
     showAddModal: boolean;
     setShowAddModal: (showModal: boolean) => void;
+    createMapping: any;
+    removeMapping: any;
 }
 
-export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSelectionWizardOtherDialectPropsInterface> = (
-    props
+/**
+ * Attribute selection wizard component.
+ *
+ * @param {AttributeSelectionWizardPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizardPropsInterface> = (
+    props: AttributeSelectionWizardPropsInterface
 ): ReactElement => {
 
     const {
-        selectedExternalClaims,
-        setSelectedExternalClaims,
-        setAvailableExternalClaims,
-        setInitialSelectedExternalClaims,
+        selectedClaims,
+        setSelectedClaims,
         showAddModal,
         setShowAddModal,
-        availableExternalClaims
+        availableClaims,
+        setAvailableClaims,
+        setInitialSelectedClaims,
+        createMapping,
+        removeMapping,
+        [ "data-testid" ]: testId
     } = props;
 
 
-    const [tempAvailableClaims, setTempAvailableClaims] = useState<ExtendedExternalClaimInterface[]>([]);
-    const [tempSelectedClaims, setTempSelectedClaims] = useState<ExtendedExternalClaimInterface[]>([]);
-    const [filterTempAvailableClaims, setFilterTempAvailableClaims] = useState<ExtendedExternalClaimInterface[]>([]);
-    const [filterTempSelectedClaims, setFilterTempSelectedClaims] = useState<ExtendedExternalClaimInterface[]>([]);
-    const [checkedUnassignedListItems, setCheckedUnassignedListItems] = useState<ExtendedExternalClaimInterface[]>([]);
-    const [checkedAssignedListItems, setCheckedAssignedListItems] = useState<ExtendedExternalClaimInterface[]>([]);
-    const [isSelectUnassignedClaimsAllClaimsChecked, setIsSelectUnassignedClaimsAllClaimsChecked] = useState(false);
+    const [tempAvailableClaims, setTempAvailableClaims] = useState<ExtendedClaimInterface[]>([]);
+    const [tempSelectedClaims, setTempSelectedClaims] = useState<ExtendedClaimInterface[]>([]);
+    const [filterTempAvailableClaims, setFilterTempAvailableClaims] = useState<ExtendedClaimInterface[]>([]);
+    const [filterTempSelectedClaims, setFilterTempSelectedClaims] = useState<ExtendedClaimInterface[]>([]);
+    const [checkedUnassignedListItems, setCheckedUnassignedListItems] = useState<ExtendedClaimInterface[]>([]);
+    const [checkedAssignedListItems, setCheckedAssignedListItems] = useState<ExtendedClaimInterface[]>([]);
+    const [isSelectUnassignedClaimsAllClaimsChecked, setSelectUnassignedClaimsAllClaimsChecked] = useState(false);
     const [isSelectAssignedAllClaimsChecked, setIsSelectAssignedAllClaimsChecked] = useState(false);
+
 
     const getClaimName = (claimURI: string): string => {
         if (typeof claimURI === "string") {
@@ -72,7 +85,6 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
                 return claimArray[0];
             }
         }
-
         return claimURI;
     };
 
@@ -80,29 +92,29 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
         setShowAddModal(false);
     };
 
-    // search operation for available claims
+    // search operation for available claims.
     const searchTempAvailable = (event) => {
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
-            setFilterTempAvailableClaims(filterTempAvailableClaims.filter((item) =>
+            setFilterTempAvailableClaims(tempAvailableClaims.filter((item) =>
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1))
         } else {
             setFilterTempAvailableClaims(tempAvailableClaims);
         }
     };
 
-    // search operation for selected claims
+    // search operation for selected claims.
     const searchTempSelected = (event) => {
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
-            setFilterTempSelectedClaims(filterTempSelectedClaims.filter((item) =>
+            setFilterTempSelectedClaims(tempSelectedClaims.filter((item) =>
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1))
         } else {
             setFilterTempSelectedClaims(tempSelectedClaims);
         }
     };
 
-    const addRoles = () => {
+    const addAttributes = () => {
         const addedClaims = [...tempSelectedClaims];
         if (checkedUnassignedListItems?.length > 0) {
             checkedUnassignedListItems.map((claim) => {
@@ -115,23 +127,23 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
         setFilterTempSelectedClaims(addedClaims);
         setTempAvailableClaims(tempAvailableClaims.filter(x => !addedClaims?.includes(x)));
         setFilterTempAvailableClaims(filterTempAvailableClaims.filter(x => !addedClaims?.includes(x)));
-        setIsSelectUnassignedClaimsAllClaimsChecked(false);
+        setSelectUnassignedClaimsAllClaimsChecked(false);
     };
 
-    const removeRoles = () => {
-        const removedClaims = [...tempAvailableClaims];
+    const removeAttributes = () => {
+        const removedRoles = [...tempAvailableClaims];
         if (checkedAssignedListItems?.length > 0) {
             checkedAssignedListItems.map((claim) => {
-                if (!(removedClaims?.includes(claim))) {
-                    removedClaims.push(claim);
+                if (!(removedRoles?.includes(claim))) {
+                    removedRoles.push(claim);
                 }
             });
         }
-        setTempAvailableClaims(removedClaims);
-        setFilterTempAvailableClaims(removedClaims);
-        setTempSelectedClaims(tempSelectedClaims?.filter(x => !removedClaims?.includes(x)));
-        setFilterTempSelectedClaims(filterTempSelectedClaims?.filter(x => !removedClaims?.includes(x)));
-        setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedClaims?.includes(x)));
+        setTempAvailableClaims(removedRoles);
+        setFilterTempAvailableClaims(removedRoles);
+        setTempSelectedClaims(tempSelectedClaims?.filter(x => !removedRoles?.includes(x)));
+        setFilterTempSelectedClaims(filterTempSelectedClaims?.filter(x => !removedRoles?.includes(x)));
+        setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles?.includes(x)));
         setIsSelectAssignedAllClaimsChecked(false);
     };
 
@@ -169,21 +181,21 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
     };
 
     /**
-     * The following function enables the user to select all the roles at once.
+     * The following function enables the user to select all the attributes at once.
      */
     const selectAllUnAssignedList = () => {
-        setIsSelectUnassignedClaimsAllClaimsChecked(!isSelectUnassignedClaimsAllClaimsChecked);
+        setSelectUnassignedClaimsAllClaimsChecked(!isSelectUnassignedClaimsAllClaimsChecked);
     };
 
     /**
-     * The following function enables the user to deselect all the roles at once.
+     * The following function enables the user to deselect all the attributes at once.
      */
     const selectAllAssignedList = () => {
         setIsSelectAssignedAllClaimsChecked(!isSelectAssignedAllClaimsChecked);
     };
 
     /**
-     * Select all selected claims.
+     *  Select all selected claims
      */
     useEffect(() => {
         if (isSelectAssignedAllClaimsChecked) {
@@ -194,7 +206,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
     }, [isSelectAssignedAllClaimsChecked]);
 
     /**
-     *  Select all available claims.
+     * Select all available claims.
      */
     useEffect(() => {
         if (isSelectUnassignedClaimsAllClaimsChecked) {
@@ -209,10 +221,10 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
      */
     useEffect(() => {
         if (showAddModal) {
-            setTempAvailableClaims(availableExternalClaims);
-            setFilterTempAvailableClaims(availableExternalClaims);
-            setTempSelectedClaims(selectedExternalClaims);
-            setFilterTempSelectedClaims(selectedExternalClaims);
+            setTempAvailableClaims(availableClaims);
+            setFilterTempAvailableClaims(availableClaims);
+            setTempSelectedClaims(selectedClaims);
+            setFilterTempSelectedClaims(selectedClaims);
         } else {
             setTempAvailableClaims([]);
             setFilterTempAvailableClaims([]);
@@ -225,27 +237,34 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
      *  Save the selected claims
      */
     const updateSelectedClaims = (() => {
-        setInitialSelectedExternalClaims([...tempSelectedClaims]);
-        setAvailableExternalClaims([...tempAvailableClaims]);
-        handleAttributeModal();
+        const selectedClaimsValues = [...tempSelectedClaims];
+        const removedClaims = selectedClaims.filter((claim) => !selectedClaimsValues?.includes(claim));
+        const added = selectedClaimsValues.filter((claim) => !selectedClaims?.includes(claim));
+        added.map((claim) => createMapping(claim));
+        removedClaims.map((claim) => removeMapping(claim));
+        // setSelectedClaims(selectedClaimsValues);
+        setInitialSelectedClaims(selectedClaimsValues);
+        setAvailableClaims([...tempAvailableClaims]);
+        setShowAddModal(false);
     });
 
 
     return (
-        <Modal open={ showAddModal } size="small" className="user-roles">
+        <Modal open={ showAddModal } size="small" className="user-roles" data-testid={ testId }>
             <Modal.Header>
-                Update attribute selection
+                Update Attribute Selection
                 <Heading subHeading ellipsis as="h6">
                     Add new attributes or remove existing attributes.
                 </Heading>
             </Modal.Header>
             <Modal.Content image>
                 <TransferComponent
-                    searchPlaceholder="Search roles"
-                    addItems={ addRoles }
-                    removeItems={ removeRoles }
+                    searchPlaceholder="Search attribute"
+                    addItems={ addAttributes }
+                    removeItems={ removeAttributes }
                     handleUnelectedListSearch={ searchTempAvailable }
                     handleSelectedListSearch={ searchTempSelected }
+                    data-testid={ `${ testId }-transfer-component` }
                 >
                     <TransferList
                         isListEmpty={ !(filterTempAvailableClaims.length > 0) }
@@ -253,6 +272,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
                         listHeaders={ ["Attribute"] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectUnassignedClaimsAllClaimsChecked }
+                        data-testid={ `${ testId }-unselected-transfer-list` }
                     >
                         {
                             filterTempAvailableClaims?.map((claim, index) => {
@@ -260,11 +280,14 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
                                     <TransferListItem
                                         handleItemChange={ () => handleUnassignedItemCheckboxChange(claim) }
                                         key={ claim.claimURI }
-                                        listItem={ claim.claimURI }
+                                        listItem={ claim.displayName }
                                         listItemId={ claim.id }
                                         listItemIndex={ claim.claimURI }
                                         isItemChecked={ checkedUnassignedListItems.includes(claim) }
                                         showSecondaryActions={ false }
+                                        showListSubItem={ true }
+                                        listSubItem={ claim.claimURI }
+                                        data-testid={ `${ testId }-unselected-transfer-list-item-${ index }` }
                                     />
                                 )
                             })
@@ -276,6 +299,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
                         listHeaders={ ["Attribute"] }
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
+                        data-testid={ `${ testId }-selected-transfer-list` }
                     >
                         {
                             filterTempSelectedClaims?.map((claim, index) => {
@@ -284,11 +308,14 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
                                     <TransferListItem
                                         handleItemChange={ () => handleAssignedItemCheckboxChange(claim) }
                                         key={ claim.claimURI }
-                                        listItem={ claim.claimURI }
+                                        listItem={ claim.displayName }
                                         listItemId={ claim.id }
                                         listItemIndex={ claim.claimURI }
                                         isItemChecked={ checkedAssignedListItems.includes(claim) }
                                         showSecondaryActions={ false }
+                                        showListSubItem={ true }
+                                        listSubItem={ claim.claimURI }
+                                        data-testid={ `${ testId }-selected-transfer-list-item-${ index }` }
                                     />
                                 )
                             })
@@ -299,15 +326,24 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<AttributeSe
             <Modal.Actions>
                 <LinkButton
                     onClick={ handleAttributeModal }
+                    data-testid={ `${ testId }-cancel-button` }
                 >
                     Cancel
                 </LinkButton>
                 <PrimaryButton
                     onClick={ updateSelectedClaims }
+                    data-testid={ `${ testId }-save-button` }
                 >
                     Save
                 </PrimaryButton>
             </Modal.Actions>
         </Modal>
     )
+};
+
+/**
+ * Default props for the application attribute selection wizard component.
+ */
+AttributeSelectionWizard.defaultProps = {
+    "data-testid": "application-attribute-selection-wizard"
 };

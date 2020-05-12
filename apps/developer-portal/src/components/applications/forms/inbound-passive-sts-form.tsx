@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -27,7 +28,7 @@ import { PassiveStsConfigurationInterface } from "../../../models";
 /**
  * Proptypes for the inbound Passive Sts form component.
  */
-interface InboundPassiveStsFormPropsInterface {
+interface InboundPassiveStsFormPropsInterface extends TestableComponentInterface {
     initialValues: PassiveStsConfigurationInterface;
     onSubmit: (values: any) => void;
     /**
@@ -39,8 +40,9 @@ interface InboundPassiveStsFormPropsInterface {
 /**
  * Inbound Passive Sts protocol configurations form.
  *
- * @param {InboundPassiveStsFormPropsInterface} props
- * @return {ReactElement}
+ * @param {InboundPassiveStsFormPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormPropsInterface> = (
     props: InboundPassiveStsFormPropsInterface
@@ -49,7 +51,8 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
     const {
         initialValues,
         onSubmit,
-        readOnly
+        readOnly,
+        [ "data-testid" ]: testId
     } = props;
 
     /**
@@ -84,6 +87,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                             type="text"
                             value={ initialValues?.realm }
                             readOnly={ readOnly || !(_.isEmpty(initialValues?.realm)) }
+                            data-testid={ `${ testId }-realm-input` }
                         />
                         <Hint disabled={ !(_.isEmpty(initialValues?.realm)) }>
                             Enter realm identifier for passive sts
@@ -107,6 +111,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                             type="text"
                             value={ initialValues?.replyTo }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-reply-to-url-input` }
                         />
                         <Hint>Enter RP endpoint URL that handles the response.</Hint>
                     </Grid.Column>
@@ -115,7 +120,13 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                     !readOnly && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Button primary type="submit" size="small" className="form-button">
+                                <Button
+                                    primary
+                                    type="submit"
+                                    size="small"
+                                    className="form-button"
+                                    data-testid={ `${ testId }-submit-button` }
+                                >
                                     Update
                                 </Button>
                             </Grid.Column>
@@ -125,4 +136,11 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
             </Grid>
         </Forms>
     );
+};
+
+/**
+ * Default props for the inbound passive-sts form component.
+ */
+InboundPassiveStsForm.defaultProps = {
+    "data-testid": "inbound-passive-sts-form"
 };

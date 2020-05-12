@@ -17,7 +17,7 @@
  */
 
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import {
@@ -54,11 +54,24 @@ import { setHelpPanelDocsContentURL } from "../store/actions";
 import { ApplicationManagementUtils } from "../utils";
 
 /**
- * Application Edit page.
- *
- * @return {ReactElement}
+ * Proptypes for the applications edit page component.
  */
-export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
+type ApplicationEditPageInterface = TestableComponentInterface
+
+/**
+ * Application Edit page component.
+ *
+ * @param {ApplicationEditPageInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
+    props: ApplicationEditPageInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
 
@@ -237,16 +250,19 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                         dispatch(addAlert({
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
-                            message: "Update error"
+                            message: t("devPortal:components.applications.notifications.updateApplication" +
+                                ".error.message")
                         }));
 
                         return;
                     }
 
                     dispatch(addAlert({
-                        description: "An error occurred updating the application",
+                        description: t("devPortal:components.applications.notifications.updateApplication" +
+                            ".genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: "Update error"
+                        message: t("devPortal:components.applications.notifications.updateApplication" +
+                            ".genericError.message")
                     }));
                 })
         }
@@ -281,16 +297,17 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Retrieval Error"
+                        message: t("devPortal:components.applications.notifications.fetchApplication.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while retrieving application details",
+                    description: t("devPortal:components.applications.notifications.fetchApplication" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Retrieval Error"
+                    message: t("devPortal:components.applications.notifications.fetchApplication.genericError.message")
                 }));
             })
             .finally(() => {
@@ -344,6 +361,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                                     : UIConstants.HELP_PANEL_DOCS_ASSETS_URL_PREFIX +
                                     StringUtils.removeDotsAndSlashesFromRelativePath(uri)
                             }
+                            data-testid={ `${ testId }-help-panel-docs-tab-markdown-renderer` }
                         />
                     )
             ),
@@ -365,14 +383,19 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                                         "content.sample.goBack")
                                 } }
                                 bottomMargin={ false }
+                                data-testid={ `${ testId }-help-panel-samples-tab-page-header` }
                             />
                             <Divider hidden/>
                             {
                                 helpPanelSelectedSample?.docs && (
                                     isHelpPanelSamplesContentRequestLoading
                                         ? <ContentLoader dimmer/>
-                                        : <Markdown source={ helpPanelSampleContent }/>
-
+                                        : (
+                                            <Markdown
+                                                source={ helpPanelSampleContent }
+                                                data-testid={ `${ testId }-help-panel-samples-tab-markdown-renderer` }
+                                            />
+                                        )
                                 )
                             }
                         </>
@@ -401,6 +424,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                                                     imageSize="mini"
                                                     spaced="bottom"
                                                     onClick={ () => handleHelpPanelSelectedSample(sample) }
+                                                    data-testid={ `${ testId }-help-panel-samples-tab-selection-card` }
                                                 />
                                             </Grid.Column>
                                         ))
@@ -446,6 +470,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }
+                data-testid={ `${ testId }-page-layout` }
             >
                 <EditApplication
                     application={ application }
@@ -454,8 +479,16 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
                     onDelete={ handleApplicationDelete }
                     onUpdate={ handleApplicationUpdate }
                     template={ applicationTemplate }
+                    data-testid={ testId }
                 />
             </PageLayout>
         </HelpPanelLayout>
     );
+};
+
+/**
+ * Default proptypes for the application edit page component.
+ */
+ApplicationEditPage.defaultProps = {
+    "data-testid": "application-edit"
 };

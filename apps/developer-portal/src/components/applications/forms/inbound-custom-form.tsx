@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { Button, Grid } from "semantic-ui-react";
@@ -28,11 +29,10 @@ import {
     SubmitFormCustomPropertiesInterface
 } from "../../../models";
 
-
 /**
  * Proptypes for the inbound custom protocol form component.
  */
-interface InboundCustomFormPropsInterface {
+interface InboundCustomFormPropsInterface extends TestableComponentInterface {
     metadata?: CustomInboundProtocolMetaDataInterface;
     initialValues?: CustomInboundProtocolConfigurationInterface;
     onSubmit: (values: any) => void;
@@ -41,8 +41,9 @@ interface InboundCustomFormPropsInterface {
 /**
  * Inbound Custom protocol configurations form.
  *
- * @param {InboundCustomFormPropsInterface} props
- * @return ReactElement
+ * @param {InboundCustomFormPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormPropsInterface> = (
     props: InboundCustomFormPropsInterface
@@ -51,7 +52,8 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
     const {
         metadata,
         initialValues,
-        onSubmit
+        onSubmit,
+        [ "data-testid" ]: testId
     } = props;
 
     const createInputComponent = (
@@ -69,6 +71,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                 requiredErrorMessage={ "Select the " + config?.displayName }
                                 default={ config?.defaultValue }
                                 children={ createDropDownOption(config?.availableValues) }
+                                data-testid={ `${ testId }-${ config?.name }-dropdown` }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -88,6 +91,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                 placeholder={ "Enter  " + config?.displayName }
                                 type="password"
                                 default={ config?.defaultValue }
+                                data-testid={ `${ testId }-${ config?.name }-password-input` }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -109,6 +113,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                         value: config.name
                                     }
                                 ] }
+                                data-testid={ `${ testId }-${ config?.name }-checkbox` }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -125,6 +130,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                 requiredErrorMessage={ "Provide  " + config?.displayName }
                                 placeholder={ "Enter  " + config?.displayName }
                                 type={ (config?.type === CustomTypeEnum.INTEGER) ? "number" : "text" }
+                                data-testid={ `${ testId }-${ config?.name }-input` }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -157,7 +163,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
         const allowedOptions = [];
         if (options) {
             options.map((ele) => {
-                allowedOptions.push({ text: ele, value: ele, key: options.indexOf(ele) });
+                allowedOptions.push({ key: options.indexOf(ele), text: ele, value: ele });
             });
         }
         return allowedOptions;
@@ -177,7 +183,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
             if (value instanceof Array) {
                 property = {
                     key: key,
-                    value: value.length > 0 ? true : false
+                    value: value.length > 0
                 };
             } else {
                 property = {
@@ -188,8 +194,8 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
             valueProperties.push(property);
         }
         return {
-            name: initialValues?.name,
             configName: initialValues?.configName,
+            name: initialValues?.name,
             properties: [
                 ...valueProperties
             ]
@@ -221,4 +227,11 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
             </Grid>
         </Forms>
     );
+};
+
+/**
+ * Default props for the inbound custom protocol form component.
+ */
+InboundCustomProtocolForm.defaultProps = {
+    "data-testid": "inbound-custom-protocol-form"
 };

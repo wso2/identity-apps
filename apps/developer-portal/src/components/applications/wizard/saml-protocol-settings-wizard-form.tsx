@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { Field, Forms, FormValue } from "@wso2is/forms";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
@@ -27,7 +28,7 @@ import { URLInputComponent } from "../components";
 /**
  * Proptypes for the oauth protocol settings wizard form component.
  */
-interface SAMLProtocolSettingsWizardFormPropsInterface {
+interface SAMLProtocolSettingsWizardFormPropsInterface extends TestableComponentInterface {
     initialValues: any;
     templateValues: any;
     triggerSubmit: boolean;
@@ -38,7 +39,8 @@ interface SAMLProtocolSettingsWizardFormPropsInterface {
  * SAML protocol settings wizard form component.
  *
  * @param {SAMLProtocolSettingsWizardFormPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ *
+ * @return {React.ReactElement}
  */
 export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSettingsWizardFormPropsInterface> = (
     props: SAMLProtocolSettingsWizardFormPropsInterface
@@ -48,7 +50,8 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
         initialValues,
         templateValues,
         triggerSubmit,
-        onSubmit
+        onSubmit,
+        [ "data-testid" ]: testId
     } = props;
 
     const [assertionConsumerUrls, setAssertionConsumerUrls] = useState("");
@@ -82,8 +85,8 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
             inboundProtocolConfiguration: {
                 saml: {
                     manualConfiguration: {
-                        issuer: values.get("issuer") as string,
                         assertionConsumerUrls: (assertionConsumerUrls.split(",")),
+                        issuer: values.get("issuer") as string,
                         serviceProviderQualifier: values.get("applicationQualifier")
                     }
                 }
@@ -117,6 +120,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                 value={
                                     initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration?.issuer
                                 }
+                                data-testid={ `${ testId }-issuer-input` }
                             />
                             <Hint>
                                 { `This specifies the issuer. This is the "saml:Issuer" element that contains
@@ -138,6 +142,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                     initialValues?.inboundProtocolConfiguration
                                         .saml?.manualConfiguration?.serviceProviderQualifier
                                 }
+                                data-testid={ `${ testId }-application-qualifier-input` }
                             />
                             <Hint>
                                 This value is needed only if you have to configure multiple SAML SSO
@@ -163,9 +168,17 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                         hint={ "This specifies the assertion Consumer URLs that the browser " +
                         "should be redirected to after the authentication is successful. " +
                         "This is the Assertion Consumer Service (ACS) URL of the Application" }
+                        data-testid={ `${ testId }-assertion-consumer-url-input` }
                     />
                 </Grid>
             </Forms>
             : <ContentLoader/>
     );
+};
+
+/**
+ * Default props for the saml protocol settings wizard form component.
+ */
+SAMLProtocolSettingsWizardForm.defaultProps = {
+    "data-testid": "saml-protocol-settings-wizard-form"
 };

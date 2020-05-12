@@ -16,11 +16,12 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Hint } from "@wso2is/react-components";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Button, Grid, Icon, Input, Label, Popup } from "semantic-ui-react";
 
-interface URLInputComponentInterface {
+interface URLInputComponentInterface extends TestableComponentInterface {
     urlState: string;
     setURLState: any;
     placeholder?: string;
@@ -42,10 +43,15 @@ interface URLInputComponentInterface {
 }
 
 /**
- * Create URL addition component.
- * @param props URLInputComponentInterface.
+ * URL Input component.
+ *
+ * @param {URLInputComponentInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = (props): JSX.Element => {
+export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = (
+    props: URLInputComponentInterface
+): ReactElement => {
 
     const {
         showError,
@@ -62,7 +68,8 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
         disabled,
         hideComponent,
         computerWidth,
-        readOnly
+        readOnly,
+        [ "data-testid" ]: testId
     } = props;
 
     const [changeUrl, setChangeUrl] = useState<string>("");
@@ -214,7 +221,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                 <Grid.Column mobile={ 14 } tablet={ 14 } computer={ computerSize }>
                     <Input
                         fluid
-                        error={ validURL && !duplicateURL ? false : true }
+                        error={ !(validURL && !duplicateURL) }
                         focus={ keepFocus }
                         value={ changeUrl }
                         onKeyDown={ keyPressed }
@@ -223,6 +230,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                         placeholder={ placeholder }
                         action
                         readOnly={ readOnly }
+                        data-testid={ testId }
                     >
                         <input
                             disabled={ disabled ? disabled : false }
@@ -236,6 +244,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                                         icon="add"
                                         type="button"
                                         disabled={ readOnly || disabled }
+                                        data-testid={ `${ testId }-add-button` }
                                     />
                                 )
                             }
@@ -286,13 +295,14 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                     return (
                         <Grid.Row key={ url } className={ "urlComponentTagRow" }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
-                                <Label>
+                                <Label data-testid={ `${ testId }-${ url }` }>
                                     { url }
                                     {
                                         !readOnly && (
                                             <Icon
                                                 name="delete"
                                                 onClick={ () => removeValue(url) }
+                                                data-testid={ `${ testId }-${ url }-delete-button` }
                                             />
                                         )
                                     }
@@ -313,4 +323,11 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
             ) }
         </>
     );
+};
+
+/**
+ * Default props for the URL input component.
+ */
+URLInputComponent.defaultProps = {
+    "data-testid": "url-input"
 };

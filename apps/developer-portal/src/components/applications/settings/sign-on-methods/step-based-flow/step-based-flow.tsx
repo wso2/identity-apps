@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
@@ -26,7 +26,7 @@ import { useDispatch } from "react-redux";
 import { Card, Divider, DropdownProps, Form, Grid, Icon, Popup } from "semantic-ui-react";
 import { AuthenticationStep } from "./authentication-step";
 import { AuthenticatorSidePanel } from "./authenticator-side-panel";
-import { OperationIcons } from "../../../../configs";
+import { OperationIcons } from "../../../../../configs";
 import {
     AuthenticationSequenceInterface,
     AuthenticationSequenceType,
@@ -34,13 +34,13 @@ import {
     AuthenticatorInterface,
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface
-} from "../../../../models";
-import { IdentityProviderManagementUtils } from "../../../../utils";
+} from "../../../../../models";
+import { IdentityProviderManagementUtils } from "../../../../../utils";
 
 /**
  * Proptypes for the applications settings component.
  */
-interface AuthenticationFlowPropsInterface {
+interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
     /**
      * Currently configured authentication sequence for the application.
      */
@@ -93,7 +93,7 @@ const EXTERNAL_AUTHENTICATORS_DROPPABLE_ID = "external-authenticators";
  *
  * @param {AuthenticationFlowPropsInterface} props - Props injected to the component.
  *
- * @return {ReactElement}
+ * @return {React.ReactElement}
  */
 export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> = (
     props: AuthenticationFlowPropsInterface
@@ -103,7 +103,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         authenticationSequence,
         onUpdate,
         readOnly,
-        triggerUpdate
+        triggerUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -381,7 +382,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     };
 
     return (
-        <div className={ `authentication-flow-section ${ showAuthenticatorsSidePanel ? "flex" : "" }` }>
+        <div
+            className={ `authentication-flow-section ${ showAuthenticatorsSidePanel ? "flex" : "" }` }
+            data-testid={ testId }
+        >
             <DragDropContext onDragEnd={ handleAuthenticatorDrag }>
                 <div className="main-content" ref={ mainContentRef }>
                     <Grid>
@@ -454,6 +458,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                     }
                                                     onChange={ handleSubjectRetrievalStepChange }
                                                     value={ subjectStepId }
+                                                    data-testid={
+                                                        `${ testId }-use-subject-identifier-from-step-select`
+                                                    }
                                                 />
                                             </Form.Field>
                                         </Form>
@@ -482,12 +489,16 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                     }
                                                     onChange={ handleAttributeRetrievalStepChange }
                                                     value={ attributeStepId }
+                                                    data-testid={ `${ testId }-use-attributes-from-step-select` }
                                                 />
                                             </Form.Field>
                                         </Form>
                                     </Grid.Column>
                                     <Grid.Column computer={ 6 } mobile={ 16 } textAlign="right">
-                                        <PrimaryButton onClick={ handleAuthenticationStepAdd }>
+                                        <PrimaryButton
+                                            onClick={ handleAuthenticationStepAdd }
+                                            data-testid={ `${ testId }-new-authentication-step-button` }
+                                        >
                                             <Icon name="add"/>New Authentication Step
                                         </PrimaryButton>
                                     </Grid.Column>
@@ -517,6 +528,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                         step={ step }
                                                         stepIndex={ stepIndex }
                                                         readOnly={ readOnly }
+                                                        data-testid={
+                                                            `${ testId }-authentication-step-${ stepIndex }`
+                                                        }
                                                     />
                                                     <Divider hidden />
                                                 </>
@@ -546,8 +560,16 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                         }
                     ] }
                     visibility={ showAuthenticatorsSidePanel }
+                    data-testid={ `${ testId }-authenticator-side-panel` }
                 />
             </DragDropContext>
         </div>
     );
+};
+
+/**
+ * Default props for the step based flow component.
+ */
+StepBasedFlow.defaultProps = {
+    "data-testid": "step-based-flow"
 };

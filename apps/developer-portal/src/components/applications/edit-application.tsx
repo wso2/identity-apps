@@ -17,19 +17,22 @@
  */
 
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, ResourceTab } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { AdvancedSettings } from "./advanced-settings";
-import { AttributeSettings } from "./attribute-management";
-import { GeneralApplicationSettings } from "./general-application-settings";
 import { InboundProtocolsMeta } from "./meta";
-import { ProvisioningSettings } from "./provisioning";
-import { ApplicationSettings } from "./settings-application";
-import { SignOnMethods } from "./sign-on-methods";
+import {
+  AccessConfiguration,
+  AdvancedSettings,
+  AttributeSettings,
+  GeneralApplicationSettings,
+  ProvisioningSettings,
+  SignOnMethods
+} from "./settings";
 import { getInboundProtocolConfig } from "../../api";
 import { ApplicationManagementConstants } from "../../constants";
 import {
@@ -45,7 +48,7 @@ import { ApplicationManagementUtils } from "../../utils";
 /**
  * Proptypes for the applications edit component.
  */
-interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInterface> {
+interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     /**
      * Editing application.
      */
@@ -72,6 +75,7 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
  * Application edit component.
  *
  * @param {EditApplicationPropsInterface} props - Props injected to the component.
+ *
  * @return {ReactElement}
  */
 export const EditApplication: FunctionComponent<EditApplicationPropsInterface> = (
@@ -84,10 +88,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         isLoading,
         onDelete,
         onUpdate,
-        template
+        template,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
@@ -174,16 +181,19 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         dispatch(addAlert({
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
-                            message: "Retrieval error"
+                            message: t("devPortal:components.applications.notifications.getInboundProtocolConfig" +
+                                ".error.message")
                         }));
 
                         return;
                     }
 
                     dispatch(addAlert({
-                        description: "An error occurred retrieving the protocol configurations.",
+                        description: t("devPortal:components.applications.notifications.getInboundProtocolConfig" +
+                            ".genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: "Retrieval error"
+                        message: t("devPortal:components.applications.notifications.getInboundProtocolConfig" +
+                            ".genericError.message")
                     }));
                 })
                 .finally(() => {
@@ -208,13 +218,14 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onUpdate={ onUpdate }
                 featureConfig={ featureConfig }
                 template={ template }
+                data-testid={ `${ testId }-general-settings` }
             />
         </ResourceTab.Pane>
     );
 
     const ApplicationSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane attached={ false }>
-            <ApplicationSettings
+            <AccessConfiguration
                 appId={ application.id }
                 appName={ application.name }
                 isLoading={ isLoading }
@@ -223,6 +234,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 inboundProtocolConfig={ inboundProtocolConfig }
                 inboundProtocols={ inboundProtocolList }
                 featureConfig={ featureConfig }
+                data-testid={ `${ testId }-general-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -237,6 +249,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     inboundProtocolList.length === 1 && (inboundProtocolList[0] === SupportedAuthProtocolTypes.OIDC)
                 }
                 onUpdate={ onUpdate }
+                data-testid={ `${ testId }-attribute-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -250,6 +263,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 featureConfig={ featureConfig }
+                data-testid={ `${ testId }-sign-on-methods` }
             />
         </ResourceTab.Pane>
     );
@@ -261,6 +275,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 advancedConfigurations={ application.advancedConfigurations }
                 onUpdate={ onUpdate }
                 featureConfig={ featureConfig }
+                data-testid={ `${ testId }-advanced-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -272,6 +287,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 provisioningConfigurations={ application.provisioningConfigurations }
                 onUpdate={ onUpdate }
                 featureConfig={ featureConfig }
+                data-testid={ `${ testId }-provisioning-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -289,7 +305,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))) {
 
                 panes.push({
-                    menuItem: "General",
+                    menuItem: t("devPortal:components.applications.edit.sections.general.tabName"),
                     render: GeneralApplicationSettingsTabPane
                 });
             }
@@ -297,7 +313,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))) {
 
                 panes.push({
-                    menuItem: "Access",
+                    menuItem: t("devPortal:components.applications.edit.sections.access.tabName"),
                     render: ApplicationSettingsTabPane
                 });
             }
@@ -305,7 +321,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))) {
 
                 panes.push({
-                    menuItem: "Attributes",
+                    menuItem: t("devPortal:components.applications.edit.sections.attributes.tabName"),
                     render: AttributeSettingTabPane
                 });
             }
@@ -313,7 +329,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))) {
 
                 panes.push({
-                    menuItem: "Sign-on Method",
+                    menuItem: t("devPortal:components.applications.edit.sections.signOnMethod.tabName"),
                     render: SignOnMethodsTabPane
                 });
             }
@@ -321,7 +337,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))) {
 
                 panes.push({
-                    menuItem: "Provisioning",
+                    menuItem: t("devPortal:components.applications.edit.sections.provisioning.tabName"),
                     render: ProvisioningSettingsTabPane
                 });
             }
@@ -329,7 +345,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))) {
 
                 panes.push({
-                    menuItem: "Advanced",
+                    menuItem: t("devPortal:components.applications.edit.sections.advanced.tabName"),
                     render: AdvancedSettingsTabPane
                 });
             }
@@ -339,33 +355,42 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         return [
             {
-                menuItem: "General",
+                menuItem: t("devPortal:components.applications.edit.sections.general.tabName"),
                 render: GeneralApplicationSettingsTabPane
             },
             {
-                menuItem: "Access",
+                menuItem: t("devPortal:components.applications.edit.sections.access.tabName"),
                 render: ApplicationSettingsTabPane
-            }, {
-                menuItem: "Attribute",
+            },
+            {
+                menuItem: t("devPortal:components.applications.edit.sections.attributes.tabName"),
                 render: AttributeSettingTabPane
             },
             {
-                menuItem: "Sign-on Method",
+                menuItem: t("devPortal:components.applications.edit.sections.signOnMethod.tabName"),
                 render: SignOnMethodsTabPane
             },
             {
-                menuItem: "Provisioning",
+                menuItem: t("devPortal:components.applications.edit.sections.provisioning.tabName"),
                 render: ProvisioningSettingsTabPane
             },
             {
-                menuItem: "Advanced",
+                menuItem: t("devPortal:components.applications.edit.sections.advanced.tabName"),
                 render: AdvancedSettingsTabPane
             }
         ];
     };
 
     return (
-        application && !isInboundProtocolsRequestLoading ?
-            <ResourceTab panes={ resolveTabPanes() }/> : <ContentLoader/>
+        application && !isInboundProtocolsRequestLoading
+            ? <ResourceTab panes={ resolveTabPanes() }/>
+            : <ContentLoader/>
     );
+};
+
+/**
+ * Default props for the application edit component.
+ */
+EditApplication.defaultProps = {
+    "data-testid": "edit-application"
 };

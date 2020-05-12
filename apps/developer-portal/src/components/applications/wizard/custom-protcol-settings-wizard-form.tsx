@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
@@ -28,11 +29,10 @@ import {
     SubmitFormCustomPropertiesInterface
 } from "../../../models";
 
-
 /**
  * Proptypes for the inbound custom protocol form component.
  */
-interface InboundCustomProtocolWizardFormPropsInterface {
+interface InboundCustomProtocolWizardFormPropsInterface extends TestableComponentInterface {
     metadata?: CustomInboundProtocolMetaDataInterface;
     protocolName: string;
     initialValues?: any;
@@ -43,8 +43,9 @@ interface InboundCustomProtocolWizardFormPropsInterface {
 /**
  * Inbound Custom protocol configurations form.
  *
- * @param {InboundCustomProtocolWizardFormPropsInterface} props
- * @return ReactElement
+ * @param {InboundCustomProtocolWizardFormPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomProtocolWizardFormPropsInterface> = (
     props: InboundCustomProtocolWizardFormPropsInterface
@@ -55,7 +56,8 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
         initialValues,
         onSubmit,
         protocolName,
-        triggerSubmit
+        triggerSubmit,
+        [ "data-testid" ]: testId
     } = props;
 
     const createInputComponent = (
@@ -73,6 +75,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                                 requiredErrorMessage={ "Select the " + config?.displayName }
                                 default={ config?.defaultValue }
                                 children={ createDropDownOption(config?.availableValues) }
+                                data-testid={ `${ testId }-${ config?.name }-select` }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -92,6 +95,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                                 placeholder={ "Enter  " + config?.displayName }
                                 type="password"
                                 default={ config?.defaultValue }
+                                data-testid={ `${ testId }-${ config?.name }-password-input` }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -113,6 +117,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                                         value: config.name
                                     }
                                 ] }
+                                data-testid={ `${ testId }-${ config?.name }-checkbox` }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -129,6 +134,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                                 requiredErrorMessage={ "Provide  " + config?.displayName }
                                 placeholder={ "Enter  " + config?.displayName }
                                 type={ (config?.type === CustomTypeEnum.INTEGER) ? "number" : "text" }
+                                data-testid={ `${ testId }-${ config?.name }-input` }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -164,7 +170,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
         const allowedOptions = [];
         if (options) {
             options.map((ele) => {
-                allowedOptions.push({ text: ele, value: ele, key: options.indexOf(ele) });
+                allowedOptions.push({ key: options.indexOf(ele), text: ele, value: ele });
             });
         }
         return allowedOptions;
@@ -184,7 +190,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
             if (value instanceof Array) {
                 property = {
                     key: key,
-                    value: value.length > 0 ? true : false
+                    value: value.length > 0
                 };
             } else {
                 property = {
@@ -197,8 +203,8 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
         return {
             inboundProtocolConfiguration: {
                 [protocolName]: {
-                    name: protocolName,
                     configName: protocolName,
+                    name: protocolName,
                     properties: [
                         ...valueProperties
                     ]
@@ -227,4 +233,11 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
             </Forms>
             : <ContentLoader/>
     );
+};
+
+/**
+ * Default props for the custom protocol settings wizard form component.
+ */
+InboundCustomProtocolWizardForm.defaultProps = {
+    "data-testid": "custom-protocol-settings-wizard-form"
 };

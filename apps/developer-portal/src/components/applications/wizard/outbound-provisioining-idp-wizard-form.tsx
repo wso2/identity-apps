@@ -16,16 +16,17 @@
  * under the License.
  */
 
-import { Field, Forms, FormValue } from "@wso2is/forms";
-import React, { FunctionComponent, useEffect, useState } from "react";
-import { Grid } from "semantic-ui-react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Hint, PrimaryButton } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Grid } from "semantic-ui-react";
 import { getIdentityProviderDetail } from "../../../api";
 
 /**
  * Proptypes for the outbound provisioning IDP form component.
  */
-interface OutboundProvisioningIdpWizardFormPropsInterface {
+interface OutboundProvisioningIdpWizardFormPropsInterface extends TestableComponentInterface {
     initialValues: any;
     triggerSubmit: boolean;
     idpList: any;
@@ -43,18 +44,20 @@ interface DropdownOptionsInterface {
  * General settings wizard form component.
  *
  * @param {GeneralSettingsWizardFormPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
 export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvisioningIdpWizardFormPropsInterface> = (
     props: OutboundProvisioningIdpWizardFormPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         initialValues,
         idpList,
         triggerSubmit,
         onSubmit,
-        isEdit
+        isEdit,
+        [ "data-testid" ]: testId
     } = props;
 
     const [ idpListOptions, setIdpListOptions ] = useState<DropdownOptionsInterface[]>([]);
@@ -87,8 +90,8 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
 
         const idpOptions: DropdownOptionsInterface[] = [];
         let idpOption: DropdownOptionsInterface = {
-            text: "",
             key: -1,
+            text: "",
             value: ""
         };
         idpList.map((idp, index) => {
@@ -112,8 +115,8 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
 
         const connectorOptions: DropdownOptionsInterface[] = [];
         let connectorOption: DropdownOptionsInterface = {
-            text: "",
             key: -1,
+            text: "",
             value: ""
         };
         getIdentityProviderDetail(selectedIdp)
@@ -151,11 +154,11 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
     const getFormValues = (values: any): object => {
         const idpName = (idpListOptions.find(idp => idp.value === selectedIdp)).text;
         return {
-            idp: idpName,
-            connector: connector,
             blocking: isBlockingChecked ? isBlockingChecked : !!values.get("blocking").includes("blocking"),
-            rules: isRulesChecked ? isRulesChecked : !!values.get("blocking").includes("blocking"),
-            jit: isJITChecked ? isJITChecked : !!values.get("jit").includes("jit")
+            connector: connector,
+            idp: idpName,
+            jit: isJITChecked ? isJITChecked : !!values.get("jit").includes("jit"),
+            rules: isRulesChecked ? isRulesChecked : !!values.get("blocking").includes("blocking")
         };
     };
 
@@ -179,6 +182,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                     required={ false }
                                     value={ initialValues?.idp }
                                     listen={ handleIdpChange }
+                                    data-testid={ `${ testId }-idp-dropdown` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -200,6 +204,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                     setConnector(values.get("connector").toString())
                                 }
                             }
+                            data-testid={ `${ testId }-provisioning-connector-dropdown` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -222,6 +227,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                     setIsRulesChecked(values.get("rules").includes("rules"))
                                 }
                             }
+                            data-testid={ `${ testId }-rules-checkbox` }
                         />
                         <Hint>
                             Provision users based on the pre-defined XACML rules
@@ -247,6 +253,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                     setIsBlockingChecked(values.get("blocking").includes("blocking"))
                                 }
                             }
+                            data-testid={ `${ testId }-blocking-checkbox` }
                         />
                         <Hint>
                             Block the authentication flow until the provisioning is completed.
@@ -272,6 +279,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                     setIsJITChecked(values.get("jit").includes("jit"))
                                 }
                             }
+                            data-testid={ `${ testId }-jit-checkbox` }
                         />
                         <Hint>
                             Provision users to the store authenticated using just-in-time provisioning.
@@ -282,7 +290,12 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                     isEdit && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <PrimaryButton type="submit" size="small" className="form-button">
+                                <PrimaryButton
+                                    type="submit"
+                                    size="small"
+                                    className="form-button"
+                                    data-testid={ `${ testId }-submit-button` }
+                                >
                                     Update
                                 </PrimaryButton>
                             </Grid.Column>
@@ -292,4 +305,11 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
             </Grid>
         </Forms>
     );
+};
+
+/**
+ * Default props for the application outbound provisioning wizard idp form component.
+ */
+OutboundProvisioningWizardIdpForm.defaultProps = {
+    "data-testid": "application-outbound-provisioning-wizard-idp-form"
 };

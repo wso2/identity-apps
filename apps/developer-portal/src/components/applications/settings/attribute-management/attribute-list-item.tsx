@@ -21,7 +21,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Checkbox, Input, Label, Popup, Table } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
 
-
 interface AttributeListItemPropInterface {
     displayName: string;
     mappedURI: string;
@@ -39,11 +38,14 @@ interface AttributeListItemPropInterface {
 }
 
 /**
- * Selected Attribute list item.
- * @param props AttributeListItemPropInterface
+ * Selected Attribute list item component.
+ *
+ * @param {AttributeListItemPropInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface> = (
-    props
+    props: AttributeListItemPropInterface
 ): ReactElement => {
 
     const {

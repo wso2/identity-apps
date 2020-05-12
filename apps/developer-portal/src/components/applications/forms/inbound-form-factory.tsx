@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import React, { FunctionComponent } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement } from "react";
 import { InboundCustomProtocolForm } from "./inbound-custom-form";
 import { InboundOIDCForm } from "./inbound-oidc-form";
 import { InboundPassiveStsForm } from "./inbound-passive-sts-form";
@@ -27,7 +28,7 @@ import { SupportedAuthProtocolTypes } from "../../../models";
 /**
  * Proptypes for the inbound form factory component.
  */
-interface InboundFormFactoryInterface {
+interface InboundFormFactoryInterface extends TestableComponentInterface {
     metadata?: any;
     initialValues: any;
     onSubmit: (values: any) => void;
@@ -44,11 +45,12 @@ interface InboundFormFactoryInterface {
  * Inbound protocol form factory.
  *
  * @param {InboundFormFactoryInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
 export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> = (
     props: InboundFormFactoryInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         metadata,
@@ -57,7 +59,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         type,
         onApplicationRegenerate,
         onApplicationRevoke,
-        readOnly
+        readOnly,
+        [ "data-testid" ]: testId
     } = props;
 
     switch (type) {
@@ -70,6 +73,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     onApplicationRegenerate={ onApplicationRegenerate }
                     onApplicationRevoke={ onApplicationRevoke }
                     readOnly={ readOnly }
+                    data-testid={ testId }
                 />
             );
         case SupportedAuthProtocolTypes.SAML:
@@ -79,6 +83,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     metadata={ metadata }
                     onSubmit={ onSubmit }
                     readOnly={ readOnly }
+                    data-testid={ testId }
                 />
             );
         case SupportedAuthProtocolTypes.WS_TRUST:
@@ -88,6 +93,7 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     metadata={ metadata }
                     onSubmit={ onSubmit }
                     readOnly={ readOnly }
+                    data-testid={ testId }
                 />
             );
         case SupportedAuthProtocolTypes.WS_FEDERATION:
@@ -96,15 +102,26 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     initialValues={ initialValues }
                     onSubmit={ onSubmit }
                     readOnly={ readOnly }
+                    data-testid={ testId }
                 />
             );
         case SupportedAuthProtocolTypes.CUSTOM:
-            return <InboundCustomProtocolForm
-                metadata={ metadata }
-                initialValues={ initialValues }
-                onSubmit={ onSubmit }
-            />;
+            return (
+                <InboundCustomProtocolForm
+                    metadata={ metadata }
+                    initialValues={ initialValues }
+                    onSubmit={ onSubmit }
+                    data-testid={ testId }
+                />
+            );
         default:
             return null;
     }
+};
+
+/**
+ * Default props for the inbound form factory component.
+ */
+InboundFormFactory.defaultProps = {
+    "data-testid": "inbound-form-factory"
 };

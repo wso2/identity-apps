@@ -16,28 +16,27 @@
  * under the License.
  */
 
-import { AuthenticatorAccordion } from "../shared";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
+import { getIdentityProviderList, updateApplicationConfigurations } from "../../../../api";
+import { EmptyPlaceholderIllustrations } from "../../../../configs";
 import {
     ApplicationInterface,
     IdentityProviderInterface,
     OutboundProvisioningConfigurationInterface,
     ProvisioningConfigurationInterface
-} from "../../models";
-import { AlertLevels } from "@wso2is/core/models";
-import { getIdentityProviderList, updateApplicationConfigurations } from "../../api";
-import { addAlert } from "@wso2is/core/store";
-import { useDispatch } from "react-redux";
-import { EmptyPlaceholderIllustrations } from "../../configs";
-import { OutboundProvisioningIdpCreateWizard } from "./wizard";
-import { OutboundProvisioningWizardIdpForm } from "./wizard";
+} from "../../../../models";
+import { AuthenticatorAccordion } from "../../../shared";
+import { OutboundProvisioningIdpCreateWizard, OutboundProvisioningWizardIdpForm } from "../../wizard";
 
 /**
  *  Provisioning Configurations for the Application.
  */
-interface OutboundProvisioningConfigurationsPropsInterface {
+interface OutboundProvisioningConfigurationPropsInterface extends TestableComponentInterface {
     /**
      * Editing application.
      */
@@ -56,15 +55,17 @@ interface OutboundProvisioningConfigurationsPropsInterface {
  * Provisioning configurations form component.
  *
  * @param {ProvisioningConfigurationFormPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ *
+ * @return {React.ReactElement}
  */
-export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvisioningConfigurationsPropsInterface> = (
-    props: OutboundProvisioningConfigurationsPropsInterface
+export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvisioningConfigurationPropsInterface> = (
+    props: OutboundProvisioningConfigurationPropsInterface
 ): ReactElement => {
 
     const {
         application,
         onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -172,7 +173,11 @@ export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvi
                     <Grid>
                         <Grid.Row>
                             <Grid.Column>
-                                <PrimaryButton floated="right" onClick={ () => setShowWizard(true) }>
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ () => setShowWizard(true) }
+                                    data-testid={ `${ testId }-new-idp-button` }
+                                >
                                     <Icon name="add"/>
                                     New Identity Provider
                                 </PrimaryButton>
@@ -207,13 +212,15 @@ export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvi
                                                                     } }
                                                                     idpList={ idpList }
                                                                     isEdit={ true }
+                                                                    data-testid={ `${ testId }-form` }
                                                                 />
                                                             ),
                                                             id: provisioningIdp?.idp,
-                                                            title: provisioningIdp?.idp,
+                                                            title: provisioningIdp?.idp
                                                         }
                                                     ]
                                                 }
+                                                data-testid={ `${ testId }-outbound-connector-accordion` }
                                             />
                                         )
                                     })
@@ -262,12 +269,23 @@ export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvi
                         onPrimaryActionClick={
                             (): void => handleProvisioningIDPDelete(deletingIdp)
                         }
+                        data-testid={ `${ testId }-connector-delete-confirmation-modal` }
                     >
-                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
+                        <ConfirmationModal.Header
+                            data-testid={ `${ testId }-connector-delete-confirmation-modal-header` }
+                        >
+                            Are you sure?
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message
+                            attached
+                            warning
+                            data-testid={ `${ testId }-connector-delete-confirmation-modal-message` }
+                        >
                             This action is irreversible and will remove the IDP.
                         </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
+                        <ConfirmationModal.Content
+                            data-testid={ `${ testId }-connector-delete-confirmation-modal-content` }
+                        >
                             If you delete this outbound provisioning IDP, you will not be able to get it back.
                             Please proceed with caution.
                         </ConfirmationModal.Content>
@@ -280,9 +298,17 @@ export const OutboundProvisioningConfigurations: FunctionComponent<OutboundProvi
                         closeWizard={ () => setShowWizard(false) }
                         application={ application }
                         onUpdate={ onUpdate }
+                        data-testid={ `${ testId }-idp-create-wizard` }
                     />
                 )
             }
         </>
     )
+};
+
+/**
+ * Default props for the application outbound provisioning configurations component.
+ */
+OutboundProvisioningConfiguration.defaultProps = {
+    "data-testid": "application-outbound-provisioning-configurations"
 };

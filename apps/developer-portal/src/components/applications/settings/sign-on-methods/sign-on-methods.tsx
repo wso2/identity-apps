@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -25,18 +25,18 @@ import { useDispatch } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
-import { updateAuthenticationSequence } from "../../../api";
+import { updateAuthenticationSequence } from "../../../../api";
 import {
     AdaptiveAuthTemplateInterface,
     AuthenticationSequenceInterface,
     AuthenticationStepInterface,
     FeatureConfigInterface
-} from "../../../models";
+} from "../../../../models";
 
 /**
  * Proptypes for the sign on methods component.
  */
-interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterface> {
+interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     /**
      * ID of the application.
      */
@@ -59,7 +59,8 @@ interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterfa
  * Configure the different sign on strategies for an application.
  *
  * @param {SignOnMethodsPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ *
+ * @return {React.ReactElement}
  */
 export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     props: SignOnMethodsPropsInterface
@@ -70,7 +71,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         authenticationSequence,
         featureConfig,
         isLoading,
-        onUpdate
+        onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -202,6 +204,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 readOnly={
                     !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
                 }
+                data-testid={ `${ testId }-step-based-flow` }
             />
             <Divider hidden />
             <ScriptBasedFlow
@@ -212,13 +215,26 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 readOnly={
                     !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
                 }
+                data-testid={ `${ testId }-script-based-flow` }
             />
             <Divider hidden/>
             {
                 hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update) && (
-                    <PrimaryButton onClick={ handleUpdateClick }>Update</PrimaryButton>
+                    <PrimaryButton
+                        onClick={ handleUpdateClick }
+                        data-testid={ `${ testId }-update-button` }
+                    >
+                        Update
+                    </PrimaryButton>
                 )
             }
         </div>
     );
+};
+
+/**
+ * Default props for the application sign-on-methods component.
+ */
+SignOnMethods.defaultProps = {
+    "data-testid": "sign-on-methods"
 };

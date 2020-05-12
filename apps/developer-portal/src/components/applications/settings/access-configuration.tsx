@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -31,25 +31,25 @@ import _ from "lodash";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
-import { InboundFormFactory } from "./forms";
-import { ApplicationCreateWizard } from "./wizard";
 import {
     deleteProtocol,
     getAuthProtocolMetadata,
     regenerateClientSecret,
     revokeClientSecret,
     updateAuthProtocolConfig
-} from "../../api";
-import { EmptyPlaceholderIllustrations, InboundProtocolLogos } from "../../configs";
-import { FeatureConfigInterface, SupportedAuthProtocolMetaTypes, SupportedAuthProtocolTypes } from "../../models";
-import { AppState } from "../../store";
-import { setAuthProtocolMeta } from "../../store/actions";
-import { AuthenticatorAccordion } from "../shared";
+} from "../../../api";
+import { EmptyPlaceholderIllustrations, InboundProtocolLogos } from "../../../configs";
+import { FeatureConfigInterface, SupportedAuthProtocolMetaTypes, SupportedAuthProtocolTypes } from "../../../models";
+import { AppState } from "../../../store";
+import { setAuthProtocolMeta } from "../../../store/actions";
+import { AuthenticatorAccordion } from "../../shared";
+import { InboundFormFactory } from "../forms";
+import { ApplicationCreateWizard } from "../wizard";
 
 /**
  * Proptypes for the applications settings component.
  */
-interface ApplicationSettingsPropsInterface extends SBACInterface<FeatureConfigInterface> {
+interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     /**
      * Currently editing application id.
      */
@@ -83,11 +83,12 @@ interface ApplicationSettingsPropsInterface extends SBACInterface<FeatureConfigI
 /**
  *  Inbound protocols and advance settings component.
  *
- * @param {ApplicationSettingsPropsInterface} props - Props injected to the component.
+ * @param {AccessConfigurationPropsInterface} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
-export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInterface> = (
-    props: ApplicationSettingsPropsInterface
+export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInterface> = (
+    props: AccessConfigurationPropsInterface
 ): ReactElement => {
 
     const {
@@ -97,7 +98,8 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
         inboundProtocolConfig,
         inboundProtocols,
         isLoading,
-        onUpdate
+        onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -246,7 +248,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
      * Handles Authenticator delete button on click action.
      *
      * @param {React.MouseEvent<HTMLDivElement>} e - Click event.
-     * @param {string} id - Id of the authenticator.
+     * @param {string} name - Protocol name.
      */
     const handleProtocolDeleteOnClick = (e: MouseEvent<HTMLDivElement>, name: string): void => {
         if (!name) {
@@ -286,7 +288,6 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                 .includes(protocol as SupportedAuthProtocolTypes)) {
                                 return {
                                     actions: [],
-                                    icon: { icon: InboundProtocolLogos[protocol], size: "micro" } as GenericIconProps,
                                     content: (
                                         <InboundFormFactory
                                             metadata={ authProtocolMeta[protocol] }
@@ -307,23 +308,16 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                                     featureConfig?.applications?.scopes?.update
                                                 )
                                             }
+                                            data-testid={ `${ testId }-inbound-${ protocol }-form` }
                                         />
                                     ),
+                                    icon: { icon: InboundProtocolLogos[protocol], size: "micro" } as GenericIconProps,
                                     id: protocol,
                                     title: _.upperCase(protocol)
                                 }
                             } else {
                                 return {
                                     actions: [],
-                                    icon: {
-                                        icon: (
-                                            <UserAvatar
-                                                name={ protocol }
-                                                size="mini"
-                                            />
-                                        ),
-                                        size: "nano"
-                                    } as GenericIconProps,
                                     content: (
                                         <InboundFormFactory
                                             metadata={ authProtocolMeta[protocol] }
@@ -342,14 +336,26 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                                     featureConfig?.applications?.scopes?.update
                                                 )
                                             }
+                                            data-testid={ `${ testId }-inbound-custom-form` }
                                         />
                                     ),
+                                    icon: {
+                                        icon: (
+                                            <UserAvatar
+                                                data-testid={ `${ testId }-${ protocol }-icon` }
+                                                name={ protocol }
+                                                size="mini"
+                                            />
+                                        ),
+                                        size: "nano"
+                                    } as GenericIconProps,
                                     id: protocol,
                                     title: _.upperCase(protocol)
                                 }
                             }
                         })
                     }
+                    data-testid={ `${ testId }-protocol-accordion` }
                 /> : <ContentLoader/>
         )
     };
@@ -413,6 +419,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                         floated="right"
                                         primary
                                         onClick={ () => setShowWizard(true) }
+                                        data-testid={ `${ testId }-new-protocol-button` }
                                     >
                                         <Icon name="add"/>New Protocol
                                     </Button>
@@ -437,6 +444,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                                 "You can add protocol easily by using the",
                                                 "predefined templates."
                                             ] }
+                                            data-testid={ `${ testId }-protocol-empty-placeholder` }
                                         />
                                     )
                             }
@@ -457,6 +465,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                 selectedProtocols={ inboundProtocols }
                                 onUpdate={ onUpdate }
                                 appId={ appId }
+                                data-testid={ `${ testId }-protocol-add-wizard` }
                             />
                         )
                     }
@@ -480,12 +489,23 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                         setShowDeleteConfirmationModal(false);
                                     }
                                 }
+                                data-testid={ `${ testId }-protocol-delete-confirmation-modal` }
                             >
-                                <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
-                                <ConfirmationModal.Message attached warning>
+                                <ConfirmationModal.Header
+                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal-header` }
+                                >
+                                    Are you sure?
+                                </ConfirmationModal.Header>
+                                <ConfirmationModal.Message
+                                    attached
+                                    warning
+                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal-message` }
+                                >
                                     This action is irreversible and will permanently delete the protocol.
                                 </ConfirmationModal.Message>
-                                <ConfirmationModal.Content>
+                                <ConfirmationModal.Content
+                                    data-testid={ `${ testId }-protocol-delete-confirmation-modal-content` }
+                                >
                                     If you delete this protocol, you will not be able to get it back. All the
                                     applications depending on this also might stop working. Please proceed with caution.
                                 </ConfirmationModal.Content>
@@ -496,4 +516,11 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
             )
             : <ContentLoader/>
     );
+};
+
+/**
+ * Default props for the application access configuration component.
+ */
+AccessConfiguration.defaultProps = {
+    "data-testid": "application-access-configuration"
 };

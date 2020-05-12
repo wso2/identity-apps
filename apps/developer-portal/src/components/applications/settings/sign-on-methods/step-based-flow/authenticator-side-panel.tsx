@@ -16,19 +16,20 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, GenericIcon, Heading } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, Ref, SyntheticEvent, forwardRef, useState } from "react";
 import Draggable from "react-draggable";
 import { Accordion, Card, Icon, Popup } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
-import { OperationIcons } from "../../../../configs";
-import { GenericAuthenticatorInterface } from "../../../../models";
+import { OperationIcons } from "../../../../../configs";
+import { GenericAuthenticatorInterface } from "../../../../../models";
 
 /**
  * Proptypes for the authenticator side panel component.
  */
-interface AuthenticatorSidePanelPropsInterface {
+interface AuthenticatorSidePanelPropsInterface extends TestableComponentInterface {
     /**
      * Set of authenticators.
      */
@@ -90,7 +91,8 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
             heading,
             onSidePanelVisibilityToggle,
             readOnly,
-            visibility
+            visibility,
+            [ "data-testid" ]: testId
         } = props;
 
         const [
@@ -124,7 +126,7 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
 
         return (
             visibility && (
-                <div className={ classes } ref={ ref }>
+                <div className={ classes } ref={ ref } data-testid={ testId }>
                     <Draggable handle=".drag-handle" disabled={ readOnly }>
                         <Card>
                             <Card.Content>
@@ -213,6 +215,7 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
                                                                                     ]
                                                                                 }/>
                                                                         ) }
+                                                                        data-testid={ `${ testId }-authenticators` }
                                                                     />
                                                                 </Accordion.Content>
                                                             </>
@@ -235,5 +238,6 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
  * Authenticator side panel component default props.
  */
 AuthenticatorSidePanel.defaultProps = {
+    "data-testid": "authenticator-side-panel",
     visibility: true
 };

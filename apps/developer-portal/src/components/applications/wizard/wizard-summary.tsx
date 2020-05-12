@@ -16,17 +16,17 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import { AppAvatar, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { Grid, Label } from "semantic-ui-react";
 import { MainApplicationInterface } from "../../../models";
 
-
 /**
  * Proptypes for the wizard summary component.
  */
-interface WizardSummaryProps {
+interface WizardSummaryProps extends TestableComponentInterface {
     summary: MainApplicationInterface;
     triggerSubmit: boolean;
     onSubmit: (application: MainApplicationInterface) => void;
@@ -36,6 +36,7 @@ interface WizardSummaryProps {
  * Wizard summary form component.
  *
  * @param {WizardSummaryProps} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
 export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
@@ -45,7 +46,8 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
     const {
         summary,
         triggerSubmit,
-        onSubmit
+        onSubmit,
+        [ "data-testid" ]: testId
     } = props;
 
     /**
@@ -60,7 +62,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
     }, [triggerSubmit]);
 
     return (
-        <Grid className="wizard-summary">
+        <Grid className="wizard-summary" data-testid={ testId }>
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details">
@@ -235,4 +237,11 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
             }
         </Grid>
     );
+};
+
+/**
+ * Default props for the application wizard summary component.
+ */
+WizardSummary.defaultProps = {
+    "data-testid": "application-wizard-summary"
 };

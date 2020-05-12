@@ -16,15 +16,16 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { PageHeader, PageHeaderPropsInterface } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, ReactElement } from "react";
 import { Divider } from "semantic-ui-react";
 
 /**
  * Page layout component Prop types.
  */
-interface PageLayoutPropsInterface extends PageHeaderPropsInterface {
+interface PageLayoutPropsInterface extends PageHeaderPropsInterface, TestableComponentInterface {
     contentTopMargin?: boolean;
     padded?: boolean;
     showHelpPanel?: boolean;
@@ -34,15 +35,17 @@ interface PageLayoutPropsInterface extends PageHeaderPropsInterface {
  * Page layout.
  *
  * @param {React.PropsWithChildren<PageLayoutPropsInterface>} props - Props injected to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
 export const PageLayout: React.FunctionComponent<PropsWithChildren<PageLayoutPropsInterface>> = (
     props: PropsWithChildren<PageLayoutPropsInterface>
-): JSX.Element => {
+): ReactElement => {
 
     const {
         children,
         contentTopMargin,
+        [ "data-testid" ]: testId,
         padded,
         ...rest
     } = props;
@@ -53,9 +56,10 @@ export const PageLayout: React.FunctionComponent<PropsWithChildren<PageLayoutPro
     });
 
     return (
-        <div className={ layoutClasses }>
+        <div className={ layoutClasses } data-tesid={ testId }>
             <div className={ layoutContentClasses }>
                 <PageHeader
+                    data-testid={ `${ testId }-page-header` }
                     { ...rest }
                 />
                 { contentTopMargin && <Divider hidden/> }
@@ -70,6 +74,7 @@ export const PageLayout: React.FunctionComponent<PropsWithChildren<PageLayoutPro
  */
 PageLayout.defaultProps = {
     contentTopMargin: true,
+    "data-testid": "page-layout",
     padded: true,
     titleTextAlign: "left"
 };

@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { TemplateGrid } from "@wso2is/react-components";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { EmptyPlaceholder, TemplateGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -27,13 +28,12 @@ import {
 import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../../../models";
 import { AppState } from "../../../store";
 import { ApplicationManagementUtils } from "../../../utils";
-import { EmptyPlaceholder } from "../../shared";
 import { InboundProtocolsMeta } from "../meta";
 
 /**
  * Proptypes for the protocol selection wizard form component.
  */
-interface ProtocolSelectionWizardFormPropsInterface {
+interface ProtocolSelectionWizardFormPropsInterface extends TestableComponentInterface {
     initialSelectedTemplate?: ApplicationTemplateListItemInterface;
     defaultTemplates: ApplicationTemplateListItemInterface[];
     onSubmit: (values: ApplicationTemplateListItemInterface) => void;
@@ -58,7 +58,8 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
         onSubmit,
         defaultTemplates,
         setSelectedCustomInboundProtocol,
-        triggerSubmit
+        triggerSubmit,
+        [ "data-testid" ]: testId
     } = props;
 
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
@@ -184,18 +185,16 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
 
     /**
      * Filter already existing protocol from the custom inbound template.
-     *
-     * @param templates Templates array to be filtered.
      */
     const filterCustomProtocol = (): ApplicationTemplateListItemInterface[] => {
         const customTemplates: ApplicationTemplateListItemInterface[] = [];
         if (availableCustomInboundProtocols.length > 0) {
             availableCustomInboundProtocols.map((protocol) => {
                 const customTemplate: ApplicationTemplateListItemInterface = {
+                    authenticationProtocol: protocol.name,
                     id: protocol.name,
-                    name: protocol.displayName,
                     image: protocol.displayName,
-                    authenticationProtocol: protocol.name
+                    name: protocol.displayName
                 };
                 customTemplates.push(customTemplate);
             });
@@ -248,6 +247,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                             subtitle="All the protocols have been configured"
                         />
                     ) }
+                    data-testid={ `${ testId }-default-template-grid` }
                 />
             ) }
             { !isInboundProtocolsRequestLoading && (
@@ -277,8 +277,16 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                             subtitle="All the protocols have been configured"
                         />
                     ) }
+                    data-testid={ `${ testId }-custom-template-grid` }
                 />
             ) }
         </>
     );
+};
+
+/**
+ * Default props for the application protocol selection wizard form component.
+ */
+ProtocolSelectionWizardForm.defaultProps = {
+    "data-testid": "application-protocol-selection-wizard-form"
 };

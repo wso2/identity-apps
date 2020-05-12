@@ -91,9 +91,38 @@ export interface DevPortalNS {
                 };
                 placeholder: string;
             };
+            edit: {
+                sections: {
+                    access: {
+                        tabName: string;
+                    };
+                    advanced: {
+                        tabName: string;
+                    };
+                    attributes: {
+                        tabName: string;
+                    };
+                    general: {
+                        tabName: string;
+                    };
+                    provisioning: {
+                        tabName: string;
+                    };
+                    signOnMethod: {
+                        tabName: string;
+                    };
+                };
+            };
             helpPanel: HelpPanelInterface;
             notifications: {
+                addApplication: Notification;
+                fetchApplication: Notification;
                 fetchApplications: Notification;
+                fetchCustomInboundProtocols: Notification;
+                fetchInboundProtocols: Notification;
+                fetchTemplates: Notification;
+                getInboundProtocolConfig: Notification;
+                updateApplication: Notification;
             };
             placeholders: {
                 emptyList: Placeholder;

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading } from "@wso2is/react-components";
 import _ from "lodash";
 import React, {
@@ -27,7 +28,7 @@ import React, {
     useState
 } from "react";
 import { Accordion, Icon, Menu, Popup, Segment, Sidebar } from "semantic-ui-react";
-import { AdaptiveAuthTemplateInterface } from "../../../../models";
+import { AdaptiveAuthTemplateInterface } from "../../../../../models";
 
 /**
  * Component ref type.
@@ -37,7 +38,7 @@ export type ScriptTemplatesSidePanelRefType = HTMLFormElement;
 /**
  * Proptypes for the adaptive scripts component.
  */
-interface ScriptTemplatesSidePanelInterface {
+interface ScriptTemplatesSidePanelInterface extends TestableComponentInterface {
     /**
      * Fired on template selection.
      * @param {AdaptiveAuthTemplateInterface} template -Auth template.
@@ -86,7 +87,8 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
             templates,
             title,
             visible,
-            readOnly
+            readOnly,
+            [ "data-testid" ]: testId
         } = props;
 
         const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
@@ -121,6 +123,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                 vertical
                 secondary
                 visible={ visible }
+                data-testid={ testId }
             >
                 { title && typeof title === "string" ? <Heading as="h6" bold>{ title }</Heading> : title }
                 {
@@ -129,6 +132,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                             <Accordion
                                 as={ Menu }
                                 className="template-category-menu"
+                                data-testid={ `${ testId }-accordion` }
                                 fluid
                                 secondary
                                 vertical
@@ -144,10 +148,12 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                                     index={ index }
                                                     icon={ <Icon className="angle right caret-icon"/> }
                                                     onClick={ handleAccordionOnClick }
+                                                    data-testid={ `${ testId }-accordion-title-${ index }` }
                                                 />
                                                 <Accordion.Content
                                                     className="template-list"
                                                     active={ accordionActiveIndexes.includes(index) }
+                                                    data-testid={ `${ testId }-accordion-content-${ index }` }
                                                 >
                                                     {
                                                         category.templates.map((template, index) => (
@@ -202,6 +208,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
  * Default props for the script templates side panel component.
  */
 ScriptTemplatesSidePanel.defaultProps = {
+    "data-testid": "script-templates-side-panel",
     defaultActiveIndexes: [ -1 ],
     visible: false
 };

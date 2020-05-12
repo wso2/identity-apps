@@ -17,7 +17,7 @@
  */
 
 import { UIConstants } from "@wso2is/core/constants";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import { CodeEditor, Heading, Hint } from "@wso2is/react-components";
@@ -25,19 +25,19 @@ import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } f
 import { useDispatch } from "react-redux";
 import { Checkbox, Grid, Icon, Menu, Sidebar } from "semantic-ui-react";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
-import { getAdaptiveAuthTemplates } from "../../../../api";
-import { ApplicationManagementConstants } from "../../../../constants";
+import { getAdaptiveAuthTemplates } from "../../../../../api";
+import { ApplicationManagementConstants } from "../../../../../constants";
 import {
     AdaptiveAuthTemplateInterface,
     AdaptiveAuthTemplatesListInterface,
     AuthenticationSequenceInterface
-} from "../../../../models";
-import { AdaptiveScriptUtils } from "../../../../utils";
+} from "../../../../../models";
+import { AdaptiveScriptUtils } from "../../../../../utils";
 
 /**
  * Proptypes for the adaptive scripts component.
  */
-interface AdaptiveScriptsPropsInterface {
+interface AdaptiveScriptsPropsInterface extends TestableComponentInterface {
     /**
      * Currently configured authentication sequence for the application.
      */
@@ -76,7 +76,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         authenticationSequence,
         onTemplateSelect,
         onScriptChange,
-        readOnly
+        readOnly,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -184,7 +185,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     };
 
     return (
-        <div className="adaptive-scripts-section">
+        <div className="adaptive-scripts-section" data-testid={ testId }>
             <Grid>
                 <Grid.Row>
                     <Grid.Column computer={ 16 }>
@@ -207,6 +208,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 }
                                 visible={ showAuthTemplatesSidePanel }
                                 readOnly={ readOnly }
+                                data-testid={ `${ testId }-script-templates-side-panel` }
                             />
                             <Sidebar.Pusher>
                                 <div className="script-editor-container" ref={ scriptEditorSectionRef }>
@@ -216,11 +218,16 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 label="Dark mode"
                                                 checked={ isEditorDarkMode }
                                                 onChange={ handleEditorDarkModeToggle }
+                                                data-testid={ `${ testId }-code-editor-mode-toggle` }
                                                 slider
                                             />
                                         </Menu.Item>
                                         <Menu.Menu position="right">
-                                            <Menu.Item onClick={ handleScriptTemplateSidebarToggle } className="action">
+                                            <Menu.Item
+                                                onClick={ handleScriptTemplateSidebarToggle }
+                                                className="action"
+                                                data-testid={ `${ testId }-script-template-sidebar-toggle` }
+                                            >
                                                 <Icon name="bars" />
                                             </Menu.Item>
                                         </Menu.Menu>
@@ -241,6 +248,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                             } }
                                             theme={ isEditorDarkMode ? "dark" : "light" }
                                             readOnly={ readOnly }
+                                            data-testid={ `${ testId }-code-editor` }
                                         />
                                     </div>
                                 </div>
@@ -251,4 +259,11 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             </Grid>
         </div>
     );
+};
+
+/**
+ * Default props for the script based flow component.
+ */
+ScriptBasedFlow.defaultProps = {
+    "data-testid": "script-based-flow"
 };

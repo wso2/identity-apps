@@ -17,18 +17,18 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
-import { AdvancedConfigurationsForm } from "./forms";
-import { updateApplicationConfigurations } from "../../api";
-import { AdvancedConfigurationsInterface, FeatureConfigInterface } from "../../models";
+import { updateApplicationConfigurations } from "../../../api";
+import { AdvancedConfigurationsInterface, FeatureConfigInterface } from "../../../models";
+import { AdvancedConfigurationsForm } from "../forms";
 
 /**
  * Proptypes for the advance settings component.
  */
-interface AdvancedSettingsPropsInterface extends SBACInterface<FeatureConfigInterface> {
+interface AdvancedSettingsPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     /**
      * Currently editing application id.
      */
@@ -47,7 +47,8 @@ interface AdvancedSettingsPropsInterface extends SBACInterface<FeatureConfigInte
  *  advance settings component.
  *
  * @param {AdvancedSettingsPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ *
+ * @return {React.ReactElement}
  */
 export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface> = (
     props: AdvancedSettingsPropsInterface
@@ -57,7 +58,8 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
         appId,
         advancedConfigurations,
         featureConfig,
-        onUpdate
+        onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -97,16 +99,22 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
     };
 
     return (
-        <>
-            <div className="advanced-configuration-section">
-                <AdvancedConfigurationsForm
-                    config={ advancedConfigurations }
-                    onSubmit={ handleAdvancedConfigFormSubmit }
-                    readOnly={
-                        !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
-                    }
-                />
-            </div>
-        </>
+        <div className="advanced-configuration-section">
+            <AdvancedConfigurationsForm
+                config={ advancedConfigurations }
+                onSubmit={ handleAdvancedConfigFormSubmit }
+                readOnly={
+                    !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                }
+                data-testid={ `${ testId }-form` }
+            />
+        </div>
     );
+};
+
+/**
+ * Default props for the application advanced settings component.
+ */
+AdvancedSettings.defaultProps = {
+    "data-testid": "application-advanced-settings"
 };

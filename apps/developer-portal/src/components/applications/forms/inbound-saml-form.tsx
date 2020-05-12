@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { CopyInputField, Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -30,7 +31,7 @@ import {
 } from "../../../models";
 import { URLInputComponent } from "../components";
 
-interface InboundSAMLFormPropsInterface {
+interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
     initialValues: SAML2ServiceProviderInterface;
     metadata: SAMLMetaDataInterface;
     onSubmit: (values: any) => void;
@@ -43,17 +44,20 @@ interface InboundSAMLFormPropsInterface {
 /**
  * Inbound SAML configurations.
  *
- * @param props InboundSAMLFormPropsInterface
+ * @param {InboundSAMLFormPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> = (
-    props
+    props: InboundSAMLFormPropsInterface
 ): ReactElement => {
 
     const {
         initialValues,
         metadata,
         onSubmit,
-        readOnly
+        readOnly,
+        [ "data-testid" ]: testId
     } = props;
 
     // creates dropdown options
@@ -66,7 +70,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                 });
             } else {
                 metadataProp.options.map((ele) => {
-                    allowedOptions.push({ text: ele, value: ele, key: metadataProp.options.indexOf(ele) });
+                    allowedOptions.push({ key: metadataProp.options.indexOf(ele), text: ele, value: ele });
                 });
             }
         }
@@ -96,7 +100,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         if (!isEmpty(assertionConsumerUrls)) {
             const assertionUrlArray = assertionConsumerUrls.split(",");
             assertionUrlArray.map((url) => {
-                allowedOptions.push({ text: url, value: url, key: assertionUrlArray.indexOf(url) });
+                allowedOptions.push({ key: assertionUrlArray.indexOf(url), text: url, value: url });
             })
         }
         return allowedOptions;
@@ -106,44 +110,17 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
 
         return {
             manualConfiguration: {
-                issuer: values.get("issuer") || initialValues?.issuer,
                 assertionConsumerUrls: assertionConsumerUrls.split(","),
-                serviceProviderQualifier: values.get("applicationQualifier"),
-                defaultAssertionConsumerUrl: values.get("defaultAssertionConsumerUrl"),
-                idpEntityIdAlias: values.get("idpEntityIdAlias"),
-                singleSignOnProfile: {
-                    bindings: values.get("bindings"),
-                    enableSignatureValidationForArtifactBinding:
-                        values.get("signatureValidationForArtifactBinding")
-                            .includes("enableSignatureValidationForArtifactBinding"),
-                    attributeConsumingServiceIndex: values.get("attributeConsumingServiceIndex"),
-                    enableIdpInitiatedSingleSignOn: values.get("idPInitiatedSSO").includes("enableIdPInitiatedSSO"),
-                    assertion: {
-                        nameIdFormat: values.get("nameIdFormat"),
-                        audiences: audiences ? audiences.split(",") : [],
-                        recipients: recipients ? recipients.split(",") : [],
-                        digestAlgorithm: values.get("digestAlgorithm"),
-                        encryption: {
-                            enabled: values.get("assertionEncryption").includes("enableAssertionEncryption"),
-                            assertionEncryptionAlgorithm: values.get("assertionEncryptionAlgorithm"),
-                            keyEncryptionAlgorithm: values.get("keyEncryptionAlgorithm")
-                        }
-                    }
-                },
                 attributeProfile: {
-                    enabled: values.get("attributeProfile").includes("enabled"),
                     alwaysIncludeAttributesInResponse: values.get("includeAttributesInResponse")
-                        .includes("alwaysIncludeAttributesInResponse")
+                        .includes("alwaysIncludeAttributesInResponse"),
+                    enabled: values.get("attributeProfile").includes("enabled")
                 },
-                singleLogoutProfile: {
-                    enabled: values.get("singleLogoutProfile").includes("enabled"),
-                    logoutResponseUrl: values.get("singleLogoutResponseUrl"),
-                    logoutMethod: values.get("logoutMethod"),
-                    idpInitiatedSingleLogout: {
-                        enabled: values.get("idpInitiatedSingleLogout").includes("enabled"),
-                        returnToUrls: returnToURLS ? returnToURLS.split(",") : []
-                    }
-                },
+                defaultAssertionConsumerUrl: values.get("defaultAssertionConsumerUrl"),
+                enableAssertionQueryProfile:
+                    values.get("assertionQueryProfile").includes("enableAssertionQueryProfile"),
+                idpEntityIdAlias: values.get("idpEntityIdAlias"),
+                issuer: values.get("issuer") || initialValues?.issuer,
                 requestValidation: {
                     enableSignatureValidation: values.get("requestSignatureValidation")
                         .includes("enableSignatureValidation"),
@@ -153,7 +130,35 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                     enabled: values.get("responseSigning").includes("enabled"),
                     signingAlgorithm: values.get("signingAlgorithm")
                 },
-                enableAssertionQueryProfile: values.get("assertionQueryProfile").includes("enableAssertionQueryProfile")
+                serviceProviderQualifier: values.get("applicationQualifier"),
+                singleLogoutProfile: {
+                    enabled: values.get("singleLogoutProfile").includes("enabled"),
+                    idpInitiatedSingleLogout: {
+                        enabled: values.get("idpInitiatedSingleLogout").includes("enabled"),
+                        returnToUrls: returnToURLS ? returnToURLS.split(",") : []
+                    },
+                    logoutMethod: values.get("logoutMethod"),
+                    logoutResponseUrl: values.get("singleLogoutResponseUrl")
+                },
+                singleSignOnProfile: {
+                    assertion: {
+                        audiences: audiences ? audiences.split(",") : [],
+                        digestAlgorithm: values.get("digestAlgorithm"),
+                        encryption: {
+                            assertionEncryptionAlgorithm: values.get("assertionEncryptionAlgorithm"),
+                            enabled: values.get("assertionEncryption").includes("enableAssertionEncryption"),
+                            keyEncryptionAlgorithm: values.get("keyEncryptionAlgorithm")
+                        },
+                        nameIdFormat: values.get("nameIdFormat"),
+                        recipients: recipients ? recipients.split(",") : []
+                    },
+                    attributeConsumingServiceIndex: values.get("attributeConsumingServiceIndex"),
+                    bindings: values.get("bindings"),
+                    enableIdpInitiatedSingleSignOn: values.get("idPInitiatedSSO").includes("enableIdPInitiatedSSO"),
+                    enableSignatureValidationForArtifactBinding:
+                        values.get("signatureValidationForArtifactBinding")
+                            .includes("enableSignatureValidationForArtifactBinding")
+                }
             }
         }
     };
@@ -162,7 +167,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         () => {
             if (initialValues) {
                 setIsSingleLogoutProfileEnabled(initialValues?.singleLogoutProfile.enabled);
-                setIsIdpInitiatedSingleLogoutEnabled(initialValues?.singleLogoutProfile.idpInitiatedSingleLogout.enabled);
+                setIsIdpInitiatedSingleLogoutEnabled(
+                    initialValues?.singleLogoutProfile.idpInitiatedSingleLogout.enabled);
                 setIsAttributeProfileEnabled(initialValues?.attributeProfile.enabled);
                 setIsRequestSignatureValidationEnabled(initialValues?.requestValidation.enableSignatureValidation);
                 setAssertionEncryptionEnabled(initialValues?.singleSignOnProfile.assertion.encryption.enabled)
@@ -202,6 +208,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             placeholder={ "Enter the issuer name" }
                                             value={ initialValues?.issuer }
                                             readOnly={ readOnly }
+                                            data-testid={ `${ testId }-issuer-input` }
                                         />
                                 }
                                 <Hint>
@@ -222,6 +229,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     placeholder={ "Enter the application qualifier" }
                                     value={ initialValues?.serviceProviderQualifier }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-application-qualifier-input` }
                                 />
                                 <Hint>
                                     This value is needed only if you have to configure multiple SAML SSO
@@ -239,10 +247,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             placeholder={ "Enter URL " }
                             validationErrorMsg={ "Please add valid URL" }
                             validation={ (value: string) => {
-                                if (FormValidation.url(value)) {
-                                    return true;
-                                }
-                                return false;
+                                return FormValidation.url(value);
                             } }
                             required={ true }
                             showError={ showAssertionConsumerUrlError }
@@ -251,6 +256,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             "should be redirected to after the authentication is successful. " +
                             "This is the Assertion Consumer Service (ACS) URL of the Application." }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-assertion-consumer-url-input` }
                         />
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -266,6 +272,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     children={ createDefaultAssertionConsumerUrl() }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-default-assertion-consumer-url-input` }
                                 />
                                 <Hint>
                                     As there can be multiple assertion consumer URLs, you must define a
@@ -285,6 +292,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     requiredErrorMessage="This is needed"
                                     value={ initialValues?.idpEntityIdAlias }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-idp-entity-id-alias-input` }
                                 />
                                 <Hint>
                                     This value can override identity provider entity Id that is specified under
@@ -329,6 +337,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         }
                                     ] }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-request-signature-validation-checkbox` }
                                 />
                                 <Hint>
                                     This specifies whether the identity provider must validate the signature of
@@ -350,6 +359,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     default={ metadata?.certificateAlias.defaultValue }
                                     children={ getAllowedOptions(metadata?.certificateAlias) }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-request-validation-certificate-alias-dropdown` }
                                 />
                                 <Hint disabled={ !isRequestSignatureValidationEnabled }>
                                     If application certificate is provided then it will be used and above selected
@@ -378,6 +388,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         value={ initialValues?.singleSignOnProfile.assertion.digestAlgorithm }
                                         children={ getAllowedOptions(metadata?.responseDigestAlgorithm) }
                                         readOnly={ readOnly }
+                                        data-testid={ `${ testId }-digest-algorithm-dropdown` }
                                     />
                                 </Grid.Column>
                             </Grid.Column>
@@ -394,6 +405,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     default={ metadata?.responseSigningAlgorithm.defaultValue }
                                     children={ getAllowedOptions(metadata?.responseSigningAlgorithm) }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-signing-algorithm-dropdown` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -413,6 +425,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         }
                                     ] }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-response-signing-checkbox` }
                                 />
                                 <Hint>Sign the SAML2 Responses returned after the authentication process.</Hint>
                             </Grid.Column>
@@ -441,6 +454,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     ] }
                                     value={ initialValues?.singleSignOnProfile?.bindings }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-bindings-checkbox-group` }
                                 />
                                 <Hint>
                                     The mechanisms to transport SAML messages.
@@ -466,6 +480,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         }
                                     ] }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-artifact-binding-signature-validation-checkbox` }
                                 />
                                 <Hint>
                                     Artifact resolve request&apos;s signature will be validated against
@@ -492,6 +507,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         }
                                     ] }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-idp-initiated-sso-checkbox` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -509,6 +525,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     requiredErrorMessage="This is needed"
                                     value={ initialValues?.singleSignOnProfile.assertion.nameIdFormat }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-name-id-format-input` }
                                 />
                                 <Hint>
                                     This defines the name identifier formats that are supported by
@@ -525,15 +542,13 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             placeholder={ "Enter audience " }
                             validationErrorMsg={ "Please add valid URL" }
                             validation={ (value: string) => {
-                                if (FormValidation.url(value)) {
-                                    return true;
-                                }
-                                return false;
+                                return FormValidation.url(value);
                             } }
                             showError={ showAudienceError }
                             setShowError={ setAudienceError }
                             hint={ "Restrict the audience." }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-audience-url-input` }
                         />
                         <URLInputComponent
                             urlState={ recipients }
@@ -543,15 +558,13 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             placeholder={ "Enter recipients" }
                             validationErrorMsg={ "Please add valid URL" }
                             validation={ (value: string) => {
-                                if (FormValidation.url(value)) {
-                                    return true;
-                                }
-                                return false;
+                                return FormValidation.url(value);
                             } }
                             showError={ showRecipientsError }
                             setShowError={ setRecipientsError }
                             hint={ "Validate the recipients of the response." }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-recipients-url-input` }
                         />
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
@@ -581,6 +594,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         }
                                     ] }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-assertion-encryption-checkbox` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -600,6 +614,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     children={ getAllowedOptions(metadata?.assertionEncryptionAlgorithm) }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-assertion-encryption-algorithm-dropdown` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -619,6 +634,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     children={ getAllowedOptions(metadata?.keyEncryptionAlgorithm) }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-key-encryption-algorithm-dropdown` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -654,6 +670,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         }
                                     ] }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-attribute-profile-checkbox` }
                                 />
                                 <Hint>
                                     The Identity Server provides support for a basic attribute profile where
@@ -682,6 +699,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         }
                                     ] }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-include-attribute-in-response-checkbox` }
                                 />
                                 <Hint disabled={ !isAttributeProfileEnabled }>
                                     Once you select the checkbox to Include Attributes in the Response Always ,
@@ -702,6 +720,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     requiredErrorMessage="This is needed"
                                     value={ initialValues?.singleSignOnProfile.attributeConsumingServiceIndex }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-attribute-consuming-service-index-input` }
                                 />
                                 <Hint>
                                     This is an optional field if not provided a value will be generated automatically.
@@ -742,6 +761,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         }
                                     ] }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-single-logout-profile-checkbox` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -758,23 +778,24 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     disabled={ !isSingleLogoutProfileEnabled }
                                     children={ [
                                         {
+                                            key: 1,
                                             text: "BACK CHANNEL",
-                                            value: LogoutMethods.BACK_CHANNEL,
-                                            key: 1
+                                            value: LogoutMethods.BACK_CHANNEL
                                         },
                                         {
+                                            key: 2,
                                             text: "FRONT CHANNEL HTTP REDIRECT",
-                                            value: LogoutMethods.FRONT_CHANNEL_HTTP_REDIRECT,
-                                            key: 2
+                                            value: LogoutMethods.FRONT_CHANNEL_HTTP_REDIRECT
                                         },
                                         {
+                                            key: 3,
                                             text: "FRONT CHANNEL HTTP POST",
-                                            value: LogoutMethods.FRONT_CHANNEL_HTTP_POST,
-                                            key: 3
+                                            value: LogoutMethods.FRONT_CHANNEL_HTTP_POST
                                         }
                                     ]
                                     }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-logout-method-dropdown` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -796,6 +817,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     type="text"
                                     value={ initialValues?.singleLogoutProfile.logoutResponseUrl }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-single-logout-response-url-input` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -817,6 +839,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     type="text"
                                     value={ initialValues?.singleLogoutProfile.logoutRequestUrl }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-single-logout-request-url-input` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -851,6 +874,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         }
                                     ] }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-idp-initiated-single-logout-checkbox` }
                                 />
                                 <Hint disabled={ !isSingleLogoutProfileEnabled }>
                                     When this is enabled, the service provider is not required to send
@@ -868,15 +892,13 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             placeholder={ "Enter url" }
                             validationErrorMsg={ "Please add valid URL" }
                             validation={ (value: string) => {
-                                if (FormValidation.url(value)) {
-                                    return true;
-                                }
-                                return false;
+                                return FormValidation.url(value);
                             } }
                             showError={ returnToURLSError }
                             setShowError={ setReturnToURLSError }
                             disabled={ !isIdpInitiatedSingleLogoutEnabled || !isSingleLogoutProfileEnabled }
                             readOnly={ readOnly }
+                            data-testid={ `${ testId }-return-to-urls-input` }
                         />
 
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
@@ -906,6 +928,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         }
                                     ] }
                                     readOnly={ readOnly }
+                                    data-testid={ `${ testId }-assertion-query-profile-checkbox` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -913,7 +936,13 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             !readOnly && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                        <Button primary type="submit" size="small" className="form-button">
+                                        <Button
+                                            primary
+                                            type="submit"
+                                            size="small"
+                                            className="form-button"
+                                            data-testid={ `${ testId }-submit-button` }
+                                        >
                                             Update
                                         </Button>
                                     </Grid.Column>
@@ -925,4 +954,11 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
             )
             : null
     );
+};
+
+/**
+ * Default props for the inbound SAML form component.
+ */
+InboundSAMLForm.defaultProps = {
+    "data-testid": "inbound-saml-form"
 };

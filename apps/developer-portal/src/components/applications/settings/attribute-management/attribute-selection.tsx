@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Checkbox, Divider, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
@@ -28,14 +29,14 @@ import {
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "./attribute-settings";
-import { EmptyPlaceholderIllustrations } from "../../../configs";
+import { EmptyPlaceholderIllustrations } from "../../../../configs";
 import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,
     RequestedClaimConfigurationInterface
-} from "../../../models";
+} from "../../../../models";
 
-interface AttributeSelectionPropsInterface {
+interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     claims: ExtendedClaimInterface[];
     setClaims: any;
     externalClaims: ExtendedExternalClaimInterface[];
@@ -65,10 +66,12 @@ interface AttributeSelectionPropsInterface {
 /**
  * Attribute selection component.
  *
- * @param props AttributeSelectionPropsInterface
+ * @param {AttributeSelectionPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterface> = (
-    props
+    props: AttributeSelectionPropsInterface
 ): ReactElement => {
 
     const {
@@ -91,7 +94,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         claimMappingOn,
         setClaimMappingOn,
         claimMappingError,
-        readOnly
+        readOnly,
+        [ "data-testid" ]: testId
     } = props;
 
 
@@ -99,7 +103,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const [availableExternalClaims, setAvailableExternalClaims] = useState<ExtendedExternalClaimInterface[]>([]);
 
     const [filterSelectedClaims, setFilterSelectedClaims] = useState<ExtendedClaimInterface[]>([]);
-    const [filterSelectedExternalClaims, setFilterSelectedExternalClaims] = useState<ExtendedExternalClaimInterface[]>([]);
+    const [
+        filterSelectedExternalClaims,
+        setFilterSelectedExternalClaims
+    ] = useState<ExtendedExternalClaimInterface[]>([]);
 
     const [initializationFinished, setInitializationFinished] = useState(false);
 
@@ -196,7 +203,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 checkInRequested = claimConfigurations.requestedClaims.find(
                     (requestClaims) => requestClaims?.claim?.uri === uri);
             }
-            return checkInRequested ? true : false;
+
+            return !!checkInRequested;
         } else {
             // If the dialect is not custom, the initial selected claim is decided by requested claims
             // So it is always true.
@@ -263,13 +271,13 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 const initialClaimMappingList: ExtendedClaimMappingInterface[] = [];
                 claimConfigurations.claimMappings.map((claim) => {
                     const claimMapping: ExtendedClaimMappingInterface = {
+                        addMapping: true,
                         applicationClaim: claim.applicationClaim,
                         localClaim: {
                             displayName: claim?.localClaim?.displayName,
                             id: claim?.localClaim?.id,
                             uri: claim?.localClaim?.uri
-                        },
-                        addMapping: true
+                        }
                     };
                     initialClaimMappingList.push(claimMapping);
                 });
@@ -279,13 +287,13 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 initialSelectedClaims.map((claim: ExtendedClaimInterface) => {
                     // createMapping(claim);
                     const claimMapping: ExtendedClaimMappingInterface = {
+                        addMapping: false,
                         applicationClaim: "",
                         localClaim: {
                             displayName: claim.displayName,
                             id: claim.id,
                             uri: claim.claimURI
-                        },
-                        addMapping: false
+                        }
                     };
                     initialClaimMappingList.push(claimMapping);
                 });
@@ -365,17 +373,20 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     const addSelectionModal = (() => {
             if (selectedDialect.localDialect) {
-                return <AttributeSelectionWizard
-                    selectedClaims={ selectedClaims }
-                    setSelectedClaims={ setFilterSelectedClaims }
-                    setInitialSelectedClaims={ setSelectedClaims }
-                    showAddModal={ showSelectionModal }
-                    setShowAddModal={ setShowSelectionModal }
-                    availableClaims={ claims }
-                    setAvailableClaims={ setClaims }
-                    createMapping={ createMapping }
-                    removeMapping={ removeMapping }
-                />
+                return (
+                    <AttributeSelectionWizard
+                        selectedClaims={ selectedClaims }
+                        setSelectedClaims={ setFilterSelectedClaims }
+                        setInitialSelectedClaims={ setSelectedClaims }
+                        showAddModal={ showSelectionModal }
+                        setShowAddModal={ setShowSelectionModal }
+                        availableClaims={ claims }
+                        setAvailableClaims={ setClaims }
+                        createMapping={ createMapping }
+                        removeMapping={ removeMapping }
+                        data-testid={ `${ testId }-wizard` }
+                    />
+                )
             }
             return (
 
@@ -387,6 +398,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     setShowAddModal={ setShowSelectionModal }
                     availableExternalClaims={ externalClaims }
                     setAvailableExternalClaims={ setExternalClaims }
+                    data-testid={ `${ testId }-wizard-other-dialects` }
                 />
             )
         }
@@ -495,7 +507,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             localDialect={ true }
                                                                             updateMapping={ updateClaimMapping }
                                                                             addToMapping={ addToClaimMapping }
-                                                                            mapping={ getCurrentMapping(claim.claimURI) }
+                                                                            mapping={
+                                                                                getCurrentMapping(claim.claimURI)
+                                                                            }
                                                                             initialMandatory={ claim.mandatory }
                                                                             initialRequested={ claim.requested }
                                                                             selectMandatory={ updateMandatory }
@@ -568,4 +582,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             </>
             : <ContentLoader/>
     );
+};
+
+/**
+ * Default props for the application attribute selection component.
+ */
+AttributeSelection.defaultProps = {
+    "data-testid": "application-attribute-selection"
 };

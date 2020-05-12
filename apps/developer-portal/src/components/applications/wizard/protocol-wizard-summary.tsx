@@ -16,19 +16,20 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import { AppAvatar, UserAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Grid, Label } from "semantic-ui-react";
-import { InboundProtocolLogos } from "../../../configs/ui";
+import { InboundProtocolLogos } from "../../../configs";
 import { SubmitFormCustomPropertiesInterface, SupportedAuthProtocolTypes } from "../../../models";
-import { ApplicationManagementUtils } from "../../../utils/application-management-utils";
+import { ApplicationManagementUtils } from "../../../utils";
 
 
 /**
  * Proptypes for the wizard summary component.
  */
-interface ProtocolWizardSummaryPropsInterface {
+interface ProtocolWizardSummaryPropsInterface extends TestableComponentInterface {
     summary: any;
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
@@ -41,6 +42,7 @@ interface ProtocolWizardSummaryPropsInterface {
  * Wizard summary form component.
  *
  * @param {ProtocolWizardSummaryPropsInterface} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
 export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryPropsInterface> = (
@@ -53,7 +55,8 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
         onSubmit,
         image,
         customProtocol,
-        samlMetaFileSelected
+        samlMetaFileSelected,
+        [ "data-testid" ]: testId
     } = props;
 
     const [protocolImage, setProtocolImage] = useState<string>("");
@@ -91,17 +94,21 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
     }, [image]);
 
     return (
-        <Grid className="wizard-summary">
+        <Grid className="wizard-summary" data-testid={ testId }>
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details">
-                        { customProtocol
-                            ?
-                            <UserAvatar name={ summary?.name } size="tiny"/>
-                            : < AppAvatar
-                                image={ ApplicationManagementUtils.findIcon(protocolImage, InboundProtocolLogos) }
-                                size="tiny"
-                            />
+                        {
+                            customProtocol
+                                ? <UserAvatar name={ summary?.name } size="tiny"/>
+                                : (
+                                    < AppAvatar
+                                        image={
+                                            ApplicationManagementUtils.findIcon(protocolImage, InboundProtocolLogos)
+                                        }
+                                        size="tiny"
+                                    />
+                                )
                         }
                     </div>
                 </Grid.Column>
@@ -295,6 +302,10 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
     );
 };
 
+/**
+ * Default props for the protocol wizard summary component.
+ */
 ProtocolWizardSummary.defaultProps = {
+    "data-testid": "protocol-wizard-summary",
     samlMetaFileSelected: false
 };

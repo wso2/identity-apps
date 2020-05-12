@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { ContentLoader } from "@wso2is/react-components";
@@ -28,7 +28,7 @@ import { Button, Grid } from "semantic-ui-react";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { RoleMapping } from "./role-mapping";
-import { getAllExternalClaims, getAllLocalClaims, getDialects, updateClaimConfiguration } from "../../../api/";
+import { getAllExternalClaims, getAllLocalClaims, getDialects, updateClaimConfiguration } from "../../../../api/";
 import {
     Claim,
     ClaimConfigurationInterface,
@@ -39,7 +39,7 @@ import {
     RoleConfigInterface,
     RoleMappingInterface,
     SubjectConfigInterface
-} from "../../../models";
+} from "../../../../models";
 
 export interface SelectedDialectInterface {
     dialectURI: string;
@@ -72,7 +72,7 @@ export interface AdvanceSettingsSubmissionInterface {
     role: RoleConfigInterface;
 }
 
-interface AttributeSelectionPropsInterface extends SBACInterface<FeatureConfigInterface> {
+interface AttributeSelectionPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     /**
      * Id of the application.
      */
@@ -107,8 +107,15 @@ export const getLocalDialectURI = (): string => {
 
 export const LocalDialectURI = "http://wso2.org/claims";
 
+/**
+ * Attribute settings component.
+ *
+ * @param {AttributeSelectionPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
 export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterface> = (
-    props
+    props: AttributeSelectionPropsInterface
 ): ReactElement => {
 
     const {
@@ -116,7 +123,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         featureConfig,
         claimConfigurations,
         onlyOIDCConfigured,
-        onUpdate
+        onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -215,13 +223,13 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         if (selectedDialect.localDialect) {
             const claimMappingList: ExtendedClaimMappingInterface[] = [...claimMapping];
             const newClaimMapping: ExtendedClaimMappingInterface = {
+                addMapping: false,
                 applicationClaim: "",
                 localClaim: {
                     displayName: claim.displayName,
                     id: claim.id,
                     uri: claim.claimURI
-                },
-                addMapping: false
+                }
             };
             if (!(claimMappingList.some((claimMap) => claimMap.localClaim.uri === claim.claimURI))) {
                 claimMappingList.push(newClaimMapping);
@@ -467,23 +475,23 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         // Generate Final Submit value
         const submitValue = {
             claimConfiguration: {
-                dialect: claimMappingFinal.length > 0 ? "CUSTOM" : "LOCAL",
                 claimMappings: claimMappingFinal.length > 0 ? claimMappingFinal : [],
+                dialect: claimMappingFinal.length > 0 ? "CUSTOM" : "LOCAL",
                 requestedClaims: RequestedClaims,
+                role: {
+                    claim: {
+                        uri: advanceSettingValues?.role.claim
+                    },
+                    includeUserDomain: advanceSettingValues?.role.includeUserDomain,
+                    mappings: roleMapping.length > 0 ? roleMapping : []
+                },
                 subject: {
                     claim: {
                         uri: advanceSettingValues?.subject.claim
                     },
-                    includeUserDomain: advanceSettingValues?.subject.includeUserDomain,
                     includeTenantDomain: advanceSettingValues?.subject.includeTenantDomain,
+                    includeUserDomain: advanceSettingValues?.subject.includeUserDomain,
                     useMappedLocalSubject: advanceSettingValues?.subject.useMappedLocalSubject
-                },
-                role: {
-                    mappings: roleMapping.length > 0 ? roleMapping : [],
-                    claim: {
-                        uri: advanceSettingValues?.role.claim
-                    },
-                    includeUserDomain: advanceSettingValues?.role.includeUserDomain
                 }
             }
         };
@@ -496,7 +504,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
 
         updateClaimConfiguration(appId, submitValue)
-            .then((response) => {
+            .then(() => {
                 onUpdate(appId);
                 dispatch(addAlert({
                     description: "Successfully updated the claim configuration.",
@@ -504,7 +512,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     message: "Update successful"
                 }));
             })
-            .catch((error) => {
+            .catch(() => {
                 dispatch(addAlert({
                     description: "An error occurred while updating the claim configuration.",
                     level: AlertLevels.ERROR,
@@ -585,6 +593,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     readOnly={
                         !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
                     }
+                    data-testid={ `${ testId }-attribute-selection` }
                 />
                 <AdvanceAttributeSettings
                     dropDownOptions={ createDropdownOption() }
@@ -596,6 +605,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     readOnly={
                         !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
                     }
+                    data-testid={ `${ testId }-advanced-attribute-settings-form` }
                 />
                 <RoleMapping
                     submitState={ triggerAdvanceSettingFormSubmission }
@@ -604,6 +614,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     readOnly={
                         !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
                     }
+                    data-testid={ `${ testId }-role-mapping` }
                 />
                 {
                     hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update) && (
@@ -613,6 +624,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     primary
                                     size="small"
                                     onClick={ updateValues }
+                                    data-testid={ `${ testId }-submit-button` }
                                 >
                                     Update
                                 </Button>
@@ -623,4 +635,11 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             </Grid>
             : <ContentLoader/>
     );
+};
+
+/**
+ * Default props for the application attribute settings component.
+ */
+AttributeSettings.defaultProps = {
+    "data-testid": "application-attribute-settings"
 };

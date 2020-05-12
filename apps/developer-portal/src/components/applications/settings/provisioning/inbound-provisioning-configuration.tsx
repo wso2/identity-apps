@@ -16,26 +16,28 @@
  * under the License.
  */
 
-import { AuthenticatorAccordion } from "../shared";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Divider, Grid } from "semantic-ui-react";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Heading } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Divider, Grid } from "semantic-ui-react";
+import { getUserStoreList, updateApplicationConfigurations } from "../../../../api";
 import {
     FeatureConfigInterface,
     ProvisioningConfigurationInterface,
     SimpleUserStoreListItemInterface
-} from "../../models";
-import { AlertLevels, SBACInterface } from "@wso2is/core/models";
-import { getUserStoreList, updateApplicationConfigurations } from "../../api";
-import { addAlert } from "@wso2is/core/store";
-import { useDispatch } from "react-redux";
-import { ProvisioningConfigurationsForm } from "./forms";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+} from "../../../../models";
+import { AuthenticatorAccordion } from "../../../shared";
+import { ProvisioningConfigurationsForm } from "../../forms";
 
 /**
  *  Inbound Provisioning Configurations for the Application.
  */
-interface InboundProvisioningConfigurationsPropsInterface extends SBACInterface<FeatureConfigInterface> {
+interface InboundProvisioningConfigurationsPropsInterface extends SBACInterface<FeatureConfigInterface>,
+    TestableComponentInterface {
+
     /**
      * Currently editing application id.
      */
@@ -68,8 +70,8 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
         appId,
         provisioningConfigurations,
         onUpdate,
-        readOnly,
-        featureConfig
+        featureConfig,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -142,13 +144,15 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
                                                     !hasRequiredScopes(featureConfig?.applications,
                                                         featureConfig?.applications?.scopes?.update)
                                                 }
+                                                data-testid={ `${ testId }-form` }
                                             />
                                         ),
                                         id: "scim",
-                                        title: "SCIM",
+                                        title: "SCIM"
                                     }
                                 ]
                             }
+                            data-testid={ `${ testId }-inbound-connector-accordion` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -156,4 +160,11 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
 
         </>
     )
+};
+
+/**
+ * Default props for the application inbound provisioning configurations component.
+ */
+InboundProvisioningConfigurations.defaultProps = {
+    "data-testid": "application-inbound-provisioning-configurations"
 };

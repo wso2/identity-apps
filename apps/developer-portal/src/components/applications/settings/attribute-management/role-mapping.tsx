@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading } from "@wso2is/react-components";
-import React, { useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { getRolesList } from "../../../api";
-import { RoleListInterface, RoleMappingInterface, RolesInterface } from "../../../models";
-import { DynamicField } from "../../shared"
+import { getRolesList } from "../../../../api";
+import { RoleListInterface, RoleMappingInterface, RolesInterface } from "../../../../models";
+import { DynamicField } from "../../../shared"
 
-interface RoleMappingPropsInterface {
+interface RoleMappingPropsInterface extends TestableComponentInterface {
     /**
      *  Trigger submission or not
      */
@@ -46,13 +46,23 @@ interface RoleMappingPropsInterface {
     readOnly?: boolean;
 }
 
-export const RoleMapping = (props: RoleMappingPropsInterface): React.ReactElement => {
+/**
+ * Role mapping component.
+ *
+ * @param {RoleMappingPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
+    props: RoleMappingPropsInterface
+): React.ReactElement => {
 
     const {
         onSubmit,
         submitState,
         initialMappings,
-        readOnly
+        readOnly,
+        [ "data-testid" ]: testId
     } = props;
 
     const [roleList, setRoleList] = useState<RolesInterface[]>();
@@ -69,8 +79,8 @@ export const RoleMapping = (props: RoleMappingPropsInterface): React.ReactElemen
 
         const finalRoles = filterRole.map(role => {
             return {
-                value: role.displayName,
-                id: role.displayName
+                id: role.displayName,
+                value: role.displayName
             }
         });
 
@@ -85,7 +95,7 @@ export const RoleMapping = (props: RoleMappingPropsInterface): React.ReactElemen
                     setRoleList(allRole.Resources);
                 }
             })
-            .catch((error) => {
+            .catch(() => {
                 dispatch(addAlert({
                     description: "An error occurred while retrieving roles.",
                     level: AlertLevels.ERROR,
@@ -125,8 +135,8 @@ export const RoleMapping = (props: RoleMappingPropsInterface): React.ReactElemen
                             if (data.length > 0) {
                                 const finalData: RoleMappingInterface[] = data.map(mapping => {
                                     return {
-                                        localRole: mapping.key,
-                                        applicationRole: mapping.value
+                                        applicationRole: mapping.value,
+                                        localRole: mapping.key
                                     }
                                 });
                                 onSubmit(finalData);
@@ -135,9 +145,17 @@ export const RoleMapping = (props: RoleMappingPropsInterface): React.ReactElemen
                             }
                         } }
                         readOnly={ readOnly }
+                        data-testid={ `${ testId }-dynamic-field` }
                     />
                 </Grid.Column>
             </Grid.Row>
         </>
     )
+};
+
+/**
+ * Default props for the application role mapping component.
+ */
+RoleMapping.defaultProps = {
+    "data-testid": "application-role-mapping"
 };
