@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { SearchUtils } from "@wso2is/core/utils";
 import { DropdownChild, Field, Forms } from "@wso2is/forms";
 import { AdvancedSearch, LinkButton, PrimaryButton } from "@wso2is/react-components";
@@ -46,7 +47,7 @@ const FILTER_VALUES_FIELD_IDENTIFIER = "filterValues";
 /**
  * Prop types for the application search component.
  */
-export interface AdvancedSearchWithBasicFiltersPropsInterface {
+export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableComponentInterface {
     /**
      * Default Search attribute. ex: "name"
      */
@@ -129,7 +130,8 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         resetButtonLabel,
         showResetButton,
         submitButtonLabel,
-        triggerClearQuery
+        triggerClearQuery,
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -225,7 +227,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             submitted={ isFormSubmitted }
             dropdownPosition={ dropdownPosition }
             triggerClearQuery={ triggerClearQuery }
-            data-testid="advanced-search"
+            data-testid={ testId }
         >
             <Grid>
                 <Grid.Row columns={ 1 }>
@@ -257,6 +259,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                         ".validations.empty")
                                 }
                                 type="dropdown"
+                                data-testid={ `${ testId }-filter-attribute-dropdown` }
                             />
                             <Form.Group widths='equal'>
                                 <Field
@@ -289,6 +292,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                     requiredErrorMessage={ t("devPortal:components.advancedSearch.form.inputs" +
                                         ".filterCondition.validations.empty") }
                                     type="dropdown"
+                                    data-testid={ `${ testId }-filter-condition-dropdown` }
                                 />
                                 <Field
                                     label={ t("devPortal:components.advancedSearch.form.inputs.filterValue.label") }
@@ -303,16 +307,25 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                     requiredErrorMessage={ t("devPortal:components.advancedSearch.form.inputs" +
                                         ".filterValue.validations.empty") }
                                     type="text"
+                                    data-testid={ `${ testId }-filter-value-input` }
                                 />
                             </Form.Group>
                             <Divider hidden/>
                             <Form.Group inline>
-                                <PrimaryButton size="small" type="submit">
+                                <PrimaryButton
+                                    size="small"
+                                    type="submit"
+                                    data-testid={ `${ testId }-search-button` }
+                                >
                                     { submitButtonLabel ? submitButtonLabel : t("common:search") }
                                 </PrimaryButton>
                                 {
                                     showResetButton && (
-                                        <LinkButton size="small" type="reset">
+                                        <LinkButton
+                                            size="small"
+                                            type="reset"
+                                            data-testid={ `${ testId }-reset-button` }
+                                        >
                                             { resetButtonLabel ? resetButtonLabel : t("common:resetFilters") }
                                         </LinkButton>
                                     )
@@ -330,6 +343,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
  * Default props for the component.
  */
 AdvancedSearchWithBasicFilters.defaultProps = {
+    "data-testid": "advanced-search",
     dropdownPosition: "bottom right",
     showResetButton: true
 };
