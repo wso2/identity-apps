@@ -1073,15 +1073,7 @@ export const devPortal: DevPortalNS = {
                         }
                     }
                 },
-                placeHolders: {
-                    emptyIDPList: {
-                        subtitles: {
-                            0: "We couldn't find any results for '{{ searchQuery }}'",
-                            1: "Please try a different search term."
-                        },
-                        title: "No results found"
-                    }
-                }
+                placeholder: "Search by IDP name"
             },
             buttons: {
                 addAttribute: "Add Attribute",
@@ -1422,10 +1414,38 @@ export const devPortal: DevPortalNS = {
                         message: ""
                     }
                 },
+                getFederatedAuthenticatorsList: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "",
+                        message: "Retrieval error"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
                 getIDP: {
                     error: {
                         description: "{{ description }}",
-                        message: "An error occurred while retrieving identity providers"
+                        message: "Retrieval Error"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving identity provider details",
+                        message: "Retrieval Error"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                getIDPList: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Retrieval Error"
                     },
                     genericError: {
                         description: "An error occurred while retrieving identity providers",
@@ -1642,6 +1662,13 @@ export const devPortal: DevPortalNS = {
                         2: "steps in the identity providers creation wizard."
                     },
                     title: "Add a new Identity Provider"
+                },
+                emptyIDPSearchResults: {
+                    subtitles: {
+                        0: "We couldn't find any results for '{{ searchQuery }}'",
+                        1: "Please try a different search term."
+                    },
+                    title: "No results found"
                 },
                 noAttributes: {
                     subtitles: {
@@ -3391,14 +3418,26 @@ export const devPortal: DevPortalNS = {
             subTitle: null,
             title: null
         },
+        idp: {
+            subTitle: "Create and manage identity providers based on templates and configure authentication.",
+            title: "Identity Providers"
+        },
         idpTemplate: {
             backButton: "Go back to Identity Providers",
             subTitle: "Please choose one of the following identity provider types.",
+            supportServices: {
+                authenticationDisplayName: "Authentication",
+                provisioningDisplayName: "Provisioning"
+            },
             title: "Select Identity Provider Type"
         },
         overView: {
             subTitle: "The following section would give you an overview of the system statistics",
             title: "Welcome, {{firstName}}"
+        },
+        serverConfigurations: {
+            subTitle: "Manage general configurations of the server.",
+            title: "General Configurations"
         },
         users: {
             subTitle: "Create and manage users, user access, and user profiles.",

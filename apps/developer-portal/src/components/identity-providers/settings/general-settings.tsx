@@ -18,9 +18,9 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
-import { useTranslation } from "react-i18next";
+import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { CheckboxProps } from "semantic-ui-react";
 import { deleteIdentityProvider, updateIdentityProviderDetails } from "../../../api";
@@ -97,6 +97,12 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
+    const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+
+    const handleIdentityProviderDeleteAction = (): void => {
+        setShowDeleteConfirmationModal(true);
+    };
+
     /**
      * Deletes an identity provider.
      */
@@ -109,6 +115,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     message: t("devPortal:components.idp.notifications.deleteIDP.success.message")
                 }));
 
+                setShowDeleteConfirmationModal(false);
                 onDelete();
             })
             .catch((error) => {
@@ -171,10 +178,47 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 actionTitle={ t("devPortal:components.idp.dangerZoneGroup.deleteIDP.actionTitle") }
                                 header={ t("devPortal:components.idp.dangerZoneGroup.deleteIDP.header") }
                                 subheader={ t("devPortal:components.idp.dangerZoneGroup.deleteIDP.subheader") }
-                                onActionClick={ handleIdentityProviderDelete }
+                                onActionClick={ handleIdentityProviderDeleteAction }
                             />
                         </DangerZoneGroup>
                     ) }
+                    {
+                        showDeleteConfirmationModal && (
+                            <ConfirmationModal
+                                onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                                type="warning"
+                                open={ showDeleteConfirmationModal }
+                                assertion={ name }
+                                assertionHint={ (
+                                    <p>
+                                        <Trans
+                                            i18nKey="devPortal:components.idp.confirmations.deleteIDP.assertionHint"
+                                            tOptions={ { name: name } }
+                                        >
+                                            Please type <strong>{ name }</strong> to confirm.
+                                        </Trans>
+                                    </p>
+                                ) }
+                                assertionType="input"
+                                primaryAction={ t("common:confirm") }
+                                secondaryAction={ t("common:cancel") }
+                                onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                                onPrimaryActionClick={
+                                    (): void => handleIdentityProviderDelete()
+                                }
+                            >
+                                <ConfirmationModal.Header>
+                                    { t("devPortal:components.idp.confirmations.deleteIDP.header") }
+                                </ConfirmationModal.Header>
+                                <ConfirmationModal.Message attached warning>
+                                    { t("devPortal:components.idp.confirmations.deleteIDP.message") }
+                                </ConfirmationModal.Message>
+                                <ConfirmationModal.Content>
+                                    { t("devPortal:components.idp.confirmations.deleteIDP.content") }
+                                </ConfirmationModal.Content>
+                            </ConfirmationModal>
+                        )
+                    }
                 </>
             )
             : <ContentLoader/>

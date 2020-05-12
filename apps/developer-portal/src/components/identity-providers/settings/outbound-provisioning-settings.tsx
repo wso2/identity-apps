@@ -183,7 +183,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         "success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
-                        "message.description")
+                        "success.message")
                 }));
 
                 onUpdate(identityProvider.id);

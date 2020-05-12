@@ -124,9 +124,9 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
         deleteIdentityProvider(idpId)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.success.description"),
+                    description: t("devPortal:components.idp.notifications.deleteIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.idp.notifications.success.message")
+                    message: t("devPortal:components.idp.notifications.deleteIDP.success.message")
                 }));
             })
             .catch((error) => {
@@ -154,11 +154,11 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                     ) }
                     image={ EmptyPlaceholderIllustrations.emptySearch }
                     imageSize="tiny"
-                    title={ t("devPortal:components.idp.advancedSearch.placeHolders.emptyIDPList.title") }
+                    title={ t("devPortal:components.idp.placeHolders.emptyIDPSearchResults.title") }
                     subtitle={ [
-                        t("devPortal:components.idp.advancedSearch.placeHolders.emptyIDPList.subtitles.0",
+                        t("devPortal:components.idp.placeHolders.emptyIDPSearchResults.subtitles.0",
                             { searchQuery: searchQuery }),
-                        t("devPortal:components.idp.advancedSearch.placeHolders.emptyIDPList.subtitles.1")
+                        t("devPortal:components.idp.placeHolders.emptyIDPSearchResults.subtitles.1")
                     ] }
                 />
             );

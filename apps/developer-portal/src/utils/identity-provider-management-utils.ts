@@ -20,8 +20,8 @@
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AxiosHttpClientInstance } from "@wso2is/http";
-import { AxiosHttpClient } from "@wso2is/http";
+import { AxiosHttpClient, AxiosHttpClientInstance } from "@wso2is/http";
+import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
 import { getFederatedAuthenticatorsList, getIdentityProviderList, getLocalAuthenticators } from "../api";
 import { getSelectedFederatedAuthenticators, getSelectedLocalAuthenticators } from "../components/applications/meta";
@@ -66,16 +66,23 @@ export class IdentityProviderManagementUtils {
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     store.dispatch(addAlert({
-                        description: error.response.data.description,
+                        description: I18n.instance.t("devPortal:components.idp.notifications." +
+                            "getFederatedAuthenticatorsList.error.description", 
+                            { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: "Retrieval error"
+                        message: I18n.instance.t("devPortal:components.idp.notifications." +
+                            "getFederatedAuthenticatorsList.error.message")
                     }));
+
                     return;
                 }
+
                 store.dispatch(addAlert({
-                    description: "An error occurred retrieving the available authenticators.",
+                    description: I18n.instance.t("devPortal:components.idp.notifications." +
+                        "getFederatedAuthenticatorsList.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Retrieval error"
+                    message: I18n.instance.t("devPortal:components.idp.notifications." +
+                        "getFederatedAuthenticatorsList.genericError.message")
                 }));
             });
     }

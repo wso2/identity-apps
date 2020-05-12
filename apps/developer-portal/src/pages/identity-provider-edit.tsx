@@ -20,6 +20,7 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AppAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { getIdentityProviderDetail } from "../api";
 import { EditIdentityProvider } from "../components";
@@ -39,6 +40,7 @@ export const IdentityProviderEditPage: FunctionComponent<{}> = (): ReactElement 
     const [ isIdentityProviderRequestLoading, setIdentityProviderRequestLoading ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     /**
      * Retrieves idp details from the API.
@@ -55,18 +57,19 @@ export const IdentityProviderEditPage: FunctionComponent<{}> = (): ReactElement 
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
-                        description: error.response.data.description,
+                        description: t("devPortal:components.idp.notifications.getIDP.error.description",
+                            { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: "Retrieval Error"
+                        message: t("devPortal:components.idp.notifications.getIDP.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while retrieving identity provider details",
+                    description: t("devPortal:components.idp.notifications.getIDP.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Retrieval Error"
+                    message: t("devPortal:components.idp.notifications.getIDP.genericError.message")
                 }));
             })
             .finally(() => {
@@ -123,7 +126,7 @@ export const IdentityProviderEditPage: FunctionComponent<{}> = (): ReactElement 
             ) }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: "Go back to identity providers"
+                text: t("devPortal:pages.idpTemplate.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
