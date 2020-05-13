@@ -11,9 +11,6 @@
     ],
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
-    "files": [
-        "dist"
-    ],
     "scripts": {
         "prebuild": "npm run clean",
         "build": "node scripts/build-module.js && npm run compile",
