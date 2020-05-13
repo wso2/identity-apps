@@ -24,14 +24,14 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { getUserStores } from "../api";
-import { AdvancedSearchWithBasicFilters, UserStoresList } from "../components";
-import { UIConstants, USERSTORE_TEMPLATES_PATH } from "../constants";
-import { history } from "../helpers";
-import { ListLayout, PageLayout } from "../layouts";
-import { AlertLevels, FeatureConfigInterface, QueryParams, UserStoreListItem } from "../models";
-import { AppState } from "../store";
-import { filterList, sortList } from "../utils";
+import { getUserStores } from "../../api";
+import { AdvancedSearchWithBasicFilters, UserStoresList } from "../../components";
+import { UIConstants, USERSTORE_TEMPLATES_PATH } from "../../constants";
+import { history } from "../../helpers";
+import { ListLayout, PageLayout } from "../../layouts";
+import { AlertLevels, FeatureConfigInterface, QueryParams, UserStoreListItem } from "../../models";
+import { AppState } from "../../store";
+import { filterList, sortList } from "../../utils";
 
 /**
  * This renders the Userstores page.

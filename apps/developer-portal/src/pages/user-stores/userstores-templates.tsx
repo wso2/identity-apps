@@ -21,18 +21,18 @@ import { EmptyPlaceholder, TemplateGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { getAType, getUserstoreTypes } from "../api";
-import { AddUserStore } from "../components";
-import { EmptyPlaceholderIllustrations, UserstoreTemplateIllustrations } from "../configs";
+import { getAType, getUserstoreTypes } from "../../api";
+import { AddUserStore } from "../../components";
+import { EmptyPlaceholderIllustrations, UserstoreTemplateIllustrations } from "../../configs";
 import {
     USERSTORE_TYPE_DISPLAY_NAMES,
     USERSTORE_TYPE_IMAGES,
     USER_STORES_PATH,
     USER_STORE_TYPE_DESCRIPTIONS
-} from "../constants";
-import { history } from "../helpers";
-import { PageLayout } from "../layouts";
-import { AlertLevels, TypeResponse, UserstoreType } from "../models";
+} from "../../constants";
+import { history } from "../../helpers";
+import { PageLayout } from "../../layouts";
+import { AlertLevels, TypeResponse, UserstoreType } from "../../models";
 
 /**
  * Interface to be passed as the type into the `TemplateGrid` component.
@@ -67,7 +67,7 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
 
     useEffect(() => {
         !openModal && setSelectedType(null);
-    }, [ openModal ])
+    }, [ openModal ]);
 
     /**
      * Fetches the list of userstore types.

@@ -22,18 +22,18 @@ import React, { ReactElement, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Image } from "semantic-ui-react";
-import { getAType, getAUserStore } from "../api";
+import { getAType, getAUserStore } from "../../api";
 import {
     EditBasicDetailsUserStore,
     EditConnectionDetails,
     EditGroupDetails,
     EditUserDetails
-} from "../components";
-import { DatabaseAvatarGraphic } from "../configs";
-import { history } from "../helpers";
-import { PageLayout } from "../layouts"
-import { AlertLevels, CategorizedProperties, UserStore, UserstoreType } from "../models";
-import { reOrganizeProperties } from "../utils";
+} from "../../components";
+import { DatabaseAvatarGraphic } from "../../configs";
+import { history } from "../../helpers";
+import { PageLayout } from "../../layouts"
+import { AlertLevels, CategorizedProperties, UserStore, UserstoreType } from "../../models";
+import { reOrganizeProperties } from "../../utils";
 
 /**
  * This renders the userstore edit page
@@ -53,7 +53,7 @@ export const UserStoresEditPage = (props): ReactElement => {
     const { t } = useTranslation();
 
     /**
-     * Fetches the suer store by its id
+     * Fetches the userstore by its id
      */
     const getUserStore = () => {
         getAUserStore(userStoreId).then(response => {
@@ -69,7 +69,7 @@ export const UserStoresEditPage = (props): ReactElement => {
                 }
             ));
         })
-    }
+    };
 
     useEffect(() => {
         getUserStore();
@@ -97,7 +97,7 @@ export const UserStoresEditPage = (props): ReactElement => {
         if (type) {
             setProperties(reOrganizeProperties(type.properties, userStore.properties));
         }
-    }, [ type ])
+    }, [ type ]);
 
     /**
      * The tab panes
@@ -176,4 +176,4 @@ export const UserStoresEditPage = (props): ReactElement => {
             <ResourceTab panes={ panes } />
         </PageLayout>
     )
-}
+};
