@@ -39,7 +39,7 @@ import { AlertLevels, Claim } from "../../models";
 /**
  * Props for the Local Claims edit page.
  */
-type LocalClaimsEditPageInterface = TestableComponentInterface
+type LocalClaimsEditPageInterface = TestableComponentInterface;
 
 /**
  * Route parameters interface.
@@ -183,7 +183,7 @@ export const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface
 };
 
 /**
- * Default proptypes for the application edit page component.
+ * Default proptypes for the component.
  */
 LocalClaimsEditPage.defaultProps = {
     "data-testid": "edit-local-claims"
