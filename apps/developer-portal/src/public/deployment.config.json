@@ -1,6 +1,5 @@
 {
     "accountAppURL": {
-        "origin": "https://localhost:9443",
         "path": "/user-portal/overview"
     },
     "appBaseName": "developer-portal",
