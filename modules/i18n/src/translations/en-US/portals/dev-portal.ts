@@ -2412,14 +2412,14 @@ export const devPortal: DevPortalNS = {
                     certificateType: {
                         certificateJWKS: {
                             label: "JWKS",
-                            placeholder: "Value should be the certificate in PEM format.",
+                            placeholder: "Value should be the certificate in JWKS format.",
                             validations: {
                                 empty: "Certificate value is required"
                             }
                         },
                         certificatePEM: {
                             label: "PEM",
-                            placeholder: "Value should be a JWKS URL.",
+                            placeholder: "Value should be a PEM URL.",
                             validations: {
                                 empty: "Certificate value is required"
                             }

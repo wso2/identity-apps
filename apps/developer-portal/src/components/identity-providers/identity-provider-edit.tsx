@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { ResourceTab } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
@@ -23,11 +24,11 @@ import React, {
 } from "react";
 import {
     AdvanceSettings,
+    AttributeSettings,
     AuthenticatorSettings,
     GeneralSettings,
     OutboundProvisioningSettings
 } from "./settings";
-import { AttributeSettings } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import {
     IdentityProviderAdvanceInterface,
@@ -37,7 +38,7 @@ import {
 /**
  * Proptypes for the idp edit component.
  */
-interface EditIdentityProviderPropsInterface {
+interface EditIdentityProviderPropsInterface extends TestableComponentInterface {
     /**
      * Editing idp.
      */
@@ -70,7 +71,8 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         identityProvider,
         isLoading,
         onDelete,
-        onUpdate
+        onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const idpAdvanceConfig: IdentityProviderAdvanceInterface = {
@@ -91,6 +93,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 isLoading={ isLoading }
                 onDelete={ onDelete }
                 onUpdate={ onUpdate }
+                data-testid={ `${ testId }-general-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -103,6 +106,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 initialRoleMappings={ identityProvider.roles.mappings }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
+                data-testid={ `${ testId }-attribute-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -115,6 +119,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 federatedAuthenticators={ identityProvider.federatedAuthenticators }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
+                data-testid={ `${ testId }-authenticator-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -126,6 +131,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 outboundConnectors={ identityProvider.provisioning?.outboundConnectors }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
+                data-testid={ `${ testId }-outbound-provisioning-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -137,6 +143,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 jitProvisioningConfigurations={ identityProvider.provisioning?.jit }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
+                data-testid={ `${ testId }-jit-provisioning-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -147,6 +154,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                 idpId={ identityProvider.id }
                 advancedConfigurations={ idpAdvanceConfig }
                 onUpdate={ onUpdate }
+                data-testid={ `${ testId }-advance-settings` }
             />
         </ResourceTab.Pane>
     );
@@ -194,4 +202,11 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
             />
         )
     );
+};
+
+/**
+ * Default proptypes for the IDP edit component.
+ */
+EditIdentityProvider.defaultProps = {
+    "data-testid": "idp-edit"
 };

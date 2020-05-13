@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import {
     FederatedAuthenticatorListItemInterface,
@@ -27,7 +28,7 @@ import { AuthenticatorFormFactory } from "../../../forms";
 /**
  * Proptypes for the authenticator settings wizard form component.
  */
-interface AuthenticatorSettingsWizardFormPropsInterface {
+interface AuthenticatorSettingsWizardFormPropsInterface extends TestableComponentInterface {
     metadata: FederatedAuthenticatorMetaInterface;
     initialValues: IdentityProviderInterface;
     onSubmit: (values: IdentityProviderInterface) => void;
@@ -48,7 +49,8 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
         metadata,
         initialValues,
         onSubmit,
-        triggerSubmit
+        triggerSubmit,
+        [ "data-testid" ]: testId
     } = props;
 
     const handleSubmit = (authenticator: FederatedAuthenticatorListItemInterface) => {
@@ -93,6 +95,7 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
                 type={ authenticator?.name }
                 triggerSubmit={ triggerSubmit }
                 enableSubmitButton={ false }
+                data-testid={ testId }
             /> : null
         )
     )

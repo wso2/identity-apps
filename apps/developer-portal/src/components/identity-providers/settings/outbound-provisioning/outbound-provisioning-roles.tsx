@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, Hint } from "@wso2is/react-components";
 import _ from "lodash";
@@ -27,7 +27,7 @@ import { getRolesList, updateIDPRoleMappings } from "../../../../api";
 import { IdentityProviderRolesInterface, RoleListInterface, RolesInterface } from "../../../../models";
 import { handleGetRoleListError, handleUpdateIDPRoleMappingsError } from "../../utils";
 
-interface OutboundProvisioningRolesPropsInterface {
+interface OutboundProvisioningRolesPropsInterface extends TestableComponentInterface {
     idpId: string;
     idpRoles: IdentityProviderRolesInterface;
 }
@@ -37,7 +37,8 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
 
     const {
         idpId,
-        idpRoles
+        idpRoles,
+        [ "data-testid" ]: testId
     } = props;
 
     const [selectedRole, setSelectedRole] = useState<string>(undefined);
@@ -133,6 +134,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                             }
                             search
                             label={ t("devPortal:components.idp.forms.outboundProvisioningRoles.label") }
+                            data-testid={ `${ testId }-role-select-dropdown` }
                         />
                         <Popup
                             trigger={
@@ -149,6 +151,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                             position="top center"
                             content={ t("devPortal:components.idp.forms.outboundProvisioningRoles.popup.content") }
                             inverted
+                            data-testid={ `${ testId }-add-button` }
                         />
                     </Form>
                     <Hint>
@@ -165,6 +168,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                     <Icon
                                         name="delete"
                                         onClick={ () => handleRoleRemove(selectedRole) }
+                                        data-testid={ `${ testId }-delete-button` }
                                     />
                                 </Label>
                             );
@@ -183,6 +187,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                             }
                             handleOutboundProvisioningRoleMapping(selectedRoles);
                         } }
+                        data-testid={ `${ testId }-update-button` }
                     >
                         { t("common:update") }
                     </Button>
@@ -190,4 +195,11 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
             </Grid.Row>
         </Grid>
     );
+};
+
+/**
+ * Default proptypes for the IDP outbound provisioning roles component.
+ */
+OutboundProvisioningRoles.defaultProps = {
+    "data-testid": "idp-edit-outbound-provisioning-settings-roles"
 };

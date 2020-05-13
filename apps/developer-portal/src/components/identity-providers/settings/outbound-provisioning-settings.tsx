@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -39,16 +39,16 @@ import {
 } from "../../../models";
 import { AuthenticatorAccordion } from "../../shared";
 import { OutboundProvisioningConnectorFormFactory } from "../forms";
-import { OutboundProvisioningConnectorCreateWizard } from "../wizards";
 import {
     handleGetOutboundProvisioningConnectorMetadataError,
     handleUpdateOutboundProvisioningConnectorError
 } from "../utils";
+import { OutboundProvisioningConnectorCreateWizard } from "../wizards";
 
 /**
  * Proptypes for the provisioning settings component.
  */
-interface ProvisioningSettingsPropsInterface {
+interface ProvisioningSettingsPropsInterface extends TestableComponentInterface {
     /**
      * Currently editing idp.
      */
@@ -69,7 +69,7 @@ interface ProvisioningSettingsPropsInterface {
 }
 
 /**
- *  Identity Provider provisioning settings component.
+ * Identity Provider provisioning settings component.
  *
  * @param { ProvisioningSettingsPropsInterface } props - Props injected to the component.
  * @return { ReactElement }
@@ -82,7 +82,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         identityProvider,
         outboundConnectors,
         isLoading,
-        onUpdate
+        onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -299,7 +300,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                             <Grid>
                                 <Grid.Row>
                                     <Grid.Column>
-                                        <PrimaryButton floated="right" onClick={ () => setShowWizard(true) }>
+                                        <PrimaryButton floated="right" onClick={ () => setShowWizard(true) }
+                                                       data-testid={ `${ testId }-add-connector-button` }>
                                             <Icon name="add"/>
                                             { t("devPortal:components.idp.buttons.addConnector") }
                                         </PrimaryButton>
@@ -344,6 +346,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                 initialValues={ connector.data }
                                                                 onSubmit={ handleConnectorConfigFormSubmit }
                                                                 type={ connector.meta?.name }
+                                                                data-testid={ `${ testId }-${ 
+                                                                    connector.meta?.name }-content` }
                                                             />
                                                         ),
                                                         id: connector?.id,
@@ -351,6 +355,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                     }
                                                 })
                                             }
+                                            data-testid={ `${ testId }-accordion` }
                                         />
                                     </Grid.Column>
                                 </Grid.Row>
@@ -373,11 +378,13 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                         ] }
                                         imageSize="tiny"
                                         action={ (
-                                            <PrimaryButton onClick={ () => setShowWizard(true) }>
+                                            <PrimaryButton onClick={ () => setShowWizard(true) }
+                                                           data-testid={ `${ testId }-add-connector-button` }>
                                                 <Icon name="add"/>
                                                 { t("devPortal:components.idp.buttons.addConnector") }
                                             </PrimaryButton>
                                         ) }
+                                        data-testid={ `${ testId }-empty-placeholder` }
                                     />
                                 </Segment>
                                 <Divider hidden />
@@ -410,14 +417,16 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         onPrimaryActionClick={
                             (): void => handleDeleteConnector(deletingConnector)
                         }
+                        data-testid={ `${ testId }-authenticator-delete-confirmation` }
                     >
-                        <ConfirmationModal.Header>
+                        <ConfirmationModal.Header data-testid={ `${ testId }-authenticator-delete-confirmation` }>
                             { t("devPortal:components.idp.confirmations.deleteConnector.header") }
                         </ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
+                        <ConfirmationModal.Message attached warning
+                                                   data-testid={ `${ testId }-authenticator-delete-confirmation` }>
                             { t("devPortal:components.idp.confirmations.deleteConnector.message") }
                         </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
+                        <ConfirmationModal.Content data-testid={ `${ testId }-authenticator-delete-confirmation` }>
                             { t("devPortal:components.idp.confirmations.deleteConnector.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
@@ -430,6 +439,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         updateIdentityProvider={ onUpdate }
                         identityProvider={ identityProvider }
                         onUpdate={ onUpdate }
+                        data-testid={ `${ testId }-connector-create-wizard` }
                     />
                 )
             }
@@ -443,10 +453,18 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         <OutboundProvisioningRoles
                             idpRoles={ identityProvider?.roles }
                             idpId={ identityProvider?.id }
+                            data-testid={ `${ testId }-roles` }
                         />
                     </>
                 ) : <ContentLoader/>
             }
          </>
     );
+};
+
+/**
+ * Default proptypes for the IDP outbound provisioning settings component.
+ */
+OutboundProvisioningSettings.defaultProps = {
+    "data-testid": "idp-edit-outbound-provisioning-settings"
 };

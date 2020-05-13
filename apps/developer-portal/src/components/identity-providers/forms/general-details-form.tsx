@@ -16,14 +16,12 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
 import { getIdentityProviderList } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";
@@ -32,7 +30,7 @@ import { handleGetIDPListCallError } from "../utils";
 /**
  * Proptypes for the identity provider general details form component.
  */
-interface GeneralDetailsFormPopsInterface {
+interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
     /**
      * Currently editing identity provider id.
      */
@@ -81,13 +79,12 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         imageUrl,
         onSubmit,
         triggerSubmit,
-        enableWizardMode
+        enableWizardMode,
+        [ "data-testid" ]: testId
     } = props;
 
     const [isNameValid, setIsNameValid] = useState<boolean>(true);
     const [modifiedName, setModifiedName] = useState<string>(name);
-
-    const dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -106,7 +103,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      * Retrieves the list of identity providers.
      */
     const validateIdpName = (idpName: string) => {
-        return getIdentityProviderList(null, null, "name eq " + idpName)
+        getIdentityProviderList(null, null, "name eq " + idpName)
             .then((response) => {
                 setIsNameValid(response?.totalResults === 0);
             })
@@ -141,6 +138,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     setModifiedName(values.get("name").toString());
                 }
             } }
+            data-testid={ testId }
         >
             <Grid>
                 <Grid.Row columns={ 1 }>
@@ -161,6 +159,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 }
                             } }
                             value={ name }
+                            data-testid={ `${ testId }-idp-name` }
                         />
                         <Hint>
                             { t("devPortal:components.idp.forms.generalDetails.name.hint") }
@@ -178,6 +177,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 "generalDetails.description.placeholder") }
                             type="textarea"
                             value={ description }
+                            data-testid={ `${ testId }-idp-description` }
                         />
                         <Hint>
                             { t("devPortal:components.idp.forms.generalDetails.description.hint") }
@@ -201,6 +201,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 }
                             } }
                             value={ imageUrl }
+                            data-testid={ `${ testId }-idp-image` }
                         />
                         <Hint>
                             { t("devPortal:components.idp.forms.generalDetails.image.hint") }
@@ -212,7 +213,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     !enableWizardMode ? (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Button primary type="submit" size="small" className="form-button">
+                                <Button primary type="submit" size="small" className="form-button"
+                                        data-testid={ `${ testId }-update-button` }>
                                     { t("common:update") }
                                 </Button>
                             </Grid.Column>
@@ -225,6 +227,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 };
 
 GeneralDetailsForm.defaultProps = {
+    "data-testid": "idp-edit-general-settings-form",
     enableWizardMode: false,
     triggerSubmit: false
 };

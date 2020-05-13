@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { FederatedAuthenticatorListItemInterface, FederatedAuthenticatorMetaInterface } from "../../../../models";
 import { CommonAuthenticatorForm } from "../authenticators";
@@ -23,7 +24,7 @@ import { CommonAuthenticatorForm } from "../authenticators";
 /**
  * Proptypes for the authenticator form factory component.
  */
-interface AuthenticatorFormFactoryInterface {
+interface AuthenticatorFormFactoryInterface extends TestableComponentInterface {
     metadata?: FederatedAuthenticatorMetaInterface;
     initialValues: FederatedAuthenticatorListItemInterface;
     onSubmit: (values: FederatedAuthenticatorListItemInterface) => void;
@@ -48,16 +49,30 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         onSubmit,
         type,
         triggerSubmit,
-        enableSubmitButton
+        enableSubmitButton,
+        [ "data-testid" ]: testId
     } = props;
 
     switch (type) {
         default:
-            return <CommonAuthenticatorForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit }
-                                            triggerSubmit={ triggerSubmit } enableSubmitButton={ enableSubmitButton }/>;
+            return <CommonAuthenticatorForm
+                initialValues={ initialValues }
+                metadata={ metadata }
+                onSubmit={ onSubmit }
+                triggerSubmit={ triggerSubmit }
+                enableSubmitButton={ enableSubmitButton }
+                data-testid={ testId }
+            />;
     }
 };
 
 AuthenticatorFormFactory.defaultProps = {
     enableSubmitButton: true
+};
+
+/**
+ * Default proptypes for the IDP authenticator for factory component.
+ */
+AuthenticatorFormFactory.defaultProps = {
+    "data-testid": "idp-edit-authenticator-settings-form-factory"
 };

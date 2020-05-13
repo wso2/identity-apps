@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { IdentityProviderInterface } from "../../../../../models";
 import { GeneralDetailsForm } from "../../../forms";
@@ -23,7 +24,7 @@ import { GeneralDetailsForm } from "../../../forms";
 /**
  * Proptypes for the general settings wizard form component.
  */
-interface GeneralSettingsWizardFormPropsInterface {
+interface GeneralSettingsWizardFormPropsInterface extends TestableComponentInterface {
     initialValues: IdentityProviderInterface;
     triggerSubmit: boolean;
     onSubmit: (values: IdentityProviderInterface) => void;
@@ -42,7 +43,8 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
     const {
         initialValues,
         triggerSubmit,
-        onSubmit
+        onSubmit,
+        [ "data-testid" ]: testId
     } = props;
 
     return (
@@ -54,6 +56,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
             imageUrl={ initialValues?.image }
             triggerSubmit={ triggerSubmit }
             enableWizardMode={ true }
+            data-testid={ testId }
         />
     );
 };

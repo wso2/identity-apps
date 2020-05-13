@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     Heading,
     LinkButton,
@@ -26,12 +27,11 @@ import {
 } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
 import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../../models";
-import { useTranslation } from "react-i18next";
 
-
-interface AttributeSelectionWizardPropsInterface {
+interface AttributeSelectionWizardPropsInterface extends TestableComponentInterface {
     attributesList: IdentityProviderClaimInterface[];
     selectedAttributes: IdentityProviderCommonClaimMappingInterface[];
     setSelectedAttributes: (mapping: IdentityProviderCommonClaimMappingInterface[]) => void;
@@ -48,7 +48,8 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
         setSelectedAttributes,
         showAddModal,
         setShowAddModal,
-        attributesList
+        attributesList,
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -237,14 +238,14 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     });
 
     return (
-        <Modal open={ showAddModal } size="small" className="user-attributes">
-            <Modal.Header>
+        <Modal open={ showAddModal } size="small" className="user-attributes" data-testid={ `${ testId }-modal` }>
+            <Modal.Header data-testid={ `${ testId }-modal-header` }>
                 { t("devPortal:components.idp.modals.attributeSelection.title") }
                 <Heading subHeading ellipsis as="h6">
                     { t("devPortal:components.idp.modals.attributeSelection.subTitle") }
                 </Heading>
             </Modal.Header>
-            <Modal.Content image>
+            <Modal.Content image data-testid={ `${ testId }-modal-content` }>
                 <TransferComponent
                     searchPlaceholder={ t("devPortal:components.idp.modals.attributeSelection." +
                         "content.searchPlaceholder") }
@@ -252,6 +253,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                     removeItems={ removeAttributes }
                     handleUnelectedListSearch={ searchTempAvailable }
                     handleSelectedListSearch={ searchTempSelected }
+                    data-testid={ `${ testId }-modal-content` }
                 >
                     <TransferList
                         isListEmpty={ !(filterTempAvailableClaims.length > 0) }
@@ -259,6 +261,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                         listHeaders={ ["Attribute"] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectUnassignedClaimsAllClaimsChecked }
+                        data-testid={ `${ testId }-modal-content-unselected-list` }
                     >
                         {
                             filterTempAvailableClaims?.map((claim: IdentityProviderClaimInterface) => {
@@ -273,6 +276,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                                         showSecondaryActions={ false }
                                         showListSubItem={ true }
                                         listSubItem={ claim.uri === claim.displayName ? "" : claim.uri }
+                                        data-testid={ `${ testId }-modal-content-unselected-list-item-${ claim.id }` }
                                     />
                                 )
                             })
@@ -284,6 +288,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                         listHeaders={ ["Attribute"] }
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAssignedAllClaimsChecked }
+                        data-testid={ `${ testId }-modal-content-selected-list` }
                     >
                         {
                             filterTempSelectedClaims?.map((mapping) => {
@@ -298,6 +303,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                                         showSecondaryActions={ false }
                                         showListSubItem={ true }
                                         listSubItem={ mapping.uri === mapping.displayName ? "" : mapping.uri }
+                                        data-testid={ `${ testId }-modal-content-selected-list-item-${ mapping.id }` }
                                     />
                                 )
                             })
@@ -305,18 +311,27 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                     </TransferList>
                 </TransferComponent>
             </Modal.Content>
-            <Modal.Actions>
+            <Modal.Actions data-testid={ `${ testId }-modal-actions` }>
                 <LinkButton
                     onClick={ handleAttributeModal }
+                    data-testid={ `${ testId }-modal-cancel-button` }
                 >
                     { t("common:cancel") }
                 </LinkButton>
                 <PrimaryButton
                     onClick={ updateSelectedClaims }
+                    data-testid={ `${ testId }-modal-save-button` }
                 >
                     { t("common:save") }
                 </PrimaryButton>
             </Modal.Actions>
         </Modal>
     )
+};
+
+/**
+ * Default proptypes for the IDP attribute selection wizard component.
+ */
+AttributeSelectionWizard.defaultProps = {
+    "data-testid": "idp-edit-attribute-settings-attribute-selection-wizard"
 };

@@ -16,13 +16,12 @@
  * under the License.
  */
 
-import { Heading } from "@wso2is/react-components";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Divider } from "semantic-ui-react";
 import { OutboundProvisioningConnectorInterface, OutboundProvisioningConnectorMetaInterface } from "../../../../models";
 import { CommonOutboundProvisioningConnectorForm } from "../outbound-provisioning-connectors";
 
-interface OutboundProvisioningConnectorFormFactoryInterface {
+interface OutboundProvisioningConnectorFormFactoryInterface extends TestableComponentInterface {
     metadata?: OutboundProvisioningConnectorMetaInterface;
     initialValues: OutboundProvisioningConnectorInterface;
     onSubmit: (values: OutboundProvisioningConnectorInterface) => void;
@@ -47,7 +46,8 @@ export const OutboundProvisioningConnectorFormFactory: FunctionComponent<
         onSubmit,
         type,
         triggerSubmit,
-        enableSubmitButton
+        enableSubmitButton,
+        [ "data-testid" ]: testId
     } = props;
 
     const generateConnector = (): ReactElement => {
@@ -59,6 +59,7 @@ export const OutboundProvisioningConnectorFormFactory: FunctionComponent<
                     onSubmit={ onSubmit }
                     triggerSubmit={ triggerSubmit }
                     enableSubmitButton={ enableSubmitButton }
+                    data-testid={ testId }
                 />;
         }
     };
@@ -72,4 +73,11 @@ export const OutboundProvisioningConnectorFormFactory: FunctionComponent<
 
 OutboundProvisioningConnectorFormFactory.defaultProps = {
     enableSubmitButton: true
+};
+
+/**
+ * Default proptypes for the IDP authenticator for factory component.
+ */
+OutboundProvisioningConnectorFormFactory.defaultProps = {
+    "data-testid": "idp-edit-outbound-provisioning-settings-form-factory"
 };

@@ -16,13 +16,14 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Input, Label, Table } from "semantic-ui-react";
 import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../../models";
 
-interface AttributeListItemPropInterface {
+interface AttributeListItemPropInterface extends TestableComponentInterface {
     attribute: IdentityProviderClaimInterface;
     placeholder: string;
     updateMapping?: (mapping: IdentityProviderCommonClaimMappingInterface) => void;
@@ -42,7 +43,8 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         attribute,
         updateMapping,
         mapping,
-        placeholder
+        placeholder,
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -56,7 +58,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     };
 
     return (
-        <Table.Row>
+        <Table.Row data-testid={ testId }>
             <Table.Cell>
                 { attribute?.displayName }
             </Table.Cell>
@@ -68,6 +70,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             value={ _.isEmpty(mapping) ? "" : mapping }
                             onChange={ handleClaimMapping }
                             required
+                            data-testid={ `${ testId }-input` }
                         />
                         { _.isEmpty(mapping) &&
                         (
@@ -83,4 +86,10 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
             }
         </Table.Row>
     );
+};
+/**
+ * Default proptypes for the attribute list item component.
+ */
+AttributeListItem.defaultProps = {
+    "data-testid": "attribute-list-item"
 };

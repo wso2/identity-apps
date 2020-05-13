@@ -31,7 +31,8 @@ import {
 
 export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyInterface,
                                      propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                                     disable: boolean): ReactElement => {
+                                     disable: boolean,
+                                     testId?: string): ReactElement => {
     return (
         <>
             <Field
@@ -45,6 +46,7 @@ export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyI
                 value={ eachProp?.value }
                 type="password"
                 disabled={ disable }
+                data-testid={ `${ testId }-${ propertyMetadata?.key }` }
             />
             { propertyMetadata?.description && (
                 <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
@@ -55,7 +57,8 @@ export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyI
 
 export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInterface,
                                  propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                                 disable: boolean): ReactElement => {
+                                 disable: boolean,
+                                 testId?: string): ReactElement => {
     return (
         <>
             <Field
@@ -74,6 +77,7 @@ export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInter
                     ]
                 }
                 disabled={ disable }
+                data-testid={ `${ testId }-${ propertyMetadata?.key }` }
             />
             { propertyMetadata?.description && (
                 <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
@@ -85,7 +89,8 @@ export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInter
 export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentPropertyInterface,
                                              propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
                                              listen: (key: string, values: Map<string, FormValue>) => void,
-                                             disable: boolean): ReactElement => {
+                                             disable: boolean,
+                                             testId?: string): ReactElement => {
     return (
         <>
             <Field
@@ -107,6 +112,7 @@ export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentP
                     listen(propertyMetadata.key, values);
                 } }
                 disabled={ disable }
+                data-testid={ `${ testId }-${ propertyMetadata?.key }` }
             />
             { propertyMetadata?.description && (
                 <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
@@ -117,7 +123,8 @@ export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentP
 
 export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface,
                              propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                             disable: boolean): ReactElement => {
+                             disable: boolean,
+                             testId?: string): ReactElement => {
     return (
         <>
             <Field
@@ -130,6 +137,7 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
                 value={ eachProp?.value }
                 key={ eachProp?.key }
                 disabled={ disable }
+                data-testid={ `${ testId }-${ propertyMetadata?.key }` }
             />
             { propertyMetadata?.description && (
                 <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
@@ -140,7 +148,8 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
 
 export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
                             propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                            disable: boolean): ReactElement => {
+                            disable: boolean,
+                            testId?: string): ReactElement => {
     return (
         <>
             <Field
@@ -160,6 +169,7 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
                 value={ eachProp?.value }
                 key={ propertyMetadata?.key }
                 disabled={ disable }
+                data-testid={ `${ testId }-${ propertyMetadata?.key }` }
             />
             { propertyMetadata?.description && (
                 <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
@@ -170,7 +180,8 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
 
 export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyInterface,
                                     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                                    disable: boolean): ReactElement => {
+                                    disable: boolean,
+                                    testId?: string): ReactElement => {
     return (
         <>
             <Field
@@ -189,6 +200,7 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
                 value={ eachProp?.value }
                 key={ propertyMetadata?.key }
                 disabled={ disable }
+                data-testid={ `${ testId }-${ propertyMetadata?.key }` }
             />
             { propertyMetadata?.description && (
                 <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
@@ -199,7 +211,8 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
 
 export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInterface,
                                  propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-                                 disable: boolean): ReactElement => {
+                                 disable: boolean,
+                                 testId?: string): ReactElement => {
     return (
         <>
             <Field
@@ -212,6 +225,7 @@ export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInter
                 key={ eachProp?.key }
                 children={ getDropDownChildren(eachProp?.key, propertyMetadata?.options) }
                 disabled={ disable }
+                data-testid={ `${ testId }-${ propertyMetadata?.key }` }
             />
             { propertyMetadata?.description && (
                 <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
@@ -281,36 +295,38 @@ export const getFieldType = (propertyMetadata: CommonPluggableComponentMetaPrope
  * @param property Property of type {@link CommonPluggableComponentPropertyInterface}.
  * @param propertyMetadata Property metadata of type.
  * @param disable Disables the form field.
+ * @param testId Test ID for the form field.
  * @param listen Listener method for the on change events of a checkbox field
  * @return Corresponding property field.
  */
 export const getPropertyField = (property: CommonPluggableComponentPropertyInterface,
                                  propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
                                  disable?: boolean,
-                                 listen?: (key: string, values: Map<string, FormValue>) => void):
+                                 listen?: (key: string, values: Map<string, FormValue>) => void,
+                                 testId?: string):
     ReactElement => {
 
     switch (getFieldType(propertyMetadata)) {
         case FieldType.CHECKBOX : {
             if (listen) {
-                return getCheckboxFieldWithListener(property, propertyMetadata, listen, disable);
+                return getCheckboxFieldWithListener(property, propertyMetadata, listen, disable, testId);
             }
-            return getCheckboxField(property, propertyMetadata, disable);
+            return getCheckboxField(property, propertyMetadata, disable, testId);
         }
         case FieldType.CONFIDENTIAL : {
-            return getConfidentialField(property, propertyMetadata, disable);
+            return getConfidentialField(property, propertyMetadata, disable, testId);
         }
         case FieldType.URL : {
-            return getURLField(property, propertyMetadata, disable);
+            return getURLField(property, propertyMetadata, disable, testId);
         }
         case FieldType.QUERY_PARAMS : {
-            return getQueryParamsField(property, propertyMetadata, disable);
+            return getQueryParamsField(property, propertyMetadata, disable, testId);
         }
         case FieldType.DROP_DOWN : {
-            return getDropDownField(property, propertyMetadata, disable);
+            return getDropDownField(property, propertyMetadata, disable, testId);
         }
         default: {
-            return getTextField(property, propertyMetadata, disable);
+            return getTextField(property, propertyMetadata, disable, testId);
         }
     }
 };

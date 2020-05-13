@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, Hint } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -23,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "../attribute-settings";
 
-interface AdvanceAttributeSettingsPropsInterface {
+interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterface {
     dropDownOptions: DropdownOptionsInterface[];
     initialSubjectUri: string;
     initialRoleUri: string;
@@ -42,7 +43,8 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
         initialRoleUri,
         claimMappingOn,
         updateRole,
-        updateSubject
+        updateSubject,
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -83,6 +85,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 pointing: "above"
                             } }
                             label={ t("devPortal:components.idp.forms.uriAttributeSettings.subject.label") }
+                            data-testid={ `${ testId }-form-element-subject` }
                         />
                     </Form>
                     <Hint>
@@ -123,6 +126,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                     pointing: "above"
                                 } }
                                 label={ t("devPortal:components.idp.forms.uriAttributeSettings.role.label") }
+                                data-testid={ `${ testId }-form-element-role` }
                             />
                         </Form>
                         <Hint>
@@ -133,4 +137,11 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
             }
         </>
     )
+};
+
+/**
+ * Default proptypes for the IDP uri attribute settings component.
+ */
+UriAttributesSettings.defaultProps = {
+    "data-testid": "idp-edit-attribute-settings-uri-attribute-settings"
 };
