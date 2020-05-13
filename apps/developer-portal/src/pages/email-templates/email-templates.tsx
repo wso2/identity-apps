@@ -221,6 +221,7 @@ export const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
                     )
                 }
                 data-testid={ `${ testId }-list-layout` }
+                showTopActionPanel={ isEmailTemplatesFetchRequestLoading || emailTemplates?.length  > 0 }
             >
                 <EmailTemplateList
                     isLoading={ isEmailTemplatesFetchRequestLoading }
