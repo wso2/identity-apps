@@ -99,6 +99,7 @@ export const ResourceList: FunctionComponent<ResourceListPropsInterface> & Resou
         for(let i=0; i < loadingStateOptions.count; i++) {
             placeholders.push(
                 <ResourceListItem
+                    key={ i }
                     avatar={ (
                         <Avatar
                             image={ (
