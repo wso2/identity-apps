@@ -51,7 +51,7 @@ const endUserSessionWithoutLoops = (): void => {
         const errorTime = parseInt(sessionStorage.getItem(ApplicationConstants.AUTH_ERROR_TIME), 10);
         if (currentTime - errorTime >= 10000) {
             sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
-            history.push(APP_LOGOUT_PATH);
+            history.push(window["AppUtils"].getConfig().routes.logout);
         } else {
             sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
             return;
@@ -82,7 +82,7 @@ export const onHttpRequestError = (error: any): null => {
         && error.response.request.responseURL === OPConfigurationUtil.getTokenEndpoint()) {
 
         if (error.response.status === 400) {
-            history.push(APP_LOGOUT_PATH);
+            history.push(window["AppUtils"].getConfig().routes.logout);
             return;
         }
     }

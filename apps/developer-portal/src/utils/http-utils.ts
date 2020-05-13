@@ -60,7 +60,7 @@ export const onHttpRequestError = (error: any): void => {
         && error.response.request.responseURL === OPConfigurationUtil.getTokenEndpoint()) {
 
         if (error.response.status === 400) {
-            history.push(APP_LOGOUT_PATH);
+            history.push(window["AppUtils"].getConfig().routes.logout);
             return;
         }
     }
@@ -75,7 +75,7 @@ export const onHttpRequestError = (error: any): void => {
     // NOTE: Axios is unable to handle 401 errors. `!error.response` will usually catch
     // the `401` error. Check the link in the doc comment.
     if (!error.response || error.response.status === 401) {
-        history.push(APP_LOGOUT_PATH);
+        history.push(window["AppUtils"].getConfig().routes.logout);
     }
 };
 

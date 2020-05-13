@@ -34,7 +34,7 @@ export const UnauthorizedErrorPage = (): ReactElement => {
     return (
         <EmptyPlaceholder
             action={ (
-                <LinkButton as={ Link } to={ APP_LOGOUT_PATH }>
+                <LinkButton as={ Link } to={ window["AppUtils"].getConfig().routes.logout }>
                     { t("devPortal:placeholders.loginError.action") }
                 </LinkButton>
             ) }

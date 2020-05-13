@@ -328,9 +328,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                             primary
                             onClick={
                                 (): void => {
-                                    window.open(config.deployment.userPortalClientHost + "/"
-                                        + config.deployment.userPortalBaseName + config.ui.myAccountPath
-                                    );
+                                    window.open(window["AppUtils"].getConfig().accountAppURL);
                                 }
                             }
                         >

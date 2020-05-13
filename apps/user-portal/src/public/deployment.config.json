@@ -1,0 +1,16 @@
+{
+    "appBaseName": "user-portal",
+    "clientID": "USER_PORTAL",
+    "loginCallbackPath": "/login",
+    "logoutCallbackPath": "/login",
+    "routePaths": {
+        "home": "/overview",
+        "login": "/login",
+        "logout": "/logout"
+    },
+    "ui": {
+        "appCopyright": "WSO2 Identity Server",
+        "appTitle": "Manage you WSO2 Identity Server Account",
+        "appName": "Identity Server Account"
+    }
+}

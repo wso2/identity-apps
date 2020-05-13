@@ -69,7 +69,7 @@ export class I18nConstants {
             loadPath: (language, namespace) => generateBackendPaths(
                 language,
                 namespace,
-                window["runConfig"].appBaseNameWithoutTenant,
+                window["AppUtils"].getConfig().appBase,
                 store.getState().config.i18n
             )
         },

@@ -449,7 +449,7 @@ const AUTH_LAYOUT_ROUTES: RouteInterface[] = [
         icon: null,
         id: "authLayoutLogin",
         name: "Login",
-        path: APP_LOGIN_PATH,
+        path: window["AppUtils"].getConfig().routes.login,
         protected: false,
         showOnSidePanel: false
     },
@@ -458,7 +458,7 @@ const AUTH_LAYOUT_ROUTES: RouteInterface[] = [
         icon: null,
         id: "authLayoutLogout",
         name: "Logout",
-        path: APP_LOGOUT_PATH,
+        path: window["AppUtils"].getConfig().routes.logout,
         protected: false,
         showOnSidePanel: false
     }
@@ -473,7 +473,7 @@ const APP_ROUTES: RouteInterface[] = [
         icon: null,
         id: "appRouteLogin",
         name: "Login",
-        path: APP_LOGIN_PATH,
+        path: window["AppUtils"].getConfig().routes.login,
         protected: false,
         showOnSidePanel: false
     },
@@ -482,7 +482,7 @@ const APP_ROUTES: RouteInterface[] = [
         icon: null,
         id: "appRouteLogout",
         name: "Logout",
-        path: APP_LOGOUT_PATH,
+        path: window["AppUtils"].getConfig().routes.logout,
         protected: false,
         showOnSidePanel: false
     },

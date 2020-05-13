@@ -38,7 +38,7 @@ export const LoginErrorPage = (): JSX.Element => {
                     <Button
                         className="link-button"
                         as={ Link }
-                        to={ APP_LOGOUT_PATH }
+                        to={ window["AppUtils"].getConfig().routes.logout }
                     >
                         { t("views:placeholders.loginError.action") }
                     </Button>
@@ -47,7 +47,7 @@ export const LoginErrorPage = (): JSX.Element => {
                 imageSize="tiny"
                 subtitle={ [
                     t("views:placeholders.loginError.subtitles.0"),
-                    t("views:placeholders.loginError.subtitles.1"),
+                    t("views:placeholders.loginError.subtitles.1")
                 ] }
                 title={ t("views:placeholders.loginError.title") }
             />

@@ -26,7 +26,7 @@ export const getTokenRequestHeaders = (): any => {
     return {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Access-Control-Allow-Origin": window["AppUtils"].getConfig().clientOriginWithTenant,
             "Content-Type": "application/x-www-form-urlencoded"
         }
     };

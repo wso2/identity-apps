@@ -20,7 +20,7 @@
 <%= htmlWebpackPlugin.options.importTenantPrefix %>
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
 
-<!doctype html>
+<!DOCTYPE html>
 <html>
     <head>
         <%= htmlWebpackPlugin.options.contentType %>
@@ -32,68 +32,14 @@
 
         <title><%= htmlWebpackPlugin.options.title %></title>
 
-        <!-- runtime config -->
-        <script src="<%= htmlWebpackPlugin.options.publicPath %>/runtime-config.js"></script>
-        <!-- runtime config -->
-
+        <script src="<%= htmlWebpackPlugin.options.publicPath %>/app-utils.js"></script>
         <script>
-            var getTenantPrefix = function() {
-                return "<%= htmlWebpackPlugin.options.tenantPrefix %>";
-            };
-
-            var getSuperTenant = function() {
-                return "<%= htmlWebpackPlugin.options.superTenantConstant %>";
-            };
-
-            var getTenantName = function() {
-                var paths = window.location.pathname.split("/");
-                var tenantIndex = paths.indexOf(getTenantPrefix());
-
-                if (tenantIndex > 0) {
-                    var tenantName = paths[tenantIndex + 1];
-                    return (tenantName) ? tenantName : "";
-                } else {
-                    return "";
-                }
-            };
-
-            var getTenantPath = function(tenantName) {
-                return (tenantName !== "") ? "/" + getTenantPrefix() + "/" + tenantName : "";
-            };
-
-            /**
-             * =====================================================
-             * Update below details according to your configuration
-             * =====================================================
-             */
-
-            // Update below with tenant user-portal application/service-provider details
-            var serverOriginAddress = "<%= htmlWebpackPlugin.options.serverUrl %>";
-            var clientOriginAddress = "<%= htmlWebpackPlugin.options.serverUrl %>";
-
-            var tenantName = getTenantName();
-            var defaultUserPortalClientID = "USER_PORTAL";
-            var tenantUserPortalClientID = defaultUserPortalClientID + "_" + tenantName;
-
-            /** ===================================================== */
-
-            if (!window.userConfig) {
-                window.userConfig = {};
-            }
-
-            window["runConfig"] = {
-                appBaseName: window.userConfig.appBaseName || getTenantPath(tenantName) + 
-                    "<%= htmlWebpackPlugin.options.publicPath %>",
-                clientHost: window.userConfig.clientHost || clientOriginAddress + getTenantPath(tenantName),
-                clientOrigin: window.userConfig.clientOrigin || clientOriginAddress,
-                clientID: window.userConfig.clientID ||
-                    (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ?
-                    tenantUserPortalClientID : defaultUserPortalClientID,
-                serverHost: window.userConfig.serverHost || serverOriginAddress + getTenantPath(tenantName),
-                serverOrigin: window.userConfig.serverOrigin || serverOriginAddress,
-                tenant: window.userConfig.tenant || (tenantName === "") ? getSuperTenant() : tenantName,
-                tenantPath: window.userConfig.tenantPath || getTenantPath(tenantName)
-            };
+            AppUtils.init({
+                deploymentConfigFile: "deployment.config.json",
+                serverOrigin: "<%= htmlWebpackPlugin.options.serverUrl %>",
+                superTenant: "<%= htmlWebpackPlugin.options.superTenantConstant %>",
+                tenantPrefix: "<%= htmlWebpackPlugin.options.tenantPrefix %>"
+            });
         </script>
     </head>
     <body>

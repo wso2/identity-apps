@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { CommonDeploymentConfigInterface } from "@wso2is/core/models";
 import { commonConfigReducer } from "@wso2is/core/store";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { combineReducers } from "redux";
@@ -29,7 +30,6 @@ import {
 } from "./reducers";
 import { helpPanelReducer } from "./reducers/help-panel";
 import {
-    DeploymentConfigInterface,
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface,
     UIConfigInterface
@@ -44,7 +44,7 @@ export const reducers = combineReducers({
     application: applicationReducer,
     authenticationInformation: authenticateReducer,
     config: commonConfigReducer<
-        DeploymentConfigInterface,
+        CommonDeploymentConfigInterface,
         ServiceResourceEndpointsInterface,
         FeatureConfigInterface,
         I18nModuleOptionsInterface,
