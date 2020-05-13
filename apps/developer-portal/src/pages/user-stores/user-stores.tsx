@@ -17,10 +17,11 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
@@ -34,11 +35,24 @@ import { AppState } from "../../store";
 import { filterList, sortList } from "../../utils";
 
 /**
+ * Props for the Userstore page.
+ */
+type UserStoresPageInterface = TestableComponentInterface;
+
+/**
  * This renders the Userstores page.
  *
- * @return {ReactElement}
+ * @param {UserStoresPageInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const UserStores = (): ReactElement => {
+export const UserStores: FunctionComponent<UserStoresPageInterface> = (
+    props: UserStoresPageInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
 
@@ -205,6 +219,7 @@ export const UserStores = (): ReactElement => {
             title={ t("devPortal:components.userstores.pageLayout.list.title") }
             description={ t("devPortal:components.userstores.pageLayout.list.description") }
             showBottomDivider={ true }
+            data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
                 advancedSearch={
@@ -240,6 +255,7 @@ export const UserStores = (): ReactElement => {
                         defaultSearchAttribute="name"
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
+                        data-testid={ `${ testId }-advanced-search` }
                     />
                 }
                 currentListSize={ listItemLimit }
@@ -257,8 +273,10 @@ export const UserStores = (): ReactElement => {
                             onClick={ () => {
                                 history.push(USERSTORE_TEMPLATES_PATH);
                             } }
+                            data-testid={ `${ testId }-list-layout-add-button` }
                         >
-                            <Icon name="add" />{ t("devPortal:components.userstores.pageLayout.list.primaryAction")}
+                            <Icon name="add" />
+                            { t("devPortal:components.userstores.pageLayout.list.primaryAction")}
                         </PrimaryButton>
                     )
                 }
@@ -269,6 +287,7 @@ export const UserStores = (): ReactElement => {
                 showTopActionPanel={ isLoading || !(!searchQuery && filteredUserStores?.length <= 0) }
                 totalPages={ Math.ceil(filteredUserStores?.length / listItemLimit) }
                 totalListSize={ filteredUserStores?.length }
+                data-testid={ `${ testId }-list-layout` }
             >
                 <UserStoresList
                     isLoading={ isLoading }
@@ -278,8 +297,16 @@ export const UserStores = (): ReactElement => {
                     searchQuery={ searchQuery }
                     update={ fetchUserStores }
                     featureConfig={ featureConfig }
+                    data-testid={ `${ testId }-list` }
                 />
             </ListLayout>
         </PageLayout>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+UserStores.defaultProps = {
+    "data-testid": "userstores"
 };

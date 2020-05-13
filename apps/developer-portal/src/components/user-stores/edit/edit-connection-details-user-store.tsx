@@ -16,10 +16,11 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
@@ -31,7 +32,7 @@ import { AlertLevels, RequiredBinary, TestConnection, TypeProperty, UserstoreTyp
 /**
  * Prop types of `EditConnectionDetails` component
  */
-interface EditConnectionDetailsPropsInterface {
+interface EditConnectionDetailsPropsInterface extends TestableComponentInterface {
     /**
      * Initiates an update
      */
@@ -49,11 +50,25 @@ interface EditConnectionDetailsPropsInterface {
      */
     properties: RequiredBinary;
 }
-export const EditConnectionDetails = (
+
+/**
+ * This renders the edit connection details pane.
+ *
+ * @param {EditConnectionDetailsPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsPropsInterface> = (
     props: EditConnectionDetailsPropsInterface
 ): ReactElement => {
 
-    const { update, id, properties, type } = props;
+    const {
+        update,
+        id,
+        properties,
+        type,
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ formValue, setFormValue ] = useState<Map<string, FormValue>>(null);
     const [ showMore, setShowMore ] = useState(false);
@@ -118,7 +133,7 @@ export const EditConnectionDetails = (
         } else {
             return TestButtonColor.INITIAL
         }
-    }
+    };
 
     useEffect(() => {
         if (properties) {
@@ -274,6 +289,7 @@ export const EditConnectionDetails = (
                                                             name: property.description.split("#")[ 0 ]
                                                         })
                                                 }
+                                                data-testid={ `${ testId }-form-password-input-${ property.name }` }
                                             />
                                         )
                                         : toggle
@@ -300,6 +316,7 @@ export const EditConnectionDetails = (
                                                             })
                                                     }
                                                     toggle
+                                                    data-testid={ `${ testId }-form-toggle-${ property.name }` }
                                                 />
                                             ) :
                                             (
@@ -324,6 +341,7 @@ export const EditConnectionDetails = (
                                                                 name: property.description.split("#")[ 0 ]
                                                             })
                                                     }
+                                                    data-testid={ `${ testId }-form-text-input-${ property.name }` }
                                                 />
                                             )
                                 );
@@ -391,6 +409,7 @@ export const EditConnectionDetails = (
                                         }
                                     }
                                 }
+                                data-testid={ `${ testId }-test-connection-button` }
                             >
                                 <Icon
                                     size="small"
@@ -423,6 +442,7 @@ export const EditConnectionDetails = (
                             <LinkButton
                                 type="button"
                                 onClick={ () => { setShowMore(!showMore) } }
+                                data-testid={ `${ testId }-show-more-button` }
                             >
                                 <Icon name={ showMore ? "chevron up" : "chevron down" } />
                                 { showMore ? t("common:showLess") : t("common:showMore") }
@@ -466,6 +486,8 @@ export const EditConnectionDetails = (
                                                                 name: property.description.split("#")[ 0 ]
                                                             })
                                                     }
+                                                    data-testid={ `${ testId }-form--non-sql-password-input-${
+                                                        property.name }` }
                                                 />
                                             )
                                             : toggle
@@ -492,6 +514,8 @@ export const EditConnectionDetails = (
                                                                 })
                                                         }
                                                         toggle
+                                                        data-testid={ `${ testId }-form--non-sql-toggle-${
+                                                            property.name }` }
                                                     />
                                                 ) :
                                                 (
@@ -516,6 +540,8 @@ export const EditConnectionDetails = (
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                         }
+                                                        data-testid={ `${ testId }-form--non-sql-text-input-${
+                                                            property.name }` }
                                                     />
                                                 )
                                     );
@@ -541,6 +567,7 @@ export const EditConnectionDetails = (
                                 } }
                                 properties={ properties?.optional.sql }
                                 values={ sql }
+                                data-testid={ `${ testId }-sql-editor` }
                             />
                         </Grid.Column>
                     </Grid>
@@ -548,11 +575,18 @@ export const EditConnectionDetails = (
             }
             <Grid columns={ 1 }>
                 <Grid.Column width={ 8 }>
-                    <PrimaryButton type="submit">
+                    <PrimaryButton type="submit" data-testid={ `${ testId }-form-submit-button` }>
                         { t("common:update") }
                     </PrimaryButton>
                 </Grid.Column>
             </Grid>
         </Forms>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+EditConnectionDetails.defaultProps = {
+    "data-testid": "userstore-connection-details-edit"
 };

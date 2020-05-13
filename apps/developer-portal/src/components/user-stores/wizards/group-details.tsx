@@ -16,6 +16,7 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,7 +26,7 @@ import { TypeProperty } from "../../../models";
 /**
  * Prop types of the `GroupDetails` component 
  */
-interface GroupDetailsPropsInterface {
+interface GroupDetailsPropsInterface extends TestableComponentInterface {
     /**
      * Trigger submit
      */
@@ -45,22 +46,30 @@ interface GroupDetailsPropsInterface {
 }
 
 /**
- * This component renders the Group Details step of the wizard
- * @param {GroupDetailsPropsInterface} props
- * @returns {Promise<any>}
+ * This component renders the Group Details step of the wizard.
+ *
+ * @param {GroupDetailsPropsInterface} props - Props injected to the component.
+ *
+ * @returns {React.ReactElement}
  */
 export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
     props: GroupDetailsPropsInterface
 ): ReactElement => {
 
-    const { submitState, onSubmit, values, properties } = props;
+    const {
+        submitState,
+        onSubmit,
+        values,
+        properties,
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ disabled, setDisabled ] = useState(false);
 
     const { t } = useTranslation();
 
     return (
-        <Grid>
+        <Grid data-testid={ testId }>
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 8 }>
                     <Forms
@@ -112,6 +121,8 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                                                                     .toString() === "false"
                                                             )
                                                         } }
+                                                        data-testid={ `${ testId }-form-master-toggle-${
+                                                            selectedTypeDetail.name }` }
                                                     />
                                                 )
                                                 : (
@@ -141,6 +152,8 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                                                         }
                                                         toggle
                                                         disabled={ disabled }
+                                                        data-testid={ `${ testId }-form-toggle-${
+                                                            selectedTypeDetail.name }` }
                                                     />
                                                 )
                                             : (
@@ -169,6 +182,8 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                                                         ?? selectedTypeDetail.defaultValue
                                                     }
                                                     disabled={ disabled }
+                                                    data-testid={ `${ testId }-form-text-input-${
+                                                        selectedTypeDetail.name }` }
                                                 />
 
                                             )
@@ -180,4 +195,11 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
             </Grid.Row>
         </Grid>
     )
-}
+};
+
+/**
+ * Default props for the component.
+ */
+GroupDetails.defaultProps = {
+    "data-testid": "userstore-group-details"
+};

@@ -16,6 +16,7 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
@@ -24,7 +25,7 @@ import { TypeProperty, UserStorePostData, UserStoreProperty } from "../../../mod
 /**
  * Prop types of the `SummaryUserStores` component
  */
-interface SummaryUserStoresPropsInterface {
+interface SummaryUserStoresPropsInterface extends TestableComponentInterface {
     /**
      * The connection properties.
      */
@@ -52,21 +53,32 @@ interface SummaryUserStoresPropsInterface {
 }
 
 /**
- * This component renders the Summary step of the wizard
- * @param {SummaryUserStoresPropsInterface} props
+ * This component renders the Summary step of the wizard.
+ *
+ * @param {SummaryUserStoresPropsInterface} props - Props injected to the component.
+ *
  * @return {ReactElement}
  */
 export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterface> = (
     props: SummaryUserStoresPropsInterface
 ): ReactElement => {
 
-    const { data, connectionProperties, userProperties, groupProperties, basicProperties, type } = props;
+    const {
+        data,
+        connectionProperties,
+        userProperties,
+        groupProperties,
+        basicProperties,
+        type,
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
     /**
      * This generates a summary row
-     * @param {string} title 
+     * @param {string} title
      * @param {string | number | ReactElement} description
+     * @param {number} key - Row key.
      */
     const generateSummaryLine = (
         title: string,
@@ -86,7 +98,7 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
     };
 
     return (
-        <Grid className="wizard-summary">
+        <Grid className="wizard-summary" data-testid={ testId }>
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details">
@@ -166,4 +178,11 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
             }
         </Grid>
     )
-}
+};
+
+/**
+ * Default props for the component.
+ */
+SummaryUserStores.defaultProps = {
+    "data-testid": "userstore-summary"
+};

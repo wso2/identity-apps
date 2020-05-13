@@ -16,6 +16,7 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,7 +28,7 @@ import { TestConnection, TypeProperty, UserstoreType } from "../../../models";
 /**
  * Prop types of the `GeneralDetails` component 
  */
-interface GeneralDetailsUserstorePropsInterface {
+interface GeneralDetailsUserstorePropsInterface extends TestableComponentInterface {
     /**
      * Trigger submit
      */
@@ -55,15 +56,25 @@ interface GeneralDetailsUserstorePropsInterface {
 }
 
 /**
- * This component renders the General Details step of the wizard
- * @param {GeneralDetailsUserstorePropsInterface} props
- * @returns {ReactElement}
+ * This component renders the General Details step of the wizard.
+ *
+ * @param {GeneralDetailsUserstorePropsInterface} props - Props injected to the component.
+ *
+ * @returns {React.ReactElement}
  */
 export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstorePropsInterface> = (
     props: GeneralDetailsUserstorePropsInterface
 ): ReactElement => {
 
-    const { submitState, onSubmit, values, type, connectionProperties, basicProperties } = props;
+    const {
+        submitState,
+        onSubmit,
+        values,
+        type,
+        connectionProperties,
+        basicProperties,
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ connectionFailed, setConnectionFailed ] = useState(false);
     const [ connectionSuccessful, setConnectionSuccessful ] = useState(false);
@@ -124,10 +135,10 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
         } else {
             return TestButtonColor.INITIAL
         }
-    }
+    };
 
     return (
-        <Grid>
+        <Grid data-testid={ testId }>
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 8 }>
                     <Forms
@@ -148,6 +159,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                 "name.requiredErrorMessage") }
                             placeholder={ t("devPortal:components.userstores.forms.general.name.placeholder") }
                             value={ values?.get("name")?.toString() }
+                            data-testid={ `${ testId }-form-name-input` }
                         />
                         <Field
                             label={ t("devPortal:components.userstores.forms.general.type.label") }
@@ -158,6 +170,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                             placeholder={ t("devPortal:components.userstores.forms.general." +
                                 "description.placeholder") }
                             value={ values?.get("description")?.toString() }
+                            data-testid={ `${ testId }-form-description-textarea` }
                         />
                         {
                             basicProperties?.map(
@@ -196,6 +209,8 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                         values?.get(selectedTypeDetail?.name)?.toString()
                                                         ?? selectedTypeDetail.defaultValue
                                                     }
+                                                    data-testid={ `${ testId }-form-basic-properties-password-input-${
+                                                        selectedTypeDetail.name }` }
                                                 />
                                             )
                                             : toggle
@@ -225,6 +240,8 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                             ?? selectedTypeDetail.defaultValue
                                                         }
                                                         toggle
+                                                        data-testid={ `${ testId }-form-basic-properties-toggle-${
+                                                            selectedTypeDetail.name }` }
                                                     />
                                                 ) :
                                                 (
@@ -252,6 +269,8 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                             values?.get(selectedTypeDetail?.name)?.toString()
                                                             ?? selectedTypeDetail.defaultValue
                                                         }
+                                                        data-testid={ `${ testId }-form-basic-properties-text-input-${
+                                                            selectedTypeDetail.name }` }
                                                     />
                                                 )
                                     );
@@ -295,6 +314,10 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                         values?.get(selectedTypeDetail?.name)?.toString()
                                                         ?? selectedTypeDetail.defaultValue
                                                     }
+                                                    data-testid={
+                                                        `${ testId }-form-connection-properties-password-input-${
+                                                            selectedTypeDetail.name }`
+                                                    }
                                                 />
                                             )
                                             : toggle
@@ -324,6 +347,10 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                             ?? selectedTypeDetail.defaultValue
                                                         }
                                                         toggle
+                                                        data-testid={
+                                                            `${ testId }-form-connection-properties-toggle-${
+                                                                selectedTypeDetail.name }`
+                                                        }
                                                     />
                                                 ) :
                                                 (
@@ -350,6 +377,10 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                         value={
                                                             values?.get(selectedTypeDetail?.name)?.toString()
                                                             ?? selectedTypeDetail.defaultValue
+                                                        }
+                                                        data-testid={
+                                                            `${ testId }-form-connection-properties-text-input-${
+                                                                selectedTypeDetail.name }`
                                                         }
                                                     />
 
@@ -391,6 +422,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                             ? "red"
                                             : null
                                 }
+                                data-testid={ `${ testId }-test-connection-button` }
                             >
                                 <Icon
                                     size="small"
@@ -419,4 +451,11 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
             </Grid.Row>
         </Grid>
     )
-}
+};
+
+/**
+ * Default props for the component.
+ */
+GeneralDetailsUserstore.defaultProps = {
+    "data-testid": "userstore-general-details"
+};

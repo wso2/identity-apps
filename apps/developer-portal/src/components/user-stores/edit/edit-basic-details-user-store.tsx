@@ -16,22 +16,23 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { DangerZoneGroup } from "@wso2is/react-components/src";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
 import { deleteUserStore, patchUserStore, updateUserStore } from "../../../api";
 import { AlertLevels, RequiredBinary, TypeProperty, UserStore } from "../../../models";
-import { addAlert } from "../../../store/actions";
 
 /**
  * Prop types of `EditBasicDetailsUserStore` component
  */
-interface EditBasicDetailsUserStorePropsInterface {
+interface EditBasicDetailsUserStorePropsInterface extends TestableComponentInterface {
     /**
      * Userstore to be edited
      */
@@ -51,15 +52,23 @@ interface EditBasicDetailsUserStorePropsInterface {
 }
 
 /**
- * This renders the edit basic details pane
- * @param {EditBasicDetailsUserStorePropsInterface} props
- * @return {ReactElement}
+ * This renders the edit basic details pane.
+ *
+ * @param {EditBasicDetailsUserStorePropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const EditBasicDetailsUserStore = (
+export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserStorePropsInterface> = (
     props: EditBasicDetailsUserStorePropsInterface
 ): ReactElement => {
 
-    const { userStore, update, id, properties } = props;
+    const {
+        userStore,
+        update,
+        id,
+        properties,
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ sql, setSql ] = useState<Map<string, string>>(null);
     const [ showMore, setShowMore ] = useState(false);
@@ -102,7 +111,10 @@ export const EditBasicDetailsUserStore = (
             assertionHint={
                 <p>
                     <Trans i18nKey="devPortal:components.userstores.confirmation.hint">
-                        Please type <strong>{ { name: userStore?.name } }</strong > to confirm.
+                        Please type
+                        <strong data-testid={ `${ testId }-delete-confirmation-modal-assertion` }>
+                            { { name: userStore?.name } }
+                        </strong > to confirm.
                     </Trans>
                 </p>
             }
@@ -143,14 +155,23 @@ export const EditBasicDetailsUserStore = (
                         setConfirmDelete(false);
                     });
             } }
+            data-testid={ `${ testId }-delete-confirmation-modal` }
         >
-            <ConfirmationModal.Header>
+            <ConfirmationModal.Header
+                data-testid={ `${ testId }-delete-confirmation-modal-header` }
+            >
                 { t("devPortal:components.userstores.confirmation.header") }
             </ConfirmationModal.Header>
-            <ConfirmationModal.Message attached warning>
+            <ConfirmationModal.Message
+                attached
+                warning
+                data-testid={ `${ testId }-delete-confirmation-modal-message` }
+            >
                 { t("devPortal:components.userstores.confirmation.message") }
             </ConfirmationModal.Message>
-            <ConfirmationModal.Content>
+            <ConfirmationModal.Content
+                data-testid={ `${ testId }-delete-confirmation-modal-content` }
+            >
                 { t("devPortal:components.userstores.confirmation.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
@@ -282,6 +303,7 @@ export const EditBasicDetailsUserStore = (
                                 placeholder={ t("devPortal:components.userstores.forms.general.name.placeholder") }
                                 value={ userStore?.name }
                                 disabled
+                                data-testid={ `${ testId }-form-name-input` }
                             />
                             <Field
                                 label={ t("devPortal:components.userstores.forms.general.type.label") }
@@ -292,6 +314,7 @@ export const EditBasicDetailsUserStore = (
                                 requiredErrorMessage={ t("devPortal:components.userstores.forms.general" +
                                     ".type.requiredErrorMessage") }
                                 value={ userStore?.typeName }
+                                data-testid={ `${ testId }-form-type-input` }
                             />
                             <Field
                                 label={ t("devPortal:components.userstores.forms.general.description.label") }
@@ -302,6 +325,7 @@ export const EditBasicDetailsUserStore = (
                                 placeholder={ t("devPortal:components.userstores.forms.general." +
                                     "description.placeholder") }
                                 value={ userStore?.description }
+                                data-testid={ `${ testId }-form-description-textarea` }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -340,6 +364,8 @@ export const EditBasicDetailsUserStore = (
                                                     }
                                                     showPassword={ t("common:showPassword") }
                                                     hidePassword={ t("common:hidePassword") }
+                                                    data-testid={ `${ testId }-form-password-input-${
+                                                        property.name }` }
                                                 />
                                             )
                                             : toggle
@@ -366,6 +392,7 @@ export const EditBasicDetailsUserStore = (
                                                                 })
                                                         }
                                                         toggle
+                                                        data-testid={ `${ testId }-form-toggle-${ property.name }` }
                                                     />
                                                 ) :
                                                 (
@@ -390,6 +417,8 @@ export const EditBasicDetailsUserStore = (
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                         }
+                                                        data-testid={ `${ testId }-form-text-input-${
+                                                            property.name }` }
                                                     />
                                                 )
                                     );
@@ -410,6 +439,7 @@ export const EditBasicDetailsUserStore = (
                                     <LinkButton
                                         type="button"
                                         onClick={ () => { setShowMore(!showMore) } }
+                                        data-testid={ `${ testId }-show-more-button` }
                                     >
                                         <Icon name={ showMore ? "chevron up" : "chevron down" } />
                                         { showMore ? t("common:showLess") : t("common:showMore") }
@@ -455,6 +485,10 @@ export const EditBasicDetailsUserStore = (
                                                             }
                                                             showPassword={ t("common:showPassword") }
                                                             hidePassword={ t("common:hidePassword") }
+                                                            data-testid={
+                                                                `${ testId }-form-non-sql-password-input-${
+                                                                    property.name }`
+                                                            }
                                                         />
                                                     )
                                                     : toggle
@@ -481,6 +515,10 @@ export const EditBasicDetailsUserStore = (
                                                                         })
                                                                 }
                                                                 toggle
+                                                                data-testid={
+                                                                    `${ testId }-form-non-sql-toggle-${
+                                                                        property.name }`
+                                                                }
                                                             />
                                                         )
                                                         : (
@@ -504,6 +542,10 @@ export const EditBasicDetailsUserStore = (
                                                                         {
                                                                             name: property.description.split("#")[ 0 ]
                                                                         })
+                                                                }
+                                                                data-testid={
+                                                                    `${ testId }-form-non-sql-text-input-${
+                                                                        property.name }`
                                                                 }
                                                             />
                                                         )
@@ -531,6 +573,7 @@ export const EditBasicDetailsUserStore = (
                                         } }
                                         properties={ properties?.optional.sql }
                                         values={ sql }
+                                        data-testid={ `${ testId }-sql-editor` }
                                     />
                                 </Grid.Column>
                             </Grid>
@@ -538,7 +581,7 @@ export const EditBasicDetailsUserStore = (
                     }
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 8 }>
-                            <PrimaryButton>
+                            <PrimaryButton data-testid={ `${ testId }-form-submit-button` }>
                                 { t("common:update") }
                             </PrimaryButton>
                         </Grid.Column>
@@ -550,16 +593,27 @@ export const EditBasicDetailsUserStore = (
 
             <Grid columns={ 1 }>
                 <Grid.Column width={ 16 }>
-                    <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                    <DangerZoneGroup
+                        sectionHeader={ t("common:dangerZone") }
+                        ata-testid={ `${ testId }-danger-zone-group` }
+                    >
                         <DangerZone
                             actionTitle={ t("devPortal:components.userstores.dangerZone.actionTitle") }
                             header={ t("devPortal:components.userstores.dangerZone.header") }
                             subheader={ t("devPortal:components.userstores.dangerZone.subheader") }
                             onActionClick={ () => setConfirmDelete(true) }
+                            data-testid={ `${ testId }-delete-danger-zone` }
                         />
                     </DangerZoneGroup>
                 </Grid.Column>
             </Grid>
         </>
     )
+};
+
+/**
+ * Default props for the component.
+ */
+EditBasicDetailsUserStore.defaultProps = {
+    "data-testid": "userstore-basic-details-edit"
 };

@@ -16,23 +16,36 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, Checkbox, Icon, Menu, Popup, Segment, Sidebar } from "semantic-ui-react";
 import { RequiredBinary } from "../../models";
 
-interface SqlEditorPropsInterface {
+interface SqlEditorPropsInterface extends TestableComponentInterface {
     onChange: (name: string, value: string) => void;
     properties: RequiredBinary[ "optional" ][ "sql" ];
     values: Map<string, string>;
 }
 
+/**
+ * SQL Editor component.
+ *
+ * @param {SqlEditorPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
 export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
     props: SqlEditorPropsInterface
 ): ReactElement => {
 
-    const { onChange, properties, values } = props;
+    const {
+        onChange,
+        properties,
+        values,
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ sideBarVisible, setSideBarVisible ] = useState(true);
     const [ accordionIndex, setAccordionIndex ] = useState(-1);
@@ -70,6 +83,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
             secondary
             visible={ sideBarVisible }
             ref={ sidebar }
+            data-testid={ `${ testId }-sidebar` }
         >
             <Heading as="h6" bold>SQL Query Types</Heading>
             {
@@ -81,6 +95,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                         fluid
                         secondary
                         vertical
+                        data-testid={ `${ testId }-query-types-accordion` }
                     >
                         {
                             properties.insert.length > 0 && (
@@ -92,10 +107,12 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                         index={ accordionIndex }
                                         icon={ <Icon className="angle right caret-icon" /> }
                                         onClick={ () => setAccordionIndex(accordionIndex === 0 ? -1 : 0) }
+                                        data-testid={ `${ testId }-insert-query-accordion-title` }
                                     />
                                     <Accordion.Content
                                         className="template-list"
                                         active={ accordionIndex === 0 }
+                                        data-testid={ `${ testId }-insert-query-accordion-content` }
                                     >
                                         {
                                             properties.insert.map((property, index) => (
@@ -107,6 +124,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                                         setPropertyDefaultValue(values.get(property.name));
                                                     } }
                                                     active={ property.name === propertyName }
+                                                    data-testid={ `${ testId }-insert-query` }
                                                 >
                                                     <Popup
                                                         trigger={ (
@@ -134,10 +152,12 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                     index={ accordionIndex }
                                     icon={ <Icon className="angle right caret-icon" /> }
                                     onClick={ () => setAccordionIndex(accordionIndex === 1 ? -1 : 1) }
+                                    data-testid={ `${ testId }-select-query-accordion-title` }
                                 />
                                 <Accordion.Content
                                     className="template-list"
                                     active={ accordionIndex === 1 }
+                                    data-testid={ `${ testId }-select-query-accordion-content` }
                                 >
                                     {
                                         properties.select.map((property, index) => (
@@ -149,6 +169,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                                     setPropertyDefaultValue(values.get(property.name));
                                                 } }
                                                 active={ property.name === propertyName }
+                                                data-testid={ `${ testId }-select-query` }
                                             >
                                                 <Popup
                                                     trigger={ (
@@ -175,10 +196,12 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                     index={ accordionIndex }
                                     icon={ <Icon className="angle right caret-icon" /> }
                                     onClick={ () => setAccordionIndex(accordionIndex === 2 ? -1 : 2) }
+                                    data-testid={ `${ testId }-update-query-accordion-title` }
                                 />
                                 <Accordion.Content
                                     className="template-list"
                                     active={ accordionIndex === 2 }
+                                    data-testid={ `${ testId }-update-query-accordion-content` }
                                 >
                                     {
                                         properties.update.map((property, index) => (
@@ -190,6 +213,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                                     setPropertyDefaultValue(values.get(property.name));
                                                 } }
                                                 active={ property.name === propertyName }
+                                                data-testid={ `${ testId }-update-query` }
                                             >
                                                 <Popup
                                                     trigger={ (
@@ -216,10 +240,12 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                     index={ accordionIndex }
                                     icon={ <Icon className="angle right caret-icon" /> }
                                     onClick={ () => setAccordionIndex(accordionIndex === 3 ? -1 : 3) }
+                                    data-testid={ `${ testId }-delete-query-accordion-title` }
                                 />
                                 <Accordion.Content
                                     className="template-list"
                                     active={ accordionIndex === 3 }
+                                    data-testid={ `${ testId }-delete-query-accordion-content` }
                                 >
                                     {
                                         properties.delete.map((property, index) => (
@@ -231,6 +257,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                                     setPropertyDefaultValue(values.get(property.name));
                                                 } }
                                                 active={ property.name === propertyName }
+                                                data-testid={ `${ testId }-delete-query` }
                                             >
                                                 <Popup
                                                     trigger={ (
@@ -268,6 +295,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                             () => setSideBarVisible(!sideBarVisible)
                                         }
                                         className="action"
+                                        data-testid={ `${ testId }-sidebar-toggle` }
                                     >
                                         <Icon name="bars" />
                                     </Menu.Item>
@@ -278,6 +306,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                         checked={ isEditorDarkMode }
                                         onChange={ () => { setIsEditorDarkMode(!isEditorDarkMode) } }
                                         slider
+                                        data-testid={ `${ testId }-code-editor-theme-toggle` }
                                     />
                                 </Menu.Item>
                             </Menu>
@@ -294,6 +323,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                         setPropertyValue(value);
                                     } }
                                     theme={ isEditorDarkMode ? "dark" : "light" }
+                                    data-testid={ `${ testId }-code-editor` }
                                 />
                             </div>
                             <Menu attached="bottom" className="action-panel" secondary>
@@ -308,6 +338,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                                 setPropertyDefaultValue(defaultValue);
                                             }, 1);
                                         } }
+                                        data-testid={ `${ testId }-reset-button` }
                                     >
                                         { t("devPortal:components.userstores.sqlEditor.reset") }
                                     </LinkButton>
@@ -316,6 +347,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                         onClick={ () => {
                                             onChange(propertyName, propertyValue);
                                         } }
+                                        data-testid={ `${ testId }-save-button` }
                                     >
                                         { t("common:save") }
                                     </PrimaryButton>
@@ -327,4 +359,11 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
             </div>
         </div>
     )
-}
+};
+
+/**
+ * Default props for the component.
+ */
+SqlEditor.defaultProps = {
+    "data-testid": "sql-editor"
+};

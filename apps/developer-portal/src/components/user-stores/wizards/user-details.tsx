@@ -16,6 +16,7 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,7 +26,7 @@ import { TypeProperty } from "../../../models";
 /**
  * Prop types of the `UserDetails` component 
  */
-interface UserDetailsPropsInterface {
+interface UserDetailsPropsInterface extends TestableComponentInterface {
     /**
      * Trigger submit
      */
@@ -45,20 +46,28 @@ interface UserDetailsPropsInterface {
 }
 
 /**
- * This component renders the User Details step of the wizard
- * @param {UserDetailsPropsInterface} props
- * @returns {Promise<any>}
+ * This component renders the User Details step of the wizard.
+ *
+ * @param {UserDetailsPropsInterface} props - Props injected to the component.
+ *
+ * @returns {React.ReactElement}
  */
 export const UserDetails: FunctionComponent<UserDetailsPropsInterface> = (
     props: UserDetailsPropsInterface
 ): ReactElement => {
 
-    const { submitState, onSubmit, values, properties } = props;
+    const {
+        submitState,
+        onSubmit,
+        values,
+        properties,
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
 
     return (
-        <Grid>
+        <Grid data-testid={ testId }>
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 8 }>
                     <Forms
@@ -101,6 +110,8 @@ export const UserDetails: FunctionComponent<UserDetailsPropsInterface> = (
                                                         ?? selectedTypeDetail.defaultValue
                                                     }
                                                     toggle
+                                                    data-testid={ `${ testId }-form-toggle-${
+                                                        selectedTypeDetail.name }` }
                                                 />
                                             )
                                             : (
@@ -128,6 +139,8 @@ export const UserDetails: FunctionComponent<UserDetailsPropsInterface> = (
                                                         values?.get(selectedTypeDetail?.name)?.toString()
                                                         ?? selectedTypeDetail.defaultValue
                                                     }
+                                                    data-testid={ `${ testId }-form-text-input-${
+                                                        selectedTypeDetail.name }` }
                                                 />
 
                                             )
@@ -139,4 +152,11 @@ export const UserDetails: FunctionComponent<UserDetailsPropsInterface> = (
             </Grid.Row>
         </Grid>
     )
-}
+};
+
+/**
+ * Default props for the component.
+ */
+UserDetails.defaultProps = {
+    "data-testid": "userstore-user-details"
+};
