@@ -18,7 +18,7 @@
 /* eslint-disable */
 //TODO Temporary disable of lint due to merge conflicts
 
-import _ from "lodash";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
 import { Modal, Grid, Icon } from "semantic-ui-react";
 import { Heading, Steps, LinkButton, PrimaryButton } from "@wso2is/react-components";
@@ -34,11 +34,10 @@ import { addAlert } from "../../../store/actions";
 import { AddRoleUsers } from "./role-user-assign";
 import { CreateRoleSummary } from "./role-sumary";
 
-
 /**
  * Interface which captures create role props.
  */
-interface CreateRoleProps {
+interface CreateRoleProps extends TestableComponentInterface {
     closeWizard: () => void;
     updateList: () => void;
     isAddGroup: boolean;
@@ -75,7 +74,8 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         closeWizard,
         initStep,
         updateList,
-        isAddGroup
+        isAddGroup,
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -106,13 +106,12 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
 
     /**
      * Method to handle create role action when create role wizard finish action is triggered.
-     * 
+     *
      * @param basicData - basic data required to create role.
-     * @param permissions - permissions selected for the created role.
      */
     const addRole = (basicData: any): void => {
         const members: CreateRoleMemberInterface[] = [];
-        const users = basicData.RoleUserList
+        const users = basicData.RoleUserList;
         if (users.length > 0) {
             users.forEach(user => {
                 members.push({
@@ -128,7 +127,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             ],
             "displayName": basicData.BasicDetails.domain + "/" + basicData.BasicDetails.roleName,
             "members" : members
-        }
+        };
 
         /**
          * Create Role API Call. 
@@ -245,7 +244,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 }));
             }
         });
-    }
+    };
 
     /**
      * Method to handle the create role wizard finish action.
@@ -286,6 +285,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     const WIZARD_STEPS = [{
         content: (
             <RoleBasics
+                data-testid={ isAddGroup ? "add-group-form" : "add-role-form" }
                 isAddGroup={ isAddGroup }
                 triggerSubmit={ submitGeneralSettings }
                 initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
@@ -293,10 +293,11 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             />
         ),
         icon: RolesWizardStepIcons.general,
-        title: "Basic Details"
+        title: t("devPortal:components.roles.addRoleWizard.wizardSteps.0")
     },{
         content: (
             <PermissionList
+                data-testid={ isAddGroup ? "new-group-permissions" : "new-role-permissions" }
                 isEdit={ false }
                 triggerSubmit={ submitPermissionList }
                 initialValues={ wizardState && wizardState[ WizardStepsFormTypes.PERM_LIST ] }
@@ -304,10 +305,11 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             />
         ),
         icon: <Icon name="key" inverted size="large" />,
-        title: "Permission Selection"
+        title: t("devPortal:components.roles.addRoleWizard.wizardSteps.1")
     },{
         content: (
             <AddRoleUsers
+                data-testid={ isAddGroup ? "new-group" : "new-role" }
                 isEdit={ false }
                 isGroup={ isAddGroup }
                 triggerSubmit={ submitRoleUserList }
@@ -317,10 +319,11 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             />
         ),
         icon: RolesWizardStepIcons.assignUser,
-        title: "Assign Users"
+        title: t("devPortal:components.roles.addRoleWizard.wizardSteps.2")
     },{
         content: (
             <CreateRoleSummary
+                data-testid={ isAddGroup ? "add-group-summary" : "add-role-summary" }
                 isAddGroup={ isAddGroup }
                 triggerSubmit={ finishSubmit }
                 onSubmit={ handleRoleWizardFinish }
@@ -328,8 +331,8 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             />
         ),
         icon: RolesWizardStepIcons.summary,
-        title: "Summary"
-    }]
+        title: t("devPortal:components.roles.addRoleWizard.wizardSteps.3")
+    }];
 
     /**
      * Function to change the current wizard step to next.
@@ -350,7 +353,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 break;
             
         }
-    }
+    };
 
     const navigateToPrevious = () => {
         setPartiallyCompletedStep(currentStep);
@@ -365,13 +368,19 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             onClose={ closeWizard }
             closeOnDimmerClick={ false }
             closeOnEscape= { false }
+            data-testid={ testId }
         >
             <Modal.Header className="wizard-header">
-                { isAddGroup ? "Create Group" : "Create Role"}
+                {
+                    isAddGroup ?
+                        t("devPortal:components.roles.addRoleWizard.heading", { type: "Group" }) :
+                        t("devPortal:components.roles.addRoleWizard.heading", { type: "Role" })
+                }
                 <Heading as="h6">
-                    { isAddGroup ? 
-                        "Create a new group in the system with specific permissions" :
-                        "Create a new role in the system with specific permissions."
+                    {
+                        isAddGroup ?
+                            t("devPortal:components.roles.addRoleWizard.subHeading", { type: "group" }) :
+                            t("devPortal:components.roles.addRoleWizard.subHeading", { type: "role" })
                     }
                 </Heading>
             </Modal.Header>
@@ -395,22 +404,42 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 <Grid>
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton floated="left" onClick={ () => closeWizard() }>Cancel</LinkButton>
+                            <LinkButton
+                                floated="left"
+                                onClick={ () => closeWizard() }
+                                data-testid={ `${ testId }-cancel-button` }
+                            >
+                                { t("devPortal:common.cancel") }
+                            </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentStep < WIZARD_STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ changeStepToNext }>
-                                    Next <Icon name="arrow right"/>
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ changeStepToNext }
+                                    data-testid={ `${ testId }-next-button` }
+                                >
+                                    { t("devPortal:components.roles.addRoleWizard.buttons.next") }
+                                    <Icon name="arrow right" data-testid={ `${ testId }-next-button-icon` }/>
                                 </PrimaryButton>
                             ) }
                             { currentStep === WIZARD_STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ changeStepToNext }>
-                                    Finish
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ changeStepToNext }
+                                    data-testid={ `${ testId }-finish-button` }
+                                >
+                                    { t("devPortal:components.roles.addRoleWizard.buttons.finish") }
                                 </PrimaryButton>
                             ) }
                             { currentStep > 0 && (
-                                <LinkButton floated="right" onClick={ navigateToPrevious }>
-                                    <Icon name="arrow left"/> Previous
+                                <LinkButton
+                                    floated="right"
+                                    onClick={ navigateToPrevious }
+                                    data-testid={ `${ testId }-previous-button` }
+                                >
+                                    <Icon name="arrow left" data-testid={ `${ testId }-previous-button-icon` }/>
+                                    { t("devPortal:components.roles.addRoleWizard.buttons.previous") }
                                 </LinkButton>
                             ) }
                         </Grid.Column>
@@ -419,12 +448,12 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             </Modal.Actions>
         </Modal>
     );
-}
+};
 
 /**
  * Default props for Create role wizard component.
  * NOTE : Current step is set to 0 in order to start from
- *        begening of the wizard. 
+ *        beginning of the wizard.
  */
 CreateRoleWizard.defaultProps = {
     initStep: 0

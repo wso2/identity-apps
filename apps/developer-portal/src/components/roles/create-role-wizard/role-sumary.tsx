@@ -16,11 +16,13 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { UserAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
 
-interface AddUserWizardSummaryProps {
+interface AddUserWizardSummaryProps extends TestableComponentInterface {
     summary: any;
     triggerSubmit: boolean;
     isAddGroup: boolean;
@@ -40,8 +42,11 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
         summary,
         triggerSubmit,
         onSubmit,
-        isAddGroup
+        isAddGroup,
+        [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     /**
      * Submits the form programmatically if triggered from outside.
@@ -60,18 +65,48 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                 <>
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">{ isAddGroup ? "Userstore" : "Role Type"}</div>
+                            <div
+                                data-testid={ `${ testId }-domain-label` }
+                                className="label"
+                            >
+                                {
+                                    isAddGroup ?
+                                        t("devPortal:components.roles.addRoleWizard.summary.labels.domain.group") :
+                                        t("devPortal:components.roles.addRoleWizard.summary.labels.domain.role")
+                                }
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                            <div className="value url">{ summary.BasicDetails.domain }</div>
+                            <div
+                                data-testid={ `${ testId }-domain-value` }
+                                className="value url"
+                            >
+                                { summary.BasicDetails.domain }
+                            </div>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">{ isAddGroup ? "Group Name" : "Role Name"}</div>
+                            <div
+                                data-testid={ `${ testId }-role-name-label` }
+                                className="label"
+                            >
+                                {
+                                    isAddGroup ?
+                                        t("devPortal:components.roles.addRoleWizard.summary.labels.roleName",
+                                            { type: "Group" }) :
+                                        t("devPortal:components.roles.addRoleWizard.summary.labels.roleName",
+                                            { type: "Role" })
+                                }
+                            </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                            <div className="value url">{ summary.BasicDetails.roleName }</div>
+                            <div
+                                data-testid={ `${ testId }-role-name-value` }
+                                className="value url"
+                            >
+                                { summary.BasicDetails.roleName }
+                            </div>
                         </Grid.Column>
                     </Grid.Row>
                 </>
@@ -83,14 +118,28 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                     ? (
                         <Grid.Row className="summary-field" columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                                <div className="label">Permission(s)</div>
+                                <div
+                                    data-testid={ `${ testId }-permissions-label` }
+                                    className="label"
+                                >
+                                    { t("devPortal:components.roles.addRoleWizard.summary.labels.permissions") }
+                                </div>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                                 <Label.Group>
                                     {
                                         summary.PermissionList
                                             .map((perm, index) => (
-                                                <Label key={ index } basic circular>{ perm.label }</Label>
+                                                <Label
+                                                    data-testid={
+                                                        `${ testId }-permissions-${ perm.label.lowerCase() }-label`
+                                                    }
+                                                    key={ index }
+                                                    basic
+                                                    circular
+                                                >
+                                                    { perm.label }
+                                                </Label>
                                             ))
                                     }
                                 </Label.Group>
@@ -105,7 +154,12 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                     ? (
                         <Grid.Row className="summary-field" columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                                <div className="label">Assigned User(s)</div>
+                                <div
+                                    data-testid={ `${ testId }-users-label` }
+                                    className="label"
+                                >
+                                    { t("devPortal:components.roles.addRoleWizard.summary.labels.users") }
+                                </div>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                                 <Label.Group>
@@ -131,4 +185,4 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
             }
         </Grid>
     )
-}
+};

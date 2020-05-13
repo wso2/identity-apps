@@ -18,11 +18,12 @@
 
 import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { BaiscRoleDetails } from "./edit-role-basic";
+import { useTranslation } from "react-i18next";
+import { BasicRoleDetails } from "./edit-role-basic";
 import { RolePermissionDetails } from "./edit-role-permission";
 import { RoleUserDetails } from "./edit-role-users";
-import { RolesInterface } from "../../../models";
 import { history } from "../../../helpers";
+import { RolesInterface } from "../../../models";
 
 /**
  * Captures props needed for edit role component
@@ -45,6 +46,8 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         onRoleUpdate
     } = props;
 
+    const { t } = useTranslation();
+
     const [ isGroup, setIsGroup ] = useState<boolean>(false);
 
     /**
@@ -56,24 +59,51 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
 
     const panes = () => ([
         {
-            menuItem: "Basics",
+            menuItem: t("devPortal:components.roles.edit.menuItems.basic"),
             render: () => (
                 <ResourceTab.Pane attached={ false }>
-                    <BaiscRoleDetails isGroup={ isGroup } roleObject={ roleObject } onRoleUpdate={ onRoleUpdate } />
+                    <BasicRoleDetails
+                        data-testid={
+                            isGroup ?
+                                "group-mgt-edit-group-basic" :
+                                "role-mgt-edit-role-basic"
+                        }
+                        isGroup={ isGroup }
+                        roleObject={ roleObject }
+                        onRoleUpdate={ onRoleUpdate }
+                    />
                 </ResourceTab.Pane>
             )
         },{
-            menuItem: "Permissions",
+            menuItem: t("devPortal:components.roles.edit.menuItems.permissions"),
             render: () => (
                 <ResourceTab.Pane attached={ false }>
-                    <RolePermissionDetails isGroup={ isGroup }  roleObject={ roleObject } onRoleUpdate={ onRoleUpdate }/>
+                    <RolePermissionDetails
+                        data-testid={
+                            isGroup ?
+                                "group-mgt-edit-group-permissions" :
+                                "role-mgt-edit-role-permissions"
+                        }
+                        isGroup={ isGroup }
+                        roleObject={ roleObject }
+                        onRoleUpdate={ onRoleUpdate }
+                    />
                 </ResourceTab.Pane>
             )
         },{
-            menuItem: "Users",
+            menuItem: t("devPortal:components.roles.edit.menuItems.users"),
             render: () => (
                 <ResourceTab.Pane attached={ false }>
-                    <RoleUserDetails isGroup={ isGroup } roleObject={ roleObject } onRoleUpdate={ onRoleUpdate }/>
+                    <RoleUserDetails
+                        data-testid={
+                            isGroup ?
+                                "group-mgt-edit-group-users" :
+                                "role-mgt-edit-role-users"
+                        }
+                        isGroup={ isGroup }
+                        roleObject={ roleObject }
+                        onRoleUpdate={ onRoleUpdate }
+                    />
                 </ResourceTab.Pane>
             )
         }
@@ -82,4 +112,4 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     return (
         <ResourceTab panes={ panes() } />
     );
-}
+};

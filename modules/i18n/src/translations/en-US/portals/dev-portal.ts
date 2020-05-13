@@ -2272,6 +2272,9 @@ export const devPortal: DevPortalNS = {
                     }
                 }
             },
+            list: {
+                storeOptions: "Select User Store"
+            },
             notifications: {
                 createGroup: {
                     error: {
@@ -3244,6 +3247,74 @@ export const devPortal: DevPortalNS = {
             }
         },
         roles: {
+            addRoleWizard: {
+                buttons: {
+                    finish: "Finish",
+                    next: "Next",
+                    previous: "Previous"
+                },
+                forms: {
+                    roleBasicDetails: {
+                        domain: {
+                            label: {
+                                group: "Userstore",
+                                role: "Role Type"
+                            },
+                            placeholder: "Domain",
+                            validation: {
+                                empty: {
+                                    group: "Select user store",
+                                    role: "Select Role Type"
+                                }
+                            }
+                        },
+                        roleName: {
+                            label: "{{type}} Name",
+                            placeholder: "Enter {{type}} Name",
+                            validations: {
+                                duplicate: "A {{type}} already exists with the given {{type}} name.",
+                                empty: "{{type}} Name is required to proceed."
+                            }
+                        }
+                    }
+                },
+                heading: "Create {{type}}",
+                permissions: {
+                    buttons: {
+                        collapseAll: "Collapse All",
+                        expandAll: "Expand All",
+                        update: "Update"
+                    }
+                },
+                subHeading: "Create a new {{type}} in the system with specific permissions",
+                summary: {
+                    labels: {
+                        domain: {
+                            group: "Userstore",
+                            role: "Role Type"
+                        },
+                        permissions: "Permission(s)",
+                        roleName: "{{type}} Name",
+                        users: "Assigned User(s)"
+                    }
+                },
+                users: {
+                    assignUserModal: {
+                        heading: "Update {{type}} Users",
+                        list: {
+                            listHeader: "Name",
+                            searchPlaceholder: "Search users"
+                        },
+                        subHeading: "Add new users or remove existing users assigned to the {{type}}."
+                    }
+                },
+                wizardSteps: {
+                    0: "Basic Details",
+                    1: "Permission Selection",
+                    2: "Assign Users",
+                    3: "Summary"
+                }
+            },
             advancedSearch: {
                 form: {
                     inputs: {
@@ -3262,6 +3333,22 @@ export const devPortal: DevPortalNS = {
             },
             edit: {
                 basics: {
+                    buttons: {
+                        update: "Update"
+                    },
+                    confirmation: {
+                        assertionHint: "Please type <1>{{ roleName }}</1> to confirm.",
+                        content: "If you delete this {{type}}, the permissions attached to it will be deleted and " +
+                            "the users attached to it will no longer be able to perform intended actions which were " +
+                            "previously allowed. Please proceed with caution",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the selected {{type}}"
+                    },
+                    dangerZone: {
+                        actionTitle: "Delete {{type}}",
+                        header: "Delete {{type}}",
+                        subheader: "Once you delete the {{type}}, there is no going back. Please be certain."
+                    },
                     fields: {
                         roleName: {
                             name: "Role Name",
@@ -3270,6 +3357,60 @@ export const devPortal: DevPortalNS = {
 
                         }
                     }
+                },
+                menuItems: {
+                    basic: "Basics",
+                    permissions: "Permissions",
+                    users: "Users"
+                },
+                users: {
+                    list: {
+                        emptyPlaceholder: {
+                            action: "Assign User",
+                            subtitles: "There are no Users assigned to the {{type}} at the moment.",
+                            title: "No Users Assigned"
+                        },
+                        header: "Users"
+                    }
+                }
+            },
+            list: {
+                buttons: {
+                    addButton: "New {{type}}",
+                    filterDropdown: "Filter By"
+                },
+                confirmations: {
+                    deleteItem: {
+                        assertionHint: "Please type <1>{{ roleName }}</1> to confirm.",
+                        content: "If you delete this {{type}}, the permissions attached to it will be deleted and " +
+                            "the users attached to it will no longer be able to perform intended actions which were " +
+                            "previously allowed. Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the selected {{type}}"
+                    }
+                },
+                emptyPlaceholders: {
+                    emptyRoleList: {
+                        action: "New {{type}}",
+                        subtitles: {
+                            0: "There are currently no {{type}} available.",
+                            1: "You can add a new {{type}} easily by following the",
+                            2: "steps in the {{type}} creation wizard."
+                        },
+                        title: "Add a new {{type}}"
+                    },
+                    search: {
+                        action: "Clear search query",
+                        subtitles: {
+                            0: "We couldn't find any results for {{searchQuery}}",
+                            1: "Please try a different search term."
+                        },
+                        title: "No results found"
+                    }
+                },
+                popups: {
+                    delete: "Delete {{type}}",
+                    edit: "Edit {{type}}"
                 }
             },
             notifications: {
@@ -4707,6 +4848,10 @@ export const devPortal: DevPortalNS = {
             subTitle: null,
             title: null
         },
+        groups: {
+            subTitle: "Create and manage user groups, assign permissions for groups.",
+            title: "Groups"
+        },
         idp: {
             subTitle: "Create and manage identity providers based on templates and configure authentication.",
             title: "Identity Providers"
@@ -4723,6 +4868,15 @@ export const devPortal: DevPortalNS = {
         overView: {
             subTitle: "The following section would give you an overview of the system statistics",
             title: "Welcome, {{firstName}}"
+        },
+        roles: {
+            subTitle: "Create and manage roles, assign permissions for roles.",
+            title: "Roles"
+        },
+        rolesEdit: {
+            backButton: "Go back to {{type}}",
+            subTitle: null,
+            title: "Edit Role"
         },
         serverConfigurations: {
             subTitle: "Manage general configurations of the server.",

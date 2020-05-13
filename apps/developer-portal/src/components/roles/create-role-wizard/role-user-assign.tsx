@@ -15,8 +15,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
-import { 
+import {
     Button,
     EmptyPlaceholder,
     Heading,
@@ -29,6 +31,7 @@ import {
 } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid, Icon, Input, Modal, Segment, Table } from "semantic-ui-react";
 import { getUsersList } from "../../../api";
 import { EmptyPlaceholderIllustrations } from "../../../configs";
@@ -38,7 +41,7 @@ import { RolesMemberInterface, UserBasicInterface } from "../../../models";
 /**
  * Proptypes for the application consents list component.
  */
-interface AddRoleUserProps {
+interface AddRoleUserProps extends TestableComponentInterface {
     triggerSubmit?: boolean;
     onSubmit?: (values: any) => void;
     assignedUsers?: RolesMemberInterface[];
@@ -56,8 +59,11 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         isEdit,
         initialValues,
         isGroup,
-        userStore
+        userStore,
+        [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const [ tempUserList, setTempUserList ] = useState<UserBasicInterface[]>([]);
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
@@ -260,7 +266,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         }
         setUsersList(usersList.filter(user => (
             checkedUnassignedListItems.indexOf(user) === -1
-        )))
+        )));
         setTempUserList(addedRoles);
         setIsSelectAllUnAssignedUsers(false);
     };
@@ -310,25 +316,41 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
     const handleAddUserSubmit = () => {
         onSubmit(tempUserList);
-        setSelectedUsers(tempUserList)
+        setSelectedUsers(tempUserList);
         setAddNewUserModalView(false);
-    }
+    };
 
     const addNewUserModal = () => (
-        <Modal dimmer="blurring" open={ showAddNewUserModal } size="small" className="user-roles">
+        <Modal
+            data-testid={ `${ testId }-assign-user-wizard-modal` }
+            dimmer="blurring"
+            open={ showAddNewUserModal }
+            size="small"
+            className="user-roles"
+        >
             <Modal.Header>
-                { isGroup ? "Update Group Users" : "Update Role Users" }
+                {
+                    isGroup ?
+                        t("devPortal:components.roles.addRoleWizard.users.assignUserModal.heading",
+                            { type: "Group" }) :
+                        t("devPortal:components.roles.addRoleWizard.users.assignUserModal.heading",
+                            { type: "Role" })
+                }
                 <Heading subHeading ellipsis as="h6">
                     { 
-                        isGroup ? 
-                        "Add new users or remove existing users assigned to the group." : 
-                        "Add new users or remove existing users assigned to the role." 
+                        isGroup ?
+                            t("devPortal:components.roles.addRoleWizard.users.assignUserModal.subHeading",
+                                { type: "group" }) :
+                            t("devPortal:components.roles.addRoleWizard.users.assignUserModal.subHeading",
+                                { type: "role" })
                     }
                 </Heading>
             </Modal.Header>
             <Modal.Content image>
                 <TransferComponent
-                    searchPlaceholder="Search users"
+                    data-testid={ `${ testId }-user-list-transfer` }
+                    searchPlaceholder={ t("devPortal:components.roles.addRoleWizard.users.assignUserModal.list." +
+                        "searchPlaceholder") }
                     addItems={ addUser }
                     removeItems={ removeUser }
                     // TODO: Add two methods to handle the search of each list.
@@ -338,9 +360,12 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                     <TransferList
                         isListEmpty={ !(usersList?.length > 0) }
                         listType="unselected"
-                        listHeaders={ [ "Name" ] }
+                        listHeaders={ [
+                            t("devPortal:components.roles.addRoleWizard.users.assignUserModal.list.listHeader")
+                        ] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
+                        data-testid={ `${ testId }-unselected-users-select-all-checkbox` }
                     >
                         {
                             usersList?.map((user, index)=> {
@@ -355,6 +380,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         listItemIndex={ index }
                                         isItemChecked={ checkedUnassignedListItems?.includes(user) }
                                         showSecondaryActions={ false }
+                                        data-testid={ `${ testId }-unselected-users` }
                                     />
                                 )
                             })
@@ -363,9 +389,12 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                     <TransferList
                         isListEmpty={ !(tempUserList?.length > 0) }
                         listType="selected"
-                        listHeaders={ [ "Name" ] }
+                        listHeaders={ [
+                            t("devPortal:components.roles.addRoleWizard.users.assignUserModal.list.listHeader")
+                        ] }
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
+                        data-testid={ `${ testId }-selected-users-select-all-checkbox` }
                     >
                         {
                             tempUserList?.map((user, index)=> {
@@ -380,6 +409,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         listItemIndex={ index }
                                         isItemChecked={ checkedAssignedListItems?.includes(user) }
                                         showSecondaryActions={ false }
+                                        data-testid={ `${ testId }-selected-users` }
                                     />
                                 )
                             })
@@ -389,16 +419,18 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
             </Modal.Content>
             <Modal.Actions>
                 <LinkButton
+                    data-testid={ `${ testId }-assign-user-wizard-modal-cancel-button` }
                     onClick={ handleCloseAddNewGroupModal }
                 >
-                    Cancel
+                    { t("devPortal:common.cancel") }
                 </LinkButton>
                 <PrimaryButton
+                    data-testid={ `${ testId }-assign-user-wizard-modal-save-button` }
                     onClick={ () => { 
                         handleAddUserSubmit()
                     } }
                 >
-                    Save
+                    { t("devPortal:common.save") }
                 </PrimaryButton>
             </Modal.Actions>
         </Modal>
@@ -417,13 +449,16 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                             <Grid.Row>
                                                 <Grid.Column>
                                                     <Input
+                                                        data-testid={ `${ testId }-users-list-search-input` }
                                                         icon={ <Icon name="search"/> }
                                                         onChange={ handleAssignedUserListSearch }
-                                                        placeholder="Search users"
+                                                        placeholder={ t("devPortal:components.roles.addRoleWizard." +
+                                                            "users.assignUserModal.list.searchPlaceholder") }
                                                         floated="left"
                                                         size="small"
                                                     />
                                                     <Button
+                                                        data-testid={ `${ testId }-users-list-edit-button` }
                                                         size="medium"
                                                         icon="pencil"
                                                         floated="right"
@@ -436,7 +471,10 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                 <Table.Header>
                                                     <Table.Row>
                                                         <Table.HeaderCell />
-                                                        <Table.HeaderCell>Users</Table.HeaderCell>
+                                                        <Table.HeaderCell>
+                                                            { t("devPortal:components.roles.edit.users.list." +
+                                                                "header")}
+                                                        </Table.HeaderCell>
                                                     </Table.Row>
                                                 </Table.Header>
                                                     <Table.Body>
@@ -446,6 +484,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                                     <Table.Row>
                                                                         <Table.Cell collapsing>
                                                                             <UserAvatar
+                                                                                data-testid={ `${ testId }-users-list-
+                                                                                ${ user.userName }-avatar` }
                                                                                 name={ user.userName }
                                                                                 size="mini"
                                                                                 floated="left"
@@ -467,16 +507,24 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                 ) : (
                                     <Segment>
                                         <EmptyPlaceholder
-                                            title="No Users Assigned"
+                                            title={ t("devPortal:components.roles.edit.users.list." +
+                                                "emptyPlaceholder.title") }
                                             subtitle={ [
                                                 isGroup ?
-                                                "There are no Users assigned to the group at the moment."
-                                                 : 
-                                                "There are no Users assigned to the role at the moment."
+                                                    t("devPortal:components.roles.edit.users.list." +
+                                                        "emptyPlaceholder.subtitles", { type: "group" })
+                                                 :
+                                                    t("devPortal:components.roles.edit.users.list." +
+                                                        "emptyPlaceholder.subtitles", { type: "role" })
                                             ] }
                                             action={
-                                                <PrimaryButton onClick={ handleOpenAddNewGroupModal } icon="plus">
-                                                    Assign User
+                                                <PrimaryButton
+                                                    data-testid={ `${ testId }-users-list-empty-assign-users-button` }
+                                                    onClick={ handleOpenAddNewGroupModal }
+                                                    icon="plus"
+                                                >
+                                                    { t("devPortal:components.roles.edit.users.list." +
+                                                        "emptyPlaceholder.action") }
                                                 </PrimaryButton>
                                             }
                                             image={ EmptyPlaceholderIllustrations.emptyList }
@@ -499,7 +547,9 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                     <Grid>
                         <Grid.Row columns={ 2 }>
                             <TransferComponent
-                                searchPlaceholder="Search users"
+                                data-testid={ `${ testId }-update-user-list-transfer` }
+                                searchPlaceholder={ t("devPortal:components.roles.addRoleWizard.users." +
+                                    "assignUserModal.list.searchPlaceholder") }
                                 addItems={ addUser }
                                 removeItems={ removeUser }
                                 // TODO: Add two methods to handle the search of each list.
@@ -509,9 +559,13 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                 <TransferList
                                     isListEmpty={ !(usersList?.length > 0) }
                                     listType="unselected"
-                                    listHeaders={ [ "Name" ] }
+                                    listHeaders={ [
+                                        t("devPortal:components.roles.addRoleWizard.users.assignUserModal.list." +
+                                            "listHeader")
+                                    ] }
                                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                     isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
+                                    data-testid={ `${ testId }-update-unselected-users-select-all-checkbox` }
                                 >
                                     {
                                         usersList?.map((user, index)=> {
@@ -526,6 +580,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                     listItemIndex={ index }
                                                     isItemChecked={ checkedUnassignedListItems?.includes(user) }
                                                     showSecondaryActions={ false }
+                                                    data-testid={ `${ testId }-update-unselected-users` }
                                                 />
                                             )
                                         })
@@ -534,9 +589,13 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                 <TransferList
                                     isListEmpty={ !(tempUserList?.length > 0) }
                                     listType="selected"
-                                    listHeaders={ [ "Name" ] }
+                                    listHeaders={ [
+                                        t("devPortal:components.roles.addRoleWizard.users.assignUserModal.list." +
+                                            "listHeader")
+                                    ] }
                                     handleHeaderCheckboxChange={ selectAllAssignedList }
                                     isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
+                                    data-testid={ `${ testId }-update-selected-users-select-all-checkbox` }
                                 >
                                     {
                                         tempUserList?.map((user, index)=> {
@@ -551,6 +610,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                     listItemIndex={ index }
                                                     isItemChecked={ checkedAssignedListItems?.includes(user) }
                                                     showSecondaryActions={ false }
+                                                    data-testid={ `${ testId }-update-selected-users` }
                                                 />
                                             )
                                         })
@@ -561,8 +621,14 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                     { isEdit && 
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Button primary type="submit" size="small" className="form-button">
-                                    Update
+                                <Button
+                                    data-testid={ `${ testId }-update-user-list-button` }
+                                    primary
+                                    type="submit"
+                                    size="small"
+                                    className="form-button"
+                                >
+                                    { t("devPortal:common.update") }
                                 </Button>
                             </Grid.Column>
                         </Grid.Row>

@@ -17,14 +17,17 @@
  */
 
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getRoleById } from "../api";
-import { EditRole } from "../components/roles/edit-role/edit-role";
+import { EditRole } from "../components/roles/edit-role";
 import { GROUP_VIEW_PATH, ROLE_VIEW_PATH } from "../constants";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import { RolesInterface } from "../models";
 
 export const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
+
+    const { t } = useTranslation();
 
     const [ roleId, setRoleId ] = useState<string>(undefined);
     const [ roleObject, setRoleObject ] = useState<RolesInterface>();
@@ -77,15 +80,26 @@ export const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
     return (
         <PageLayout
             isLoading={ isRoleDetailsRequestLoading }
-            title={ roleObject && roleObject.displayName ? roleObject.displayName : "Edit Role" }
+            title={
+                roleObject && roleObject.displayName ?
+                    roleObject.displayName :
+                    t("devPortal:pages.rolesEdit.title")
+            }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: isGroup ? "Go back to groups" : "Go back to roles"
+                text:
+                    isGroup ?
+                        t("devPortal:pages.rolesEdit.backButton", { type: "groups" }) :
+                        t("devPortal:pages.rolesEdit.backButton", { type: "roles" })
             } }
             titleTextAlign="left"
             bottomMargin={ false }
         >
-            <EditRole roleObject={ roleObject } roleId={ roleId } onRoleUpdate={ onRoleUpdate } />
+            <EditRole
+                roleObject={ roleObject }
+                roleId={ roleId }
+                onRoleUpdate={ onRoleUpdate }
+            />
         </PageLayout>
     );
 };

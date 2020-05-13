@@ -16,20 +16,20 @@
  * under the License
  */
 
-import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { updateRoleDetails } from "../../../api";
-import { 
-    AlertInterface,     
+import { PRIMARY_DOMAIN } from "../../../constants";
+import {
+    AlertInterface,
     AlertLevels,
     CreateRoleMemberInterface,
     PatchRoleDataInterface,
     RolesInterface
 } from "../../../models";
 import { addAlert } from "../../../store/actions";
-import { AddRoleUsers } from "../create-role-wizard/role-user-assign";
-import { PRIMARY_DOMAIN } from "../../../constants";
+import { AddRoleUsers } from "../create-role-wizard";
 
 interface RoleUserDetailsProps {
     roleObject: RolesInterface;
@@ -53,12 +53,12 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
 
     useEffect(() => {
         const roleName = roleObject.displayName;
-        if (roleName.indexOf('/') !== -1) {
-            setCurrentUserStore(roleName.split('/')[0]);
+        if (roleName.indexOf("/") !== -1) {
+            setCurrentUserStore(roleName.split("/")[0]);
         } else {
             setCurrentUserStore(PRIMARY_DOMAIN);
         }
-    }, [currentUserStore, roleObject, isGroup])
+    }, [currentUserStore, roleObject, isGroup]);
 
     /**
      * Dispatches the alert object to the redux store.
@@ -91,32 +91,34 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
             }]
         };
         
-        updateRoleDetails(roleObject.id, roleData).then(response => {
-            handleAlerts({
-                description: isGroup ? 
-                    t("devPortal:components.groups.notifications.updateGroup.success.description") : 
-                    t("devPortal:components.roles.notifications.updateRole.success.description"),
-                level: AlertLevels.SUCCESS,
-                message: isGroup ? 
-                    t("devPortal:components.groups.notifications.updateGroup.success.message") : 
-                    t("devPortal:components.roles.notifications.updateRole.success.message")
-            });
-            onRoleUpdate();
-        }).catch(error => {
-            handleAlerts({
-                description: isGroup ? 
-                    t("devPortal:components.groups.notifications.updateGroup.error.description") : 
-                    t("devPortal:components.roles.notifications.updateRole.error.description"),
-                level: AlertLevels.ERROR,
-                message: isGroup ? 
-                    t("devPortal:components.groups.notifications.updateGroup.error.message") : 
-                    t("devPortal:components.roles.notifications.updateRole.error.message")
-            });
-        })
+        updateRoleDetails(roleObject.id, roleData)
+            .then(() => {
+                handleAlerts({
+                    description: isGroup ?
+                        t("devPortal:components.groups.notifications.updateGroup.success.description") :
+                        t("devPortal:components.roles.notifications.updateRole.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: isGroup ?
+                        t("devPortal:components.groups.notifications.updateGroup.success.message") :
+                        t("devPortal:components.roles.notifications.updateRole.success.message")
+                });
+                onRoleUpdate();
+            }).catch(() => {
+                handleAlerts({
+                    description: isGroup ?
+                        t("devPortal:components.groups.notifications.updateGroup.error.description") :
+                        t("devPortal:components.roles.notifications.updateRole.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: isGroup ?
+                        t("devPortal:components.groups.notifications.updateGroup.error.message") :
+                        t("devPortal:components.roles.notifications.updateRole.error.message")
+                });
+            })
     };
 
     return (
-        <AddRoleUsers 
+        <AddRoleUsers
+            data-testid={ isGroup ? "group-mgt-edit-group-users" : "role-mgt-edit-role-users" }
             isGroup={ isGroup } 
             isEdit={ true } 
             userStore={ currentUserStore }

@@ -16,17 +16,19 @@
  * under the License.
  */
 
-import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
-import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
+import { getUserStoreList, searchRoleList } from "../../../api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../../constants";
 import { CreateRoleFormData, SearchRoleInterface } from "../../../models";
-import { searchRoleList, getUserStoreList } from "../../../api";
 
 /**
  * Interface to capture role basics props.
  */
-interface RoleBasicProps {
+interface RoleBasicProps extends TestableComponentInterface {
     dummyProp?: string;
     triggerSubmit: boolean;
     initialValues: any;
@@ -45,8 +47,11 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         onSubmit,
         triggerSubmit,
         initialValues,
-        isAddGroup
+        isAddGroup,
+        [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const [ isValidRoleName, setIsValidRoleName ] = useState<boolean>(true);
     const [ updatedRoleName, setUpdatedRoleName ] = useState<string>(initialValues?.roleName);
@@ -62,7 +67,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
     useEffect(() => {
         getUserStores();
-    }, [isAddGroup])
+    }, [isAddGroup]);
 
     /**
      * Contains domains needed for role creation.
@@ -108,9 +113,17 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      */
     const getUserStores = () => {
         const storeOptions = [
-                { text: "Primary", key: -1, value: "primary" }
+                {
+                    key: -1,
+                    text: "Primary",
+                    value: "primary"
+                }
             ];
-        let storeOption = { text: "", key: null, value: "" };
+        let storeOption = {
+            key: null,
+            text: "",
+            value: ""
+        };
         getUserStoreList()
             .then((response) => {
                 if (storeOptions === []) {
@@ -154,6 +167,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
     return (
         <Forms
+            data-testid={ testId }
             onSubmit={ (values) => {
                 onSubmit(getFormValues(values));
             } }
@@ -163,12 +177,26 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                 <GridRow columns={ 2 }>
                     <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
+                            data-testid={ `${ testId }-domain-dropdown` }
                             type="dropdown"
-                            label={ isAddGroup ? "Userstore" : "Role Type" }
+                            label={
+                                isAddGroup ?
+                                    t("devPortal:components.roles.addRoleWizard.forms.roleBasicDetails.domain.label." +
+                                        "group") :
+                                    t("devPortal:components.roles.addRoleWizard.forms.roleBasicDetails.domain.label." +
+                                        "role")
+                            }
                             name="domain"
                             children={ isAddGroup ? userStoreOptions : roleDomains }
-                            placeholder="Domain"
-                            requiredErrorMessage={ isAddGroup ? "Select user store" : "Select Role Type" }
+                            placeholder={ t("devPortal:components.roles.addRoleWizard.forms.roleBasicDetails.domain." +
+                                "placeholder") }
+                            requiredErrorMessage={
+                                isAddGroup ?
+                                    t("devPortal:components.roles.addRoleWizard.forms.roleBasicDetails.domain." +
+                                        "validation.empty.group") :
+                                    t("devPortal:components.roles.addRoleWizard.forms.roleBasicDetails.domain." +
+                                        "validation.empty.role")
+                            }
                             required={ true }
                             element={ <div></div> }
                             value={ initialValues?.domain ? 
@@ -180,23 +208,40 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                     </GridColumn>
                     <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
+                            data-testid={ `${ testId }-role-name-input` }
                             type="text"
                             name="rolename"
-                            label={ isAddGroup ? "Group Name" : "Role Name" }
-                            placeholder={ isAddGroup ? "Enter Group Name" : "Enter Role Name" }
+                            label={
+                                isAddGroup ?
+                                    t("devPortal:components.roles.addRoleWizard.forms.roleBasicDetails.roleName.label",
+                                        { type: "Group" }) :
+                                    t("devPortal:components.roles.addRoleWizard.forms.roleBasicDetails.roleName.label",
+                                        { type: "Role" })
+                            }
+                            placeholder={
+                                isAddGroup ?
+                                    t("devPortal:components.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
+                                        "placeholder", { type: "Group" }) :
+                                    t("devPortal:components.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
+                                        "placeholder", { type: "Role" })
+                            }
                             required={ true }
                             requiredErrorMessage={ 
-                                isAddGroup ? 
-                                    "Group Name is required to proceed." : 
-                                    "Role Name is required to proceed." 
+                                isAddGroup ?
+                                    t("devPortal:components.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
+                                        "validations.empty", { type: "Group" }) :
+                                    t("devPortal:components.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
+                                        "validations.empty", { type: "Role" })
                             }
                             validation={ (value: string, validation: Validation) => {
                                 if (isValidRoleName === false) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        isAddGroup ? 
-                                            "A group already exists with the given group name." : 
-                                            "A role already exists with the given role name."
+                                        isAddGroup ?
+                                            t("devPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
+                                                "roleName.validations.duplicate", { type: "Group" }) :
+                                            t("devPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
+                                                "roleName.validations.duplicate", { type: "Role" })
                                     );
                                 }
                             } }
@@ -208,4 +253,4 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             </Grid>
         </Forms>
     )
-}
+};

@@ -16,14 +16,14 @@
  * under the License
  */
 
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react"
+import React, { FunctionComponent, ReactElement } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { updateRolePermissions } from "../../../api";
 import { AlertLevels, RolesInterface } from "../../../models";
 import { Permission } from "../../../models/permission";
 import { addAlert } from "../../../store/actions";
-import { PermissionList } from "../create-role-wizard/role-permisson";
+import { PermissionList } from "../create-role-wizard";
 
 /**
  * Interface to capture permission edit props.
@@ -111,11 +111,11 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
                     );
                 }
             })
-    }
+    };
     
     return (
         <div className="permissions-edit-container">
             <PermissionList isEdit isRole onSubmit={ onPermissionUpdate } roleObject={ roleObject } />
         </div>
     )
-}
+};

@@ -296,13 +296,14 @@ export const GroupsPage = (): ReactElement => {
 
     return (
         <PageLayout
-            title="Groups"
-            description="Create and manage user groups, assign permissions for groups."
+            title={ t("devPortal:pages.groups.title") }
+            description={ t("devPortal:pages.groups.subTitle") }
             showBottomDivider={ true }
         >
             <ListLayout
                 advancedSearch={ (
                     <AdvancedSearchWithBasicFilters
+                        data-testid="group-mgt-groups-list-advanced-search"
                         onFilter={ handleUserFilter  }
                         filterAttributeOptions={ [
                             {
@@ -335,16 +336,20 @@ export const GroupsPage = (): ReactElement => {
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
                 sortStrategy={ listSortingStrategy }
                 rightActionPanel={
-                    <PrimaryButton onClick={ () => setShowWizard(true) }>
+                    <PrimaryButton
+                        data-testid="group-mgt-groups-list-add-button"
+                        onClick={ () => setShowWizard(true) }
+                    >
                         <Icon name="add"/>
-                        New Group
+                        { t("devPortal:components.roles.list.buttons.addButton", { type: "Group" }) }
                     </PrimaryButton>
                 }
                 leftActionPanel={
                     <Dropdown
+                        data-testid="group-mgt-groups-list-stores-dropdown"
                         selection
                         options={ userStoreOptions && userStoreOptions }
-                        placeholder="Select User Store"
+                        placeholder={ t("devPortal:components.groups.list.storeOptions") }
                         value={ userStore && userStore }
                         onChange={ handleDomainChange }
                     />
@@ -355,6 +360,7 @@ export const GroupsPage = (): ReactElement => {
                 totalListSize={ groupList?.length }
             >
                 <RoleList
+                    data-testid="group-mgt-groups-list"
                     handleRoleDelete={ handleOnDelete }
                     isGroup={ true }
                     isLoading={ isGroupsListRequestLoading }
@@ -367,6 +373,7 @@ export const GroupsPage = (): ReactElement => {
             {
                 showWizard && (
                     <CreateRoleWizard
+                        data-testid="group-mgt-create-group-wizard"
                         isAddGroup
                         closeWizard={ () => setShowWizard(false) }
                         updateList={ () => setListUpdated(true) }

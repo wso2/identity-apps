@@ -16,14 +16,15 @@
  * under the License
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms"
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState, useEffect, ChangeEvent } from "react"
-import { useTranslation } from "react-i18next";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react"
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Divider, Grid, Input, Form, InputOnChangeData } from "semantic-ui-react"
+import { Button, Divider, Form, Grid, Input, InputOnChangeData } from "semantic-ui-react"
 import { deleteRoleById, updateRoleDetails } from "../../../api";
-import { ROLE_VIEW_PATH, GROUP_VIEW_PATH } from "../../../constants";
+import { GROUP_VIEW_PATH, ROLE_VIEW_PATH } from "../../../constants";
 import { history } from "../../../helpers";
 import { AlertInterface, AlertLevels, PatchRoleDataInterface, RolesInterface } from "../../../models";
 import { addAlert } from "../../../store/actions";
@@ -31,7 +32,7 @@ import { addAlert } from "../../../store/actions";
 /**
  * Interface to contain props needed for component
  */
-interface BasicRoleProps {
+interface BasicRoleProps extends TestableComponentInterface {
     roleObject: RolesInterface;
     isGroup: boolean;
     onRoleUpdate: () => void;
@@ -42,28 +43,29 @@ interface BasicRoleProps {
  * 
  * @param props Role object containing details which needs to be edited.
  */
-export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: BasicRoleProps): ReactElement => {
+export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: BasicRoleProps): ReactElement => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const {
         roleObject,
         onRoleUpdate,
-        isGroup
+        isGroup,
+        [ "data-testid" ]: testId
     } = props;
 
-    const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false)
-    const [ labelText, setLableText ] = useState<string>('');
-    const [ nameValue, setNameValue ] = useState<string>('');
+    const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ labelText, setLableText ] = useState<string>("");
+    const [ nameValue, setNameValue ] = useState<string>("");
 
     useEffect(() => {
-        if (roleObject && roleObject.displayName.indexOf('/') !== -1) {
-            setNameValue(roleObject.displayName.split('/')[1])
-            setLableText(roleObject.displayName.split('/')[0])
+        if (roleObject && roleObject.displayName.indexOf("/") !== -1) {
+            setNameValue(roleObject.displayName.split("/")[1]);
+            setLableText(roleObject.displayName.split("/")[0])
         } else if (roleObject) {
             setNameValue(roleObject.displayName);
         }
-    }, [roleObject])
+    }, [roleObject]);
 
     /**
      * Dispatches the alert object to the redux store.
@@ -117,7 +119,7 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         };
 
         updateRoleDetails(roleObject.id, roleData)
-            .then(response => {
+            .then(() => {
                 onRoleUpdate();
                 handleAlerts({
                     description: isGroup ? 
@@ -128,7 +130,7 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                         t("devPortal:components.groups.notifications.updateGroup.success.message") : 
                         t("devPortal:components.roles.notifications.updateRole.success.message")
                 });
-            }).catch(error => {
+            }).catch(() => {
                 handleAlerts({
                     description: isGroup ? 
                         t("devPortal:components.groups.notifications.updateGroup.error.description") : 
@@ -153,15 +155,21 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                             <Form.Field>
                                 <label>
-                                    { isGroup ? 
-                                        t("devPortal:components.groups.edit.basics.fields.groupName.name") : 
-                                        t("devPortal:components.roles.edit.basics.fields.roleName.name") 
+                                    {
+                                        isGroup ?
+                                            t("devPortal:components.groups.edit.basics.fields.groupName.name") :
+                                            t("devPortal:components.roles.edit.basics.fields.roleName.name")
+                                    }
+                                    data-testid={
+                                        isGroup ?
+                                            `${ testId }-group-name-label` :
+                                            `${ testId }-role-name-label`
                                     }
                                 </label>
                                 <Input
                                     required={ true }
                                     name={ "rolename" }
-                                    label={ labelText !== '' ? labelText + " /" : null }
+                                    label={ labelText !== "" ? labelText + " /" : null }
                                     requiredErrorMessage={ 
                                         isGroup ? 
                                             t("devPortal:components.groups.edit.basics.fields.groupName.required") : 
@@ -177,6 +185,11 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                         setNameValue(data.value)
                                     } }
                                     type="text"
+                                    data-testid={
+                                        isGroup ?
+                                            `${ testId }-group-name-input` :
+                                            `${ testId }-role-name-input`
+                                    }
                                 />
                             </Form.Field>
                             
@@ -184,8 +197,18 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                     </Grid.Row>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Button primary type="submit" size="small" className="form-button">
-                                Update
+                            <Button
+                                primary
+                                type="submit"
+                                size="small"
+                                className="form-button"
+                                data-testid={
+                                    isGroup ?
+                                        `${ testId }-group-update-button` :
+                                        `${ testId }-role-update-button`
+                                }
+                            >
+                                { t("devPortal:components.roles.edit.basics.buttons.update") }
                             </Button>
                         </Grid.Column>
                     </Grid.Row>
@@ -194,14 +217,33 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             <Divider hidden />
             <DangerZoneGroup sectionHeader="Danger Zone">
                 <DangerZone
-                    actionTitle={ isGroup ? "Delete Group" : "Delete Role" }
-                    header={ isGroup ? "Delete group" : "Delete role" }
+                    actionTitle={
+                        isGroup ?
+                            t("devPortal:components.roles.edit.basics.dangerZone.actionTitle",
+                                { type: "Group" }) :
+                            t("devPortal:components.roles.edit.basics.dangerZone.actionTitle",
+                                { type: "Role" })
+                    }
+                    header={
+                        isGroup ?
+                            t("devPortal:components.roles.edit.basics.dangerZone.header",
+                                { type: "group" }) :
+                            t("devPortal:components.roles.edit.basics.dangerZone.header",
+                                { type: "role" })
+                    }
                     subheader={ 
-                        isGroup ? 
-                            "Once you delete the group, there is no going back. Please be certain." : 
-                            "Once you delete the role, there is no going back. Please be certain." 
+                        isGroup ?
+                            t("devPortal:components.roles.edit.basics.dangerZone.subheader",
+                                { type: "group" }) :
+                            t("devPortal:components.roles.edit.basics.dangerZone.subheader",
+                                { type: "role" })
                     }
                     onActionClick={ () => setShowDeleteConfirmationModal(!showRoleDeleteConfirmation) }
+                    data-testid={
+                        isGroup ?
+                            `${ testId }-group-danger-zone` :
+                            `${ testId }-role-danger-zone`
+                    }
                 />
             </DangerZoneGroup> 
             {
@@ -211,25 +253,39 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                         type="warning"
                         open={ showRoleDeleteConfirmation }
                         assertion={ roleObject.displayName }
-                        assertionHint={ <p>Please type <strong>{ roleObject.displayName }</strong> to confirm.</p> }
+                        assertionHint={
+                            (
+                                <p>
+                                    <Trans
+                                        i18nKey={ "devPortal:components.roles.edit.basics.confirmation.assertionHint" }
+                                        tOptions={ { roleName: roleObject.displayName } }
+                                    >
+                                        Please type <strong>{ roleObject.displayName }</strong> to confirm.
+                                    </Trans>
+                                </p>
+                            )
+                        }
                         assertionType="input"
                         primaryAction="Confirm"
                         secondaryAction="Cancel"
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => handleOnDelete(roleObject.id) }
+                        data-testid={
+                            isGroup ?
+                                `${ testId }-group-confirmation-modal` :
+                                `${ testId }-role-confirmation-modal`
+                        }
                     >
-                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+                        <ConfirmationModal.Header>
+                            { t("devPortal:components.roles.edit.basics.confirmation.header") }
+                        </ConfirmationModal.Header>
                         <ConfirmationModal.Message attached warning>
-                            This action is irreversible and will permanently delete the selected { 
-                                isGroup ? "group." : "role." 
-                            }
+                            { t("devPortal:components.roles.edit.basics.confirmation.message",
+                                { type: isGroup ? "group." : "role." }) }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            If you delete this { 
-                                isGroup ? "group" : "role" 
-                            }, the permissions attached to it will be deleted and the users 
-                            attached to it will no longer be able to perform intended actions which were previously
-                            allowed. Please proceed with caution.
+                            { t("devPortal:components.roles.edit.basics.confirmation.content",
+                                { type: isGroup ? "group." : "role." }) }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
             }
