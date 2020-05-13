@@ -330,18 +330,18 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         >
             <Modal.Header>
                 {
-                    isGroup ?
-                        t("devPortal:components.roles.addRoleWizard.users.assignUserModal.heading",
-                            { type: "Group" }) :
-                        t("devPortal:components.roles.addRoleWizard.users.assignUserModal.heading",
+                    isGroup
+                        ? t("devPortal:components.roles.addRoleWizard.users.assignUserModal.heading",
+                            { type: "Group" })
+                        : t("devPortal:components.roles.addRoleWizard.users.assignUserModal.heading",
                             { type: "Role" })
                 }
                 <Heading subHeading ellipsis as="h6">
                     { 
-                        isGroup ?
-                            t("devPortal:components.roles.addRoleWizard.users.assignUserModal.subHeading",
-                                { type: "group" }) :
-                            t("devPortal:components.roles.addRoleWizard.users.assignUserModal.subHeading",
+                        isGroup
+                            ? t("devPortal:components.roles.addRoleWizard.users.assignUserModal.subHeading",
+                                { type: "group" })
+                            : t("devPortal:components.roles.addRoleWizard.users.assignUserModal.subHeading",
                                 { type: "role" })
                     }
                 </Heading>
@@ -510,11 +510,10 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                             title={ t("devPortal:components.roles.edit.users.list." +
                                                 "emptyPlaceholder.title") }
                                             subtitle={ [
-                                                isGroup ?
-                                                    t("devPortal:components.roles.edit.users.list." +
+                                                isGroup
+                                                    ? t("devPortal:components.roles.edit.users.list." +
                                                         "emptyPlaceholder.subtitles", { type: "group" })
-                                                 :
-                                                    t("devPortal:components.roles.edit.users.list." +
+                                                    : t("devPortal:components.roles.edit.users.list." +
                                                         "emptyPlaceholder.subtitles", { type: "role" })
                                             ] }
                                             action={

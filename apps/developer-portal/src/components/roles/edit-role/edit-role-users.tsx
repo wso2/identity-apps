@@ -94,31 +94,35 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         updateRoleDetails(roleObject.id, roleData)
             .then(() => {
                 handleAlerts({
-                    description: isGroup ?
-                        t("devPortal:components.groups.notifications.updateGroup.success.description") :
-                        t("devPortal:components.roles.notifications.updateRole.success.description"),
+                    description: isGroup
+                        ? t("devPortal:components.groups.notifications.updateGroup.success.description")
+                        : t("devPortal:components.roles.notifications.updateRole.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: isGroup ?
-                        t("devPortal:components.groups.notifications.updateGroup.success.message") :
-                        t("devPortal:components.roles.notifications.updateRole.success.message")
+                    message: isGroup
+                        ? t("devPortal:components.groups.notifications.updateGroup.success.message")
+                        : t("devPortal:components.roles.notifications.updateRole.success.message")
                 });
                 onRoleUpdate();
             }).catch(() => {
                 handleAlerts({
-                    description: isGroup ?
-                        t("devPortal:components.groups.notifications.updateGroup.error.description") :
-                        t("devPortal:components.roles.notifications.updateRole.error.description"),
+                    description: isGroup
+                        ? t("devPortal:components.groups.notifications.updateGroup.error.description")
+                        : t("devPortal:components.roles.notifications.updateRole.error.description"),
                     level: AlertLevels.ERROR,
-                    message: isGroup ?
-                        t("devPortal:components.groups.notifications.updateGroup.error.message") :
-                        t("devPortal:components.roles.notifications.updateRole.error.message")
+                    message: isGroup
+                        ? t("devPortal:components.groups.notifications.updateGroup.error.message")
+                        : t("devPortal:components.roles.notifications.updateRole.error.message")
                 });
             })
     };
 
     return (
         <AddRoleUsers
-            data-testid={ isGroup ? "group-mgt-edit-group-users" : "role-mgt-edit-role-users" }
+            data-testid={
+                isGroup
+                    ? "group-mgt-edit-group-users"
+                    : "role-mgt-edit-role-users"
+            }
             isGroup={ isGroup } 
             isEdit={ true } 
             userStore={ currentUserStore }

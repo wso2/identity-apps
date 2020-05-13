@@ -88,9 +88,9 @@ export const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
             backButton={ {
                 onClick: handleBackButtonClick,
                 text:
-                    isGroup ?
-                        t("devPortal:pages.rolesEdit.backButton", { type: "groups" }) :
-                        t("devPortal:pages.rolesEdit.backButton", { type: "roles" })
+                    isGroup
+                        ? t("devPortal:pages.rolesEdit.backButton", { type: "groups" })
+                        : t("devPortal:pages.rolesEdit.backButton", { type: "roles" })
             } }
             titleTextAlign="left"
             bottomMargin={ false }

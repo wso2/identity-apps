@@ -55,13 +55,13 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
             .then(() => {
                 dispatch(
                     addAlert({
-                        description: isGroup ? 
-                            t("devPortal:components.groups.notifications.updateGroup.success.description") : 
-                            t("devPortal:components.roles.notifications.updateRole.success.description"),
+                        description: isGroup
+                            ? t("devPortal:components.groups.notifications.updateGroup.success.description")
+                            : t("devPortal:components.roles.notifications.updateRole.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: isGroup ? 
-                            t("devPortal:components.groups.notifications.updateGroup.success.message") : 
-                            t("devPortal:components.roles.notifications.updateRole.success.message")
+                        message: isGroup
+                            ? t("devPortal:components.groups.notifications.updateGroup.success.message")
+                            : t("devPortal:components.roles.notifications.updateRole.success.message")
                     })
                 );
                 onRoleUpdate();
@@ -70,42 +70,42 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
                 if (!error.response || error.response.status === 401) {
                     dispatch(
                         addAlert({
-                            description: isGroup ? 
-                                t("devPortal:components.groups.notifications.createPermission.error.description") : 
-                                t("devPortal:components.roles.notifications.createPermission.error.description"),
+                            description: isGroup
+                                ? t("devPortal:components.groups.notifications.createPermission.error.description")
+                                : t("devPortal:components.roles.notifications.createPermission.error.description"),
                             level: AlertLevels.ERROR,
-                            message: isGroup ? 
-                                t("devPortal:components.groups.notifications.createPermission.error.message") : 
-                                t("devPortal:components.roles.notifications.createPermission.error.message")
+                            message: isGroup
+                                ? t("devPortal:components.groups.notifications.createPermission.error.message")
+                                : t("devPortal:components.roles.notifications.createPermission.error.message")
                         })
                     );
                 } else if (error.response && error.response.data.detail) {
                     dispatch(
                         addAlert({
-                            description: isGroup ? 
-                                t("devPortal:components.groups.notifications.createPermission.error.description", 
-                                { description: error.response.data.detail }) : 
-                                t("devPortal:components.roles.notifications.createPermission.error.description", 
+                            description: isGroup
+                                ? t("devPortal:components.groups.notifications.createPermission.error.description",
+                                { description: error.response.data.detail })
+                                : t("devPortal:components.roles.notifications.createPermission.error.description",
                                 { description: error.response.data.detail }),
                             level: AlertLevels.ERROR,
-                            message: isGroup ? 
-                                t("devPortal:components.groups.notifications.createPermission.error.message") : 
-                                t("devPortal:components.roles.notifications.createPermission.error.message")
+                            message: isGroup
+                                ? t("devPortal:components.groups.notifications.createPermission.error.message")
+                                : t("devPortal:components.roles.notifications.createPermission.error.message")
                         })
                     );
                 } else {
                     dispatch(
                         addAlert({
-                            description: isGroup ? 
-                                t("devPortal:components.groups.notifications.createPermission.genericError."+
-                                "description") : 
-                                t("devPortal:components.roles.notifications.createPermission.genericError."+
+                            description: isGroup
+                                ? t("devPortal:components.groups.notifications.createPermission.genericError."+
+                                "description")
+                                : t("devPortal:components.roles.notifications.createPermission.genericError."+
                                 "description"),
                             level: AlertLevels.ERROR,
-                            message: isGroup ? 
-                                t("devPortal:components.groups.notifications.createPermission.genericError."+
-                                "message") : 
-                                t("devPortal:components.roles.notifications.createPermission.genericError."+
+                            message: isGroup
+                                ? t("devPortal:components.groups.notifications.createPermission.genericError."+
+                                "message")
+                                : t("devPortal:components.roles.notifications.createPermission.genericError."+
                                 "message")
                         })
                     );

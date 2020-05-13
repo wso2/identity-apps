@@ -84,13 +84,13 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const handleOnDelete = (id: string): void => {
         deleteRoleById(id).then(() => {
             handleAlerts({
-                description: isGroup ? 
-                    t("devPortal:components.groups.notifications.deleteGroup.success.description") : 
-                    t("devPortal:components.roles.notifications.deleteRole.success.description"),
+                description: isGroup
+                    ? t("devPortal:components.groups.notifications.deleteGroup.success.description")
+                    : t("devPortal:components.roles.notifications.deleteRole.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: isGroup ? 
-                    t("devPortal:components.groups.notifications.deleteGroup.success.message") : 
-                    t("devPortal:components.roles.notifications.deleteRole.success.message")
+                message: isGroup
+                    ? t("devPortal:components.groups.notifications.deleteGroup.success.message")
+                    : t("devPortal:components.roles.notifications.deleteRole.success.message")
             });
             if (isGroup) {
                 history.push(GROUP_VIEW_PATH);
@@ -122,23 +122,23 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             .then(() => {
                 onRoleUpdate();
                 handleAlerts({
-                    description: isGroup ? 
-                        t("devPortal:components.groups.notifications.updateGroup.success.description") : 
-                        t("devPortal:components.roles.notifications.updateRole.success.description"),
+                    description: isGroup
+                        ? t("devPortal:components.groups.notifications.updateGroup.success.description")
+                        : t("devPortal:components.roles.notifications.updateRole.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: isGroup ? 
-                        t("devPortal:components.groups.notifications.updateGroup.success.message") : 
-                        t("devPortal:components.roles.notifications.updateRole.success.message")
+                    message: isGroup
+                        ? t("devPortal:components.groups.notifications.updateGroup.success.message")
+                        : t("devPortal:components.roles.notifications.updateRole.success.message")
                 });
             }).catch(() => {
                 handleAlerts({
-                    description: isGroup ? 
-                        t("devPortal:components.groups.notifications.updateGroup.error.description") : 
-                        t("devPortal:components.roles.notifications.updateRole.error.description"),
+                    description: isGroup
+                        ? t("devPortal:components.groups.notifications.updateGroup.error.description")
+                        : t("devPortal:components.roles.notifications.updateRole.error.description"),
                     level: AlertLevels.ERROR,
-                    message: isGroup ? 
-                        t("devPortal:components.groups.notifications.updateGroup.error.message") : 
-                        t("devPortal:components.roles.notifications.updateRole.error.message")
+                    message: isGroup
+                        ? t("devPortal:components.groups.notifications.updateGroup.error.message")
+                        : t("devPortal:components.roles.notifications.updateRole.error.message")
                 });
             });
     };
@@ -156,14 +156,14 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                             <Form.Field>
                                 <label>
                                     {
-                                        isGroup ?
-                                            t("devPortal:components.groups.edit.basics.fields.groupName.name") :
-                                            t("devPortal:components.roles.edit.basics.fields.roleName.name")
+                                        isGroup
+                                            ? t("devPortal:components.groups.edit.basics.fields.groupName.name")
+                                            : t("devPortal:components.roles.edit.basics.fields.roleName.name")
                                     }
                                     data-testid={
-                                        isGroup ?
-                                            `${ testId }-group-name-label` :
-                                            `${ testId }-role-name-label`
+                                        isGroup
+                                            ? `${ testId }-group-name-label`
+                                            : `${ testId }-role-name-label`
                                     }
                                 </label>
                                 <Input
@@ -171,14 +171,16 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                     name={ "rolename" }
                                     label={ labelText !== "" ? labelText + " /" : null }
                                     requiredErrorMessage={ 
-                                        isGroup ? 
-                                            t("devPortal:components.groups.edit.basics.fields.groupName.required") : 
-                                            t("devPortal:components.roles.edit.basics.fields.roleName.required") 
+                                        isGroup
+                                            ? t("devPortal:components.groups.edit.basics.fields.groupName.required")
+                                            : t("devPortal:components.roles.edit.basics.fields.roleName.required")
                                     }
                                     placeholder={ 
-                                        isGroup ? 
-                                            t("devPortal:components.groups.edit.basics.fields.groupName.placeholder") : 
-                                            t("devPortal:components.roles.edit.basics.fields.roleName.placeholder") 
+                                        isGroup
+                                            ? t("devPortal:components.groups.edit.basics.fields.groupName." +
+                                            "placeholder")
+                                            : t("devPortal:components.roles.edit.basics.fields.roleName." +
+                                            "placeholder")
                                     }
                                     value={ nameValue }
                                     onChange={ (event: ChangeEvent, data: InputOnChangeData) => {
@@ -186,9 +188,9 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                     } }
                                     type="text"
                                     data-testid={
-                                        isGroup ?
-                                            `${ testId }-group-name-input` :
-                                            `${ testId }-role-name-input`
+                                        isGroup
+                                            ? `${ testId }-group-name-input`
+                                            : `${ testId }-role-name-input`
                                     }
                                 />
                             </Form.Field>
@@ -203,9 +205,9 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                 size="small"
                                 className="form-button"
                                 data-testid={
-                                    isGroup ?
-                                        `${ testId }-group-update-button` :
-                                        `${ testId }-role-update-button`
+                                    isGroup
+                                        ? `${ testId }-group-update-button`
+                                        : `${ testId }-role-update-button`
                                 }
                             >
                                 { t("devPortal:components.roles.edit.basics.buttons.update") }
@@ -218,31 +220,31 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             <DangerZoneGroup sectionHeader="Danger Zone">
                 <DangerZone
                     actionTitle={
-                        isGroup ?
-                            t("devPortal:components.roles.edit.basics.dangerZone.actionTitle",
-                                { type: "Group" }) :
-                            t("devPortal:components.roles.edit.basics.dangerZone.actionTitle",
+                        isGroup
+                            ? t("devPortal:components.roles.edit.basics.dangerZone.actionTitle",
+                                { type: "Group" })
+                            : t("devPortal:components.roles.edit.basics.dangerZone.actionTitle",
                                 { type: "Role" })
                     }
                     header={
-                        isGroup ?
-                            t("devPortal:components.roles.edit.basics.dangerZone.header",
-                                { type: "group" }) :
-                            t("devPortal:components.roles.edit.basics.dangerZone.header",
+                        isGroup
+                            ? t("devPortal:components.roles.edit.basics.dangerZone.header",
+                                { type: "group" })
+                            : t("devPortal:components.roles.edit.basics.dangerZone.header",
                                 { type: "role" })
                     }
                     subheader={ 
-                        isGroup ?
-                            t("devPortal:components.roles.edit.basics.dangerZone.subheader",
-                                { type: "group" }) :
-                            t("devPortal:components.roles.edit.basics.dangerZone.subheader",
+                        isGroup
+                            ? t("devPortal:components.roles.edit.basics.dangerZone.subheader",
+                                { type: "group" })
+                            : t("devPortal:components.roles.edit.basics.dangerZone.subheader",
                                 { type: "role" })
                     }
                     onActionClick={ () => setShowDeleteConfirmationModal(!showRoleDeleteConfirmation) }
                     data-testid={
-                        isGroup ?
-                            `${ testId }-group-danger-zone` :
-                            `${ testId }-role-danger-zone`
+                        isGroup
+                            ? `${ testId }-group-danger-zone`
+                            : `${ testId }-role-danger-zone`
                     }
                 />
             </DangerZoneGroup> 
@@ -271,9 +273,9 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => handleOnDelete(roleObject.id) }
                         data-testid={
-                            isGroup ?
-                                `${ testId }-group-confirmation-modal` :
-                                `${ testId }-role-confirmation-modal`
+                            isGroup
+                                ? `${ testId }-group-confirmation-modal`
+                                : `${ testId }-role-confirmation-modal`
                         }
                     >
                         <ConfirmationModal.Header>

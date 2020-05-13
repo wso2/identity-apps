@@ -240,10 +240,10 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                         icon: "pencil alternate",
                                         onClick: () => handleRoleEdit(role.id),
                                         popupText:
-                                            isGroup ?
-                                                t("devPortal:components.roles.list.popups.edit",
-                                                    { type: "Group" }) :
-                                                t("devPortal:components.roles.list.popups.edit",
+                                            isGroup
+                                                ? t("devPortal:components.roles.list.popups.edit",
+                                                    { type: "Group" })
+                                                : t("devPortal:components.roles.list.popups.edit",
                                                     { type: "Role" }),
                                         type: "button"
                                     },
@@ -254,10 +254,10 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                             setShowDeleteConfirmationModal(!showRoleDeleteConfirmation);
                                         },
                                         popupText:
-                                            isGroup ?
-                                                t("devPortal:components.roles.list.popups.delete",
-                                                    { type: "Group" }) :
-                                                t("devPortal:components.roles.list.popups.delete",
+                                            isGroup
+                                                ? t("devPortal:components.roles.list.popups.delete",
+                                                    { type: "Group" })
+                                                : t("devPortal:components.roles.list.popups.delete",
                                                     { type: "Role" }),
                                         type: "button"
                                     }

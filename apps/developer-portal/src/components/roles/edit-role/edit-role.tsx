@@ -64,9 +64,9 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 <ResourceTab.Pane attached={ false }>
                     <BasicRoleDetails
                         data-testid={
-                            isGroup ?
-                                "group-mgt-edit-group-basic" :
-                                "role-mgt-edit-role-basic"
+                            isGroup
+                                ? "group-mgt-edit-group-basic"
+                                : "role-mgt-edit-role-basic"
                         }
                         isGroup={ isGroup }
                         roleObject={ roleObject }
@@ -80,9 +80,9 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 <ResourceTab.Pane attached={ false }>
                     <RolePermissionDetails
                         data-testid={
-                            isGroup ?
-                                "group-mgt-edit-group-permissions" :
-                                "role-mgt-edit-role-permissions"
+                            isGroup
+                                ? "group-mgt-edit-group-permissions"
+                                : "role-mgt-edit-role-permissions"
                         }
                         isGroup={ isGroup }
                         roleObject={ roleObject }
@@ -96,9 +96,9 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 <ResourceTab.Pane attached={ false }>
                     <RoleUserDetails
                         data-testid={
-                            isGroup ?
-                                "group-mgt-edit-group-users" :
-                                "role-mgt-edit-role-users"
+                            isGroup
+                                ? "group-mgt-edit-group-users"
+                                : "role-mgt-edit-role-users"
                         }
                         isGroup={ isGroup }
                         roleObject={ roleObject }
