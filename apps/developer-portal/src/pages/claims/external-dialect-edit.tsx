@@ -16,31 +16,54 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react"
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react"
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { RouteComponentProps } from "react-router";
 import { Divider, Grid, Header, Image, Segment } from "semantic-ui-react";
-import { deleteADialect, getADialect, getAllExternalClaims } from "../api";
+import { deleteADialect, getADialect, getAllExternalClaims } from "../../api";
 import {
     AvatarBackground,
     EditDialectDetails,
     EditExternalClaims
-} from "../components";
-import { CLAIM_DIALECTS_PATH } from "../constants";
-import { history } from "../helpers";
-import { PageLayout } from "../layouts"
-import { AlertLevels, ClaimDialect, ExternalClaim } from "../models";
-import { addAlert } from "../store/actions";
+} from "../../components";
+import { CLAIM_DIALECTS_PATH } from "../../constants";
+import { history } from "../../helpers";
+import { PageLayout } from "../../layouts"
+import { AlertLevels, ClaimDialect, ExternalClaim } from "../../models";
+
+/**
+ * Props for the External Dialects edit page.
+ */
+type ExternalDialectEditPageInterface = TestableComponentInterface
+
+/**
+ * Route parameters interface.
+ */
+interface RouteParams {
+    id: string;
+}
 
 /**
  * This renders the edit external dialect page
- * @param props 
- * @return {ReactElement}
+ *
+ * @param {ExternalDialectEditPageInterface & RouteComponentProps<RouteParams>} props - Props injected to the component
+ *
+ * @return {React.ReactElement}
  */
-export const ExternalDialectEditPage = (props): ReactElement => {
+export const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterface> = (
+    props: ExternalDialectEditPageInterface & RouteComponentProps<RouteParams>
+): ReactElement => {
 
-    const dialectId = props.match.params.id;
+    const {
+        match,
+        [ "data-testid" ]: testId
+    } = props;
+
+    const dialectId = match.params.id;
 
     const [ dialect, setDialect ] = useState<ClaimDialect>(null);
     const [ claims, setClaims ] = useState<ExternalClaim[]>([]);
@@ -69,14 +92,23 @@ export const ExternalDialectEditPage = (props): ReactElement => {
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
             onPrimaryActionClick={ (): void => deleteDialect(dialect.id) }
+            data-testid={ `${ testId }-delete-confirmation-modal` }
         >
-            <ConfirmationModal.Header>
+            <ConfirmationModal.Header
+                data-testid={ `${ testId }-delete-confirmation-modal-header` }
+            >
                 { t("devPortal:components.claims.dialects.confirmations.header") }
             </ConfirmationModal.Header>
-            <ConfirmationModal.Message attached warning>
+            <ConfirmationModal.Message
+                attached
+                warning
+                data-testid={ `${ testId }-delete-confirmation-modal-message` }
+            >
                 { t("devPortal:components.claims.dialects.confirmations.message") }
             </ConfirmationModal.Message>
-            <ConfirmationModal.Content>
+            <ConfirmationModal.Content
+                data-testid={ `${ testId }-delete-confirmation-modal-content` }
+            >
                 { t("devPortal:components.claims.dialects.confirmations.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
@@ -101,7 +133,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
                 }
             ));
         })
-    }
+    };
 
     useEffect(() => {
         getDialect();
@@ -139,7 +171,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
         }).finally(() => {
             setIsLoading(false);
         });
-    }
+    };
 
     useEffect(() => {
         getExternalClaims();
@@ -153,7 +185,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
     const generateDialectLetter = (name: string): string => {
         const stringArray = name.replace("http://", "").split("/");
         return stringArray[ 0 ][ 0 ].toLocaleUpperCase();
-    }
+    };
 
     /**
      * This deletes a dialect
@@ -213,6 +245,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
             } }
             titleTextAlign="left"
             bottomMargin={ false }
+            data-testid={ `${ testId }-page-layout` }
         >
 
             <Divider />
@@ -225,6 +258,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
                         </Header>
                         <EditDialectDetails
                             dialect={ dialect }
+                            data-testid={ `${ testId }-edit-dialect-details` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -247,6 +281,7 @@ export const ExternalDialectEditPage = (props): ReactElement => {
                     isLoading={ isLoading }
                     claims={ claims }
                     update={ getExternalClaims }
+                    data-testid={ `${ testId }-edit-external-claims` }
                 />
             </Segment>
 
@@ -255,12 +290,16 @@ export const ExternalDialectEditPage = (props): ReactElement => {
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
-                        <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                        <DangerZoneGroup
+                            sectionHeader={ t("common:dangerZone") }
+                            data-testid={ `${ testId }-danger-zone-group` }
+                        >
                             <DangerZone
                                 actionTitle={ t("devPortal:components.claims.dialects.dangerZone.actionTitle") }
                                 header={ t("devPortal:components.claims.dialects.dangerZone.header") }
                                 subheader={ t("devPortal:components.claims.dialects.dangerZone.subheader") }
                                 onActionClick={ () => setConfirmDelete(true) }
+                                data-testid={ `${ testId }-dialect-delete-danger-zone` }
                             />
                         </DangerZoneGroup>
                     </Grid.Column>
@@ -269,4 +308,11 @@ export const ExternalDialectEditPage = (props): ReactElement => {
             { confirmDelete && deleteConfirmation() }
         </PageLayout>
     )
-}
+};
+
+/**
+ * Default props for the component.
+ */
+ExternalDialectEditPage.defaultProps = {
+    "data-testid": "external-dialect-edit"
+};

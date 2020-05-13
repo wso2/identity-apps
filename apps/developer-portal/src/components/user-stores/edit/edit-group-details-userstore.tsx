@@ -16,10 +16,11 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon } from "semantic-ui-react";
@@ -30,7 +31,7 @@ import { AlertLevels, RequiredBinary, TypeProperty, UserstoreType } from "../../
 /**
  * Prop types of `EditGroupDetails` component
  */
-interface EditGroupDetailsPropsInterface {
+interface EditGroupDetailsPropsInterface extends TestableComponentInterface {
     /**
      * Initiates an update
      */
@@ -49,11 +50,23 @@ interface EditGroupDetailsPropsInterface {
     properties: RequiredBinary;
 }
 
-export const EditGroupDetails = (
+/**
+ * This renders the edit userstore group details pane.
+ *
+ * @param {EditGroupDetailsPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface> = (
     props: EditGroupDetailsPropsInterface
 ): ReactElement => {
 
-    const { update, id, properties } = props;
+    const {
+        update,
+        id,
+        properties,
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ showMore, setShowMore ] = useState(false);
     const [ disabled, setDisabled ] = useState(true);
@@ -222,6 +235,7 @@ export const EditGroupDetails = (
                                                             name: property.description.split("#")[ 0 ]
                                                         })
                                                 }
+                                                data-testid={ `${ testId }-form-password-input-${ property.name }` }
                                             />
                                         )
                                         : toggle
@@ -255,6 +269,8 @@ export const EditGroupDetails = (
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                         }
+                                                        data-testid={ `${ testId }-form-toggle-master-${
+                                                            property.name }` }
                                                     />
                                                 )
                                                 : (
@@ -281,6 +297,7 @@ export const EditGroupDetails = (
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                         }
+                                                        data-testid={ `${ testId }-form-toggle-${ property.name }` }
                                                     />
                                                 )
                                             : (
@@ -306,6 +323,7 @@ export const EditGroupDetails = (
                                                                 name: property.description.split("#")[ 0 ]
                                                             })
                                                     }
+                                                    data-testid={ `${ testId }-form-text-input-${ property.name }` }
                                                 />
                                             )
                                 );
@@ -328,6 +346,7 @@ export const EditGroupDetails = (
                             <LinkButton
                                 type="button"
                                 onClick={ () => { setShowMore(!showMore) } }
+                                data-testid={ `${ testId }-show-more-button` }
                             >
                                 <Icon name={ showMore ? "chevron up" : "chevron down" } />
                                 { showMore ? t("common:showLess") : t("common:showMore") }
@@ -374,6 +393,8 @@ export const EditGroupDetails = (
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                         }
+                                                        data-testid={ `${ testId }-form-non-sql-password-input-${
+                                                            property.name }` }
                                                     />
                                                 )
                                                 : toggle
@@ -401,6 +422,8 @@ export const EditGroupDetails = (
                                                                         name: property.description.split("#")[ 0 ]
                                                                     })
                                                             }
+                                                            data-testid={ `${ testId }-form-non-sql-toggle-${
+                                                                property.name }` }
                                                         />
                                                     ) :
                                                     (
@@ -426,6 +449,8 @@ export const EditGroupDetails = (
                                                                         name: property.description.split("#")[ 0 ]
                                                                     })
                                                             }
+                                                            data-testid={ `${ testId }-form-non-sql-text-input-${
+                                                                property.name }` }
                                                         />
                                                     )
                                         );
@@ -453,6 +478,7 @@ export const EditGroupDetails = (
                                 } }
                                 properties={ properties?.optional.sql }
                                 values={ sql }
+                                data-testid={ `${ testId }-sql-editor` }
                             />
                         </Grid.Column>
                     </Grid>
@@ -460,11 +486,18 @@ export const EditGroupDetails = (
             }
             <Grid columns={ 1 }>
                 <Grid.Column width={ 8 }>
-                    <PrimaryButton type="submit">
+                    <PrimaryButton type="submit" data-testid={ `${ testId }-form-submit-button` }>
                         Update
                     </PrimaryButton>
                 </Grid.Column>
             </Grid>
         </Forms>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+EditGroupDetails.defaultProps = {
+    "data-testid": "userstore-group-details-edit"
 };

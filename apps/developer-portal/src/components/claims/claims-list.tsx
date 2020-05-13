@@ -17,12 +17,18 @@
 */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { LoadableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
-import { ConfirmationModal, EmptyPlaceholder, LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components"
-import { CopyInputField } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import {
+    ConfirmationModal,
+    CopyInputField,
+    EmptyPlaceholder,
+    LinkButton,
+    PrimaryButton,
+    ResourceList
+} from "@wso2is/react-components"
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Icon, Image, List, Popup } from "semantic-ui-react";
@@ -65,7 +71,9 @@ export enum ListType {
 /**
  * Prop types of `ClaimsList` component
  */
-interface ClaimsListPropsInterface extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface {
+interface ClaimsListPropsInterface extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * The array containing claims/external claims/claim dialects/add external claim.
      */
@@ -106,10 +114,14 @@ interface ClaimsListPropsInterface extends SBACInterface<FeatureConfigInterface>
 
 /**
  * This component renders claims/dialects list
- * @param {ClaimsListPropsInterface} props
- * @return {ReactElement}
+ *
+ * @param {ClaimsListPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
+export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
+    props: ClaimsListPropsInterface
+): ReactElement => {
 
     const {
         featureConfig,
@@ -122,7 +134,8 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
         isLoading,
         onEmptyListPlaceholderActionClick,
         onSearchQueryClear,
-        searchQuery
+        searchQuery,
+        [ "data-testid" ]: testId
     } = props;
 
     const [ deleteConfirm, setDeleteConfirm ] = useState(false);
@@ -398,20 +411,28 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                         ? listItem.delete(dialectID, deleteItem.id)
                         : listItem.delete(deleteItem.id)
                 } }
+                data-testid={ `${ testId }-delete-confirmation-modal` }
             >
-                <ConfirmationModal.Header>
-                {t("devPortal:components.claims.list.confirmation.header")}
+                <ConfirmationModal.Header
+                    data-testid={ `${ testId }-delete-confirmation-modal-header` }
+                >
+                    { t("devPortal:components.claims.list.confirmation.header") }
                 </ConfirmationModal.Header>
-                <ConfirmationModal.Message attached warning>
-                    {t("devPortal:components.claims.list.confirmation.message",{
-                        name:listItem.name
-                    })}
+                <ConfirmationModal.Message
+                    attached
+                    warning
+                    data-testid={ `${ testId }-delete-confirmation-modal-message` }
+                >
+                    { t("devPortal:components.claims.list.confirmation.message", {
+                        name: listItem.name
+                    }) }
                 </ConfirmationModal.Message>
-                <ConfirmationModal.Content>
-                {t("devPortal:components.claims.list.confirmation.content",{
-                    message:listItem.message
-                })}
-                   
+                <ConfirmationModal.Content
+                    data-testid={ `${ testId }-delete-confirmation-modal-content` }
+                >
+                    { t("devPortal:components.claims.list.confirmation.content", {
+                        message: listItem.message
+                    }) }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );
@@ -471,6 +492,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                              searchQuery:searchQuery
                          })
                     ] }
+                    data-testid={ `${ testId }-empty-search-placeholder` }
                 />
             );
         }
@@ -504,6 +526,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                     subtitle={ [
                         
                     ] }
+                    data-testid={ `${ testId }-empty-placeholder` }
                 />
             );
         }
@@ -520,6 +543,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                     count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
+                data-testid={ testId }
             >
                 {
                     list && list instanceof Array && list.length > 0
@@ -589,6 +613,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                     rounded
                                                     centered
                                                     size="mini"
+                                                    data-testid={ `${ testId }-item-image` }
                                                 >
                                                     <AvatarBackground />
                                                     <span className="claims-letter">
@@ -607,6 +632,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                 />
                                             )
                                         ] }
+                                        data-testid={ `${ testId }-item` }
                                     />
                                 )
                             })
@@ -622,6 +648,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                     rounded
                                                     centered
                                                     size="mini"
+                                                    data-testid={ `${ testId }-item-image` }
                                                 >
                                                     <AvatarBackground />
                                                     <span className="claims-letter">
@@ -650,6 +677,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                             ] }
                                             actionsFloated="right"
                                             itemHeader={ dialect.dialectURI }
+                                            data-testid={ `${ testId }-item` }
                                         />
                                     );
                                 })
@@ -693,6 +721,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                         rounded
                                                         centered
                                                         size="mini"
+                                                        data-testid={ `${ testId }-item-image` }
                                                     >
                                                         <AvatarBackground />
                                                         <span className="claims-letter">
@@ -702,24 +731,28 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                 }
                                                 actionsFloated="right"
                                                 itemHeader={ claim.claimURI }
-                                                metaContent={ [
-                                                    editClaim !== claim?.id
-                                                        ? claim.mappedLocalClaimURI
-                                                        : null,
-                                                    editClaim === claim?.id
-                                                        ? <EditExternalClaim
-                                                            claimID={ claim.id }
-                                                            dialectID={ dialectID }
-                                                            update={ () => {
-                                                                setEditClaim("");
-                                                                update();
-                                                            } }
-                                                            submit={ submitExternalClaim }
-                                                            claimURI={ claim.claimURI }
-                                                            externalClaims={ list }
-                                                        />
-                                                        : null
-                                                ].filter(meta => meta !== null) }
+                                                metaContent={
+                                                    [
+                                                        editClaim !== claim?.id
+                                                            ? claim.mappedLocalClaimURI
+                                                            : null,
+                                                        editClaim === claim?.id
+                                                            ? <EditExternalClaim
+                                                                claimID={ claim.id }
+                                                                dialectID={ dialectID }
+                                                                update={ () => {
+                                                                    setEditClaim("");
+                                                                    update();
+                                                                } }
+                                                                submit={ submitExternalClaim }
+                                                                claimURI={ claim.claimURI }
+                                                                externalClaims={ list }
+                                                                data-testid={ `${ testId }-edit-external-claim` }
+                                                            />
+                                                            : null
+                                                    ].filter(meta => meta !== null)
+                                                }
+                                                data-testid={ `${ testId }-item` }
                                             />
                                         )
                                     })
@@ -765,6 +798,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                                 rounded
                                                                 centered
                                                                 size="mini"
+                                                                data-testid={ `${ testId }-item-image` }
                                                             >
                                                                 <AvatarBackground />
                                                                 <span className="claims-letter">
@@ -802,6 +836,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
                                                         />
                                                     )
                                                 ] }
+                                                data-testid={ `${ testId }-item` }
                                             />
                                         )
                                     })
@@ -810,4 +845,11 @@ export const ClaimsList = (props: ClaimsListPropsInterface): ReactElement => {
             </ResourceList>
         </>
     )
+};
+
+/**
+ * Default props for the component.
+ */
+ClaimsList.defaultProps = {
+    "data-testid": "claims-list"
 };

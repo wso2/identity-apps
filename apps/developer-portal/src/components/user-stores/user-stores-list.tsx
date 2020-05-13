@@ -17,7 +17,7 @@
 */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { LoadableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -39,7 +39,9 @@ import { AlertLevels, FeatureConfigInterface, UserStoreListItem } from "../../mo
 /**
  * Prop types of the `UserStoresList` component
  */
-interface UserStoresListPropsInterface extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface {
+interface UserStoresListPropsInterface extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * The userstore list
      */
@@ -63,9 +65,11 @@ interface UserStoresListPropsInterface extends SBACInterface<FeatureConfigInterf
 }
 
 /**
- * This component renders the Userstore List
- * @param {UserStoresListPropsInterface} props
- * @return {ReactElement}
+ * This component renders the Userstore List.
+ *
+ * @param {UserStoresListPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     props: UserStoresListPropsInterface
@@ -78,7 +82,8 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
         onEmptyListPlaceholderActionClick,
         onSearchQueryClear,
         searchQuery,
-        update
+        update,
+        [ "data-testid" ]: testId
     } = props;
 
     const [ deleteConfirm, setDeleteConfirm ] = useState(false);
@@ -123,7 +128,10 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             assertionHint={
                 <p>
                     <Trans i18nKey="devPortal:components.userstores.confirmation.hint">
-                        Please type <strong>{ { name: deleteName } }</strong > to confirm.
+                        Please type
+                        <strong data-testid={ `${ testId }-delete-confirmation-modal-assertion` }>
+                            { { name: deleteName } }
+                        </strong > to confirm.
                     </Trans>
                 </p>
             }
@@ -165,14 +173,23 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                         closeDeleteConfirm();
                     });
             } }
+            data-testid={ `${ testId }-delete-confirmation-modal` }
         >
-            <ConfirmationModal.Header>
+            <ConfirmationModal.Header
+                data-testid={ `${ testId }-delete-confirmation-modal-header` }
+            >
                 { t("devPortal:components.userstores.confirmation.header") }
             </ConfirmationModal.Header>
-            <ConfirmationModal.Message attached warning>
+            <ConfirmationModal.Message
+                attached
+                warning
+                data-testid={ `${ testId }-delete-confirmation-modal-message` }
+            >
                 { t("devPortal:components.userstores.confirmation.message") }
             </ConfirmationModal.Message>
-            <ConfirmationModal.Content>
+            <ConfirmationModal.Content
+                data-testid={ `${ testId }-delete-confirmation-modal-content` }
+            >
                 { t("devPortal:components.userstores.confirmation.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
@@ -202,6 +219,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                                 searchQuery: searchQuery
                             })
                     ] }
+                    data-testid={ `${ testId }-empty-search-placeholder` }
                 />
             );
         }
@@ -221,6 +239,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                     subtitle={ [
                         t("devPortal:components.userstores.placeholders.emptyList.subtitles")
                     ] }
+                    data-testid={ `${ testId }-empty-placeholder` }
                 />
             );
         }
@@ -237,6 +256,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                     count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
+                data-testid={ testId }
             >
                 {
                     list && list instanceof Array && list.length > 0
@@ -249,6 +269,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                                         rounded
                                         centered
                                         size="mini"
+                                        data-testid={ `${ testId }-item-image` }
                                     >
                                         <DatabaseAvatarGraphic.ReactComponent />
                                     </Image>
@@ -278,6 +299,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                                 actionsFloated="right"
                                 itemHeader={ userStore.name }
                                 itemDescription={ userStore.description }
+                                data-testid={ `${ testId }-item` }
                             />
                         ))
                         : showPlaceholders()
@@ -285,4 +307,11 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             </ResourceList>
         </>
     )
+};
+
+/**
+ * Default props for the component.
+ */
+UserStoresList.defaultProps = {
+    "data-testid": "userstores-list"
 };

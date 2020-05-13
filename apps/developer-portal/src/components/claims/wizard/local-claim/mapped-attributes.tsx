@@ -16,8 +16,9 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { getUserStoreList } from "../../../../api";
@@ -26,7 +27,7 @@ import { UserStoreListItem } from "../../../../models";
 /**
  * Prop types of `MappedAttributes` component
  */
-interface MappedAttributesPropsInterface {
+interface MappedAttributesPropsInterface extends TestableComponentInterface {
     /**
      * Trigger submit
      */
@@ -42,13 +43,22 @@ interface MappedAttributesPropsInterface {
 }
 
 /**
- * This component renders the Mapped Attributes step of the wizard
- * @param {MappedAttributesPropsInterface} props
- * @return {ReactElement}
+ * This component renders the Mapped Attributes step of the wizard.
+ *
+ * @param {MappedAttributesPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const MappedAttributes = (props: MappedAttributesPropsInterface): ReactElement => {
+export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface> = (
+    props: MappedAttributesPropsInterface
+): ReactElement => {
 
-    const { onSubmit, submitState, values } = props;
+    const {
+        onSubmit,
+        submitState,
+        values,
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ userStore, setUserStore ] = useState<UserStoreListItem[]>([]);
 
@@ -71,7 +81,7 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): ReactEl
     }, []);
     
     return (
-        <Grid>
+        <Grid data-testid={ testId }>
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 14 }>
                     <h4>{ t("devPortal:components.claims.local.wizard." +
@@ -112,6 +122,7 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): ReactEl
                                                 requiredErrorMessage={ t("devPortal:components.claims.local.forms." +
                                                     "attribute.requiredErrorMessage") }
                                                 value={ values?.get(store.name).toString() }
+                                                data-testid={ `${ testId }-form-store-name-input` }
                                             />
                                         </Grid.Column>
                                     </Grid.Row>
@@ -123,4 +134,11 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): ReactEl
             </Grid.Row>
         </Grid>
     )
+};
+
+/**
+ * Default props for the application creation wizard.
+ */
+MappedAttributes.defaultProps = {
+    "data-testid": "mapped-attributes"
 };

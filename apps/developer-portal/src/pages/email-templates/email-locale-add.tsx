@@ -16,27 +16,43 @@
 * under the License.
 */
 
-import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
-import { EmailTemplateDetails } from "../models";
-import { EMAIL_TEMPLATE_VIEW_PATH } from "../constants";
-import { getEmailTemplate } from "../api";
-import { PageLayout } from "../layouts";
-import { history } from "../helpers";
-import { AddLocaleTemplate } from "../components/email-templates";
 import * as CountryLanguage from "country-language";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { getEmailTemplate } from "../../api";
+import { AddLocaleTemplate } from "../../components";
+import { EMAIL_TEMPLATE_VIEW_PATH } from "../../constants";
+import { history } from "../../helpers";
+import { PageLayout } from "../../layouts";
+import { EmailTemplateDetails } from "../../models";
 
 /**
- * Component will render add view for a email template based on 
- * locale for selected email template type.
+ * Props for the add Templates Locale page.
  */
-export const AddTemplateLocale: FunctionComponent = (): ReactElement => {
-    
-    const [ templateTypeId, setTemplateTypeId ] = useState<string>('');
-    const [ templateId, setTemplateId ] = useState<string>('');
-    const [ localeName, setLocaleName ] = useState<string>('');
+type AddTemplateLocalePageInterface = TestableComponentInterface
+
+/**
+ * Component will render add view for a email template based on
+ * locale for selected email template type.
+ *
+ * @param {AddTemplateLocalePageInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const AddTemplateLocale: FunctionComponent<AddTemplateLocalePageInterface> = (
+    props: AddTemplateLocalePageInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
+
+    const [ templateTypeId, setTemplateTypeId ] = useState<string>("");
+    const [ templateId, setTemplateId ] = useState<string>("");
+    const [ localeName, setLocaleName ] = useState<string>("");
     const [ emailTemplateTypeDetails, setEmailTemplateTypeDetails ] = useState<EmailTemplateDetails>(undefined);
-    const [ emailTemplateName, setEmailTemplateName ] = useState<string>('');
+    const [ emailTemplateName, setEmailTemplateName ] = useState<string>("");
 
     /**
      * Util to handle back button event.
@@ -47,8 +63,8 @@ export const AddTemplateLocale: FunctionComponent = (): ReactElement => {
 
     useEffect(() => {
         const path: string[] = history.location.pathname.split("/");
-        let templateTypeId = '';
-        let templateId = '';
+        let templateTypeId = "";
+        let templateId = "";
         let countryCode = "";
         let languageCode = "";
         
@@ -96,8 +112,20 @@ export const AddTemplateLocale: FunctionComponent = (): ReactElement => {
             titleTextAlign="left"
             showBottomDivider={ true }
             bottomMargin={ false }
+            data-testid={ `${ testId }-page-layout` }
         >
-            <AddLocaleTemplate templateId={ templateId } templateTypeId={ templateTypeId } />
+            <AddLocaleTemplate
+                templateId={ templateId }
+                templateTypeId={ templateTypeId }
+                data-testid={ `${ testId }-form` }
+            />
         </PageLayout>
     )
-}
+};
+
+/**
+ * Default props for the component.
+ */
+AddTemplateLocale.defaultProps = {
+    "data-testid": "email-locale-add"
+};

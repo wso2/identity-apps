@@ -16,24 +16,38 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownProps, PaginationProps } from "semantic-ui-react";
-import { listClientCertificates } from "../api";
-import { AdvancedSearchWithBasicFilters, CertificatesList } from "../components";
-import { UIConstants } from "../constants";
-import { ListLayout, PageLayout } from "../layouts";
-import { AlertLevels, Certificate } from "../models";
-import { filterList, sortList } from "../utils";
+import { listClientCertificates } from "../../api";
+import { AdvancedSearchWithBasicFilters, CertificatesList } from "../../components";
+import { UIConstants } from "../../constants";
+import { ListLayout, PageLayout } from "../../layouts";
+import { AlertLevels, Certificate } from "../../models";
+import { filterList, sortList } from "../../utils";
 
 /**
- * This renders the Userstores page.
- *
- * @return {ReactElement}
+ * Props for the Certificates Truststore page.
  */
-export const CertificatesTruststore: FunctionComponent<{}> = (): ReactElement => {
+type CertificatesTruststorePageInterface = TestableComponentInterface
+
+/**
+ * This renders the Certificates Truststore page.
+ *
+ * @param {CertificatesTruststorePageInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterface> = (
+    props: CertificatesTruststorePageInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     /**
      * Sets the attributes by which the list can be sorted.
@@ -167,6 +181,7 @@ export const CertificatesTruststore: FunctionComponent<{}> = (): ReactElement =>
             title="Certificates in the Truststore"
             description="Create and manage certificates in the truststore"
             showBottomDivider={ true }
+            data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
                 advancedSearch={
@@ -196,6 +211,7 @@ export const CertificatesTruststore: FunctionComponent<{}> = (): ReactElement =>
                         }
                         defaultSearchAttribute="alias"
                         defaultSearchOperator="co"
+                        data-testid={ `${ testId }-advanced-search` }
                     />
                 }
                 currentListSize={ listItemLimit }
@@ -210,6 +226,7 @@ export const CertificatesTruststore: FunctionComponent<{}> = (): ReactElement =>
                 sortStrategy={ sortBy }
                 totalPages={ Math.ceil(filteredCertificatesTruststore?.length / listItemLimit) }
                 totalListSize={ filteredCertificatesTruststore?.length }
+                data-testid={ `${ testId }-list-layout` }
             >
                 <CertificatesList
                     isLoading={ isLoading }
@@ -218,8 +235,16 @@ export const CertificatesTruststore: FunctionComponent<{}> = (): ReactElement =>
                     onSearchQueryClear={ handleSearchQueryClear }
                     searchQuery={ searchQuery }
                     type="truststore"
+                    data-testid={ `${ testId }-list` }
                 />
             </ListLayout>
         </PageLayout>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+CertificatesTruststore.defaultProps = {
+    "data-testid": "certificate-truststore"
 };

@@ -16,10 +16,11 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
@@ -29,7 +30,7 @@ import { AlertLevels, Claim, UserStoreListItem } from "../../../../models";
 /**
  * Prop types of `EditMappedAttributesLocalClaims` component
  */
-interface EditMappedAttributesLocalClaimsPropsInterface {
+interface EditMappedAttributesLocalClaimsPropsInterface extends TestableComponentInterface {
     /**
      * Claim to be edited
      */
@@ -44,17 +45,24 @@ interface EditMappedAttributesLocalClaimsPropsInterface {
  * This component renders the Mapped Attribute pane of 
  * the edit local claim screen
  * 
- * @param {EditMappedAttributesLocalClaimsPropsInterface} props
- * @return {ReactElement}
+ * @param {EditMappedAttributesLocalClaimsPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const EditMappedAttributesLocalClaims = (
+export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttributesLocalClaimsPropsInterface> = (
     props: EditMappedAttributesLocalClaimsPropsInterface
 ): ReactElement => {
 
+    const {
+        claim,
+        update,
+        [ "data-testid" ]: testId
+    } = props;
+
+    const dispatch = useDispatch();
+
     const [ userStore, setUserStore ] = useState([]);
 
-    const { claim, update } = props;
-    const dispatch = useDispatch();
     const [ submit, setSubmit ] = useTrigger();
 
     const { t } = useTranslation();
@@ -76,7 +84,7 @@ export const EditMappedAttributesLocalClaims = (
     }, []);
 
     return (
-        <Grid>
+        <Grid data-testid={ testId }>
             <Grid.Row columns={ 1 }>
                 <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                     <p>
@@ -98,7 +106,7 @@ export const EditMappedAttributesLocalClaims = (
                                         userstore: userstore.toString()
                                     }
                                 })
-                            }
+                            };
                             updateAClaim(claim.id, submitData).then(() => {
                                 dispatch(addAlert(
                                     {
@@ -145,6 +153,7 @@ export const EditMappedAttributesLocalClaims = (
                                                     return attribute.userstore
                                                         .toLowerCase() === store.name.toLowerCase()
                                                 })?.mappedAttribute }
+                                                data-testid={ `${ testId }-form-store-name-input` }
                                             />
                                         </Grid.Column>
                                     </Grid.Row>
@@ -161,6 +170,7 @@ export const EditMappedAttributesLocalClaims = (
                         onClick={ () => {
                             setSubmit();
                         } }
+                        data-testid={ `${ testId }-form-submit-button` }
                     >
                         { t("common:update") }
                     </PrimaryButton>
@@ -168,4 +178,11 @@ export const EditMappedAttributesLocalClaims = (
             </Grid.Row>
         </Grid>
     )
+};
+
+/**
+ * Default props for the component.
+ */
+EditMappedAttributesLocalClaims.defaultProps = {
+    "data-testid": "edit-local-claims-mapped-attributes"
 };

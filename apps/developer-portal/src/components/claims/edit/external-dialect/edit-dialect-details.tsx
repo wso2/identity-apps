@@ -16,10 +16,11 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
@@ -31,18 +32,25 @@ import { AlertLevels, ClaimDialect } from "../../../../models";
 /**
  * Prop types for the `EditDialectDetails` component
  */
-interface EditDialectDetailsPropsInterface {
+interface EditDialectDetailsPropsInterface extends TestableComponentInterface {
     dialect: ClaimDialect;
 }
 
 /**
  * This renders the dialect details tab pane of the edit external dialect page.
- * 
+ *
+ * @param {EditDialectDetailsPropsInterface} props - Props injected to the component.
+ *
  * @return {ReactElement}
  */
-export const EditDialectDetails = (props: EditDialectDetailsPropsInterface): ReactElement => {
+export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterface> = (
+    props: EditDialectDetailsPropsInterface
+): ReactElement => {
 
-    const { dialect } = props;
+    const {
+        dialect,
+        [ "data-testid" ]: testId
+    } = props;
 
     const dispatch = useDispatch();
 
@@ -90,9 +98,10 @@ export const EditDialectDetails = (props: EditDialectDetailsPropsInterface): Rea
                                 "forms.dialectURI.requiredErrorMessage") }
                             label={ t("devPortal:components.claims.dialects.forms.dialectURI.label") }
                             name="dialectURI"
+                            data-testid={ `${ testId }-form-dialect-uri-input` }
                         />
                         <Divider hidden />
-                        <PrimaryButton type="submit">
+                        <PrimaryButton type="submit" data-testid={ `${ testId }-form-submit-button` }>
                             { t("devPortal:components.claims.dialects.forms.submit") }
                         </PrimaryButton>
                     </Forms>
@@ -100,4 +109,11 @@ export const EditDialectDetails = (props: EditDialectDetailsPropsInterface): Rea
             </Grid.Row>
         </Grid>
     )
+};
+
+/**
+ * Default props for the component.
+ */
+EditDialectDetails.defaultProps = {
+    "data-testid": "edit-dialect-details"
 };

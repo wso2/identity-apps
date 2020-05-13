@@ -17,29 +17,42 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { getADialect, getAllLocalClaims } from "../api";
-import { AdvancedSearchWithBasicFilters, ClaimsList, ListType } from "../components";
-import { AddLocalClaims } from "../components";
-import { CLAIM_DIALECTS_PATH, UIConstants } from "../constants";
-import { history } from "../helpers";
-import { ListLayout, PageLayout } from "../layouts";
-import { AlertLevels, Claim, ClaimsGetParams, FeatureConfigInterface } from "../models";
-import { AppState } from "../store";
-import { filterList, sortList } from "../utils";
+import { getADialect, getAllLocalClaims } from "../../api";
+import { AddLocalClaims, AdvancedSearchWithBasicFilters, ClaimsList, ListType } from "../../components";
+import { CLAIM_DIALECTS_PATH, UIConstants } from "../../constants";
+import { history } from "../../helpers";
+import { ListLayout, PageLayout } from "../../layouts";
+import { AlertLevels, Claim, ClaimsGetParams, FeatureConfigInterface } from "../../models";
+import { AppState } from "../../store";
+import { filterList, sortList } from "../../utils";
+
+/**
+ * Props for the Local Claims page.
+ */
+type LocalClaimsPageInterface = TestableComponentInterface
 
 /**
  * This returns the list of local claims.
  *
+ * @param {LocalClaimsPageInterface} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
-export const LocalClaimsPage = (): ReactElement => {
+export const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
+    props: LocalClaimsPageInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
 
@@ -231,6 +244,7 @@ export const LocalClaimsPage = (): ReactElement => {
                         onClose={ () => { setOpenModal(false) } }
                         update={ getLocalClaims }
                         claimURIBase={ claimURIBase }
+                        data-testid={ `${ testId }-add-local-claims-wizard` }
                     />
                     : null
             }
@@ -243,6 +257,7 @@ export const LocalClaimsPage = (): ReactElement => {
                     onClick: () => { history.push(CLAIM_DIALECTS_PATH) },
                     text: t("devPortal:components.claims.local.pageLayout.local.back")
                 } }
+                data-testid={ `${ testId }-page-layout` }
             >
                 <ListLayout
                     resetPagination={ resetPagination }
@@ -277,6 +292,7 @@ export const LocalClaimsPage = (): ReactElement => {
                             defaultSearchAttribute="displayName"
                             defaultSearchOperator="co"
                             triggerClearQuery={ triggerClearQuery }
+                            data-testid={ `${ testId }-list-advanced-search` }
                         />
                     }
                     currentListSize={ listItemLimit }
@@ -292,6 +308,7 @@ export const LocalClaimsPage = (): ReactElement => {
                                 onClick={ () => {
                                     setOpenModal(true);
                                 } }
+                                data-testid={ `${ testId }-list-layout-add-button` }
                             >
                                 <Icon name="add" />
                                 { t("devPortal:components.claims.local.pageLayout.local.action") }
@@ -306,6 +323,7 @@ export const LocalClaimsPage = (): ReactElement => {
                     totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
                     totalListSize={ filteredClaims?.length }
                     onSortOrderChange={ handleSortOrderChange }
+                    data-testid={ `${ testId }-list-layout` }
                 >
                     <ClaimsList
                         isLoading={ isLoading }
@@ -315,9 +333,17 @@ export const LocalClaimsPage = (): ReactElement => {
                         onEmptyListPlaceholderActionClick={ () => setOpenModal(true) }
                         onSearchQueryClear={ handleSearchQueryClear }
                         searchQuery={ searchQuery }
+                        data-testid={ `${ testId }-list` }
                     />
                 </ListLayout>
             </PageLayout>
         </>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+LocalClaimsPage.defaultProps = {
+    "data-testid": "local-claims"
 };

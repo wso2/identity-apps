@@ -16,24 +16,23 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
-import React, { ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { addDialect, addExternalClaim } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
 import { AddExternalClaim, AlertLevels } from "../../../models";
-import { DialectDetails } from "../wizard";
-import { ExternalClaims } from "../wizard";
-import { SummaryAddDialect } from "../wizard";
+import { DialectDetails, ExternalClaims, SummaryAddDialect } from "../wizard";
 
 /**
  * Prop types for `AddDialect` component.
  */
-interface AddDialectPropsInterface {
+interface AddDialectPropsInterface extends TestableComponentInterface {
     /**
      * Open the modal.
      */
@@ -51,13 +50,21 @@ interface AddDialectPropsInterface {
 /**
  * A component that lets you add a dialect.
  * 
- * @param {AddLocalClaimsPropsInterface} props
+ * @param {AddDialectPropsInterface} props - Props injected to the component.
  * 
- * @return {ReactElement} component.
+ * @return {React.ReactElement} component.
  */
-export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
+export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
+    props: AddDialectPropsInterface
+): ReactElement => {
 
-    const { open, onClose, update } = props;
+    const {
+        open,
+        onClose,
+        update,
+        [ "data-testid" ]: testId
+    } = props;
+
     const [ currentWizardStep, setCurrentWizardStep ] = useState(0);
     const [ dialectDetailsData, setDialectDetailsData ] = useState<Map<string, FormValue>>(null);
     const [ externalClaims, setExternalClaims ] = useState<AddExternalClaim[]>([]);
@@ -107,7 +114,7 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
                     || t("devPortal:components.claims.dialects.notifications.addDialect.success.description")
             }));
         })
-    }
+    };
 
     /**
      * Handler that is called when the `Dialect Details` wizard step is completed.
@@ -117,17 +124,17 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
     const onSubmitDialectDetails = (values: Map<string, FormValue>): void => {
         setCurrentWizardStep(1);
         setDialectDetailsData(values);
-    }
+    };
 
     /**
      * Handler that is called when the `Add External CLaims` step of the wizard is completed.
      * 
-     * @param {AddExternalClaim[]} values Claim Values.
+     * @param {AddExternalClaim[]} claims - Claim Values.
      */
-    const onSubmitExternalClaims = (claims: AddExternalClaim[]) => {
+    const onSubmitExternalClaims = (claims: AddExternalClaim[]): void => {
         setCurrentWizardStep(2);
         setExternalClaims(claims);
-    }
+    };
 
     /**
      * An array of objects that contains data of each step of the wizard.
@@ -139,6 +146,7 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
                     submitState={ firstStep }
                     onSubmit={ onSubmitDialectDetails }
                     values={ dialectDetailsData }
+                    data-testid={ `${ testId }-dialect-details` }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
@@ -150,6 +158,7 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
                     submitState={ secondStep }
                     onSubmit={ onSubmitExternalClaims }
                     values={ externalClaims }
+                    data-testid={ `${ testId }-external-claims` }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
@@ -160,6 +169,7 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
                 <SummaryAddDialect
                     dialectURI={ dialectDetailsData?.get("dialectURI").toString() }
                     claims={ externalClaims }
+                    data-testid={ `${ testId }-summary` }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
@@ -183,14 +193,14 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
                 handleSubmit();
                 break;
         }
-    }
+    };
 
     /**
      * Moves wizard to the previous step.
      */
     const previous = () => {
         setCurrentWizardStep(currentWizardStep - 1);
-    }
+    };
 
     return (
         <Modal
@@ -199,11 +209,12 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
             className="wizard application-create-wizard"
             open={ open }
             onClose={ onClose }
+            data-testid={ testId }
         >
             <Modal.Header className="wizard-header">
                 { t("devPortal:components.claims.dialects.wizard.header") }
             </Modal.Header>
-            <Modal.Content className="steps-container">
+            <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
                 <Steps.Group
                     current={ currentWizardStep }
                 >
@@ -212,6 +223,7 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
                             key={ index }
                             icon={ step.icon }
                             title={ step.title }
+                            data-testid={ `${ testId }-step-${ index }` }
                         />
                     )) }
                 </Steps.Group>
@@ -227,16 +239,28 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ next }>
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ next }
+                                    data-testid={ `${ testId }-next-button` }
+                                >
                                     { t("common:next") } <Icon name="arrow right" />
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep === STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ next }>
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ next }
+                                    data-testid={ `${ testId }-finish-button` }
+                                >
                                     { t("common:finish") }</PrimaryButton>
                             ) }
                             { currentWizardStep > 0 && (
-                                <LinkButton floated="right" onClick={ previous }>
+                                <LinkButton
+                                    floated="right"
+                                    onClick={ previous }
+                                    data-testid={ `${ testId }-previous-button` }
+                                >
                                     <Icon name="arrow left" /> { t("common:previous") }
                                 </LinkButton>
                             ) }
@@ -246,4 +270,11 @@ export const AddDialect = (props: AddDialectPropsInterface): ReactElement => {
             </Modal.Actions>
         </Modal >
     )
-}
+};
+
+/**
+ * Default props for the component.
+ */
+AddDialect.defaultProps = {
+    "data-testid": "add-dialect-wizard"
+};

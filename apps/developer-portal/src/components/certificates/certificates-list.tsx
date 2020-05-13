@@ -17,11 +17,16 @@
 */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { LoadableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components";
-import { Avatar } from "@wso2is/react-components";
-import { ConfirmationModal } from "@wso2is/react-components";
+import {
+    Avatar,
+    ConfirmationModal,
+    EmptyPlaceholder,
+    LinkButton,
+    PrimaryButton,
+    ResourceList
+} from "@wso2is/react-components";
 import { saveAs } from "file-saver";
 import * as forge from "node-forge";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -55,7 +60,9 @@ const TRUSTSTORE = "truststore";
 /**
  * Prop types of the `CertificatesList` component
  */
-interface CertificatesListPropsInterface extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface {
+interface CertificatesListPropsInterface extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * The certificate list
      */
@@ -83,9 +90,11 @@ interface CertificatesListPropsInterface extends SBACInterface<FeatureConfigInte
 }
 
 /**
- * This component renders the certificate List
- * @param {CertificatesListPropsInterface} props
- * @return {ReactElement}
+ * This component renders the certificate List.
+ *
+ * @param {CertificatesListPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const CertificatesList: FunctionComponent<CertificatesListPropsInterface> = (
     props: CertificatesListPropsInterface
@@ -99,7 +108,8 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
         onSearchQueryClear,
         searchQuery,
         update,
-        type
+        type,
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -235,24 +245,34 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                     }).finally(() => {
                         closeDeleteConfirm();
                     });
-                }
-                }
+                } }
+                data-testid={ `${ testId }-delete-confirmation-modal` }
             >
-                <ConfirmationModal.Header>
+                <ConfirmationModal.Header
+                    data-testid={ `${ testId }-delete-confirmation-modal-header` }
+                >
                     { t("devPortal:components.certificates.keystore.confirmation.header") }
                 </ConfirmationModal.Header>
                 { isTenantCertificate
                     ? (
                         <>
-                            <ConfirmationModal.Message attached warning>
+                            <ConfirmationModal.Message
+                                attached
+                                warning
+                                data-testid={ `${ testId }-delete-confirmation-modal-message` }
+                            >
                                 { t("devPortal:components.certificates.keystore.confirmation.message") }
                             </ConfirmationModal.Message>
-                            < ConfirmationModal.Content >
+                            < ConfirmationModal.Content
+                                data-testid={ `${ testId }-delete-confirmation-modal-content` }
+                            >
                                 { t("devPortal:components.certificates.keystore.confirmation.tenantContent") }
                             </ConfirmationModal.Content>
                         </>
                     ) : (
-                        < ConfirmationModal.Content >
+                        < ConfirmationModal.Content
+                            data-testid={ `${ testId }-delete-confirmation-modal-content` }
+                        >
                             { t("devPortal:components.certificates.keystore.confirmation.content") }
                         </ConfirmationModal.Content>
                     )
@@ -377,12 +397,13 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 size="tiny"
                 open={ certificateModal }
                 onClose={ () => { setCertificateModal(false) } }
+                data-testid={ `${ testId }-certificate-display-modal` }
             >
                 <Modal.Header>
 
                 </Modal.Header>
                 <Modal.Content className="certificate-content">
-                    <CertificateDisplay certificate={ certificateDisplay } />
+                    <CertificateDisplay data-testid={ `${ testId }-certificate` } certificate={ certificateDisplay } />
                 </Modal.Content>
             </Modal>
         )
@@ -409,6 +430,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                     subtitle={ [
                         t("devPortal:components.certificates.keystore.placeholders.emptySearch.subtitle")
                     ] }
+                    data-testid={ `${ testId }-empty-search-placeholder` }
                 />
             );
         }
@@ -428,6 +450,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                     subtitle={ [
                         t("devPortal:components.certificates.keystore.placeholders.emptyList.subtitle")
                     ] }
+                    data-testid={ `${ testId }-empty-placeholder` }
                 />
             );
         }
@@ -461,6 +484,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                     count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
+                data-testid={ testId }
             >
                 {
                     list && list instanceof Array && list.length > 0
@@ -475,6 +499,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                                                 avatarType="app"
                                                 spaced="right"
                                                 floated="left"
+                                                data-testid={ `${ testId }-item-image` }
                                             />
                                         }
                                         key={ index }
@@ -578,6 +603,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                                         ] }
                                         actionsFloated="right"
                                         itemHeader={ certificate.alias }
+                                        data-testid={ `${ testId }-item` }
                                     />
                                 )
                             })
@@ -587,4 +613,11 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
             </ResourceList>
         </>
     )
+};
+
+/**
+ * Default props for the component.
+ */
+CertificatesList.defaultProps = {
+    "data-testid": "certificates-list"
 };

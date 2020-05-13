@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Forms, useTrigger } from "@wso2is/forms";
+import { Field, Forms } from "@wso2is/forms";
 import { GenericIcon, Hint, Section } from "@wso2is/react-components";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -32,18 +32,24 @@ import { PasswordPoliciesInterface } from "../../models/server-configurations";
 /**
  * Prop types for the password policies component.
  */
-interface PasswordPoliciesProps {
+interface PasswordPoliciesProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
 /**
  * Password policies component.
  *
- * @param {Props} props - Props injected to the password policies component.
- * @return {JSX.Element}
+ * @param {PasswordPoliciesProps} props - Props injected to the password policies component.
+ *
+ * @return {React.ReactElement}
  */
-export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props: PasswordPoliciesProps):
-    JSX.Element => {
+export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (
+    props: PasswordPoliciesProps
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ passwordPoliciesConfigs, setPasswordPoliciesConfigs ] = useState<PasswordPoliciesInterface>({});
     const [ subAccordionActiveIndex, setSubAccordionActiveIndex ] = useState<number>(undefined);
@@ -271,6 +277,7 @@ export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props
                         value={ passwordPoliciesConfigs.passwordHistoryCount }
                         width={ 9 }
                         disabled={ !passwordPoliciesConfigs.passwordHistoryEnable }
+                        data-testid={ `${ testId }-password-history-other-settings-form-password-history-count-input` }
                     />
                     <Hint disabled={ !passwordPoliciesConfigs.passwordHistoryEnable }>
                         { t("devPortal:components.serverConfigs.passwordPolicies.passwordHistory." +
@@ -286,6 +293,7 @@ export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props
                             size="small"
                             type="submit"
                             value={ t("common:update").toString() }
+                            data-testid={ `${ testId }-password-history-other-settings-form-submit-button` }
                         />
                     </Form.Group>
                 </Grid.Column>
@@ -294,7 +302,7 @@ export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props
     );
 
     const passwordHistoryAccordion: ReactElement = (
-        <Accordion>
+        <Accordion data-testid={ `${ testId }-password-history-accordion` }>
             <Accordion.Title
                 active={ subAccordionActiveIndex === 1 }
                 index={ 0 }
@@ -362,6 +370,7 @@ export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props
                         value={ passwordPoliciesConfigs.passwordPolicyMinLength }
                         width={ 9 }
                         disabled={ !passwordPoliciesConfigs.passwordPolicyEnable }
+                        data-testid={ `${ testId }-password-policy-other-settings-policy-min-length-input` }
                     />
                     <Hint disabled={ !passwordPoliciesConfigs.passwordPolicyEnable }>
                         { t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
@@ -381,6 +390,7 @@ export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props
                         value={ passwordPoliciesConfigs.passwordPolicyMaxLength }
                         width={ 9 }
                         disabled={ !passwordPoliciesConfigs.passwordPolicyEnable }
+                        data-testid={ `${ testId }-password-policy-other-settings-policy-max-length-input` }
                     />
                     <Hint disabled={ !passwordPoliciesConfigs.passwordPolicyEnable }>
                         { t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
@@ -399,6 +409,7 @@ export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props
                         type="text"
                         value={ passwordPoliciesConfigs.passwordPolicyPattern }
                         disabled={ !passwordPoliciesConfigs.passwordPolicyEnable }
+                        data-testid={ `${ testId }-password-policy-other-settings-policy-pattern-input` }
                     />
                     <Hint disabled={ !passwordPoliciesConfigs.passwordPolicyEnable }>
                         { t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
@@ -417,6 +428,7 @@ export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props
                         type="text"
                         value={ passwordPoliciesConfigs.passwordPolicyErrorMessage }
                         disabled={ !passwordPoliciesConfigs.passwordPolicyEnable }
+                        data-testid={ `${ testId }-password-policy-other-settings-policy-pattern-error-message-input` }
                     />
                     <Hint disabled={ !passwordPoliciesConfigs.passwordPolicyEnable }>
                         { t("devPortal:components.serverConfigs.passwordPolicies.passwordPatterns." +
@@ -433,6 +445,7 @@ export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props
                             size="small"
                             type="submit"
                             value={ t("common:update").toString() }
+                            data-testid={ `${ testId }-password-policy-other-settings-submit-button` }
                         />
                     </Form.Group>
                 </Grid.Column>
@@ -441,7 +454,7 @@ export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props
     );
 
     const passwordPolicyAccordion: ReactElement = (
-        <Accordion>
+        <Accordion data-testid={ `${ testId }-password-policy-accordion` }>
             <Accordion.Title
                 active={ subAccordionActiveIndex === 2 }
                 index={ 0 }
@@ -522,6 +535,7 @@ export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
+            data-testid={ `${ testId }-section` }
         >
             <Divider className="m-0 mb-2"/>
             <div className="main-content-inner">
@@ -529,4 +543,11 @@ export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (props
             </div>
         </Section>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+PasswordPolicies.defaultProps = {
+    "data-testid": "password-policies"
 };

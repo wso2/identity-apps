@@ -16,10 +16,11 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Modal, PaginationProps } from "semantic-ui-react";
@@ -30,7 +31,7 @@ import { AlertLevels, ExternalClaim } from "../../../../models";
 import { filterList, sortList } from "../../../../utils";
 import { AdvancedSearchWithBasicFilters } from "../../../shared";
 
-interface EditExternalClaimsPropsInterface {
+interface EditExternalClaimsPropsInterface extends TestableComponentInterface {
     /**
      * Dialect ID
      */
@@ -52,11 +53,17 @@ interface EditExternalClaimsPropsInterface {
 /**
  * This lists the external claims.
  *
- * @param {EditExternalClaimsPropsInterface} props.
+ * @param {EditExternalClaimsPropsInterface} props - Props injected to the component.
  *
  * @return {ReactElement}
  */
-export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): ReactElement => {
+export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterface> = (
+    props: EditExternalClaimsPropsInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
 
@@ -219,6 +226,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                     defaultSearchAttribute="claimURI"
                     defaultSearchOperator="co"
                     triggerClearQuery={ triggerClearQuery }
+                    data-testid={ `${ testId }-list-advanced-search` }
                 />
             ) }
             currentListSize={ listItemLimit }
@@ -240,11 +248,13 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                         setShowAddExternalClaim(true);
                     } }
                     disabled={ showAddExternalClaim }
+                    data-testid={ `${ testId }-list-layout-add-button` }
                 >
                     <Icon name="add" />
                     { t("devPortal:components.claims.external.pageLayout.edit.primaryAction") }
                 </PrimaryButton>
             }
+            data-testid={ `${ testId }-list-layout` }
         >
             {
                 showAddExternalClaim && (
@@ -253,6 +263,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                         onClose={ () => { setShowAddExternalClaim(false) } }
                         dimmer="blurring"
                         size="small"
+                        data-testid={ `${ testId }-add-external-claim-modal` }
                     >
                         <Modal.Header>
                             { t("devPortal:components.claims.external.pageLayout.edit.header") }
@@ -264,17 +275,21 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                                 externalClaims={ claims }
                                 triggerSubmit={ triggerAddExternalClaim }
                                 cancel={ () => { setShowAddExternalClaim(false) } }
+                                data-testid={ `${ testId }-add-external-claims` }
                             />
                         </Modal.Content>
                         <Modal.Actions>
-                            <LinkButton onClick={ () => { setShowAddExternalClaim(false) } }>
+                            <LinkButton
+                                onClick={ () => { setShowAddExternalClaim(false) } }
+                                data-testid={ `${ testId }-add-external-claim-modal-cancel-button` }
+                            >
                                 { t("common:cancel") }
                             </LinkButton>
                             <PrimaryButton
                                 onClick={ () => {
                                     setTriggerAddExternalClaim();
-                                }
-                                }
+                                } }
+                                data-testid={ `${ testId }-add-external-claim-modal-save-button` }
                             >
                                 { t("common:save") }
                             </PrimaryButton>
@@ -294,6 +309,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                         onEmptyListPlaceholderActionClick={ () => setShowAddExternalClaim(true) }
                         onSearchQueryClear={ handleSearchQueryClear }
                         searchQuery={ searchQuery }
+                        data-testid={ `${ testId }-list` }
                     />
                 </Grid.Column>
             </Grid>
@@ -301,6 +317,10 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
     )
 };
 
+/**
+ * Default props for the component.
+ */
 EditExternalClaims.defaultProps = {
+    "data-testid": "edit-external-claims",
     isLoading: true
 };

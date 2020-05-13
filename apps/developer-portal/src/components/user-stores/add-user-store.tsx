@@ -16,6 +16,7 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
@@ -40,7 +41,7 @@ import { reOrganizeProperties } from "../../utils";
 /**
  * Prop types of the `AddUserStore` component
  */
-interface AddUserStoreProps {
+interface AddUserStoreProps extends TestableComponentInterface {
     /**
      * Open modal
      */
@@ -56,13 +57,20 @@ interface AddUserStoreProps {
 }
 
 /**
- * This component renders the Add Userstore Wizard
- * @param {AddUserStoreProps} props
+ * This component renders the Add Userstore Wizard.
+ *
+ * @param {AddUserStoreProps} props - Props injected to the component.
+ *
  * @return {ReactElement}
  */
 export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUserStoreProps): ReactElement => {
 
-    const { open, onClose, type } = props;
+    const {
+        open,
+        onClose,
+        type,
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(0);
     const [ generalDetailsData, setGeneralDetailsData ] = useState<Map<string, FormValue>>(null);
@@ -100,7 +108,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 description: t("devPortal:components.userstores.notifications.addUserstore.success.description"),
                 level: AlertLevels.SUCCESS,
                 message: t("devPortal:components.userstores.notifications.addUserstore.success.message")
-            }))
+            }));
             dispatch(addAlert({
                 description: t("devPortal:components.userstores.notifications.delay.description"),
                 level: AlertLevels.WARNING,
@@ -126,16 +134,16 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
     const onSubmitGeneralDetails = (values: Map<string, FormValue>): void => {
         setGeneralDetailsData(values);
         setCurrentWizardStep(1);
-    }
+    };
 
     const onSubmitUserDetails = (values: Map<string, FormValue>): void => {
         setUserDetailsData(values);
         setCurrentWizardStep(2);
-    }
+    };
 
     const onSubmitGroupDetails = (values: Map<string, FormValue>): void => {
         setGroupDetailsData(values);
-    }
+    };
 
     const serializeData = (): void => {
         const userStore: UserStorePostData = {
@@ -146,7 +154,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
         };
 
         setUserStore(userStore);
-    }
+    };
 
     const serializeProperties = (): UserStoreProperty[] => {
         const connectionProperties: UserStoreProperty[] = properties.connection.required.map(property => {
@@ -178,7 +186,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
         });
 
         return [ ...connectionProperties, ...userProperties, ...groupProperties, ...basicProperties ];
-    }
+    };
 
     /**
      * This contains the wizard steps
@@ -193,6 +201,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     type={ type }
                     connectionProperties={ properties?.connection?.required }
                     basicProperties={ properties?.basic?.required }
+                    data-testid={ `${ testId }-general-details` }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
@@ -205,6 +214,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     onSubmit={ onSubmitUserDetails }
                     values={ userDetailsData }
                     properties={ properties?.user?.required }
+                    data-testid={ `${ testId }-user-details` }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
@@ -217,6 +227,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     onSubmit={ onSubmitGroupDetails }
                     values={ groupDetailsData }
                     properties={ properties?.group?.required }
+                    data-testid={ `${ testId }-group-details` }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
@@ -231,6 +242,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     groupProperties={ properties?.group?.required }
                     basicProperties={ properties?.basic?.required }
                     type={ type?.typeName }
+                    data-testid={ `${ testId }-summary` }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
@@ -256,14 +268,14 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 handleSubmit();
                 break;
         }
-    }
+    };
 
     /**
      * Moves to the previous step in the wizard
      */
     const previous = () => {
         setCurrentWizardStep(currentWizardStep - 1);
-    }
+    };
 
     return (
         <Modal
@@ -272,6 +284,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             dimmer="blurring"
             size="small"
             className="wizard application-create-wizard"
+            data-testid={ testId }
         >
             <Modal.Header className="wizard-header">
                 { t("devPortal:components.userstores.wizard.header",
@@ -280,7 +293,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     })
                 }
             </Modal.Header>
-            <Modal.Content className="steps-container">
+            <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
                 <Steps.Group
                     current={ currentWizardStep }
                 >
@@ -289,6 +302,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                             key={ index }
                             icon={ step.icon }
                             title={ step.title }
+                            data-testid={ `${ testId }-step-${ index }` }
                         />
                     )) }
                 </Steps.Group>
@@ -304,16 +318,28 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ next }>
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ next }
+                                    data-testid={ `${ testId }-next-button` }
+                                >
                                     { t("common:next") } <Icon name="arrow right" />
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep === STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ next }>
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ next }
+                                    data-testid={ `${ testId }-finish-button` }
+                                >
                                     { t("common:finish") }</PrimaryButton>
                             ) }
                             { currentWizardStep > 0 && (
-                                <LinkButton floated="right" onClick={ previous }>
+                                <LinkButton
+                                    floated="right"
+                                    onClick={ previous }
+                                    data-testid={ `${ testId }-previous-button` }
+                                >
                                     <Icon name="arrow left" /> { t("common:previous") }
                                 </LinkButton>
                             ) }
@@ -323,4 +349,11 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             </Modal.Actions>
         </Modal>
     )
-}
+};
+
+/**
+ * Default props for the component.
+ */
+AddUserStore.defaultProps = {
+    "data-testid": "add-userstore-wizard"
+};

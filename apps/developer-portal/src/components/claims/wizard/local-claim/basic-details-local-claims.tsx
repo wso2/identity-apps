@@ -16,15 +16,17 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label, Popup } from "semantic-ui-react";
+import { ApplicationCreateWizard } from "../../../applications/wizard";
 
 /**
  * Prop types of `BasicDetailsLocalClaims` component
  */
-interface BasicDetailsLocalClaimsPropsInterface {
+interface BasicDetailsLocalClaimsPropsInterface extends TestableComponentInterface {
     /**
      * Triggers submit
      */
@@ -45,12 +47,20 @@ interface BasicDetailsLocalClaimsPropsInterface {
 
 /**
  * This component renders the basic details step of the add local claim wizard
- * @param {BasicDetailsLocalClaimsPropsInterface} props
- * @return {ReactElement}
+ *
+ * @param {BasicDetailsLocalClaimsPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
 export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInterface): ReactElement => {
 
-    const { submitState, onSubmit, values, claimURIBase } = props;
+    const {
+        submitState,
+        onSubmit,
+        values,
+        claimURIBase,
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ claimID, setClaimID ] = useState<string>(null);
     const [ isShow, setIsShow ] = useState(false);
@@ -105,7 +115,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     ): void => {
         clearTimeout(ref.current);
         callback(false);
-    }
+    };
 
     return (
         <Forms
@@ -119,7 +129,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                     regEx: values.get("regularExpression").toString(),
                     required: values.get("required").length > 0,
                     supportedByDefault: values.get("supportedByDefault").length > 0
-                }
+                };
                 onSubmit(data, values);
             } }
             submitState={ submitState }
@@ -143,6 +153,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             placeholder={ t("devPortal:components.claims.local.forms.name.placeholder") }
                             value={ values?.get("name")?.toString() }
                             ref={ nameField }
+                            data-testid={ `${ testId }-form-name-input` }
                         />
                         <Popup
                             content={ t("devPortal:components.claims.local.forms.nameHint") }
@@ -176,6 +187,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                 closePopup(setIsShowClaimIDHint, claimTimer);
                             } }
                             ref={ claimField }
+                            data-testid={ `${ testId }-form-claim-uri-input` }
                         />
                         <Popup
                             content={ t("devPortal:components.claims.local.forms.attributeHint") }
@@ -209,6 +221,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                 "requiredErrorMessage") }
                             placeholder={ t("devPortal:components.claims.local.forms.description.placeholder") }
                             value={ values?.get("description")?.toString() }
+                            data-testid={ `${ testId }-form-description-input` }
                         />
                     </Grid.Column>
                     <Grid.Column width={ 8 }>
@@ -227,6 +240,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                 closePopup(setIsShowRegExHint, regExTimer);
                             } }
                             ref={ regExField }
+                            data-testid={ `${ testId }-form-regex-input` }
                         />
                         <Popup
                             content={ t("devPortal:components.claims.local.forms.regExHint") }
@@ -257,6 +271,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             listen={ (values: Map<string, FormValue>) => {
                                 setIsShow(values?.get("supportedByDefault").length > 0);
                             } }
+                            data-testid={ `${ testId }-form-supported-by-default-checkbox` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -281,6 +296,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                         closePopup(setIsShowDisplayOrderHint, displayTimer);
                                     } }
                                     ref={ displayOrderField }
+                                    data-testid={ `${ testId }-form-display-order-input` }
                                 />
                                 <Popup
                                     content={
@@ -311,6 +327,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                 value: "Required"
                             } ] }
                             value={ values?.get("required") as string[] }
+                            data-testid={ `${ testId }-form-required-checkbox` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -326,10 +343,19 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                 value: "ReadOnly"
                             } ] }
                             value={ values?.get("readOnly") as string[] }
+                            data-testid={ `${ testId }-form-readonly-checkbox` }
                         />
                     </Grid.Column>
                 </Grid.Row>
             </Grid >
         </Forms >
     )
+};
+
+/**
+ * Default props for the application creation wizard.
+ */
+BasicDetailsLocalClaims.defaultProps = {
+    currentStep: 0,
+    "data-testid": "local-claim-basic-details-form"
 };

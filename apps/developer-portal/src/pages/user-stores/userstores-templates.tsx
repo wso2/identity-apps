@@ -16,23 +16,29 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, TemplateGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { getAType, getUserstoreTypes } from "../api";
-import { AddUserStore } from "../components";
-import { EmptyPlaceholderIllustrations, UserstoreTemplateIllustrations } from "../configs";
+import { getAType, getUserstoreTypes } from "../../api";
+import { AddUserStore } from "../../components";
+import { EmptyPlaceholderIllustrations, UserstoreTemplateIllustrations } from "../../configs";
 import {
     USERSTORE_TYPE_DISPLAY_NAMES,
     USERSTORE_TYPE_IMAGES,
     USER_STORES_PATH,
     USER_STORE_TYPE_DESCRIPTIONS
-} from "../constants";
-import { history } from "../helpers";
-import { PageLayout } from "../layouts";
-import { AlertLevels, TypeResponse, UserstoreType } from "../models";
+} from "../../constants";
+import { history } from "../../helpers";
+import { PageLayout } from "../../layouts";
+import { AlertLevels, TypeResponse, UserstoreType } from "../../models";
+
+/**
+ * Props for the Userstore templates page.
+ */
+type UserstoresTemplatesPageInterface = TestableComponentInterface;
 
 /**
  * Interface to be passed as the type into the `TemplateGrid` component.
@@ -46,10 +52,18 @@ interface UserstoreTypeListItem {
 
 /**
  * This renders the userstore templates page.
- * 
- * @returns {ReactElement} Userstore templates page.
+ *
+ * @param {UserstoresTemplatesPageInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
+export const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> = (
+    props: UserstoresTemplatesPageInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ userstoreTypes, setUserstoreTypes ] = useState<UserstoreTypeListItem[]>([]);
     const [ rawUserstoreTypes, setRawUserstoreTypes ] = useState<UserstoreType[]>([]);
@@ -67,7 +81,7 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
 
     useEffect(() => {
         !openModal && setSelectedType(null);
-    }, [ openModal ])
+    }, [ openModal ]);
 
     /**
      * Fetches the list of userstore types.
@@ -148,6 +162,7 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
                             setOpenModal(false);
                         } }
                         type={ selectedType }
+                        data-testid={ `${ testId }-add-userstore-wizard` }
                     />
                 )
             }
@@ -166,6 +181,7 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
                 titleTextAlign="left"
                 bottomMargin={ false }
                 showBottomDivider
+                data-testid={ `${ testId }-page-layout` }
             >
                 {
                     userstoreTypes && (
@@ -195,9 +211,11 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
                                             subtitle={
                                                 [ t("devPortal:components.templates.emptyPlaceholder.subtitles") ]
                                             }
+                                            data-testid={ `${ testId }-grid-empty-placeholder` }
                                         />
                                     )
                                 ) }
+                                data-testid={ `${ testId }-grid` }
                             />
                         </div>
                     )
@@ -205,4 +223,11 @@ export const UserstoresTemplates: FunctionComponent<{}> = (): ReactElement => {
             </PageLayout>
         </>
     )
+};
+
+/**
+ * Default props for the component.
+ */
+UserstoresTemplates.defaultProps = {
+    "data-testid": "userstore-templates"
 };

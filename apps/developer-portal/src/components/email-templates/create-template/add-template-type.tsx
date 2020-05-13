@@ -16,22 +16,25 @@
 * under the License.
 */
 
-import React, { ReactElement, FunctionComponent, useEffect, useState } from "react";
-import { Forms, Field } from "@wso2is/forms";
-import { Grid, GridRow, GridColumn } from "semantic-ui-react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { Field, Forms } from "@wso2is/forms";
+import React, { FunctionComponent, ReactElement } from "react";
+import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 
 /**
  * Interface to capture role basics props.
  */
-interface AddEmailTemplateTypePropsInterface {
+interface AddEmailTemplateTypePropsInterface extends TestableComponentInterface {
     onSubmit: (values: any) => void;
     triggerSubmit: boolean;
 }
 
 /**
  * Form component to capture template type data.
- * 
- * @param props - props required for template type form component
+ *
+ * @param {AddEmailTemplateTypePropsInterface} props - props required for template type form component
+ *
+ * @return {React.ReactElement}
  */
 export const AddEmailTemplateType: FunctionComponent<AddEmailTemplateTypePropsInterface> = (
     props: AddEmailTemplateTypePropsInterface
@@ -39,7 +42,8 @@ export const AddEmailTemplateType: FunctionComponent<AddEmailTemplateTypePropsIn
 
     const {
         onSubmit,
-        triggerSubmit
+        triggerSubmit,
+        [ "data-testid" ]: testId
     } = props;
 
     /**
@@ -49,7 +53,7 @@ export const AddEmailTemplateType: FunctionComponent<AddEmailTemplateTypePropsIn
      */
     const getFormValues = (values: any): any => {
         return {
-            templateType: values.get("templatetype").toString(),
+            templateType: values.get("templatetype").toString()
         };
     };
 
@@ -70,10 +74,18 @@ export const AddEmailTemplateType: FunctionComponent<AddEmailTemplateTypePropsIn
                             placeholder="Enter a template type name"
                             required={ true }
                             requiredErrorMessage="Template type name is required to proceed."
+                            data-testid={ `${ testId }-type-input` }
                         />
                     </GridColumn>
                 </GridRow>
             </Grid>
         </Forms>
     )
-}
+};
+
+/**
+ * Default props for the component.
+ */
+AddEmailTemplateType.defaultProps = {
+    "data-testid": "add-email-template-type-form"
+};

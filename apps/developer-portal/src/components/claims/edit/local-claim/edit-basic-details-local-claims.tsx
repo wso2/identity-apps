@@ -16,10 +16,11 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ConfirmationModal, CopyInputField, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Form, Grid, Popup } from "semantic-ui-react";
@@ -31,7 +32,7 @@ import { AlertLevels, Claim } from "../../../../models";
 /**
  * Prop types for `EditBasicDetailsLocalClaims` component
  */
-interface EditBasicDetailsLocalClaimsPropsInterface {
+interface EditBasicDetailsLocalClaimsPropsInterface extends TestableComponentInterface {
     /**
      * The claim to be edited
      */
@@ -44,16 +45,22 @@ interface EditBasicDetailsLocalClaimsPropsInterface {
 
 /**
  * This component renders the Basic Details pane of the edit local claim screen
- * @param {EditBasicDetailsLocalClaimsPropsInterface} props
- * @return {ReactElement}
+ *
+ * @param {EditBasicDetailsLocalClaimsPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const EditBasicDetailsLocalClaims = (
+export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLocalClaimsPropsInterface> = (
     props: EditBasicDetailsLocalClaimsPropsInterface
 ): ReactElement => {
 
-    const dispatch = useDispatch();
+    const {
+        claim,
+        update,
+        [ "data-testid" ]: testId
+    } = props;
 
-    const { claim, update } = props;
+    const dispatch = useDispatch();
 
     const [ isShowNameHint, setIsShowNameHint ] = useState(false);
     const [ isShowRegExHint, setIsShowRegExHint ] = useState(false);
@@ -95,6 +102,7 @@ export const EditBasicDetailsLocalClaims = (
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
             onPrimaryActionClick={ (): void => deleteLocalClaim(claim.id) }
+            data-testid={ `${ testId }-delete-confirmation-modal` }
         >
             <ConfirmationModal.Header>
                 { t("devPortal:components.claims.local.confirmation.header") }
@@ -160,7 +168,7 @@ export const EditBasicDetailsLocalClaims = (
     ): void => {
         clearTimeout(ref.current);
         callback(false);
-    }
+    };
 
     return (
         <>
@@ -169,7 +177,9 @@ export const EditBasicDetailsLocalClaims = (
                 <Grid.Row columns={ 1 }>
                     <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                         <Form>
-                            <Form.Field>
+                            <Form.Field
+                                data-testid={ `${ testId }-form-attribute-uri-readonly-input` }
+                            >
                                 <label>{ t("devPortal:components.claims.local.attributes.attributeURI") }</label>
                                 <CopyInputField value={ claim ? claim.claimURI : "" } />
                             </Form.Field>
@@ -238,6 +248,7 @@ export const EditBasicDetailsLocalClaims = (
                                 placeholder={ t("devPortal:components.claims.local.forms.name.placeholder") }
                                 value={ claim?.displayName }
                                 ref={ nameField }
+                                data-testid={ `${ testId }-form-name-input` }
                             />
                             <Popup
                                 content={ t("devPortal:components.claims.local.forms.nameHint") }
@@ -260,6 +271,7 @@ export const EditBasicDetailsLocalClaims = (
                                     "requiredErrorMessage") }
                                 placeholder={ t("devPortal:components.claims.local.forms.description.placeholder") }
                                 value={ claim?.description }
+                                data-testid={ `${ testId }-form-description-input` }
                             />
                             <Divider hidden />
                             <Field
@@ -277,6 +289,7 @@ export const EditBasicDetailsLocalClaims = (
                                     closePopup(setIsShowRegExHint, regExTimer);
                                 } }
                                 ref={ regExField }
+                                data-testid={ `${ testId }-form-regex-input` }
                             />
                             <Popup
                                 content={ t("devPortal:components.claims.local.forms.description.regExHint") }
@@ -303,6 +316,7 @@ export const EditBasicDetailsLocalClaims = (
                                 listen={ (values: Map<string, FormValue>) => {
                                     setIsShowDisplayOrder(values?.get("supportedByDefault")?.length > 0);
                                 } }
+                                data-testid={ `${ testId }-form-supported-by-default-input` }
                             />
                             {
                                 isShowDisplayOrder
@@ -325,6 +339,7 @@ export const EditBasicDetailsLocalClaims = (
                                                 closePopup(setIsShowDisplayOrderHint, displayTimer);
                                             } }
                                             ref={ displayOrderField }
+                                            data-testid={ `${ testId }-form-display-order-input` }
                                         />
                                         <Popup
                                             content={ t("devPortal:components.claims.local.forms.displayOrderHint") }
@@ -351,6 +366,7 @@ export const EditBasicDetailsLocalClaims = (
                                     value: "Required"
                                 } ] }
                                 value={ claim?.required ? [ "Required" ] : [] }
+                                data-testid={ `${ testId }-form-required-checkbox` }
                             />
                             <Divider hidden />
                             <Field
@@ -363,6 +379,7 @@ export const EditBasicDetailsLocalClaims = (
                                     value: "ReadOnly"
                                 } ] }
                                 value={ claim?.readOnly ? [ "ReadOnly" ] : [] }
+                                data-testid={ `${ testId }-form-readonly-checkbox` }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -371,6 +388,7 @@ export const EditBasicDetailsLocalClaims = (
                             <Field
                                 type="submit"
                                 value={ t("common:update") }
+                                data-testid={ `${ testId }-form-submit-button` }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -378,16 +396,27 @@ export const EditBasicDetailsLocalClaims = (
             </Forms>
             <Grid columns={ 1 }>
                 <Grid.Column width={ 16 }>
-                    <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                    <DangerZoneGroup
+                        sectionHeader={ t("common:dangerZone") }
+                        data-testid={ `${ testId }-danger-zone-group` }
+                    >
                         <DangerZone
                             actionTitle={ t("devPortal:components.claims.local.dangerZone.actionTitle") }
                             header={ t("devPortal:components.claims.local.dangerZone.header") }
                             subheader={ t("devPortal:components.claims.local.dangerZone.subheader") }
                             onActionClick={ () => setConfirmDelete(true) }
+                            data-testid={ `${ testId }-local-claim-delete-danger-zone` }
                         />
                     </DangerZoneGroup>
                 </Grid.Column>
             </Grid>
         </>
     )
+};
+
+/**
+ * Default props for the component.
+ */
+EditBasicDetailsLocalClaims.defaultProps = {
+    "data-testid": "local-claims-basic-details-edit"
 };

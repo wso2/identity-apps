@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import { LoadableComponentInterface } from "@wso2is/core/models";
+import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import {
     ConfirmationModal,
     EmptyPlaceholder,
@@ -32,7 +32,7 @@ import { history } from "../../helpers";
 import { EmailTemplateType } from "../../models";
 import { AvatarBackground } from "../shared";
 
-interface EmailTemplateListPropsInterface extends LoadableComponentInterface {
+interface EmailTemplateListPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
     onDelete: (templateId: string) => void;
     templateTypeList: EmailTemplateType[];
     /**
@@ -43,8 +43,10 @@ interface EmailTemplateListPropsInterface extends LoadableComponentInterface {
 
 /**
  * List component to render email template types.
- * 
- * @param props props required to render the email template list
+ *
+ * @param {EmailTemplateListPropsInterface} props - props required to render the email template list.
+ *
+ * @return {React.ReactElement}
  */
 export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInterface> = (
     props: EmailTemplateListPropsInterface
@@ -54,7 +56,8 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
         isLoading,
         templateTypeList: templateList,
         onDelete,
-        onEmptyListPlaceholderActionClick
+        onEmptyListPlaceholderActionClick,
+        [ "data-testid" ]: testId
     } = props;
 
     const [ showTemplateTypeDeleteConfirmation, setShowTemplateTypeDeleteConfirmation ] = useState<boolean>(false);
@@ -87,6 +90,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                     ] }
                     image={ EmailTemplateIllustrations.emptyEmailListing }
                     imageSize="tiny"
+                    data-testid={ `${ testId }-empty-placeholder` }
                 />
             );
         }
@@ -103,6 +107,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                     count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
+                data-testid={ testId }
             >
                 {
                     templateList && templateList instanceof Array && templateList.length > 0
@@ -132,6 +137,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                                         rounded
                                         centered
                                         size="mini"
+                                        data-testid={ `${ testId }-item-image` }
                                     >
                                         <AvatarBackground />
                                         <span className="claims-letter">
@@ -140,13 +146,14 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                                     </Image>
                                 ) }
                                 itemHeader={ template.displayName }
+                                data-testid={ `${ testId }-item` }
                             />
                         ))
                         : showPlaceholders()
                 }
             </ResourceList>
             {
-                showTemplateTypeDeleteConfirmation && 
+                showTemplateTypeDeleteConfirmation && (
                     <ConfirmationModal
                         onClose={ (): void => setShowTemplateTypeDeleteConfirmation(false) }
                         type="warning"
@@ -163,18 +170,37 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                             onDelete(currentDeletingTemplate.id);
                             setShowTemplateTypeDeleteConfirmation(false);
                         } }
+                        data-testid={ `${ testId }-delete-confirmation-modal` }
                     >
-                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
+                        <ConfirmationModal.Header
+                            data-testid={ `${ testId }-delete-confirmation-modal-header` }
+                        >
+                            Are you sure?
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message
+                            attached
+                            warning
+                            data-testid={ `${ testId }-delete-confirmation-modal-message` }
+                        >
                             This action is irreversible and will permanently delete the selected email template type.
                         </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
+                        <ConfirmationModal.Content
+                            data-testid={ `${ testId }-delete-confirmation-modal-content` }
+                        >
                             If you delete this email template type, all associated work flows will no longer
                             have a valid email template to work with and this will delete all the locale templates 
                             associated with this template type. Please proceed cautiously.
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
+                )
             }
         </>
     )
+};
+
+/**
+ * Default props for the component.
+ */
+EmailTemplateTypeList.defaultProps = {
+    "data-testid": "email-template-types-list"
 };

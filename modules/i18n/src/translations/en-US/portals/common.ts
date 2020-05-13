@@ -57,6 +57,7 @@ export const common: CommonNS = {
     edit: "Edit",
     endsWith: "Ends with",
     equals: "Equals",
+    export: "Export",
     filter: "Filter",
     finish: "Finish",
     goBackHome: "Go back home",
@@ -122,5 +123,6 @@ export const common: CommonNS = {
     unpinned: "Unpinned",
     update: "Update",
     user: "User",
-    verify: "Verify"
+    verify: "Verify",
+    view: "View"
 };

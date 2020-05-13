@@ -16,23 +16,37 @@
  * under the License.
  */
 
-import { AlertInterface } from "@wso2is/core/models";
+import { AlertInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { AccountRecovery, UserSelfRegistration, LoginPolicies, PasswordPolicies } from "../components";
-import { PageLayout } from "../layouts";
+import { AccountRecovery, LoginPolicies, PasswordPolicies, UserSelfRegistration } from "../../components";
+import { PageLayout } from "../../layouts";
+
+/**
+ * Props for the Server Configurations page.
+ */
+type ServerConfigurationsPageInterface = TestableComponentInterface;
 
 /**
  * Governance Features page.
  *
+ * @param {ServerConfigurationsPageInterface} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
-export const ServerConfigurationsPage: FunctionComponent<{}> = (): ReactElement => {
+export const ServerConfigurationsPage: FunctionComponent<ServerConfigurationsPageInterface> = (
+    props: ServerConfigurationsPageInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const dispatch = useDispatch();
+
     const { t } = useTranslation();
 
     /**
@@ -48,20 +62,40 @@ export const ServerConfigurationsPage: FunctionComponent<{}> = (): ReactElement 
             title={ t("devPortal:pages.serverConfigurations.title") }
             description={ t("devPortal:pages.serverConfigurations.subTitle") }
             showBottomDivider={ true }
+            data-testid={ `${ testId }-page-layout` }
         >
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={ 10 }>
-                        <UserSelfRegistration onAlertFired={ handleAlerts }/>
+                        <UserSelfRegistration
+                            onAlertFired={ handleAlerts }
+                            data-testid={ `${ testId }-user-self-registration` }
+                        />
                         <Divider hidden={ true } />
-                        <AccountRecovery onAlertFired={ handleAlerts }/>
+                        <AccountRecovery
+                            onAlertFired={ handleAlerts }
+                            data-testid={ `${ testId }-account-recovery` }
+                        />
                         <Divider hidden={ true } />
-                        <LoginPolicies onAlertFired={ handleAlerts }/>
+                        <LoginPolicies
+                            onAlertFired={ handleAlerts }
+                            data-testid={ `${ testId }-login-policies` }
+                        />
                         <Divider hidden={ true } />
-                        <PasswordPolicies onAlertFired={ handleAlerts }/>
+                        <PasswordPolicies
+                            onAlertFired={ handleAlerts }
+                            data-testid={ `${ testId }-password-policies` }
+                        />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
         </PageLayout>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+ServerConfigurationsPage.defaultProps = {
+    "data-testid": "server-configurations"
 };

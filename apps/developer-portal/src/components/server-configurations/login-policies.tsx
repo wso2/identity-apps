@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import { EditSection, GenericIcon, Hint, LinkButton, Section } from "@wso2is/react-components";
@@ -32,17 +32,24 @@ import { LoginPoliciesInterface } from "../../models/server-configurations";
 /**
  * Prop types for the login policies component.
  */
-interface LoginPoliciesProps {
+interface LoginPoliciesProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
 /**
  * Login policies component.
  *
- * @param {Props} props - Props injected to the login policies component.
- * @return {JSX.Element}
+ * @param {LoginPoliciesProps} props - Props injected to the login policies component.
+ *
+ * @return {React.ReactElement}
  */
-export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: LoginPoliciesProps): JSX.Element => {
+export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (
+    props: LoginPoliciesProps
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ loginPoliciesConfigs, setLoginPoliciesConfigs ] = useState<LoginPoliciesInterface>({});
     const [ mainAccordionActiveState, setMainAccordionActiveState ] = useState<boolean>(false);
@@ -338,6 +345,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
                         value={ loginPoliciesConfigs.maxFailedLoginAttemptsToAccountLock }
                         width={ 9 }
                         disabled={ !loginPoliciesConfigs?.accountLockEnable }
+                        data-testid={ `${ testId }-form-max-failed-login-attempts-to-account-lock-input` }
                     />
                     <Hint disabled={ !loginPoliciesConfigs?.accountLockEnable }>
                         { t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
@@ -357,6 +365,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
                         value={ loginPoliciesConfigs.accountLockTime }
                         width={ 9 }
                         disabled={ !loginPoliciesConfigs?.accountLockEnable }
+                        data-testid={ `${ testId }-form-account-lock-time-input` }
                     />
                     <Hint disabled={ !loginPoliciesConfigs?.accountLockEnable }>
                         { t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
@@ -376,6 +385,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
                         value={ loginPoliciesConfigs.accountLockTimeIncrementFactor }
                         width={ 9 }
                         disabled={ !loginPoliciesConfigs?.accountLockEnable }
+                        data-testid={ `${ testId }-form-account-lock-time-increment-factor-input` }
                     />
                     <Hint disabled={ !loginPoliciesConfigs?.accountLockEnable }>
                         { t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
@@ -397,6 +407,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
                         ] }
                         value={ loginPoliciesConfigs.accountLockInternalNotificationManagement }
                         disabled={ !loginPoliciesConfigs?.accountLockEnable }
+                        data-testid={ `${ testId }-form-account-lock-internal-notification-mgt-checkbox` }
                     />
                     <Hint disabled={ !loginPoliciesConfigs?.accountLockEnable }>
                         { t("devPortal:components.serverConfigs.loginPolicies.accountLock." +
@@ -412,6 +423,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
                             size="small"
                             type="submit"
                             value={ t("common:update").toString() }
+                            data-testid={ `${ testId }-form-submit-button` }
                         />
                     </Form.Group>
                 </Grid.Column>
@@ -420,7 +432,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
     );
 
     const accountLockAccordion: ReactElement = (
-        <Accordion>
+        <Accordion data-testid={ `${ testId }-account-lock-accordion` }>
             <Accordion.Title
                 active={ subAccordionActiveIndex === 1 }
                 index={ 0 }
@@ -497,6 +509,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
                                     ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT, value);
                             }
                         }
+                        data-testid={ `${ testId }-form-account-disable-internal-notification-mgt-checkbox` }
                     />
                     <Hint>
                         { t("devPortal:components.serverConfigs.loginPolicies." +
@@ -508,7 +521,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
     );
 
     const accountDisableAccordion: ReactElement = (
-        <Accordion>
+        <Accordion data-testid={ `${ testId }-account-disable-accordion` }>
             <Accordion.Title
                 active={ subAccordionActiveIndex === 2 }
                 index={ 0 }
@@ -587,6 +600,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
                                     }
                                 ] }
                                 value={ loginPoliciesConfigs.reCaptchaPreference }
+                                data-testid={ `${ testId }-advanced-config-form-recaptcha-always-enable-radio` }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -604,6 +618,9 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
                                 type="number"
                                 value={ loginPoliciesConfigs.maxFailedLoginAttemptsToReCaptcha }
                                 width={ 9 }
+                                data-testid={
+                                    `${ testId }-advanced-config-form-max-failed-login-attempts-to-recaptcha-input`
+                                }
                             />
                             <Hint>
                                 { t("devPortal:components.serverConfigs.loginPolicies.reCaptcha." +
@@ -621,6 +638,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
                                     size="small"
                                     type="submit"
                                     value={ t("common:save").toString() }
+                                    data-testid={ `${ testId }-advanced-config-form-submit-button` }
                                 />
                             </Form.Group>
                         </Grid.Column>
@@ -631,7 +649,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
     );
 
     const mainAccordion: ReactElement = (
-        <Accordion fluid styled>
+        <Accordion fluid styled data-testid={ `${ testId }-main-accordion` }>
             <Accordion.Title
                 active={ mainAccordionActiveState }
                 index={ 0 }
@@ -702,7 +720,8 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
                                         ACCOUNT_DISABLING_ENABLE, value);
                                 }
                             }
-                            toggle
+                            togglea
+                            data-testid={ `${ testId }-form-account-disabling-enable-toggle` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -728,6 +747,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
             iconStyle="colored"
             iconFloated="right"
             accordion={ mainAccordion }
+            data-testid={ `${ testId }-section` }
         >
             <Divider className="m-0 mb-2"/>
             <div className="main-content-inner">
@@ -735,4 +755,11 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (props: Logi
             </div>
         </Section>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+LoginPolicies.defaultProps = {
+    "data-testid": "login-policies"
 };

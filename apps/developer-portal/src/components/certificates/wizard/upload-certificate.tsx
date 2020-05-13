@@ -16,6 +16,7 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import * as forge from "node-forge";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -41,7 +42,7 @@ interface PemCertificate {
 /**
  * Prop types of the `UploadCertificate` component.
  */
-interface UploadCertificatePropsInterface {
+interface UploadCertificatePropsInterface extends TestableComponentInterface {
     /**
      * Submits this step.
      */
@@ -90,7 +91,16 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
     props: UploadCertificatePropsInterface
 ): ReactElement => {
 
-    const { submit, triggerSubmit, nameData, pemData, fileDecodedData, fileData, forgeCertificateData } = props;
+    const {
+        submit,
+        triggerSubmit,
+        nameData,
+        pemData,
+        fileDecodedData,
+        fileData,
+        forgeCertificateData,
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ name, setName ] = useState("");
     const [ file, setFile ] = useState<File>(null);
@@ -197,7 +207,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             } else {
                 setDark(false);
             }
-        }
+        };
         window.matchMedia("(prefers-color-scheme:dark)").addEventListener("change", callback);
 
         return () => {
@@ -208,7 +218,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
     /**
      * This takes in a `.cer` file and converts it to PEM.
      * 
-     * @param {File} value .cer `File`.
+     * @param {File} file .cer `File`.
      * 
      * @returns {Promise<string>} The PEM encoded string.
      */
@@ -277,7 +287,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         }
 
         return pemValue.join("\n");
-    }
+    };
 
     /**
      * Convert PEM string to forge certificate object.
@@ -301,7 +311,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             setFileError(true);
             return null;
         }
-    }
+    };
 
     /**
      * Checks the certificate type and decodes appropriately.
@@ -380,7 +390,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         } else {
             return fileDecoded || convertFromPem(pem);
         }
-    }
+    };
 
     /**
      * The tab panes that display the drop zone and the textarea.
@@ -410,6 +420,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                             onDragLeave={ () => {
                                 setDragOver(false);
                             } }
+                            data-testid={ `${ testId }-certificate-upload-dropzone` }
                         >
                             <Segment placeholder className={ `drop-zone ${dragOver ? "drag-over" : ""}` }>
                                 <div className="certificate-upload-placeholder">
@@ -458,6 +469,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                         } }
                         spellCheck={ false }
                         className={ `certificate-editor ${dark ? "dark" : "light"}` }
+                        data-testid={ `${ testId }-certificate-content-textarea` }
                     />
                 </Form>
             )
@@ -498,6 +510,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                     event.target.value = null;
                     addFile(file);
                 } }
+                data-testid={ `${ testId }-file-upload-input` }
             />
             <Form>
                 <Form.Input
@@ -518,6 +531,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                     onChange={ (event) => {
                         setName(event.target.value);
                     } }
+                    data-testid={ `${ testId }-alias-input` }
                 />
             </Form>
             <Divider hidden />
@@ -533,11 +547,12 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 onTabChange={ (event, { activeIndex }) => {
                     setActiveIndex(parseInt(activeIndex.toString()));
                 } }
+                data-testid={ `${ testId }-certificate-upload-tab` }
             />
 
             {
                 (fileError || certEmpty) &&
-                <Message error attached="bottom">
+                <Message error attached="bottom" data-testid={ `${ testId }-error-message` }>
                     { fileError
                         ? t("devPortal:components.certificates.keystore.errorCertificate")
                         : t("devPortal:components.certificates.keystore.errorEmpty")
@@ -547,4 +562,11 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         </>
 
     )
+};
+
+/**
+ * Default props for the component.
+ */
+UploadCertificate.defaultProps = {
+    "data-testid": "upload-certificate"
 };

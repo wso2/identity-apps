@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import { EditSection, GenericIcon, Hint, LinkButton, Section } from "@wso2is/react-components";
@@ -32,7 +32,7 @@ import { AccountRecoveryConfigurationsInterface } from "../../models/server-conf
 /**
  * Prop types for the account recovery component.
  */
-interface AccountRecoveryProps {
+interface AccountRecoveryProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -40,9 +40,16 @@ interface AccountRecoveryProps {
  * User Account Recovery component.
  *
  * @param {AccountRecoveryProps} props - Props injected to the account recovery component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
-export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: AccountRecoveryProps): JSX.Element => {
+export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (
+    props: AccountRecoveryProps
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ accountRecoveryConfigs, setAccountRecoveryConfigs ] = useState<AccountRecoveryConfigurationsInterface>({});
     const [ mainAccordionActiveState, setMainAccordionActiveState ] = useState<boolean>(false);
@@ -331,6 +338,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                                     value);
                             }
                         }
+                        data-testid={ `${ testId }-form-enable-recaptcha-checkbox` }
                     />
                     <Hint>
                         { t("devPortal:components.serverConfigs.accountRecovery." +
@@ -368,6 +376,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                                     PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA, value);
                             }
                         }
+                        data-testid={ `${ testId }-form-enable-recaptcha-for-notification-based-recovery-checkbox` }
                     />
                     <Hint>
                         { t("devPortal:components.serverConfigs.accountRecovery." +
@@ -429,6 +438,9 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                             }
                         ] }
                         value={ accountRecoveryConfigs.enableReCaptchaForQuestionPasswordRecovery }
+                        data-testid={
+                            `${ testId }-form-enable-recaptcha-for-security-question-based-recovery-checkbox`
+                        }
                     />
                     <Hint>
                         { t("devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
@@ -448,6 +460,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                         type="number"
                         value={ accountRecoveryConfigs.passwordRecoveryMinAnswers }
                         width={ 9 }
+                        data-testid={ `${ testId }-form-no-of-questions-required-input` }
                     />
                     <Hint>
                         { t("devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
@@ -461,6 +474,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                             size="small"
                             type="submit"
                             value={ t("common:update").toString() }
+                            data-testid={ `${ testId }-form-submit-button` }
                         />
                     </Form.Group>
                 </Grid.Column>
@@ -477,7 +491,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
     };
 
     const usernameRecoveryAccordion: ReactElement = (
-        <Accordion>
+        <Accordion data-testid={ `${ testId }-username-recovery-accordion` }>
             <Accordion.Title
                 active={ subAccordionActiveIndex === 1 }
                 index={ 0 }
@@ -523,7 +537,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
     );
 
     const notificationBasedPasswordRecoveryAccordion: ReactElement = (
-        <Accordion>
+        <Accordion data-testid={ `${ testId }-notification-based-password-recovery-accordion` }>
             <Accordion.Title
                 active={ subAccordionActiveIndex === 2 }
                 index={ 0 }
@@ -569,7 +583,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
     );
 
     const securityBasedPasswordRecoveryAccordion: ReactElement = (
-        <Accordion>
+        <Accordion data-testid={ `${ testId }-security-based-password-recovery-accordion` }>
             <Accordion.Title
                 active={ subAccordionActiveIndex === 3 }
                 index={ 0 }
@@ -652,6 +666,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                                 }
                             }
                             toggle
+                            data-testid={ `${ testId }-form-enable-username-recovery-toggle` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -689,6 +704,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                                 }
                             }
                             toggle
+                            data-testid={ `${ testId }-form-enable-notification-password-recovery-toggle` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -726,6 +742,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                             }
                             value={ accountRecoveryConfigs.enableSecurityQuestionPasswordRecovery }
                             toggle
+                            data-testid={ `${ testId }-form-enable-security-question-password-recovery-toggle` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -766,6 +783,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                                     }
                                 ] }
                                 value={ accountRecoveryConfigs.enableForcedChallengeQuestions }
+                                data-testid={ `${ testId }-form-enable-forced-challenge-questions-checkbox` }
                             />
                             <Hint>
                                 { t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
@@ -787,6 +805,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                                 type="number"
                                 value={ accountRecoveryConfigs.reCaptchaMaxFailedAttempts }
                                 width={ 9 }
+                                data-testid={ `${ testId }-form-recaptcha-max-failed-attempts-input` }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -811,6 +830,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                                     }
                                 }
                                 value={ accountRecoveryConfigs.notificationInternallyManaged }
+                                data-testid={ `${ testId }-form-enable-internal-notification-management-checkbox` }
                             />
                             <Hint>
                                 { t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
@@ -839,6 +859,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                                 ] }
                                 value={ accountRecoveryConfigs.notificationCheckBoxes }
                                 disabled={ accountRecoveryConfigs.notificationInternallyManaged?.length == 0 }
+                                data-testid={ `${ testId }-form-notify-question-recovery-start-checkbox` }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -856,6 +877,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                                 type="number"
                                 value={ accountRecoveryConfigs.recoveryLinkExpiryTime }
                                 width={ 9 }
+                                data-testid={ `${ testId }-form-recovery-link-expiry-input` }
                             />
                             <Hint>
                                 { t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
@@ -877,6 +899,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                                 type="number"
                                 value={ accountRecoveryConfigs.smsOTPExpiryTime }
                                 width={ 9 }
+                                data-testid={ `${ testId }-form-sms-otp-expiry-input` }
                             />
                             <Hint>
                                 { t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
@@ -898,6 +921,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                                 type="text"
                                 value={ accountRecoveryConfigs.callbackRegex }
                                 width={ 9 }
+                                data-testid={ `${ testId }-form-recovery-callback-url-regex-input` }
                             />
                             <Hint>
                                 { t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
@@ -915,6 +939,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
                                     size="small"
                                     type="submit"
                                     value={ t("common:save").toString() }
+                                    data-testid={ `${ testId }-form-submit-button` }
                                 />
                             </Form.Group>
                         </Grid.Column>
@@ -929,7 +954,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
     };
 
     const mainAccordion: ReactElement = (
-        <Accordion fluid styled>
+        <Accordion fluid styled data-testid={ `${ testId }-main-accordion` }>
             <Accordion.Title
                 active={ mainAccordionActiveState }
                 index={ 0 }
@@ -971,6 +996,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
             iconStyle="colored"
             iconFloated="right"
             accordion={ mainAccordion }
+            data-testid={ `${ testId }-section` }
         >
             <Divider className="m-0 mb-2"/>
             <div className="main-content-inner">
@@ -978,4 +1004,11 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
             </div>
         </Section>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+AccountRecovery.defaultProps = {
+    "data-testid": "account-recovery"
 };

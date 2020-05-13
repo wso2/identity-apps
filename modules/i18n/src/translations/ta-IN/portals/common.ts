@@ -57,6 +57,7 @@ export const common: CommonNS = {
     edit: "திருத்து",
     endsWith: "முடிவடைவது",
     equals: "சமன்",
+    export: "ஏற்றுமதி",
     filter: "வடிகட்டு",
     finish: "முடி",
     goBackHome: "முகப்புக்கு செல்",
@@ -122,5 +123,6 @@ export const common: CommonNS = {
     unpinned: "அகற்றப்பட்டது",
     update: "புதுப்பி",
     user: "பயனர்",
-    verify: "உறுதி செய்"
+    verify: "உறுதி செய்",
+    view: "காண்க"
 };

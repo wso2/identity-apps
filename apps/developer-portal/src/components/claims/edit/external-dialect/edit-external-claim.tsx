@@ -16,9 +16,10 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
@@ -28,7 +29,7 @@ import { AddExternalClaim, AlertLevels, Claim, ExternalClaim } from "../../../..
 /**
  * Prop types of `EditExternalClaims` component
  */
-interface EditExternalClaimsPropsInterface {
+interface EditExternalClaimsPropsInterface extends TestableComponentInterface {
     /**
      * The claim ID to be edited.
      */
@@ -68,13 +69,28 @@ interface EditExternalClaimsPropsInterface {
 }
 
 /**
- * This component renders the edit external claim modal
- * @param {EditExternalClaimsPropsInterface} props
- * @return {ReactElement}
+ * This component renders the edit external claim modal.
+ *
+ * @param {EditExternalClaimsPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): ReactElement => {
+export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterface> = (
+    props: EditExternalClaimsPropsInterface
+): ReactElement => {
 
-    const { claimID, update, dialectID, submit, claimURI, wizard, onSubmit, addedClaim, externalClaims } = props;
+    const {
+        claimID,
+        update,
+        dialectID,
+        submit,
+        claimURI,
+        wizard,
+        onSubmit,
+        addedClaim,
+        externalClaims,
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ localClaims, setLocalClaims ] = useState<Claim[]>();
     const [ claim, setClaim ] = useState<ExternalClaim>(null);
@@ -136,7 +152,8 @@ export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): Reac
      * This removes the mapped local claims from the local claims list.
      * 
      * @param {string} claimURI The claim URI of the mapped local claim.
-     * 
+     * @param {Claim[]} filteredLocalClaims - Filtered claims.
+     *
      * @returns {Claim[]} The array of filtered Claims.
      */
     const removeMappedLocalClaim = (claimURI: string, filteredLocalClaims?: Claim[]): Claim[] => {
@@ -158,7 +175,7 @@ export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): Reac
                 ? localClaim?.claimURI === addedClaim?.mappedLocalClaimURI
                 : localClaim?.claimURI === claim?.mappedLocalClaimURI
         })
-    }
+    };
 
     return (
         <Forms
@@ -213,6 +230,7 @@ export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): Reac
                                     placeholder={ t("devPortal:components.claims.external.forms.attributeURI.label") }
                                     type="text"
                                     value={ addedClaim.claimURI }
+                                    data-testid={ `${ testId }-form-claim-uri-input` }
                                 />
                             </Grid.Column>
                         )
@@ -237,10 +255,18 @@ export const EditExternalClaim = (props: EditExternalClaimsPropsInterface): Reac
                                     }
                                 })
                             }
+                            data-testid={ `${ testId }-local-claim-dropdown` }
                         />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
         </Forms>
     )
+};
+
+/**
+ * Default props for the component.
+ */
+EditExternalClaim.defaultProps = {
+    "data-testid": "edit-external-claim"
 };

@@ -16,33 +16,56 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react"
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { RouteComponentProps } from "react-router";
 import { Image } from "semantic-ui-react";
-import { getAType, getAUserStore } from "../api";
+import { getAType, getAUserStore } from "../../api";
 import {
     EditBasicDetailsUserStore,
     EditConnectionDetails,
     EditGroupDetails,
     EditUserDetails
-} from "../components";
-import { DatabaseAvatarGraphic } from "../configs";
-import { history } from "../helpers";
-import { PageLayout } from "../layouts"
-import { AlertLevels, CategorizedProperties, UserStore, UserstoreType } from "../models";
-import { reOrganizeProperties } from "../utils";
+} from "../../components";
+import { DatabaseAvatarGraphic } from "../../configs";
+import { history } from "../../helpers";
+import { PageLayout } from "../../layouts"
+import { AlertLevels, CategorizedProperties, UserStore, UserstoreType } from "../../models";
+import { reOrganizeProperties } from "../../utils";
 
 /**
- * This renders the userstore edit page
- * @param props 
- * @return {ReactElement}
+ * Props for the Userstores edit page.
  */
-export const UserStoresEditPage = (props): ReactElement => {
+type UserStoresEditPageInterface = TestableComponentInterface;
 
-    const userStoreId = props.match.params.id;
+/**
+ * Route parameters interface.
+ */
+interface RouteParams {
+    id: string;
+}
+
+/**
+ * This renders the userstore edit page.
+ *
+ * @param {UserStoresEditPageInterface & RouteComponentProps<RouteParams>} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
+    props: UserStoresEditPageInterface & RouteComponentProps<RouteParams>
+): ReactElement => {
+
+    const {
+        match,
+        [ "data-testid" ]: testId
+    } = props;
+
+    const userStoreId = match.params.id;
 
     const [ userStore, setUserStore ] = useState<UserStore>(null);
     const [ type, setType ] = useState<UserstoreType>(null);
@@ -53,7 +76,7 @@ export const UserStoresEditPage = (props): ReactElement => {
     const { t } = useTranslation();
 
     /**
-     * Fetches the suer store by its id
+     * Fetches the userstore by its id
      */
     const getUserStore = () => {
         getAUserStore(userStoreId).then(response => {
@@ -69,7 +92,7 @@ export const UserStoresEditPage = (props): ReactElement => {
                 }
             ));
         })
-    }
+    };
 
     useEffect(() => {
         getUserStore();
@@ -97,7 +120,7 @@ export const UserStoresEditPage = (props): ReactElement => {
         if (type) {
             setProperties(reOrganizeProperties(type.properties, userStore.properties));
         }
-    }, [ type ])
+    }, [ type ]);
 
     /**
      * The tab panes
@@ -111,6 +134,7 @@ export const UserStoresEditPage = (props): ReactElement => {
                     userStore={ userStore }
                     update={ getUserStore }
                     id={ userStoreId }
+                    data-testid={ `${ testId }-userstore-basic-details-edit` }
                 />
             )
         },
@@ -122,6 +146,7 @@ export const UserStoresEditPage = (props): ReactElement => {
                     type={ type }
                     id={ userStoreId }
                     properties={ properties?.connection }
+                    data-testid={ `${ testId }-userstore-connection-details-edit` }
                 />
             )
         },
@@ -133,6 +158,7 @@ export const UserStoresEditPage = (props): ReactElement => {
                     type={ type }
                     id={ userStoreId }
                     properties={ properties?.user }
+                    data-testid={ `${ testId }-userstore-user-details-edit` }
                 />
             )
         },
@@ -144,6 +170,7 @@ export const UserStoresEditPage = (props): ReactElement => {
                     type={ type }
                     id={ userStoreId }
                     properties={ properties?.group }
+                    data-testid={ `${ testId }-userstore-group-details-edit` }
                 />
             )
         }
@@ -172,8 +199,16 @@ export const UserStoresEditPage = (props): ReactElement => {
             } }
             titleTextAlign="left"
             bottomMargin={ false }
+            data-testid={ `${ testId }-page-layout` }
         >
-            <ResourceTab panes={ panes } />
+            <ResourceTab panes={ panes } data-testid={ `${ testId }-tabs` }/>
         </PageLayout>
     )
-}
+};
+
+/**
+ * Default props for the component.
+ */
+UserStoresEditPage.defaultProps = {
+    "data-testid": "userstores-edit"
+};

@@ -16,9 +16,10 @@
 * under the License.
 */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { FormValue } from "@wso2is/forms";
 import { EmptyPlaceholder } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { ClaimsList, ListType } from "../..";
@@ -29,7 +30,7 @@ import { AddExternalClaims } from "../../add";
 /**
  * Prop types of `ExternalClaims` component.
  */
-interface ExternalClaimsPropsInterface {
+interface ExternalClaimsPropsInterface extends TestableComponentInterface {
     /**
      * Calls onSubmit.
      */
@@ -47,13 +48,21 @@ interface ExternalClaimsPropsInterface {
 /**
  * This component renders the Add External Claims step of the wizard.
  * 
- * @param {ExternalClaimsPropsInterface} props
+ * @param {ExternalClaimsPropsInterface} props - Props injected to the component.
  * 
- * @return {ReactElement}
+ * @return {React.ReactElement}
  */
-export const ExternalClaims = (props: ExternalClaimsPropsInterface): ReactElement => {
+export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
+    props: ExternalClaimsPropsInterface
+): ReactElement => {
 
-    const { onSubmit, submitState, values } = props;
+    const {
+        onSubmit,
+        submitState,
+        values,
+        [ "data-testid" ]: testId
+    } = props;
+
     const [ claims, setClaims ] = useState<AddExternalClaim[]>([]);
 
     const ref = useRef(true);
@@ -70,7 +79,7 @@ export const ExternalClaims = (props: ExternalClaimsPropsInterface): ReactElemen
     
     useEffect(() => {
         setClaims(values);
-    },[values])
+    },[values]);
 
     return (
         <Grid>
@@ -87,6 +96,7 @@ export const ExternalClaims = (props: ExternalClaimsPropsInterface): ReactElemen
                             setClaims(tempClaims);
                         } }
                         externalClaims={ claims }
+                        data-testid={ `${ testId }-add-external-claims` }
                     />
                     <Divider hidden />
                     {
@@ -107,6 +117,7 @@ export const ExternalClaims = (props: ExternalClaimsPropsInterface): ReactElemen
                                         tempClaims.splice(index, 1);
                                         setClaims(tempClaims);
                                     } }
+                                    data-testid={ `${ testId }-list` }
                                 />
                             )
                             : (
@@ -116,6 +127,7 @@ export const ExternalClaims = (props: ExternalClaimsPropsInterface): ReactElemen
                                         "placeholders.empty.subtitle") ] }
                                     image={ EmptyPlaceholderIllustrations.emptyList }
                                     imageSize="tiny"
+                                    data-testid={ `${ testId }-empty-placeholder` }
                                 />
                             )
                     }
@@ -123,4 +135,11 @@ export const ExternalClaims = (props: ExternalClaimsPropsInterface): ReactElemen
             </Grid.Row>
         </Grid>
     )
-}
+};
+
+/**
+ * Default props for the application creation wizard.
+ */
+ExternalClaims.defaultProps = {
+    "data-testid": "external-claims"
+};
