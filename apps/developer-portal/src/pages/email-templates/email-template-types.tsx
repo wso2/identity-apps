@@ -33,7 +33,7 @@ import { AlertInterface, EmailTemplateType } from "../../models";
 /**
  * Props for the Email Templates Types page.
  */
-type EmailTemplateTypesPageInterface = TestableComponentInterface
+type EmailTemplateTypesPageInterface = TestableComponentInterface;
 
 /**
  * Component to list available email template types.
@@ -151,8 +151,8 @@ export const EmailTemplateTypes: FunctionComponent<EmailTemplateTypesPageInterfa
     return (
         <PageLayout
             isLoading={ isTemplateTypesFetchRequestLoading }
-            title="Email Templates Types"
-            description="Create and manage templates types."
+            title={ t("devPortal:pages.emailTemplateTypes.title") }
+            description={ t("devPortal:pages.emailTemplateTypes.subTitle") }
             showBottomDivider={ true }
             data-testid={ `${ testId }-page-layout` }
         >
@@ -171,7 +171,7 @@ export const EmailTemplateTypes: FunctionComponent<EmailTemplateTypesPageInterfa
                             data-testid={ `${ testId }-list-layout-add-button` }
                         >
                             <Icon name="add"/>
-                            New Template Type
+                            { t("devPortal:components.emailTemplateTypes.buttons.newType") }
                         </PrimaryButton>
                     )
                 }

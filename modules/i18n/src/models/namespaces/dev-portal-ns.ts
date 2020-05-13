@@ -944,18 +944,86 @@ export interface DevPortalNS {
                 warning: string;
             };
         };
+        emailLocale: {
+            buttons: {
+                addLocaleTemplate: string;
+                saveChanges: string;
+            };
+            forms: {
+                addLocale: {
+                    fields: {
+                        bodyEditor: FormAttributes;
+                        locale: FormAttributes;
+                        signatureEditor: FormAttributes;
+                        subject: FormAttributes;
+                    };
+                };
+            };
+        };
         emailTemplateTypes: {
+            buttons: {
+                createTemplateType: string;
+                deleteTemplate: string;
+                editTemplate: string;
+                newType: string;
+            };
+            confirmations: {
+                deleteTemplateType: Confirmation;
+            };
+            forms: {
+                addTemplateType: {
+                    fields: {
+                        type: FormAttributes;
+                    };
+                };
+            };
             notifications: {
                 deleteTemplateType: Notification;
                 updateTemplateType: Notification;
                 createTemplateType: Notification;
             };
+            placeholders: {
+                emptyList: Placeholder;
+            };
+            wizards: {
+                addTemplateType: {
+                    heading: string;
+                    subHeading: string;
+                    steps: {};
+                };
+            };
         };
         emailTemplates: {
+            buttons: {
+                editTemplate: string;
+                deleteTemplate: string;
+                newTemplate: string;
+                viewTemplate: string;
+            };
+            confirmations: {
+                deleteTemplate: Confirmation;
+            };
+            editor: {
+                tabs: {
+                    code: {
+                        tabName: string;
+                    };
+                    preview: {
+                        tabName: string;
+                    };
+                };
+            };
             notifications: {
                 deleteTemplate: Notification;
-                updateTemplate: Notification;
                 createTemplate: Notification;
+                iframeUnsupported: Notification;
+                updateTemplate: Notification;
+            };
+            placeholders: {
+                emptyList: Placeholder;
+            };
+            viewTemplate: {
+                heading: string;
             };
         };
         helpPanel: {
@@ -2236,6 +2304,11 @@ export interface DevPortalNS {
         applicationTemplate: EditPage;
         applications: Page;
         applicationsEdit: EditPage;
+        emailLocaleAdd: EditPage;
+        emailLocaleAddWithDisplayName: EditPage;
+        emailTemplateTypes: Page;
+        emailTemplates: EditPage;
+        emailTemplatesWithDisplayName: EditPage;
         groups: Page;
         idp: Page;
         idpTemplate: {

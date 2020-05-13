@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 
 /**
@@ -46,6 +47,8 @@ export const AddEmailTemplateType: FunctionComponent<AddEmailTemplateTypePropsIn
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
     /**
      * Util method to collect form data for processing.
      * 
@@ -70,10 +73,18 @@ export const AddEmailTemplateType: FunctionComponent<AddEmailTemplateTypePropsIn
                         <Field
                             type="text"
                             name="templatetype"
-                            label="Template Type Name"
-                            placeholder="Enter a template type name"
+                            label={
+                                t("devPortal:components.emailTemplateTypes.forms.addTemplateType.fields.type.label")
+                            }
+                            placeholder={
+                                t("devPortal:components.emailTemplateTypes.forms.addTemplateType.fields.type" +
+                                    ".placeholder")
+                            }
                             required={ true }
-                            requiredErrorMessage="Template type name is required to proceed."
+                            requiredErrorMessage={
+                                t("devPortal:components.emailTemplateTypes.forms.addTemplateType.fields.type" +
+                                    ".validations.empty")
+                            }
                             data-testid={ `${ testId }-type-input` }
                         />
                     </GridColumn>

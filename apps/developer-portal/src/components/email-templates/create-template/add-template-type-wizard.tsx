@@ -81,7 +81,7 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
             />
         ),
         icon: ApplicationWizardStepIcons.general,
-        title: "Template Type"
+        title: t("devPortal:components.emailTemplateTypes.wizards.addTemplateType.steps.templateType.heading")
     }];
 
     const createTemplateType = (templateTypeName: string): void => {
@@ -122,8 +122,10 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
             data-testid={ testId }
         >
             <Modal.Header className="wizard-header template-type-wizard">
-                Create Email Template Type
-                <Heading as="h6">Create a new template type to associate with email requirements.</Heading>
+                { t("devPortal:components.emailTemplateTypes.wizards.addTemplateType.heading") }
+                <Heading as="h6">
+                    { t("devPortal:components.emailTemplateTypes.wizards.addTemplateType.subHeading") }
+                </Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
                 {WIZARD_STEPS[currentStep].content}
@@ -137,7 +139,7 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
                                 onClick={ () => { onCloseHandler() } }
                                 data-testid={ `${ testId }-cancel-button` }
                             >
-                                Cancel
+                                { t("cancel") }
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
@@ -146,7 +148,7 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
                                 onClick={ setFinishSubmit }
                                 data-testid={ `${ testId }-create-button` }
                             >
-                                Create Template Type
+                                { t("devPortal:components.emailTemplateTypes.buttons.createTemplateType") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>

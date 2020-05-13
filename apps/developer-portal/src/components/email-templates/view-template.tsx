@@ -20,6 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid, Modal } from "semantic-ui-react";
 import { EmailTemplateEditor } from "./email-code-editor";
 import { getTemplateDetails } from "../../api";
@@ -44,8 +45,6 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
     props: ViewLocaleTemplatePropsInterface
 ): ReactElement => {
 
-    const [ templateData, setTemplateData ] = useState<EmailTemplate>(undefined);
-
     const {
         onCloseHandler,
         onEditHandler,
@@ -53,6 +52,10 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
         templateId,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
+
+    const [ templateData, setTemplateData ] = useState<EmailTemplate>(undefined);
 
     useEffect(() => {
         getTemplateDetails(templateTypeId, templateId)
@@ -90,7 +93,9 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
         >
             <Modal.Header className="wizard-header template-type-wizard">
                 { templateData?.subject }
-                <Heading as="h6">Email Template Preview</Heading>
+                <Heading as="h6">
+                    { t("devPortal:components.emailTemplates.viewTemplate.heading") }
+                </Heading>
             </Modal.Header>
             <Modal.Content className="content-container template-view-content" scrolling>
                 {WIZARD_STEPS[0].content}
@@ -104,7 +109,7 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
                                 onClick={ () => { onCloseHandler() } }
                                 data-testid={ `${ testId }-modal-cancel-button` }
                             >
-                                Cancel
+                                { t("common:cancel") }
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
@@ -113,7 +118,7 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
                                 onClick={ () => { onEditHandler() } }
                                 data-testid={ `${ testId }-modal-edit-button` }
                             >
-                                Edit Template
+                                { t("devPortal:components.emailTemplates.buttons.editTemplate") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>

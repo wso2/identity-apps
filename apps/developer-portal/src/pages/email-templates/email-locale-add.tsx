@@ -20,6 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
 import * as CountryLanguage from "country-language";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getEmailTemplate } from "../../api";
 import { AddLocaleTemplate } from "../../components";
 import { EMAIL_TEMPLATE_VIEW_PATH } from "../../constants";
@@ -47,6 +48,8 @@ export const AddTemplateLocale: FunctionComponent<AddTemplateLocalePageInterface
     const {
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const [ templateTypeId, setTemplateTypeId ] = useState<string>("");
     const [ templateId, setTemplateId ] = useState<string>("");
@@ -102,12 +105,14 @@ export const AddTemplateLocale: FunctionComponent<AddTemplateLocalePageInterface
 
     return (
         <PageLayout
-            title={ templateId === "" ? 
-                "Add new template for " + emailTemplateTypeDetails?.displayName : 
-                "Edit template - " + localeName }
+            title={ templateId === ""
+                ? t("devPortal:pages.emailLocaleAddWithDisplayName.title",
+                    { displayName: emailTemplateTypeDetails?.displayName })
+                : t("devPortal:pages.emailLocaleAdd.title", { name: localeName })
+            }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: "Go back to " + emailTemplateName + " template"
+                text: t("devPortal:pages.emailLocaleAdd.backButton", { name: emailTemplateName })
             } }
             titleTextAlign="left"
             showBottomDivider={ true }

@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { EMAIL_STARTER_TEMPLATE } from "../../../constants";
 
 interface EmailTemplateEditorPropsInterface extends TestableComponentInterface {
@@ -54,6 +55,8 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
     const [ content, setContent ] = useState<string>("");
 
     useEffect(() => {
@@ -71,7 +74,8 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                     <div className="render-view" data-testid={ `${ testId }-preview-only-render-view` }>
                         <iframe id="iframe" srcDoc={ content }>
                             <p data-testid={ `${ testId }-iframe-unsupported-error` }>
-                                Your browser does not support iframes.
+                                { t("devPortal:components.emailTemplates.notifications.iframeUnsupported" +
+                                    ".genericError.description") }
                             </p>
                         </iframe>
                     </div>
@@ -80,7 +84,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                         defaultActiveTab={ isAddFlow ? 1 : 0  }
                         panes={ [
                             {
-                                menuItem: "Preview",
+                                menuItem: t("devPortal:components.emailTemplates.editor.tabs.preview.tabName"),
                                 render: () => (
                                     <ResourceTab.Pane
                                         className="render-view"
@@ -89,14 +93,15 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                                     >
                                         <iframe id="iframe" srcDoc={ content }>
                                             <p data-testid={ `${ testId }-iframe-unsupported-error` }>
-                                                Your browser does not support iframes.
+                                                { t("devPortal:components.emailTemplates.notifications" +
+                                                    ".iframeUnsupported.genericError.description") }
                                             </p>
                                         </iframe>
                                     </ResourceTab.Pane>
                                 )
                             },
                             {
-                                menuItem: "HTML Code",
+                                menuItem: t("devPortal:components.emailTemplates.editor.tabs.code.tabName"),
                                 render: () => (
                                     <ResourceTab.Pane attached={ false }>
                                         <CodeEditor

@@ -34,7 +34,7 @@ import { AlertInterface, AlertLevels, EmailTemplate, EmailTemplateDetails } from
 /**
  * Props for the Email Templates page.
  */
-type EmailTemplatesPageInterface = TestableComponentInterface
+type EmailTemplatesPageInterface = TestableComponentInterface;
 
 /**
  * Component will list all available locale based email templates for
@@ -187,12 +187,15 @@ export const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
     return (
         <PageLayout
             isLoading={ isEmailTemplatesFetchRequestLoading }
-            title={ emailTemplateTypeDetails && 
-                    emailTemplateTypeDetails.displayName ? "Templates - " + emailTemplateTypeDetails.displayName 
-                    : "Email Templates" }
+            title={
+                (emailTemplateTypeDetails && emailTemplateTypeDetails.displayName)
+                    ? t("devPortal:pages.emailTemplatesWithDisplayName.title",
+                    { displayName: emailTemplateTypeDetails.displayName })
+                    : t("devPortal:pages.emailTemplates.title")
+            }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: "Go back to email templates types"
+                text: t("devPortal:pages.emailTemplates.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
@@ -213,7 +216,7 @@ export const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
                             data-testid={ `${ testId }-list-layout-add-button` }
                         >
                             <Icon name="add"/>
-                            New Template
+                            { t("devPortal:components.emailTemplates.buttons.newTemplate") }
                         </PrimaryButton>
                     )
                 }
