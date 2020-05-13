@@ -20,6 +20,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { getIdentityProviderList, updateApplicationConfigurations } from "../../../../api";
@@ -68,6 +69,8 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
     const dispatch = useDispatch();
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -97,9 +100,10 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
         updateApplicationConfigurations(id, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully updated the application",
+                    description: t("devPortal:components.applications.notifications.updateApplication.success" +
+                        ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Update successful"
+                    message: t("devPortal:components.applications.notifications.updateApplication.success.message")
                 }));
 
                 onUpdate(application.id);
@@ -109,16 +113,18 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Update Error"
+                        message: t("devPortal:components.applications.notifications.updateApplication.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while updating the application",
+                    description: t("devPortal:components.applications.notifications.updateApplication" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Update Error"
+                    message: t("devPortal:components.applications.notifications.updateApplication.genericError" +
+                        ".message")
                 }));
             })
     };
@@ -162,9 +168,9 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
     return (
         <>
         <Heading as="h4">
-            Outbound Provisioning
+            { t("devPortal:components.applications.edit.sections.provisioning.outbound.heading") }
             <Heading subHeading as="h6">
-                Configure an identity provider to outbound provision the users of this application.
+                { t("devPortal:components.applications.edit.sections.provisioning.outbound.subHeading") }
             </Heading>
         </Heading>
         <Divider hidden/>
@@ -179,7 +185,8 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                     data-testid={ `${ testId }-new-idp-button` }
                                 >
                                     <Icon name="add"/>
-                                    New Identity Provider
+                                    { t("devPortal:components.applications.edit.sections.provisioning.outbound" +
+                                        ".actions.addIdp") }
                                 </PrimaryButton>
                             </Grid.Column>
                         </Grid.Row>
@@ -234,15 +241,21 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                             <Grid.Column width={ 8 }>
                                 <Segment>
                                     <EmptyPlaceholder
-                                        title="No outbound provisioning IDPs"
+                                        title={
+                                            t("devPortal:components.applications.placeholders" +
+                                                ".emptyOutboundProvisioningIDPs.title")
+                                        }
                                         image={ EmptyPlaceholderIllustrations.emptyList }
-                                        subtitle={ [ "This Application has no outbound provisioning IDPs configured." +
-                                        " Add an IDP to view it here." ] }
+                                        subtitle={ [
+                                            t("devPortal:components.applications.placeholders" +
+                                                ".emptyOutboundProvisioningIDPs.subtitles")
+                                        ] }
                                         imageSize="tiny"
                                         action={ (
                                             <PrimaryButton onClick={ () => setShowWizard(true) }>
                                                 <Icon name="add"/>
-                                                New IDP
+                                                { t("devPortal:components.applications.placeholders" +
+                                                    ".emptyOutboundProvisioningIDPs.action") }
                                             </PrimaryButton>
                                         ) }
                                     />
@@ -260,7 +273,17 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingIdp?.idp }
                         assertionHint={ (
-                            <p>Please type <strong>{ deletingIdp?.idp }</strong> to confirm.</p>
+                            <p>
+                                <Trans
+                                    i18nKey={
+                                        "devPortal:components.applications.confirmations" +
+                                        ".deleteOutboundProvisioningIDP.assertionHint"
+                                    }
+                                    tOptions={ { name: deletingIdp?.idp } }
+                                >
+                                    Please type <strong>{ deletingIdp?.idp }</strong> to confirm.
+                                </Trans>
+                            </p>
                         ) }
                         assertionType="input"
                         primaryAction="Confirm"
@@ -274,20 +297,22 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-connector-delete-confirmation-modal-header` }
                         >
-                            Are you sure?
+                            { t("devPortal:components.applications.confirmations.deleteOutboundProvisioningIDP" +
+                                ".header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             warning
                             data-testid={ `${ testId }-connector-delete-confirmation-modal-message` }
                         >
-                            This action is irreversible and will remove the IDP.
+                            { t("devPortal:components.applications.confirmations.deleteOutboundProvisioningIDP" +
+                                ".message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-testid={ `${ testId }-connector-delete-confirmation-modal-content` }
                         >
-                            If you delete this outbound provisioning IDP, you will not be able to get it back.
-                            Please proceed with caution.
+                            { t("devPortal:components.applications.confirmations.deleteOutboundProvisioningIDP" +
+                                ".content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

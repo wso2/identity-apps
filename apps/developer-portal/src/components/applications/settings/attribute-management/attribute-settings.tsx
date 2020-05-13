@@ -23,6 +23,7 @@ import { useTrigger } from "@wso2is/forms";
 import { ContentLoader } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
@@ -127,6 +128,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
     const dispatch = useDispatch();
 
     // Manage Local Dialect URI
@@ -165,11 +168,12 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             .then((response) => {
                 setClaims(response);
             })
-            .catch((error) => {
+            .catch(() => {
                 dispatch(addAlert({
-                    description: "An error occurred while retrieving local claims.",
+                    description: t("devPortal:components.claims.local.notifications.fetchLocalClaims.genericError" +
+                        ".description"),
                     level: AlertLevels.ERROR,
-                    message: "Get Error"
+                    message: t("devPortal:components.claims.local.notifications.fetchLocalClaims.genericError.message")
                 }));
             });
     };
@@ -179,11 +183,12 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             .then((response) => {
                 setDialect(response);
             })
-            .catch((error) => {
+            .catch(() => {
                 dispatch(addAlert({
-                    description: "An error occurred while retrieving dialects.",
+                    description: t("devPortal:components.claims.dialects.notifications.fetchDialects" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Get Error"
+                    message: t("devPortal:components.claims.dialects.notifications.fetchDialects.genericError.message")
                 }));
             });
     };
@@ -195,11 +200,13 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     setIsClaimRequestLoading(true);
                     setExternalClaims(response);
                 })
-                .catch((error) => {
+                .catch(() => {
                     dispatch(addAlert({
-                        description: "An error occurred while retrieving external claims.",
+                        description: t("devPortal:components.claims.external.notifications.fetchExternalClaims" +
+                            ".genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: "Get Error"
+                        message: t("devPortal:components.claims.external.notifications.fetchExternalClaims" +
+                            ".genericError.message")
                     }));
                 })
                 .finally(() => {
@@ -507,16 +514,19 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             .then(() => {
                 onUpdate(appId);
                 dispatch(addAlert({
-                    description: "Successfully updated the claim configuration.",
+                    description: t("devPortal:components.applications.notifications.updateClaimConfig.success" +
+                        ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Update successful"
+                    message: t("devPortal:components.applications.notifications.updateClaimConfig.success.message")
                 }));
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: "An error occurred while updating the claim configuration.",
+                    description: t("devPortal:components.applications.notifications.updateClaimConfig" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Update error"
+                    message: t("devPortal:components.applications.notifications.updateClaimConfig.genericError" +
+                        ".message")
                 }));
             });
     };
@@ -626,7 +636,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                     onClick={ updateValues }
                                     data-testid={ `${ testId }-submit-button` }
                                 >
-                                    Update
+                                    { t("common:update") }
                                 </Button>
                             </Grid.Column>
                         </Grid.Row>

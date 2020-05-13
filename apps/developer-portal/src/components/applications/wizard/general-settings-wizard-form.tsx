@@ -21,6 +21,7 @@ import { Field, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 
 /**
@@ -51,6 +52,8 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
         onSubmit,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     // Check whether discoverableByEndUsers option is selected or not
     const [isDiscoverable, setIsDiscoverable] = useState(false);
@@ -83,10 +86,15 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Field
                             name="name"
-                            label="Name"
+                            label={ t("devPortal:components.applications.forms.generalDetails.fields.name.label") }
                             required={ true }
-                            requiredErrorMessage="Application name is required"
-                            placeholder={ "Enter Application Name" }
+                            requiredErrorMessage={
+                                t("devPortal:components.applications.forms.generalDetails.fields.name" +
+                                    ".validations.empty")
+                            }
+                            placeholder={
+                                t("devPortal:components.applications.forms.generalDetails.fields.name.placeholder")
+                            }
                             value={ initialValues?.name }
                             type="text"
                             data-testid={ `${ testId }-application-name-input` }
@@ -97,10 +105,16 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Field
                             name="description"
-                            label="Description"
+                            label={
+                                t("devPortal:components.applications.forms.generalDetails.fields.description" +
+                                    ".label")
+                            }
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder="Enter a description for the application"
+                            placeholder={
+                                t("devPortal:components.applications.forms.generalDetails.fields.description" +
+                                    ".placeholder")
+                            }
                             type="textarea"
                             value={ initialValues ? initialValues?.description : templateValues?.description }
                             data-testid={ `${ testId }-application-description-textarea` }
@@ -111,14 +125,22 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Field
                             name="imageUrl"
-                            label="Image URL"
+                            label={
+                                t("devPortal:components.applications.forms.generalDetails.fields.imageUrl.label")
+                            }
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder="Provide the image url for the application"
+                            placeholder={
+                                t("devPortal:components.applications.forms.generalDetails.fields.imageUrl" +
+                                    ".placeholder")
+                            }
                             validation={ (value: string, validation: Validation) => {
                                 if (!FormValidation.url(value)) {
                                     validation.isValid = false;
-                                    validation.errorMessages.push("The URL you entered is invalid");
+                                    validation.errorMessages.push(
+                                        t("devPortal:components.applications.forms.generalDetails.fields" +
+                                            ".imageUrl.validations.invalid")
+                                    );
                                 }
                             } }
                             value={ initialValues ? initialValues?.imageUrl : templateValues?.imageUrl }
@@ -144,7 +166,8 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                                 }
                                 children={ [
                                     {
-                                        label: "Discoverable application",
+                                        label: t("devPortal:components.applications.forms.generalDetails.fields" +
+                                            ".discoverable.label"),
                                         value: "discoverableByEndUsers"
                                     }
                                 ] }
@@ -158,22 +181,32 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                                 data-testid={ `${ testId }-application-discoverable-checkbox` }
                             />
                             <Hint>
-                                Applications flagged as discoverable are visible for end users.
+                                { t("devPortal:components.applications.forms.generalDetails.fields.accessUrl.hint") }
                             </Hint>
                             <Divider hidden/>
                             <Field
                                 name="accessUrl"
-                                label="Access URL"
+                                label={
+                                    t("devPortal:components.applications.forms.generalDetails.fields.accessUrl.label")
+                                }
                                 required={ isDiscoverable }
-                                requiredErrorMessage={ "A valid access URL needs to be defined for an application " +
-                                    "to be marked as discoverable" }
+                                requiredErrorMessage={
+                                    t("devPortal:components.applications.forms.generalDetails.fields.accessUrl" +
+                                        ".validations.empty")
+                                }
+                                placeholder={
+                                    t("devPortal:components.applications.forms.generalDetails.fields.accessUrl" +
+                                        ".placeholder")
+                                }
                                 validation={ (value: string, validation: Validation) => {
                                     if (!FormValidation.url(value)) {
                                         validation.isValid = false;
-                                        validation.errorMessages.push("The URL you entered is invalid");
+                                        validation.errorMessages.push(
+                                            t("devPortal:components.applications.forms.generalDetails.fields" +
+                                                ".accessUrl.validations.invalid")
+                                        );
                                     }
                                 } }
-                                placeholder="Enter access url for the application login page"
                                 type="text"
                                 value={ initialValues ? initialValues?.accessUrl : templateValues?.accessUrl }
                                 data-testid={ `${ testId }-application-access-url-input` }

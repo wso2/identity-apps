@@ -22,6 +22,7 @@ import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { InboundCustomProtocolWizardForm } from "./custom-protcol-settings-wizard-form";
@@ -65,7 +66,6 @@ import {
     WSTrustProtocolTemplate,
     WSTrustProtocolTemplateItem
 } from "../meta";
-
 
 /**
  * Proptypes for the application creation wizard component.
@@ -115,29 +115,6 @@ enum WizardStepsFormTypes {
     SUMMARY = "summary"
 }
 
-const STEPS: WizardStepInterface[] = [
-    {
-        icon: ApplicationWizardStepIcons.protocolSelection,
-        name: WizardStepsFormTypes.PROTOCOL_SELECTION,
-        title: "Protocol Selection"
-    },
-    {
-        icon: ApplicationWizardStepIcons.general,
-        name: WizardStepsFormTypes.GENERAL_SETTINGS,
-        title: "General Settings"
-    },
-    {
-        icon: ApplicationWizardStepIcons.protocolConfig,
-        name: WizardStepsFormTypes.PROTOCOL_SETTINGS,
-        title: "Protocol Configuration"
-    },
-    {
-        icon: ApplicationWizardStepIcons.summary,
-        name: WizardStepsFormTypes.SUMMARY,
-        title: "Summary"
-    }
-];
-
 /**
  * Application creation wizard component.
  *
@@ -160,6 +137,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         onUpdate,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
 
@@ -204,15 +183,18 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                         dispatch(addAlert({
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
-                            message: "Application Template data Fetch Error"
+                            message: t("devPortal:components.applications.notifications.fetchTemplate.error" +
+                                ".message")
                         }));
 
                         return;
                     }
                     dispatch(addAlert({
-                        description: "An error occurred while retrieving application template data",
+                        description: t("devPortal:components.applications.notifications.fetchTemplate" +
+                            ".genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: "Retrieval Error"
+                        message: t("devPortal:components.applications.notifications.fetchTemplate.genericError" +
+                            ".message")
                     }));
                 })
         }
@@ -227,9 +209,10 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         createApplication(application)
             .then((response) => {
                 dispatch(addAlert({
-                    description: "Successfully created the application",
+                    description: t("devPortal:components.applications.notifications.addApplication.success" +
+                        ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Creation successful"
+                    message: t("devPortal:components.applications.notifications.addApplication.success.message")
                 }));
 
                 // The created resource's id is sent as a location header.
@@ -252,16 +235,17 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Application Create Error"
+                        message: t("devPortal:components.applications.notifications.addApplication.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while creating the application",
+                    description: t("devPortal:components.applications.notifications.addApplication.genericError" +
+                        ".description"),
                     level: AlertLevels.ERROR,
-                    message: "Creation Error"
+                    message: t("devPortal:components.applications.notifications.addApplication.genericError.message")
                 }));
             });
     };
@@ -276,9 +260,10 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         updateAuthProtocolConfig(appId, values, selectedTemplate.authenticationProtocol)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully added new protocol configurations.",
+                    description: t("devPortal:components.applications.notifications.updateProtocol.success" +
+                        ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Update successful"
+                    message: t("devPortal:components.applications.notifications.updateProtocol.success.message")
                 }));
 
                 onUpdate(appId);
@@ -288,16 +273,17 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Application update Error"
+                        message: t("devPortal:components.applications.notifications.updateProtocol.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while updating the application",
+                    description: t("devPortal:components.applications.notifications.updateProtocol.genericError" +
+                        ".description"),
                     level: AlertLevels.ERROR,
-                    message: "Update Error"
+                    message: t("devPortal:components.applications.notifications.updateProtocol.error.message")
                 }));
             });
     };
@@ -654,16 +640,19 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                         dispatch(addAlert({
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
-                            message: "Retrieval error"
+                            message: t("devPortal:components.applications.notifications.fetchProtocolMeta.error" +
+                                ".message")
                         }));
 
                         return;
                     }
 
                     dispatch(addAlert({
-                        description: "An error occurred retrieving the protocol metadata.",
+                        description: t("devPortal:components.applications.notifications.fetchProtocolMeta" +
+                            ".genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: "Retrieval error"
+                        message: t("devPortal:components.applications.notifications.fetchProtocolMeta" +
+                            ".genericError.message")
                     }));
                 });
         }
@@ -714,6 +703,29 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         }
     }, [triggerProtocolSelectionSubmit]);
 
+    const STEPS: WizardStepInterface[] = [
+        {
+            icon: ApplicationWizardStepIcons.protocolSelection,
+            name: WizardStepsFormTypes.PROTOCOL_SELECTION,
+            title: t("devPortal:components.applications.addWizard.steps.protocolSelection.heading")
+        },
+        {
+            icon: ApplicationWizardStepIcons.general,
+            name: WizardStepsFormTypes.GENERAL_SETTINGS,
+            title: t("devPortal:components.applications.addWizard.steps.generalSettings.heading")
+        },
+        {
+            icon: ApplicationWizardStepIcons.protocolConfig,
+            name: WizardStepsFormTypes.PROTOCOL_SETTINGS,
+            title: t("devPortal:components.applications.addWizard.steps.protocolConfig.heading")
+        },
+        {
+            icon: ApplicationWizardStepIcons.summary,
+            name: WizardStepsFormTypes.SUMMARY,
+            title: t("devPortal:components.applications.addWizard.steps.summary.heading")
+        }
+    ];
+
     return (
         wizardSteps
             ? (
@@ -756,7 +768,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                             onClick={ navigateToNext }
                                             data-testid={ `${ testId }-next-button` }
                                         >
-                                            Next
+                                            { t("common:next") }
                                             <Icon name="arrow right"/>
                                         </PrimaryButton>
                                     ) }
@@ -766,7 +778,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                             onClick={ navigateToNext }
                                             data-testid={ `${ testId }-finish-button` }
                                         >
-                                            Finish
+                                            { t("common:finish") }
                                         </PrimaryButton>
                                     ) }
                                     { currentWizardStep > 0 && (
@@ -776,7 +788,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                             data-testid={ `${ testId }-previous-button` }
                                         >
                                             <Icon name="arrow left"/>
-                                            Previous
+                                            { t("common:previous") }
                                         </LinkButton>
                                     ) }
                                 </Grid.Column>

@@ -22,6 +22,7 @@ import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { UploadFile } from "../../shared";
 import { URLInputComponent } from "../components";
@@ -60,6 +61,8 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
         onSubmit,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const [assertionConsumerUrls, setAssertionConsumerUrls] = useState("");
     const [showAssertionConsumerUrlError, setAssertionConsumerUrlError] = useState(false);
@@ -172,22 +175,27 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Field
-                                label="Mode"
+                                label={
+                                    t("devPortal:components.applications.forms.inboundSAML.fields.mode.label")
+                                }
                                 name="mode"
                                 default={ configureMode }
                                 type="radio"
                                 children={
                                     [
                                         {
-                                            label: "Manual Configuration",
+                                            label: t("devPortal:components.applications.forms.inboundSAML" +
+                                                ".fields.mode.children.manualConfig.label"),
                                             value: SAMLConfigModes.MANUAL
                                         },
                                         {
-                                            label: "Metadata URL",
+                                            label: t("devPortal:components.applications.forms.inboundSAML" +
+                                                ".fields.mode.children.metadataURL.label"),
                                             value: SAMLConfigModes.META_URL
                                         },
                                         {
-                                            label: "Metadata File",
+                                            label: t("devPortal:components.applications.forms.inboundSAML" +
+                                                ".fields.mode.children.metadataFile.label"),
                                             value: SAMLConfigModes.META_FILE
                                         }
                                     ]
@@ -200,7 +208,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                 data-testid={ `${ testId }-mode-radio-group` }
                             />
                             <Hint>
-                                { "Select the mode to configure saml." }
+                                { t("devPortal:components.applications.forms.inboundSAML.fields.mode.hint") }
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>
@@ -212,20 +220,27 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                         <Field
                                             name="issuer"
-                                            label="Issuer"
+                                            label={
+                                                t("devPortal:components.applications.forms.inboundSAML" +
+                                                    ".fields.issuer.label")
+                                            }
                                             required={ true }
-                                            requiredErrorMessage="Please provide the issuer"
+                                            requiredErrorMessage={
+                                                t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                                    ".issuer.validations.empty")
+                                            }
                                             type="text"
-                                            placeholder={ "Enter the issuer name" }
+                                            placeholder={
+                                                t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                                    ".issuer.placeholder")
+                                            }
                                             value={ initialValues?.inboundProtocolConfiguration
                                                 .saml?.manualConfiguration?.issuer }
                                             data-testid={ `${ testId }-issuer-input` }
                                         />
                                         <Hint>
-                                            { `This specifies the issuer. This is the "saml:Issuer" element 
-                                            that contains the unique identifier of the Application. 
-                                            This is also the issuer value specified in the SAML Authentication Request 
-                                            issued by the Application. ` }
+                                            { t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                                ".issuer.hint") }
                                         </Hint>
                                     </Grid.Column>
                                 </Grid.Row>
@@ -233,11 +248,20 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                         <Field
                                             name="applicationQualifier"
-                                            label="Application qualifier"
+                                            label={
+                                                t("devPortal:components.applications.forms.inboundSAML" +
+                                                    ".fields.qualifier.label")
+                                            }
                                             required={ false }
-                                            requiredErrorMessage="This is needed"
+                                            requiredErrorMessage={
+                                                t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                                    ".qualifier.validations.empty")
+                                            }
                                             type="text"
-                                            placeholder={ "Enter the application qualifier" }
+                                            placeholder={
+                                                t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                                    ".qualifier.placeholder")
+                                            }
                                             value={
                                                 initialValues?.inboundProtocolConfiguration
                                                     .saml?.manualConfiguration?.serviceProviderQualifier
@@ -245,10 +269,8 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                             data-testid={ `${ testId }-application-qualifier-input` }
                                         />
                                         <Hint>
-                                            This value is needed only if you have to configure multiple SAML SSO
-                                            inbound authentication configurations for the same Issuer value. Qualifier
-                                            that is defined here will be appended to the issuer internally to
-                                            identify a application uniquely at runtime.
+                                            { t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                                ".qualifier.hint") }
                                         </Hint>
                                     </Grid.Column>
                                 </Grid.Row>
@@ -259,9 +281,18 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                         initialValues?.inboundProtocolConfiguration
                                             .saml?.manualConfiguration?.assertionConsumerUrls.toString()
                                     }
-                                    labelName={ "Assertion consumer URLs" }
-                                    placeholder={ "Enter url " }
-                                    validationErrorMsg={ "Please add valid URL" }
+                                    labelName={
+                                        t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                            ".assertionURLs.label")
+                                    }
+                                    placeholder={
+                                        t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                            ".assertionURLs.placeholder")
+                                    }
+                                    validationErrorMsg={
+                                        t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                            ".assertionURLs.validations.invalid")
+                                    }
                                     validation={ (value: string): boolean => {
                                         return FormValidation.url(value);
                                     } }
@@ -269,9 +300,10 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                     computerWidth={ 10 }
                                     showError={ showAssertionConsumerUrlError }
                                     setShowError={ setAssertionConsumerUrlError }
-                                    hint={ "This specifies the assertion Consumer URLs that the browser " +
-                                    "should be redirected to after the authentication is successful. " +
-                                    "This is the Assertion Consumer Service (ACS) URL of the Application" }
+                                    hint={
+                                        t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                            ".assertionURLs.hint")
+                                    }
                                     data-testid={ `${ testId }-assertion-consumer-url-input` }
                                 />
                             </>
@@ -284,22 +316,35 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                     <Field
                                         name="url"
-                                        label="Meta URL"
+                                        label={
+                                            t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                                ".metaURL.label")
+                                        }
                                         required={ true }
-                                        requiredErrorMessage="Please provide the meta file url"
+                                        requiredErrorMessage={
+                                            t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                                ".metaURL.validations.empty")
+                                        }
                                         type="text"
-                                        placeholder={ "Enter the meta file url" }
+                                        placeholder={
+                                            t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                                ".metaURL.placeholder")
+                                        }
                                         validation={ (value: string, validation: Validation) => {
                                             if (!FormValidation.url(value)) {
                                                 validation.isValid = false;
-                                                validation.errorMessages.push("This is not a valid URL");
+                                                validation.errorMessages.push(
+                                                    t("devPortal:components.applications.forms.inboundSAML" +
+                                                        ".fields.metaURL.validations.invalid")
+                                                );
                                             }
                                         } }
                                         value={ initialValues?.inboundProtocolConfiguration?.saml?.metadataURL }
                                         data-testid={ `${ testId }-meta-url-input` }
                                     />
                                     <Hint>
-                                        { "URL for the meta file" }
+                                        { t("devPortal:components.applications.forms.inboundSAML.fields.metaURL" +
+                                            ".hint") }
                                     </Hint>
                                 </Grid.Column>
                             </Grid.Row>

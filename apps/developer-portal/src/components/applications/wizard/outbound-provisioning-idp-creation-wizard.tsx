@@ -48,10 +48,9 @@ interface OutboundProvisioningIdpCreateWizardPropsInterface extends TestableComp
  * @param {OutboundProvisioningIdpCreateWizardPropsInterface} props - Props injected to the component.
  * @return {ReactElement}
  */
-
-export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProvisioningIdpCreateWizardPropsInterface> = (
-    props: OutboundProvisioningIdpCreateWizardPropsInterface
-): ReactElement => {
+export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
+    OutboundProvisioningIdpCreateWizardPropsInterface
+    > = (props: OutboundProvisioningIdpCreateWizardPropsInterface): ReactElement => {
 
     const {
         application,
@@ -62,6 +61,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
     } = props;
 
     const { t } = useTranslation();
+
     const dispatch = useDispatch();
 
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
@@ -112,9 +112,10 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
         updateApplicationConfigurations(id, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully updated the application",
+                    description: t("devPortal:components.applications.notifications.updateApplication" +
+                        ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Update successful"
+                    message: t("devPortal:components.applications.notifications.updateApplication.success.message")
                 }));
 
                 onUpdate(application.id);
@@ -124,16 +125,18 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Update Error"
+                        message: t("devPortal:components.applications.notifications.updateApplication.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while updating the application",
+                    description: t("devPortal:components.applications.notifications.updateApplication" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Update Error"
+                    message: t("devPortal:components.applications.notifications.updateApplication.genericError" +
+                        ".message")
                 }));
             })
             .finally(() => {
@@ -160,9 +163,11 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
         if (application?.provisioningConfigurations?.outboundProvisioningIdps.find(idp =>
             (idp.connector === values.connector) && (idp.idp === values.idp))) {
             dispatch(addAlert({
-                description: "The outbound provisioning IDP already exists.",
+                description: t("devPortal:components.applications.notifications.updateOutboundProvisioning" +
+                    ".genericError.description"),
                 level: AlertLevels.ERROR,
-                message: "Update Error"
+                message: t("devPortal:components.applications.notifications.updateOutboundProvisioning" +
+                    ".genericError.message")
             }));
             closeWizard();
             return;
@@ -185,7 +190,8 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "IDP Details"
+            title: t("devPortal:components.applications.edit.sections.provisioning.outbound.addIdpWizard" +
+                ".steps.details")
         }
     ];
 
@@ -201,8 +207,12 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
-                Add Outbound Provisioning IDP
-                <Heading as="h6">Select the IDP to provision users that self-register to your application.</Heading>
+                { t("devPortal:components.applications.edit.sections.provisioning.outbound.addIdpWizard" +
+                    ".heading") }
+                <Heading as="h6">
+                    { t("devPortal:components.applications.edit.sections.provisioning.outbound.addIdpWizard" +
+                        ".subHeading") }
+                </Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group
@@ -241,7 +251,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
                                     onClick={ navigateToNext }
                                     data-testid={ `${ testId }-next-button` }
                                 >
-                                    Next
+                                    { t("common:next") }
                                     <Icon name="arrow right"/>
                                 </PrimaryButton>
                             ) }
@@ -251,7 +261,8 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
                                     onClick={ navigateToNext }
                                     data-testid={ `${ testId }-finish-button` }
                                 >
-                                    Finish</PrimaryButton>
+                                    { t("common:finish") }
+                                </PrimaryButton>
                             ) }
                             { currentWizardStep > 0 && (
                                 <LinkButton
@@ -260,7 +271,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<OutboundProv
                                     data-testid={ `${ testId }-previous-button` }
                                 >
                                     <Icon name="arrow left"/>
-                                    Previous
+                                    { t("common:previous") }
                                 </LinkButton>
                             ) }
                         </Grid.Column>

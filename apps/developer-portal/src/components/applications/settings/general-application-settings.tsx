@@ -21,6 +21,7 @@ import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteApplication, updateApplicationDetails } from "../../../api";
 import {
@@ -109,6 +110,8 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
 
     const dispatch = useDispatch();
 
+    const { t } = useTranslation();
+
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState<boolean>(false);
@@ -120,9 +123,10 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         deleteApplication(appId)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully deleted the application",
+                    description: t("devPortal:components.applications.notifications.deleteApplication.success" +
+                        ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Delete successful"
+                    message: t("devPortal:components.applications.notifications.deleteApplication.success.message")
                 }));
 
                 setShowDeleteConfirmationModal(false);
@@ -133,16 +137,19 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Application Delete Error"
+                        message: t("devPortal:components.applications.notifications.deleteApplication.error" +
+                            ".message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while deleting the application",
+                    description: t("devPortal:components.applications.notifications.deleteApplication" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Application Delete Error"
+                    message: t("devPortal:components.applications.notifications.deleteApplication.genericError" +
+                        ".message")
                 }));
             });
     };
@@ -156,9 +163,10 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         updateApplicationDetails(ApplicationManagementUtils.prefixTemplateNameToDescription(updatedDetails, template))
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully updated the application",
+                    description: t("devPortal:components.applications.notifications.updateApplication.success" +
+                        ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Update successful"
+                    message: t("devPortal:components.applications.notifications.updateApplication.success.message")
                 }));
 
                 onUpdate(appId);
@@ -168,16 +176,19 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Update Error"
+                        message: t("devPortal:components.applications.notifications.updateApplication.error" +
+                            ".message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while updating the application",
+                    description: t("devPortal:components.applications.notifications.updateApplication" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Update Error"
+                    message: t("devPortal:components.applications.notifications.updateApplication.genericError" +
+                        ".message")
                 }));
             });
     };
@@ -198,15 +209,22 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
 
         if (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.delete)) {
             return (
-                <DangerZoneGroup sectionHeader="Danger Zone">
+                <DangerZoneGroup sectionHeader={ t("devPortal:components.applications.dangerZoneGroup.header") }>
                     {
                         hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.delete) &&
                         (
                             <DangerZone
-                                actionTitle="Delete"
-                                header="Delete application"
-                                subheader={ "Once you delete an application, there is no going back. " +
-                                "Please be certain." }
+                                actionTitle={
+                                    t("devPortal:components.applications.dangerZoneGroup.deleteApplication" +
+                                        ".actionTitle")
+                                }
+                                header={
+                                    t("devPortal:components.applications.dangerZoneGroup.deleteApplication.header")
+                                }
+                                subheader={
+                                    t("devPortal:components.applications.dangerZoneGroup.deleteApplication" +
+                                        ".subheader")
+                                }
                                 onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
                                 data-testid={ `${ testId }-danger-zone` }
                             />
@@ -244,10 +262,22 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         type="warning"
                         open={ showDeleteConfirmationModal }
                         assertion={ name }
-                        assertionHint={ <p>Please type <strong>{ name }</strong> to confirm.</p> }
+                        assertionHint={ (
+                            <p>
+                                <Trans
+                                    i18nKey={
+                                        "devPortal:components.applications.confirmations.deleteApplication" +
+                                        ".assertionHint"
+                                    }
+                                    tOptions={ { name: name } }
+                                >
+                                    Please type <strong>{ name }</strong> to confirm.
+                                </Trans>
+                            </p>
+                        ) }
                         assertionType="input"
-                        primaryAction="Confirm"
-                        secondaryAction="Cancel"
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => handleApplicationDelete() }
                         data-testid={ `${ testId }-application-delete-confirmation-modal` }
@@ -255,20 +285,19 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-application-delete-confirmation-modal-header` }
                         >
-                            Are you sure?
+                            { t("devPortal:components.applications.confirmations.deleteApplication.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             warning
                             data-testid={ `${ testId }-application-delete-confirmation-modal-message` }
                         >
-                            This action is irreversible and will permanently delete the application.
+                            { t("devPortal:components.applications.confirmations.deleteApplication.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-testid={ `${ testId }-application-delete-confirmation-modal-content` }
                         >
-                            If you delete this application, you will not be able to get it back. All the applications
-                            depending on this also might stop working. Please proceed with caution.
+                            { t("devPortal:components.applications.confirmations.deleteApplication.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 </>

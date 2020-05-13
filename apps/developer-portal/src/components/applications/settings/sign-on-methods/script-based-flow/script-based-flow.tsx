@@ -22,6 +22,7 @@ import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import { CodeEditor, Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Checkbox, Grid, Icon, Menu, Sidebar } from "semantic-ui-react";
 import { ScriptTemplatesSidePanel } from "./script-templates-side-panel";
@@ -79,6 +80,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         readOnly,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const dispatch = useDispatch();
 
@@ -189,10 +192,13 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             <Grid>
                 <Grid.Row>
                     <Grid.Column computer={ 16 }>
-                        <Heading as="h5">Script based configuration</Heading>
+                        <Heading as="h5">
+                            { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
+                                ".authenticationFlow.sections.scriptBased.heading") }
+                        </Heading>
                         <Hint>
-                            Define the authentication flow via an adaptive script. You can select one of the
-                            templates fom the panel to get started.
+                            { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
+                                ".authenticationFlow.sections.scriptBased.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -200,7 +206,10 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     <Grid.Column computer={ 16 }>
                         <Sidebar.Pushable className="script-editor-section">
                             <ScriptTemplatesSidePanel
-                                title="Templates"
+                                title={
+                                    t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
+                                        ".authenticationFlow.sections.scriptBased.editor.templates.heading")
+                                }
                                 ref={ authTemplatesSidePanelRef }
                                 onTemplateSelect={ handleTemplateSelection }
                                 templates={
@@ -215,7 +224,11 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     <Menu attached="top" className="action-panel" secondary>
                                         <Menu.Item>
                                             <Checkbox
-                                                label="Dark mode"
+                                                label={
+                                                    t("devPortal:components.applications.edit.sections" +
+                                                        ".signOnMethod.sections.authenticationFlow.sections" +
+                                                        ".scriptBased.editor.templates.darkMode")
+                                                }
                                                 checked={ isEditorDarkMode }
                                                 onChange={ handleEditorDarkModeToggle }
                                                 data-testid={ `${ testId }-code-editor-mode-toggle` }
@@ -233,9 +246,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         </Menu.Menu>
                                     </Menu>
 
-                                    <div
-                                        className="code-editor-wrapper"
-                                    >
+                                    <div className="code-editor-wrapper">
                                         <CodeEditor
                                             lint
                                             language="javascript"

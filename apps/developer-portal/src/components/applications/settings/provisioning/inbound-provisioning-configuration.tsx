@@ -31,6 +31,7 @@ import {
 } from "../../../../models";
 import { AuthenticatorAccordion } from "../../../shared";
 import { ProvisioningConfigurationsForm } from "../../forms";
+import { useTranslation } from "react-i18next";
 
 /**
  *  Inbound Provisioning Configurations for the Application.
@@ -74,6 +75,8 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
     const dispatch = useDispatch();
 
     const [userStore, setUserStore] = useState<SimpleUserStoreListItemInterface[]>([]);
@@ -87,18 +90,22 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
         updateApplicationConfigurations(appId, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully updated the provisioning configurations.",
+                    description: t("devPortal:components.applications.notifications" +
+                        ".updateInboundProvisioningConfig.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Update successful"
+                    message: t("devPortal:components.applications.notifications.updateInboundProvisioningConfig" +
+                        ".success.message")
                 }));
 
                 onUpdate(appId);
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: "An error occurred while the provisioning configurations.",
+                    description: t("devPortal:components.applications.notifications" +
+                        ".updateInboundProvisioningConfig.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Update error"
+                    message: t("devPortal:components.applications.notifications.updateInboundProvisioningConfig" +
+                        ".genericError.message")
                 }));
             });
     };
@@ -121,9 +128,9 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
     return (
         <>
             <Heading as="h4">
-                Inbound Provisioning
+                { t("devPortal:components.applications.edit.sections.provisioning.inbound.heading") }
                 <Heading subHeading as="h6">
-                    Provision users or groups to a WSO2 Identity Server’s userstore via this application.
+                    { t("devPortal:components.applications.edit.sections.provisioning.inbound.subHeading") }
                 </Heading>
             </Heading>
             <Divider hidden/>

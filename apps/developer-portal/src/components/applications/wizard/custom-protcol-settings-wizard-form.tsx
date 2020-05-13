@@ -20,6 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import {
     CustomInboundProtocolMetaDataInterface,
@@ -60,6 +61,8 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
     const createInputComponent = (
         (config: CustomInboundProtocolPropertyInterface, initialValue?: PropertyModelInterface) => {
             if (config?.availableValues?.length > 0) {
@@ -72,7 +75,10 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                                 type="dropdown"
                                 value={ initialValue?.value }
                                 required={ config?.required }
-                                requiredErrorMessage={ "Select the " + config?.displayName }
+                                requiredErrorMessage={
+                                    t("devPortal:components.applications.forms.inboundCustom.fields.dropdown" +
+                                        ".validations.empty", { name: config?.displayName })
+                                }
                                 default={ config?.defaultValue }
                                 children={ createDropDownOption(config?.availableValues) }
                                 data-testid={ `${ testId }-${ config?.name }-select` }
@@ -87,12 +93,20 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                             <Field
                                 label={ config?.displayName }
                                 name={ config?.name }
-                                hidePassword={ "Hide " + config?.displayName }
-                                showPassword={ "Show " + config?.displayName }
+                                hidePassword={ t("common:hide") + " " + config?.displayName }
+                                showPassword={ t("common:show") + " " + config?.displayName }
                                 value={ initialValue?.value }
                                 required={ config?.required }
-                                requiredErrorMessage={ "Provide  " + config?.displayName }
-                                placeholder={ "Enter  " + config?.displayName }
+                                requiredErrorMessage={
+                                    t("devPortal:components.applications.forms.inboundCustom.fields.password" +
+                                        ".validations.empty",
+                                        { name: config?.displayName })
+                                }
+                                placeholder={
+                                    t("devPortal:components.applications.forms.inboundCustom.fields.password" +
+                                        ".placeholder",
+                                        { name: config?.displayName })
+                                }
                                 type="password"
                                 default={ config?.defaultValue }
                                 data-testid={ `${ testId }-${ config?.name }-password-input` }
@@ -108,7 +122,11 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                                 name={ config?.name }
                                 label=""
                                 required={ config?.required }
-                                requiredErrorMessage={ "Provide  " + config?.displayName }
+                                requiredErrorMessage={
+                                    t("devPortal:components.applications.forms.inboundCustom.fields.checkbox" +
+                                        ".validations.empty",
+                                        { user: config?.displayName })
+                                }
                                 value={ initialValue?.value ? [config.name] : [] }
                                 type="checkbox"
                                 children={ [
@@ -131,8 +149,16 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                                 name={ config?.name }
                                 required={ config?.required }
                                 value={ initialValue?.value }
-                                requiredErrorMessage={ "Provide  " + config?.displayName }
-                                placeholder={ "Enter  " + config?.displayName }
+                                requiredErrorMessage={
+                                    t("devPortal:components.applications.forms.inboundCustom.fields.generic" +
+                                        ".validations.empty",
+                                        { name: config?.displayName })
+                                }
+                                placeholder={
+                                    t("devPortal:components.applications.forms.inboundCustom.fields.generic" +
+                                        ".placeholder",
+                                        { name: config?.displayName })
+                                }
                                 type={ (config?.type === CustomTypeEnum.INTEGER) ? "number" : "text" }
                                 data-testid={ `${ testId }-${ config?.name }-input` }
                             />

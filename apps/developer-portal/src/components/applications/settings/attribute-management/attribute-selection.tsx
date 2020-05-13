@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Divider, Grid, Icon, Input, Segment, Table } from "semantic-ui-react";
 import { AttributeSelectionWizardOtherDialect } from "./attirbute-selection-wizard-other-dialect";
 import { AttributeListItem } from "./attribute-list-item";
@@ -98,6 +99,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
 
     const [availableClaims, setAvailableClaims] = useState<ExtendedClaimInterface[]>([]);
     const [availableExternalClaims, setAvailableExternalClaims] = useState<ExtendedExternalClaimInterface[]>([]);
@@ -410,7 +412,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             ?
             <>
                 <Heading as="h5">
-                    Attribute Selection
+                    { t("devPortal:components.applications.edit.sections.attributes.selection.heading") }
                 </Heading>
                 <Divider hidden/>
                 <Grid.Row>
@@ -427,7 +429,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                             <Input
                                                                 icon={ <Icon name="search"/> }
                                                                 onChange={ handleChange }
-                                                                placeholder="Search attributes"
+                                                                placeholder={
+                                                                    t("devPortal:components.applications.edit" +
+                                                                        ".sections.attributes.selection.mappingTable" +
+                                                                        ".searchPlaceholder")
+                                                                }
                                                                 floated="left"
                                                                 size="small"
                                                             />
@@ -439,7 +445,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                     slider
                                                                     defaultChecked={ claimMappingOn }
                                                                     onChange={ handelMapButtonClick }
-                                                                    label="Enable mapping"
+                                                                    label={
+                                                                        t("devPortal:components.applications" +
+                                                                            ".edit.sections.attributes.selection" +
+                                                                            ".mappingTable.actions.enable")
+                                                                    }
                                                                 />
                                                             </Table.Cell>
                                                         )
@@ -464,32 +474,96 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                 (
                                                                     <Table.Row>
                                                                         <Table.HeaderCell>
-                                                                            <strong>Attribute</strong>
+                                                                            <strong>
+                                                                                {
+                                                                                    t("devPortal:components" +
+                                                                                        ".applications.edit.sections" +
+                                                                                        ".attributes.selection" +
+                                                                                        ".mappingTable.columns" +
+                                                                                        ".attribute")
+                                                                                }
+                                                                            </strong>
                                                                         </Table.HeaderCell>
                                                                         <Table.HeaderCell>
-                                                                            <strong>Application attribute</strong>
+                                                                            <strong>
+                                                                                {
+                                                                                    t("devPortal:components" +
+                                                                                    ".applications.edit.sections" +
+                                                                                        ".attributes.selection" +
+                                                                                        ".mappingTable.columns" +
+                                                                                        ".appAttribute")
+                                                                                }
+                                                                            </strong>
                                                                         </Table.HeaderCell>
                                                                         <Table.HeaderCell>
-                                                                            <strong> Requested </strong>
+                                                                            <strong>
+                                                                                {
+                                                                                    t("devPortal:components" +
+                                                                                        ".applications.edit.sections" +
+                                                                                        ".attributes.selection" +
+                                                                                        ".mappingTable.columns" +
+                                                                                        ".requested")
+                                                                                }
+                                                                            </strong>
                                                                         </Table.HeaderCell>
                                                                         <Table.HeaderCell>
-                                                                            <strong>Mandatory</strong>
+                                                                            <strong>
+                                                                                {
+                                                                                    t("devPortal:components" +
+                                                                                        ".applications.edit.sections" +
+                                                                                        ".attributes.selection" +
+                                                                                        ".mappingTable.columns" +
+                                                                                        ".mandatory")
+                                                                                }
+                                                                            </strong>
                                                                         </Table.HeaderCell>
                                                                     </Table.Row>
                                                                 ) :
                                                                 (
                                                                     <Table.Row>
                                                                         <Table.HeaderCell>
-                                                                            <strong>Attribute</strong>
+                                                                            <strong>
+                                                                                {
+                                                                                    t("devPortal:components" +
+                                                                                        ".applications.edit.sections" +
+                                                                                        ".attributes.selection" +
+                                                                                        ".mappingTable.columns" +
+                                                                                        ".attribute")
+                                                                                }
+                                                                            </strong>
                                                                         </Table.HeaderCell>
                                                                         <Table.HeaderCell>
-                                                                            <strong>Application attribute</strong>
+                                                                            <strong>
+                                                                                {
+                                                                                    t("devPortal:components" +
+                                                                                        ".applications.edit.sections" +
+                                                                                        ".attributes.selection" +
+                                                                                        ".mappingTable.columns" +
+                                                                                        ".appAttribute")
+                                                                                }
+                                                                            </strong>
                                                                         </Table.HeaderCell>
                                                                         <Table.HeaderCell>
-                                                                            <strong> Requested </strong>
+                                                                            <strong>
+                                                                                {
+                                                                                    t("devPortal:components" +
+                                                                                        ".applications.edit.sections" +
+                                                                                        ".attributes.selection" +
+                                                                                        ".mappingTable.columns" +
+                                                                                        ".requested")
+                                                                                }
+                                                                            </strong>
                                                                         </Table.HeaderCell>
                                                                         <Table.HeaderCell>
-                                                                            <strong>Mandatory</strong>
+                                                                            <strong>
+                                                                                {
+                                                                                    t("devPortal:components" +
+                                                                                        ".applications.edit.sections" +
+                                                                                        ".attributes.selection" +
+                                                                                        ".mappingTable.columns" +
+                                                                                        ".mandatory")
+                                                                                }
+                                                                            </strong>
                                                                         </Table.HeaderCell>
                                                                     </Table.Row>
                                                                 )
@@ -527,10 +601,22 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                     <Table.Header>
                                                         <Table.Row>
                                                             <Table.HeaderCell>
-                                                                <strong>Attribute</strong>
+                                                                <strong>
+                                                                    {
+                                                                        t("devPortal:components.applications" +
+                                                                            ".edit.sections.attributes.selection" +
+                                                                            ".mappingTable.columns.attribute")
+                                                                    }
+                                                                </strong>
                                                             </Table.HeaderCell>
                                                             <Table.HeaderCell>
-                                                                <strong>Mandatory</strong>
+                                                                <strong>
+                                                                    {
+                                                                        t("devPortal:components.applications" +
+                                                                            ".edit.sections.attributes.selection" +
+                                                                            ".mappingTable.columns.mandatory")
+                                                                    }
+                                                                </strong>
                                                             </Table.HeaderCell>
                                                         </Table.Row>
                                                     </Table.Header>
@@ -559,14 +645,19 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                             ) : (
                                 <Segment>
                                     <EmptyPlaceholder
-                                        title="No attributes added"
+                                        title={
+                                            t("devPortal:components.applications.placeholders.emptyAttributesList" +
+                                                ".title")
+                                        }
                                         subtitle={ [
-                                            "There are no attributes selected to the application at the moment."
+                                            t("devPortal:components.applications.placeholders.emptyAttributesList" +
+                                                ".subtitles")
                                         ] }
                                         action={
                                             !readOnly && (
                                                 <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">
-                                                    Add Attribute
+                                                    { t("devPortal:components.applications.placeholders" +
+                                                        ".emptyAttributesList.action") }
                                                 </PrimaryButton>
                                             )
                                         }

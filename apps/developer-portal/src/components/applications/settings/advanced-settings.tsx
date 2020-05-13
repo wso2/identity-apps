@@ -20,6 +20,7 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { updateApplicationConfigurations } from "../../../api";
 import { AdvancedConfigurationsInterface, FeatureConfigInterface } from "../../../models";
@@ -62,6 +63,8 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
     const dispatch = useDispatch();
 
     /**
@@ -73,9 +76,11 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
         updateApplicationConfigurations(appId, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully updated the advanced configurations.",
+                    description: t("devPortal:components.applications.notifications.updateAdvancedConfig" +
+                        ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Update successful"
+                    message: t("devPortal:components.applications.notifications.updateAdvancedConfig" +
+                        ".success.message")
                 }));
 
                 onUpdate(appId);
@@ -85,15 +90,18 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Update error"
+                        message: t("devPortal:components.applications.notifications.updateAdvancedConfig.error" +
+                            ".message")
                     }));
 
                     return;
                 }
                 dispatch(addAlert({
-                    description: "An error occurred while the advanced configurations.",
+                    description: t("devPortal:components.applications.notifications.updateAdvancedConfig" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Update error"
+                    message: t("devPortal:components.applications.notifications.updateAdvancedConfig" +
+                        ".genericError.message")
                 }));
             });
     };

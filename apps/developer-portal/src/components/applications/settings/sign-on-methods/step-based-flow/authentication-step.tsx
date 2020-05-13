@@ -21,6 +21,7 @@ import { EmptyPlaceholder, Heading, LabeledCard } from "@wso2is/react-components
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Droppable, DroppableProvided } from "react-beautiful-dnd";
+import { useTranslation } from "react-i18next";
 import { Form, Icon, Label, Popup, Radio } from "semantic-ui-react";
 import { IdentityProviderManagementConstants } from "../../../../../constants";
 import {
@@ -102,6 +103,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
     const classes = classNames("authentication-step-container", className);
 
     /**
@@ -161,7 +164,10 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                     content={
                         (
                             <>
-                                <Label attached="top">Select an Authenticator</Label>
+                                <Label attached="top">
+                                    { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
+                                        ".authenticationFlow.sections.stepBased.actions.selectAuthenticator") }
+                                </Label>
                                 <Form className="mt-3 mb-3" data-testid={ `${ testId }-authenticator-selection` }>
                                     {
                                         authenticator?.authenticators?.map((item) => {
@@ -204,7 +210,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                     className={ classes }
                     data-testid={ testId }
                 >
-                    <Heading className="step-header" as="h6">Step { step.id }</Heading>
+                    <Heading className="step-header" as="h6">{ t("common:step") } { step.id }</Heading>
                     <Icon
                         className="delete-button"
                         name="cancel"
@@ -218,9 +224,12 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                     resolveStepOption(option, stepIndex, optionIndex))
                                 : (
                                     <EmptyPlaceholder
-                                        subtitle={ [ "Drag and drop any of the above authenticators",
-                                            "to build an authentication sequence." ]
-                                        }
+                                        subtitle={ [
+                                            t("devPortal:components.applications.placeholders" +
+                                                ".emptyAuthenticatorStep.subtitles.0"),
+                                            t("devPortal:components.applications.placeholders" +
+                                                ".emptyAuthenticatorStep.subtitles.1")
+                                        ] }
                                         data-testid={ `${ testId }-empty-placeholder` }
                                     />
                                 )

@@ -22,6 +22,7 @@ import { ConfirmationModal, CopyInputField, Heading, Hint } from "@wso2is/react-
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { Button, Divider, Form, Grid } from "semantic-ui-react";
 import {
     GrantTypeMetaDataInterface,
@@ -69,6 +70,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         readOnly,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const [isEncryptionEnabled, setEncryptionEnable] = useState(false);
     const [callBackUrls, setCallBackUrls] = useState("");
@@ -266,7 +269,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                         <Form.Field>
-                                            <label>Client ID</label>
+                                            <label>
+                                                { t("devPortal:components.applications.forms.inboundOIDC.fields" +
+                                                    ".clientID.label") }
+                                            </label>
                                             <CopyInputField
                                                 value={ initialValues?.clientId }
                                                 data-testid={ `${ testId }-client-id-readonly-input` }
@@ -282,12 +288,27 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                         <Field
                                             name="clientSecret"
-                                            label="Client secret"
-                                            hidePassword="Hide secret"
-                                            showPassword="Show secret"
+                                            label={
+                                                t("devPortal:components.applications.forms.inboundOIDC.fields" +
+                                                    ".clientSecret.label")
+                                            }
+                                            hidePassword={
+                                                t("devPortal:components.applications.forms.inboundOIDC.fields" +
+                                                    ".clientSecret.hideSecret")
+                                            }
+                                            showPassword={
+                                                t("devPortal:components.applications.forms.inboundOIDC.fields" +
+                                                    ".clientSecret.showSecret")
+                                            }
                                             required={ false }
-                                            requiredErrorMessage="this is needed"
-                                            placeholder="Enter Client Secret"
+                                            requiredErrorMessage={
+                                                t("devPortal:components.applications.forms.inboundOIDC.fields" +
+                                                    ".clientSecret.validations.empty")
+                                            }
+                                            placeholder={
+                                                t("devPortal:components.applications.forms.inboundOIDC.fields" +
+                                                    ".clientSecret.placeholder")
+                                            }
                                             type="password"
                                             value={ initialValues.clientSecret }
                                             data-testid={ `${ testId }-client-secret-readonly-input` }
@@ -310,7 +331,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                         onClick={ handleRegenerateButton }
                                                         data-testid={ `${ testId }-oidc-regenerate-button` }
                                                     >
-                                                        Regenerate
+                                                        { t("common:regenerate") }
                                                     </Button>
                                                     <Button
                                                         color="red"
@@ -319,7 +340,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                         disabled={ (initialValues?.state === State.REVOKED) }
                                                         data-testid={ `${ testId }-oidc-revoke-button` }
                                                     >
-                                                        Revoke
+                                                        { t("common:revoke") }
                                                     </Button>
                                                 </>
 
@@ -331,12 +352,22 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         type="warning"
                                         open={ showRegenerateConfirmationModal }
                                         assertion={ initialValues?.clientId }
-                                        assertionHint={
-                                            <p>Please type <strong>{ initialValues?.clientId }</strong> to confirm.</p>
-                                        }
+                                        assertionHint={ (
+                                            <p>
+                                                <Trans
+                                                    i18nKey={
+                                                        "devPortal:components.applications.confirmations" +
+                                                        ".regenerateSecret.assertionHint"
+                                                    }
+                                                    tOptions={ { id: initialValues?.clientId } }
+                                                >
+                                                    Please type <strong>{ initialValues?.clientId }</strong> to confirm.
+                                                </Trans>
+                                            </p>
+                                        ) }
                                         assertionType="input"
-                                        primaryAction="Confirm"
-                                        secondaryAction="Cancel"
+                                        primaryAction={ t("common:confirm") }
+                                        secondaryAction={ t("common:cancel") }
                                         onSecondaryActionClick={ (): void =>
                                             setShowRegenerateConfirmationModal(false)
                                         }
@@ -349,20 +380,22 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         <ConfirmationModal.Header
                                             data-testid={ `${ testId }-oidc-regenerate-confirmation-modal-header` }
                                         >
-                                            Are you sure?
+                                            { t("devPortal:components.applications.confirmations" +
+                                                ".regenerateSecret.header") }
                                         </ConfirmationModal.Header>
                                         <ConfirmationModal.Message
                                             attached
                                             warning
                                             data-testid={ `${ testId }-oidc-regenerate-confirmation-modal-message` }
                                         >
-                                            This action is irreversible and permanently change the client secret.
+                                            { t("devPortal:components.applications.confirmations" +
+                                                ".regenerateSecret.message") }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
                                             data-testid={ `${ testId }-oidc-regenerate-confirmation-modal-content` }
                                         >
-                                            If you regenerate this application, All the applications
-                                            depending on this also might stop working. Please proceed with caution.
+                                            { t("devPortal:components.applications.confirmations" +
+                                                ".regenerateSecret.content") }
                                         </ConfirmationModal.Content>
                                     </ConfirmationModal>
                                     <ConfirmationModal
@@ -370,12 +403,22 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         type="warning"
                                         open={ showRevokeConfirmationModal }
                                         assertion={ initialValues?.clientId }
-                                        assertionHint={
-                                            <p>Please type <strong>{ initialValues?.clientId }</strong> to confirm.</p>
-                                        }
+                                        assertionHint={ (
+                                            <p>
+                                                <Trans
+                                                    i18nKey={
+                                                        "devPortal:components.applications.confirmations" +
+                                                        ".revokeApplication.assertionHint"
+                                                    }
+                                                    tOptions={ { id: initialValues?.clientId } }
+                                                >
+                                                    Please type <strong>{ initialValues?.clientId }</strong> to confirm.
+                                                </Trans>
+                                            </p>
+                                        ) }
                                         assertionType="input"
-                                        primaryAction="Confirm"
-                                        secondaryAction="Cancel"
+                                        primaryAction={ t("common:confirm") }
+                                        secondaryAction={ t("common:cancel") }
                                         onSecondaryActionClick={ (): void => setShowRevokeConfirmationModal(false) }
                                         onPrimaryActionClick={ (): void => {
                                             onApplicationRevoke();
@@ -386,20 +429,22 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         <ConfirmationModal.Header
                                             data-testid={ `${ testId }-oidc-revoke-confirmation-modal-header` }
                                         >
-                                            Are you sure?
+                                            { t("devPortal:components.applications.confirmations" +
+                                                ".revokeApplication.header") }
                                         </ConfirmationModal.Header>
                                         <ConfirmationModal.Message
                                             attached
                                             warning
                                             data-testid={ `${ testId }-oidc-revoke-confirmation-modal-message` }
                                         >
-                                            This action is can be reversed by regenerating client secret.
+                                            { t("devPortal:components.applications.confirmations" +
+                                                ".revokeApplication.message") }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
                                             data-testid={ `${ testId }-oidc-revoke-confirmation-modal-content` }
                                         >
-                                            If you Revoke this application, All the applications
-                                            depending on this also might stop working. Please proceed with caution.
+                                            { t("devPortal:components.applications.confirmations" +
+                                                ".revokeApplication.content") }
                                         </ConfirmationModal.Content>
                                     </ConfirmationModal>
                                 </Grid.Row>
@@ -413,10 +458,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="grant"
-                                    label="Allowed grant type"
+                                    label={
+                                        t("devPortal:components.applications.forms.inboundOIDC.fields.grant.label")
+                                    }
                                     type="checkbox"
                                     required={ true }
-                                    requiredErrorMessage="Select at least a  grant type"
+                                    requiredErrorMessage={
+                                        t("devPortal:components.applications.forms.inboundOIDC.fields.grant" +
+                                            ".validations.empty")
+                                    }
                                     children={ getAllowedGranTypeList(metadata.allowedGrantTypes) }
                                     value={ initialValues.grantTypes }
                                     readOnly={ readOnly }
@@ -428,57 +478,70 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <URLInputComponent
                             urlState={ callBackUrls }
                             setURLState={ setCallBackUrls }
-                            labelName={ "Callback URL" }
+                            labelName={
+                                t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.label")
+                            }
                             required={ true }
                             value={ buildCallBackURLWithSeparator(initialValues.callbackURLs?.toString()) }
-                            placeholder={ "Enter callback URL" }
-                            validationErrorMsg={ "Please add valid URL." }
+                            placeholder={
+                                t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
+                                    ".placeholder")
+                            }
+                            validationErrorMsg={
+                                t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
+                                    ".validations.empty")
+                            }
                             validation={ (value: string) => {
                                 return FormValidation.url(value);
                             } }
                             showError={ showURLError }
                             setShowError={ setShowURLError }
-                            hint={ " After the authentication, we will only redirect to the above callback URLs " +
-                            "and you can specify multiple URLs" }
+                            hint={
+                                t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.hint")
+                            }
                             readOnly={ readOnly }
                             data-testid={ `${ testId }-callback-url-input` }
                         />
-                        <Grid.Row columns={ 1 }>
+                        {/*TODO: Enable this after the backend is fixed*/ }
+                        {/*<Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                {/*TODO: Enable this after the backend is fixed*/ }
-                                {/*<Field*/ }
-                                {/*    name="allowedOrigins"*/ }
-                                {/*    label="Allowed origins"*/ }
-                                {/*    validation={ (value: string, validation: Validation) => {*/ }
-                                {/*        if (!FormValidation.url(value)) {*/ }
-                                {/*            validation.isValid = false;*/ }
-                                {/*            validation.errorMessages.push("This is not a valid URL");*/ }
-                                {/*        }*/ }
-                                {/*    } }*/ }
-                                {/*    required={ false }*/ }
-                                {/*    requiredErrorMessage="this is not needed"*/ }
-                                {/*    placeholder="Enter the Allowed Origins"*/ }
-                                {/*    type="text"*/ }
-                                {/*    value={ initialValues.allowedOrigins?.toString() }*/ }
-                                {/*/>*/ }
+                                <Field
+                                    name="allowedOrigins"
+                                    label="Allowed origins"
+                                    validation={ (value: string, validation: Validation) => {
+                                        if (!FormValidation.url(value)) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push("This is not a valid URL");
+                                        }
+                                    } }
+                                    required={ false }
+                                    requiredErrorMessage="this is not needed"
+                                    placeholder="Enter the Allowed Origins"
+                                    type="text"
+                                    value={ initialValues.allowedOrigins?.toString() }
+                                />
                                 <Hint>
                                     Certain origins can be whitelisted to allowed cross origin requests. Enter a list
                                     of URL separated by commas. E.g. https://app.example.com/js.
                                 </Hint>
                             </Grid.Column>
-                        </Grid.Row>
+                        </Grid.Row>*/}
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="supportPublicClients"
                                     label=""
                                     required={ false }
-                                    requiredErrorMessage="this is needed"
+                                    requiredErrorMessage={
+                                        t("devPortal:components.applications.forms.inboundOIDC.fields.public" +
+                                            ".validations.empty")
+                                    }
                                     type="checkbox"
                                     value={ initialValues.publicClient ? ["supportPublicClients"] : [] }
                                     children={ [
                                         {
-                                            label: "Public client",
+                                            label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                                ".fields.public.label"),
                                             value: "supportPublicClients"
                                         }
                                     ] }
@@ -486,7 +549,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     data-testid={ `${ testId }-public-client-checkbox` }
                                 />
                                 <Hint>
-                                    Allow the client to authenticate without a client secret.
+                                    { t("devPortal:components.applications.forms.inboundOIDC.fields.public.hint") }
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
@@ -498,26 +561,34 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Divider hidden/>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Heading as="h5">PKCE</Heading>
+                                <Heading as="h5">
+                                    { t("devPortal:components.applications.forms.inboundOIDC.sections.pkce" +
+                                        ".heading") }
+                                </Heading>
                                 <Hint>
-                                    PKCE (RFC 7636) is an extension to the Authorization Code flow to prevent certain
-                                    attacks and to be able to securely perform the OAuth exchange from public clients.
+                                    { t("devPortal:components.applications.forms.inboundOIDC.sections.pkce" +
+                                        ".hint") }
                                 </Hint>
                                 <Divider hidden/>
                                 <Field
                                     name="PKCE"
                                     label=""
                                     required={ false }
-                                    requiredErrorMessage="this is needed"
+                                    requiredErrorMessage={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections.pkce" +
+                                            ".fields.pkce.validations.empty")
+                                    }
                                     type="checkbox"
                                     value={ findPKCE(initialValues.pkce) }
                                     children={ [
                                         {
-                                            label: "PKCE mandatory",
+                                            label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                                ".sections.pkce.fields.pkce.children.mandatory.label"),
                                             value: "mandatory"
                                         },
                                         {
-                                            label: "Support PKCE 'Plain' Transform Algorithm",
+                                            label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                                ".sections.pkce.fields.pkce.children.plainAlg.label"),
                                             value: "supportPlainTransformAlgorithm"
                                         }
                                     ] }
@@ -534,14 +605,20 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Divider hidden/>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Heading as="h5">Access Token</Heading>
+                                <Heading as="h5">
+                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                        ".accessToken.heading") }
+                                </Heading>
                                 <Hint>
-                                    Configure the access token issuer, user access token expiry time, application access
-                                    token expiry time etc.
+                                   { t("devPortal:components.applications.forms.inboundOIDC.sections.accessToken" +
+                                       ".hint") }
                                 </Hint>
                                 <Divider hidden/>
                                 <Field
-                                    label="Token type"
+                                    label={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".accessToken.fields.type.label")
+                                    }
                                     name="type"
                                     default={ initialValues.accessToken ? initialValues.accessToken.type
                                         : metadata.accessTokenType.defaultValue }
@@ -556,18 +633,30 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                 <Field
                                     name="userAccessTokenExpiryInSeconds"
-                                    label="User access token expiry time"
+                                    label={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".accessToken.fields.expiry.label")
+                                    }
                                     required={ true }
-                                    requiredErrorMessage="Please fill the user access token expiry time"
+                                    requiredErrorMessage={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".accessToken.fields.expiry.validations.empty")
+                                    }
                                     value={ initialValues.accessToken ?
                                         initialValues.accessToken.userAccessTokenExpiryInSeconds.toString() :
                                         metadata.defaultUserAccessTokenExpiryTime }
-                                    placeholder="Enter the user access token expiry time "
+                                    placeholder={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".accessToken.fields.expiry.placeholder")
+                                    }
                                     type="number"
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-access-token-expiry-time-input` }
                                 />
-                                <Hint>Configure the user access token expiry time (in seconds).</Hint>
+                                <Hint>
+                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                        ".accessToken.fields.expiry.hint") }
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                         {/* TODO  Enable this option in future*/ }
@@ -596,35 +685,54 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Divider hidden/>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Heading as="h5">Refresh Token</Heading>
+                                <Heading as="h5">
+                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                        ".refreshToken.heading") }
+                                </Heading>
                                 <Divider hidden/>
                                 <Field
                                     name="RefreshToken"
                                     label=""
                                     required={ false }
-                                    requiredErrorMessage="this is needed"
+                                    requiredErrorMessage={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".refreshToken.fields.renew.validations.empty")
+                                    }
                                     type="checkbox"
                                     value={ initialValues.refreshToken?.renewRefreshToken ? ["refreshToken"] : [] }
                                     children={ [
                                         {
-                                            label: "Renew refresh token",
+                                            label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                                ".sections.refreshToken.fields.renew.label"),
                                             value: "refreshToken"
                                         }
                                     ] }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-renew-refresh-token-checkbox` }
                                 />
-                                <Hint>Issue a new refresh token per request when Refresh Token Grant is used.</Hint>
+                                <Hint>
+                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                        ".refreshToken.fields.renew.hint") }
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                 <Field
                                     name="expiryInSeconds"
-                                    label="Refresh token expiry time"
+                                    label={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".refreshToken.fields.expiry.label")
+                                    }
                                     required={ true }
-                                    requiredErrorMessage="Please fill the refresh token expiry time"
-                                    placeholder="Enter the refresh token expiry time"
+                                    requiredErrorMessage={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".refreshToken.fields.expiry.validations.empty")
+                                    }
+                                    placeholder={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".refreshToken.fields.expiry.placeholder")
+                                    }
                                     value={ initialValues.refreshToken ?
                                         initialValues.refreshToken.expiryInSeconds.toString() :
                                         metadata.defaultRefreshTokenExpiryTime }
@@ -632,7 +740,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-refresh-token-expiry-time-input` }
                                 />
-                                <Hint>Configure the refresh token expiry time (in seconds).</Hint>
+                                <Hint>
+                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                        ".refreshToken.fields.expiry.hint") }
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
 
@@ -643,20 +754,35 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Divider hidden/>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Heading as="h5">ID Token</Heading>
+                                <Heading as="h5">
+                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                        ".idToken.heading") }
+                                </Heading>
                                 <Divider hidden/>
                                 <Field
                                     name="audience"
-                                    label="Audience"
+                                    label={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".idToken.fields.audience.label")
+                                    }
                                     required={ false }
-                                    requiredErrorMessage="Please fill the audience"
-                                    placeholder="Enter Audience"
+                                    requiredErrorMessage={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                            ".fields.audience.validations.empty")
+                                    }
+                                    placeholder={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                            ".fields.audience.placeholder")
+                                    }
                                     value={ initialValues.idToken?.audience.toString() }
                                     type="textarea"
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-audience-textarea` }
                                 />
-                                <Hint>The recipients that the ID token is intended for.</Hint>
+                                <Hint>
+                                    { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                        ".fields.audience.hint") }
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
@@ -665,7 +791,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     name="encryption"
                                     label=""
                                     required={ false }
-                                    requiredErrorMessage="this is needed"
+                                    requiredErrorMessage={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                            ".fields.encryption.validations.empty")
+                                    }
                                     type="checkbox"
                                     listen={
                                         (values) => {
@@ -677,7 +806,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     value={ initialValues.idToken?.encryption.enabled ? ["enableEncryption"] : [] }
                                     children={ [
                                         {
-                                            label: "Enable encryption",
+                                            label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                                ".sections.idToken.fields.encryption.label"),
                                             value: "enableEncryption"
                                         }
                                     ] }
@@ -691,19 +821,29 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="algorithm"
-                                    label="Algorithm"
+                                    label={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                            ".fields.algorithm.label")
+                                    }
                                     required={ isEncryptionEnabled }
-                                    requiredErrorMessage="this is needed"
+                                    requiredErrorMessage={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                            ".fields.algorithm.validations.empty")
+                                    }
                                     type="dropdown"
                                     default={ initialValues.idToken ? initialValues.idToken.encryption.algorithm :
                                         metadata.idTokenEncryptionAlgorithm.defaultValue }
-                                    placeholder="Select Algorithm"
+                                    placeholder={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".idToken.fields.algorithm.placeholder")
+                                    }
                                     children={ getAllowedList(metadata.idTokenEncryptionAlgorithm) }
                                     disabled={ !isEncryptionEnabled }
                                     data-testid={ `${ testId }-encryption-algorithm-dropdown` }
                                 />
                                 <Hint disabled={ !isEncryptionEnabled }>
-                                    Choose encryption algorithm of ID token for the client.
+                                    { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                        ".fields.algorithm.hint") }
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
@@ -711,20 +851,30 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="method"
-                                    label="Encryption method"
+                                    label={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".idToken.fields.method.label")
+                                    }
                                     required={ isEncryptionEnabled }
-                                    requiredErrorMessage="this is needed"
+                                    requiredErrorMessage={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                            ".fields.method.validations.empty")
+                                    }
                                     type="dropdown"
                                     default={ initialValues.idToken ? initialValues.idToken.encryption.method :
                                         metadata.idTokenEncryptionMethod.defaultValue }
-                                    placeholder="Select Method"
+                                    placeholder={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                            ".fields.method.placeholder")
+                                    }
                                     children={ getAllowedList(metadata.idTokenEncryptionMethod) }
                                     disabled={ !isEncryptionEnabled }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-encryption-method-dropdown` }
                                 />
                                 <Hint disabled={ !isEncryptionEnabled }>
-                                    Choose the method for the ID token encryption.
+                                    { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                        ".fields.method.hint") }
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
@@ -732,17 +882,29 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                 <Field
                                     name="idExpiryInSeconds"
-                                    label="Id token expiry time"
+                                    label={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                            ".fields.expiry.label")
+                                    }
                                     required={ true }
-                                    requiredErrorMessage="Please fill the ID token expiry time"
-                                    placeholder="Enter the ID token expiry time"
+                                    requiredErrorMessage={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                            ".fields.expiry.validations.empty")
+                                    }
+                                    placeholder={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                            ".fields.expiry.placeholder")
+                                    }
                                     value={ initialValues.idToken ? initialValues.idToken.expiryInSeconds.toString() :
                                         metadata.defaultIdTokenExpiryTime }
                                     type="number"
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-id-token-expiry-time-input` }
                                 />
-                                <Hint>Configure the ID token expiry time (in seconds).</Hint>
+                                <Hint>
+                                    { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                        ".fields.expiry.hint") }
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
 
@@ -757,12 +919,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Divider hidden/>
                                 <Field
                                     name="backChannelLogoutUrl"
-                                    label="Back channel logout URL"
+                                    label={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".logoutURLs.fields.back.label")
+                                    }
                                     required={ false }
-                                    requiredErrorMessage="Please fill the Back Channel Logout URL"
-                                    placeholder="Enter the Back Channel Logout URL"
+                                    requiredErrorMessage={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".logoutURLs.fields.back.validations.empty")
+                                    }
+                                    placeholder={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".logoutURLs.fields.back.placeholder")
+                                    }
                                     type="text"
-                                    validationErrorMsg={ "Please add valid URL" }
+                                    validationErrorMsg={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".logoutURLs.fields.back.validations.invalid")
+                                    }
                                     validation={ (value: string) => {
                                         return FormValidation.url(value);
                                     } }
@@ -776,12 +950,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="frontChannelLogoutUrl"
-                                    label="Front channel logout URL"
+                                    label={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".logoutURLs.fields.front.label")
+                                    }
                                     required={ false }
-                                    requiredErrorMessage="Please fill the Front Channel Logout URL"
-                                    placeholder="Enter the Front Channel Logout URL"
+                                    requiredErrorMessage={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".logoutURLs.fields.front.validations.empty")
+                                    }
+                                    placeholder={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".logoutURLs.fields.front.placeholder")
+                                    }
                                     type="text"
-                                    validationErrorMsg={ "Please add valid URL" }
+                                    validationErrorMsg={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".logoutURLs.fields.front.validations.invalid")
+                                    }
                                     validation={ (value: string) => {
                                         return FormValidation.url(value);
                                     } }
@@ -803,7 +989,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         ["EnableRequestObjectSignatureValidation"] : [] }
                                     children={ [
                                         {
-                                            label: "Enable request object signature validation",
+                                            label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                                ".sections.logoutURLs.fields.signatureValidation.label"),
                                             value: "EnableRequestObjectSignatureValidation"
                                         }
                                     ] }
@@ -819,13 +1006,19 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Divider hidden/>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Heading as="h5">Scope validators</Heading>
+                                <Heading as="h5">
+                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                        ".scopeValidators.heading") }
+                                </Heading>
                                 <Divider hidden/>
                                 <Field
                                     name="scopeValidator"
                                     label=""
                                     required={ false }
-                                    requiredErrorMessage="this is needed"
+                                    requiredErrorMessage={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".scopeValidators.fields.validator.validations.empty")
+                                    }
                                     type="checkbox"
                                     value={ initialValues.scopeValidators }
                                     children={ getAllowedList(metadata.scopeValidators, true) }
@@ -845,7 +1038,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             className="form-button"
                                             data-testid={ `${ testId }-submit-button` }
                                         >
-                                            Update
+                                            { t("common:update") }
                                         </Button>
                                     </Grid.Column>
                                 </Grid.Row>

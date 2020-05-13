@@ -21,6 +21,7 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 
 /**
@@ -52,6 +53,8 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
     /**
      * Sanitizes and prepares the form values for submission.
      *
@@ -82,36 +85,59 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 name="realm"
-                                label="Realm"
+                                label={
+                                    t("devPortal:components.applications.forms.inboundSTS.fields.realm.label")
+                                }
                                 required={ true }
-                                requiredErrorMessage="Enter the realm."
-                                placeholder="Enter realm."
+                                requiredErrorMessage={
+                                    t("devPortal:components.applications.forms.inboundSTS.fields.realm" +
+                                        ".validations.empty")
+                                }
+                                placeholder={
+                                    t("devPortal:components.applications.forms.inboundSTS.fields.realm" +
+                                        ".placeholder")
+                                }
                                 type="text"
                                 value={ initialValues ? initialValues?.realm : templateValues?.realm }
                                 data-testid={ `${ testId }-realm-input` }
                             />
-                            <Hint>Enter realm identifier for passive sts</Hint>
+                            <Hint>
+                                { t("devPortal:components.applications.forms.inboundSTS.fields.realm.hint") }
+                            </Hint>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 name="replyTo"
-                                label="Reply URL"
+                                label={
+                                    t("devPortal:components.applications.forms.inboundSTS.fields.replyTo.label")
+                                }
                                 required={ true }
-                                requiredErrorMessage="Enter the reply url."
-                                placeholder="Enter url."
+                                requiredErrorMessage={
+                                    t("devPortal:components.applications.forms.inboundSTS.fields.replyTo" +
+                                        ".validations.empty")
+                                }
+                                placeholder={
+                                    t("devPortal:components.applications.forms.inboundSTS.fields.replyTo" +
+                                        ".placeholder")
+                                }
                                 validation={ (value: string, validation: Validation) => {
                                     if (!FormValidation.url(value)) {
                                         validation.isValid = false;
-                                        validation.errorMessages.push("This is not a valid URL");
+                                        validation.errorMessages.push(
+                                            t("devPortal:components.applications.forms.inboundSTS.fields.replyTo" +
+                                                ".validations.invalid")
+                                        );
                                     }
                                 } }
                                 type="text"
                                 value={ initialValues ? initialValues?.replyTo : templateValues?.replyTo }
                                 data-testid={ `${ testId }-reply-url-input` }
                             />
-                            <Hint>Enter RP endpoint URL that handles the response.</Hint>
+                            <Hint>
+                                { t("devPortal:components.applications.forms.inboundSTS.fields.replyTo.hint") }
+                            </Hint>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

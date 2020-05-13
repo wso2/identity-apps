@@ -21,6 +21,7 @@ import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
@@ -74,6 +75,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         onUpdate,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const dispatch = useDispatch();
 
@@ -152,9 +155,11 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         updateAuthenticationSequence(appId, requestBody)
             .then(() => {
                 dispatch(addAlert({
-                    description: "Successfully updated the application",
+                    description: t("devPortal:components.applications.notifications.updateAuthenticationFlow" +
+                        ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Update successful"
+                    message: t("devPortal:components.applications.notifications.updateAuthenticationFlow" +
+                        ".success.message")
                 }));
 
                 onUpdate(appId);
@@ -164,16 +169,19 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: "Update Error"
+                        message: t("devPortal:components.applications.notifications.updateAuthenticationFlow" +
+                            ".error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: "An error occurred while updating authentication steps of the application",
+                    description: t("devPortal:components.applications.notifications.updateAuthenticationFlow" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Update Error"
+                    message: t("devPortal:components.applications.notifications.updateAuthenticationFlow" +
+                        ".genericError.message")
                 }));
             });
     };
@@ -224,7 +232,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         onClick={ handleUpdateClick }
                         data-testid={ `${ testId }-update-button` }
                     >
-                        Update
+                        { t("common:update") }
                     </PrimaryButton>
                 )
             }

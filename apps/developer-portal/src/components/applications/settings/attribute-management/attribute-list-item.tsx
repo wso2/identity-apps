@@ -18,6 +18,7 @@
 
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Checkbox, Input, Label, Popup, Table } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
 
@@ -64,11 +65,12 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         claimMappingError
     } = props;
 
+    const { t } = useTranslation();
+
     const [mappingOn, setMappingOn] = useState(false);
     const [errorInClaimMapping, setErrorInClaimMapping] = useState(false);
     const [mandatory, setMandatory] = useState(false);
     const [requested, setRequested] = useState(true);
-
 
     const getClaimName = (claimURI: string): string => {
         if (typeof claimURI === "string") {
@@ -142,20 +144,25 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                         <>
                             <Table.Cell error={ errorInClaimMapping }>
                                 <Input
-                                    placeholder={ "eg: custom" + displayName + ", new" + displayName }
+                                    placeholder={
+                                        t("devPortal:components.applications.edit.sections.attributes.selection" +
+                                            ".mappingTable.listItem.fields.claim.placeholder",
+                                            { name: displayName })
+                                    }
                                     value={ mapping?.applicationClaim }
                                     onChange={ handleClaimMapping }
                                     disabled={ !mappingOn }
                                     required
                                 />
-                                { errorInClaimMapping &&
-                                (<Label
+                                { errorInClaimMapping && (
+                                    <Label
                                         basic color='red'
-                                        pointing='left'>
-                                        Please enter a value
+                                        pointing='left'
+                                    >
+                                        { t("devPortal:components.applications.edit.sections.attributes.selection" +
+                                            ".mappingTable.listItem.fields.claim.label") }
                                     </Label>
-                                )
-                                }
+                                ) }
                             </Table.Cell>
                             <Table.Cell>
                                 <Popup
@@ -169,7 +176,13 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                         )
                                     }
                                     position="top right"
-                                    content={ requested ? "Remove requested" : "Make requested" }
+                                    content={
+                                        requested
+                                            ? t("devPortal:components.applications.edit.sections.attributes" +
+                                            ".selection.mappingTable.listItem.actions.removeRequested")
+                                            : t("devPortal:components.applications.edit.sections.attributes" +
+                                            ".selection.mappingTable.listItem.actions.makeRequested")
+                                    }
                                     inverted
                                     disabled={ !mappingOn }
                                 />
@@ -188,7 +201,13 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                 )
                             }
                             position="top right"
-                            content={ mandatory ? "Remove mandatory" : "Make mandatory" }
+                            content={
+                                mandatory
+                                    ? t("devPortal:components.applications.edit.sections.attributes.selection" +
+                                    ".mappingTable.listItem.actions.removeMandatory")
+                                    : t("devPortal:components.applications.edit.sections.attributes.selection" +
+                                    ".mappingTable.listItem.actions.makeMandatory")
+                            }
                             inverted
                             disabled={ mappingOn ? !requested : false }
                         />
@@ -211,7 +230,13 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                 )
                             }
                             position="top right"
-                            content={ mandatory ? "Remove mandatory" : "Make mandatory" }
+                            content={
+                                mandatory
+                                    ? t("devPortal:components.applications.edit.sections.attributes.selection" +
+                                    ".mappingTable.listItem.actions.removeMandatory")
+                                    : t("devPortal:components.applications.edit.sections.attributes.selection" +
+                                    ".mappingTable.listItem.actions.makeMandatory")
+                            }
                             inverted
                         />
                     </Table.Cell>

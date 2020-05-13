@@ -21,6 +21,7 @@ import { EmptyPlaceholder, GenericIcon, Heading } from "@wso2is/react-components
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, Ref, SyntheticEvent, forwardRef, useState } from "react";
 import Draggable from "react-draggable";
+import { useTranslation } from "react-i18next";
 import { Accordion, Card, Icon, Popup } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
 import { OperationIcons } from "../../../../../configs";
@@ -95,6 +96,8 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
             [ "data-testid" ]: testId
         } = props;
 
+        const { t } = useTranslation();
+
         const [
             authenticatorsAccordionActiveIndexes,
             setAuthenticatorsAccordionActiveIndexes
@@ -143,7 +146,7 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
                                         </div>
                                     ) }
                                     position="top center"
-                                    content="Drag"
+                                    content={ t("common:drag") }
                                     inverted
                                 />
                                 <Popup
@@ -164,7 +167,7 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
                                         </div>
                                     ) }
                                     position="top center"
-                                    content="Minimize"
+                                    content={ t("common:minimize") }
                                     inverted
                                 />
                             </Card.Content>
@@ -209,11 +212,15 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
                                                                             <EmptyPlaceholder
                                                                                 subtitle={
                                                                                     [
-                                                                                        "Could not find any "
-                                                                                        + authenticator.heading
-                                                                                        + " authenticators"
+                                                                                        t("devPortal:components" +
+                                                                                            ".applications.placehold" +
+                                                                                            "ers.emptyAuthenticators" +
+                                                                                            "List.subtitles", {
+                                                                                            type: authenticator.heading
+                                                                                        })
                                                                                     ]
-                                                                                }/>
+                                                                                }
+                                                                            />
                                                                         ) }
                                                                         data-testid={ `${ testId }-authenticators` }
                                                                     />

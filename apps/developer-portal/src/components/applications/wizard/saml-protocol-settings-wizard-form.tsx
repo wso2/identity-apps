@@ -22,6 +22,7 @@ import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { URLInputComponent } from "../components";
 
@@ -53,6 +54,8 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
         onSubmit,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const [assertionConsumerUrls, setAssertionConsumerUrls] = useState("");
     const [showAssertionConsumerUrlError, setAssertionConsumerUrlError] = useState(false);
@@ -112,20 +115,27 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Field
                                 name="issuer"
-                                label="Issuer"
+                                label={
+                                    t("devPortal:components.applications.forms.inboundSAML" +
+                                        ".fields.issuer.label")
+                                }
                                 required={ true }
-                                requiredErrorMessage="Please provide the issuer"
+                                requiredErrorMessage={
+                                    t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                        ".issuer.validations.empty")
+                                }
                                 type="text"
-                                placeholder={ "Enter the issuer name" }
+                                placeholder={
+                                    t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                        ".issuer.placeholder")
+                                }
                                 value={
                                     initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration?.issuer
                                 }
                                 data-testid={ `${ testId }-issuer-input` }
                             />
                             <Hint>
-                                { `This specifies the issuer. This is the "saml:Issuer" element that contains
-                            the unique identifier of the Application. This is also the issuer value
-                            specified in the SAML Authentication Request issued by the Application. ` }
+                                { t("devPortal:components.applications.forms.inboundSAML.fields.issuer.hint") }
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>
@@ -133,11 +143,20 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Field
                                 name="applicationQualifier"
-                                label="Application qualifier"
+                                label={
+                                    t("devPortal:components.applications.forms.inboundSAML.fields.qualifier" +
+                                        ".label")
+                                }
                                 required={ false }
-                                requiredErrorMessage="This is needed"
+                                requiredErrorMessage={
+                                    t("devPortal:components.applications.forms.inboundSAML.fields.qualifier" +
+                                        ".validations.empty")
+                                }
                                 type="text"
-                                placeholder={ "Enter the application qualifier" }
+                                placeholder={
+                                    t("devPortal:components.applications.forms.inboundSAML.fields.qualifier" +
+                                        ".placeholder")
+                                }
                                 value={
                                     initialValues?.inboundProtocolConfiguration
                                         .saml?.manualConfiguration?.serviceProviderQualifier
@@ -145,19 +164,24 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                 data-testid={ `${ testId }-application-qualifier-input` }
                             />
                             <Hint>
-                                This value is needed only if you have to configure multiple SAML SSO
-                                inbound authentication configurations for the same Issuer value. Qualifier
-                                that is defined here will be appended to the issuer internally to
-                                identify a application uniquely at runtime.
+                                { t("devPortal:components.applications.forms.inboundSAML.fields.qualifier.hint") }
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>
                     <URLInputComponent
                         urlState={ assertionConsumerUrls }
                         setURLState={ setAssertionConsumerUrls }
-                        labelName={ "Assertion consumer URLs" }
-                        placeholder={ "Enter url " }
-                        validationErrorMsg={ "Please add valid URL" }
+                        labelName={
+                            t("devPortal:components.applications.forms.inboundSAML.fields.assertionURLs.label")
+                        }
+                        placeholder={
+                            t("devPortal:components.applications.forms.inboundSAML.fields.assertionURLs" +
+                                ".placeholder")
+                        }
+                        validationErrorMsg={
+                            t("devPortal:components.applications.forms.inboundSAML.fields.assertionURLs" +
+                                ".validations.invalid")
+                        }
                         validation={ (value: string): boolean => {
                             return FormValidation.url(value);
                         } }
@@ -165,9 +189,9 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                         required={ true }
                         showError={ showAssertionConsumerUrlError }
                         setShowError={ setAssertionConsumerUrlError }
-                        hint={ "This specifies the assertion Consumer URLs that the browser " +
-                        "should be redirected to after the authentication is successful. " +
-                        "This is the Assertion Consumer Service (ACS) URL of the Application" }
+                        hint={
+                            t("devPortal:components.applications.forms.inboundSAML.fields.assertionURLs.hint")
+                        }
                         data-testid={ `${ testId }-assertion-consumer-url-input` }
                     />
                 </Grid>

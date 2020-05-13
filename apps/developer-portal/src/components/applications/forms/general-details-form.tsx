@@ -21,6 +21,7 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
 import { ApplicationInterface } from "../../../models";
 
@@ -85,6 +86,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
 
     /**
@@ -131,10 +134,15 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="name"
-                            label="Name"
+                            label={ t("devPortal:components.applications.forms.generalDetails.fields.name.label") }
                             required={ true }
-                            requiredErrorMessage="Application name is required"
-                            placeholder={ name }
+                            requiredErrorMessage={
+                                t("devPortal:components.applications.forms.generalDetails.fields.name" +
+                                    ".validations.empty")
+                            }
+                            placeholder={
+                                t("devPortal:components.applications.forms.generalDetails.fields.name.placeholder")
+                            }
                             type="text"
                             value={ name }
                             readOnly={ readOnly }
@@ -146,10 +154,16 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="description"
-                            label="Description"
+                            label={
+                                t("devPortal:components.applications.forms.generalDetails.fields.description" +
+                                    ".label")
+                            }
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder="Enter a description for the application"
+                            placeholder={
+                                t("devPortal:components.applications.forms.generalDetails.fields.description" +
+                                    ".placeholder")
+                            }
                             type="textarea"
                             value={ description }
                             readOnly={ readOnly }
@@ -161,15 +175,23 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="imageUrl"
-                            label="Application image"
+                            label={
+                                t("devPortal:components.applications.forms.generalDetails.fields.imageUrl.label")
+                            }
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder="Enter a image url for the application"
+                            placeholder={
+                                t("devPortal:components.applications.forms.generalDetails.fields.imageUrl" +
+                                    ".placeholder")
+                            }
                             type="text"
                             validation={ (value: string, validation: Validation) => {
                                 if (!FormValidation.url(value)) {
                                     validation.isValid = false;
-                                    validation.errorMessages.push("This is not a valid URL");
+                                    validation.errorMessages.push(
+                                        t("devPortal:components.applications.forms.generalDetails.fields" +
+                                            ".imageUrl.validations.invalid")
+                                    );
                                 }
                             } }
                             value={ imageUrl }
@@ -187,7 +209,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             type="checkbox"
                             children={ [
                                 {
-                                    label: "Discoverable application",
+                                    label: t("devPortal:components.applications.forms.generalDetails.fields" +
+                                        ".discoverable.label"),
                                     value: "discoverable"
                                 }
                             ] }
@@ -197,16 +220,26 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         />
                         <Field
                             name="accessUrl"
-                            label="Access URL"
+                            label={
+                                t("devPortal:components.applications.forms.generalDetails.fields.accessUrl.label")
+                            }
                             required={ isDiscoverable }
-                            requiredErrorMessage={ "A valid access URL needs to be defined for" +
-                            " an application to be marked as discoverable" }
-                            placeholder="Enter access url for the application login page"
+                            requiredErrorMessage={
+                                t("devPortal:components.applications.forms.generalDetails.fields.accessUrl" +
+                                    ".validations.empty")
+                            }
+                            placeholder={
+                                t("devPortal:components.applications.forms.generalDetails.fields.accessUrl" +
+                                    ".placeholder")
+                            }
                             type="text"
                             validation={ (value: string, validation: Validation) => {
                                 if (!FormValidation.url(value)) {
                                     validation.isValid = false;
-                                    validation.errorMessages.push("This is not a valid URL");
+                                    validation.errorMessages.push(
+                                        t("devPortal:components.applications.forms.generalDetails.fields" +
+                                            ".accessUrl.validations.invalid")
+                                    );
                                 }
                             } }
                             value={ accessUrl }
@@ -214,7 +247,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             data-testid={ `${ testId }-application-access-url-input` }
                         />
                         <Hint>
-                            Applications flagged as discoverable are visible for end users.
+                            { t("devPortal:components.applications.forms.generalDetails.fields.accessUrl.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -229,7 +262,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     className="form-button"
                                     data-testid={ `${ testId }-submit-button` }
                                 >
-                                    Update
+                                    { t("common:update") }
                                 </Button>
                             </Grid.Column>
                         </Grid.Row>

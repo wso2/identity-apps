@@ -35,12 +35,12 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Label, SemanticICONS } from "semantic-ui-react";
-import { getApplicationDetails, getRawDocumentation, updateApplicationConfigurations } from "../api";
-import { EditApplication } from "../components";
-import { TechnologyLogos } from "../configs";
-import { ApplicationConstants, ApplicationManagementConstants, HelpPanelConstants, UIConstants } from "../constants";
-import { generateApplicationSamples, history } from "../helpers";
-import { HelpPanelLayout, PageLayout } from "../layouts";
+import { getApplicationDetails, getRawDocumentation, updateApplicationConfigurations } from "../../api";
+import { EditApplication } from "../../components";
+import { TechnologyLogos } from "../../configs";
+import { ApplicationConstants, ApplicationManagementConstants, HelpPanelConstants, UIConstants } from "../../constants";
+import { generateApplicationSamples, history } from "../../helpers";
+import { HelpPanelLayout, PageLayout } from "../../layouts";
 import {
     ApplicationInterface,
     ApplicationSampleInterface,
@@ -48,10 +48,10 @@ import {
     FeatureConfigInterface,
     PortalDocumentationStructureInterface,
     emptyApplication
-} from "../models";
-import { AppState } from "../store";
-import { setHelpPanelDocsContentURL } from "../store/actions";
-import { ApplicationManagementUtils } from "../utils";
+} from "../../models";
+import { AppState } from "../../store";
+import { setHelpPanelDocsContentURL } from "../../store/actions";
+import { ApplicationManagementUtils } from "../../utils";
 
 /**
  * Proptypes for the applications edit page component.
