@@ -116,7 +116,8 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
                             content="View permissions"
                             trigger={
                                 <Icon
-                                    data-testid={ `${ testId }-${ listItem.replace(" ", "-") }-icon` }
+                                    data-testid={ `${ testId }-${ listItem?.replace(" ", "-") }
+                                    -icon` }
                                     color="grey"
                                     name="key"
                                     onClick={ handleOpenPermissionModal }

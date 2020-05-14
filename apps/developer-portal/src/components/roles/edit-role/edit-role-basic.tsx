@@ -154,16 +154,17 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                             <Form.Field>
-                                <label>
-                                    {
-                                        isGroup
-                                            ? t("devPortal:components.groups.edit.basics.fields.groupName.name")
-                                            : t("devPortal:components.roles.edit.basics.fields.roleName.name")
-                                    }
+                                <label
                                     data-testid={
                                         isGroup
                                             ? `${ testId }-group-name-label`
                                             : `${ testId }-role-name-label`
+                                    }
+                                >
+                                    {
+                                        isGroup
+                                            ? t("devPortal:components.groups.edit.basics.fields.groupName.name")
+                                            : t("devPortal:components.roles.edit.basics.fields.roleName.name")
                                     }
                                 </label>
                                 <Input

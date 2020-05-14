@@ -35,6 +35,7 @@ export interface TransferListPropsInterface extends TableProps, TestableComponen
     listHeaders?: any;
     listType: "selected" | "unselected";
     isListEmpty: boolean;
+    emptyPlaceholderContent?: string;
     handleHeaderCheckboxChange: () => void;
     isHeaderCheckboxChecked: boolean;
 }
@@ -57,6 +58,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
         isListEmpty,
         handleHeaderCheckboxChange,
         isHeaderCheckboxChecked,
+        emptyPlaceholderContent,
         [ "data-testid" ]: testId
     } = props;
 
@@ -79,8 +81,9 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                                     {
                                         listHeaders?.map((header, index) => {
                                             return (
-                                                <Table.HeaderCell
-                                                    key={ index }><strong>{ header }</strong></Table.HeaderCell>
+                                                <Table.HeaderCell key={ index }>
+                                                    <strong>{ header }</strong>
+                                                </Table.HeaderCell>
                                             )
                                         })
                                     }
@@ -93,8 +96,12 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                 ) : (
                     <div className={ "empty-placeholder-center" }>
                         <EmptyPlaceholder
+                            subtitle={ [
+                                emptyPlaceholderContent
+                                    ? emptyPlaceholderContent
+                                    : t("devPortal:components.transferList.list.emptyPlaceholders.default")
+                            ] }
                             data-testid={ `${ testId }-placeholder` }
-                            subtitle={ t("devPortal:components.transferList.list.emptyPlaceholder") }
                         />
                     </div>
                 )

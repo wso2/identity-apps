@@ -422,7 +422,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                     data-testid={ `${ testId }-assign-user-wizard-modal-cancel-button` }
                     onClick={ handleCloseAddNewGroupModal }
                 >
-                    { t("devPortal:common.cancel") }
+                    { t("common:cancel") }
                 </LinkButton>
                 <PrimaryButton
                     data-testid={ `${ testId }-assign-user-wizard-modal-save-button` }
@@ -430,7 +430,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         handleAddUserSubmit()
                     } }
                 >
-                    { t("devPortal:common.save") }
+                    { t("common:save") }
                 </PrimaryButton>
             </Modal.Actions>
         </Modal>
@@ -627,7 +627,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                     size="small"
                                     className="form-button"
                                 >
-                                    { t("devPortal:common.update") }
+                                    { t("devPortalcommon.update") }
                                 </Button>
                             </Grid.Column>
                         </Grid.Row>

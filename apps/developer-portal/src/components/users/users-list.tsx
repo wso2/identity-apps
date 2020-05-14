@@ -27,7 +27,7 @@ import {
     UserAvatar
 } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
-import { useTranslation } from "react-i18next";
+import {Trans, useTranslation} from "react-i18next";
 import { Grid, Icon, List, SemanticWIDTHS } from "semantic-ui-react";
 import { EmptyPlaceholderIllustrations } from "../../configs";
 import { UIConstants } from "../../constants";
@@ -290,7 +290,19 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         type="warning"
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingUser.userName }
-                        assertionHint={ <p>Please type <strong>{ deletingUser.userName }</strong> to confirm.</p> }
+                        assertionHint={
+                            (
+                                <p>
+                                    <Trans
+                                        i18nKey={ "devPortal:components.user.deleteUser.confirmationModal." +
+                                        "assertionHint" }
+                                        tOptions={ { userName: deletingUser.userName } }
+                                    >
+                                        Please type <strong>{ deletingUser.userName }</strong> to confirm.
+                                    </Trans>
+                                </p>
+                            )
+                        }
                         assertionType="input"
                         primaryAction="Confirm"
                         secondaryAction="Cancel"

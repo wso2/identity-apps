@@ -606,6 +606,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     ] }
                                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                     isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
+                                    emptyPlaceholderContent={ t("devPortal:components.transferList.list." +
+                                        "emptyPlaceholders.users.roles.unselected", { type: "roles" }) }
                                     data-testid="user-mgt-update-roles-modal-unselected-roles-select-all-checkbox"
                                 >
                                     {
@@ -641,6 +643,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     ] }
                                     handleHeaderCheckboxChange={ selectAllAssignedList }
                                     isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
+                                    emptyPlaceholderContent={ t("devPortal:components.transferList.list." +
+                                        "emptyPlaceholders.users.roles.selected", { type: "roles" }) }
                                     data-testid="user-mgt-update-roles-modal-selected-roles-select-all-checkbox"
                                 >
                                     {

@@ -4082,7 +4082,15 @@ export const devPortal: DevPortalNS = {
         },
         transferList: {
             list: {
-                emptyPlaceholder: "There are no items in this list at the moment.",
+                emptyPlaceholders: {
+                    default: "There are no items in this list at the moment.",
+                    users: {
+                        roles: {
+                            selected: "There are no {{type}} assigned to this user.",
+                            unselected: "There are no {{type}} available to assign to this user."
+                        }
+                    }
+                },
                 headers: {
                     0: "Domain",
                     1: "Name"
@@ -4093,7 +4101,7 @@ export const devPortal: DevPortalNS = {
         user: {
             deleteUser: {
                 confirmationModal: {
-                    assertionHint: "Please type {{username}} to confirm.",
+                    assertionHint: "Please type <1>{{ userName }}</1> to confirm.",
                     content: "If you delete this user, the user will not be able to login to the developer portal or " +
                         "any other application the user was subscribed before. Please proceed with caution.",
                     header: "Are you sure?",
@@ -4544,7 +4552,9 @@ export const devPortal: DevPortalNS = {
                 subHeading: "Add and manage user accounts, assign roles to the users and maintain user identities."
             },
             buttons: {
-                assignUserRoleBtn: "Assign roles"
+                addNewUserBtn: "New User",
+                assignUserRoleBtn: "Assign roles",
+                metaColumnBtn: "Columns"
             },
             notifications: {
                 addUser: {

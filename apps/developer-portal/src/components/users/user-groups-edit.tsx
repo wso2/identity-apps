@@ -593,6 +593,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                     ] }
                                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                     isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
+                                    emptyPlaceholderContent={ t("devPortal:components.transferList.list." +
+                                        "emptyPlaceholders.users.roles.unselected", { type: "groups" }) }
                                     data-testid="user-mgt-update-groups-modal-unselected-groups-select-all-checkbox"
                                 >
                                     {
@@ -633,6 +635,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                     ] }
                                     handleHeaderCheckboxChange={ selectAllAssignedList }
                                     isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
+                                    emptyPlaceholderContent={ t("devPortal:components.transferList.list." +
+                                        "emptyPlaceholders.users.roles.selected", { type: "groups" }) }
                                     data-testid="user-mgt-update-groups-modal-selected-groups-select-all-checkbox"
                                 >
                                     {

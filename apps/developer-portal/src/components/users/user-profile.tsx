@@ -21,7 +21,7 @@ import { Field, Forms } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import {Trans, useTranslation} from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Input } from "semantic-ui-react";
 import { deleteUser, updateUserInfo } from "../../api";
@@ -334,6 +334,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     } }
                 />
             </DangerZoneGroup>
+            { console.log(deletingUser)}
             {
                 deletingUser && (
                     <ConfirmationModal
@@ -342,7 +343,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         type="warning"
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingUser.userName }
-                        assertionHint={ <p>Please type <strong>{ deletingUser.userName }</strong> to confirm.</p> }
+                        assertionHint={ (
+                            <p>
+                                <Trans
+                                    i18nKey={ "devPortal:components.user.deleteUser.confirmationModal." +
+                                    "assertionHint" }
+                                    tOptions={ { userName: deletingUser.userName } }
+                                >
+                                    Please type <strong>{ deletingUser.userName }</strong> to confirm.
+                                </Trans>
+                            </p>
+                        ) }
                         assertionType="input"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }

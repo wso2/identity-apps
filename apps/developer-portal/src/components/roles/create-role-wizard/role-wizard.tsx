@@ -409,7 +409,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                                 onClick={ () => closeWizard() }
                                 data-testid={ `${ testId }-cancel-button` }
                             >
-                                { t("devPortal:common.cancel") }
+                                { t("common:cancel") }
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>

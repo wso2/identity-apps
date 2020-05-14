@@ -1270,7 +1270,9 @@ export interface DevPortalNS {
                 subHeading: string;
             };
             buttons: {
+                addNewUserBtn: string;
                 assignUserRoleBtn: string;
+                metaColumnBtn: string;
             };
             notifications: {
                 addUser: Notification;
@@ -1326,12 +1328,7 @@ export interface DevPortalNS {
         };
         user: {
             deleteUser: {
-                confirmationModal: {
-                    content: string;
-                    header: string;
-                    message: string;
-                    assertionHint: string;
-                };
+                confirmationModal: Confirmation;
             };
             editUser: {
                 dangerZoneGroup: {
@@ -2066,7 +2063,15 @@ export interface DevPortalNS {
                     0: string;
                     1: string;
                 };
-                emptyPlaceholder: string;
+                emptyPlaceholders: {
+                    default: string;
+                    users: {
+                        roles: {
+                            unselected: string;
+                            selected: string;
+                        };
+                    };
+                };
             };
         };
         footer: {
