@@ -119,7 +119,7 @@ var AppUtils = AppUtils || (function() {
 
             _config = _default;
 
-            var userConfigFile = (_config.clientOrigin + "/" + _args.deploymentConfigFile);
+            var userConfigFile = (_config.clientOrigin + _args.deploymentConfigFile);
 
             if (!userConfigFile) {
                 throw "AppUtils.init({deploymentConfigFile: value}) missing.";
