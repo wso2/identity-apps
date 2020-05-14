@@ -16,5 +16,27 @@
  * under the License.
  */
 
-export * from "./mock-config";
-export * from "./mock-deployment-config";
+/* eslint-disable sort-keys */
+export const deploymentConfigMock = {
+    accountAppURL: {
+        path: "/user-portal/overview"
+    },
+    appBaseName: "developer-portal",
+    clientID: "DEVELOPER_PORTAL",
+    debug: false,
+    i18nResourcePath: "",
+    loginCallbackPath: "/login",
+    logoutCallbackPath: "/login",
+    routePaths: {
+        home: "/applications",
+        login: "/login",
+        logout: "/logout"
+    },
+    ui: {
+        appCopyright: "WSO2 Identity Server",
+        appTitle: "WSO2 Identity Server Developer Dashboard",
+        appName: "Identity Server",
+        appLogoPath: "/assets/images/logo.svg"
+    }
+};
+/* eslint-enable sort-keys */
