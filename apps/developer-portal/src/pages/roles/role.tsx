@@ -23,13 +23,13 @@ import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { deleteRoleById, getRolesList, getUserStoreList, searchRoleList } from "../api";
-import { AdvancedSearchWithBasicFilters } from "../components";
-import { RoleList } from "../components/roles";
-import { CreateRoleWizard } from "../components/roles/create-role-wizard";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, UIConstants } from "../constants";
-import { ListLayout, PageLayout } from "../layouts";
-import { AlertInterface, AlertLevels, RolesInterface, SearchRoleInterface } from "../models"
+import { deleteRoleById, getRolesList, getUserStoreList, searchRoleList } from "../../api";
+import { AdvancedSearchWithBasicFilters } from "../../components";
+import { RoleList } from "../../components/roles";
+import { CreateRoleWizard } from "../../components/roles/create-role-wizard";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, UIConstants } from "../../constants";
+import { ListLayout, PageLayout } from "../../layouts";
+import { AlertInterface, AlertLevels, RolesInterface, SearchRoleInterface } from "../../models"
 
 const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
     {

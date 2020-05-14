@@ -16,5 +16,5 @@
  * under the License.
  */
 
-export * from "./users";
-export * from "./user-edit";
+export * from "./role";
+export * from "./role-edit";
