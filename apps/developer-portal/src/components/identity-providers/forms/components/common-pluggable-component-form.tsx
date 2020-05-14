@@ -43,7 +43,8 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         initialValues,
         onSubmit,
         triggerSubmit,
-        enableSubmitButton
+        enableSubmitButton,
+        [ "data-testid" ]: testId
     } = props;
     
     // Used for field elements which needs to listen for any onChange events in the form.
@@ -106,7 +107,9 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                       eachPropertyMeta: CommonPluggableComponentMetaPropertyInterface,
                       disable: boolean,
                       isSub?: boolean,
-                      listen?: (key: string, values: Map<string, FormValue>) => void): ReactElement => {
+                      testId?: string,
+                      listen?: (key: string, values: Map<string, FormValue>) => void):
+        ReactElement => {
 
         if (isSub) {
             return (
@@ -114,7 +117,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                     <Grid.Column mobile={ 2 } tablet={ 2 } computer={ 1 }>
                     </Grid.Column>
                     <Grid.Column mobile={ 14 } tablet={ 14 } computer={ 7 }>
-                        { getPropertyField(property, eachPropertyMeta, disable, listen) }
+                        { getPropertyField(property, eachPropertyMeta, disable, listen, testId) }
                     </Grid.Column>
                 </Grid.Row>
             );
@@ -122,7 +125,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             return (
                 <Grid.Row columns={ 1 } key={ eachPropertyMeta?.displayOrder }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        { getPropertyField(property, eachPropertyMeta, disable, listen) }
+                        { getPropertyField(property, eachPropertyMeta, disable, listen, testId) }
                     </Grid.Column>
                 </Grid.Row>
             );
@@ -147,13 +150,14 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
                 let field: ReactElement;
                 if (!isCheckboxWithSubProperties(metaProperty)) {
-                    field = getField(property, metaProperty, disable, isSub);
+                    field = getField(property, metaProperty, disable, isSub, `${ testId }-form`);
                 } else {
                     field =
                         <React.Fragment key={ metaProperty?.displayOrder }>
                             {
                                 // Render parent property.
-                                getField(property, metaProperty, disable, isSub, handleParentPropertyChange)
+                                getField(property, metaProperty, disable, isSub, `${ testId }-form`,
+                                    handleParentPropertyChange)
                             }
                             {
                                 getSortedPropertyFields(metaProperty?.subProperties,
@@ -186,7 +190,8 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         return (
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    <Button primary type="submit" size="small" className="form-button">
+                    <Button primary type="submit" size="small" className="form-button"
+                            data-testid={ `${ testId }-submit-button` }>
                         { content }
                     </Button>
                 </Grid.Column>
@@ -204,6 +209,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 onSubmit(getUpdatedConfigurations(values));
             } }
             submitState={ triggerSubmit }
+            data-testid={ `${ testId }-form` }
         >
             <Grid>
                 { dynamicValues && getSortedPropertyFields(metadata?.properties, false, false) }

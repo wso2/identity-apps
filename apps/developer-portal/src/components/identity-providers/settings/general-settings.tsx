@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
@@ -35,7 +35,7 @@ import { handleIDPDeleteError, handleIDPUpdateError } from "../utils";
 /**
  * Proptypes for the identity provider general details component.
  */
-interface GeneralSettingsInterface {
+interface GeneralSettingsInterface extends TestableComponentInterface {
     /**
      * Currently editing idp id.
      */
@@ -88,7 +88,8 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         imageUrl,
         isLoading,
         onDelete,
-        onUpdate
+        onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -161,6 +162,8 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                         description={ description }
                         onSubmit={ handleFormSubmit }
                         imageUrl={ imageUrl }
+                        data-testid={ `${ testId }-form` }
+
                     />
                     { !(config.ui.doNotDeleteIdentityProviders.includes(name)) && (
                         <DangerZoneGroup sectionHeader={ t("devPortal:components.idp.dangerZoneGroup.header") }>
@@ -173,12 +176,14 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                     checked: isEnabled,
                                     onChange: handleIdentityProviderDisable
                                 } }
+                                data-testid={ `${ testId }-disable-idp-danger-zone` }
                             />
                             <DangerZone
                                 actionTitle={ t("devPortal:components.idp.dangerZoneGroup.deleteIDP.actionTitle") }
                                 header={ t("devPortal:components.idp.dangerZoneGroup.deleteIDP.header") }
                                 subheader={ t("devPortal:components.idp.dangerZoneGroup.deleteIDP.subheader") }
                                 onActionClick={ handleIdentityProviderDeleteAction }
+                                data-testid={ `${ testId }-delete-idp-danger-zone` }
                             />
                         </DangerZoneGroup>
                     ) }
@@ -206,14 +211,16 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 onPrimaryActionClick={
                                     (): void => handleIdentityProviderDelete()
                                 }
+                                data-testid={ `${ testId }-delete-idp-confirmation` }
                             >
-                                <ConfirmationModal.Header>
+                                <ConfirmationModal.Header data-testid={ `${ testId }-delete-idp-confirmation` }>
                                     { t("devPortal:components.idp.confirmations.deleteIDP.header") }
                                 </ConfirmationModal.Header>
-                                <ConfirmationModal.Message attached warning>
+                                <ConfirmationModal.Message attached warning
+                                                           data-testid={ `${ testId }-delete-idp-confirmation` }>
                                     { t("devPortal:components.idp.confirmations.deleteIDP.message") }
                                 </ConfirmationModal.Message>
-                                <ConfirmationModal.Content>
+                                <ConfirmationModal.Content data-testid={ `${ testId }-delete-idp-confirmation` }>
                                     { t("devPortal:components.idp.confirmations.deleteIDP.content") }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
@@ -223,4 +230,11 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
             )
             : <ContentLoader/>
     );
+};
+
+/**
+ * Default proptypes for the IDP general settings component.
+ */
+GeneralSettings.defaultProps = {
+    "data-testid": "idp-edit-general-settings"
 };

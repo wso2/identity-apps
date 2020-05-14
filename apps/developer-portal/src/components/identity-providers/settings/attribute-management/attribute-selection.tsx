@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useState } from "react";
@@ -26,7 +27,7 @@ import { AttributeSelectionWizard } from "./attribute-selection-wizard";
 import { EmptyPlaceholderIllustrations } from "../../../../configs";
 import { IdentityProviderClaimInterface, IdentityProviderCommonClaimMappingInterface } from "../../../../models";
 
-interface AttributeSelectionPropsInterface {
+interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     attributeList: IdentityProviderClaimInterface[];
     selectedAttributesWithMapping: IdentityProviderCommonClaimMappingInterface[];
     setSelectedAttributesWithMapping: (selectedAttributes: IdentityProviderCommonClaimMappingInterface[]) => void;
@@ -48,14 +49,15 @@ export interface AttributeSelectionUIPropsInterface {
  * @param props AttributeSelectionPropsInterface
  */
 export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterface> = (
-    props
+    props: AttributeSelectionPropsInterface
 ): ReactElement => {
 
     const {
         attributeList,
         setSelectedAttributesWithMapping,
         selectedAttributesWithMapping,
-        uiProps
+        uiProps,
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -80,6 +82,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 setSelectedAttributes={ setSelectedAttributesWithMapping }
                 showAddModal={ showSelectionModal }
                 setShowAddModal={ setShowSelectionModal }
+                data-testid={ `${ testId }-attribute-selection-wizard` }
             />
         }
     );
@@ -97,7 +100,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     return (
         (selectedAttributesWithMapping || searchFilter) &&
         <>
-            <Grid.Row>
+            <Grid.Row data-testid={ testId }>
                 <Grid.Column computer={ 10 }>
                     { uiProps.enablePrecedingDivider && <Divider/> }
                     <Heading as="h5">
@@ -171,6 +174,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                 + mapping?.claim.displayName }
                                                                 updateMapping={ updateAttributeMapping }
                                                                 mapping={ mapping?.mappedValue }
+                                                                data-testid={ `${ testId }-attribute-list-item-${ 
+                                                                    mapping?.claim.id }` }
                                                             />
                                                         )
                                                     }
@@ -194,6 +199,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                     }
                                     image={ EmptyPlaceholderIllustrations.emptyList }
                                     imageSize="tiny"
+                                    data-testid={ `${ testId }-empty-placeholder` }
                                 />
                             </Segment>
                         )
@@ -203,4 +209,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             { addSelectionModal() }
         </>
     );
+};
+
+/**
+ * Default proptypes for the IDP attribute selection component.
+ */
+AttributeSelection.defaultProps = {
+    "data-testid": "attribute-selection"
 };

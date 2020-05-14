@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
@@ -48,7 +48,7 @@ import {
 /**
  * Interface for the outbound provisioning create wizard props.
  */
-interface OutboundProvisioningConnectorCreateWizardPropsInterface {
+interface OutboundProvisioningConnectorCreateWizardPropsInterface extends TestableComponentInterface {
     identityProvider: IdentityProviderInterface;
     updateIdentityProvider: (id: string) => void;
     closeWizard: () => void;
@@ -83,7 +83,8 @@ export const OutboundProvisioningConnectorCreateWizard:
         identityProvider,
         closeWizard,
         currentStep,
-        onUpdate
+        onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -293,6 +294,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                     onSubmit={ (values): void => handleWizardFormSubmit(values,
                         WizardStepsFormTypes.CONNECTOR_SELECTION) }
                     connectorList={ connectorList }
+                    data-testid={ `${ testId }-connector-selection` }
                 />
             ),
             icon: OutboundProvisioningConnectorWizard.connectorSelection,
@@ -308,6 +310,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                         values, WizardStepsFormTypes.CONNECTOR_DETAILS) }
                     triggerSubmit={ submitConnectorSettings }
                     defaultConnector={ defaultConnector }
+                    data-testid={ `${ testId }-provisioning-settings` }
                 />
             ),
             icon: OutboundProvisioningConnectorWizard.connectorDetails,
@@ -322,6 +325,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                     triggerSubmit={ finishSubmit }
                     identityProvider={ generateWizardSummary() }
                     onSubmit={ handleWizardFormFinish }
+                    data-testid={ `${ testId }-summary` }
                 />
             ),
             icon: OutboundProvisioningConnectorWizard.summary,
@@ -338,14 +342,15 @@ export const OutboundProvisioningConnectorCreateWizard:
             onClose={ closeWizard }
             closeOnDimmerClick
             closeOnEscape
+            data-testid={ `${ testId }-modal` }
         >
-            <Modal.Header className="wizard-header">
+            <Modal.Header className="wizard-header" data-testid={ `${ testId }-modal-header` }>
                 { t("devPortal:components.idp.modals.addProvisioningConnector.title") }
                 <Heading as="h6">
                     { t("devPortal:components.idp.modals.addProvisioningConnector.subTitle") }
                 </Heading>
             </Modal.Header>
-            <Modal.Content className="steps-container">
+            <Modal.Content className="steps-container" data-testid={ `${ testId }-modal-content-1` }>
                 <Steps.Group
                     header={ t("devPortal:components.idp.wizards.addProvisioningConnector.header") }
                     current={ currentWizardStep }
@@ -359,31 +364,35 @@ export const OutboundProvisioningConnectorCreateWizard:
                     )) }
                 </Steps.Group>
             </Modal.Content>
-            <Modal.Content className="content-container" scrolling>
+            <Modal.Content className="content-container" scrolling data-testid={ `${ testId }-modal-content-2` }>
                 { STEPS[ currentWizardStep ].content }
             </Modal.Content>
-            <Modal.Actions>
+            <Modal.Actions data-testid={ `${ testId }-modal-actions` }>
                 <Grid>
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton floated="left" onClick={ () => closeWizard() }>
+                            <LinkButton floated="left" onClick={ () => closeWizard() }
+                                        data-testid={ `${ testId }-modal-cancel-button` }>
                                 { t("common:cancel") }
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ navigateToNext }>
+                                <PrimaryButton floated="right" onClick={ navigateToNext }
+                                               data-testid={ `${ testId }-modal-next-button` }>
                                     { t("devPortal:components.idp.wizards.buttons.next") }
                                     <Icon name="arrow right"/>
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep === STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ navigateToNext }>
+                                <PrimaryButton floated="right" onClick={ navigateToNext }
+                                               data-testid={ `${ testId }-modal-finish-button` }>
                                     { t("devPortal:components.idp.wizards.buttons.finish") }
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep > 0 && (
-                                <LinkButton floated="right" onClick={ navigateToPrevious }>
+                                <LinkButton floated="right" onClick={ navigateToPrevious }
+                                            data-testid={ `${ testId }-modal-previous-button` }>
                                     <Icon name="arrow left"/>
                                     { t("devPortal:components.idp.wizards.buttons.previous") }
                                 </LinkButton>
@@ -400,5 +409,6 @@ export const OutboundProvisioningConnectorCreateWizard:
  * Default props for the add user wizard.
  */
 OutboundProvisioningConnectorCreateWizard.defaultProps = {
-    currentStep: 0
+    currentStep: 0,
+    "data-testid": "idp-edit-provisioning-connector-create-wizard"
 };

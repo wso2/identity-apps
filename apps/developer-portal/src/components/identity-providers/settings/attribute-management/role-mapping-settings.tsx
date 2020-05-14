@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -28,7 +29,7 @@ import { handleGetRoleListError } from "../../utils";
 /**
  * Proptypes for the identity providers settings component.
  */
-interface RoleMappingSettingsPropsInterface {
+interface RoleMappingSettingsPropsInterface extends TestableComponentInterface {
 
     /**
      * Trigger submission.
@@ -61,7 +62,8 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     const {
         onSubmit,
         triggerSubmit,
-        initialRoleMappings
+        initialRoleMappings,
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -136,10 +138,18 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                                 onSubmit([]);
                             }
                         } }
+                        data-testid={ testId }
                     />
                     <Hint>{ t("devPortal:components.idp.forms.roleMapping.hint") }</Hint>
                 </Grid.Column>
             </Grid.Row>
         </>
     );
+};
+
+/**
+ * Default proptypes for the role mapping settings component.
+ */
+RoleMappingSettings.defaultProps = {
+    "data-testid": "idp-edit-attribute-settings-role-mapping"
 };

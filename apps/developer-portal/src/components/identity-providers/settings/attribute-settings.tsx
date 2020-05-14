@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { ContentLoader } from "@wso2is/react-components";
@@ -45,7 +45,6 @@ import {
     updateAvailableLocalClaims
 } from "../utils";
 
-
 export interface DropdownOptionsInterface {
     key: string;
     text: string;
@@ -53,7 +52,7 @@ export interface DropdownOptionsInterface {
 }
 
 
-interface AttributeSelectionPropsInterface {
+interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     /**
      * Currently editing idp id.
      */
@@ -91,7 +90,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         initialClaims,
         initialRoleMappings,
         isLoading,
-        onUpdate
+        onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -268,6 +268,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         enablePrecedingDivider: false,
                         hint: t("devPortal:components.idp.forms.attributeSettings.attributeMapping.hint")
                     } }
+                    data-testid={ `${ testId }-claim-attribute-selection` }
                 /> }
 
                 { selectedClaimsWithMapping &&
@@ -279,6 +280,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     claimMappingOn={ !isEmpty(selectedClaimsWithMapping) }
                     updateRole={ setRoleClaimUri }
                     updateSubject={ setSubjectClaimUri }
+                    data-testid={ `${ testId }-uri-attribute-settings` }
                 /> }
 
                 {/* Select attributes for provisioning. */}
@@ -303,6 +305,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         enablePrecedingDivider: true,
                         hint: t("devPortal:components.idp.forms.attributeSettings.attributeProvisioning.hint")
                     } }
+                    data-testid={ `${ testId }-provisioning-attribute-selection` }
                 /> }
 
                 {/* Set role mappings. */}
@@ -310,6 +313,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     triggerSubmit={ triggerSubmission }
                     initialRoleMappings={ initialRoleMappings }
                     onSubmit={ setRoleMapping }
+                    data-testid={ `${ testId }-role-mapping` }
                 />
 
                 <Grid.Row>
@@ -318,6 +322,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             primary
                             size="small"
                             onClick={ setTriggerSubmission }
+                            data-testid={ `${ testId }-update-button` }
                         >
                             { t("common:update") }
                         </Button>
@@ -325,4 +330,11 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 </Grid.Row>
             </Grid> : <ContentLoader/>
     );
+};
+
+/**
+ * Default proptypes for the IDP attribute settings component.
+ */
+AttributeSettings.defaultProps = {
+    "data-testid": "idp-edit-attribute-settings"
 };

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
 import { Heading, Hint, SelectionCard } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
@@ -31,7 +32,7 @@ import {
 /**
  * Proptypes for the general settings wizard form component.
  */
-interface AuthenticatorTemplateSelectionWizardFormPropsInterface {
+interface AuthenticatorTemplateSelectionWizardFormPropsInterface extends TestableComponentInterface {
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
     manualModeOptions: FederatedAuthenticatorMetaDataInterface[];
@@ -53,7 +54,8 @@ export const AuthenticatorTemplateSelection:
         triggerSubmit,
         onSubmit,
         manualModeOptions,
-        authenticatorTemplates
+        authenticatorTemplates,
+        [ "data-testid" ]: testId
     } = props;
 
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderInterface>(undefined);
@@ -118,6 +120,7 @@ export const AuthenticatorTemplateSelection:
                                     image={ IdPIcons[template.image] }
                                     onClick={ (): void => handleTemplateSelection(template) }
                                     selected={ selectedTemplate?.id === template.id }
+                                    data-testid={ `${ testId }-template-${ index }` }
                                 />))
                             }
                         </Grid.Column>
@@ -145,6 +148,7 @@ export const AuthenticatorTemplateSelection:
                                     image={ option.icon }
                                     onClick={ (): void => handleManualModeOptionSelection(option) }
                                     selected={ selectedManualModeOption?.authenticatorId === option.authenticatorId }
+                                    data-testid={ `${ testId }-manual-option-${ index }` }
                                 />))
                             }
                         </Grid.Column>

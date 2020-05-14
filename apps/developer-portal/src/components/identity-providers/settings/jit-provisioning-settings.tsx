@@ -16,10 +16,11 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import {
     getUserStoreList,
@@ -30,12 +31,11 @@ import {
     SimpleUserStoreListItemInterface
 } from "../../../models";
 import { JITProvisioningConfigurationsForm } from "../forms";
-import { useTranslation } from "react-i18next";
 
 /**
  * Proptypes for the identity provider general details component.
  */
-interface JITProvisioningSettingsInterface {
+interface JITProvisioningSettingsInterface extends TestableComponentInterface {
     /**
      * Currently editing idp id.
      */
@@ -67,7 +67,8 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
         idpId,
         isLoading,
         jitProvisioningConfigurations,
-        onUpdate
+        onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -123,8 +124,16 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
                     initialValues={ jitProvisioningConfigurations }
                     onSubmit={ handleJITProvisioningConfigFormSubmit }
                     useStoreList={ userStore }
+                    data-testid={ testId }
                 />
             )
             : <ContentLoader/>
     );
+};
+
+/**
+ * Default proptypes for the IDP JIT provisioning settings component.
+ */
+JITProvisioningSettings.defaultProps = {
+    "data-testid": "idp-edit-jit-provisioning-settings"
 };

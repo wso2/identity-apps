@@ -16,21 +16,24 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getIdentityProviderList } from "../api";
 import { AdvancedSearchWithBasicFilters, IdentityProviderList } from "../components";
+import { handleGetIDPListCallError } from "../components/identity-providers/utils";
 import { IdentityProviderConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
 import { IdentityProviderListResponseInterface } from "../models";
-import { handleGetIDPListCallError } from "../components/identity-providers/utils";
+
+/**
+ * Proptypes for the IDP edit page component.
+ */
+type IDPPropsInterface = TestableComponentInterface
 
 const IDENTITY_PROVIDER_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -60,11 +63,15 @@ const IDENTITY_PROVIDER_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
  *
  * @return {React.ReactElement}
  */
-export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => {
+export const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
+    props: IDPPropsInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
-
-    const dispatch = useDispatch();
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
@@ -171,6 +178,7 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
             title={ t("devPortal:pages.idp.title") }
             description={ t("devPortal:pages.idp.subTitle") }
             showBottomDivider={ true }
+            data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
                 advancedSearch={
@@ -196,6 +204,7 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
                         defaultSearchAttribute="name"
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
+                        data-testid={ `${ testId }-advance-search` }
                     />
                 }
                 currentListSize={ idpList.count }
@@ -209,6 +218,7 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
                             onClick={ (): void => {
                                 history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDER_TEMPLATES"));
                             } }
+                            data-testid={ `${ testId }-add-button` }
                         >
                             <Icon name="add"/>{ t("devPortal:components.idp.buttons.addIDP") }
                         </PrimaryButton>
@@ -220,6 +230,7 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
                 sortStrategy={ listSortingStrategy }
                 totalPages={ Math.ceil(idpList.totalResults / listItemLimit) }
                 totalListSize={ idpList.totalResults }
+                data-testid={ `${ testId }-list-layout` }
             >
                 <IdentityProviderList
                     isLoading={ isIdPListRequestLoading }
@@ -230,8 +241,16 @@ export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => 
                     onIdentityProviderDelete={ handleIdentityProviderDelete }
                     onSearchQueryClear={ handleSearchQueryClear }
                     searchQuery={ searchQuery }
+                    data-testid={ `${ testId }-list` }
                 />
             </ListLayout>
         </PageLayout>
     );
+};
+
+/**
+ * Default proptypes for the IDP component.
+ */
+IdentityProvidersPage.defaultProps = {
+    "data-testid": "idp"
 };

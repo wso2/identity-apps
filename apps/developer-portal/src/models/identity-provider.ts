@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
+
 /**
  * Available Identity Provider list.
  */
@@ -310,7 +312,7 @@ export interface OutboundProvisioningConnectorWithMetaInterface {
     data?: FederatedAuthenticatorInterface;
 }
 
-export interface CommonPluggableComponentFormPropsInterface {
+export interface CommonPluggableComponentFormPropsInterface extends TestableComponentInterface {
     metadata?: CommonPluggableComponentMetaInterface;
     initialValues: CommonPluggableComponentInterface;
     onSubmit: (values: CommonPluggableComponentInterface) => void;

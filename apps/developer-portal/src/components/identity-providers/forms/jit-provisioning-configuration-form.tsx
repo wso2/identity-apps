@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -31,7 +32,7 @@ import {
 /**
  *  Just-in time provisioning configurations for the IdP.
  */
-interface JITProvisioningConfigurationFormPropsInterface {
+interface JITProvisioningConfigurationFormPropsInterface extends TestableComponentInterface {
     onSubmit: (values: IdentityProviderInterface) => void;
     initialValues: JITProvisioningResponseInterface;
     useStoreList: SimpleUserStoreListItemInterface[];
@@ -56,7 +57,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     const {
         initialValues,
         onSubmit,
-        useStoreList
+        useStoreList,
+        [ "data-testid" ]: testId
     } = props;
 
     const [isJITProvisioningEnabled, setIsJITProvisioningEnabled] = useState<boolean>(false);
@@ -135,6 +137,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                 }
                             ] }
                             toggle
+                            data-testid={ `${ testId }-is-enable` }
                         />
                         <Hint>
                             { t("devPortal:components.idp.forms.jitProvisioning.enableJITProvisioning.hint") }
@@ -154,6 +157,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             value={ initialValues?.userstore }
                             children={ getUserStoreOption() }
                             disabled={ !isJITProvisioningEnabled }
+                            data-testid={ `${ testId }-user-store-domain` }
                         />
                         <Hint>
                             { t("devPortal:components.idp.forms.jitProvisioning.provisioningUserStoreDomain.hint") }
@@ -192,6 +196,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                 }
                             ] }
                             disabled={ !isJITProvisioningEnabled }
+                            data-testid={ `${ testId }-scheme` }
                         />
                         <Hint>
                             { t("devPortal:components.idp.forms.jitProvisioning.provisioningScheme.hint") }
@@ -205,6 +210,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             primary type="submit"
                             size="small"
                             className="form-button"
+                            data-testid={ `${ testId }-update-button` }
                         >
                             { t("common:update") }
                         </Button>
@@ -213,4 +219,11 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             </Grid>
         </Forms>
     );
+};
+
+/**
+ * Default proptypes for the IDP JIT provisioning form component.
+ */
+JITProvisioningConfigurationsForm.defaultProps = {
+    "data-testid": "idp-edit-jit-provisioning-settings"
 };

@@ -36,7 +36,8 @@ export const CommonAuthenticatorForm: FunctionComponent<CommonPluggableComponent
         initialValues,
         onSubmit,
         triggerSubmit,
-        enableSubmitButton
+        enableSubmitButton,
+        [ "data-testid" ]: testId
     } = props;
 
     return (
@@ -46,6 +47,7 @@ export const CommonAuthenticatorForm: FunctionComponent<CommonPluggableComponent
             enableSubmitButton={ enableSubmitButton }
             triggerSubmit={ triggerSubmit }
             metadata={ metadata }
+            data-testid={ testId }
         />
     );
 };

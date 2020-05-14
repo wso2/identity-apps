@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -29,7 +29,7 @@ import { handleIDPUpdateError } from "../utils";
 /**
  * Proptypes for the advance settings component.
  */
-interface AdvanceSettingsPropsInterface {
+interface AdvanceSettingsPropsInterface extends TestableComponentInterface {
     /**
      * Currently editing idp id.
      */
@@ -57,7 +57,8 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
     const {
         idpId,
         advancedConfigurations,
-        onUpdate
+        onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -90,8 +91,16 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
                 <AdvanceConfigurationsForm
                     config={ advancedConfigurations }
                     onSubmit={ handleAdvancedConfigFormSubmit }
+                    data-testid={ testId }
                 />
             </div>
         </>
     );
+};
+
+/**
+ * Default proptypes for the IDP advance settings component.
+ */
+AdvanceSettings.defaultProps = {
+    "data-testid": "idp-edit-advance-settings"
 };

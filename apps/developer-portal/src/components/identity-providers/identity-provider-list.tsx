@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, LoadableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AppAvatar,
@@ -45,7 +45,7 @@ import { AppState } from "../../store";
 /**
  * Proptypes for the identity provider list component.
  */
-interface IdentityProviderListPropsInterface extends LoadableComponentInterface {
+interface IdentityProviderListPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
     /**
      * IdP list.
      */
@@ -84,7 +84,8 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
         onEmptyListPlaceholderActionClick,
         onIdentityProviderDelete,
         onSearchQueryClear,
-        searchQuery
+        searchQuery,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -160,6 +161,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                             { searchQuery: searchQuery }),
                         t("devPortal:components.idp.placeHolders.emptyIDPSearchResults.subtitles.1")
                     ] }
+                    data-testid={ `${ testId }-empty-search-results-placeholder` }
                 />
             );
         }
@@ -183,6 +185,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         t("devPortal:components.idp.placeHolders.emptyIDPList.subtitles.1"),
                         t("devPortal:components.idp.placeHolders.emptyIDPList.subtitles.2")
                     ] }
+                    data-testid={ `${ testId }-empty-idp-list-placeholder` }
                 />
             );
         }
@@ -198,6 +201,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                 imageType: "square"
             } }
+            data-testid={ `${ testId }-resource-list` }
         >
             {
                 list?.identityProviders && list.identityProviders instanceof Array && list.identityProviders.length > 0
@@ -234,6 +238,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                                     ) }
                                     itemHeader={ idp.name }
                                     itemDescription={ idp.description }
+                                    data-testid={ `${ testId }-resource-list-item-${ index }` }
                                 />
                             );
                         }
@@ -264,6 +269,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         onPrimaryActionClick={
                             (): void => handleIdentityProviderDelete(deletingIDP.id)
                         }
+                        data-testid={ `${ testId }-delete-confirmation` }
                     >
                         <ConfirmationModal.Header>
                             { t("devPortal:components.idp.confirmations.deleteIDP.header") }
@@ -279,4 +285,11 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
             }
         </ResourceList>
     );
+};
+
+/**
+ * Default proptypes for the IDP list.
+ */
+IdentityProviderList.defaultProps = {
+    "data-testid": "idp-list"
 };

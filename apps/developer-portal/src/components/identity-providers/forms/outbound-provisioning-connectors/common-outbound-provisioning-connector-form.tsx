@@ -35,7 +35,8 @@ export const CommonOutboundProvisioningConnectorForm: FunctionComponent<
         initialValues,
         onSubmit,
         triggerSubmit,
-        enableSubmitButton
+        enableSubmitButton,
+        [ "data-testid" ]: testId
     } = props;
 
     return (
@@ -45,6 +46,7 @@ export const CommonOutboundProvisioningConnectorForm: FunctionComponent<
             enableSubmitButton={ enableSubmitButton }
             triggerSubmit={ triggerSubmit }
             metadata={ metadata }
+            data-testid={ testId }
         />
     );
 };

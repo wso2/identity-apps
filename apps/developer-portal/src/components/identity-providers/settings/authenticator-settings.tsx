@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
@@ -52,7 +52,7 @@ import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizar
 /**
  * Proptypes for the identity providers settings component.
  */
-interface IdentityProviderSettingsPropsInterface {
+interface IdentityProviderSettingsPropsInterface extends TestableComponentInterface {
     /**
      * Currently editing idp id.
      */
@@ -92,7 +92,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         idpName,
         federatedAuthenticators,
         isLoading,
-        onUpdate
+        onUpdate,
+        [ "data-testid" ]: testId
     } = props;
 
     const dispatch = useDispatch();
@@ -379,7 +380,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         return (
             <EmptyPlaceholder
                 action={ (
-                    <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }>
+                    <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }
+                                   data-testid={ `${ testId }-add-authenticator-button` }>
                         <Icon name="add"/>{ t("devPortal:components.idp.buttons.addAuthenticator") }
                     </PrimaryButton>
                 ) }
@@ -391,6 +393,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     t("devPortal:components.idp.placeHolders.emptyAuthenticatorList.subtitles.1"),
                     t("devPortal:components.idp.placeHolders.emptyAuthenticatorList.subtitles.2")
                 ] }
+                data-testid={ `${ testId }-empty-placeholder` }
             />
         )
     };
@@ -400,7 +403,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={ 16 } textAlign="right">
-                        <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }>
+                        <PrimaryButton onClick={ handleAddAuthenticator } loading={ isTemplatesLoading }
+                                       data-testid={ `${ testId }-add-authenticator-button` }>
                             <Icon name="add"/>
                             { t("devPortal:components.idp.buttons.addAuthenticator") }
                         </PrimaryButton>
@@ -448,6 +452,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                 initialValues={ authenticator.data }
                                                 onSubmit={ handleAuthenticatorConfigFormSubmit }
                                                 type={ authenticator.meta?.name }
+                                                data-testid={ `${ testId }-${ authenticator.meta?.name }-content` }
                                             />
                                         ),
                                         icon: {
@@ -460,6 +465,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                     }
                                 })
                             }
+                            data-testid={ `${ testId }-accordion` }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -498,14 +504,19 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                 onPrimaryActionClick={
                                     (): void => handleAuthenticatorDelete(deletingAuthenticator.authenticatorId)
                                 }
+                                data-testid={ `${ testId }-authenticator-delete-confirmation` }
                             >
-                                <ConfirmationModal.Header>
+                                <ConfirmationModal.Header
+                                    data-testid={ `${ testId }-authenticator-delete-confirmation` }>
                                     { t("devPortal:components.idp.confirmations.deleteAuthenticator.header") }
                                 </ConfirmationModal.Header>
-                                <ConfirmationModal.Message attached warning>
+                                <ConfirmationModal.Message
+                                    attached warning
+                                    data-testid={ `${ testId }-authenticator-delete-confirmation` }>
                                     { t("devPortal:components.idp.confirmations.deleteAuthenticator.message") }
                                 </ConfirmationModal.Message>
-                                <ConfirmationModal.Content>
+                                <ConfirmationModal.Content
+                                    data-testid={ `${ testId }-authenticator-delete-confirmation` }>
                                     { t("devPortal:components.idp.confirmations.deleteAuthenticator.content") }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
@@ -525,6 +536,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                  manualModeOptions={ availableManualModeOptions }
                                  availableTemplates={ availableTemplates }
                                  idpId={ idpId }
+                                 data-testid={ `${ testId }-authenticator-create-wizard` }
                              />
                          )
                     }
@@ -532,4 +544,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             )
             : <ContentLoader/>
     );
+};
+
+/**
+ * Default proptypes for the IDP authenticator settings component.
+ */
+AuthenticatorSettings.defaultProps = {
+    "data-testid": "idp-edit-authenticator-settings"
 };

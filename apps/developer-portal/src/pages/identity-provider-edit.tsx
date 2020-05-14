@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AppAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -30,12 +30,24 @@ import { PageLayout } from "../layouts";
 import { IdentityProviderInterface, emptyIdentityProvider } from "../models";
 
 /**
- * Identity Provider Edit page.
- *
- * @return {ReactElement}
+ * Proptypes for the IDP edit page component.
  */
-export const IdentityProviderEditPage: FunctionComponent<{}> = (): ReactElement => {
+type IDPEditPagePropsInterface = TestableComponentInterface
 
+/**
+ * Identity Provider Edit page.
+ * 
+ * @param {IDPEditPagePropsInterface} props - Props injected to the component.
+ * @return {React.ReactElement}
+ */
+export const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
+    props: IDPEditPagePropsInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
+    
     const [ identityProvider, setIdentityProvider ] = useState<IdentityProviderInterface>(emptyIdentityProvider);
     const [ isIdentityProviderRequestLoading, setIdentityProviderRequestLoading ] = useState<boolean>(false);
 
@@ -130,13 +142,22 @@ export const IdentityProviderEditPage: FunctionComponent<{}> = (): ReactElement 
             } }
             titleTextAlign="left"
             bottomMargin={ false }
+            data-testid={ `${ testId }-page-layout` }
         >
             <EditIdentityProvider
                 identityProvider={ identityProvider }
                 isLoading={ isIdentityProviderRequestLoading }
                 onDelete={ handleIdentityProviderDelete }
                 onUpdate={ handleIdentityProviderUpdate }
+                data-testid={ testId }
             />
         </PageLayout>
     );
+};
+
+/**
+ * Default proptypes for the IDP edit page component.
+ */
+IdentityProviderEditPage.defaultProps = {
+    "data-testid": "idp-edit-page"
 };

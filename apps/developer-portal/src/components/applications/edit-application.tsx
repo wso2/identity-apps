@@ -234,7 +234,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 inboundProtocolConfig={ inboundProtocolConfig }
                 inboundProtocols={ inboundProtocolList }
                 featureConfig={ featureConfig }
-                data-testid={ `${ testId }-general-settings` }
+                data-testid={ `${ testId }-access-settings` }
             />
         </ResourceTab.Pane>
     );

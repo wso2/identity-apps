@@ -141,7 +141,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                                 <>
                                     <SegmentedAccordion.Title
                                         id={ authenticator.id }
-                                        data-testid={ `${ testId }-title` }
+                                        data-testid={ `${ testId }-${ authenticator.id }-title` }
                                         active={ accordionActiveIndexes.includes(index) }
                                         index={ index }
                                         onClick={ handleAccordionOnClick }
@@ -151,7 +151,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                                                     floated="left"
                                                     size="micro"
                                                     spaced="right"
-                                                    data-testid={ `${ testId }-title-icon` }
+                                                    data-testid={ `${ testId }-${ authenticator.id }-title-icon` }
                                                     transparent
                                                     { ...authenticator.icon }
                                                 />
@@ -167,7 +167,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                                     />
                                     <SegmentedAccordion.Content
                                         active={ accordionActiveIndexes.includes(index) }
-                                        data-testid={ `${ testId }-content` }
+                                        data-testid={ `${ testId }-${ authenticator.id }-content` }
                                     >
                                         { authenticator.content }
                                     </SegmentedAccordion.Content>

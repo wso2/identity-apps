@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
@@ -43,7 +43,7 @@ import { handleGetFederatedAuthenticatorMetadataAPICallError } from "../utils";
 /**
  * Proptypes for the identity provider creation wizard component.
  */
-interface AddAuthenticatorWizardPropsInterface {
+interface AddAuthenticatorWizardPropsInterface extends TestableComponentInterface {
     currentStep?: number;
     title: string;
     closeWizard: () => void;
@@ -108,7 +108,8 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         subTitle,
         manualModeOptions,
         availableTemplates,
-        idpId
+        idpId,
+        [ "data-testid" ]: testId
     } = props;
 
     const [ initWizard, setInitWizard ] = useState<boolean>(true);
@@ -275,6 +276,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                         onSubmit={ (values): void => handleWizardFormSubmit(values) }
                         manualModeOptions={ manualModeOptions }
                         authenticatorTemplates={ availableTemplates }
+                        data-testid={ `${ testId }-template-selection` }
                     />
                 );
             }
@@ -285,6 +287,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                         initialValues={ wizardState[WizardConstants.AUTHENTICATOR] }
                         onSubmit={ (values): void => handleWizardFormSubmit(values) }
                         triggerSubmit={ submitAuthenticator }
+                        data-testid={ `${ testId }-authenticator-settings` }
                     />
                 )
             }
@@ -297,6 +300,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                         identityProvider={ generateWizardSummary() }
                         onSubmit={ handleWizardFormFinish }
                         isAddAuthenticatorWizard={ true }
+                        data-testid={ `${ testId }-summary` }
                     />
                 )
             }
@@ -392,14 +396,15 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                 onClose={ handleWizardClose }
                 closeOnDimmerClick
                 closeOnEscape
+                data-testid={ `${ testId }-modal` }
             >
-                <Modal.Header className="wizard-header">
+                <Modal.Header className="wizard-header" data-testid={ `${ testId }-modal-header` }>
                     { title }
                     { subTitle &&
                         <Heading as="h6">{ subTitle }</Heading>
                     }
                 </Modal.Header>
-                <Modal.Content className="steps-container">
+                <Modal.Content className="steps-container" data-testid={ `${ testId }-modal-content-1` }>
                     <Steps.Group header={ t("devPortal:components.idp.wizards.addAuthenticator.header") }
                                  current={ currentWizardStep }>
                         { wizardSteps.map((step, index) => (
@@ -411,30 +416,35 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                         )) }
                     </Steps.Group>
                 </Modal.Content>
-                <Modal.Content className="content-container" scrolling>{ resolveStepContent(currentWizardStep) }
+                <Modal.Content className="content-container" scrolling data-testid={ `${ testId }-modal-content-2` }>
+                    { resolveStepContent(currentWizardStep) }
                 </Modal.Content>
-                <Modal.Actions>
+                <Modal.Actions data-testid={ `${ testId }-modal-actions` }>
                     <Grid>
                         <Grid.Row column={ 1 }>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                <LinkButton floated="left" onClick={ handleWizardClose }>
+                                <LinkButton floated="left" onClick={ handleWizardClose }
+                                            data-testid={ `${ testId }-modal-cancel-button` }>
                                     { t("common:cancel") }
                                 </LinkButton>
                             </Grid.Column>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                 {currentWizardStep < wizardSteps.length - 1 && (
-                                    <PrimaryButton floated="right" onClick={ navigateToNext }>
+                                    <PrimaryButton floated="right" onClick={ navigateToNext }
+                                                   data-testid={ `${ testId }-modal-next-button` }>
                                         { t("devPortal:components.idp.wizards.buttons.next") }
                                         <Icon name="arrow right"/>
                                     </PrimaryButton>
                                 )}
                                 {currentWizardStep === wizardSteps.length - 1 && (
-                                    <PrimaryButton floated="right" onClick={ navigateToNext }>
+                                    <PrimaryButton floated="right" onClick={ navigateToNext }
+                                                   data-testid={ `${ testId }-modal-finish-button` }>
                                         { t("devPortal:components.idp.wizards.buttons.finish") }
                                     </PrimaryButton>
                                 )}
                                 {currentWizardStep > 0 && (
-                                    <LinkButton floated="right" onClick={ navigateToPrevious }>
+                                    <LinkButton floated="right" onClick={ navigateToPrevious }
+                                                data-testid={ `${ testId }-modal-previous-button` }>
                                         <Icon name="arrow left"/>
                                         { t("devPortal:components.idp.wizards.buttons.previous") }
                                     </LinkButton>
@@ -452,5 +462,6 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
  * Default props for the identity provider creation wizard.
  */
 AuthenticatorCreateWizard.defaultProps = {
-    currentStep: 0
+    currentStep: 0,
+    "data-testid": "idp-edit-authenticator-create-wizard"
 };

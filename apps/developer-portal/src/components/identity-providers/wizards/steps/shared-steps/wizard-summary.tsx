@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { AppAvatar, Heading } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
@@ -30,7 +31,7 @@ import { getPropertyMetadata } from "../../../utils";
 /**
  * Proptypes for the wizard summary component.
  */
-interface WizardSummaryProps {
+interface WizardSummaryProps extends TestableComponentInterface {
     provisioningConnectorMetadata: OutboundProvisioningConnectorMetaInterface;
     authenticatorMetadata: FederatedAuthenticatorMetaInterface;
     identityProvider: IdentityProviderInterface;
@@ -55,7 +56,8 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         identityProvider,
         triggerSubmit,
         onSubmit,
-        isAddAuthenticatorWizard
+        isAddAuthenticatorWizard,
+        [ "data-testid" ]: testId
     } = props;
 
     /**
@@ -90,12 +92,15 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
             if (eachProp.value !== undefined && !_.isEmpty(eachProp?.value.toString()) &&
                 !propertyMetadata?.isConfidential) {
                 return (
-                    <Grid.Row className="summary-field" columns={ 2 } key={ eachProp?.key }>
+                    <Grid.Row className="summary-field" columns={ 2 } key={ eachProp?.key }
+                              data-testid={ `${ testId }-${ eachProp?.key }` }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">{ propertyMetadata?.displayName }</div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                            <div className="value url">{ eachProp?.value.toString() }</div>
+                            <div className="value url" data-testid={ `${ testId }-${ eachProp?.key }` }>
+                                { eachProp?.value.toString() }
+                            </div>
                         </Grid.Column>
                     </Grid.Row>
                 )
@@ -107,7 +112,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         return (
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
-                    <div className="general-details">
+                    <div className="general-details" data-testid={ testId }>
                         <AppAvatar
                             name={ identityProvider?.name }
                             image={ identityProvider?.image }
@@ -173,7 +178,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
 
     return (
         identityProvider ?
-            <Grid className="wizard-summary">
+            <Grid className="wizard-summary" data-testid={ testId }>
                 { !isAddAuthenticatorWizard && getGeneralDetailsComponent() }
 
                 { isAuthenticatorSettingsStepAvailable() && getAuthenticatorSettingsComponent() }

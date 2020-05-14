@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
 import { Heading, SelectionCard } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
@@ -27,7 +28,7 @@ import { OutboundConnectors } from "../../../meta";
 /**
  * Interface for the outbound provisioning connectors props.
  */
-interface OutboundProvisioningConnectorsPropsInterface {
+interface OutboundProvisioningConnectorsPropsInterface extends TestableComponentInterface {
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
     connectorList?: OutboundProvisioningConnectorListItemInterface[];
@@ -38,7 +39,7 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
     props: OutboundProvisioningConnectorsPropsInterface
 ): ReactElement => {
 
-    const { onSubmit, triggerSubmit } = props;
+    const { onSubmit, triggerSubmit, [ "data-testid" ]: testId } = props;
 
     const [
         selectedConnector,
@@ -88,6 +89,7 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
                                                 onClick={ (): void => handleConnectorSelection(connector) }
                                                 selected={ selectedConnector?.connectorId === connector.connectorId }
                                                 size="small"
+                                                data-testid={ `${ testId }-connector-${ index }` }
                                             />
                                         )
                                     })
