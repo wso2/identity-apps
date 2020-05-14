@@ -62,7 +62,7 @@ export const UserStores: FunctionComponent<UserStoresPageInterface> = (
     const SORT_BY = [
         {
             key: 0,
-            text:t("common:name"),
+            text: t("common:name"),
             value: "name"
         },
         {

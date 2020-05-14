@@ -25,12 +25,12 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-ui-react";
-import { deleteUser, getUserStoreList, getUsersList } from "../api";
-import { AddUserWizard, AdvancedSearchWithBasicFilters, UsersList, UsersListOptionsComponent } from "../components";
-import { UIConstants, UserConstants } from "../constants";
-import { ListLayout, PageLayout } from "../layouts";
-import { AlertInterface, AlertLevels, UserListInterface } from "../models";
-import { store } from "../store";
+import { deleteUser, getUserStoreList, getUsersList } from "../../api";
+import { AddUserWizard, AdvancedSearchWithBasicFilters, UsersList, UsersListOptionsComponent } from "../../components";
+import { UIConstants, UserConstants } from "../../constants";
+import { ListLayout, PageLayout } from "../../layouts";
+import { AlertInterface, AlertLevels, UserListInterface } from "../../models";
+import { store } from "../../store";
 
 /**
  * Users info page.
@@ -353,7 +353,7 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
                             onClick={ () => setShowWizard(true) }
                         >
                             <Icon name="add"/>
-                            New User
+                            { t("devPortal:components.users.buttons.addNewUserBtn") }
                         </PrimaryButton>
                     )
                 }
@@ -381,7 +381,7 @@ export const UsersPage: FunctionComponent<any> = (): ReactElement => {
                                         basic
                                     >
                                         <Icon name="columns"/>
-                                        Columns
+                                        { t("devPortal:components.users.buttons.metaColumnBtn") }
                                     </Button>
                                 }
                             />
