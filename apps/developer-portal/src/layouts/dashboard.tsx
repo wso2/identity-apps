@@ -17,11 +17,11 @@
  */
 
 import { getProfileInfo } from "@wso2is/core/api";
+import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import { RouteUtils } from "@wso2is/core/utils";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
-import { Footer, Header, Logo, ProductBrand, SidePanel } from "@wso2is/react-components";
-import { ThemeContext } from "@wso2is/react-components";
+import { Footer, Header, Logo, ProductBrand, SidePanel, ThemeContext } from "@wso2is/react-components";
 import classNames from "classnames";
 import _ from "lodash";
 import React, {
@@ -39,7 +39,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { Button, Image, Responsive } from "semantic-ui-react";
 import { BaseLayout } from "./base";
 import { ProtectedRoute } from "../components";
-import { LogoImage, SidePanelIcons, SidePanelMiscIcons, routes } from "../configs";
+import { SidePanelIcons, SidePanelMiscIcons, routes } from "../configs";
 import { UIConstants } from "../constants";
 import { history } from "../helpers";
 import { AuthStateInterface, ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
@@ -306,10 +306,20 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     brand={ (
                         <ProductBrand
                             style={ { marginTop: 0 } }
-                            logo={  state.logo && state.logo !== "" ?
-                                <Image src={ state.logo } style={ { maxHeight: 25 } } />
-                                :
-                                <Logo image={ LogoImage } />
+                            logo={
+                                (state.logo && state.logo !== "")
+                                    ? <Image src={ state.logo } style={ { maxHeight: 25 } } />
+                                    : (
+                                        <Logo
+                                            className="portal-logo"
+                                            image={
+                                                resolveAppLogoFilePath(window["AppUtils"].getConfig().ui.appLogoPath,
+                                                    `${window["AppUtils"].getConfig().clientOrigin}/` +
+                                                    `${window["AppUtils"].getConfig().appBase}/libs/themes/` +
+                                                    state.theme)
+                                            }
+                                        />
+                                    )
                             }
                             name={ state.productName && state.productName !== "" ?
                                 state.productName
