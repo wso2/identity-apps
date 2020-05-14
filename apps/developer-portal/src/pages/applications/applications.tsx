@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { PrimaryButton } from "@wso2is/react-components";
@@ -65,11 +65,24 @@ const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
 ];
 
 /**
- * Overview page.
+ * Props for the Applications page.
+ */
+type ApplicationsPageInterface = TestableComponentInterface;
+
+/**
+ * Applications page.
+ *
+ * @param {ApplicationsPageInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
+export const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
+    props: ApplicationsPageInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
 
@@ -197,6 +210,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
             title={ t("devPortal:pages.applications.title") }
             description={ t("devPortal:pages.applications.subTitle") }
             showBottomDivider={ true }
+            data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
                 advancedSearch={
@@ -225,6 +239,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                         defaultSearchAttribute="name"
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
+                        data-testid={ `${ testId }-list-advanced-search` }
                     />
                 }
                 currentListSize={ appList.count }
@@ -239,6 +254,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                                 onClick={ (): void => {
                                     history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
                                 } }
+                                data-testid={ `${ testId }-list-layout-add-button` }
                             >
                                 <Icon name="add"/>
                                 { t("devPortal:components.applications.list.actions.add") }
@@ -252,6 +268,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                 sortStrategy={ listSortingStrategy }
                 totalPages={ Math.ceil(appList.totalResults / listItemLimit) }
                 totalListSize={ appList.totalResults }
+                data-testid={ `${ testId }-list-layout` }
             >
                 <ApplicationList
                     featureConfig={ featureConfig }
@@ -263,8 +280,16 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                     }
                     onSearchQueryClear={ handleSearchQueryClear }
                     searchQuery={ searchQuery }
+                    data-testid={ `${ testId }-list` }
                 />
             </ListLayout>
         </PageLayout>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+ApplicationsPage.defaultProps = {
+    "data-testid": "applications"
 };
