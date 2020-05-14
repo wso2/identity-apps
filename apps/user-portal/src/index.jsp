@@ -35,7 +35,7 @@
         <script src="<%= htmlWebpackPlugin.options.publicPath %>/app-utils.js"></script>
         <script>
             AppUtils.init({
-                deploymentConfigFile: "deployment.config.json",
+                deploymentConfigFile: "<%= htmlWebpackPlugin.options.publicPath %>/deployment.config.json",
                 serverOrigin: "<%= htmlWebpackPlugin.options.serverUrl %>",
                 superTenant: "<%= htmlWebpackPlugin.options.superTenantConstant %>",
                 tenantPrefix: "<%= htmlWebpackPlugin.options.tenantPrefix %>"
