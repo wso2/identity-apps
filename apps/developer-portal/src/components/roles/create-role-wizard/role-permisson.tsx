@@ -16,11 +16,13 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
 import { ContentLoader, TreeView } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Grid, Segment, Divider } from "semantic-ui-react";
+import { useTranslation } from "react-i18next";
+import { Button, Divider, Grid, Segment } from "semantic-ui-react";
 import { getPermissionList, getPermissionsForRole } from "../../../api";
 import { RolesInterface } from "../../../models";
 import { Permission } from "../../../models/permission";
@@ -29,7 +31,7 @@ import { addPath } from "../role-utils";
 /**
  * Interface to capture permission list props
  */
-interface PermissionListProp {
+interface PermissionListProp extends  TestableComponentInterface {
     triggerSubmit?: boolean;
     onSubmit?: (permissions: any) => void;
     roleObject?: RolesInterface;
@@ -51,8 +53,11 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         roleObject,
         isEdit,
         initialValues,
-        isRole
+        isRole,
+        [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const [ permissionTree, setPermissionTree ] = useState<Permission[]>([]);
     const [ availablePermissionsInRole, setAvailablePermissionsInRole ] = useState<Permission[]>([]);
@@ -84,22 +89,22 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                         getAllPermissions();
                     }
                 })
-                .catch(error => {
+                .catch(() => {
                     //Handle Role Retrieval Properly
                 })
         } else {
             getAllPermissions();
         }
-    }, [availablePermissionsInRole.toString()])
+    }, [availablePermissionsInRole.toString()]);
 
     useEffect(() => {
         const collapsedTree = _.cloneDeep(permissionTree);
         removeIndeterminateState(collapsedTree);
         checkedPermissions.forEach((node: Permission) => {
             markParentAsPartiallyChecked(collapsedTree, node, 0)
-        })
+        });
         setPermissionTree(collapsedTree);
-    }, [checkedPermissions.length])
+    }, [checkedPermissions.length]);
 
     /**
      * Retrieve all permissions to render permissions tree.
@@ -116,14 +121,14 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                     ),[]);
 
                     //Will collapse top level nodes in initial load
-                    setTopNodesCollapsed(permissionTree)
+                    setTopNodesCollapsed(permissionTree);
 
                     //Retrieved permissions of Role in edit mode
                     if (availablePermissionsInRole.length !== 0) {
                         setCheckedPermissions(availablePermissionsInRole);
                         availablePermissionsInRole.forEach((node: Permission) => {
                             markParentAsPartiallyChecked(permissionTree, node, 0)
-                        })
+                        });
                         setCheckedStateForNodesInPermissionTree(availablePermissionsInRole, permissionTree, false);
                     }
 
@@ -132,7 +137,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                         setCheckedPermissions(initialValues);
                         initialValues.forEach((node: Permission) => {
                             markParentAsPartiallyChecked(permissionTree, node, 0)
-                        })
+                        });
                         setCheckedStateForNodesInPermissionTree(initialValues, permissionTree, false);
                     }
 
@@ -141,10 +146,10 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                     setPermissionTree(permissionTree);
                 }
             })
-            .catch(error => {
+            .catch(() => {
                 //Handle Permission Retrieval Properly
             })
-    }
+    };
 
     /**
      * Util method to load the initial tree main elements collapsed.
@@ -155,7 +160,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         permissionNodes[0].children?.forEach((permissionNode: Permission) => {
             permissionNode.isExpanded = false;
         })
-    }
+    };
 
     /**
      * Util method to remove indeterminate state.
@@ -169,7 +174,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                 removeIndeterminateState(permission.children);
             }
         })
-    }
+    };
 
     /**
      * Util method to change collapse state of tree nodes.
@@ -185,7 +190,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                 setNodeCollapseState(permissionNode.children, parentCollapseState);
             }
         })
-    }
+    };
 
     /**
      * Util method to change checked state in permission tree according to the selected permissions
@@ -214,21 +219,22 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                     }
                 }
             })
-    }
+    };
 
     /**
      * A util method which will check all the child elements.
-     * 
+     *
      * @param nodes child nodes need to be checked.
+     * @param checked
      */
     const markChildrenAsChecked = (nodes: any, checked: boolean): void => {
         nodes.forEach((node)=>{
-            node.isChecked = checked
+            node.isChecked = checked;
             if(node.children){
                 markChildrenAsChecked(node.children, checked);
             }
         })
-    }
+    };
 
     /**
      * Add indeteminate state for parent node when checked on tree node.
@@ -248,7 +254,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                 }
             }
         });
-    }
+    };
 
     /**
      * Click event handler for the permission tree checkboxes.
@@ -265,7 +271,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         } else {
             setCheckedPermissions(checkedPermissions.filter(item => item.fullPath !== nodeData[0].fullPath));
         }
-    }
+    };
 
     /**
      * Handler to update collapse button state when tree node is expanded 
@@ -280,7 +286,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         } else if (depth === 0 && !node.isExpanded) {
             setCollapseTree(true);
         }
-    }
+    };
 
     /**
      * Util method to handle expand all, collapse all button event.
@@ -290,29 +296,39 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         setNodeCollapseState(collapsedTree, collapseTree);
         setPermissionTree(collapsedTree);
         setCollapseTree(!collapseTree);
-    }
+    };
 
     return (
-        <Segment basic>
+        <Segment
+            data-testid={ testId }
+            basic
+        >
             { !isPermissionsLoading && 
                 <div className="action-container">
-                        <Button 
+                        <Button
+                            data-testid={ `${ testId }-tree-expand-all-button` }
                             basic
                             compact
                             size="tiny"
                             onClick={ handleExpandAll } 
                             icon={ collapseTree? "expand" : "compress" } 
-                            content={ collapseTree? "Expand All" : "Collapse All" } 
+                            content={
+                                collapseTree ?
+                                    t("devPortal:components.roles.addRoleWizard.permissions.buttons.expandAll") :
+                                    t("devPortal:components.roles.addRoleWizard.permissions.buttons.collapseAll")
+                            }
                         />
                 </div>
             }
-            <Forms submitState={ triggerSubmit } onSubmit={ () => {
-                onSubmit(checkedPermissions);
-            } }>
+            <Forms
+                submitState={ triggerSubmit }
+                onSubmit={ () => { onSubmit(checkedPermissions); } }
+            >
                 {
                     !isPermissionsLoading ? 
                         <div className="treeview-container">
                             <TreeView
+                                data-testid={ `${ testId }-tree` }
                                 data={ permissionTree }
                                 keywordLabel= "label"
                                 isDeletable= { () => { return false } }
@@ -329,8 +345,14 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                         <Divider hidden/>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Button primary type="submit" size="small" className="form-button">
-                                    Update
+                                <Button
+                                    data-testid={ `${ testId }-update-button` }
+                                    primary
+                                    type="submit"
+                                    size="small"
+                                    className="form-button"
+                                >
+                                    { t("devPortal:components.roles.addRoleWizard.permissions.buttons.update") }
                                 </Button>
                             </Grid.Column>
                         </Grid.Row>
@@ -340,4 +362,4 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         </Segment>
     )
 
-}
+};

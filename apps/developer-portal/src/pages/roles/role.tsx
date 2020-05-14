@@ -23,13 +23,13 @@ import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { deleteRoleById, getRolesList, getUserStoreList, searchRoleList } from "../api";
-import { AdvancedSearchWithBasicFilters } from "../components";
-import { RoleList } from "../components/roles";
-import { CreateRoleWizard } from "../components/roles/create-role-wizard";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, UIConstants } from "../constants";
-import { ListLayout, PageLayout } from "../layouts";
-import { AlertInterface, AlertLevels, RolesInterface, SearchRoleInterface } from "../models"
+import { deleteRoleById, getRolesList, getUserStoreList, searchRoleList } from "../../api";
+import { AdvancedSearchWithBasicFilters } from "../../components";
+import { RoleList } from "../../components/roles";
+import { CreateRoleWizard } from "../../components/roles/create-role-wizard";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, UIConstants } from "../../constants";
+import { ListLayout, PageLayout } from "../../layouts";
+import { AlertInterface, AlertLevels, RolesInterface, SearchRoleInterface } from "../../models"
 
 const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -300,8 +300,8 @@ export const RolesPage = (): ReactElement => {
 
     return (
         <PageLayout
-            title="Roles"
-            description="Create and manage roles, assign permissions for roles."
+            title={ t("devPortal:pages.roles.title") }
+            description={ t("devPortal:pages.roles.subTitle") }
             showBottomDivider={ true }
         >
             {
@@ -309,6 +309,7 @@ export const RolesPage = (): ReactElement => {
                 <ListLayout
                     advancedSearch={ (
                         <AdvancedSearchWithBasicFilters
+                            data-testid="role-mgt-roles-list-advanced-search"
                             onFilter={ handleUserFilter  }
                             filterAttributeOptions={ [
                                 {
@@ -318,7 +319,8 @@ export const RolesPage = (): ReactElement => {
                                 }
                             ] }
                             filterAttributePlaceholder={
-                                t("devPortal:components.roles.advancedSearch.form.inputs.filterAttribute.placeholder")
+                                t("devPortal:components.roles.advancedSearch.form.inputs.filterAttribute." +
+                                    "placeholder")
                             }
                             filterConditionsPlaceholder={
                                 t("devPortal:components.roles.advancedSearch.form.inputs.filterCondition" +
@@ -342,18 +344,25 @@ export const RolesPage = (): ReactElement => {
                     sortStrategy={ listSortingStrategy }
                     rightActionPanel={
                         (
-                            <PrimaryButton onClick={ () => setShowWizard(true) }>
-                                <Icon name="add"/>
-                                New Role
+                            <PrimaryButton
+                                data-testid="role-mgt-roles-list-add-button"
+                                onClick={ () => setShowWizard(true) }
+                            >
+                                <Icon
+                                    data-testid="role-mgt-roles-list-add-button-icon"
+                                    name="add"
+                                />
+                                { t("devPortal:components.roles.list.buttons.addButton", { type: "Role" }) }
                             </PrimaryButton>
                         )
                     }
                     leftActionPanel={
                         (
                             <Dropdown
+                                data-testid="role-mgt-roles-list-filters-dropdown"
                                 selection
                                 options={ filterOptions }
-                                placeholder="Filter by"
+                                placeholder= { t("devPortal:components.roles.list.buttons.filterDropdown") }
                                 onChange={ handleFilterChange }
                             />
                         )
@@ -366,6 +375,7 @@ export const RolesPage = (): ReactElement => {
                     totalListSize={ initialRolList?.length }
                 >
                     <RoleList
+                        data-testid="role-mgt-roles-list"
                         handleRoleDelete={ handleOnDelete }
                         isGroup={ false }
                         isLoading={ isRoleListFetchRequestLoading }
@@ -379,6 +389,7 @@ export const RolesPage = (): ReactElement => {
             {
                 showWizard && (
                     <CreateRoleWizard
+                        data-testid="role-mgt-create-role-wizard"
                         isAddGroup={ false }
                         closeWizard={ () => setShowWizard(false) }
                         updateList={ () => setListUpdated(true) }

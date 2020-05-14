@@ -212,6 +212,20 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         }
     };
 
+    /**
+     * The following method handles creating a label for the list item.
+     *
+     * @param groupName: string
+     */
+    const createGroupLabel = (groupName: string): any => {
+        const group = groupName.split("/");
+        if (group.length > 1) {
+            return { labelColor: "teal", labelText: group[0].toString() };
+        } else {
+            return { labelColor: "olive", labelText: "Primary" };
+        }
+    };
+
     return (
         <Forms
             onSubmit={ () => {
@@ -237,18 +251,21 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                     ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedGroupsAllRolesChecked }
+                    emptyPlaceholderContent={ t("devPortal:components.transferList.list.emptyPlaceholders.users." +
+                        "roles.unselected", { type: "groups" }) }
                     data-testid="user-mgt-add-user-wizard-modal-unselected-groups-select-all-checkbox"
                 >
                     {
                         initialValues?.groupList?.map((group, index)=> {
+                            const groupName = group?.displayName?.split("/");
                             return (
                                 <TransferListItem
                                     handleItemChange={ () => handleUnassignedItemCheckboxChange(group) }
                                     key={ index }
-                                    listItem={ group.displayName }
+                                    listItem={ groupName?.length > 1 ? groupName[1] : group?.displayName }
                                     listItemId={ group.id }
                                     listItemIndex={ index }
-                                    listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
+                                    listItemTypeLabel={ createGroupLabel(group?.displayName) }
                                     isItemChecked={ checkedUnassignedListItems.includes(group) }
                                     showSecondaryActions={ true }
                                     handleOpenPermissionModal={ () => handleSetGroupId(group.id) }
@@ -267,18 +284,21 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                     ] }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
                     isHeaderCheckboxChecked={ isSelectAssignedAllGroupsChecked }
+                    emptyPlaceholderContent={ t("devPortal:components.transferList.list.emptyPlaceholders.users." +
+                        "roles.selected", { type: "groups" }) }
                     data-testid="user-mgt-add-user-wizard-modal-selected-groups-select-all-checkbox"
                 >
                     {
                         initialValues?.tempGroupList?.map((group, index)=> {
+                            const groupName = group?.displayName?.split("/");
                             return (
                                 <TransferListItem
                                     handleItemChange={ () => handleAssignedItemCheckboxChange(group) }
                                     key={ index }
-                                    listItem={ group.displayName }
+                                    listItem={ groupName?.length > 1 ? groupName[1] : group?.displayName }
                                     listItemId={ group.id }
                                     listItemIndex={ index }
-                                    listItemTypeLabel={ { labelText: "Primary", labelColor: "olive" } }
+                                    listItemTypeLabel={ createGroupLabel(group?.displayName) }
                                     isItemChecked={ checkedAssignedListItems.includes(group) }
                                     showSecondaryActions={ false }
                                     data-testid="user-mgt-add-user-wizard-modal-selected-groups"

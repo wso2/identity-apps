@@ -1270,7 +1270,9 @@ export interface DevPortalNS {
                 subHeading: string;
             };
             buttons: {
+                addNewUserBtn: string;
                 assignUserRoleBtn: string;
+                metaColumnBtn: string;
             };
             notifications: {
                 addUser: Notification;
@@ -1326,12 +1328,7 @@ export interface DevPortalNS {
         };
         user: {
             deleteUser: {
-                confirmationModal: {
-                    content: string;
-                    header: string;
-                    message: string;
-                    assertionHint: string;
-                };
+                confirmationModal: Confirmation;
             };
             editUser: {
                 dangerZoneGroup: {
@@ -1732,6 +1729,67 @@ export interface DevPortalNS {
             };
         };
         roles: {
+            addRoleWizard: {
+                buttons: {
+                    finish: string;
+                    next: string;
+                    previous: string;
+                };
+                forms: {
+                    roleBasicDetails: {
+                        domain: {
+                            label: {
+                                role: string;
+                                group: string;
+                            };
+                            placeholder: string;
+                            validation: {
+                                empty: {
+                                    role: string;
+                                    group: string;
+                                };
+                            };
+                        };
+                        roleName: FormAttributes;
+                    };
+                };
+                heading: string;
+                permissions: {
+                    buttons: {
+                        collapseAll: string;
+                        expandAll: string;
+                        update: string;
+                    };
+                };
+                subHeading: string;
+                summary: {
+                    labels: {
+                        domain: {
+                            role: string;
+                            group: string;
+                        };
+                        permissions: string;
+                        roleName:  string;
+                        users: string;
+                    };
+                };
+                users: {
+                    assignUserModal: {
+                        heading: string;
+                        subHeading: string;
+                        list: {
+                            searchPlaceholder: string;
+                            listHeader: string;
+                        };
+                    };
+                };
+                wizardSteps: {
+                    0: string;
+                    1: string;
+                    2: string;
+                    3: string;
+                };
+            };
             advancedSearch: {
                 form: {
                     inputs: {
@@ -1750,6 +1808,11 @@ export interface DevPortalNS {
             };
             edit: {
                 basics: {
+                    buttons: {
+                        update: string;
+                    };
+                    confirmation: Confirmation;
+                    dangerZone: DangerZone;
                     fields: {
                         roleName: {
                             name: string;
@@ -1757,6 +1820,34 @@ export interface DevPortalNS {
                             placeholder: string;
                         };
                     };
+                };
+                menuItems: {
+                    basic: string;
+                    permissions: string;
+                    users: string;
+                };
+                users: {
+                    list: {
+                        header: string;
+                        emptyPlaceholder: Placeholder;
+                    };
+                };
+            };
+            list: {
+                buttons: {
+                    addButton: string;
+                    filterDropdown: string;
+                };
+                confirmations: {
+                    deleteItem: Confirmation;
+                };
+                emptyPlaceholders: {
+                    search: Placeholder;
+                    emptyRoleList: Placeholder;
+                };
+                popups: {
+                    delete: string;
+                    edit: string;
                 };
             };
             notifications: {
@@ -1794,6 +1885,9 @@ export interface DevPortalNS {
                         };
                     };
                 };
+            };
+            list: {
+                storeOptions: string;
             };
             notifications: {
                 deleteGroup: Notification;
@@ -1969,7 +2063,15 @@ export interface DevPortalNS {
                     0: string;
                     1: string;
                 };
-                emptyPlaceholder: string;
+                emptyPlaceholders: {
+                    default: string;
+                    users: {
+                        roles: {
+                            unselected: string;
+                            selected: string;
+                        };
+                    };
+                };
             };
         };
         footer: {
@@ -2134,6 +2236,7 @@ export interface DevPortalNS {
         applicationTemplate: EditPage;
         applications: Page;
         applicationsEdit: EditPage;
+        groups: Page;
         idp: Page;
         idpTemplate: {
             title: string;
@@ -2145,6 +2248,8 @@ export interface DevPortalNS {
             };
         };
         overView: Page;
+        roles: Page;
+        rolesEdit: EditPage;
         users: Page;
         usersEdit: EditPage;
         serverConfigurations: Page;

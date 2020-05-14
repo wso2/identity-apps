@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export * from "./role-list";
-export * from "./create-role-wizard";
 export * from "./edit-role";
-
+export * from "./edit-role-basic";
+export * from "./edit-role-permission";
+export * from "./edit-role-users";

@@ -229,6 +229,8 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                     ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
+                    emptyPlaceholderContent={ t("devPortal:components.transferList.list.emptyPlaceholders.users." +
+                        "roles.unselected", { type: "roles" }) }
                     data-testid="user-mgt-add-user-wizard-modal-unselected-roles-select-all-checkbox"
                 >
                     {
@@ -260,6 +262,8 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                     ] }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
                     isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
+                    emptyPlaceholderContent={ t("devPortal:components.transferList.list.emptyPlaceholders.users." +
+                        "roles.selected", { type: "roles" }) }
                     data-testid="user-mgt-add-user-wizard-modal-selected-roles-select-all-checkbox"
                 >
                     {
