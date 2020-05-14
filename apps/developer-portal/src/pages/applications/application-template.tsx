@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, EmptyPlaceholder, TemplateGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -32,11 +33,24 @@ import { AppState } from "../../store";
 import { ApplicationManagementUtils } from "../../utils";
 
 /**
+ * Props for the Applications templates page.
+ */
+type ApplicationTemplateSelectPageInterface = TestableComponentInterface;
+
+/**
  * Choose the application template from this page.
+ *
+ * @param {ApplicationTemplateSelectPageInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactElement => {
+export const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelectPageInterface> = (
+    props: ApplicationTemplateSelectPageInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
 
@@ -106,6 +120,7 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
             titleTextAlign="left"
             bottomMargin={ false }
             showBottomDivider
+            data-testid={ `${ testId }-page-layout` }
         >
             {
                 (applicationTemplates && !isApplicationTemplateRequestLoading)
@@ -133,9 +148,11 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
                                         imageSize="tiny"
                                         title={ t("devPortal:components.templates.emptyPlaceholder.title") }
                                         subtitle={ [t("devPortal:components.templates.emptyPlaceholder.subtitles")] }
+                                        data-testid={ `${ testId }-quick-start-template-grid-empty-placeholder` }
                                     />
                                 ) }
                                 tagsSectionTitle={ t("common:technologies") }
+                                data-testid={ `${ testId }-quick-start-template-grid` }
                             />
                         </div>
                     )
@@ -165,9 +182,11 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
                             imageSize="tiny"
                             title={ t("devPortal:components.templates.emptyPlaceholder.title") }
                             subtitle={ [t("devPortal:components.templates.emptyPlaceholder.subtitles")] }
+                            data-testid={ `${ testId }-custom-template-grid-empty-placeholder` }
                         />
                     ) }
                     tagsSectionTitle={ t("common:technologies") }
+                    data-testid={ `${ testId }-custom-template-grid` }
                 />
             </div>
             {
@@ -183,4 +202,11 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
             }
         </PageLayout>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+ApplicationTemplateSelectPage.defaultProps = {
+    "data-testid": "application-templates"
 };

@@ -2149,7 +2149,69 @@ export const devPortal: DevPortalNS = {
                 }
             }
         },
+        emailLocale: {
+            buttons: {
+                addLocaleTemplate: "Add Locale Template",
+                saveChanges: "Save Changes"
+            },
+            forms: {
+                addLocale: {
+                    fields: {
+                        bodyEditor: {
+                            label: "Body"
+                        },
+                        locale: {
+                            label: "Locale",
+                            placeholder: "Select Locale",
+                            validations: {
+                                empty: "Select locale"
+                            }
+                        },
+                        signatureEditor: {
+                            label: "Mail signature"
+                        },
+                        subject: {
+                            label: "Subject",
+                            placeholder: "Enter your email subject",
+                            validations: {
+                                empty: "Email Subject is required"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         emailTemplateTypes: {
+            buttons: {
+                createTemplateType: "Create Template Type",
+                deleteTemplate: "Delete Template",
+                editTemplate: "Edit Template",
+                newType: "New Template Type"
+            },
+            confirmations: {
+                deleteTemplateType: {
+                    assertionHint: "Please type <1>{{ id }}</1> to confirm.",
+                    content: "If you delete this email template type, all associated work flows will no longer " +
+                        "have a valid email template to work with and this will delete all the locale templates " +
+                        "associated with this template type. Please proceed cautiously.",
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will permanently delete the selected email template " +
+                        "type."
+                }
+            },
+            forms: {
+                addTemplateType: {
+                    fields: {
+                        type: {
+                            label: "Template Type Name",
+                            placeholder: "Enter a template type name",
+                            validations: {
+                                empty: "Template type name is required to proceed."
+                            }
+                        }
+                    }
+                }
+            },
             notifications: {
                 createTemplateType: {
                     error: {
@@ -2193,9 +2255,56 @@ export const devPortal: DevPortalNS = {
                         message: "Email template type update successful"
                     }
                 }
+            },
+            placeholders: {
+                emptyList: {
+                    action: "New Template Type",
+                    subtitles: {
+                        0: "Currently there are no templates types available.",
+                        2: "You can add a new template type by ",
+                        3: "clicking on the button below."
+                    },
+                    title: "Add new Template Type",
+                }
+            },
+            wizards: {
+                addTemplateType: {
+                    heading: "Create Email Template Type",
+                    steps: {
+                        templateType: {
+                            heading: "Template Type"
+                        }
+                    },
+                    subHeading: "Create a new template type to associate with email requirements."
+                }
             }
         },
         emailTemplates: {
+            buttons: {
+                deleteTemplate: "Delete Template",
+                editTemplate: "Edit Template",
+                newTemplate: "New Template",
+                viewTemplate: "View Template"
+            },
+            confirmations: {
+                deleteTemplate: {
+                    assertionHint: "Please type <1>{{ id }}</1> to confirm.",
+                    content: "If you delete this email template, all associated work flows will no longer " +
+                        "have a valid email template to work with. Please proceed cautiously.",
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will permanently delete the selected email template."
+                }
+            },
+            editor: {
+                tabs: {
+                    code: {
+                        tabName: "HTML Code"
+                    },
+                    preview: {
+                        tabName: "Preview"
+                    }
+                }
+            },
             notifications: {
                 createTemplate: {
                     error: {
@@ -2225,6 +2334,12 @@ export const devPortal: DevPortalNS = {
                         message: "Email template delete successful"
                     }
                 },
+                iframeUnsupported: {
+                    genericError: {
+                        description: "Your browser does not support iframes.",
+                        message: "Unsupported"
+                    }
+                },
                 updateTemplate: {
                     error: {
                         description: "{{description}}",
@@ -2239,6 +2354,20 @@ export const devPortal: DevPortalNS = {
                         message: "Email template update successful"
                     }
                 }
+            },
+            placeholders: {
+                emptyList: {
+                    action: "New Template",
+                    subtitles: {
+                        0: "Currently there are no templates available for the selected",
+                        1: "email template type. You can add a new template by ",
+                        2: "clicking on the button below."
+                    },
+                    title: "Add Template"
+                }
+            },
+            viewTemplate: {
+                heading: "Email Template Preview"
             }
         },
         footer: {
@@ -4857,6 +4986,30 @@ export const devPortal: DevPortalNS = {
             backButton: "Go back to applications",
             subTitle: null,
             title: null
+        },
+        emailLocaleAdd: {
+            backButton: "Go back to {{name}} template",
+            subTitle: null,
+            title: "Edit template - {{name}}"
+        },
+        emailLocaleAddWithDisplayName: {
+            backButton: "Go back to {{name}} template",
+            subTitle: null,
+            title: "Add new template for {{displayName}}"
+        },
+        emailTemplateTypes: {
+            subTitle: "Create and manage templates types.",
+            title: "Email Templates Types"
+        },
+        emailTemplates: {
+            backButton: "Go back to email templates types",
+            subTitle: null,
+            title: "Email Templates"
+        },
+        emailTemplatesWithDisplayName: {
+            backButton: "Go back to applications",
+            subTitle: null,
+            title: "Templates - {{displayName}}"
         },
         groups: {
             subTitle: "Create and manage user groups, assign permissions for groups.",

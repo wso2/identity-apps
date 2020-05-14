@@ -26,6 +26,7 @@ import {
 } from "@wso2is/react-components";
 import * as CountryLanguage from "country-language";
 import React, { FunctionComponent, ReactElement, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { Flag, FlagNameValues, Icon } from "semantic-ui-react";
 import { ViewLocaleTemplate } from "./view-template";
 import { EmailTemplateIllustrations } from "../../configs";
@@ -63,6 +64,8 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
         [ "data-testid" ]: testId
     } = props;
 
+    const { t } = useTranslation();
+
     const [ showViewLocaleWizArd, setShowViewLocaleWizard ] = useState<boolean>(false);
     const [ currentViewTemplate, setCurrentViewTemplate ] = useState<string>("");
 
@@ -85,14 +88,14 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                     action={
                         <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
                             <Icon name="add"/>
-                            New Template
+                            { t("devPortal:components.emailTemplates.placeholders.emptyList.action") }
                         </PrimaryButton>
                     }
-                    title="Add Template"
+                    title={ t("devPortal:components.emailTemplates.placeholders.emptyList.title") }
                     subtitle={ [
-                        "Currently there are no templates available for the selected",
-                        "email template type. You can add a new template clicking on the",
-                        "button below."
+                        t("devPortal:components.emailTemplates.placeholders.emptyList.subtitles.0"),
+                        t("devPortal:components.emailTemplates.placeholders.emptyList.subtitles.1"),
+                        t("devPortal:components.emailTemplates.placeholders.emptyList.subtitles.2")
                     ] }
                     image={ EmailTemplateIllustrations.emptyEmailListing }
                     imageSize="tiny"
@@ -142,12 +145,12 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                                             setCurrentViewTemplate(template.id);
                                             setShowViewLocaleWizard(true);
                                         },
-                                        popupText: "View Template",
+                                        popupText: t("devPortal:components.emailTemplates.buttons.viewTemplate"),
                                         type: "button"
                                     }, {
                                         icon: "pencil alternate",
                                         onClick: () => handleEditTemplate(templateTypeId, template.id),
-                                        popupText: "Edit Template",
+                                        popupText: t("devPortal:components.emailTemplates.buttons.editTemplate"),
                                         type: "button"
                                     }, {
                                         icon: "trash alternate",
@@ -155,7 +158,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                                             setCurrentDeletingTemplate(template);
                                             setShowTemplateDeleteConfirmation(true);
                                         },
-                                        popupText: "Delete Template",
+                                        popupText: t("devPortal:components.emailTemplates.buttons.deleteTemplate"),
                                         type: "button"
                                     } ] }
                                     itemHeader={
@@ -194,11 +197,19 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                         open={ showTemplateDeleteConfirmation }
                         assertion={ currentDeletingTemplate.id }
                         assertionHint={
-                            <p>Please type <strong>{ currentDeletingTemplate.id }</strong> to confirm. </p>
+                            <p>
+                                <Trans
+                                    i18nKey={ "devPortal:components.emailTemplates.confirmations.deleteTemplate" +
+                                    ".assertionHint" }
+                                    tOptions={ { id: currentDeletingTemplate.id } }
+                                >
+                                    Please type <strong>{ currentDeletingTemplate.id }</strong> to confirm.
+                                </Trans>
+                            </p>
                         }
                         assertionType="input"
-                        primaryAction="Confirm"
-                        secondaryAction="Cancel"
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowTemplateDeleteConfirmation(false) }
                         onPrimaryActionClick={ (): void => {
                             onDelete(templateTypeId, currentDeletingTemplate.id);
@@ -209,20 +220,19 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-delete-confirmation-modal-header` }
                         >
-                            Are you sure?
+                            { t("devPortal:components.emailTemplates.confirmations.deleteTemplate.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             warning
                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                         >
-                            This action is irreversible and will permanently delete the selected email template.
+                            { t("devPortal:components.emailTemplates.confirmations.deleteTemplate.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-testid={ `${ testId }-delete-confirmation-modal-content` }
                         >
-                            If you delete this email template, all associated work flows will no longer
-                            have a valid email template to work with. Please proceed cautiously.
+                            { t("devPortal:components.emailTemplates.confirmations.deleteTemplate.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

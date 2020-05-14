@@ -208,10 +208,17 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                             <Form.Field>
                                 <label>Locale</label>
                                 <Dropdown
-                                    placeholder="Select Locale"
-                                    label="Locale "
+                                    placeholder={
+                                        t("devPortal:components.emailLocale.forms.addLocale.fields.locale.placeholder")
+                                    }
+                                    label={
+                                        t("devPortal:components.emailLocale.forms.addLocale.fields.locale.label")
+                                    }
                                     name="locale"
-                                    requiredErrorMessage="Select locale"
+                                    requiredErrorMessage={
+                                        t("devPortal:components.emailLocale.forms.addLocale.fields.locale" +
+                                            ".validations.empty")
+                                    }
                                     required={ true }
                                     options={ localeList ? localeList : [] }
                                     onChange={ (event: SyntheticEvent, data: DropdownProps) => {
@@ -232,11 +239,17 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 4 }>
                         <Field
-                            name={ "emailSubject" }
-                            label={ "Subject" }
+                            name="emailSubject"
+                            label={
+                                t("devPortal:components.emailLocale.forms.addLocale.fields.subject.label")
+                            }
                             required={ true }
-                            requiredErrorMessage={ "Email Subject is required" }
-                            placeholder={ "Enter your email subject" }
+                            requiredErrorMessage={
+                                t("devPortal:components.emailLocale.forms.addLocale.fields.subject.validations.empty")
+                            }
+                            placeholder={
+                                t("devPortal:components.emailLocale.forms.addLocale.fields.subject.placeholder")
+                            }
                             type="text"
                             value={ subject }
                             data-testid={ `${ testId }-subject-input` }
@@ -246,7 +259,9 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 12 }>
                         <Form.Field>
-                            <label>Body</label>
+                            <label>
+                                { t("devPortal:components.emailLocale.forms.addLocale.fields.bodyEditor.label") }
+                            </label>
                             <EmailTemplateEditor 
                                 htmlContent={ htmlBodyContent } 
                                 isReadOnly={ false }
@@ -261,7 +276,10 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 12 }>
                         <Form.Field>
-                            <label>Mail signature</label>
+                            <label>
+                                { t("devPortal:components.emailLocale.forms.addLocale.fields.signatureEditor" +
+                                    ".label") }
+                            </label>
                             <EmailTemplateEditor 
                                 htmlContent={ htmlFooterContent } 
                                 isReadOnly={ false }
@@ -283,7 +301,11 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                             className="form-button"
                             data-testid={ `${ testId }-submit-button` }
                         >
-                            {templateId === "" ? "Add Locale Template" : "Save Changes" }
+                            {
+                                (templateId === "")
+                                    ? t("devPortal:components.emailLocale.buttons.addLocaleTemplate")
+                                    : t("devPortal:components.emailLocale.buttons.saveChanges")
+                            }
                         </Button>
                     </Grid.Column>
                 </Grid.Row>

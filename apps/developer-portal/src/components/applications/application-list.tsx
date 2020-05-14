@@ -17,7 +17,12 @@
  */
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, LoadableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import {
+    AlertLevels,
+    LoadableComponentInterface,
+    SBACInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AppAvatar,
@@ -50,7 +55,9 @@ import { ApplicationManagementUtils } from "../../utils";
  *
  * Proptypes for the applications list component.
  */
-interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface {
+interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface,
+    TestableComponentInterface {
+
     /**
      * Application list.
      */
@@ -77,6 +84,7 @@ interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInter
  * Application list component.
  *
  * @param {ApplicationListPropsInterface} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
 export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> = (
@@ -90,7 +98,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         onApplicationDelete,
         onEmptyListPlaceholderActionClick,
         onSearchQueryClear,
-        searchQuery
+        searchQuery,
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -232,6 +241,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         t("devPortal:placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
                         t("devPortal:placeholders.emptySearchResult.subtitles.1")
                     ] }
+                    data-testid={ `${ testId }-empty-search-placeholder` }
                 />
             );
         }
@@ -253,6 +263,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         t("devPortal:components.applications.placeholders.emptyList.subtitles.1"),
                         t("devPortal:components.applications.placeholders.emptyList.subtitles.2")
                     ] }
+                    data-testid={ `${ testId }-empty-placeholder` }
                 />
             );
         }
@@ -269,6 +280,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
+                data-testid={ testId }
             >
                 {
                     list?.applications && list.applications instanceof Array && list.applications.length > 0
@@ -293,6 +305,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                                 image={ app.image }
                                                 size="mini"
                                                 floated="left"
+                                                data-testid={ `${ testId }-item-image` }
                                             />
                                         ) }
                                         itemHeader={ app.name }
@@ -305,7 +318,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                                     && applicationTemplates
                                                         .find((template) => template.name === templateName)
                                                     && (
-                                                        <Label size="mini" className="compact spaced-right">
+                                                        <Label
+                                                            size="mini"
+                                                            className="compact spaced-right"
+                                                            data-testid={ `${ testId }-template-type` }
+                                                        >
                                                             { templateName }
                                                         </Label>
                                                     )
@@ -313,6 +330,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                                 { description }
                                             </>
                                         ) }
+                                        data-testid={ `${ testId }-item` }
                                     />
                                 );
                             }
@@ -345,14 +363,23 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => handleApplicationDelete(deletingApplication.id) }
+                        data-testid={ `${ testId }-delete-confirmation-modal` }
                     >
-                        <ConfirmationModal.Header>
+                        <ConfirmationModal.Header
+                            data-testid={ `${ testId }-delete-confirmation-modal-header` }
+                        >
                             { t("devPortal:components.applications.confirmations.deleteApplication.header") }
                         </ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
+                        <ConfirmationModal.Message
+                            attached
+                            warning
+                            data-testid={ `${ testId }-delete-confirmation-modal-message` }
+                        >
                             { t("devPortal:components.applications.confirmations.deleteApplication.message") }
                         </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
+                        <ConfirmationModal.Content
+                            data-testid={ `${ testId }-delete-confirmation-modal-content` }
+                        >
                             { t("devPortal:components.applications.confirmations.deleteApplication.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
@@ -360,4 +387,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             }
         </>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+ApplicationList.defaultProps = {
+    "data-testid": "application-list"
 };
