@@ -16,11 +16,12 @@
  * under the License.
  */
 
+import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
+import { Logo } from "@wso2is/react-components";
 import classNames from "classnames";
 import * as React from "react";
 import { Image } from "semantic-ui-react";
-import { ThemeIcon } from "./icon";
-import { GlobalConfig, HomeTileIconImages, LogoImage, UserImage } from "../../configs";
+import { GlobalConfig, HomeTileIconImages, UserImage } from "../../configs";
 
 interface ImageProps {
     classes?: any;
@@ -41,27 +42,19 @@ interface TitleProps {
     children?: any;
 }
 
-export const Logo = (props: ImageProps) => {
-    const { classes, size, style } = props;
-
-    return (
-        <ThemeIcon
-            icon={ LogoImage }
-            className={ classNames(classes, "product-logo") }
-            size={ size }
-            style={ style }
-            transparent
-            inline
-        />
-    );
-};
-
 export const Title = (props: TitleProps) => {
     const { classes, style, children } = props;
 
     return (
         <div className={ classNames(classes, "product-title") } style={ style }>
-            <Logo />
+            <Logo
+                className="portal-logo"
+                image={
+                    resolveAppLogoFilePath(window["AppUtils"].getConfig().ui.appLogoPath,
+                        `${window["AppUtils"].getConfig().clientOrigin}/` +
+                        `${window["AppUtils"].getConfig().appBase}/libs/themes/default`)
+                }
+            />
             <h1 className={ classNames(classes, "product-title-text") } style={ style }>
                 { GlobalConfig.applicationName }
             </h1>
