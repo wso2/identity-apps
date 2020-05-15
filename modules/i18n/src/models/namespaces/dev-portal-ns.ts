@@ -1451,6 +1451,7 @@ export interface DevPortalNS {
                             validations: {
                                 empty: string;
                                 invalid: string;
+                                regExViolation: string;
                             };
                         };
                         newPassword: {
@@ -1458,6 +1459,7 @@ export interface DevPortalNS {
                             placeholder: string;
                             validations: {
                                 empty: string;
+                                regExViolation: string;
                             };
                         };
                         domain: {
