@@ -133,7 +133,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      *
      * @param roleName - User input role name
      */
-    async function validateRoleNamePattern(roleName: string) {
+    const validateRoleNamePattern = async (roleName: string): Promise<void> => {
         let userStoreRegEx = "";
         if (userStore !== PRIMARY_DOMAIN) {
             await getUserstoreRegEx(userStore, USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
@@ -145,7 +145,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             userStoreRegEx = PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
         }
         setIsRoleNamePatternValid(validateInputAgainstRegEx(roleName, userStoreRegEx));
-    }
+    };
 
     /**
      * The following function fetch the user store list and set it to the state.

@@ -155,7 +155,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      *
      * @param userstore
      */
-    async function setUserStoreRegEx(userstore: string) {
+    const setUserStoreRegEx = async (userstore: string): Promise<void> => {
         if (userstore !== "primary") {
             // Set the username regEx of the secondary user store.
             await getUserstoreRegEx(userstore, USERSTORE_REGEX_PROPERTIES.UsernameRegEx)
@@ -167,14 +167,14 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             // Set the username regEx of the primary user store.
             setUsernameRegEx(PRIMARY_USERSTORE_PROPERTY_VALUES.UsernameJavaScriptRegEx);
         }
-    }
+    };
 
     /**
      * The following function checks if the password pattern is valid against the user store regEx.
      *
      * @param password
      */
-    async function setPasswordRegEx(password: string) {
+    const setPasswordRegEx = async (password: string): Promise<void> => {
         let passwordRegex = "";
         if (userStore !== "primary") {
             // Set the username regEx of the secondary user store.
@@ -188,7 +188,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             passwordRegex = PRIMARY_USERSTORE_PROPERTY_VALUES.PasswordJavaScriptRegEx;
         }
         setIsPasswordPatternValid(validateInputAgainstRegEx(password, passwordRegex));
-    }
+    };
 
     /**
      * The following function handles the change of the password.

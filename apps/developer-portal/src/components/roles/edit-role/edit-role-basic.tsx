@@ -91,7 +91,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             });
     }, [ nameValue ]);
 
-    async function fetchUserstoreRegEx() {
+    const fetchUserstoreRegEx = async (): Promise<string> => {
         // TODO: Enable when the role object includes user store.
         // if (roleObject && roleObject.displayName.indexOf("/") !== -1) {
         //     // Get the role name regEx for the secondary user store
@@ -105,9 +105,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         //     // Get the role name regEx for the primary user store
         //     regEx = PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
         // }
-        const regEx = PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
-        return regEx;
-    }
+        return PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
+    };
 
     /**
      * The following function handles the role name change.
@@ -115,7 +114,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
      * @param event
      * @param data
      */
-    const handleRoleNameChange = (event: ChangeEvent, data: InputOnChangeData) => {
+    const handleRoleNameChange = (event: ChangeEvent, data: InputOnChangeData): void => {
         setNameValue(data.value);
         setIsRoleNamePatternValid(validateInputAgainstRegEx(data.value, userStoreRegEx));
     };
@@ -125,7 +124,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
      *
      * @param {AlertInterface} alert - Alert object.
      */
-    const handleAlerts = (alert: AlertInterface) => {
+    const handleAlerts = (alert: AlertInterface): void => {
         dispatch(addAlert(alert));
     };
 

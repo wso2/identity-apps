@@ -189,7 +189,7 @@ export const reOrganizeProperties = (
  * @param userstore
  * @param regExName
  */
-export async function getUserstoreRegEx (userstore: string, regExName: string) {
+export const getUserstoreRegEx = async (userstore: string, regExName: string): Promise<string> => {
     let usernameRegEx: UserStoreProperty = null;
     return getUserStoreList()
          .then((response) => {
@@ -202,7 +202,7 @@ export async function getUserstoreRegEx (userstore: string, regExName: string) {
                     })
             }
         });
-}
+};
 
 /**
  * The following method validate user input against the user store regEx.
