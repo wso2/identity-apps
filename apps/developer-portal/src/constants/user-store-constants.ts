@@ -65,3 +65,21 @@ export const USERSTORE_TYPE_IMAGES = {
     UniqueIDReadOnlyLDAPUserStoreManager: "ldap",
     UniqueIDReadWriteLDAPUserStoreManager: "ldap"
 };
+
+/**
+ * Primary user store property values
+ */
+export const PRIMARY_USERSTORE_PROPERTY_VALUES = {
+    PasswordJavaScriptRegEx: "^[\\S]{5,30}$",
+    RolenameJavaScriptRegEx: "^[\\S]{3,30}$",
+    UsernameJavaScriptRegEx: "^[\\S]{3,30}$"
+};
+
+/**
+ * User store regEx properties
+ */
+export const USERSTORE_REGEX_PROPERTIES = {
+    PasswordRegEx: "PasswordJavaScriptRegEx",
+    RolenameRegEx: "RolenameJavaScriptRegEx",
+    UsernameRegEx: "UsernameJavaScriptRegEx"
+};
