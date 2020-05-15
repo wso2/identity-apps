@@ -17,10 +17,6 @@
  */
 
 function loadUserConfig(configFile, callback) {
-    if (!configFile) {
-        throw configFile + " is missing in the root directory";
-    }
-
     var request = new XMLHttpRequest();
 
     request.overrideMimeType("application/json");
@@ -66,9 +62,24 @@ var AppUtils = AppUtils || (function() {
         _default = {},
         _config = {};
 
-    var userConfigFile = "deployment.config.json";
+    var fallbackServerOrigin = "https://localhost:9443";
 
     return {
+        getAppBase: function() {
+            var path = this.getLocationPathWithoutTenant();
+            var pathChuncks = path.split("/");
+
+            if (pathChuncks.length <= 1) {
+                return "/";
+            }
+
+            if (pathChuncks.length === 2) {
+                return path;
+            }
+
+            return "/" + this.getLocationPathWithoutTenant().split("/")[1];
+        },
+
         getConfig: function() {
             return {
                 appBase: _config.appBaseName,
@@ -88,6 +99,19 @@ var AppUtils = AppUtils || (function() {
                 tenantPath: this.getTenantPath(),
                 ui: _config.ui
             };
+        },
+
+        getLocationPathWithoutTenant: function() {
+            var path = window.location.pathname;
+            var pathChunks = path.split("/");
+
+            if ( (pathChunks[1] === this.getTenantPrefix()) && (pathChunks[2] === this.getTenantName()) ) {
+                pathChunks.splice(1, 2);
+
+                return pathChunks.join("/");
+            }
+
+            return path;
         },
 
         getSuperTenant: function() {
@@ -120,10 +144,12 @@ var AppUtils = AppUtils || (function() {
 
             _default = {
                 "clientOrigin": window.location.origin,
-                "serverOrigin": _args.serverOrigin || "https://localhost:9443"
+                "serverOrigin": _args.serverOrigin || fallbackServerOrigin
             };
 
             _config = _default;
+
+            var userConfigFile = this.getAppBase() + "/deployment.config.json";
 
             loadUserConfig(userConfigFile, function(response) {
                 var configResponse = JSON.parse(response);

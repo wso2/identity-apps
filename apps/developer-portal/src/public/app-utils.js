@@ -17,10 +17,6 @@
  */
 
 function loadUserConfig(configFile, callback) { 
-    if (!configFile) {
-        throw configFile + " is missing in the root directory";
-    }
-
     var request = new XMLHttpRequest();
 
     request.overrideMimeType("application/json");
@@ -66,16 +62,31 @@ var AppUtils = AppUtils || (function() {
         _default = {},
         _config = {};
 
-    var userConfigFile = "deployment.config.json";
+    var fallbackServerOrigin = "https://localhost:9443";
 
     return {
+        getAppBase: function() {
+            var path = this.getLocationPathWithoutTenant();
+            var pathChuncks = path.split("/");
+
+            if (pathChuncks.length <= 1) {
+                return "/";
+            }
+
+            if (pathChuncks.length === 2) {
+                return path;
+            }
+
+            return "/" + this.getLocationPathWithoutTenant().split("/")[1];
+        },
+
         getConfig: function() {
-            var accountAppUROrigin = (_config.accountAppURL && _config.accountAppURL.origin) ?
-                _config.accountAppURL.origin : 
-                _config.clientOrigin;
+            if (_config.accountAppURL && _config.accountAppURL.origin) {
+                _config.accountAppOrigin = _config.accountAppURL.origin;
+            }
 
             return {
-                accountAppURL: accountAppUROrigin + this.getTenantPath() + _config.accountAppURL.path,
+                accountAppURL: _config.accountAppOrigin + this.getTenantPath() + _config.accountAppURL.path,
                 appBase: _config.appBaseName,
                 appBaseWithTenant: this.getTenantPath() + "/" + _config.appBaseName,
                 clientID: (this.isSuperTenant()) ?
@@ -94,6 +105,19 @@ var AppUtils = AppUtils || (function() {
                 tenantPath: this.getTenantPath(),
                 ui: _config.ui
             };
+        },
+
+        getLocationPathWithoutTenant: function() {
+            var path = window.location.pathname;
+            var pathChunks = path.split("/");
+
+            if ( (pathChunks[1] === this.getTenantPrefix()) && (pathChunks[2] === this.getTenantName()) ) {
+                pathChunks.splice(1, 2);
+
+                return pathChunks.join("/");
+            }
+
+            return path;
         },
 
         getSuperTenant: function() {
@@ -125,11 +149,14 @@ var AppUtils = AppUtils || (function() {
             _args = Args;
 
             _default = {
+                "accountAppOrigin": _args.accountAppOrigin || _args.serverOrigin || fallbackServerOrigin,
                 "clientOrigin": window.location.origin,
-                "serverOrigin": _args.serverOrigin || "https://localhost:9443"
+                "serverOrigin": _args.serverOrigin || fallbackServerOrigin
             };
 
             _config = _default;
+
+            var userConfigFile = this.getAppBase() + "/deployment.config.json";
 
             loadUserConfig(userConfigFile, function(response) {
                 var configResponse = JSON.parse(response);
