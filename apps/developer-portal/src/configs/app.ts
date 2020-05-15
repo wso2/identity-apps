@@ -132,6 +132,8 @@ export class Config {
             portalDocumentationStructure: `${ HelpPanelConstants.GITHUB_CONTENTS_API_ENDPOINT }/mkdocs.yml`,
             profileSchemas: `${this.getDeploymentConfig().serverHost}/scim2/Schemas`,
             publicCertificates: `${this.getDeploymentConfig().serverHost}/api/server/v1/keystores/certs/public`,
+            requestPathAuthenticators:
+                `${this.getDeploymentConfig().serverHost}/api/server/v1/configs/authenticators?type=REQUEST_PATH`,
             revoke: `${this.getDeploymentConfig().serverHost}/oauth2/revoke`,
             selfSignUp: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID

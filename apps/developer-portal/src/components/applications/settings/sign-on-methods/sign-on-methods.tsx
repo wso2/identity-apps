@@ -19,14 +19,15 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { PrimaryButton } from "@wso2is/react-components";
+import { Field, Forms } from "@wso2is/forms";
+import { Heading, Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider } from "semantic-ui-react";
+import { Divider, Grid } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
-import { updateAuthenticationSequence } from "../../../../api";
+import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../../api";
 import {
     AdaptiveAuthTemplateInterface,
     AuthenticationSequenceInterface,
@@ -83,6 +84,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
     const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
     const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
+    const [ requestPathAuthenticators, setRequestPathAuthenticators ] = useState<any>(undefined);
+    const [ selectedRequestPathAuthenticators, setSelectedRequestPathAuthenticators ] = useState<any>(undefined);
 
     /**
      * Toggles the update trigger.
@@ -94,6 +97,13 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
         setUpdateTrigger(false);
     }, [ updateTrigger ]);
+
+    /**
+     * Fetch data on component load
+     */
+    useEffect(() => {
+        fetchRequestPathAuthenticators();
+    }, [ props ]);
 
     /**
      * Handles the data loading from a adaptive auth template when it is selected
@@ -111,6 +121,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         if (template.code) {
             newSequence = {
                 ...newSequence,
+                requestPathAuthenticators: selectedRequestPathAuthenticators,
                 script: JSON.stringify(template.code)
             }
         }
@@ -148,6 +159,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         const requestBody = {
             authenticationSequence: {
                 ...sequence,
+                requestPathAuthenticators: selectedRequestPathAuthenticators,
                 script: JSON.stringify(adaptiveScript)
             }
         };
@@ -186,21 +198,87 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             });
     };
 
+    const fetchRequestPathAuthenticators = (): void => {
+        getRequestPathAuthenticators()
+            .then((response) => {
+                setRequestPathAuthenticators(response);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.detail) {
+                    dispatch(addAlert({
+                        description: t("devPortal:components.serverConfigs.requestPathAuthenticators." +
+                            "notifications.getRequestPathAuthenticators.error.description",
+                            { description: error.response.data.description }),
+                        level: AlertLevels.ERROR,
+                        message: t("devPortal:components.serverConfigs.requestPathAuthenticators." +
+                            "notifications.getRequestPathAuthenticators.error.message")
+                    }));
+                } else {
+                    // Generic error message
+                    dispatch(addAlert({
+                        description: t("devPortal:components.serverConfigs.requestPathAuthenticators." +
+                            "notifications.getRequestPathAuthenticators.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("devPortal:components.serverConfigs.requestPathAuthenticators." +
+                            "notifications.getRequestPathAuthenticators.genericError.message")
+                    }));
+                }
+            });
+    };
+
     /**
      * Handles adaptive script change event.
      *
      * @param {string | string[]} script - Adaptive script from the editor.
      */
-    const handleAdaptiveScriptChange = (script: string | string[]) => {
+    const handleAdaptiveScriptChange = (script: string | string[]): void => {
         setAdaptiveScript(script);
     };
 
     /**
      * Handles the update button click event.
      */
-    const handleUpdateClick = () => {
+    const handleUpdateClick = (): void => {
         setUpdateTrigger(true);
     };
+
+    const showRequestPathAuthenticators: ReactElement = (
+        <>
+            <Divider />
+            <Heading as="h4">{ t("devPortal:components.serverConfigs.requestPathAuthenticators.title") }</Heading>
+            <Hint>{ t("devPortal:components.serverConfigs.requestPathAuthenticators.subTitle") }</Hint>
+            <Forms>
+                <Grid>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                name="requestPathAuthenticators"
+                                label=""
+                                type="checkbox"
+                                required={ false }
+                                value={ authenticationSequence?.requestPathAuthenticators }
+                                requiredErrorMessage=""
+                                children={
+                                    requestPathAuthenticators?.map(authenticator => {
+                                        return {
+                                            label: authenticator.displayName,
+                                            value: authenticator.name
+                                        }
+                                    })
+                                }
+                                listen={
+                                    (values) => {
+                                        setSelectedRequestPathAuthenticators(values.get("requestPathAuthenticators"));
+                                    }
+                                }
+                                data-testid={ `${ testId }-request-path-authenticators` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Forms>
+        </>
+    );
 
     return (
         <div className="sign-on-methods-tab-content">
@@ -214,7 +292,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 }
                 data-testid={ `${ testId }-step-based-flow` }
             />
-            <Divider hidden />
+            <Divider />
             <ScriptBasedFlow
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }
@@ -225,15 +303,18 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 }
                 data-testid={ `${ testId }-script-based-flow` }
             />
-            <Divider hidden/>
+            { requestPathAuthenticators && showRequestPathAuthenticators }
             {
                 hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update) && (
-                    <PrimaryButton
-                        onClick={ handleUpdateClick }
-                        data-testid={ `${ testId }-update-button` }
-                    >
-                        { t("common:update") }
-                    </PrimaryButton>
+                    <>
+                        <Divider hidden />
+                        <PrimaryButton
+                            onClick={ handleUpdateClick }
+                            data-testid={ `${ testId }-update-button` }
+                        >
+                            { t("common:update") }
+                        </PrimaryButton>
+                    </>
                 )
             }
         </div>
