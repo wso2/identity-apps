@@ -20,8 +20,7 @@ import { getProfileInfo } from "@wso2is/core/api";
 import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import { RouteUtils } from "@wso2is/core/utils";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
-import { Footer, Header, Logo, ProductBrand, SidePanel } from "@wso2is/react-components";
-import { ThemeContext } from "@wso2is/react-components";
+import { Footer, Header, Logo, ProductBrand, SidePanel, ThemeContext } from "@wso2is/react-components";
 import classNames from "classnames";
 import _ from "lodash";
 import React, {
@@ -41,6 +40,7 @@ import { BaseLayout } from "./base";
 import { ProtectedRoute } from "../components";
 import { LogoImage, SidePanelIcons, SidePanelMiscIcons, routes } from "../configs";
 import { UIConstants } from "../constants";
+import { ComponentPlaceholder } from "../extensions";
 import { history } from "../helpers";
 import { AuthStateInterface, ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
@@ -344,7 +344,9 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     profileInfo={ profileDetails.profileInfo }
                     showUserDropdown={ true }
                     onSidePanelToggleClick={ handleSidePanelToggleClick }
-                />
+                >
+                    <ComponentPlaceholder section="feedback-button" type="component" />
+                </Header>
                 <SidePanel
                     bordered="right"
                     caretIcon={ SidePanelMiscIcons.caretRight }
