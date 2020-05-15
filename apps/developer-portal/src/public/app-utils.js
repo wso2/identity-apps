@@ -16,7 +16,7 @@
  * under the License.
  */
 
-function loadUserConfig(configFile, callback) {   
+function loadUserConfig(configFile, callback) { 
     var request = new XMLHttpRequest();
 
     request.overrideMimeType("application/json");
@@ -62,14 +62,31 @@ var AppUtils = AppUtils || (function() {
         _default = {},
         _config = {};
 
-    var accountAppUROrigin = (_config.accountAppURL && _config.accountAppURL.origin) ?
-        _config.accountAppURL.origin : 
-        _config.clientOrigin;
+    var fallbackServerOrigin = "https://localhost:9443";
 
     return {
+        getAppBase: function() {
+            var path = this.getLocationPathWithoutTenant();
+            var pathChuncks = path.split("/");
+
+            if (pathChuncks.length <= 1) {
+                return "/";
+            }
+
+            if (pathChuncks.length === 2) {
+                return path;
+            }
+
+            return "/" + this.getLocationPathWithoutTenant().split("/")[1];
+        },
+
         getConfig: function() {
+            if (_config.accountAppURL && _config.accountAppURL.origin) {
+                _config.accountAppOrigin = _config.accountAppURL.origin;
+            }
+
             return {
-                accountAppURL: accountAppUROrigin + this.getTenantPath() + _config.accountAppURL.path,
+                accountAppURL: _config.accountAppOrigin + this.getTenantPath() + _config.accountAppURL.path,
                 appBase: _config.appBaseName,
                 appBaseWithTenant: this.getTenantPath() + "/" + _config.appBaseName,
                 clientID: (this.isSuperTenant()) ?
@@ -88,6 +105,19 @@ var AppUtils = AppUtils || (function() {
                 tenantPath: this.getTenantPath(),
                 ui: _config.ui
             };
+        },
+
+        getLocationPathWithoutTenant: function() {
+            var path = window.location.pathname;
+            var pathChunks = path.split("/");
+
+            if ( (pathChunks[1] === this.getTenantPrefix()) && (pathChunks[2] === this.getTenantName()) ) {
+                pathChunks.splice(1, 2);
+
+                return pathChunks.join("/");
+            }
+
+            return path;
         },
 
         getSuperTenant: function() {
@@ -119,38 +149,35 @@ var AppUtils = AppUtils || (function() {
             _args = Args;
 
             _default = {
+                "accountAppOrigin": _args.accountAppOrigin || _args.serverOrigin || fallbackServerOrigin,
                 "clientOrigin": window.location.origin,
-                "serverOrigin": _args.serverOrigin || "https://localhost:9443"
+                "serverOrigin": _args.serverOrigin || fallbackServerOrigin
             };
 
             _config = _default;
 
-            var userConfigFile = (_config.clientOrigin + "/user-portal/" + _args.deploymentConfigFile);
+            var userConfigFile = this.getAppBase() + "/deployment.config.json";
 
-            if (!userConfigFile) {
-                throw "AppUtils.init({deploymentConfigFile: value}) missing.";
-            } else {
-                loadUserConfig(userConfigFile, function(response) {
-                    var configResponse = JSON.parse(response);
+            loadUserConfig(userConfigFile, function(response) {
+                var configResponse = JSON.parse(response);
 
-                    if (!{}.hasOwnProperty.call(configResponse, "accountAppURL"))
-                        throw "'accountAppURL' config is missing in " + _args.deploymentConfigFile;
-                    if (!{}.hasOwnProperty.call(configResponse, "appBaseName"))
-                        throw "'appBaseName' config is missing in " + _args.deploymentConfigFile;
-                    if (!{}.hasOwnProperty.call(configResponse, "clientID"))
-                        throw "'clientID' config is missing in " + _args.deploymentConfigFile;
-                    if (!{}.hasOwnProperty.call(configResponse, "loginCallbackPath"))
-                        throw "'loginCallbackPath' config is missing in " + _args.deploymentConfigFile;
-                    if (!{}.hasOwnProperty.call(configResponse, "logoutCallbackPath"))
-                        throw "'logoutCallbackPath' config is missing in " + _args.deploymentConfigFile;
-                    if (!{}.hasOwnProperty.call(configResponse, "routePaths"))
-                        throw "'routePaths' config is missing in " + _args.deploymentConfigFile;
-                    if (!{}.hasOwnProperty.call(configResponse, "ui"))
-                        throw "'ui' config is missing in " + _args.deploymentConfigFile;
-    
-                    _config = extend({}, _default, JSON.parse(response));   
-                });
-            }
+                if (!{}.hasOwnProperty.call(configResponse, "accountAppURL"))
+                    throw "'accountAppURL' config is missing in " + _args.deploymentConfigFile;
+                if (!{}.hasOwnProperty.call(configResponse, "appBaseName"))
+                    throw "'appBaseName' config is missing in " + _args.deploymentConfigFile;
+                if (!{}.hasOwnProperty.call(configResponse, "clientID"))
+                    throw "'clientID' config is missing in " + _args.deploymentConfigFile;
+                if (!{}.hasOwnProperty.call(configResponse, "loginCallbackPath"))
+                    throw "'loginCallbackPath' config is missing in " + _args.deploymentConfigFile;
+                if (!{}.hasOwnProperty.call(configResponse, "logoutCallbackPath"))
+                    throw "'logoutCallbackPath' config is missing in " + _args.deploymentConfigFile;
+                if (!{}.hasOwnProperty.call(configResponse, "routePaths"))
+                    throw "'routePaths' config is missing in " + _args.deploymentConfigFile;
+                if (!{}.hasOwnProperty.call(configResponse, "ui"))
+                    throw "'ui' config is missing in " + _args.deploymentConfigFile;
+
+                _config = extend({}, _default, JSON.parse(response));   
+            });
         },
 
         isSuperTenant: function(){
