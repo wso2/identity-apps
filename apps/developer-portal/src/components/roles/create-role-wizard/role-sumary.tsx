@@ -132,7 +132,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                                             .map((perm, index) => (
                                                 <Label
                                                     data-testid={
-                                                        `${ testId }-permissions-${ perm.label.lowerCase() }-label`
+                                                        `${ testId }-permissions-${ index }-label`
                                                     }
                                                     key={ index }
                                                     basic

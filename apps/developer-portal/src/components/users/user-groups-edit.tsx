@@ -680,7 +680,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                 floated="left"
                                 onClick={ handleCloseAddNewGroupModal }
                             >
-                                Cancel
+                                { t("common:cancel") }
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
@@ -689,7 +689,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                 floated="right"
                                 onClick={ () => updateUserGroup(user, tempGroupList) }
                             >
-                                Save
+                                { t("common:save") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>

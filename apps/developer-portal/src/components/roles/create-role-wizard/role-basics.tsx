@@ -22,8 +22,15 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { getUserStoreList, searchRoleList } from "../../../api";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../../constants";
+import {
+    APPLICATION_DOMAIN,
+    INTERNAL_DOMAIN,
+    PRIMARY_DOMAIN,
+    PRIMARY_USERSTORE_PROPERTY_VALUES,
+    USERSTORE_REGEX_PROPERTIES
+} from "../../../constants";
 import { CreateRoleFormData, SearchRoleInterface } from "../../../models";
+import { getUserstoreRegEx, validateInputAgainstRegEx } from "../../../utils";
 
 /**
  * Interface to capture role basics props.
@@ -54,8 +61,11 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const { t } = useTranslation();
 
     const [ isValidRoleName, setIsValidRoleName ] = useState<boolean>(true);
+    const [ isRoleNamePatternValid, setIsRoleNamePatternValid ] = useState<boolean>(true);
     const [ updatedRoleName, setUpdatedRoleName ] = useState<string>(initialValues?.roleName);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
+    const [ userStore, setUserStore ] = useState<string>(PRIMARY_DOMAIN);
+    const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
 
     /**
      * Triggers when updatedRoleName is changed.
@@ -67,7 +77,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
     useEffect(() => {
         getUserStores();
-    }, [isAddGroup]);
+    }, [ isAddGroup ]);
 
     /**
      * Contains domains needed for role creation.
@@ -100,13 +110,42 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                 "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
             ],
             startIndex: 1
-        }
+        };
 
         searchRoleList(searchData)
             .then((response) => {
                 setIsValidRoleName(response?.data?.totalResults === 0);
             });
     };
+
+    /**
+     * The following function change of the user stores.
+     *
+     * @param values
+     */
+    const handleDomainChange = (values: Map<string, FormValue>) => {
+        const domain: string = values.get("domain").toString();
+        setUserStore(domain);
+    };
+
+    /**
+     * The following function validates role name against the user store regEx.
+     *
+     * @param roleName - User input role name
+     */
+    async function validateRoleNamePattern(roleName: string) {
+        let userStoreRegEx = "";
+        if (userStore !== PRIMARY_DOMAIN) {
+            await getUserstoreRegEx(userStore, USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
+                .then((response) => {
+                    setRegExLoading(true);
+                    userStoreRegEx = response;
+                })
+        } else {
+            userStoreRegEx = PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
+        }
+        setIsRoleNamePatternValid(validateInputAgainstRegEx(roleName, userStoreRegEx));
+    }
 
     /**
      * The following function fetch the user store list and set it to the state.
@@ -150,7 +189,12 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      * @param values - form values from the listen event.
      */
     const roleNameChangeListener = (values: Map<string, FormValue>): void => {
-        setUpdatedRoleName(values?.get("rolename")?.toString());
+        const roleName: string = values?.get("rolename")?.toString();
+        setUpdatedRoleName(roleName);
+        validateRoleNamePattern(roleName)
+            .finally(() => {
+                setRegExLoading(false);
+            })
     };
 
     /**
@@ -199,6 +243,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                             }
                             required={ true }
                             element={ <div></div> }
+                            listen={ handleDomainChange }
                             value={ initialValues?.domain ? 
                                     initialValues?.domain : 
                                         isAddGroup ? 
@@ -244,9 +289,20 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                                 "roleName.validations.duplicate", { type: "Role" })
                                     );
                                 }
+                                if (!isRoleNamePatternValid) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(
+                                        isAddGroup ?
+                                            t("devPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
+                                                "roleName.validations.invalid", { type: "group" }) :
+                                            t("devPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
+                                                "roleName.validations.invalid", { type: "role" })
+                                    );
+                                }
                             } }
                             value={ initialValues && initialValues.roleName }
                             listen={ roleNameChangeListener }
+                            loading={ isRegExLoading }
                         />
                     </GridColumn>
                 </GridRow>

@@ -21,7 +21,7 @@ import { Field, Forms } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import {Trans, useTranslation} from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Input } from "semantic-ui-react";
 import { deleteUser, updateUserInfo } from "../../api";
@@ -278,6 +278,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 type="text"
                                 value={ profileInfo.get(schema.name) }
                                 key={ key }
+                                disabled={ schema.name === "userName" }
                             />
                         )
                     }

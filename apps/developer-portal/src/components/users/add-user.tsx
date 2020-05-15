@@ -26,7 +26,9 @@ import {
     Message
 } from "semantic-ui-react";
 import { getUserStoreList, getUsersList } from "../../api";
+import { PRIMARY_USERSTORE_PROPERTY_VALUES, USERSTORE_REGEX_PROPERTIES } from "../../constants";
 import { BasicUserDetailsInterface } from "../../models";
+import { getUserstoreRegEx, validateInputAgainstRegEx } from "../../utils";
 
 /**
  * Proptypes for the add user component.
@@ -53,10 +55,18 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ passwordOption, setPasswordOption ] = useState(initialValues && initialValues.passwordOption);
     const [ isUsernameValid, setIsUsernameValid ] = useState<boolean>(true);
+    const [ isUsernamePatternValid, setIsUsernamePatternValid ] = useState<boolean>(true);
+    const [ isPasswordPatternValid, setIsPasswordPatternValid ] = useState<boolean>(true);
     const [ updatedUsername, setUpdatedUsername ] = useState<string>(initialValues?.userName);
-    const [ userStore, setUserStore ] = useState<string>("");
+    const [ userStore, setUserStore ] = useState<string>(initialValues?.domain);
     const [ randomPassword, setRandomPassword ] = useState<string>("");
     const [ isPasswordGenerated, setIsPasswordGenerated ] = useState<boolean>(false);
+    const [
+        usernameRegEx,
+        setUsernameRegEx
+    ] = useState<string>(PRIMARY_USERSTORE_PROPERTY_VALUES.UsernameJavaScriptRegEx);
+    const [ isUsernameRegExLoading, setUsernameRegExLoading ] = useState<boolean>(false);
+    const [ isPasswordRegExLoading, setPasswordRegExLoading ] = useState<boolean>(false);
 
     const { t } = useTranslation();
 
@@ -123,6 +133,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             .then((response) => {
                 setIsUsernameValid(response?.totalResults === 0);
             });
+        setIsUsernamePatternValid(validateInputAgainstRegEx(username, usernameRegEx));
     };
 
     /**
@@ -131,7 +142,65 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      * @param values
      */
     const handleUserStoreChange = (values: Map<string, FormValue>): void => {
-        setUserStore(values.get("domain").toString());
+        const domain: string = values.get("domain").toString();
+        setUserStore(domain);
+        setUserStoreRegEx(domain)
+            .finally(() => {
+                setUsernameRegExLoading(false);
+            })
+    };
+
+    /**
+     * The following function set the username regEx to the state.
+     *
+     * @param userstore
+     */
+    async function setUserStoreRegEx(userstore: string) {
+        if (userstore !== "primary") {
+            // Set the username regEx of the secondary user store.
+            await getUserstoreRegEx(userstore, USERSTORE_REGEX_PROPERTIES.UsernameRegEx)
+                .then((response) => {
+                    setUsernameRegExLoading(true);
+                    setUsernameRegEx(response);
+                })
+        } else {
+            // Set the username regEx of the primary user store.
+            setUsernameRegEx(PRIMARY_USERSTORE_PROPERTY_VALUES.UsernameJavaScriptRegEx);
+        }
+    }
+
+    /**
+     * The following function checks if the password pattern is valid against the user store regEx.
+     *
+     * @param password
+     */
+    async function setPasswordRegEx(password: string) {
+        let passwordRegex = "";
+        if (userStore !== "primary") {
+            // Set the username regEx of the secondary user store.
+            await getUserstoreRegEx(userStore, USERSTORE_REGEX_PROPERTIES.PasswordRegEx)
+                .then((response) => {
+                    setPasswordRegExLoading(true);
+                    passwordRegex = response;
+                })
+        } else {
+            // Set the username regEx of the primary user store.
+            passwordRegex = PRIMARY_USERSTORE_PROPERTY_VALUES.PasswordJavaScriptRegEx;
+        }
+        setIsPasswordPatternValid(validateInputAgainstRegEx(password, passwordRegex));
+    }
+
+    /**
+     * The following function handles the change of the password.
+     *
+     * @param values
+     */
+    const handlePasswordChange = (values: Map<string, FormValue>): void => {
+        const password: string = values.get("newPassword").toString();
+        setPasswordRegEx(password)
+            .finally(() => {
+                setPasswordRegExLoading(false);
+            });
     };
 
     /**
@@ -227,6 +296,15 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 showPassword={ t("common:showPassword") }
                                 type="password"
                                 value={ isPasswordGenerated ? randomPassword : initialValues?.newPassword }
+                                listen={ handlePasswordChange }
+                                loading={ isPasswordRegExLoading }
+                                validation={ (value: string, validation: Validation) => {
+                                    if (!isPasswordPatternValid) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push( t("devPortal:components.user.forms." +
+                                            "addUserForm.inputs.newPassword.validations.regExViolation") );
+                                    }
+                                } }
                             />
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -343,12 +421,17 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 if (isUsernameValid === false) {
                                     validation.isValid = false;
                                     validation.errorMessages.push( t("devPortal:components.user.forms." +
-                                        "addUserForm.inputs.username.validations.invalid"
-                                    ) );
+                                        "addUserForm.inputs.username.validations.invalid") );
+                                }
+                                if (!isUsernamePatternValid) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push( t("devPortal:components.user.forms." +
+                                        "addUserForm.inputs.username.validations.regExViolation") );
                                 }
                             } }
                             value={ initialValues && initialValues.userName }
                             listen={ handleUserNameChange }
+                            loading={ isUsernameRegExLoading }
                         />
                     </Grid.Column>
                 </Grid.Row>

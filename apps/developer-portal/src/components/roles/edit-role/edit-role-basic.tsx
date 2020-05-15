@@ -22,12 +22,22 @@ import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-co
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react"
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Divider, Form, Grid, Input, InputOnChangeData } from "semantic-ui-react"
+import { Button, Divider, Form, Grid, Input, InputOnChangeData, Label } from "semantic-ui-react"
 import { deleteRoleById, updateRoleDetails } from "../../../api";
-import { GROUP_VIEW_PATH, ROLE_VIEW_PATH } from "../../../constants";
+import {
+    GROUP_VIEW_PATH,
+    PRIMARY_USERSTORE_PROPERTY_VALUES,
+    ROLE_VIEW_PATH
+} from "../../../constants";
 import { history } from "../../../helpers";
-import { AlertInterface, AlertLevels, PatchRoleDataInterface, RolesInterface } from "../../../models";
+import {
+    AlertInterface,
+    AlertLevels,
+    PatchRoleDataInterface,
+    RolesInterface
+} from "../../../models";
 import { addAlert } from "../../../store/actions";
+import { validateInputAgainstRegEx } from "../../../utils";
 
 /**
  * Interface to contain props needed for component
@@ -57,15 +67,58 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ labelText, setLableText ] = useState<string>("");
     const [ nameValue, setNameValue ] = useState<string>("");
+    const [ userStoreRegEx, setUserStoreRegEx ] = useState<string>("");
+    const [ isRoleNamePatternValid, setIsRoleNamePatternValid ] = useState<boolean>(true);
+    const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
 
     useEffect(() => {
         if (roleObject && roleObject.displayName.indexOf("/") !== -1) {
             setNameValue(roleObject.displayName.split("/")[1]);
-            setLableText(roleObject.displayName.split("/")[0])
+            setLableText(roleObject.displayName.split("/")[0]);
         } else if (roleObject) {
             setNameValue(roleObject.displayName);
         }
-    }, [roleObject]);
+    }, [ roleObject ]);
+
+    useEffect(() => {
+        if (userStoreRegEx !== "") {
+            return;
+        }
+        fetchUserstoreRegEx()
+            .then((response) => {
+                setUserStoreRegEx(response);
+                setRegExLoading(false);
+            });
+    }, [ nameValue ]);
+
+    async function fetchUserstoreRegEx() {
+        // TODO: Enable when the role object includes user store.
+        // if (roleObject && roleObject.displayName.indexOf("/") !== -1) {
+        //     // Get the role name regEx for the secondary user store
+        //     const userstore = roleObject.displayName.split("/")[0].toString().toLowerCase();
+        //     await getUserstoreRegEx(userstore, USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
+        //         .then((response) => {
+        //             setRegExLoading(true);
+        //             regEx = response;
+        //         })
+        // } else if (roleObject) {
+        //     // Get the role name regEx for the primary user store
+        //     regEx = PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
+        // }
+        const regEx = PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
+        return regEx;
+    }
+
+    /**
+     * The following function handles the role name change.
+     *
+     * @param event
+     * @param data
+     */
+    const handleRoleNameChange = (event: ChangeEvent, data: InputOnChangeData) => {
+        setNameValue(data.value);
+        setIsRoleNamePatternValid(validateInputAgainstRegEx(data.value, userStoreRegEx));
+    };
 
     /**
      * Dispatches the alert object to the redux store.
@@ -153,7 +206,9 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
-                            <Form.Field>
+                            <Form.Field
+                                error={ !isRoleNamePatternValid }
+                            >
                                 <label
                                     data-testid={
                                         isGroup
@@ -184,16 +239,32 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                             "placeholder")
                                     }
                                     value={ nameValue }
-                                    onChange={ (event: ChangeEvent, data: InputOnChangeData) => {
-                                        setNameValue(data.value)
-                                    } }
+                                    onChange={ handleRoleNameChange }
                                     type="text"
                                     data-testid={
                                         isGroup
                                             ? `${ testId }-group-name-input`
                                             : `${ testId }-role-name-input`
                                     }
+                                    loading={ isRegExLoading }
                                 />
+                                {
+                                    !isRoleNamePatternValid && (
+                                        isGroup
+                                            ?
+                                            <Label basic color="red" pointing>
+                                                { t("devPortal:components.roles.addRoleWizard.forms." +
+                                                    "roleBasicDetails.roleName.validations.invalid",
+                                                    { type: "group" }) }
+                                            </Label>
+                                            :
+                                            <Label basic color="red" pointing>
+                                               { t("devPortal:components.roles.addRoleWizard.forms." +
+                                                "roleBasicDetails.roleName.validations.invalid",
+                                                   { type: "role" }) }
+                                            </Label>
+                                    )
+                                }
                             </Form.Field>
                             
                         </Grid.Column>
@@ -210,6 +281,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                         ? `${ testId }-group-update-button`
                                         : `${ testId }-role-update-button`
                                 }
+                                disabled={ !isRoleNamePatternValid && !isRegExLoading }
                             >
                                 { t("devPortal:components.roles.edit.basics.buttons.update") }
                             </Button>
