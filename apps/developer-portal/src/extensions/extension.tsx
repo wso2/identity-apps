@@ -29,7 +29,7 @@ import { EmptyPlaceholderIllustrations } from "../configs";
  * @interface ExtensionInterface - Component placeholder properties.
  */
 interface ExtensionInterface {
-    section: "account-subscription" | "account-status";
+    section: "feedback-button";
     type: "component";
 }
 

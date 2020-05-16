@@ -42,6 +42,7 @@ export interface HeaderPropsInterface extends TestableComponentInterface {
     basicProfileInfo: any;
     brand?: React.ReactNode;
     brandLink?: string;
+    children?: any;
     className?: string;
     fixed?: "left" | "right" | "bottom" | "top";
     fluid?: boolean;
@@ -87,6 +88,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         brand,
         brandLink,
         basicProfileInfo,
+        children,
         className,
         fixed,
         fluid,
@@ -191,6 +193,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 }
                 { (
                     <Menu.Menu position="right" data-testid={ `${ testId }-user-dropdown-container` }>
+                        { children }
                         {
                             showUserDropdown && (
                                 <Dropdown

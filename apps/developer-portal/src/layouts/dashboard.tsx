@@ -41,6 +41,7 @@ import { BaseLayout } from "./base";
 import { ProtectedRoute } from "../components";
 import { SidePanelIcons, SidePanelMiscIcons, routes } from "../configs";
 import { UIConstants } from "../constants";
+import { ComponentPlaceholder } from "../extensions";
 import { history } from "../helpers";
 import { AuthStateInterface, ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
@@ -354,7 +355,9 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     profileInfo={ profileDetails.profileInfo }
                     showUserDropdown={ true }
                     onSidePanelToggleClick={ handleSidePanelToggleClick }
-                />
+                >
+                    <ComponentPlaceholder section="feedback-button" type="component" />
+                </Header>
                 <SidePanel
                     bordered="right"
                     caretIcon={ SidePanelMiscIcons.caretRight }
