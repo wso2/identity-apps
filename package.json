@@ -11,8 +11,8 @@
     ],
     "repository": "https://github.com/wso2/identity-apps.git",
     "scripts": {
-        "prebuild": "npm i && lerna bootstrap",
-        "build": "lerna run build --stream",
+        "prebuild": "lerna bootstrap",
+        "build": "lerna run build --since master --stream",
         "clean": "lerna run clean --stream",
         "clean-all": "npm run remove-package-lock && npm run remove-maven-folders && npm run remove-node-modules",
         "remove-node-modules": "npx lerna exec -- rm -rf node_modules && rm -rf node_modules",
