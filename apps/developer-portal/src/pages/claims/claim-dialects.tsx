@@ -226,14 +226,18 @@ export const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = 
 
     return (
         <>
-            <AddDialect
-                open={ addEditClaim }
-                onClose={ () => {
-                    setAddEditClaim(false);
-                } }
-                update={ getDialect }
-                data-testid={ `${ testId }-add-dialect-wizard` }
-            />
+            { addEditClaim &&
+                (
+                    <AddDialect
+                        open={ addEditClaim }
+                        onClose={ () => {
+                            setAddEditClaim(false);
+                        } }
+                        update={ getDialect }
+                        data-testid={ `${ testId }-add-dialect-wizard` }
+                    />
+                )
+            }
             <PageLayout
                 isLoading={ isLoading }
                 title={ t("devPortal:components.claims.dialects.pageLayout.list.title") }

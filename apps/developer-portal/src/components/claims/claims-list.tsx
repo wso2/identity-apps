@@ -20,14 +20,7 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
-import {
-    ConfirmationModal,
-    CopyInputField,
-    EmptyPlaceholder,
-    LinkButton,
-    PrimaryButton,
-    ResourceList
-} from "@wso2is/react-components"
+import { CopyInputField, ConfirmationModal, EmptyPlaceholder, LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components"
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";

@@ -201,11 +201,11 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     ) }
                     image={ EmptyPlaceholderIllustrations.newList }
                     imageSize="tiny"
-                    title={ t("devPortal:components.roles.list.emptyPlaceholders.emptyRoleList.action.title",
+                    title={ t("devPortal:components.roles.list.emptyPlaceholders.emptyRoleList.title",
                         { type: isGroup ? "group" : "role" }) }
                     subtitle={ [
                         t("devPortal:components.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
-                            { type: isGroup ? "group" : "role" }),
+                            { type: isGroup ? "groups" : "roles" }),
                         t("devPortal:components.roles.list.emptyPlaceholders.emptyRoleList.subtitles.1",
                             { type: isGroup ? "group" : "role" }),
                         t("devPortal:components.roles.list.emptyPlaceholders.emptyRoleList.subtitles.2",

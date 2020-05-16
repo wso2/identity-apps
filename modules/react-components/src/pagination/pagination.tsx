@@ -77,7 +77,16 @@ export interface PaginationPropsInterface extends PaginationProps, TestableCompo
      * Total size of the list.
      */
     totalListSize?: number;
+    /**
+     * Called when the page change event occurs.
+     * 
+     * @param {React.MouseEvent<HTMLAnchorElement, MouseEvent>} event MouseEvent.
+     * @param {PaginationProps} data Pagination props data.
+     */
     onPageChange: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: PaginationProps) => void;
+    /**
+     * Toggles pagination reset.
+     */
     resetPagination?: boolean;
 }
 
@@ -171,9 +180,9 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
                 )
             }
             <SemanticPagination
+                { ...rest }
                 className="list-pagination"
                 data-testid={ `${ testId }-steps` }
-                { ...rest }
                 activePage={ activePage }
                 onPageChange={ pageChangeHandler }
             />
@@ -185,9 +194,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
  * Prop types for the Pagination component.
  */
 Pagination.defaultProps =  {
-	activePage: 1,
     "data-testid": "pagination",
-    defaultActivePage: 1,
     float: "right",
     itemsPerPageDropdownLabel: "Items per page",
     itemsPerPageDropdownLowerLimit: 10,

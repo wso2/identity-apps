@@ -16,15 +16,27 @@
  * under the License.
  */
 
-export * from "./adaptive-script-utils";
-export * from "./application-management-utils";
-export * from "./identity-provider-management-utils";
-export * from "./authenticate-util";
-export * from "./http-utils";
-export * from "./search-utils";
-export * from "./user-profile-util";
-export * from "./common-utils";
-export * from "./filter-list";
-export * from "./sort-list";
-export * from "./userstores";
-export * from "./role-management-utils";
+/* eslint-disable sort-keys */
+export const deploymentConfigMock = {
+    accountAppURL: {
+        path: "/user-portal/overview"
+    },
+    appBaseName: "developer-portal",
+    clientID: "DEVELOPER_PORTAL",
+    debug: false,
+    i18nResourcePath: "",
+    loginCallbackPath: "/login",
+    logoutCallbackPath: "/login",
+    routePaths: {
+        home: "/applications",
+        login: "/login",
+        logout: "/logout"
+    },
+    ui: {
+        appCopyright: "WSO2 Identity Server",
+        appTitle: "WSO2 Identity Server Developer Dashboard",
+        appName: "Identity Server",
+        appLogoPath: "/assets/images/logo.svg"
+    }
+};
+/* eslint-enable sort-keys */

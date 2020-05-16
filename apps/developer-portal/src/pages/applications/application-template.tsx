@@ -129,8 +129,12 @@ export const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplat
                             <TemplateGrid<ApplicationTemplateListItemInterface>
                                 type="application"
                                 templates={
-                                    applicationTemplates.filter((template) =>
-                                        template.category === ApplicationTemplateCategories.DEFAULT)
+                                    applicationTemplates
+                                    && applicationTemplates instanceof Array
+                                    && applicationTemplates.length > 0
+                                        ? applicationTemplates.filter(
+                                            (template) => template.category === ApplicationTemplateCategories.DEFAULT)
+                                        : null
                                 }
                                 templateIcons={ ApplicationTemplateIllustrations }
                                 heading={ t("devPortal:components.applications.templates.quickSetup.heading") }
@@ -163,8 +167,12 @@ export const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplat
                 <TemplateGrid<ApplicationTemplateListItemInterface>
                     type="application"
                     templates={
-                        applicationTemplates.filter((template) =>
-                            template.category === ApplicationTemplateCategories.DEFAULT_CUSTOM)
+                        applicationTemplates
+                        && applicationTemplates instanceof Array
+                        && applicationTemplates.length > 0
+                            ? applicationTemplates.filter(
+                                (template) => template.category === ApplicationTemplateCategories.DEFAULT_CUSTOM)
+                            : null
                     }
                     templateIcons={ ApplicationTemplateIllustrations }
                     heading={ t("devPortal:components.applications.templates.manualSetup.heading") }

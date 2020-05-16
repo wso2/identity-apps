@@ -3402,7 +3402,8 @@ export const devPortal: DevPortalNS = {
                             placeholder: "Enter {{type}} Name",
                             validations: {
                                 duplicate: "A {{type}} already exists with the given {{type}} name.",
-                                empty: "{{type}} Name is required to proceed."
+                                empty: "{{type}} Name is required to proceed.",
+                                invalid: "Please enter a valid {{type}} name."
                             }
                         }
                     }
@@ -4064,6 +4065,26 @@ export const devPortal: DevPortalNS = {
                     heading: "Password Patterns"
                 }
             },
+            requestPathAuthenticators: {
+                notifications: {
+                    getRequestPathAuthenticators: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving request path authenticators.",
+                            message: "Retrieval Error"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    }
+                },
+                subTitle: "Local authenticators for request path authentication.",
+                title: "Request Path Authentication"
+            },
             selfRegistration: {
                 actionTitles: {
                     config: "More"
@@ -4308,7 +4329,8 @@ export const devPortal: DevPortalNS = {
                             label: "New Password",
                             placeholder: "Enter the new password",
                             validations: {
-                                empty: "New password is a required field"
+                                empty: "New password is a required field",
+                                regExViolation: "Please enter a valid password"
                             }
                         },
                         username: {
@@ -4316,7 +4338,8 @@ export const devPortal: DevPortalNS = {
                             placeholder: "Enter the username",
                             validations: {
                                 empty: "Username is a required field",
-                                invalid: "A user already exists with this username."
+                                invalid: "A user already exists with this username.",
+                                regExViolation: "Please enter a valid username"
                             }
                         }
                     },

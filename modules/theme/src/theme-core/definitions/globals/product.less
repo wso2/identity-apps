@@ -24,8 +24,8 @@
 .loadVariables();
 
 @spacer: 1rem;
-
 @pageHeaderMaxWidth: 600px;
+@productLogoHeight: 22px;
 
 each(range(5), {
     .ui.divider.hidden.x@{value} {
@@ -43,6 +43,13 @@ body {
             width: 60px;
             vertical-align: text-top;
             margin-right: 5px;
+
+            .icon {
+                height: @productLogoHeight;
+            }
+            &.portal-logo {
+                width: auto !important;
+            }
         }
         .product-title-text {
             text-transform: uppercase;

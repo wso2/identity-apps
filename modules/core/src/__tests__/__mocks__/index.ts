@@ -17,3 +17,4 @@
  */
 
 export * from "./mock-config";
+export * from "./mock-deployment-config";

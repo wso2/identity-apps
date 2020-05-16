@@ -144,4 +144,5 @@ export interface ServiceResourceEndpointsInterface {
     captchaForSSOLogin: string;
     passwordHistory: string;
     passwordPolicy: string;
+    requestPathAuthenticators: string;
 }

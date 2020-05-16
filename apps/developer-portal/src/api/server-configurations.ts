@@ -182,3 +182,12 @@ export const updateAllPasswordPolicies = (data: object): Promise<any> => {
     // API calls per each connector if the UI design permits it.
     return updateConfigurations(data, store.getState().config.endpoints.passwordHistory);
 };
+
+/**
+ * Retrieve available request path authenticators.
+ *
+ * @returns {Promise<any>} a promise containing the response.
+ */
+export const getRequestPathAuthenticators = (): Promise<any> => {
+    return getConfigurations(store.getState().config.endpoints.requestPathAuthenticators);
+};
