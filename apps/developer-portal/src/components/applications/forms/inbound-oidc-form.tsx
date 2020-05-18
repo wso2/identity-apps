@@ -33,7 +33,7 @@ import {
     State,
     emptyOIDCConfig
 } from "../../../models";
-import { URLInputComponent } from "../components";
+import { URLInputComponent } from "../../shared";
 
 /**
  * Proptypes for the inbound OIDC form component.

@@ -28,7 +28,7 @@ import { getServerConfigurations, updateServerConfigurations } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
 import { ServerConfigurationsConstants } from "../../constants";
 import { RealmConfigurationsInterface } from "../../models";
-import { URLInputComponent } from "../applications/components";
+import { URLInputComponent } from "../shared";
 
 /**
  * Prop types for the realm configurations component.

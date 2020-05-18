@@ -24,7 +24,7 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { URLInputComponent } from "../components";
+import { URLInputComponent } from "../../shared";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
