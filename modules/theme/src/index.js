@@ -49,6 +49,8 @@ export const BasicAuthIcon = require("../dist/lib/themes/default/assets/images/a
 export const BlockedMagnifierIcon =
     require("../dist/lib/themes/default/assets/images/icons/blocked-magnifier-icon.svg");
 export const BoxIcon = require("../dist/lib/themes/default/assets/images/icons/box-icon.svg");
+export const BriefcaseIcon = require("../dist/lib/themes/default/assets/images/icons/briefcase-icon.svg");
+export const BuildingIcon = require("../dist/lib/themes/default/assets/images/icons/building-icon.svg");
 export const CaretRightIcon = require("../dist/lib/themes/default/assets/images/icons/caret-right-icon.svg");
 export const CertificateColoredIcon =
     require("../dist/lib/themes/default/assets/images/icons/certificate-colored-icon.svg");
@@ -57,6 +59,7 @@ export const ClaimsIcon = require("../dist/lib/themes/default/assets/images/icon
 export const ClockColoredIcon = require("../dist/lib/themes/default/assets/images/icons/clock-colored-icon.svg");
 export const CloseIcon = require("../dist/lib/themes/default/assets/images/icons/close-icon.svg");
 export const CodeIcon = require("../dist/lib/themes/default/assets/images/icons/code-icon.svg");
+export const CogwheelIcon = require("../dist/lib/themes/default/assets/images/icons/cog-wheel-icon.svg");
 export const ConsentIcon = require("../dist/lib/themes/default/assets/images/icons/consent-icon.svg");
 export const ControlsIcon = require("../dist/lib/themes/default/assets/images/icons/controls-icon.svg");
 export const CrossIcon = require("../dist/lib/themes/default/assets/images/icons/cross-icon.svg");
@@ -85,6 +88,9 @@ export const MinimizeIcon = require("../dist/lib/themes/default/assets/images/ic
 export const MonitorIcon = require("../dist/lib/themes/default/assets/images/icons/monitor-icon.svg");
 export const PackageIcon = require("../dist/lib/themes/default/assets/images/icons/package.svg");
 export const PadlockIcon = require("../dist/lib/themes/default/assets/images/icons/padlock-icon.svg");
+export const PaperRocketIcon = require("../dist/lib/themes/default/assets/images/icons/paper-rocket-icon.svg");
+export const UserGroupIcon = require("../dist/lib/themes/default/assets/images/icons/user-group-icon.svg");
+
 /**
  * The following has been kept for backward compatibility.
  * These can be removed once the user portal is refactored.
@@ -127,6 +133,8 @@ export const ProfileExportIllustration =
     require("../dist/lib/themes/default/assets/images/illustrations/profile-export.svg");
 export const QRCodeScanIllustration = 
     require("../dist/lib/themes/default/assets/images/illustrations/qrcode-scan.svg");
+export const SecurityIllustration =
+    require("../dist/lib/themes/default/assets/images/illustrations/security-illustration.svg");
 export const SecurityQuestionsMiniIllustration = 
     require("../dist/lib/themes/default/assets/images/illustrations/security-questions-mini.svg");
 export const SecurityQuestionsIllustration = 

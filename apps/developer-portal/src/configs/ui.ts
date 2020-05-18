@@ -28,6 +28,8 @@ import {
     BasicAuthIcon,
     BlockedMagnifierIcon,
     BoxIcon,
+    BriefcaseIcon,
+    BuildingIcon,
     CSharpLogo,
     CaretRightIcon,
     CertificateAvatar,
@@ -40,6 +42,7 @@ import {
     ClockColoredIcon,
     CloseIcon,
     CodeIcon,
+    CogwheelIcon,
     CordovaLogo,
     CrossIcon,
     CustomApplicationTemplateIllustration,
@@ -88,6 +91,7 @@ import {
     OIDCWebAppTemplateIllustration,
     Office365Logo,
     OpenIDLogo,
+    PaperRocketIcon,
     PassiveSTSTemplateIllustration,
     PinIcon,
     PlugIcon,
@@ -101,12 +105,14 @@ import {
     SPMLLogo,
     SalesforceLogo,
     SamlLogo,
+    SecurityIllustration,
     SettigsSectionIconSet,
     SpinWheelIcon,
     SuccessIcon,
     TOTPIcon,
     TwitterIdPIcon,
     TwitterLogo,
+    UserGroupIcon,
     UserIcon,
     VueLogo,
     WSFedLogo,
@@ -318,8 +324,8 @@ export const IdPIcons = {
 };
 
 export const IdPCapabilityIcons = {
-    [SupportedServices.AUTHENTICATION]: AuthenticationCapabilityIcon,
-    [SupportedServices.PROVISIONING]: ProvisionCapabilityIcon
+    [ SupportedServices.AUTHENTICATION ]: AuthenticationCapabilityIcon,
+    [ SupportedServices.PROVISIONING ]: ProvisionCapabilityIcon
 };
 
 export const OperationIcons = {
@@ -382,4 +388,21 @@ export const UserstoreTemplateIllustrations = {
     default: CustomApplicationTemplateIllustration,
     jdbc: JDBCUserstoreIllustration,
     ldap: LDAPUserstoreIllustration
+};
+
+export const OverviewPageIllustrations = {
+    jumbotronIllustration: SecurityIllustration,
+    quickLinks: {
+        certificates: CertificateIcon,
+        dialects: ClaimsIcon,
+        emailTemplates: PaperRocketIcon,
+        generalConfigs: CogwheelIcon,
+        groups: UserGroupIcon,
+        roles: BriefcaseIcon
+    },
+    statsOverview: {
+        application: AppIcon,
+        idp: BuildingIcon,
+        userstores: DatabaseIcon
+    }
 };
