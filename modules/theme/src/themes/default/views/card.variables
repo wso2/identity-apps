@@ -21,6 +21,16 @@
             Card
 *******************************/
 
+@extraSelectionHoverBackground: @subtleTransparentBlack;
+
+/*-------------------------------
+           Basic Card
+--------------------------------*/
+
+@basicCardHoverBoxShadow: @defaultCardHoverBoxShadow;
+@basicCardTransition: @defaultCardTransition;
+@basicCardBorder: @defaultCardBorder;
+
 /*-------------------
     Settings Card
 --------------------*/
@@ -107,3 +117,11 @@ Recent Application Card
 @infoCardTransition: @defaultCardTransition;
 @infoCardBorder: @defaultCardBorder;
 @infoCardHoverBoxShadow: @defaultCardHoverBoxShadow;
+
+/*-------------------------------
+         Stat Count Card
+--------------------------------*/
+
+@statCountCardHoverBoxShadow: @defaultCardHoverBoxShadow;
+@statCountCardTransition: @defaultCardTransition;
+@statCountCardBorder: @defaultCardBorder;

@@ -17,6 +17,22 @@
  *
  */
 
+/*-----------------------------
+     Global Card Overrides
+------------------------------*/
+
+.ui.card {
+    .extra {
+        &.selection {
+            cursor: pointer;
+
+            &:hover {
+                background: @extraSelectionHoverBackground;
+            }
+        }
+    }
+}
+
 .ui.card {
     &.application-card {
         &.recent {
@@ -198,6 +214,25 @@
     }
 }
 
+/*-----------------------------
+     Basic Card Variation
+------------------------------*/
+
+.ui.card {
+    &.basic-card {
+        transition: @basicCardTransition;
+        border: @basicCardBorder;
+        box-shadow: none;
+
+        &:hover {
+            transform: none;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: @basicCardHoverBoxShadow;
+        }
+    }
+}
+
 /*******************************
     Selection Card Variation
 *******************************/
@@ -238,6 +273,11 @@
                 margin-bottom: @selectionCardSpacedBottomMargin;
             }
         }
+        &.no-content-top-border {
+            .card-text-container {
+                border-top: 0;
+            }
+        }
         .card-text-container {
             padding: @selectionCardTextContainerPadding;
 
@@ -256,6 +296,14 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+
+                &.multiline {
+                    white-space: normal;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    text-overflow: ellipsis;
+                }
             }
         }
         &:after {
@@ -506,12 +554,22 @@
 
 .ui.card {
     &.stat-count-card {
+        transition: @statCountCardTransition;
+        border: @statCountCardBorder;
+        box-shadow: none;
+
         .ui.statistic {
             margin-top: 0 !important;
 
             .label {
                 color: @lightFontColor;
             }
+        }
+        &:hover {
+            transform: none;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: @statCountCardHoverBoxShadow;
         }
     }
 }
