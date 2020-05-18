@@ -185,7 +185,7 @@ export const StatCountCard: FunctionComponent<StatCountCardPropsInterface> = (
  */
 StatCountCard.defaultProps = {
     "data-testid": "stat-count-card",
-    fluid: true,
+    fluid: false,
     iconSize: "mini",
     inline: true,
     textAlign: "left"

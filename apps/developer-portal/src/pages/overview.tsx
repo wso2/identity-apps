@@ -22,7 +22,7 @@ import { Jumbotron, StatsInsightsWidget, StatsOverviewWidget, StatsQuickLinksWid
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Icon } from "semantic-ui-react";
+import { Divider, Grid, Icon, Responsive } from "semantic-ui-react";
 import { getApplicationList, getIdentityProviderList, getUserStores } from "../api";
 import { ApplicationList, handleGetIDPListCallError } from "../components";
 import { IdentityProviderList } from "../components/identity-providers";
@@ -178,6 +178,136 @@ export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
             });
     };
 
+    const resolveGridContent = () => (
+        <>
+            <Grid.Column className="with-bottom-gutters">
+                <StatsQuickLinksWidget
+                    heading={ t("devPortal:components.overview.widgets.quickLinks.heading") }
+                    subHeading={ t("devPortal:components.overview.widgets.quickLinks.subHeading") }
+                    links={ [
+                        {
+                            description: t("devPortal:components.overview.widgets.quickLinks.cards" +
+                                ".groups.subHeading"),
+                            header: t("devPortal:components.overview.widgets.quickLinks.cards.groups" +
+                                ".heading"),
+                            image: OverviewPageIllustrations.quickLinks.groups,
+                            onClick: () => {
+                                history.push(ApplicationConstants.PATHS.get("GROUPS"))
+                            }
+                        },
+                        {
+                            description: t("devPortal:components.overview.widgets.quickLinks.cards" +
+                                ".roles.subHeading"),
+                            header: t("devPortal:components.overview.widgets.quickLinks.cards.roles" +
+                                ".heading"),
+                            image: OverviewPageIllustrations.quickLinks.roles,
+                            onClick: () => {
+                                history.push(ApplicationConstants.PATHS.get("ROLES"))
+                            }
+                        },
+                        {
+                            description: t("devPortal:components.overview.widgets.quickLinks.cards" +
+                                ".dialects.subHeading"),
+                            header: t("devPortal:components.overview.widgets.quickLinks.cards" +
+                                ".dialects.heading"),
+                            image: OverviewPageIllustrations.quickLinks.dialects,
+                            onClick: () => {
+                                history.push(ApplicationConstants.PATHS.get("ATTRIBUTE_DIALECTS"))
+                            }
+                        },
+                        {
+                            description: t("devPortal:components.overview.widgets.quickLinks.cards" +
+                                ".certificates.subHeading"),
+                            header: t("devPortal:components.overview.widgets.quickLinks.cards" +
+                                ".certificates.heading"),
+                            image: OverviewPageIllustrations.quickLinks.certificates,
+                            onClick: () => {
+                                history.push(ApplicationConstants.PATHS.get("CERTIFICATES"))
+                            }
+                        },
+                        {
+                            description: t("devPortal:components.overview.widgets.quickLinks" +
+                                ".cards.generalConfigs.subHeading"),
+                            header: t("devPortal:components.overview.widgets.quickLinks.cards" +
+                                ".generalConfigs.heading"),
+                            image: OverviewPageIllustrations.quickLinks.generalConfigs,
+                            onClick: () => {
+                                history.push(ApplicationConstants.PATHS.get("GENERAL_CONFIGS"))
+                            }
+                        },
+                        {
+                            description: t("devPortal:components.overview.widgets.quickLinks" +
+                                ".cards.emailTemplates.subHeading"),
+                            header: t("devPortal:components.overview.widgets.quickLinks.cards" +
+                                ".emailTemplates.heading"),
+                            image: OverviewPageIllustrations.quickLinks.emailTemplates,
+                            onClick: () => {
+                                history.push(ApplicationConstants.PATHS.get("EMAIL_TEMPLATES"))
+                            }
+                        }
+                    ] }
+                />
+            </Grid.Column>
+            <Grid.Column className="with-bottom-gutters">
+                <StatsInsightsWidget
+                    heading={ t("devPortal:components.overview.widgets.insights.applications.heading") }
+                    subHeading={
+                        t("devPortal:components.overview.widgets.insights.applications.subHeading")
+                    }
+                    primaryAction={ <><Icon name="location arrow"/>{ t("common:explore") }</> }
+                    onPrimaryActionClick={
+                        () => history.push(ApplicationConstants.PATHS.get("APPLICATIONS"))
+                    }
+                    showExtraContent={
+                        appList?.applications
+                        && appList.applications instanceof Array
+                        && appList.applications.length > 0
+                    }
+                >
+                    <ApplicationList
+                        selection
+                        defaultListItemLimit={ UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT }
+                        featureConfig={ featureConfig }
+                        isLoading={ isApplicationListRequestLoading }
+                        list={ appList }
+                        onEmptyListPlaceholderActionClick={
+                            () => history.push(ApplicationConstants.PATHS.get("APPLICATIONS"))
+                        }
+                        showListItemActions={ false }
+                        data-testid={ `${ testId }-list` }
+                    />
+                </StatsInsightsWidget>
+            </Grid.Column>
+            <Grid.Column className="with-bottom-gutters">
+                <StatsInsightsWidget
+                    heading={ t("devPortal:components.overview.widgets.insights.idp.heading") }
+                    subHeading={
+                        t("devPortal:components.overview.widgets.insights.idp.subHeading")
+                    }
+                    primaryAction={ <><Icon name="location arrow"/>{ t("common:explore") }</> }
+                    onPrimaryActionClick={ () => history.push(ApplicationConstants.PATHS.get("IDP")) }
+                    showExtraContent={
+                        idpList?.identityProviders
+                        && idpList.identityProviders instanceof Array
+                        && idpList.identityProviders.length > 0
+                    }
+                >
+                    <IdentityProviderList
+                        selection
+                        defaultListItemLimit={ UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT }
+                        isLoading={ isIdPListRequestLoading }
+                        list={ idpList }
+                        onEmptyListPlaceholderActionClick={
+                            () => history.push(ApplicationConstants.PATHS.get("IDP"))
+                        }
+                        showListItemActions={ false }
+                        data-testid={ `${ testId }-list` }
+                    />
+                </StatsInsightsWidget>
+            </Grid.Column>
+        </>
+    );
+
     return (
         <>
             <Jumbotron
@@ -226,133 +356,20 @@ export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                 />
                 <Divider hidden/>
                 <Grid>
-                    <Grid.Row columns={ 3 }>
-                        <Grid.Column>
-                            <StatsQuickLinksWidget
-                                heading={ t("devPortal:components.overview.widgets.quickLinks.heading") }
-                                subHeading={ t("devPortal:components.overview.widgets.quickLinks.subHeading") }
-                                links={ [
-                                    {
-                                        description: t("devPortal:components.overview.widgets.quickLinks.cards" +
-                                            ".groups.subHeading"),
-                                        header: t("devPortal:components.overview.widgets.quickLinks.cards.groups" +
-                                            ".heading"),
-                                        image: OverviewPageIllustrations.quickLinks.groups,
-                                        onClick: () => {
-                                            history.push(ApplicationConstants.PATHS.get("GROUPS"))
-                                        }
-                                    },
-                                    {
-                                        description: t("devPortal:components.overview.widgets.quickLinks.cards" +
-                                            ".roles.subHeading"),
-                                        header: t("devPortal:components.overview.widgets.quickLinks.cards.roles" +
-                                            ".heading"),
-                                        image: OverviewPageIllustrations.quickLinks.roles,
-                                        onClick: () => {
-                                            history.push(ApplicationConstants.PATHS.get("ROLES"))
-                                        }
-                                    },
-                                    {
-                                        description: t("devPortal:components.overview.widgets.quickLinks.cards" +
-                                            ".dialects.subHeading"),
-                                        header: t("devPortal:components.overview.widgets.quickLinks.cards" +
-                                            ".dialects.heading"),
-                                        image: OverviewPageIllustrations.quickLinks.dialects,
-                                        onClick: () => {
-                                            history.push(ApplicationConstants.PATHS.get("ATTRIBUTE_DIALECTS"))
-                                        }
-                                    },
-                                    {
-                                        description: t("devPortal:components.overview.widgets.quickLinks.cards" +
-                                            ".certificates.subHeading"),
-                                        header: t("devPortal:components.overview.widgets.quickLinks.cards" +
-                                            ".certificates.heading"),
-                                        image: OverviewPageIllustrations.quickLinks.certificates,
-                                        onClick: () => {
-                                            history.push(ApplicationConstants.PATHS.get("CERTIFICATES"))
-                                        }
-                                    },
-                                    {
-                                        description: t("devPortal:components.overview.widgets.quickLinks" +
-                                            ".cards.generalConfigs.subHeading"),
-                                        header: t("devPortal:components.overview.widgets.quickLinks.cards" +
-                                            ".generalConfigs.heading"),
-                                        image: OverviewPageIllustrations.quickLinks.generalConfigs,
-                                        onClick: () => {
-                                            history.push(ApplicationConstants.PATHS.get("GENERAL_CONFIGS"))
-                                        }
-                                    },
-                                    {
-                                        description: t("devPortal:components.overview.widgets.quickLinks" +
-                                            ".cards.emailTemplates.subHeading"),
-                                        header: t("devPortal:components.overview.widgets.quickLinks.cards" +
-                                            ".emailTemplates.heading"),
-                                        image: OverviewPageIllustrations.quickLinks.emailTemplates,
-                                        onClick: () => {
-                                            history.push(ApplicationConstants.PATHS.get("EMAIL_TEMPLATES"))
-                                        }
-                                    }
-                                ] }
-                            />
-                        </Grid.Column>
-                        <Grid.Column>
-                            <StatsInsightsWidget
-                                heading={ t("devPortal:components.overview.widgets.insights.applications.heading") }
-                                subHeading={
-                                    t("devPortal:components.overview.widgets.insights.applications.subHeading")
-                                }
-                                primaryAction={ <><Icon name="location arrow"/>{ t("common:explore") }</> }
-                                onPrimaryActionClick={
-                                    () => history.push(ApplicationConstants.PATHS.get("APPLICATIONS"))
-                                }
-                                showExtraContent={
-                                    appList?.applications
-                                    && appList.applications instanceof Array
-                                    && appList.applications.length > 0
-                                }
-                            >
-                                <ApplicationList
-                                    selection
-                                    defaultListItemLimit={ UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT }
-                                    featureConfig={ featureConfig }
-                                    isLoading={ isApplicationListRequestLoading }
-                                    list={ appList }
-                                    onEmptyListPlaceholderActionClick={
-                                        () => history.push(ApplicationConstants.PATHS.get("APPLICATIONS"))
-                                    }
-                                    showListItemActions={ false }
-                                    data-testid={ `${ testId }-list` }
-                                />
-                            </StatsInsightsWidget>
-                        </Grid.Column>
-                        <Grid.Column>
-                            <StatsInsightsWidget
-                                heading={ t("devPortal:components.overview.widgets.insights.idp.heading") }
-                                subHeading={
-                                    t("devPortal:components.overview.widgets.insights.idp.subHeading")
-                                }
-                                primaryAction={ <><Icon name="location arrow"/>{ t("common:explore") }</> }
-                                onPrimaryActionClick={ () => history.push(ApplicationConstants.PATHS.get("IDP")) }
-                                showExtraContent={
-                                    idpList?.identityProviders
-                                    && idpList.identityProviders instanceof Array
-                                    && idpList.identityProviders.length > 0
-                                }
-                            >
-                                <IdentityProviderList
-                                    selection
-                                    defaultListItemLimit={ UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT }
-                                    isLoading={ isIdPListRequestLoading }
-                                    list={ idpList }
-                                    onEmptyListPlaceholderActionClick={
-                                        () => history.push(ApplicationConstants.PATHS.get("IDP"))
-                                    }
-                                    showListItemActions={ false }
-                                    data-testid={ `${ testId }-list` }
-                                />
-                            </StatsInsightsWidget>
-                        </Grid.Column>
-                    </Grid.Row>
+                    <Responsive
+                        as={ Grid.Row }
+                        columns={ 3 }
+                        minWidth={ Responsive.onlyComputer.minWidth }
+                    >
+                        { resolveGridContent() }
+                    </Responsive>
+                    <Responsive
+                        as={ Grid.Row }
+                        columns={ 1 }
+                        maxWidth={ Responsive.onlyComputer.minWidth }
+                    >
+                        { resolveGridContent() }
+                    </Responsive>
                 </Grid>
             </PageLayout>
         </>

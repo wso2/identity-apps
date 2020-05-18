@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Divider, Grid, HeaderProps, SemanticWIDTHS } from "semantic-ui-react";
+import { Divider, Grid, GridColumn, HeaderProps, Responsive, SemanticWIDTHS } from "semantic-ui-react";
 import { StatCountCard, StatCountCardPropsInterface } from "./stat-count-card";
 import { Heading } from "../typography";
 
@@ -36,6 +36,10 @@ interface StatsOverviewWidgetPropsInterface extends TestableComponentInterface {
      * Element to render heading.
      */
     headingAs?: HeaderProps["as"];
+    /**
+     * Maximum card count in a row.
+     */
+    maxRowCount?: number;
     /**
      * Sub heading for the widget.
      */
@@ -64,11 +68,47 @@ export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInte
     const {
         heading,
         headingAs,
+        maxRowCount,
         subHeading,
         subHeadingAs,
         stats,
         [ "data-testid" ]: testId
     } = props;
+
+    const resolveStatCountCard = (stat: StatCountCardPropsInterface) => {
+
+        const {
+            icon,
+            label,
+            value,
+            iconOptions,
+            statOptions,
+            ...statRest
+        } = stat;
+
+        return (
+            <StatCountCard
+                fluid
+                icon={ icon }
+                label={ label }
+                value={ value }
+                textAlign="right"
+                statOptions={ {
+                    size: "small",
+                    textAlign: "right",
+                    ...statOptions
+                } }
+                iconOptions={ {
+                    background: "default",
+                    fill: "default",
+                    shape: "circular",
+                    ...iconOptions
+                } }
+                { ...statRest }
+                data-testid={ `${ testId }-${ _.kebabCase(label) }-card` }
+            />
+        );
+    };
 
     return (
         <>
@@ -98,43 +138,36 @@ export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInte
                 (stats && stats instanceof Array && stats.length > 0)
                     ? (
                         <Grid>
-                            <Grid.Row columns={ stats.length as SemanticWIDTHS }>
+                            <Grid.Row
+                                columns={
+                                    ((stats.length > maxRowCount) ? maxRowCount : stats.length) as SemanticWIDTHS
+                                }
+                                className={
+                                    ((stats.length > maxRowCount) ? "column-count-exceeded" : "")
+                                }
+                            >
                                 {
-                                    stats.map((stat, index) => {
+                                    stats.map((stat, index) => (
+                                        <>
+                                            <Responsive
+                                                key={ index }
+                                                as={ GridColumn }
+                                                width={ 16 }
+                                                className="with-bottom-gutters"
+                                                maxWidth={ Responsive.onlyTablet.maxWidth }
+                                            >
+                                                { resolveStatCountCard(stat) }
+                                            </Responsive>
 
-                                        const {
-                                            icon,
-                                            label,
-                                            value,
-                                            iconOptions,
-                                            statOptions,
-                                            ...statRest
-                                        } = stat;
-
-                                        return (
-                                            <Grid.Column key={ index }>
-                                                <StatCountCard
-                                                    icon={ icon }
-                                                    label={ label }
-                                                    value={ value }
-                                                    textAlign="right"
-                                                    statOptions={ {
-                                                        size: "small",
-                                                        textAlign: "right",
-                                                        ...statOptions
-                                                    } }
-                                                    iconOptions={ {
-                                                        background: "default",
-                                                        fill: "default",
-                                                        shape: "circular",
-                                                        ...iconOptions
-                                                    } }
-                                                    { ...statRest }
-                                                    data-testid={ `${ testId }-${ _.kebabCase(label) }-card` }
-                                                />
-                                            </Grid.Column>
-                                        )
-                                    })
+                                            <Responsive
+                                                key={ index }
+                                                as={ GridColumn }
+                                                minWidth={ Responsive.onlyTablet.maxWidth }
+                                            >
+                                                { resolveStatCountCard(stat) }
+                                            </Responsive>
+                                        </>
+                                    ))
                                 }
                             </Grid.Row>
                         </Grid>
@@ -151,5 +184,6 @@ export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInte
 StatsOverviewWidget.defaultProps = {
     "data-testid": "stats-overview-widget",
     headingAs: "h3",
+    maxRowCount: 4,
     subHeadingAs: "h5"
 };

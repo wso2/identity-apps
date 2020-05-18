@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
-import { Divider, HeaderProps } from "semantic-ui-react";
+import { Divider, HeaderProps, Responsive } from "semantic-ui-react";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 import { Heading } from "../typography";
 
@@ -154,11 +154,13 @@ export const Jumbotron: FunctionComponent<JumbotronPropsInterface> = (
                 </>
             ) }
             { icon && (
-                <GenericIcon
+                <Responsive
+                    as={ GenericIcon }
                     icon={ icon }
                     size={ iconSize }
                     floated="right"
                     transparent
+                    minWidth={ Responsive.onlyComputer.minWidth }
                     { ...iconOptions }
                 />
             ) }
