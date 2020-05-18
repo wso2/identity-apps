@@ -679,7 +679,7 @@ export const views: Views = {
                     label: "Enter new device name",
                     placeholder: "Enter a device name",
                     remove: "Remove the device",
-                    required: "Please enter a name for your mobile device"
+                    required: "Enter a Unique Name To Identify This Device"
                 },
                 heading: "via Mobile Device",
                 modals: {
@@ -736,7 +736,7 @@ export const views: Views = {
                         },
                         success: {
                             description: "The name of your mobile device was successfully updated",
-                            message: "Mobile Device name updated successfully"
+                            message: "Mobile Device name was updated successfully"
                         }
                     }
                 },

@@ -28,6 +28,7 @@ import {AppConfig} from "../../../helpers";
 import {AUTHENTICATOR_APP, MULTI_FACTOR_AUTHENTICATION, SECURITY} from "../../../constants";
 import {BiometricDevice, DiscoveryData} from "../../../models/biometric-authenticator";
 import {
+    deleteDeviceData,
     editDevicename,
     getAllDevices,
     getDiscoveryData,
@@ -56,8 +57,10 @@ export const BiometricAuthenticator: React.FunctionComponent<BiometricAuthentica
     const [step, setStep] = useState(0);
     const translateKey = "views:components.mfa.biometricAuthentication.";
     const [error, setError] = useState(false);
-    const [cancel, setCancel] = useState(false);
-    const [editFIDO, setEditFido] = useState<Map<string, boolean>>();
+    const [cancel, setCancel] = useState(0);
+    const [editDevice, setEditDevice] = useState<Map<string, boolean>>();
+    const [isDeviceUpdateSuccessModalVisible, setIsDeviceUpdateSuccessModalVisibility] = useState(false);
+
     const fireFailureNotification = () => {
         onAlertFired({
             description: t(
@@ -71,10 +74,49 @@ export const BiometricAuthenticator: React.FunctionComponent<BiometricAuthentica
     };
 
     /**
+     * This function fires a notification on the success of device name update.
+     */
+    const fireDeviceNameUpdateSuccessNotification = () => {
+        onAlertFired({
+            description: t(
+                "views:components.mfa.biometricAuthentication.notifications.updateDeviceName.success.description"
+            ),
+            level: AlertLevels.SUCCESS,
+            message: t(
+                "views:components.mfa.biometricAuthentication.notifications.updateDeviceName.success.message"
+            )
+        });
+    };
+
+    /**
+     * This function fires a notification on successful removal of a device.
+     */
+    const fireDeletionSuccessNotification = () => {
+        onAlertFired({
+            description: t(
+                "views:components.mfa.biometricAuthentication.notifications.removeDevice.success.description"
+            ),
+            level: AlertLevels.SUCCESS,
+            message: t(
+                "views:components.mfa.biometricAuthentication.notifications.removeDevice.success.message"
+            )
+        });
+    };
+    /**
+     * Rest error and step when the modal is closed
+     */
+    useEffect(() => {
+        if (!openWizard) {
+            setError(false);
+            setStep(0);
+        }
+    }, [openWizard]);
+
+    /**
      * Initiates the Device registration flow by getting data for the QR code
      */
     const displayQrCode = () => {
-        setCancel(false);
+        setCancel(0);
         let discoveryData: DiscoveryData;
         getDiscoveryData()
             .then(({data}) => {
@@ -91,11 +133,17 @@ export const BiometricAuthenticator: React.FunctionComponent<BiometricAuthentica
     };
 
     /**
+     * Cancels polling the server
+     */
+    const cancelPolling = () =>{
+        setCancel(1);
+        setOpenWizard(false);
+    };
+
+    /**
      * Polls the server for the registraton requst
      */
-
     const pollServer = (id: string) => {
-        if(!cancel){
             console.log("Started polling ");
             console.log(id);
             let newdevice: BiometricDevice;
@@ -106,21 +154,15 @@ export const BiometricAuthenticator: React.FunctionComponent<BiometricAuthentica
                     setDiscoveryData(null);
                     setStep(1);
                 }).catch(() => {
-                setTimeout(function () {
-                    pollServer(id);
-                },2000);
+                    if(cancel === 0){
+                        setTimeout(function () {
+                            pollServer(id);
+                        },2000);
+                    }
+
             });
-        }
     };
 
-    /**
-     * Cancels polling the server
-     */
-    const cancelPolling = () =>{
-        setCancel(true);
-        console.log("Polling cancelled");
-        setOpenWizard(false);
-    };
     /**
      * Refreshes the QR code
      */
@@ -129,14 +171,12 @@ export const BiometricAuthenticator: React.FunctionComponent<BiometricAuthentica
     };
 
     /**
-     * Changes the display name of the device
+     * Changes the display name of the device after registration
      */
     const changeDeviceName = (id: string, newName: string) => {
         console.log("Changing device name");
         editDevicename(id, newName)
             .then((response)=>{
-                console.log("The device name was changed");
-                console.log(response);
                 setOpenWizard(false);
             }).catch(()=>{
             fireFailureNotification();
@@ -146,7 +186,7 @@ export const BiometricAuthenticator: React.FunctionComponent<BiometricAuthentica
     };
 
     /**
-     * Changes the display name of the device
+     * Lists all registered devices of a user
      */
     const listDevices = () => {
         let devices: BiometricDevice[];
@@ -154,8 +194,6 @@ export const BiometricAuthenticator: React.FunctionComponent<BiometricAuthentica
             .then(({data})=>{
                 devices = data;
                 setDeviceList(devices);
-                console.log("Retrieved all deviecs");
-                console.log(devices);
             }).catch(()=>{
             fireFailureNotification();})
 
@@ -173,15 +211,38 @@ export const BiometricAuthenticator: React.FunctionComponent<BiometricAuthentica
     }, [biometricDevice]);
 
     const cancelEdit = (id: string) =>{
-        console.log("Cancelling edit" + id);
+        const tempEditDevice: Map<string, boolean> = new Map(editDevice);
+        tempEditDevice.set(id, false);
+        setEditDevice(tempEditDevice);
     };
 
     const showEdit = (id: string) =>{
-        console.log("Cancelling edit" + id);
+        const tempEditDevice: Map<string, boolean> = new Map(editDevice);
+        tempEditDevice.set(id, true);
+        setEditDevice(tempEditDevice);
+    };
+
+    const submitDeviceName = (name: string, id: string): void => {
+        editDevicename(id, name)
+            .then(()=>{
+                listDevices();
+                cancelEdit(id);
+                fireDeviceNameUpdateSuccessNotification();
+            }).catch(((error) => {
+            fireFailureNotification();
+        }));
     };
 
     const removeDevice = (id: string) =>{
-        console.log("Cancelling edit" + id);
+        console.log("removing device " + id);
+        deleteDeviceData(id)
+            .then(()=> {
+                cancelEdit(id);
+                listDevices();
+                fireDeletionSuccessNotification();
+            }).catch((error) => {
+            fireFailureNotification();
+        })
     };
 
     /**
@@ -428,7 +489,7 @@ export const BiometricAuthenticator: React.FunctionComponent<BiometricAuthentica
                         >
                             {
                                 deviceList.map((device, index) => (
-                                    editFIDO && editFIDO.get(device.id)
+                                    editDevice && editDevice.get(device.id)
                                         ? (
                                             <EditSection key={ device.id }>
                                                 <Grid>
@@ -445,7 +506,7 @@ export const BiometricAuthenticator: React.FunctionComponent<BiometricAuthentica
                                                                     <Forms
                                                                         onSubmit={
                                                                             (values: Map<string, string>) => {
-                                                                                editDevicename(
+                                                                                submitDeviceName(
                                                                                     values.get(
                                                                                         device.id
                                                                                     ),

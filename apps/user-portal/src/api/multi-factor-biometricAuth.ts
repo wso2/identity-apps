@@ -170,3 +170,40 @@ export const getAllDevices = (): Promise<any> => {
         });
 };
 
+/**
+ * Removes a specified device
+ *
+ * @return {Promise<any>} a promise containing the response.
+ */
+export const deleteDeviceData = (id: string): Promise<any> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+        },
+        method: HttpMethods.DELETE,
+        url: `${ServiceResourcesEndpoint.biometricDeviceManagement}/${id}`
+    };
+
+    return httpClient
+        .request(requestConfig)
+        .then((response) => {
+            console.log(response);
+            if (response.status !== 204) {
+                return Promise.reject(
+                    new Error(`The device was not removed`)
+                );
+            }
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            console.log(error);
+            return Promise.reject(`Could not remove device- ${error}`);
+        });
+};
+
+
+
+
+
