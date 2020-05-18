@@ -16,5 +16,6 @@
  * under the License.
  */
 
+export * from "./authenticators";
 export * from "./templates";
 export * from "./connectors";
