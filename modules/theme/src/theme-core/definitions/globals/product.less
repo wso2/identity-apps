@@ -337,6 +337,33 @@ body {
     white-space: nowrap;
 }
 
+.text {
+    &-left {
+        text-align: left !important;
+    }
+    &-center {
+        text-align: center !important;
+    }
+    &-right {
+        text-align: right !important;
+    }
+    &-justify {
+        text-align: justify !important;
+    }
+    &-uppercase {
+        text-transform: uppercase !important;
+    }
+    &-lowercase {
+        text-transform: lowercase !important;
+    }
+    &-capitalize {
+        text-transform: capitalize !important;
+    }
+    &-unset {
+        text-transform: unset !important;
+    }
+}
+
 /*****************************************
                 Layout
 *****************************************/
@@ -435,6 +462,8 @@ body {
                 Theme Icon
 *****************************************/
 
+@iconMiniVeryPadding: 15px;
+
 .theme-icon {
     background-color: @iconWrapperBgColor;
     overflow: hidden;
@@ -454,6 +483,10 @@ body {
 
         &.very {
             padding: @iconWrapperVeryPadding;
+
+            &.mini {
+                padding: @iconMiniVeryPadding;
+            }
         }
     }
     &.bordered {
