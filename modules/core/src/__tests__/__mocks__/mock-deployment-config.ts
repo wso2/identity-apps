@@ -28,7 +28,7 @@ export const deploymentConfigMock = {
     loginCallbackPath: "/login",
     logoutCallbackPath: "/login",
     routePaths: {
-        home: "/applications",
+        home: "/overview",
         login: "/login",
         logout: "/logout"
     },
