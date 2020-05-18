@@ -89,6 +89,7 @@ regexp=(https://localhost:9443/developer-portal/login|https://localhost:9443/dev
 
 8. Open cloned or downloaded Identity Apps repo and Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependencies. _(Note:- Not necessary if you have already done above identity apps build steps)_
 9. Start the apps in development mode, Execute `cd apps/<app> && npm start` command. E.g. `cd apps/user-portal && npm start`.
+10. Once the app is successfully started, you can access the via the URLs `https://localhost:9000/user-portal` or `https://localhost:9001/developer-portal`.
 
 ## Reporting Issues
 
