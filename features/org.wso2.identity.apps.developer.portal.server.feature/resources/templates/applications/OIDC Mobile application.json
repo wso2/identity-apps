@@ -1,0 +1,40 @@
+{
+	"id": "44a2d9d9-bc0c-4b54-85df-1cf08f4002ec",
+    "name": "Mobile application",
+    "description": "Applications developed to target mobiles devices.",
+    "image": "oidcWebApp",
+    "authenticationProtocol": "oidc",
+    "types": [
+        "android"
+    ],
+    "category": "DEFAULT",
+    "displayOrder": 7,
+    "application": {
+        "name": "",
+        "advancedConfigurations": {
+            "discoverableByEndUsers": false
+        },
+        "authenticationSequence": {
+            "type": "DEFAULT",
+            "steps": [
+                {
+                    "id": 1,
+                    "options": [
+                        {
+                            "idp": "LOCAL",
+                            "authenticator": "basic"
+                        }
+                    ]
+                }
+            ]
+        },
+        "inboundProtocolConfiguration": {
+            "oidc": {
+                "grantTypes": [
+                    "authorization_code"
+                ],
+                "publicClient": true
+            }
+        }
+    }
+}
