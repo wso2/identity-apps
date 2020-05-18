@@ -464,6 +464,9 @@ body {
     &.rounded {
         border-radius: @defaultBorderRadius;
     }
+    &.circular {
+        border-radius: 50%;
+    }
     &.nano {
         .icon {
             width: @iconNano;
@@ -585,7 +588,10 @@ body {
             }
         }
     }
-    &.fill {
+    &.background {
+        &-transparent {
+            background-color: transparent;
+        }
         &-default {
             background-color: @iconWrapperBgColor;
         }
