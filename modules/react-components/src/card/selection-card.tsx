@@ -21,27 +21,20 @@ import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Card, CardProps } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
+import { Tooltip } from "../typography";
 
 /**
  * Proptypes for the selection card component.
  */
-export interface SelectionCardPropsInterface extends TestableComponentInterface {
+export interface SelectionCardPropsInterface extends Omit<CardProps, "image">, TestableComponentInterface {
     /**
-     * Additional classes.
+     * Content top border.
      */
-    className?: string;
-    /**
-     * Card description.
-     */
-    description?: string;
+    contentTopBorder?: boolean;
     /**
      * Is card disabled.
      */
     disabled?: boolean;
-    /**
-     * Card header.
-     */
-    header: string;
     /**
      * Id for the card.
      */
@@ -55,16 +48,17 @@ export interface SelectionCardPropsInterface extends TestableComponentInterface 
      */
     imageSize?: GenericIconSizes;
     /**
-     * On click callback.
-     *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event - On click event.
-     * @param {CardProps} data - Card data.
+     * Should the description have two lines.
      */
-    onClick?: (event: React.MouseEvent<HTMLAnchorElement>, data: CardProps) => void;
+    multilineDescription?: boolean;
     /**
      * If the card is selected.
      */
     selected?: boolean;
+    /**
+     * Should tooltips be shown.
+     */
+    showTooltips?: boolean;
     /**
      * Card size.
      */
@@ -96,6 +90,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
 
     const {
         className,
+        contentTopBorder,
         description,
         disabled,
         header,
@@ -103,12 +98,15 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         inline,
         image,
         imageSize,
+        multilineDescription,
         onClick,
         selected,
+        showTooltips,
         size,
         spaced,
         textAlign,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        ...rest
     } = props;
 
     const classes = classNames(
@@ -116,10 +114,11 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         {
             disabled,
             inline,
+            "no-content-top-border": !contentTopBorder,
             selected,
             [ size ]: size,
-            [`spaced-${ spaced }`]: spaced,
-            ["with-image"]: image
+            [ `spaced-${ spaced }` ]: spaced,
+            [ "with-image" ]: image
         },
         className
     );
@@ -132,6 +131,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
             link={ false }
             as="div"
             data-testid={ testId }
+            { ...rest }
         >
             {
                 image && (
@@ -148,11 +148,30 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
                 )
             }
             <Card.Content className="card-text-container" style={ { textAlign } }>
-                <Card.Header data-testid={ `${ testId }-header` }>{ header }</Card.Header>
+                { header && (
+                    <Tooltip
+                        disabled={ !showTooltips }
+                        content={ header }
+                        trigger={ (
+                            <Card.Header data-testid={ `${ testId }-header` }>
+                                { header }
+                            </Card.Header>
+                        ) }
+                    />
+                ) }
                 { description && (
-                    <Card.Description data-testid={ `${ testId }-description` }>
-                        { description }
-                    </Card.Description>
+                    <Tooltip
+                        disabled={ !showTooltips }
+                        content={ description }
+                        trigger={ (
+                            <Card.Description
+                                className={ multilineDescription ? "multiline" : "" }
+                                data-testid={ `${ testId }-description` }
+                            >
+                                { description }
+                            </Card.Description>
+                        ) }
+                    />
                 ) }
             </Card.Content>
         </Card>
@@ -163,10 +182,12 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
  * Default props for the selection card component.
  */
 SelectionCard.defaultProps = {
+    contentTopBorder: true,
     "data-testid": "selection-card",
     imageSize: "tiny",
     inline: false,
     onClick: () => null,
+    showTooltips: false,
     size: "default",
     textAlign: "center"
 };
