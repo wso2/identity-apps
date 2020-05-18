@@ -73,7 +73,7 @@ export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInte
         <>
             { heading && (
                 <Heading
-                    className="overview-widget-header inline ellipsis"
+                    className="overview-widget-heading inline ellipsis"
                     as={ headingAs }
                     data-testid={ `${ testId }-heading` }
                     compact
@@ -83,7 +83,7 @@ export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInte
             ) }
             { subHeading && (
                 <Heading
-                    className="overview-widget-sub-header"
+                    className="overview-widget-sub-heading"
                     data-testid={ `${ testId }-sub-heading` }
                     as={ subHeadingAs }
                     subHeading
