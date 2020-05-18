@@ -46,9 +46,9 @@ export interface GenericIconProps extends TestableComponentInterface {
      */
     defaultIcon?: boolean;
     /**
-     * Background fill color.
+     * Icon fill color.
      */
-    fill?: "primary" | "secondary" | "accent1" | "accent2" | "accent3" | boolean;
+    fill?: "primary" | "secondary" | "accent1" | "accent2" | "accent3" | "default" | "white" | boolean;
     /**
      * Floated direction.
      */
@@ -156,6 +156,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         className,
         colored,
         defaultIcon,
+        fill,
         floated,
         hoverable,
         icon,
@@ -183,6 +184,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         "bordered": bordered,
         "colored": colored,
         "default": defaultIcon,
+        [ typeof fill === "boolean" ? "fill-default" : `fill-${ fill }` ]: fill,
         [`floated-${floated}`]: floated,
         hoverable,
         "inline": inline,
@@ -260,6 +262,7 @@ GenericIcon.defaultProps = {
     className: "",
     "data-testid": "generic-icon",
     defaultIcon: false,
+    fill: "default",
     floated: null,
     inline: false,
     relaxed: false,
