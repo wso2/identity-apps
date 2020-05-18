@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider, Grid, GridColumn, HeaderProps, Responsive, SemanticWIDTHS } from "semantic-ui-react";
-import { StatCountCard, StatCountCardPropsInterface } from "./stat-count-card";
+import { StatCountCard, StatCountCardPropsInterface } from "../card";
 import { Heading } from "../typography";
 
 /**

@@ -20,3 +20,4 @@ export * from "./template-card";
 export * from "./info-card";
 export * from "./labeled-card";
 export * from "./selection-card";
+export * from "./stat-count-card";

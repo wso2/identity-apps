@@ -24,8 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Icon, Responsive } from "semantic-ui-react";
 import { getApplicationList, getIdentityProviderList, getUserStores } from "../api";
-import { ApplicationList, handleGetIDPListCallError } from "../components";
-import { IdentityProviderList } from "../components/identity-providers";
+import { ApplicationList, IdentityProviderList, handleGetIDPListCallError } from "../components";
 import { OverviewPageIllustrations } from "../configs";
 import { ApplicationConstants, UIConstants } from "../constants";
 import { history, resolveUserDisplayName } from "../helpers";
@@ -100,7 +99,8 @@ export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.applications.notifications.fetchApplications.error.message")
+                        message: t("devPortal:components.applications.notifications.fetchApplications.error" +
+                            ".message")
                     }));
 
                     return;
@@ -110,7 +110,8 @@ export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     description: t("devPortal:components.applications.notifications.fetchApplications" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.applications.notifications.fetchApplications.genericError.message")
+                    message: t("devPortal:components.applications.notifications.fetchApplications.genericError" +
+                        ".message")
                 }));
             })
             .finally(() => {
