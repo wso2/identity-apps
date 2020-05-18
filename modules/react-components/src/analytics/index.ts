@@ -17,3 +17,4 @@
  */
 
 export * from "./stat-count-card";
+export * from "./stats-overview-widget";
