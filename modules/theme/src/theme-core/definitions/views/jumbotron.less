@@ -1,4 +1,4 @@
-/**
+/*!
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -17,18 +17,32 @@
  *
  */
 
-/* Global */
-& { @import "definitions/globals/product.less"; }
+@type    : "view";
+@element : "jumbotron";
 
-/* Apps */
-& { @import "definitions/apps/login-portal.less"; }
-& { @import "definitions/apps/developer-portal.less"; }
-& { @import "definitions/apps/user-portal.less"; }
+@import (multiple) '../../theme.less';
+.loadVariables();
 
-/* Modules */
-& { @import "definitions/modules/treeview.less"; }
-& { @import "definitions/modules/markdown.less"; }
-& { @import "definitions/modules/hint.less"; }
+/*****************************************
+            UI Jumbotron
+*****************************************/
 
-/* Views */
-& { @import "definitions/views/jumbotron.less"; }
+.ui-jumbotron {
+    &.padded {
+        padding: @pageLayoutContentPadding;
+    }
+
+    &.bordered {
+        &-default {
+            border: @defaultBorderWidth solid @defaultBorderColor;
+        }
+        &-bottom {
+            border-bottom: @defaultBorderWidth solid @defaultBorderColor;
+        }
+        &-top {
+            border-top: @defaultBorderWidth solid @defaultBorderColor;
+        }
+    }
+}
+
+.loadUIOverrides();

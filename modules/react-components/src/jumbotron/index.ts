@@ -14,21 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-/* Global */
-& { @import "definitions/globals/product.less"; }
-
-/* Apps */
-& { @import "definitions/apps/login-portal.less"; }
-& { @import "definitions/apps/developer-portal.less"; }
-& { @import "definitions/apps/user-portal.less"; }
-
-/* Modules */
-& { @import "definitions/modules/treeview.less"; }
-& { @import "definitions/modules/markdown.less"; }
-& { @import "definitions/modules/hint.less"; }
-
-/* Views */
-& { @import "definitions/views/jumbotron.less"; }
+export * from "./jumbotron";
