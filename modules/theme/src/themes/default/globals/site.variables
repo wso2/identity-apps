@@ -44,7 +44,9 @@
 --------------------*/
 
 @primaryColor        : @orange;
-
+@accentColor1        : #1a1c4c;
+@accentColor2        : #f5385b;
+@accentColor3        : #00b7e1;
 
 /*-------------------
     Site Colors
