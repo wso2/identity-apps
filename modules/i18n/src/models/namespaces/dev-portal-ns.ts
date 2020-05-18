@@ -2125,6 +2125,27 @@ export interface DevPortalNS {
                     };
                 };
             };
+            realmConfiguration: {
+                actionTitles: {
+                    config: string;
+                };
+                description: string;
+                heading: string;
+                confirmation: {
+                    heading: string;
+                    message: string;
+                };
+                notifications: {
+                    getConfigurations: Notification;
+                    updateConfigurations: Notification;
+                    emptyHomeRealmIdentifiers: Notification;
+                };
+                form: {
+                    homeRealmIdentifiers: FormAttributes;
+                    idleSessionTimeoutPeriod: FormAttributes;
+                    rememberMePeriod: FormAttributes;
+                };
+            };
             requestPathAuthenticators: {
                 title: string;
                 subTitle: string;

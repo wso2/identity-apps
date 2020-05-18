@@ -70,3 +70,9 @@ export interface PasswordPoliciesInterface {
 	passwordPolicyPattern?: string;
 	passwordPolicyErrorMessage?: string;
 }
+
+export interface RealmConfigurationsInterface {
+	homeRealmIdentifiers?: string[];
+	idleSessionTimeoutPeriod?: string;
+	rememberMePeriod?: string;
+}

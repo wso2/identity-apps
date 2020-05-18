@@ -20,3 +20,4 @@ export * from "./user-self-registration";
 export * from "./account-recovery";
 export * from "./login-policies";
 export * from "./password-policies";
+export * from "./realm-configurations";

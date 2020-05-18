@@ -184,4 +184,11 @@ export class ServerConfigurationsConstants {
 	public static readonly PASSWORD_POLICY_MAX_LENGTH: string = "passwordPolicy.max.length";
 	public static readonly PASSWORD_POLICY_PATTERN: string = "passwordPolicy.pattern";
 	public static readonly PASSWORD_POLICY_ERROR_MESSAGE: string = "passwordPolicy.errorMsg";
+
+	/**
+	 * Real Configurations constants.
+	 */
+	public static readonly HOME_REALM_IDENTIFIER: string = "homeRealmIdentifiers";
+	public static readonly IDLE_SESSION_TIMEOUT_PERIOD: string = "idleSessionTimeoutPeriod";
+	public static readonly REMEMBER_ME_PERIOD: string = "rememberMePeriod";
 }

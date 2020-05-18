@@ -138,6 +138,7 @@ export class Config {
             selfSignUp: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
             }/connectors/${ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID}`,
+            serverConfigurations: `${this.getDeploymentConfig().serverHost}/api/server/v1/configs`,
             sessions: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/sessions`,
             token: `${this.getDeploymentConfig().serverHost}/oauth2/token`,
             user: `${this.getDeploymentConfig().serverHost}/api/identity/user/v1.0/me`,
