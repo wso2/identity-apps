@@ -25,7 +25,9 @@
         &:hover {
             background: transparent;
         }
-
+        &.compact {
+            padding: 0;
+        }
         &.positive {
             color: @positiveColor;
         }
