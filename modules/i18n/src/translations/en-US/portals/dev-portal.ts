@@ -2264,7 +2264,7 @@ export const devPortal: DevPortalNS = {
                         2: "You can add a new template type by ",
                         3: "clicking on the button below."
                     },
-                    title: "Add new Template Type",
+                    title: "Add new Template Type"
                 }
             },
             wizards: {
@@ -3164,6 +3164,65 @@ export const devPortal: DevPortalNS = {
                     finish: "Finish",
                     next: "Next",
                     previous: "Previous"
+                }
+            }
+        },
+        overview: {
+            widgets: {
+                insights: {
+                    applications: {
+                        heading: "Applications",
+                        subHeading: "Overview of applications"
+                    },
+                    idp: {
+                        heading: "Identity Providers",
+                        subHeading: "Overview of Identity Providers"
+                    }
+                },
+                overview: {
+                    cards: {
+                        applications: {
+                            heading: "Applications"
+                        },
+                        idp: {
+                            heading: "Identity Providers"
+                        },
+                        userstores: {
+                            heading: "Userstores"
+                        }
+                    },
+                    heading: "Overview",
+                    subHeading: "Basic set of stats to understand the status of the instance."
+                },
+                quickLinks: {
+                    cards: {
+                        certificates: {
+                            heading: "Certificates",
+                            subHeading: "Manage certificates in the keystore."
+                        },
+                        dialects: {
+                            heading: "Attribute Dialects",
+                            subHeading: "Manage attribute dialects."
+                        },
+                        emailTemplates: {
+                            heading: "Email Templates",
+                            subHeading: "Manage email templates."
+                        },
+                        generalConfigs: {
+                            heading: "General Configurations",
+                            subHeading: "Manage configurations, policies, etc."
+                        },
+                        groups: {
+                            heading: "Groups",
+                            subHeading: "Manage user groups and permissions."
+                        },
+                        roles: {
+                            heading: "Roles",
+                            subHeading: "Manage user roles and permissions."
+                        }
+                    },
+                    heading: "Quick Links",
+                    subHeading: "Links to quickly navigate to features."
                 }
             }
         },
@@ -5052,7 +5111,8 @@ export const devPortal: DevPortalNS = {
             title: "Select Identity Provider Type"
         },
         overView: {
-            subTitle: "The following section would give you an overview of the system statistics",
+            subTitle: "Configure and  manage applications, identity providers, users and roles, attribute dialects, " +
+                "etc.",
             title: "Welcome, {{firstName}}"
         },
         roles: {

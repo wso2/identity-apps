@@ -1452,6 +1452,10 @@ svg.illustration {
              Stats Widgets
 *****************************************/
 
+@statsInsightsCardContentHeight: 280px;
+@statsInsightsCardContentWithoutExtraHeight: 322px;
+@statsInsightsCardListItemPadding: .66em 1em;
+
 .stats-quick-links-widget {
     .stats-quick-links-widget-cards {
         .selection-card {
@@ -1466,13 +1470,21 @@ svg.illustration {
 
 .stats-insights-widget {
     .stats-insights-widget-card {
-        .resource-list {
-            .resource-list-item {
-                &:first-child {
-                    border-top: 0;
-                }
-                &:last-child {
-                    border-bottom: 0;
+        .main-content {
+            height: @statsInsightsCardContentHeight;
+            overflow-x: hidden;
+            overflow-y: auto;
+
+            &.hide-extra {
+                height: @statsInsightsCardContentWithoutExtraHeight;
+            }
+            .resource-list {
+                .resource-list-item {
+                    padding: @statsInsightsCardListItemPadding !important;
+
+                    &:first-child {
+                        border-top: 0;
+                    }
                 }
             }
         }

@@ -41,12 +41,12 @@ import {
     EmailTemplates,
     ExternalDialectEditPage,
     GroupsPage,
-    HomePage,
     IdentityProviderEditPage,
     IdentityProviderTemplateSelectPage,
     IdentityProvidersPage,
     LocalClaimsEditPage,
     LocalClaimsPage,
+    OverviewPage,
     PageNotFound,
     PrivacyPage,
     RoleEditPage,
@@ -80,13 +80,13 @@ import {
  */
 const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
-        component: HomePage,
+        component: OverviewPage,
         icon: "overview",
         id: "overview",
         name: "Overview",
         path: "/overview",
         protected: true,
-        showOnSidePanel: false
+        showOnSidePanel: true
     },
     {
         children: [

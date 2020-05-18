@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import _ from "lodash";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { Card, Divider, HeaderProps } from "semantic-ui-react";
 import { LinkButton } from "../button";
@@ -36,9 +37,17 @@ interface StatsInsightsWidgetPropsInterface extends TestableComponentInterface {
      */
     headingAs?: HeaderProps["as"];
     /**
+     * Set of stats for the widget.
+     */
+    onPrimaryActionClick: () => void;
+    /**
      * Primary action.
      */
     primaryAction: ReactNode;
+    /**
+     * Show card extra content.
+     */
+    showExtraContent?: boolean;
     /**
      * Sub heading for the widget.
      */
@@ -47,10 +56,6 @@ interface StatsInsightsWidgetPropsInterface extends TestableComponentInterface {
      * Element to render sub heading.
      */
     subHeadingAs?: HeaderProps["as"];
-    /**
-     * Set of stats for the widget.
-     */
-    onPrimaryActionClick: () => void;
 }
 
 /**
@@ -61,17 +66,18 @@ interface StatsInsightsWidgetPropsInterface extends TestableComponentInterface {
  * @return {React.ReactElement}
  */
 export const StatsInsightsWidget: FunctionComponent<PropsWithChildren<StatsInsightsWidgetPropsInterface>> = (
-        props: PropsWithChildren<StatsInsightsWidgetPropsInterface>
+    props: PropsWithChildren<StatsInsightsWidgetPropsInterface>
 ): ReactElement => {
 
     const {
         children,
         heading,
         headingAs,
+        onPrimaryActionClick,
         primaryAction,
+        showExtraContent,
         subHeading,
         subHeadingAs,
-        onPrimaryActionClick,
         [ "data-testid" ]: testId
     } = props;
 
@@ -102,21 +108,23 @@ export const StatsInsightsWidget: FunctionComponent<PropsWithChildren<StatsInsig
             <Card
                 fluid
                 className="stats-insights-widget-card basic-card"
-                data-testid={ `${ testId }-${ heading }-card` }
+                data-testid={ `${ testId }-${ _.kebabCase(heading) }-card` }
             >
-                <Card.Content className="compact">
+                <Card.Content className={ `main-content compact ${ !showExtraContent ? "hide-extra" : "" } ` }>
                     { children }
                 </Card.Content>
-                <Card.Content
-                    extra
-                    className="selection"
-                    data-testid={ `${ testId }-${ heading }-card-action` }
-                    onClick={ onPrimaryActionClick }
-                >
-                    <LinkButton compact data-testid={ `${ testId }-${ heading }-card-action-button` }>
-                        { primaryAction }
-                    </LinkButton>
-                </Card.Content>
+                { showExtraContent && (
+                    <Card.Content
+                        extra
+                        className="selection"
+                        data-testid={ `${ testId }-${ _.kebabCase(heading) }-card-action` }
+                        onClick={ onPrimaryActionClick }
+                    >
+                        <LinkButton compact data-testid={ `${ testId }-${ _.kebabCase(heading) }-card-action-button` }>
+                            { primaryAction }
+                        </LinkButton>
+                    </Card.Content>
+                ) }
             </Card>
         </div>
     );
@@ -128,5 +136,6 @@ export const StatsInsightsWidget: FunctionComponent<PropsWithChildren<StatsInsig
 StatsInsightsWidget.defaultProps = {
     "data-testid": "stats-insights-widget",
     headingAs: "h3",
+    showExtraContent: true,
     subHeadingAs: "h5"
 };

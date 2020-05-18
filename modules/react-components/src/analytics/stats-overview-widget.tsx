@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import _ from "lodash";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider, Grid, HeaderProps, SemanticWIDTHS } from "semantic-ui-react";
 import { StatCountCard, StatCountCardPropsInterface } from "./stat-count-card";
@@ -73,7 +74,7 @@ export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInte
         <>
             { heading && (
                 <Heading
-                    className="overview-widget-heading inline ellipsis"
+                    className="stats-overview-widget-heading inline ellipsis"
                     as={ headingAs }
                     data-testid={ `${ testId }-heading` }
                     compact
@@ -83,7 +84,7 @@ export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInte
             ) }
             { subHeading && (
                 <Heading
-                    className="overview-widget-sub-heading"
+                    className="stats-overview-widget-sub-heading"
                     data-testid={ `${ testId }-sub-heading` }
                     as={ subHeadingAs }
                     subHeading
@@ -129,7 +130,7 @@ export const StatsOverviewWidget: FunctionComponent<StatsOverviewWidgetPropsInte
                                                         ...iconOptions
                                                     } }
                                                     { ...statRest }
-                                                    data-testid={ `${ testId }-card` }
+                                                    data-testid={ `${ testId }-${ _.kebabCase(label) }-card` }
                                                 />
                                             </Grid.Column>
                                         )

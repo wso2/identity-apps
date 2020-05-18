@@ -2154,6 +2154,65 @@ export interface DevPortalNS {
         footer: {
             copyright: string;
         };
+        overview: {
+            widgets: {
+                insights: {
+                    applications: {
+                        heading: string;
+                        subHeading: string;
+                    };
+                    idp: {
+                        heading: string;
+                        subHeading: string;
+                    };
+                };
+                overview: {
+                    cards: {
+                        applications: {
+                            heading: string;
+                        };
+                        idp: {
+                            heading: string;
+                        };
+                        userstores: {
+                            heading: string;
+                        };
+                    };
+                    heading: string;
+                    subHeading: string;
+                };
+                quickLinks: {
+                    cards: {
+                        certificates: {
+                            heading: string;
+                            subHeading: string;
+                        };
+                        dialects: {
+                            heading: string;
+                            subHeading: string;
+                        };
+                        emailTemplates: {
+                            heading: string;
+                            subHeading: string;
+                        };
+                        generalConfigs: {
+                            heading: string;
+                            subHeading: string;
+                        };
+                        groups: {
+                            heading: string;
+                            subHeading: string;
+                        };
+                        roles: {
+                            heading: string;
+                            subHeading: string;
+                        };
+                    };
+                    heading: string;
+                    subHeading: string;
+                };
+            };
+        };
         privacy: {
             about: {
                 description: string;

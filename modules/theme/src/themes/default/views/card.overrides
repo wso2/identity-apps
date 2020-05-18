@@ -22,16 +22,26 @@
 ------------------------------*/
 
 .ui.card {
-    .extra {
-        &.selection {
-            cursor: pointer;
+    .content {
+        &.extra {
+            &.selection {
+                cursor: pointer;
 
-            &:hover {
-                background: @extraSelectionHoverBackground;
+                &:hover {
+                    background: @extraSelectionHoverBackground;
+                }
             }
+        }
+        &.compact {
+            padding: 0;
         }
     }
 }
+
+
+/*-----------------------------
+   Application Card Variation
+------------------------------*/
 
 .ui.card {
     &.application-card {

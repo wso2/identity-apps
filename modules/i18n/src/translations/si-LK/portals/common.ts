@@ -57,6 +57,7 @@ export const common: CommonNS = {
     edit: "සංස්කරණය කරන්න",
     endsWith: "සමඟ අවසන් වේ",
     equals: "සමාන",
+    explore: "ගවේෂණය කරන්න",
     export: "අපනයනය කරන්න",
     filter: "පෙරහන",
     finish: "අවසන් කරන්න",
