@@ -853,6 +853,11 @@ body {
 
         &-primary {
             &:hover {
+                color: @primaryColor;
+
+                .icon {
+                    color: @primaryColor;
+                }
                 svg.icon {
                     .path {
                         fill: @primaryColor;
@@ -1453,6 +1458,21 @@ svg.illustration {
             .card-text-container {
                 .header {
                     font-size: 1em !important;
+                }
+            }
+        }
+    }
+}
+
+.stats-insights-widget {
+    .stats-insights-widget-card {
+        .resource-list {
+            .resource-list-item {
+                &:first-child {
+                    border-top: 0;
+                }
+                &:last-child {
+                    border-bottom: 0;
                 }
             }
         }

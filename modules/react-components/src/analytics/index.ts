@@ -18,4 +18,5 @@
 
 export * from "./stat-count-card";
 export * from "./stats-overview-widget";
+export * from "./stats-insights-widget";
 export * from "./stats-quick-links-widget";
