@@ -499,3 +499,19 @@
         }
     }
 }
+
+/*-----------------------------
+   Statistics Count Variation
+------------------------------*/
+
+.ui.card {
+    &.stat-count-card {
+        .ui.statistic {
+            margin-top: 0 !important;
+
+            .label {
+                color: @lightFontColor;
+            }
+        }
+    }
+}
