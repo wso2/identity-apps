@@ -26,8 +26,8 @@ import { useDispatch } from "react-redux";
 import { Accordion, Checkbox, CheckboxProps, Divider, Form, Grid, Icon } from "semantic-ui-react";
 import { getAllPasswordPolicies, updateAllPasswordPolicies } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
-import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
-import { PasswordPoliciesInterface } from "../../models/server-configurations";
+import { ServerConfigurationsConstants } from "../../constants";
+import { PasswordPoliciesInterface } from "../../models";
 
 /**
  * Prop types for the password policies component.

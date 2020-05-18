@@ -145,4 +145,5 @@ export interface ServiceResourceEndpointsInterface {
     passwordHistory: string;
     passwordPolicy: string;
     requestPathAuthenticators: string;
+    serverConfigurations: string;
 }

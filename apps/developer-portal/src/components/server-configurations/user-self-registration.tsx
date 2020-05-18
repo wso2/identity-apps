@@ -26,8 +26,8 @@ import { useDispatch } from "react-redux";
 import { Accordion, Divider, Form, Grid, Icon } from "semantic-ui-react";
 import { getSelfSignUpConfigurations, updateSelfSignUpConfigurations } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
-import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
-import { SelfSignUpConfigurationsInterface } from "../../models/server-configurations";
+import { ServerConfigurationsConstants } from "../../constants";
+import { SelfSignUpConfigurationsInterface } from "../../models";
 
 /**
  * Prop types for the change password component.

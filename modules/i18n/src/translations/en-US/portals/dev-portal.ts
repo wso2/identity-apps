@@ -17,6 +17,7 @@
  */
 
 import { DevPortalNS } from "../../../models";
+import { FormAttributes } from "../../../models/common";
 
 export const devPortal: DevPortalNS = {
     components: {
@@ -4063,6 +4064,76 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     heading: "Password Patterns"
+                }
+            },
+            realmConfiguration: {
+                actionTitles: {
+                    config: "More"
+                },
+                confirmation: {
+                    heading: "Confirmation",
+                    message: "Do you wish to save the configurations related to realm?"
+                },
+                description: "Configure the basic configurations related to realm.",
+                form: {
+                    homeRealmIdentifiers: {
+                        hint: "Enter home realm identifier. Multiple identifiers are allowed.",
+                        label: "Home realm identifiers",
+                        placeholder: "localhost",
+                    },
+                    idleSessionTimeoutPeriod: {
+                        hint: "Enter the idle session timeout in minutes",
+                        label: "Idle Session Time Out"
+                    },
+                    rememberMePeriod: {
+                        hint: "Enter the remember me period in minutes",
+                        label: "Remember Me Period"
+                    }
+                },
+                heading: "Realm configurations",
+                notifications: {
+                    emptyHomeRealmIdentifiers: {
+                        error: {
+                            description: "You must declare at least one home realm identifier.",
+                            message: "Data validation error"
+                        },
+                        genericError: {
+                            description: "",
+                            message: ""
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    getConfigurations: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving the realm configurations.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "",
+                            message: ""
+                        }
+                    },
+                    updateConfigurations: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update Error"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the realm configurations.",
+                            message: "Update Error"
+                        },
+                        success: {
+                            description: "Successfully updated the realm configurations.",
+                            message: "Update Successful"
+                        }
+                    }
                 }
             },
             requestPathAuthenticators: {

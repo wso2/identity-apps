@@ -30,7 +30,7 @@ import {
     SAML2ServiceProviderInterface,
     SAMLMetaDataInterface
 } from "../../../models";
-import { URLInputComponent } from "../components";
+import { URLInputComponent } from "../../shared";
 
 interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
     initialValues: SAML2ServiceProviderInterface;

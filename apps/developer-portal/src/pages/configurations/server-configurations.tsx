@@ -22,7 +22,9 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { AccountRecovery, LoginPolicies, PasswordPolicies, UserSelfRegistration } from "../../components";
+import {
+    AccountRecovery, LoginPolicies, PasswordPolicies, RealmConfiguration, UserSelfRegistration
+} from "../../components";
 import { PageLayout } from "../../layouts";
 
 /**
@@ -67,6 +69,11 @@ export const ServerConfigurationsPage: FunctionComponent<ServerConfigurationsPag
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={ 10 }>
+                        <RealmConfiguration
+                            onAlertFired={ handleAlerts }
+                            data-testid={ `${ testId }-realm-configurations` }
+                        />
+                        <Divider hidden={ true } />
                         <UserSelfRegistration
                             onAlertFired={ handleAlerts }
                             data-testid={ `${ testId }-user-self-registration` }

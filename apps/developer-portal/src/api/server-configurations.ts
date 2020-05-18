@@ -191,3 +191,23 @@ export const updateAllPasswordPolicies = (data: object): Promise<any> => {
 export const getRequestPathAuthenticators = (): Promise<any> => {
     return getConfigurations(store.getState().config.endpoints.requestPathAuthenticators);
 };
+
+/**
+ * Retrieve server configurations.
+ *
+ * @returns {Promise<any>} a promise containing the response.
+ */
+export const getServerConfigurations = (): Promise<any> => {
+    return getConfigurations(store.getState().config.endpoints.serverConfigurations);
+};
+
+/**
+ * Update server configurations.
+ *
+ * @param data request payload
+ *
+ * @returns {Promise<any>} a promise containing the response.
+ */
+export const updateServerConfigurations = (data: object): Promise<any> => {
+    return updateConfigurations(data, store.getState().config.endpoints.serverConfigurations);
+};
