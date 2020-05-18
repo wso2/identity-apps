@@ -26,8 +26,8 @@ import { useDispatch } from "react-redux";
 import { Accordion, Divider, Form, Grid, Icon } from "semantic-ui-react";
 import { getAccountRecoveryConfigurations, updateAccountRecoveryConfigurations } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
-import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
-import { AccountRecoveryConfigurationsInterface } from "../../models/server-configurations";
+import { ServerConfigurationsConstants } from "../../constants";
+import { AccountRecoveryConfigurationsInterface } from "../../models";
 
 /**
  * Prop types for the account recovery component.

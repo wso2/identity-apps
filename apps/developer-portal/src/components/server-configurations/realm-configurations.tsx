@@ -26,8 +26,8 @@ import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { getServerConfigurations, updateServerConfigurations } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
-import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
-import { RealmConfigurationsInterface } from "../../models/server-configurations";
+import { ServerConfigurationsConstants } from "../../constants";
+import { RealmConfigurationsInterface } from "../../models";
 import { URLInputComponent } from "../applications/components";
 
 /**
@@ -59,7 +59,7 @@ export const RealmConfiguration: FunctionComponent<RealmConfigurationProps> = (
 
     const { t } = useTranslation();
 
-    const handleUpdateError = (error) => {
+    const handleUpdateError = (error): void => {
         if (error.response && error.response.data && error.response.data.detail) {
             dispatch(addAlert({
                 description: t("devPortal:components.serverConfigs.realmConfiguration.notifications." +
@@ -80,7 +80,7 @@ export const RealmConfiguration: FunctionComponent<RealmConfigurationProps> = (
         }
     };
 
-    const handleRetrievalError = (error) => {
+    const handleRetrievalError = (error): void => {
         if (error.response && error.response.data && error.response.data.detail) {
             dispatch(addAlert({
                 description: t("devPortal:components.serverConfigs.realmConfiguration.notifications." +
@@ -101,7 +101,7 @@ export const RealmConfiguration: FunctionComponent<RealmConfigurationProps> = (
         }
     };
 
-    const setRealmConfigurationConfigsFromAPI = () => {
+    const setRealmConfigurationConfigsFromAPI = (): void => {
         getServerConfigurations()
             .then((response) => {
                 const configs = {
@@ -119,11 +119,11 @@ export const RealmConfiguration: FunctionComponent<RealmConfigurationProps> = (
     /**
      * Load realm configurations from the API, on page load.
      */
-    useEffect(() => {
+    useEffect((): void => {
         setRealmConfigurationConfigsFromAPI();
     }, [props]);
 
-    const saveRealmConfigurations = (values) => {
+    const saveRealmConfigurations = (values): void => {
         const data = [
             {
                 "operation": "REPLACE",
