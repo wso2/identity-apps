@@ -116,8 +116,10 @@ module.exports = (env) => {
                     ]
                 },
                 {
+                    exclude: /(node_modules)/,
                     test: /\.tsx?$/,
                     use: [
+                        { loader: "cache-loader" },
                         {
                             loader: "thread-loader",
                             options: {
@@ -129,17 +131,17 @@ module.exports = (env) => {
                             loader: "ts-loader",
                             options: {
                                 happyPackMode: true,
-                                transpileOnly: false
+                                transpileOnly: true
                             }
                         }
-                    ],
-                    exclude: /(node_modules)/
+                    ]
                 },
                 {
-                    test: /\.(ts|tsx|js|jsx)$/,
                     enforce: "pre",
                     exclude: /(node_modules|dist|build|target|plugins)/,
+                    test: /\.(ts|tsx|js|jsx)$/,
                     use: [
+                        { loader: "cache-loader" },
                         {
                             loader: "thread-loader",
                             options: {
@@ -151,7 +153,7 @@ module.exports = (env) => {
                             loader: "eslint-loader",
                             options: {
                                 happyPackMode: true,
-                                transpileOnly: false
+                                transpileOnly: true
                             }
                         }
                     ]
