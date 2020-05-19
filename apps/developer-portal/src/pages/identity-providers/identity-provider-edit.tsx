@@ -22,12 +22,12 @@ import { AppAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { getIdentityProviderDetail } from "../api";
-import { EditIdentityProvider } from "../components";
-import { IdentityProviderConstants } from "../constants";
-import { history } from "../helpers";
-import { PageLayout } from "../layouts";
-import { IdentityProviderInterface, emptyIdentityProvider } from "../models";
+import { getIdentityProviderDetail } from "../../api";
+import { EditIdentityProvider } from "../../components";
+import { IdentityProviderConstants } from "../../constants";
+import { history } from "../../helpers";
+import { PageLayout } from "../../layouts";
+import { IdentityProviderInterface, emptyIdentityProvider } from "../../models";
 
 /**
  * Proptypes for the IDP edit page component.

@@ -22,13 +22,13 @@ import _ from "lodash";
 import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { getIdentityProviderList } from "../api";
-import { AdvancedSearchWithBasicFilters, IdentityProviderList } from "../components";
-import { handleGetIDPListCallError } from "../components/identity-providers/utils";
-import { IdentityProviderConstants, UIConstants } from "../constants";
-import { history } from "../helpers";
-import { ListLayout, PageLayout } from "../layouts";
-import { IdentityProviderListResponseInterface } from "../models";
+import { getIdentityProviderList } from "../../api";
+import { AdvancedSearchWithBasicFilters, IdentityProviderList } from "../../components";
+import { handleGetIDPListCallError } from "../../components/identity-providers/utils";
+import { IdentityProviderConstants, UIConstants } from "../../constants";
+import { history } from "../../helpers";
+import { ListLayout, PageLayout } from "../../layouts";
+import { IdentityProviderListResponseInterface } from "../../models";
 
 /**
  * Proptypes for the IDP edit page component.
