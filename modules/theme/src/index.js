@@ -137,6 +137,8 @@ export const CustomApplicationTemplateIllustration =
     require("../dist/lib/themes/default/assets/images/illustrations/custom-app-illustration.svg");
 export const OIDCWebAppTemplateIllustration =
     require("../dist/lib/themes/default/assets/images/illustrations/oidc-web-app-template-illustration.svg");
+export const OIDCMobileTemplateIllustration =
+    require("../dist/lib/themes/default/assets/images/illustrations/oidc-mobile-template-illustration.svg");
 export const PassiveSTSTemplateIllustration =
     require("../dist/lib/themes/default/assets/images/illustrations/passive-sts-template-illustration.svg");
 export const SAMLWebAppTemplateIllustration =
