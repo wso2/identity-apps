@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, EmptyPlaceholder, TemplateGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,16 +25,16 @@ import {
     getIdentityProviderList,
     getIdentityProviderTemplate,
     getIdentityProviderTemplateList
-} from "../api";
-import { ExpertModeTemplate } from "../components/identity-providers/meta";
+} from "../../api";
+import { ExpertModeTemplate } from "../../components/identity-providers/meta";
 import {
     handleGetIDPTemplateAPICallError,
     handleGetIDPTemplateListError
-} from "../components/identity-providers/utils";
-import { IdentityProviderCreateWizard } from "../components/identity-providers/wizards";
-import { EmptyPlaceholderIllustrations, IdPCapabilityIcons, IdPIcons } from "../configs";
-import { history } from "../helpers";
-import { PageLayout } from "../layouts";
+} from "../../components/identity-providers/utils";
+import { IdentityProviderCreateWizard } from "../../components/identity-providers/wizards";
+import { EmptyPlaceholderIllustrations, IdPCapabilityIcons, IdPIcons } from "../../configs";
+import { history } from "../../helpers";
+import { PageLayout } from "../../layouts";
 import {
     IdentityProviderListResponseInterface,
     IdentityProviderTemplateListItemInterface,
@@ -44,9 +42,9 @@ import {
     IdentityProviderTemplateListResponseInterface,
     SupportedServices,
     SupportedServicesInterface
-} from "../models";
-import { AppState } from "../store";
-import { setAvailableAuthenticatorsMeta } from "../store/actions/identity-provider";
+} from "../../models";
+import { AppState } from "../../store";
+import { setAvailableAuthenticatorsMeta } from "../../store/actions/identity-provider";
 
 /**
  * Choose the application template from this page.
