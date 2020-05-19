@@ -85,6 +85,7 @@ import {
     MinimizeIcon,
     NodeJSLogo,
     OIDCLogo,
+    OIDCMobileTemplateIllustration,
     OIDCWebAppTemplateIllustration,
     Office365Logo,
     OpenIDLogo,
@@ -212,6 +213,7 @@ export const InboundProtocolLogos = {
 
 export const ApplicationTemplateIllustrations = {
     customApp: CustomApplicationTemplateIllustration,
+    oidcMobile: OIDCMobileTemplateIllustration,
     oidcWebApp: OIDCWebAppTemplateIllustration,
     passiveSTS: PassiveSTSTemplateIllustration,
     samlWebApp: SAMLWebAppTemplateIllustration,
