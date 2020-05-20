@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/i18n",
-    "version": "1.0.265",
+    "version": "1.0.266",
     "description": "This module contains the configs, helpers and translations required to make an identity app available in multiple languages.",
     "keywords": [
         "WSO2",
@@ -26,7 +26,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/core": "^1.0.265"
+        "@wso2is/core": "^1.0.266"
     },
     "peerDependencies": {
         "@types/i18next": "*",
