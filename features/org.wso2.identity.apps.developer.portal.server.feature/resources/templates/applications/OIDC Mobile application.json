@@ -2,7 +2,7 @@
 	"id": "44a2d9d9-bc0c-4b54-85df-1cf08f4002ec",
     "name": "Mobile application",
     "description": "Applications developed to target mobiles devices.",
-    "image": "oidcWebApp",
+    "image": "oidcMobile",
     "authenticationProtocol": "oidc",
     "types": [
         "android"
