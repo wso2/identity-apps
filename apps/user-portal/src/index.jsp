@@ -38,7 +38,7 @@
             // In such cases, the code is added to the sessionStorage under the key "code".
             const authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>";
 
-            if (authorizationCode) {
+            if (authorizationCode !== "null") {
                 window.sessionStorage.setItem("code", authorizationCode);
             }
 
