@@ -43,12 +43,33 @@ import { AccountSwitchRequestParams } from "../models/oidc-request-params";
 import { TokenRequestHeader, TokenResponseInterface } from "../models/token-response";
 
 /**
- * Checks whether authorization code present in the request.
+ * Checks whether authorization code is present.
  *
  * @returns {boolean} true if authorization code is present.
  */
 export const hasAuthorizationCode = (): boolean => {
-    return !!new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
+    return !!getAuthorizationCode();
+};
+
+/**
+ * Resolves the authorization code.
+ * If response mode is `form_post` authorization code is taken from the session storage.
+ * And if the response mode is not defined or set to `query`, the code will be extracted from
+ * the URL params.
+ *
+ * @returns {string} Resolved authorization code.
+ */
+export const getAuthorizationCode = (): string => {
+
+    if (new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE)) {
+        return new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
+    }
+
+    if (window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
+        return window.sessionStorage.getItem(AUTHORIZATION_CODE);
+    }
+
+    return null;
 };
 
 /**
@@ -93,6 +114,10 @@ export const sendAuthorizationRequest = (requestParams: ConfigInterface): Promis
 
     authorizeRequest += "&scope=" + scope;
     authorizeRequest += "&redirect_uri=" + requestParams.callbackURL;
+
+    if (requestParams.responseMode) {
+        authorizeRequest += "&response_mode=" + requestParams.responseMode;
+    }
 
     if (requestParams.enablePKCE) {
         const codeVerifier = getCodeVerifier();
@@ -162,8 +187,6 @@ export const sendTokenRequest = (
         return Promise.reject(new Error("Invalid token endpoint found."));
     }
 
-    const code = new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
-
     const body = [];
     body.push(`client_id=${requestParams.clientID}`);
 
@@ -171,7 +194,13 @@ export const sendTokenRequest = (
         body.push(`client_secret=${requestParams.clientSecret}`);
     }
 
+    const code = getAuthorizationCode();
     body.push(`code=${code}`);
+
+    if (window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
+        window.sessionStorage.removeItem(AUTHORIZATION_CODE);
+    }
+
     body.push("grant_type=authorization_code");
     body.push(`redirect_uri=${requestParams.callbackURL}`);
 
