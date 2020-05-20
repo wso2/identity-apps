@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import _ from "lodash";
@@ -35,7 +36,6 @@ import {
     UserDetailsInterface,
     createEmptyUserDetails
 } from "../../../models";
-import { addAlert } from "../../../store/actions";
 import { AddUser } from "../add-user";
 import { AddUserGroup } from "../add-user-groups";
 import { AddUserRole } from "../add-user-role";

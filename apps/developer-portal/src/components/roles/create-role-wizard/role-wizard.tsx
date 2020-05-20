@@ -19,6 +19,7 @@
 //TODO Temporary disable of lint due to merge conflicts
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
 import { Modal, Grid, Icon } from "semantic-ui-react";
 import { Heading, Steps, LinkButton, PrimaryButton } from "@wso2is/react-components";
@@ -30,7 +31,6 @@ import { createRole, updateRolePermissions } from "../../../api";
 import { CreateRoleInterface, AlertLevels, CreateRoleMemberInterface } from "../../../models";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../../../store/actions";
 import { AddRoleUsers } from "./role-user-assign";
 import { CreateRoleSummary } from "./role-sumary";
 

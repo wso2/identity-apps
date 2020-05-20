@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Forms } from "@wso2is/forms"
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react"
@@ -36,7 +37,6 @@ import {
     PatchRoleDataInterface,
     RolesInterface
 } from "../../../models";
-import { addAlert } from "../../../store/actions";
 import { validateInputAgainstRegEx } from "../../../utils";
 
 /**
