@@ -374,3 +374,23 @@
         float: right;
     }
 }
+
+.feedback-category {
+    padding: 2em 0 2em 0 !important;
+
+    input:checked + label {
+        background: #f7f7f7;
+    }
+
+    input {
+        display: none;
+    }
+
+    label:not(:first-child) {
+        padding: 1em;
+        display: block;
+        text-align: center;
+        border: 1px solid #3333;
+        border-radius: 5px;
+    }
+}
