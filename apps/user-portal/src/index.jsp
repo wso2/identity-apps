@@ -34,6 +34,14 @@
 
         <script src="<%= htmlWebpackPlugin.options.publicPath %>/app-utils.js"></script>
         <script>
+            // When OAuth2 response mode is set to "form_post", Authorization code sent in a POST.
+            // In such cases, the code is added to the sessionStorage under the key "code".
+            const authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>";
+
+            if (authorizationCode) {
+                window.sessionStorage.setItem("code", authorizationCode);
+            }
+
             AppUtils.init({
                 serverOrigin: "<%= htmlWebpackPlugin.options.serverUrl %>",
                 superTenant: "<%= htmlWebpackPlugin.options.superTenantConstant %>",

@@ -158,12 +158,13 @@ export const getProfileInformation = () => (dispatch): void => {
  */
 const identityManager = (() => {
     let instance: ConfigInterface;
- 
+
     const createInstance = () => {
         return new IdentityClient({
             callbackURL: store.getState().config.deployment.loginCallbackUrl,
             clientHost: store.getState().config.deployment.clientHost,
             clientID: store.getState().config.deployment.clientID,
+            responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
             scope: [ SYSTEM_SCOPE ],
             serverOrigin: store.getState().config.deployment.serverOrigin,
             tenant: store.getState().config.deployment.tenant,
