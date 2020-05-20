@@ -60,7 +60,7 @@ module.exports = (env) => {
                 serverUrl: "<%=getServerURL(\"\", true, true)%>",
                 superTenantConstant: "<%=SUPER_TENANT_DOMAIN_NAME%>",
                 tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
-                tenantPrefix: '<%=TENANT_AWARE_URL_PREFIX%>',
+                tenantPrefix: "<%=TENANT_AWARE_URL_PREFIX%>",
                 authorizationCode: "<%=request.getParameter(\"code\")%>"
             });
         }
