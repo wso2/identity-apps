@@ -60,7 +60,8 @@ module.exports = (env) => {
                 serverUrl: "<%=getServerURL(\"\", true, true)%>",
                 superTenantConstant: "<%=SUPER_TENANT_DOMAIN_NAME%>",
                 tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
-                tenantPrefix: '<%=TENANT_AWARE_URL_PREFIX%>'
+                tenantPrefix: "<%=TENANT_AWARE_URL_PREFIX%>",
+                authorizationCode: "<%=request.getParameter(\"code\")%>"
             });
         }
         else {
@@ -207,7 +208,7 @@ module.exports = (env) => {
             compileAppIndex(),
             new webpack.DefinePlugin({
                 "process.env": {
-                    NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+                    NODE_ENV: JSON.stringify(env.NODE_ENV)
                 },
                 "typeof window": JSON.stringify("object")
             })

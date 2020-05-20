@@ -172,12 +172,13 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
  */
 const identityManager = (() => {
     let instance: ClientInteface;
- 
+
     const createInstance = () => {
         return new IdentityClient({
             callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
+            responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
             serverOrigin: window["AppUtils"].getConfig().serverOrigin,
             tenant: window["AppUtils"].getConfig().tenant,
             tenantPath: window["AppUtils"].getConfig().tenantPath

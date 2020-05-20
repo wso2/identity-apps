@@ -20,6 +20,7 @@ import { handleSignIn } from "./actions/sign-in";
 import { handleSignOut } from "./actions/sign-out";
 import * as AUTHENTICATION_TYPES from "./constants";
 import { ConfigInterface } from "./models/client";
+import { ResponseModeTypes } from "./models/oidc-request-params";
 
 /**
  * The login scope.
@@ -53,6 +54,7 @@ const DefaultConfig = {
     clientSecret: null,
     consentDenied: false,
     enablePKCE: true,
+    responseMode: null,
     scope: [LOGIN_SCOPE, HUMAN_TASK_SCOPE],
     tenant: DEFAULT_SUPER_TENANT
 };
@@ -72,6 +74,7 @@ export class IdentityClient implements ConfigInterface {
     public clientSecret!: string;
     public consentDenied!: boolean;
     public enablePKCE!: boolean;
+    public responseMode!: ResponseModeTypes;
     public scope!: string[];
     public serverOrigin: string;
     public tenant!: string;
@@ -98,6 +101,7 @@ export class IdentityClient implements ConfigInterface {
         this.clientSecret = resolve("clientSecret");
         this.consentDenied = resolve("consentDenied");
         this.enablePKCE = resolve("enablePKCE");
+        this.responseMode = resolve("responseMode");
         this.scope = resolve("scope");
         this.serverOrigin = resolve("serverOrigin");
         this.tenant = resolve("tenant");

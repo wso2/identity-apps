@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ResponseModeTypes } from "./oidc-request-params";
+
 /**
  * SDK Client config parameters.
  */
@@ -28,6 +30,7 @@ export interface ConfigInterface {
     consentDenied?: boolean;
     enablePKCE?: boolean;
     prompt?: string;
+    responseMode?: ResponseModeTypes;
     scope?: string[];
     serverOrigin: string;
     tenant?: string;

@@ -27,6 +27,7 @@ export interface OIDCRequestParamsInterface {
     enablePKCE: boolean;
     prompt?: string;
     redirectUri: string;
+    responseMode?: ResponseModeTypes;
     scope?: string[];
     serverOrigin: string;
 }
@@ -46,3 +47,8 @@ export interface AccountSwitchRequestParams {
     clientHost: string;
     serverOrigin: string;
 }
+
+/**
+ * Supported OAuth2 response types.
+ */
+export type ResponseModeTypes = "query" | "form_post";
