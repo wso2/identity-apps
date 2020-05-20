@@ -20,6 +20,7 @@ interface ServiceResourcesType {
     authorize: string;
     jwks: string;
     logout: string;
+    oidcSessionIFrame: string;
     revoke: string;
     token: string;
     wellKnown: string;
@@ -29,6 +30,7 @@ export const SERVICE_RESOURCES: ServiceResourcesType = {
     authorize: "/oauth2/authorize",
     jwks: "/oauth2/jwks",
     logout: "/oidc/logout",
+    oidcSessionIFrame: "/oidc/checksession",
     revoke: "/oauth2/revoke",
     token: "/oauth2/token",
     wellKnown: "/oauth2/oidcdiscovery/.well-known/openid-configuration"
@@ -42,3 +44,4 @@ export const JWKS_ENDPOINT = "jwks_uri";
 export const OP_CONFIG_INITIATED = "op_config_initiated";
 export const TENANT = "tenant";
 export const CALLBACK_URL = "callback_url";
+export const OIDC_SESSION_IFRAME_ENDPOINT = "oidc_session_iframe_endpoint";

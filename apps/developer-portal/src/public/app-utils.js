@@ -81,6 +81,10 @@ var AppUtils = AppUtils || (function() {
         },
 
         getConfig: function() {
+            if (Object.entries(_config).length === 0) {
+                return null;
+            }
+
             if (_config.accountAppURL && _config.accountAppURL.origin) {
                 _config.accountAppOrigin = _config.accountAppURL.origin;
             }

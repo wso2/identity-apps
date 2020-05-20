@@ -1,0 +1,73 @@
+<html>
+<head>
+    <title>OpenID Connect Session Management RP IFrame</title>
+    <script type="text/javascript">
+
+        const config = window.parent["AppUtils"].getConfig();
+
+        const clientId = config.clientID;
+        const targetOrigin = sessionStorage.getItem("oidc_session_iframe_endpoint");
+        const redirectUri = config.loginCallbackURL;
+
+        function check_session() {
+            const session_state = sessionStorage.getItem("session_state");
+            const mes = clientId + " " + session_state;
+            if (isNotNull(clientId) && isNotNull(session_state)) {
+                const win = document.getElementById("opIFrame").contentWindow;
+                win.postMessage(mes, targetOrigin);
+            }
+        }
+
+        function isNotNull(value) {
+            return value !== null && value.length !== 0 && value !== 'null';
+        }
+
+        function setTimer() {
+            check_session();
+            setInterval("check_session()", 4 * 1000);
+        }
+
+        window.addEventListener("message", receiveMessage, false);
+
+        function receiveMessage(e) {
+
+            if (targetOrigin.indexOf(e.origin) < 0) {
+                return;
+            }
+
+            if (e.data === "changed") {
+                // [RP] session state has changed. Sending prompt=none request...
+                document.getElementById("promptNoneIFrame").src = sessionStorage.getItem("authorization_endpoint") +
+                    "?response_type=code" +
+                    "&client_id=" + clientId +
+                    "&scope=openid" +
+                    "&redirect_uri=" + redirectUri +
+                    "&state=checkSession" +
+                    "&prompt=none";
+            } else if (e.data === "unchanged") {
+                // [RP] session state has not changed
+            } else {
+                // [RP] error while checking session status
+                // Todo: Handle error
+            }
+        }
+
+        document.getElementById("opIFrame").src = targetOrigin + "?client_id=" +
+            clientId + "&redirect_uri=" + redirectUri;
+    </script>
+</head>
+<body onload="setTimer()">
+<iframe id="opIFrame"
+        src=""
+        width="0"
+        height="0">
+</iframe>
+<iframe id="promptNoneIFrame"
+        src=""
+        width="0"
+        height="0">
+</iframe>
+<script type="application/javascript">
+</script>
+</body>
+</html>

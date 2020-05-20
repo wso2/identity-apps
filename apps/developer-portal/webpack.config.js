@@ -61,7 +61,8 @@ module.exports = (env) => {
                 superTenantConstant: "<%=SUPER_TENANT_DOMAIN_NAME%>",
                 tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
                 tenantPrefix: "<%=TENANT_AWARE_URL_PREFIX%>",
-                authorizationCode: "<%=request.getParameter(\"code\")%>"
+                authorizationCode: "<%=request.getParameter(\"code\")%>",
+                NODE_ENV: JSON.stringify(env.NODE_ENV)
             });
         }
         else {
@@ -71,7 +72,8 @@ module.exports = (env) => {
                 hash: true,
                 favicon: faviconImage,
                 title: titleText,
-                publicPath: publicPath
+                publicPath: publicPath,
+                NODE_ENV: JSON.stringify(env.NODE_ENV)
             });
         }
     };

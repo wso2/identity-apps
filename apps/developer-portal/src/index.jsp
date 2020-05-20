@@ -42,19 +42,36 @@
                 window.sessionStorage.setItem("code", authorizationCode);
             }
 
-            AppUtils.init({
-                serverOrigin: "<%= htmlWebpackPlugin.options.serverUrl %>",
-                superTenant: "<%= htmlWebpackPlugin.options.superTenantConstant %>",
-                tenantPrefix: "<%= htmlWebpackPlugin.options.tenantPrefix %>"
-            });
+            if (window["AppUtils"].getConfig() === null) {
+                AppUtils.init({
+                    serverOrigin: "<%= htmlWebpackPlugin.options.serverUrl %>",
+                    superTenant: "<%= htmlWebpackPlugin.options.superTenantConstant %>",
+                    tenantPrefix: "<%= htmlWebpackPlugin.options.tenantPrefix %>"
+                });
+            }
 
-            var doNotDeleteApplications = ["Developer Portal", "User Portal"];
+            const state = new URL(window.location.href).searchParams.get("state");
+            if (state !== null && state === "checkSession") {
+                // Prompt none response.
+                const code = new URL(window.location.href).searchParams.get("code");
+                if (code !== null && code.length !== 0) {
+                    const newSessionState = new URL(window.location.href).searchParams.get("session_state");
+                    sessionStorage.setItem("session_state", newSessionState);
+                } else {
+                    const config = window["AppUtils"].getConfig();
+                    window.top.location.href = config.clientOriginWithTenant +
+                    config.appBaseWithTenant + config.routes.logout;
+                }
+            }
+
+            const doNotDeleteApplications = ["Developer Portal", "User Portal"];
         </script>
     </head>
     <body>
         <noscript>
             You need to enable JavaScript to run this app.
         </noscript>
+        <iframe id="rpIFrame" src="rpIFrame.html" frameborder="0" width="0" height="0"></iframe>
         <div id="root"></div>
     </body>
 </html>
