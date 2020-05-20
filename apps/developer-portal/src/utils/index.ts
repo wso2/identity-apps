@@ -28,3 +28,4 @@ export * from "./filter-list";
 export * from "./sort-list";
 export * from "./userstores";
 export * from "./role-management-utils";
+export * from "./certificates";
