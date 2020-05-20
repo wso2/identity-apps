@@ -78,6 +78,10 @@ interface UploadCertificatePropsInterface extends TestableComponentInterface {
      * The forge certificate object.
      */
     forgeCertificateData: forge.pki.Certificate;
+    /**
+     * Hides the alias input.
+     */
+    hideAliasInput?: boolean;
 }
 
 /**
@@ -99,6 +103,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         fileDecodedData,
         fileData,
         forgeCertificateData,
+        hideAliasInput,
         [ "data-testid" ]: testId
     } = props;
 
@@ -512,29 +517,36 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 } }
                 data-testid={ `${ testId }-file-upload-input` }
             />
-            <Form>
-                <Form.Input
-                    fluid
-                    type="text"
-                    placeholder={ t("devPortal:components.certificates.keystore.forms.alias.placeholder") }
-                    label={ t("devPortal:components.certificates.keystore.forms.alias.label") }
-                    required={ true }
-                    error={
-                        nameError
-                            ? {
-                                content: t("devPortal:components.certificates.keystore." +
-                                    "forms.alias.requiredErrorMessage")
-                            }
-                            : false
-                    }
-                    value={ name }
-                    onChange={ (event) => {
-                        setName(event.target.value);
-                    } }
-                    data-testid={ `${ testId }-alias-input` }
-                />
-            </Form>
-            <Divider hidden />
+            {
+                !hideAliasInput && (
+                    <>
+                        <Form>
+                            <Form.Input
+                                fluid
+                                type="text"
+                                placeholder={ t("devPortal:components.certificates.keystore.forms.alias." +
+                                    "placeholder") }
+                                label={ t("devPortal:components.certificates.keystore.forms.alias.label") }
+                                required={ true }
+                                error={
+                                    nameError
+                                        ? {
+                                            content: t("devPortal:components.certificates.keystore." +
+                                                "forms.alias.requiredErrorMessage")
+                                        }
+                                        : false
+                                }
+                                value={ name }
+                                onChange={ (event) => {
+                                    setName(event.target.value);
+                                } }
+                                data-testid={ `${ testId }-alias-input` }
+                            />
+                        </Form>
+                        <Divider hidden />
+                    </>
+                    )
+                }
 
             <Tab
                 className="tabs resource-tabs"

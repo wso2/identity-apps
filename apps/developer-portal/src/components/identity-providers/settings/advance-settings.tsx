@@ -22,7 +22,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { updateIdentityProviderDetails } from "../../../api";
-import { IdentityProviderAdvanceInterface } from "../../../models";
+import { IdentityProviderAdvanceInterface, IdentityProviderInterface } from "../../../models";
 import { AdvanceConfigurationsForm } from "../forms";
 import { handleIDPUpdateError } from "../utils";
 
@@ -31,9 +31,9 @@ import { handleIDPUpdateError } from "../utils";
  */
 interface AdvanceSettingsPropsInterface extends TestableComponentInterface {
     /**
-     * Currently editing idp id.
+     * Currently editing IDP.
      */
-    idpId: string;
+    editingIDP: IdentityProviderInterface;
     /**
      * Current advanced configurations.
      */
@@ -55,7 +55,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
 ): ReactElement => {
 
     const {
-        idpId,
+        editingIDP,
         advancedConfigurations,
         onUpdate,
         [ "data-testid" ]: testId
@@ -71,14 +71,14 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
      * @param values - Form values.
      */
     const handleAdvancedConfigFormSubmit = (values: any): void => {
-        updateIdentityProviderDetails({ id: idpId, ...values })
+        updateIdentityProviderDetails({ id: editingIDP.id, ...values })
             .then(() => {
                 dispatch(addAlert({
                     description: t("devPortal:components.idp.notifications.updateIDP.success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t("devPortal:components.idp.notifications.updateIDP.success.message")
                 }));
-                onUpdate(idpId);
+                onUpdate(editingIDP.id);
             })
             .catch((error) => {
                 handleIDPUpdateError(error);
@@ -89,8 +89,10 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
         <>
             <div className="advanced-configuration-section">
                 <AdvanceConfigurationsForm
+                    editingIDP={ editingIDP }
                     config={ advancedConfigurations }
                     onSubmit={ handleAdvancedConfigFormSubmit }
+                    onUpdate={ onUpdate }
                     data-testid={ testId }
                 />
             </div>

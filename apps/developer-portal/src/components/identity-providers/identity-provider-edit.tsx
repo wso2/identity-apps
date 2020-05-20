@@ -151,7 +151,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     const AdvancedSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane attached={ false }>
             <AdvanceSettings
-                idpId={ identityProvider.id }
+                editingIDP={ identityProvider }
                 advancedConfigurations={ idpAdvanceConfig }
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-advance-settings` }

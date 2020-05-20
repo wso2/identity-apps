@@ -70,7 +70,11 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
             </div>
 
             <Header>
-                <Header.Content>{ alias }</Header.Content>
+                {
+                    alias && (
+                        <Header.Content>{ alias }</Header.Content>
+                    )
+                }
                 <Header.Subheader>
                     <span>{ t("devPortal:components.certificates.keystore.summary.sn") }</span>
                     { serialNumber }
