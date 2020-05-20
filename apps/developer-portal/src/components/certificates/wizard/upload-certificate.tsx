@@ -545,9 +545,8 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                         </Form>
                         <Divider hidden />
                     </>
-                    )
-                }
-
+                )
+            }
             <Tab
                 className="tabs resource-tabs"
                 menu={ {

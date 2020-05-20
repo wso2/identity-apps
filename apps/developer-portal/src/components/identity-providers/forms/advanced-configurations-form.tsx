@@ -65,8 +65,6 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
         [ "data-testid" ]: testId
     } = props;
 
-    const [isPEMSelected, setPEMSelected] = useState<boolean>(false);
-
     const { t } = useTranslation();
 
     /**
@@ -86,11 +84,6 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
             isFederationHub: !!values.get("federationHub")?.includes("federationHub")
         };
     };
-
-    // useEffect(() => {
-    //     setPEMSelected(config?.certificate && config?.certificate.certificates
-    //         && config?.certificate?.certificates.length > 0);
-    // }, []);
 
     return (
         <>
