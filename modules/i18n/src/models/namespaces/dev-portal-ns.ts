@@ -1053,6 +1053,7 @@ export interface DevPortalNS {
                 addAuthenticator: string;
                 addConnector: string;
                 addAttribute: string;
+                addCertificate: string;
             };
             confirmations: {
                 deleteIDP: Confirmation;
@@ -1199,6 +1200,10 @@ export interface DevPortalNS {
                     title: string;
                     subTitle: string;
                 };
+                addCertificate: {
+                    title: string;
+                    subTitle: string;
+                };
                 addProvisioningConnector: {
                     title: string;
                     subTitle: string;
@@ -1214,9 +1219,20 @@ export interface DevPortalNS {
             notifications: {
                 addFederatedAuthenticator: Notification;
                 addIDP: Notification;
+                changeCertType: {
+                    pem: {
+                       description: string;
+                       message: string;
+                    };
+                    jwks: {
+                        description: string;
+                        message: string;
+                    };
+                };
                 deleteIDP: Notification;
                 disableAuthenticator: Notification;
                 disableOutboundProvisioningConnector: Notification;
+                duplicateCertificateUpload: Notification;
                 getIDP: Notification;
                 getIDPList: Notification;
                 getIDPTemplate: Notification;
@@ -1233,11 +1249,13 @@ export interface DevPortalNS {
                 updateClaimsConfigs: Notification;
                 updateFederatedAuthenticator: Notification;
                 updateIDP: Notification;
+                updateIDPCertificate: Notification;
                 updateIDPRoleMappings: Notification;
                 updateJITProvisioning: Notification;
                 updateOutboundProvisioningConnector: Notification;
             };
             placeHolders: {
+                emptyCertificateList: Placeholder;
                 emptyIDPList: Placeholder;
                 emptyIDPSearchResults: Placeholder;
                 emptyAuthenticatorList: Placeholder;

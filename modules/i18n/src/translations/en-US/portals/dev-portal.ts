@@ -2494,6 +2494,7 @@ export const devPortal: DevPortalNS = {
             buttons: {
                 addAttribute: "Add Attribute",
                 addAuthenticator: "New Authenticator",
+                addCertificate: "New Certificate",
                 addConnector: "New Connector",
                 addIDP: "New Identity Provider"
             },
@@ -2544,14 +2545,14 @@ export const devPortal: DevPortalNS = {
                     },
                     certificateType: {
                         certificateJWKS: {
-                            label: "JWKS",
+                            label: "Use JWKS endpoint",
                             placeholder: "Value should be the certificate in JWKS format.",
                             validations: {
                                 empty: "Certificate value is required"
                             }
                         },
                         certificatePEM: {
-                            label: "PEM",
+                            label: "Provide certificate",
                             placeholder: "Value should be a PEM URL.",
                             validations: {
                                 empty: "Certificate value is required"
@@ -2559,7 +2560,7 @@ export const devPortal: DevPortalNS = {
                         },
                         hint: "If the type is JWKS, the value should be a JWKS URL. If the type is PEM, the" +
                             " value should be the certificate in PEM format.",
-                        label: "Certificate type"
+                        label: "Select Certificate Type"
                     },
                     federationHub: {
                         hint: "Check if this points to a federation hub identity provider",
@@ -2705,6 +2706,10 @@ export const devPortal: DevPortalNS = {
                     subTitle: "Add new authenticator to the identity provider: {{ idpName }}",
                     title: "Add New Authenticator"
                 },
+                addCertificate: {
+                    subTitle: "Add new certificate to the identity provider: {{ idpName }}",
+                    title: "Add New Certificate"
+                },
                 addProvisioningConnector: {
                     subTitle: "Follow the steps to add new outbound provisioning connector",
                     title: "Create outbound provisioning connector"
@@ -2746,6 +2751,18 @@ export const devPortal: DevPortalNS = {
                         message: "Create successful"
                     }
                 },
+                changeCertType: {
+                    jwks: {
+                        description: "Please note that if you have added a certificate it'll be overridden by the " +
+                            "the JWKS endpoint.",
+                        message: "Warning!"
+                    },
+                    pem: {
+                        description: "Please note that if you have added a JWKS endpoint it'll be overridden by the " +
+                            "certificate.",
+                        message: "Warning!"
+                    }
+                },
                 deleteIDP: {
                     error: {
                         description: "{{ description }}",
@@ -2778,6 +2795,20 @@ export const devPortal: DevPortalNS = {
                     error: {
                         description: "You cannot disable the default outbound provisioning connector.",
                         message: "Data validation error"
+                    },
+                    genericError: {
+                        description: "",
+                        message: ""
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                duplicateCertificateUpload: {
+                    error: {
+                        description: "The certificate already exists for the IDP: {{idp}}",
+                        message: "Certificate duplication error "
                     },
                     genericError: {
                         description: "",
@@ -3012,6 +3043,20 @@ export const devPortal: DevPortalNS = {
                         message: "Update successful"
                     }
                 },
+                updateIDPCertificate: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Update error"
+                    },
+                    genericError: {
+                        description: "An error occurred while updating the identity provider certificate.",
+                        message: "Update Error"
+                    },
+                    success: {
+                        description: "Successfully updated the identity provider certificate.",
+                        message: "Update successful"
+                    }
+                },
                 updateIDPRoleMappings: {
                     error: {
                         description: "{{ description }}",
@@ -3063,6 +3108,13 @@ export const devPortal: DevPortalNS = {
                         2: "predefined templates."
                     },
                     title: "Add an authenticator"
+                },
+                emptyCertificateList: {
+                    subtitles: {
+                        0: "This IDP has no certificates added.",
+                        1: "Add a certificate to view it here."
+                    },
+                    title: "No certificates"
                 },
                 emptyConnectorList: {
                     subtitles: {
