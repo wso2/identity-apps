@@ -19,6 +19,7 @@
 
 export * from "./accordion";
 export * from "./alert";
+export * from "./analytics";
 export * from "./avatar";
 export * from "./brand";
 export * from "./button";
@@ -32,6 +33,7 @@ export * from "./header";
 export * from "./help-panel";
 export * from "./icon";
 export * from "./input";
+export * from "./jumbotron";
 export * from "./language-switcher";
 export * from "./list";
 export * from "./loader";

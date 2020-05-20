@@ -26,6 +26,10 @@ import { SemanticVERTICALALIGNMENTS } from "semantic-ui-react";
  */
 export interface GenericIconProps extends TestableComponentInterface {
     /**
+     * Background fill color.
+     */
+    background?: "primary" | "secondary" | "accent1" | "accent2" | "accent3" | "default" | boolean;
+    /**
      * Should the icon appear bordered.
      */
     bordered?: boolean;
@@ -41,6 +45,10 @@ export interface GenericIconProps extends TestableComponentInterface {
      * Should the icon appear default i.e grey.
      */
     defaultIcon?: boolean;
+    /**
+     * Icon fill color.
+     */
+    fill?: "primary" | "secondary" | "accent1" | "accent2" | "accent3" | "default" | "white" | boolean;
     /**
      * Floated direction.
      */
@@ -76,8 +84,13 @@ export interface GenericIconProps extends TestableComponentInterface {
     relaxed?: boolean | "very";
     /**
      * Should the icon appear rounded.
+     * @deprecated use `shape` instead.
      */
     rounded?: boolean;
+    /**
+     * Shape of the icon.
+     */
+    shape?: "square" | "circular" | "rounded";
     /**
      * Size of the icon.
      */
@@ -92,6 +105,7 @@ export interface GenericIconProps extends TestableComponentInterface {
     style?: object;
     /**
      * Should the icon be squared.
+     * @deprecated use `shape` instead.
      */
     square?: boolean;
     /**
@@ -137,10 +151,12 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
 ): ReactElement => {
 
     const {
+        background,
         bordered,
         className,
         colored,
         defaultIcon,
+        fill,
         floated,
         hoverable,
         icon,
@@ -150,6 +166,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         onClick,
         relaxed,
         rounded,
+        shape,
         size,
         spaced,
         style,
@@ -163,9 +180,11 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
 
     const classes = classNames({
+        [ typeof background === "boolean" ? "background-transparent" : `background-${ background }` ]: background,
         "bordered": bordered,
         "colored": colored,
         "default": defaultIcon,
+        [ typeof fill === "boolean" ? "fill-default" : `fill-${ fill }` ]: fill,
         [`floated-${floated}`]: floated,
         hoverable,
         "inline": inline,
@@ -174,6 +193,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         "relaxed": relaxed,
         "rounded": rounded,
         [ (size === "default") ? "default-size" : size ]: size,
+        [ shape ]: shape,
         [`spaced-${spaced}`]: spaced,
         "square": square,
         "transparent": transparent,
@@ -237,14 +257,17 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
  * Default proptypes for the Generic Icon component.
  */
 GenericIcon.defaultProps = {
+    background: false,
     bordered: false,
     className: "",
     "data-testid": "generic-icon",
     defaultIcon: false,
+    fill: "default",
     floated: null,
     inline: false,
     relaxed: false,
     rounded: false,
+    shape: "square",
     size: "auto",
     spaced: null,
     square: false,

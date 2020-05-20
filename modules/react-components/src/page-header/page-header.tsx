@@ -53,7 +53,7 @@ export interface PageHeaderPropsInterface extends LoadableComponentInterface, Te
     /**
      * Header title.
      */
-    title: string;
+    title?: string;
     /**
      * Title render element.
      */
@@ -106,7 +106,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
     const wrapperClasses = classNames(
         "page-header-wrapper",
         {
-            ["with-image"]: image
+            [ "with-image" ]: image
         },
         className
     );
@@ -114,102 +114,104 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
     const innerClasses = classNames(
         "page-header-inner",
         {
-            ["with-image"]: image
+            [ "with-image" ]: image
         }
     );
 
     return (
-        (title || description) && (
-            <div className={ wrapperClasses } data-testid={ testId }>
-                {
-                    backButton && backButton.text && (
-                        isLoading
-                            ? (
-                                <div className="back-button fluid">
-                                    <Placeholder>
-                                        <Placeholder.Line length="short" />
-                                    </Placeholder>
-                                </div>
-                            )
-                            : (
-                                <div
-                                    data-testid={ backButton[ "data-testid" ] }
-                                    className="back-button"
-                                    onClick={ backButton.onClick }
-                                >
-                                    <Icon name="arrow left"/>
-                                    { backButton.text }
-                                </div>
-                            )
-                    )
-                }
-                <div className={ innerClasses }>
-                    { image && (
-                        <GenericIcon
-                            icon={
-                                isLoading ?
-                                    (
-                                        <div className="fluid">
-                                            <Placeholder style={ { height: 100, width: 100 } }>
-                                                <Placeholder.Image square />
-                                            </Placeholder>
-                                        </div>
-                                    )
-                                    : image
-                            }
-                            size="tiny"
-                            transparent
-                            spaced="right"
-                            data-testid={ `${ testId }-image` }
-                        />
-                    ) }
-
+        (title || description)
+            ? (
+                <div className={ wrapperClasses } data-testid={ testId }>
                     {
-                        isLoading
-                            ? (
-                                <Header className="page-header ellipsis"
-                                    as={ titleAs }
-                                    textAlign={ titleTextAlign }
-                                >
-                                    <div style={ { width: "250px" } }>
-                                        <Placeholder fluid>
-                                            <Placeholder.Header>
-                                                <Placeholder.Line />
-                                                { description && <Placeholder.Line /> }
-                                            </Placeholder.Header>
+                        backButton && backButton.text && (
+                            isLoading
+                                ? (
+                                    <div className="back-button fluid">
+                                        <Placeholder>
+                                            <Placeholder.Line length="short"/>
                                         </Placeholder>
                                     </div>
-                                </Header>
-                            )
-                            : (
-                                <Header
-                                    className="page-header ellipsis"
-                                    as={ titleAs }
-                                    textAlign={ titleTextAlign }
-                                    data-testid={ `${ testId }-header` }
-                                >
-                                    { title && title }
-                                    { description && (
-                                        <Header.Subheader
-                                            className="sub-header ellipsis"
-                                            data-testid={ `${ testId }-sub-header` }
-                                        >
-                                            { description }
-                                        </Header.Subheader>
-                                    ) }
-                                </Header>
-                            )
+                                )
+                                : (
+                                    <div
+                                        data-testid={ backButton[ "data-testid" ] }
+                                        className="back-button"
+                                        onClick={ backButton.onClick }
+                                    >
+                                        <Icon name="arrow left"/>
+                                        { backButton.text }
+                                    </div>
+                                )
+                        )
                     }
-                    
+                    <div className={ innerClasses }>
+                        { image && (
+                            <GenericIcon
+                                icon={
+                                    isLoading ?
+                                        (
+                                            <div className="fluid">
+                                                <Placeholder style={ { height: 100, width: 100 } }>
+                                                    <Placeholder.Image square/>
+                                                </Placeholder>
+                                            </div>
+                                        )
+                                        : image
+                                }
+                                size="tiny"
+                                transparent
+                                spaced="right"
+                                data-testid={ `${ testId }-image` }
+                            />
+                        ) }
+
+                        {
+                            isLoading
+                                ? (
+                                    <Header className="page-header ellipsis"
+                                            as={ titleAs }
+                                            textAlign={ titleTextAlign }
+                                    >
+                                        <div style={ { width: "250px" } }>
+                                            <Placeholder fluid>
+                                                <Placeholder.Header>
+                                                    <Placeholder.Line/>
+                                                    { description && <Placeholder.Line/> }
+                                                </Placeholder.Header>
+                                            </Placeholder>
+                                        </div>
+                                    </Header>
+                                )
+                                : (
+                                    <Header
+                                        className="page-header ellipsis"
+                                        as={ titleAs }
+                                        textAlign={ titleTextAlign }
+                                        data-testid={ `${ testId }-header` }
+                                    >
+                                        { title && title }
+                                        { description && (
+                                            <Header.Subheader
+                                                className="sub-header ellipsis"
+                                                data-testid={ `${ testId }-sub-header` }
+                                            >
+                                                { description }
+                                            </Header.Subheader>
+                                        ) }
+                                    </Header>
+                                )
+                        }
+
+                    </div>
+                    {
+                        bottomMargin && <Divider hidden/>
+                    }
+                    {
+                        showBottomDivider && <Divider/>
+                    }
                 </div>
-                {
-                    bottomMargin && <Divider hidden/>
-                }
-                {
-                    showBottomDivider && <Divider />
-                }
-            </div>
-        )
+            )
+            : null
     );
 };
 

@@ -57,6 +57,7 @@ export interface CommonNS {
     edit: string;
     endsWith: string;
     equals: string;
+    explore: string;
     export: string;
     filter: string;
     finish: string;

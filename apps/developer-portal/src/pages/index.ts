@@ -25,7 +25,7 @@ export * from "./customize";
 export * from "./errors";
 export * from "./user-stores";
 export * from "./groups";
-export * from "./home";
+export * from "./overview";
 export * from "./privacy";
 export * from "./users";
 export * from "./roles";

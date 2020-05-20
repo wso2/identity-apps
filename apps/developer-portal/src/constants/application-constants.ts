@@ -162,7 +162,15 @@ export class ApplicationConstants {
         .set("UNAUTHORIZED", "/unauthorized")
         .set("APPLICATIONS", "/applications")
         .set("APPLICATION_TEMPLATES", "/applications/templates")
-        .set("APPLICATION_EDIT", "/applications/:id");
+        .set("APPLICATION_EDIT", "/applications/:id")
+        .set("ATTRIBUTE_DIALECTS", "/claim-dialects")
+        .set("CERTIFICATES", "/certificates")
+        .set("EMAIL_TEMPLATES", "/email-templates")
+        .set("GENERAL_CONFIGS", "/server-configurations")
+        .set("GROUPS", "/groups")
+        .set("IDP", "/identity-providers")
+        .set("IDP_EDIT", "/identity-providers/:id")
+        .set("ROLES", "/roles");
 
     /**
      * Name of the app config file for the developer portal.

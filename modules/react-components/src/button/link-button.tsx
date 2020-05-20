@@ -26,6 +26,10 @@ import { ButtonProps, Loader, LoaderProps, Button as SemanticButton } from "sema
  */
 export interface LinkButtonPropsInterface extends ButtonProps, TestableComponentInterface {
     /**
+     * Compact mode with no padding.
+     */
+    compact?: boolean;
+    /**
      * To represent info state.
      */
     info?: boolean;
@@ -57,6 +61,7 @@ export const LinkButton: FunctionComponent<LinkButtonPropsInterface> = (
     const {
         children,
         className,
+        compact,
         info,
         loading,
         loaderPosition,
@@ -69,6 +74,7 @@ export const LinkButton: FunctionComponent<LinkButtonPropsInterface> = (
     const classes = classNames(
         "link-button",
         {
+            compact,
             info,
             [ `loader-${ loaderPosition }` ]: loading && loaderPosition,
             warning

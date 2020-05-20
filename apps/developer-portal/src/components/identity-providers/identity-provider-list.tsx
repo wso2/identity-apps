@@ -29,11 +29,11 @@ import {
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Icon } from "semantic-ui-react";
+import { Icon, ListItemProps } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
 import { deleteIdentityProvider } from "../../api";
 import { EmptyPlaceholderIllustrations } from "../../configs";
-import { UIConstants } from "../../constants";
+import { ApplicationConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import {
     ConfigReducerStateInterface,
@@ -47,25 +47,41 @@ import { AppState } from "../../store";
  */
 interface IdentityProviderListPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
     /**
+     * Default list item limit.
+     */
+    defaultListItemLimit?: number;
+    /**
      * IdP list.
      */
     list: IdentityProviderListResponseInterface;
     /**
      * Callback to be fired when clicked on the empty list placeholder action.
      */
-    onEmptyListPlaceholderActionClick: () => void;
+    onEmptyListPlaceholderActionClick?: () => void;
     /**
      * On IdP delete callback.
      */
-    onIdentityProviderDelete: () => void;
+    onIdentityProviderDelete?: () => void;
+    /**
+     * On list item select callback.
+     */
+    onListItemClick?: (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => void;
     /**
      * Callback for the search query clear action.
      */
-    onSearchQueryClear: () => void;
+    onSearchQueryClear?: () => void;
     /**
      * Search query for the list.
      */
-    searchQuery: string;
+    searchQuery?: string;
+    /**
+     * Enable selection styles.
+     */
+    selection?: boolean;
+    /**
+     * Show list item actions.
+     */
+    showListItemActions?: boolean;
 }
 
 /**
@@ -79,12 +95,16 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
 ): ReactElement => {
 
     const {
+        defaultListItemLimit,
         isLoading,
         list,
         onEmptyListPlaceholderActionClick,
         onIdentityProviderDelete,
+        onListItemClick,
         onSearchQueryClear,
         searchQuery,
+        selection,
+        showListItemActions,
         [ "data-testid" ]: testId
     } = props;
 
@@ -103,7 +123,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
      * @param {string} idpId Identity provider id.
      */
     const handleIdentityProviderEdit = (idpId: string): void => {
-        history.push(`identity-providers/${ idpId }`);
+        history.push(ApplicationConstants.PATHS.get("IDP_EDIT").replace(":id", idpId));
     };
 
     /**
@@ -169,7 +189,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
         if (list?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
-                    action={ (
+                    action={ onEmptyListPlaceholderActionClick && (
                         <PrimaryButton
                             onClick={ onEmptyListPlaceholderActionClick }
                         >
@@ -198,9 +218,10 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
             className="identity-providers-list"
             isLoading={ isLoading }
             loadingStateOptions={ {
-                count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                count: defaultListItemLimit,
                 imageType: "square"
             } }
+            selection={ selection }
             data-testid={ `${ testId }-resource-list` }
         >
             {
@@ -211,7 +232,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                             return (
                                 <ResourceList.Item
                                     key={ index }
-                                    actions={ [
+                                    actions={ showListItemActions && [
                                         {
                                             hidden: config.ui.doNotDeleteIdentityProviders.includes(idp.name),
                                             icon: "pencil alternate",
@@ -238,6 +259,16 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                                     ) }
                                     itemHeader={ idp.name }
                                     itemDescription={ idp.description }
+                                    onClick={
+                                        (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => {
+                                            if (!selection) {
+                                                return;
+                                            }
+
+                                            handleIdentityProviderEdit(idp.id);
+                                            onListItemClick(event, data);
+                                        }
+                                    }
                                     data-testid={ `${ testId }-resource-list-item-${ index }` }
                                 />
                             );
@@ -291,5 +322,8 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
  * Default proptypes for the IDP list.
  */
 IdentityProviderList.defaultProps = {
-    "data-testid": "idp-list"
+    "data-testid": "idp-list",
+    defaultListItemLimit: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+    selection: false,
+    showListItemActions: true
 };

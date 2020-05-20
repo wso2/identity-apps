@@ -115,13 +115,14 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
         itemHeader,
         metaContent,
         metaColumnWidth,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        ...rest
     } = props;
 
     const classes = classNames("resource-list-item", className);
 
     return (
-        <List.Item className={ classes } data-testid={ testId }>
+        <List.Item className={ classes } data-testid={ testId } { ...rest }>
             <Grid>
                 <Grid.Row columns={
                     metaContent instanceof Array

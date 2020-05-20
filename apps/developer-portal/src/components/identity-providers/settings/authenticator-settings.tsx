@@ -41,7 +41,7 @@ import {
 } from "../../../models";
 import { AuthenticatorAccordion } from "../../shared";
 import { AuthenticatorFormFactory } from "../forms";
-import { FederatedAuthenticators } from "../meta/authenticators";
+import { getFederatedAuthenticators } from "../meta";
 import {
     handleGetFederatedAuthenticatorMetadataAPICallError,
     handleGetIDPTemplateAPICallError,
@@ -328,7 +328,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         );
 
                         // Set filtered manual mode options.
-                        setAvailableManualModeOptions(FederatedAuthenticators.filter(a =>
+                        setAvailableManualModeOptions(getFederatedAuthenticators().filter(a =>
                             !availableAuthenticatorIDs.includes(a.authenticatorId)));
 
                         // sort templateList based on display Order
@@ -456,11 +456,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                             />
                                         ),
                                         icon: {
-                                            icon: authenticator.id && (FederatedAuthenticators.find((fedAuth) =>
+                                            icon: authenticator.id && (getFederatedAuthenticators().find((fedAuth) =>
                                                     (fedAuth.authenticatorId === authenticator.id))).icon
                                         },
                                         id: authenticator?.id,
-                                        title: authenticator.id && (FederatedAuthenticators.find((fedAuth) =>
+                                        title: authenticator.id && (getFederatedAuthenticators().find((fedAuth) =>
                                             (fedAuth.authenticatorId === authenticator.id))).displayName
                                     }
                                 })

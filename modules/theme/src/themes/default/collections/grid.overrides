@@ -294,3 +294,31 @@
          }
      }
 }
+
+/*----------------------------------
+     Column with bottom gutters
+------------------------------------*/
+
+.ui.grid {
+    .row {
+        .column {
+            &.with-bottom-gutters {
+                padding-bottom: (@gutterWidth / 2);
+            }
+        }
+    }
+}
+
+/*----------------------------------
+  Column count exceeded Scenario
+------------------------------------*/
+
+.ui.grid {
+    .row {
+        &.column-count-exceeded {
+            .column {
+                padding-bottom: (@gutterWidth / 2);
+            }
+        }
+    }
+}

@@ -18,3 +18,4 @@
 
 export * from "./heading";
 export * from "./hint";
+export * from "./tooltip";

@@ -36,7 +36,7 @@ import {
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Icon, Label } from "semantic-ui-react";
+import { Icon, Label, ListItemProps } from "semantic-ui-react";
 import { deleteApplication } from "../../api";
 import { EmptyPlaceholderIllustrations } from "../../configs";
 import { ApplicationConstants, ApplicationManagementConstants, UIConstants } from "../../constants";
@@ -59,25 +59,41 @@ interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInter
     TestableComponentInterface {
 
     /**
+     * Default list item limit.
+     */
+    defaultListItemLimit?: number;
+    /**
      * Application list.
      */
     list: ApplicationListInterface;
     /**
      * On application delete callback.
      */
-    onApplicationDelete: () => void;
+    onApplicationDelete?: () => void;
+    /**
+     * On list item select callback.
+     */
+    onListItemClick?: (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => void;
     /**
      * Callback for the search query clear action.
      */
-    onSearchQueryClear: () => void;
+    onSearchQueryClear?: () => void;
     /**
      * Callback to be fired when clicked on the empty list placeholder action.
      */
-    onEmptyListPlaceholderActionClick: () => void;
+    onEmptyListPlaceholderActionClick?: () => void;
     /**
      * Search query for the list.
      */
-    searchQuery: string;
+    searchQuery?: string;
+    /**
+     * Enable selection styles.
+     */
+    selection?: boolean;
+    /**
+     * Show list item actions.
+     */
+    showListItemActions?: boolean;
 }
 
 /**
@@ -92,13 +108,17 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 ): ReactElement => {
 
     const {
+        defaultListItemLimit,
         featureConfig,
         isLoading,
         list,
         onApplicationDelete,
+        onListItemClick,
         onEmptyListPlaceholderActionClick,
         onSearchQueryClear,
         searchQuery,
+        selection,
+        showListItemActions,
         [ "data-testid" ]: testId
     } = props;
 
@@ -190,6 +210,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      * @return {ResourceListActionInterface[]} Resolved list actions.
      */
     const resolveListActions = (app: ApplicationListItemInterface): ResourceListActionInterface[] => {
+        if (!showListItemActions) {
+            return;
+        }
+
         const actions: ResourceListActionInterface[] = [
             {
                 hidden: !isFeatureEnabled(
@@ -249,7 +273,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         if (list?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
-                    action={ (
+                    action={ onEmptyListPlaceholderActionClick && (
                         <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
                             <Icon name="add"/>
                             { t("devPortal:components.applications.placeholders.emptyList.action") }
@@ -277,9 +301,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 className="applications-list"
                 isLoading={ isLoading || isApplicationTemplateRequestLoading }
                 loadingStateOptions={ {
-                    count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                    count: defaultListItemLimit,
                     imageType: "square"
                 } }
+                selection={ selection }
                 data-testid={ testId }
             >
                 {
@@ -297,6 +322,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                 return (
                                     <ResourceList.Item
                                         key={ index }
+                                        id={ app.id }
                                         actions={ resolveListActions(app) }
                                         actionsFloated="right"
                                         avatar={ (
@@ -330,6 +356,16 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                                 { description }
                                             </>
                                         ) }
+                                        onClick={
+                                            (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => {
+                                                if (!selection) {
+                                                    return;
+                                                }
+
+                                                handleApplicationEdit(app.id);
+                                                onListItemClick(event, data);
+                                            }
+                                        }
                                         data-testid={ `${ testId }-item` }
                                     />
                                 );
@@ -393,5 +429,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
  * Default props for the component.
  */
 ApplicationList.defaultProps = {
-    "data-testid": "application-list"
+    "data-testid": "application-list",
+    defaultListItemLimit: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+    selection: false,
+    showListItemActions: true
 };
