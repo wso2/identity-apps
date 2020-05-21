@@ -18,7 +18,7 @@
 
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importTenantPrefix %>
-<%= htmlWebpackPlugin.options.importSuperTenantConstant %>
+<%= htmlWebpackPlugin.options.importSuperTenantvarant %>
 
 <!DOCTYPE HTML>
 <html>
@@ -36,7 +36,7 @@
         <script>
             // When OAuth2 response mode is set to "form_post", Authorization code sent in a POST.
             // In such cases, the code is added to the sessionStorage under the key "code".
-            const authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>";
+            var authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>";
 
             if (authorizationCode !== "null") {
                 window.sessionStorage.setItem("code", authorizationCode);
@@ -45,26 +45,30 @@
             if (window["AppUtils"].getConfig() === null) {
                 AppUtils.init({
                     serverOrigin: "<%= htmlWebpackPlugin.options.serverUrl %>",
-                    superTenant: "<%= htmlWebpackPlugin.options.superTenantConstant %>",
+                    superTenant: "<%= htmlWebpackPlugin.options.superTenantvarant %>",
                     tenantPrefix: "<%= htmlWebpackPlugin.options.tenantPrefix %>"
                 });
             }
 
-            const state = new URL(window.location.href).searchParams.get("state");
+            var state = new URL(window.location.href).searchParams.get("state");
+    
             if (state !== null && state === "checkSession") {
                 // Prompt none response.
-                const code = new URL(window.location.href).searchParams.get("code");
+                var code = new URL(window.location.href).searchParams.get("code");
+    
                 if (code !== null && code.length !== 0) {
-                    const newSessionState = new URL(window.location.href).searchParams.get("session_state");
+                    var newSessionState = new URL(window.location.href).searchParams.get("session_state");
+    
                     sessionStorage.setItem("session_state", newSessionState);
                 } else {
-                    const config = window["AppUtils"].getConfig();
+                    var config = window["AppUtils"].getConfig();
+    
                     window.top.location.href = config.clientOriginWithTenant +
                     config.appBaseWithTenant + config.routes.logout;
                 }
             }
 
-            const doNotDeleteApplications = ["Developer Portal", "User Portal"];
+            var doNotDeleteApplications = ["Developer Portal", "User Portal"];
         </script>
     </head>
     <body>

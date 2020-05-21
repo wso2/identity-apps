@@ -29,7 +29,7 @@
 
         <script src="<%= htmlWebpackPlugin.options.publicPath %>/app-utils.js"></script>
         <script>
-            if (window["AppUtils"].getConfig() === null) {
+            if (window["AppUtils"] === null || window["AppUtils"].getConfig() === null) {
                 AppUtils.init({
                     accountAppOrigin: "https://localhost:9000",
                     serverOrigin: "https://localhost:9443",
@@ -38,21 +38,25 @@
                 });
             }
 
-            const state = new URL(window.location.href).searchParams.get("state");
+            var state = new URL(window.location.href).searchParams.get("state");
+
             if (state !== null && state === "checkSession") {
                 // Prompt none response.
-                const code = new URL(window.location.href).searchParams.get("code");
+                var code = new URL(window.location.href).searchParams.get("code");
+                
                 if (code !== null && code.length !== 0) {
-                    const newSessionState = new URL(window.location.href).searchParams.get("session_state");
+                    var newSessionState = new URL(window.location.href).searchParams.get("session_state");
+                    
                     sessionStorage.setItem("session_state", newSessionState);
                 } else {
-                    const config = window["AppUtils"].getConfig();
+                    var config = window["AppUtils"].getConfig();
+                    
                     window.top.location.href = config.clientOriginWithTenant +
                         config.appBaseWithTenant + config.routes.logout;
                 }
             }
 
-            const doNotDeleteApplications = ["Developer Portal", "User Portal"];
+            var doNotDeleteApplications = ["Developer Portal", "User Portal"];
         </script>
     </head>
     <body>
