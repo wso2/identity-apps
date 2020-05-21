@@ -374,3 +374,36 @@
         float: right;
     }
 }
+
+.feedback-category {
+    padding: 1em 0 2em 0 !important;
+
+    .row .column:first-child {
+        padding-right: 5px !important;
+    }
+
+    .row .column:nth-child(2) {
+        padding-right: 5px !important;
+        padding-left: 5px !important;
+    }
+
+    .row .column:last-child {
+        padding-left: 5px !important;
+    }
+
+    input:checked + label {
+        background: #f7f7f7;
+    }
+
+    input {
+        display: none;
+    }
+
+    label:not(:first-child) {
+        padding: 1em;
+        display: block;
+        text-align: center;
+        border: 1px solid #3333;
+        border-radius: 5px;
+    }
+}
