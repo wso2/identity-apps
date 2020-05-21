@@ -60,11 +60,10 @@ export class HelpPanelConstants {
 
     /**
      * Key for the `Edit Application` tag in the docs structure object.
-     * TODO: Rename this to `"Developer Portal` once mkdocs.yml is changed.
      * @constant
      * @type {string}
      */
-    public static readonly EDIT_APPLICATIONS_DOCS_KEY = "[\"Admin Portal\"].Applications[\"Edit Application\"]";
+    public static readonly EDIT_APPLICATIONS_DOCS_KEY = "[\"Developer Portal\"].Applications[\"Edit Application\"]";
 
     /**
      * Key for the application samples tag in the docs structure object.
@@ -83,7 +82,8 @@ export class HelpPanelConstants {
     public static readonly APPLICATION_TEMPLATE_DOC_MAPPING: Map<string, string> = new Map<string, string>()
             .set("SAML web application", "SAML Web Application")
             .set("OIDC web application", "OIDC Web Application")
-            .set("Single page application", "Single Page Aplication");
+            .set("Single page application", "Single Page Aplication")
+            .set("Mobile application", "OIDC Mobile Application");
 
     /**
      * Github contents API endpoint.
