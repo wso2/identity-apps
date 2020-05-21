@@ -169,12 +169,18 @@ module.exports = (env) => {
             ignored: [/node_modules([\\]+|\/)+(?!@wso2is)/, /build/]
         },
         devServer: {
-            https: true,
+            before: function(app) {
+                app.get("/", function(req, res) {
+                    res.redirect(publicPath);
+                });
+            },
             contentBase: distFolder,
-            inline: true,
+            historyApiFallback: true,
             host: "localhost",
-            port: devServerPort,
-            historyApiFallback: true
+            https: true,
+            inline: true,
+            openPage: basename,
+            port: devServerPort
         },
         node: {
             fs: "empty"
