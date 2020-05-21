@@ -101,29 +101,27 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
         let data = [];
         const certificateIndex: number = idp?.certificate?.certificates ? idp?.certificate?.certificates?.length : 0;
 
-        if (values.key === "certificate") {
-            if (idp?.certificate?.jwksUri) {
-                data = [
-                    {
-                        "operation": "ADD",
-                        "path": "/certificate/certificates/" + certificateIndex,
-                        "value": values["certificate"]
-                    },
-                    {
-                        "operation": "REPLACE",
-                        "path": "/certificate/jwksUri",
-                        "value": null
-                    }
-                ]
-            } else {
-                data = [
-                    {
-                        "operation": "ADD",
-                        "path": "/certificate/certificates/" + certificateIndex,
-                        "value": values["certificate"]
-                    }
-                ]
-            }
+        if (idp?.certificate?.jwksUri) {
+            data = [
+                {
+                    "operation": "ADD",
+                    "path": "/certificate/certificates/" + certificateIndex,
+                    "value": values["certificate"]
+                },
+                {
+                    "operation": "REPLACE",
+                    "path": "/certificate/jwksUri",
+                    "value": null
+                }
+            ]
+        } else {
+            data = [
+                {
+                    "operation": "ADD",
+                    "path": "/certificate/certificates/" + certificateIndex,
+                    "value": values["certificate"]
+                }
+            ]
         }
 
         updateIDPCertificate(idp.id, data)

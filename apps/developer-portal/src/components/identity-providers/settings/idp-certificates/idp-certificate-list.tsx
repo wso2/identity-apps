@@ -22,11 +22,11 @@ import { EmptyPlaceholder, PrimaryButton, ResourceList, ResourceListItem, UserAv
 import moment from "moment";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Grid, Icon, Label, Modal, Segment } from "semantic-ui-react";
+import {Divider, Grid, Icon, Label, Modal, Popup, Segment, SemanticCOLORS, SemanticICONS} from "semantic-ui-react";
 import { EmptyPlaceholderIllustrations } from "../../../../configs";
 import { UIConstants } from "../../../../constants";
 import { DisplayCertificate, IdentityProviderInterface } from "../../../../models";
-import { CertificateManagementUtils } from "../../../../utils/certificates";
+import { CertificateManagementUtils } from "../../../../utils";
 import { Certificate as CertificateDisplay } from "../../../certificates";
 import { AddIDPCertificateWizard } from "../../wizards/add-certificate-wizard";
 
@@ -145,6 +145,26 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
     };
 
     /**
+     * The following function search the issuerDN array and return a alias for the issuer.
+     *
+     * @param issuerDN
+     */
+    const searchIssuerDNAlias = (issuerDN: object[]): string => {
+        let issuerAlias = "";
+        issuerDN.map((issuer) => {
+            if (Object.prototype.hasOwnProperty.call(issuer, "CN")) {
+                issuerAlias = issuer["CN"];
+                return;
+            } else if (Object.prototype.hasOwnProperty.call(issuer, "O")) {
+                issuerAlias = issuer["O"];
+                return;
+            }
+        });
+
+        return issuerAlias;
+    };
+
+    /**
      * Creates the resource item header.
      *
      * @param validFrom
@@ -152,17 +172,38 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
      * @param issuer
      */
     const showValidityLabel = (validFrom: Date, validTill: Date, issuer: string): ReactElement => {
+        let icon: SemanticICONS = null;
+        let iconColor: SemanticCOLORS = null;
+
+        const currentDate = moment(new Date());
+        const expiryDate = moment(validTill);
         const isValid = new Date() >= validFrom && new Date() <= validTill;
+
+        if (isValid) {
+            if (Math.abs(moment.duration(currentDate.diff(expiryDate)).months()) > 1) {
+                icon = "check circle";
+                iconColor = "green";
+            } else {
+                icon = "exclamation circle";
+                iconColor = "yellow";
+            }
+        } else {
+            icon = "times circle";
+            iconColor = "red";
+        }
 
         return (
             <>
                 { issuer + " " }
-                <Label color={ isValid ? "green" : "red" } size="mini">
-                    <Icon name={ isValid ? "calendar check outline" : "calendar times outline" } />
-                    { isValid ? "Valid" : "Expired" }
-                </Label>
+                <Popup
+                    trigger={ <Icon name={ icon } color={ iconColor } /> }
+                    content={ "Expiry date: " + expiryDate.format("DD/MM/YYYY") }
+                    inverted
+                    position="top left"
+                    size="mini"
+                />
             </>
-        )
+        );
     };
 
     return (
@@ -185,7 +226,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
                                 <ResourceList
-                                    className="applications-list"
+                                    className="application-list"
                                     isLoading={ isLoading }
                                     loadingStateOptions={ {
                                         count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
@@ -219,11 +260,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                                 actionsFloated="right"
                                                 avatar={ (
                                                     <UserAvatar
-                                                        name={
-                                                            certificate?.issuerDN[2].CN
-                                                                ? certificate?.issuerDN[2].CN?.toString()
-                                                                : certificate?.issuerDN[2].O?.toString()
-                                                        }
+                                                        name={ searchIssuerDNAlias(certificate?.issuerDN) }
                                                         size="mini"
                                                         floated="left"
                                                     />
@@ -231,9 +268,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                                 itemHeader={ showValidityLabel(
                                                     certificate.validFrom,
                                                     certificate.validTill,
-                                                    certificate?.issuerDN[2].CN
-                                                        ? certificate?.issuerDN[2].CN?.toString()
-                                                        : certificate?.issuerDN[2].O?.toString()
+                                                    searchIssuerDNAlias(certificate?.issuerDN)
                                                 ) }
                                                 itemDescription={ showDescription(certificate.validFrom,
                                                     certificate.validTill) }

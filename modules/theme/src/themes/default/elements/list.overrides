@@ -56,6 +56,8 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                color: grey;
+                font-size: 13px;
             }
 
             .list-item-action-panel {

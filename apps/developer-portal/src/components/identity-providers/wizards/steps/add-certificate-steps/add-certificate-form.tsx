@@ -21,8 +21,7 @@ import { Forms } from "@wso2is/forms";
 import * as forge from "node-forge";
 import React, { ReactElement, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
-import { Certificate, DisplayCertificate } from "../../../../../models";
-import { CertificateManagementUtils } from "../../../../../utils";
+import { Certificate } from "../../../../../models";
 import { UploadCertificate } from "../../../../certificates/wizard";
 
 /**
@@ -48,26 +47,19 @@ export const AddIDPCertificateFormComponent: React.FunctionComponent<AddIDPCerti
          [ "data-testid" ]: testId
      } = props;
 
-    const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
     const [ name, setName ] = useState("");
     const [ fileDecoded, setFileDecoded ] = useState("");
     const [ pem, setPem ] = useState("");
     const [ file, setFile ] = useState<File>(null);
     const [ certificate, setCertificate ] = useState<forge.pki.Certificate>(null);
+    const [ certString, setCertString ] = useState("");
 
     useEffect(() => {
-        if (fileDecoded === "") {
+        if (certString === "") {
             return;
         }
-        onSubmit({ certificate: fileDecoded, key: "certificate" });
-    }, [ fileDecoded, onSubmit ]);
-
-    useEffect(() => {
-        if (pem === "") {
-            return;
-        }
-        onSubmit({ key: "pem", pem: pem });
-    }, [ pem, onSubmit ]);
+        onSubmit({ certificate: certString });
+    }, [ certString, onSubmit ]);
 
     /**
      * This is called when the first step is submitted.
@@ -96,7 +88,7 @@ export const AddIDPCertificateFormComponent: React.FunctionComponent<AddIDPCerti
         setFileDecoded(fileDecoded);
         setFile(file);
         setCertificate(forgeCertificate);
-        setCertificateDisplay(CertificateManagementUtils.decodeForgeCertificate(data, forgeCertificate));
+        setCertString(data.certificate)
     };
 
     const addIDPCertificateForm = (): ReactElement => (

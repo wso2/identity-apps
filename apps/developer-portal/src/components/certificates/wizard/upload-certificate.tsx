@@ -352,12 +352,18 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
      * Submits the data to the wizard.
      */
     const onSubmit = (): void => {
-        !name && setNameError(true);
         (!file && !pem) && setCertEmpty(true);
         const certificate = resolveCertificate();
 
-        if (!name || (!file && !pem) || fileError || !certificate) {
-            return;
+        if (!hideAliasInput) {
+            !name && setNameError(true);
+            if (!name || (!file && !pem) || fileError || !certificate) {
+                return;
+            }
+        } else {
+            if ((!file && !pem) || fileError || !certificate) {
+                return;
+            }
         }
 
         let pemString;
@@ -579,5 +585,6 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
  * Default props for the component.
  */
 UploadCertificate.defaultProps = {
-    "data-testid": "upload-certificate"
+    "data-testid": "upload-certificate",
+    hideAliasInput: false
 };
