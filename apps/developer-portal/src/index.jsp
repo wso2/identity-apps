@@ -62,12 +62,13 @@
                     sessionStorage.setItem("session_state", newSessionState);
                 } else {
                     var config = window["AppUtils"].getConfig();
+    
                     window.top.location.href = config.clientOriginWithTenant +
                     config.appBaseWithTenant + config.routes.logout;
                 }
             }
 
-            const doNotDeleteApplications = ["Developer Portal", "User Portal"];
+            var doNotDeleteApplications = ["Developer Portal", "User Portal"];
         </script>
     </head>
     <body>
