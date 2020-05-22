@@ -16,10 +16,12 @@
  * under the License.
  */
 
+import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
+import { Logo } from "@wso2is/react-components";
 import classNames from "classnames";
 import * as React from "react";
 import { Image } from "semantic-ui-react";
-import { HomeTileIconImages, UserImage } from "../../configs";
+import { GlobalConfig, HomeTileIconImages, UserImage } from "../../configs";
 
 interface ImageProps {
     classes?: any;
@@ -33,6 +35,37 @@ type HomeTileIconImagePropInputs = "Profile" | "Security" | "Consent";
 interface HomeTileIconImageProps extends ImageProps {
     icon: HomeTileIconImagePropInputs;
 }
+
+interface TitleProps {
+    classes?: any;
+    style?: any;
+    children?: any;
+}
+
+/**
+ * TODO: Remove once `layouts/login` is removed.
+ * @deprecated Use `ProductBrand` from `@wso2is/react-components`.
+ */
+export const Title = (props: TitleProps) => {
+    const { classes, style, children } = props;
+
+    return (
+        <div className={ classNames(classes, "product-title") } style={ style }>
+            <Logo
+                className="portal-logo"
+                image={
+                    resolveAppLogoFilePath(window["AppUtils"].getConfig().ui.appLogoPath,
+                        `${window["AppUtils"].getConfig().clientOrigin}/` +
+                        `${window["AppUtils"].getConfig().appBase}/libs/themes/default`)
+                }
+            />
+            <h1 className={ classNames(classes, "product-title-text") } style={ style }>
+                { GlobalConfig.applicationName }
+            </h1>
+            { children }
+        </div>
+    );
+};
 
 export const UserImagePlaceHolder = (props: ImageProps) => {
     const { classes, size, floated } = props;
