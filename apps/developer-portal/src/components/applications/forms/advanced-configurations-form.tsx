@@ -27,8 +27,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Grid, Modal } from "semantic-ui-react";
 import { AdvancedConfigurationsInterface, CertificateTypeInterface, DisplayCertificate } from "../../../models";
-import { CommonUtils } from "../../../utils";
+import {CertificateManagementUtils, CommonUtils} from "../../../utils";
 import { Certificate as CertificateDisplay } from "../../certificates";
+import {CertificateIllustrations} from "../../../configs";
 
 /**
  *  Advanced Configurations for the Application.
@@ -110,6 +111,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
     const renderCertificateModal = (): ReactElement => {
         return (
             <Modal
+                className="certificate-display"
                 dimmer="blurring"
                 size="tiny"
                 open={ certificateModal }
@@ -119,7 +121,19 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 data-testid={ `${ testId }-view-certificate-modal` }
             >
                 <Modal.Header>
-                    View certificate
+                    <div className="certificate-ribbon">
+                        <CertificateIllustrations.ribbon.ReactComponent />
+                        <div className="certificate-alias">
+                            View Certificate - {
+                            certificateDisplay?.alias
+                                ? certificateDisplay?.alias
+                                : certificateDisplay?.issuerDN && (
+                                    CertificateManagementUtils.searchIssuerDNAlias(certificateDisplay?.issuerDN)
+                            )
+                        }
+                        </div><br/>
+                        <div className="certificate-serial">Serial Number: { certificateDisplay?.serialNumber }</div>
+                    </div>
                 </Modal.Header>
                 <Modal.Content className="certificate-content">
                     <CertificateDisplay certificate={ certificateDisplay }/>

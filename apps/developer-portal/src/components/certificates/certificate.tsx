@@ -17,10 +17,10 @@
 */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import moment from "moment";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Header, Icon, Label, Segment } from "semantic-ui-react";
-import { CertificateIllustrations } from "../../configs";
+import {Divider, Grid, Icon, Popup, Segment, SemanticCOLORS, SemanticICONS} from "semantic-ui-react";
 import { DisplayCertificate, DistinguishedName } from "../../models";
 
 /**
@@ -50,8 +50,6 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
     } = props;
 
     const {
-        alias,
-        serialNumber,
         version,
         issuerDN,
         subjectDN,
@@ -61,84 +59,200 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
 
     const { t } = useTranslation();
 
-    const isValid = new Date() >= validFrom && new Date() <= validTill;
+    /**
+     * Creates the validity icon.
+     */
+    const showValidTillIcon = (): ReactElement => {
+        let icon: SemanticICONS = null;
+        let iconColor: SemanticCOLORS = null;
+        let popupText = "";
+
+        const currentDate = moment(new Date());
+        const expiryDate = moment(validTill);
+        const isValid = new Date() <= validTill;
+
+        if (isValid) {
+            if (Math.abs(moment.duration(currentDate.diff(expiryDate)).months()) > 1) {
+                icon = "check circle";
+                iconColor = "green";
+                popupText = "Certificate is valid."
+            } else {
+                icon = "exclamation circle";
+                iconColor = "yellow";
+                popupText = "Certificate is soon to be expired."
+            }
+        } else {
+            icon = "times circle";
+            iconColor = "red";
+            popupText = "Certificate is expired."
+        }
+
+        return (
+            <>
+                <Popup
+                    trigger={ <Icon name={ icon } color={ iconColor } /> }
+                    content={ popupText }
+                    inverted
+                    position="top center"
+                    size="mini"
+                />
+            </>
+        );
+    };
+
+    /**
+     * Creates the validity icon for expiry date.
+     */
+    const showValidFromIcon = (): ReactElement => {
+        let icon: SemanticICONS = null;
+        let iconColor: SemanticCOLORS = null;
+        let popupText = "";
+
+        const currentDate = moment(new Date());
+        const expiryDate = moment(validFrom);
+        const isValid = new Date() >= validFrom;
+
+        if (isValid) {
+            if (Math.abs(moment.duration(currentDate.diff(expiryDate)).months()) > 1) {
+                icon = "check circle";
+                iconColor = "green";
+                popupText = "Certificate is valid."
+            } else {
+                icon = "exclamation circle";
+                iconColor = "yellow";
+                popupText = "Certificate is soon to be valid."
+            }
+        } else {
+            icon = "times circle";
+            iconColor = "red";
+            popupText = "Certificate is still not valid."
+        }
+
+        return (
+            <>
+                <Popup
+                    trigger={ <Icon name={ icon } color={ iconColor } /> }
+                    content={ popupText }
+                    inverted
+                    position="top center"
+                    size="mini"
+                />
+            </>
+        );
+    };
 
     return (
-        <Segment className="certificate" compact padded="very" data-testid={ testId }>
-            <div className="certificate-ribbon">
-                <CertificateIllustrations.ribbon.ReactComponent />
-            </div>
+        <Segment className="certificate" compact data-testid={ testId }>
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column computer={ 16 } mobile={ 16 } tablet={ 16 }>
+                        <p className="certificate-field">
+                            <span>
+                                <strong>
+                                    { t("devPortal:components.certificates.keystore.summary.validFrom") }
+                                </strong>
+                            </span>
+                            <span className="valid-before-date">
+                                {
+                                    validFrom.toLocaleString("en-us", {
+                                        day: "numeric",
+                                        hour: "numeric",
+                                        hour12: true,
+                                        minute: "numeric",
+                                        month: "long",
+                                        timeZoneName: "short",
+                                        weekday: "short",
+                                        year: "numeric"
+                                    })
+                                }
+                                { showValidFromIcon() }
+                            </span>
+                        </p>
+                        <p className="certificate-field">
+                            <span>
+                                <strong>
+                                    { t("devPortal:components.certificates.keystore.summary.validTill") }
+                                </strong>
+                            </span>
+                            <span className="valid-till-date">
+                                {
+                                    validTill.toLocaleString("en-us", {
+                                        day: "numeric",
+                                        hour: "numeric",
+                                        hour12: true,
+                                        minute: "numeric",
+                                        month: "long",
+                                        timeZoneName: "short",
+                                        weekday: "short",
+                                        year: "numeric"
+                                    })
+                                }
+                                { showValidTillIcon() }
+                            </span>
+                        </p>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
 
-            <Header>
+            <Divider hidden />
+            <Divider hidden />
+
+            <Grid className="certificate-issuer">
+                <Grid.Row>
+                    <Grid.Column computer={ 4 } mobile={ 4 } tablet={ 4 }/>
+                    <Grid.Column computer={ 6 } mobile={ 6 } tablet={ 6 }>
+                        <p className="certificate-field">
+                            <span>
+                                <strong>
+                                    { t("devPortal:components.certificates.keystore.summary.issuerDN") }
+                                </strong>
+                            </span>
+                        </p>
+                    </Grid.Column>
+                    <Grid.Column computer={ 6 } mobile={ 6 } tablet={ 6 }>
+                        <p className="certificate-field">
+                            <span>
+                                <strong>
+                                    { t("devPortal:components.certificates.keystore.summary.subjectDN") }
+                                </strong>
+                            </span>
+                        </p>
+                    </Grid.Column>
+                </Grid.Row>
                 {
-                    alias && (
-                        <Header.Content>{ alias }</Header.Content>
-                    )
+                    issuerDN.map((attribute: DistinguishedName) => (
+                        <>
+                            <Grid.Row>
+                                <Grid.Column computer={ 4 } mobile={ 4 } tablet={ 4 }>
+                                    <p className="certificate-field">
+                                        <span>
+                                            <strong>{ Object.entries(attribute)[ 0 ][ 0 ] }</strong>
+                                        </span>
+                                    </p>
+                                </Grid.Column>
+                                <Grid.Column computer={ 6 } mobile={ 6 } tablet={ 6 }>
+                                    <p className="certificate-field">
+                                        <span>
+                                            { Object.entries(attribute)[ 0 ][ 1 ] }
+                                        </span>
+                                    </p>
+                                </Grid.Column>
+                                <Grid.Column computer={ 6 } mobile={ 6 } tablet={ 6 }>
+                                    <p className="certificate-field">
+                                        <span>
+                                            { Object.entries(attribute)[ 0 ][ 1 ] }
+                                        </span>
+                                    </p>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </>
+                    ))
                 }
-                <Header.Subheader>
-                    <span>{ t("devPortal:components.certificates.keystore.summary.sn") }</span>
-                    { serialNumber }
-                </Header.Subheader>
-            </Header>
-
-            <p className="certificate-field">
-                <span>{ t("devPortal:components.certificates.keystore.summary.validFrom") }</span> {
-                    validFrom.toLocaleString("en-us", {
-                        day: "numeric",
-                        hour: "numeric",
-                        hour12: true,
-                        minute: "numeric",
-                        month: "long",
-                        timeZoneName: "short",
-                        weekday: "short",
-                        year: "numeric"
-                    })
-                }
-            </p>
-
-            <p className="certificate-field">
-                <span>{ t("devPortal:components.certificates.keystore.summary.validTill") }</span> {
-                    validTill.toLocaleString("en-us", {
-                        day: "numeric",
-                        hour: "numeric",
-                        hour12: true,
-                        minute: "numeric",
-                        month: "long",
-                        timeZoneName: "short",
-                        weekday: "short",
-                        year: "numeric"
-                    })
-                }
-            </p>
-
+            </Grid>
             <Divider hidden />
-
-            <p className="certificate-field">
-                <span>
-                    { t("devPortal:components.certificates.keystore.summary.issuerDN") }
-                </span> { issuerDN.map((attribute: DistinguishedName) => {
-                    return `${Object.entries(attribute)[ 0 ][ 0 ]}=${Object.entries(attribute)[ 0 ][ 1 ]}`;
-                }).join((", ")) }
-            </p>
-
-            <Divider hidden />
-
-            <p className="certificate-field">
-                <span>
-                    { t("devPortal:components.certificates.keystore.summary.subjectDN") }
-                </span> { subjectDN.map((attribute: DistinguishedName) => {
-                    return `${Object.entries(attribute)[ 0 ][ 0 ]}=${Object.entries(attribute)[ 0 ][ 1 ]}`;
-                }).join(", ") }
-            </p>
-
             <p className="certificate-version">
                 <span>{ t("devPortal:components.certificates.keystore.summary.version") }</span> { version + " " }
-                <Label color={ isValid ? "green" : "red" } size="mini">
-                    <Icon name={ isValid ? "calendar check outline" : "calendar times outline" } />
-                    { isValid ? "Valid" : "Expired" }
-                </Label>
             </p>
-            <div className="certificate-badge"><CertificateIllustrations.badge.ReactComponent /></div>
         </Segment>
     )
 };

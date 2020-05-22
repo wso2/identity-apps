@@ -22,6 +22,8 @@ import { EmptyPlaceholder, PrimaryButton, ResourceList, ResourceListItem, UserAv
 import moment from "moment";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Divider, Grid, Icon, Modal, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
+import { CertificateIllustrations, EmptyPlaceholderIllustrations } from "../../../../configs";
 import {Divider, Grid, Icon, Label, Modal, Popup, Segment, SemanticCOLORS, SemanticICONS} from "semantic-ui-react";
 import { EmptyPlaceholderIllustrations } from "../../../../configs";
 import { UIConstants } from "../../../../constants";
@@ -98,6 +100,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
     const showCertificateModal = (): ReactElement => {
         return (
             <Modal
+                className="certificate-display"
                 dimmer="blurring"
                 size="tiny"
                 open={ certificateModal }
@@ -107,7 +110,19 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                 data-testid={ `${ testId }-view-certificate-modal` }
             >
                 <Modal.Header>
-                    View certificate
+                    <div className="certificate-ribbon">
+                        <CertificateIllustrations.ribbon.ReactComponent />
+                        <div className="certificate-alias">
+                                View Certificate - {
+                                certificateDisplay?.alias
+                                    ? certificateDisplay?.alias
+                                    : certificateDisplay?.issuerDN && (
+                                        CertificateManagementUtils.searchIssuerDNAlias(certificateDisplay?.issuerDN)
+                                )
+                            }
+                        </div><br/>
+                        <div className="certificate-serial">Serial Number: { certificateDisplay?.serialNumber }</div>
+                    </div>
                 </Modal.Header>
                 <Modal.Content className="certificate-content">
                     <CertificateDisplay certificate={ certificateDisplay }/>
@@ -142,26 +157,6 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
             : description = "Expired " + moment.duration(now.diff(recievedDate)).humanize() + " ago";
 
         return description;
-    };
-
-    /**
-     * The following function search the issuerDN array and return a alias for the issuer.
-     *
-     * @param issuerDN
-     */
-    const searchIssuerDNAlias = (issuerDN: object[]): string => {
-        let issuerAlias = "";
-        issuerDN.map((issuer) => {
-            if (Object.prototype.hasOwnProperty.call(issuer, "CN")) {
-                issuerAlias = issuer["CN"];
-                return;
-            } else if (Object.prototype.hasOwnProperty.call(issuer, "O")) {
-                issuerAlias = issuer["O"];
-                return;
-            }
-        });
-
-        return issuerAlias;
     };
 
     /**
@@ -260,7 +255,10 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                                 actionsFloated="right"
                                                 avatar={ (
                                                     <UserAvatar
-                                                        name={ searchIssuerDNAlias(certificate?.issuerDN) }
+                                                        name={
+                                                            CertificateManagementUtils.searchIssuerDNAlias(
+                                                                certificate?.issuerDN)
+                                                        }
                                                         size="mini"
                                                         floated="left"
                                                     />
@@ -268,7 +266,8 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                                 itemHeader={ showValidityLabel(
                                                     certificate.validFrom,
                                                     certificate.validTill,
-                                                    searchIssuerDNAlias(certificate?.issuerDN)
+                                                    CertificateManagementUtils.searchIssuerDNAlias(
+                                                        certificate?.issuerDN)
                                                 ) }
                                                 itemDescription={ showDescription(certificate.validFrom,
                                                     certificate.validTill) }

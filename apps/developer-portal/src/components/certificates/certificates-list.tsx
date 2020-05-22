@@ -44,6 +44,7 @@ import { CertificateIllustrations, EmptyPlaceholderIllustrations } from "../../c
 import { CERTIFICATE_BEGIN, CERTIFICATE_END, END_LINE, UIConstants } from "../../constants";
 import { AlertLevels, Certificate, DisplayCertificate, FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
+import {CertificateManagementUtils} from "../../utils";
 
 /**
  * @constant
@@ -393,6 +394,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     const renderCertificateModal = (): ReactElement => {
         return (
             <Modal
+                className="certificate-display"
                 dimmer="blurring"
                 size="tiny"
                 open={ certificateModal }
@@ -400,7 +402,19 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 data-testid={ `${ testId }-certificate-display-modal` }
             >
                 <Modal.Header>
-
+                    <div className="certificate-ribbon">
+                        <CertificateIllustrations.ribbon.ReactComponent />
+                        <div className="certificate-alias">
+                            View Certificate - {
+                            certificateDisplay?.alias
+                                ? certificateDisplay?.alias
+                                : certificateDisplay?.issuerDN && (
+                                    CertificateManagementUtils.searchIssuerDNAlias(certificateDisplay?.issuerDN)
+                            )
+                        }
+                        </div><br/>
+                        <div className="certificate-serial">Serial Number: { certificateDisplay?.serialNumber }</div>
+                    </div>
                 </Modal.Header>
                 <Modal.Content className="certificate-content">
                     <CertificateDisplay data-testid={ `${ testId }-certificate` } certificate={ certificateDisplay } />
