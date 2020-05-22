@@ -120,4 +120,24 @@ export class CertificateManagementUtils {
 
        return displayCertificate;
     }
+
+    /**
+     * The following function search the issuerDN array and return a alias for the issuer.
+     *
+     * @param issuerDN
+     */
+    public static searchIssuerDNAlias (issuerDN: object[]): string {
+        let issuerAlias = "";
+        issuerDN.map((issuer) => {
+            if (Object.prototype.hasOwnProperty.call(issuer, "CN")) {
+                issuerAlias = issuer["CN"];
+                return;
+            } else if (Object.prototype.hasOwnProperty.call(issuer, "O")) {
+                issuerAlias = issuer["O"];
+                return;
+            }
+        });
+
+        return issuerAlias;
+    }
 }

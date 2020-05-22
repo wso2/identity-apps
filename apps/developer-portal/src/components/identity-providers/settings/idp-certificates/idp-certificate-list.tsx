@@ -24,8 +24,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Divider, Grid, Icon, Modal, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { CertificateIllustrations, EmptyPlaceholderIllustrations } from "../../../../configs";
-import {Divider, Grid, Icon, Label, Modal, Popup, Segment, SemanticCOLORS, SemanticICONS} from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations } from "../../../../configs";
 import { UIConstants } from "../../../../constants";
 import { DisplayCertificate, IdentityProviderInterface } from "../../../../models";
 import { CertificateManagementUtils } from "../../../../utils";
