@@ -49,6 +49,7 @@ export const ROUTES: RouteInterface[] = [
     },
     {
         component: null,
+        featureStatus: "alpha",
         icon: "apps",
         id: "applications",
         name: "Applications",
@@ -67,6 +68,7 @@ export const ROUTES: RouteInterface[] = [
     },
     {
         component: null,
+        featureStatus: "new",
         icon: "security",
         id: "security",
         name: "Security",
@@ -117,6 +119,7 @@ export const ROUTES_WITH_CHILDREN: RouteInterface[] = [
             }
         ],
         component: null,
+        featureStatus: "alpha",
         icon: "apps",
         id: "applications",
         name: "Applications",
@@ -137,6 +140,7 @@ export const ROUTES_WITH_CHILDREN: RouteInterface[] = [
             },
             {
                 component: null,
+                featureStatus: "beta",
                 icon: "childIcon",
                 id: "preferences",
                 name: "Preferences",
@@ -164,6 +168,7 @@ export const ROUTES_WITH_CHILDREN: RouteInterface[] = [
     },
     {
         component: null,
+        featureStatus: "new",
         icon: "security",
         id: "security",
         name: "Security",

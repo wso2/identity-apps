@@ -69,6 +69,10 @@ export interface StaticRouteInterface {
      * Should the item be displayed on the side panel.
      */
     showOnSidePanel: boolean;
+    /**
+     * Status of the feature.
+     */
+    featureStatus?: "new" | "alpha" | "beta" | string;
 }
 
 /**
