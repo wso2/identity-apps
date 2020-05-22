@@ -55,7 +55,7 @@ export interface ProductVersionUIInterface extends ProductVersionInterface {
     /**
      * Color for the release label.
      */
-    labelColor?: SemanticCOLORS;
+    labelColor?: SemanticCOLORS | "auto" | "primary" | "secondary";
     /**
      * Text case.
      */
@@ -83,14 +83,30 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
         [ "data-testid" ]: testId
     } = props;
 
+    const versionLabelClasses = classNames(
+        "version-label",
+        {
+            "primary" : !version.labelColor,
+            [ version.labelColor ]: version.labelColor === "primary" || version.labelColor === "secondary"
+        }
+    );
+
     /**
      * Resolves the version label color.
      *
      * @return {SemanticCOLORS} Resolved color.
      */
     const resolveVersionLabelColor = (): SemanticCOLORS => {
-        if (version.labelColor) {
+        if (version.labelColor
+            && !(version.labelColor === "auto"
+                || version.labelColor === "primary"
+                || version.labelColor === "secondary")) {
+
             return version.labelColor;
+        }
+
+        if (version.labelColor === "primary" || version.labelColor === "secondary") {
+            return "orange";
         }
 
         if (version.releaseType === "alpha") {
@@ -100,9 +116,10 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
         } else if (version.releaseType === "rc") {
             return "green";
         } else if (version.releaseType === "milestone") {
-            return "orange";
+            return "violet";
         }
-        return "blue";
+
+        return "orange";
     };
 
     /**
@@ -136,7 +153,7 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
                 <div className="product-title-meta">
                     <Label
                         color={ resolveVersionLabelColor() }
-                        className="version-label"
+                        className={ versionLabelClasses }
                         size="mini"
                         data-testid={ `${ testId }-version` }
                     >

@@ -54,8 +54,10 @@ export const DefaultProductBrand = (): React.ReactElement => (
                     OLIVE: "olive",
                     ORANGE: "orange",
                     PINK: "pink",
+                    PRIMARY: "primary",
                     PURPLE: "purple",
                     RED: "red",
+                    SECONDARY: "secondary",
                     TEAL: "teal",
                     VIOLET: "violet",
                     YELLOW: "yellow"
