@@ -39,7 +39,7 @@ export class Config {
     /**
      * Get the deployment config.
      *
-     * @return {DeploymentConfigInterface} Deployment config object.
+     * @return {CommonDeploymentConfigInterface} Deployment config object.
      */
     public static getDeploymentConfig(): CommonDeploymentConfigInterface {
         return {
@@ -52,6 +52,7 @@ export class Config {
             clientID: window["AppUtils"].getConfig().clientID,
             clientOrigin: window["AppUtils"].getConfig().clientOrigin,
             loginCallbackUrl: window["AppUtils"].getConfig().loginCallbackURL,
+            productVersion: window["AppUtils"].getConfig().productVersion,
             serverHost: window["AppUtils"].getConfig().serverOriginWithTenant,
             serverOrigin: window["AppUtils"].getConfig().serverOrigin,
             tenant: window["AppUtils"].getConfig().tenant,

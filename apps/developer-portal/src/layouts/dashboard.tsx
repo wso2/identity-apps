@@ -327,6 +327,11 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                                 :
                                 config.deployment.applicationName
                             }
+                            version={ {
+                                milestoneNumber: config.deployment.productVersion?.milestoneNumber,
+                                releaseType: config.deployment.productVersion?.releaseType,
+                                versionNumber: config.deployment.productVersion?.versionNumber
+                            } }
                         />
                     ) }
                     brandLink={ config.deployment.appHomePath }

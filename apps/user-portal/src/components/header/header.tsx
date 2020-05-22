@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
+import { Logo, ProductBrand } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { SyntheticEvent, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -38,7 +40,7 @@ import { resolveUserDisplayName, resolveUsername } from "../../helpers";
 import { AlertLevels, AuthStateInterface, LinkedAccountInterface } from "../../models";
 import { AppState } from "../../store";
 import { addAlert, getProfileInformation, getProfileLinkedAccounts } from "../../store/actions";
-import { Title, UserAvatar } from "../shared";
+import { UserAvatar } from "../shared";
 
 /**
  * Header component prop types.
@@ -151,7 +153,25 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                     : null
                 }
                 <Menu.Item as={ Link } to={ GlobalConfig.appHomePath } header>
-                    <Title style={ { marginTop: 0 } } />
+                    <ProductBrand
+                        style={ { marginTop: 0 } }
+                        logo={ (
+                            <Logo
+                                className="portal-logo"
+                                image={
+                                    resolveAppLogoFilePath(window[ "AppUtils" ].getConfig().ui.appLogoPath,
+                                        `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
+                                        `${ window[ "AppUtils" ].getConfig().appBase }/libs/themes/default`)
+                                }
+                            />
+                        ) }
+                        name={ GlobalConfig.applicationName }
+                        version={ {
+                            milestoneNumber: window[ "AppUtils" ].getConfig().productVersion?.milestoneNumber,
+                            releaseType: window[ "AppUtils" ].getConfig().productVersion?.releaseType,
+                            versionNumber: window[ "AppUtils" ].getConfig().productVersion?.versionNumber
+                        } }
+                    />
                 </Menu.Item>
                 { (
                     <Menu.Menu position="right">
