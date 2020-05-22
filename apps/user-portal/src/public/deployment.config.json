@@ -3,6 +3,11 @@
     "clientID": "USER_PORTAL",
     "loginCallbackPath": "/login",
     "logoutCallbackPath": "/login",
+    "productVersion": {
+        "releaseType": "milestone",
+        "versionNumber": "5.11.0",
+        "milestoneNumber": "20"
+    },
     "routePaths": {
         "home": "/overview",
         "login": "/login",
