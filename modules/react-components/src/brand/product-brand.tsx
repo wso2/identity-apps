@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { ProductVersionInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Label, SemanticCOLORS } from "semantic-ui-react";
@@ -45,25 +45,13 @@ export interface ProductBrandPropsInterface extends TestableComponentInterface {
     /**
      * Product version.
      */
-    version?: ProductVersionInterface;
+    version?: ProductVersionUIInterface;
 }
 
 /**
- * Product version interface
+ * Product version interface for UI.
  */
-export interface ProductVersionInterface {
-    /**
-     * Release type.
-     */
-    releaseType?: "milestone" | "alpha" | "beta" | "rc" | string;
-    /**
-     * Product version number.
-     */
-    versionNumber?: string;
-    /**
-     * Milestone version number.
-     */
-    milestoneNumber?: string;
+export interface ProductVersionUIInterface extends ProductVersionInterface {
     /**
      * Color for the release label.
      */
@@ -127,10 +115,10 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
             return null;
         }
 
-        let releaseVersion = version.versionNumber + " " + version.releaseType;
+        let releaseVersion = `${ version.versionNumber ?? "" } ${ version.releaseType ?? "" }`;
 
         if (version.releaseType === "milestone" && version.milestoneNumber) {
-            releaseVersion = version.versionNumber + " " + "M" + version.milestoneNumber;
+            releaseVersion = `${ version.versionNumber ?? "" } M${ version.milestoneNumber }`;
         }
 
         if (version.textCase === "lowercase") {
