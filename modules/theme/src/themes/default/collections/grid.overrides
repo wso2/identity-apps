@@ -322,3 +322,18 @@
         }
     }
 }
+
+/*----------------------------------
+     Certificate Grid variation
+------------------------------------*/
+
+.ui.grid {
+    &.certificate-issuer {
+        margin-top: 0rem;
+        margin-bottom: 2rem;
+
+        .row {
+            padding-bottom: 0rem;
+        }
+    }
+}

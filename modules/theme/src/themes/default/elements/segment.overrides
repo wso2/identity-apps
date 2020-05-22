@@ -380,6 +380,14 @@
             color: @doveGray;
 
             span {
+                &.valid-till-date {
+                    margin-left: 24px;
+                }
+
+                &.valid-before-date {
+                    margin-left: 15px;
+                }
+
                 color: @black;
             }
         }

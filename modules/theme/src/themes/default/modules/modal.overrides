@@ -386,3 +386,27 @@
         }
     }
 }
+
+/*********************************************
+             Certificate Details
+*********************************************/
+
+.ui.modal {
+    &.certificate-display {
+        div {
+            &.certificate-serial {
+                margin-top: -35px;
+                margin-left: 33px;
+                font-size: 12px;
+                color: gray;
+            }
+
+            &.certificate-alias {
+                margin-top: -39px;
+                margin-left: 33px;
+                font-size: 15px;
+                color: #656565;
+            }
+        }
+    }
+}
