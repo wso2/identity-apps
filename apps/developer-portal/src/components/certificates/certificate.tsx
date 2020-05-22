@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import moment from "moment";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import {Divider, Grid, Icon, Popup, Segment, SemanticCOLORS, SemanticICONS} from "semantic-ui-react";
+import { Divider, Grid, Icon, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { DisplayCertificate, DistinguishedName } from "../../models";
 
 /**

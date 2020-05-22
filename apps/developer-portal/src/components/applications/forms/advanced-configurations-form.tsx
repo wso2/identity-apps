@@ -26,10 +26,10 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Grid, Modal } from "semantic-ui-react";
+import { CertificateIllustrations } from "../../../configs";
 import { AdvancedConfigurationsInterface, CertificateTypeInterface, DisplayCertificate } from "../../../models";
-import {CertificateManagementUtils, CommonUtils} from "../../../utils";
+import { CertificateManagementUtils, CommonUtils } from "../../../utils";
 import { Certificate as CertificateDisplay } from "../../certificates";
-import {CertificateIllustrations} from "../../../configs";
 
 /**
  *  Advanced Configurations for the Application.

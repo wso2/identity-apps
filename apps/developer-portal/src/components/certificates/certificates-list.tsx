@@ -44,7 +44,7 @@ import { CertificateIllustrations, EmptyPlaceholderIllustrations } from "../../c
 import { CERTIFICATE_BEGIN, CERTIFICATE_END, END_LINE, UIConstants } from "../../constants";
 import { AlertLevels, Certificate, DisplayCertificate, FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
-import {CertificateManagementUtils} from "../../utils";
+import { CertificateManagementUtils } from "../../utils";
 
 /**
  * @constant

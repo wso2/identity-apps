@@ -28,7 +28,7 @@ import { UIConstants } from "../../../../constants";
 import { DisplayCertificate, IdentityProviderInterface } from "../../../../models";
 import { CertificateManagementUtils } from "../../../../utils";
 import { Certificate as CertificateDisplay } from "../../../certificates";
-import { AddIDPCertificateWizard } from "../../wizards/add-certificate-wizard";
+import { AddIDPCertificateWizard } from "../../wizards";
 
 /**
  * Proptypes for the IDP certificate list component.

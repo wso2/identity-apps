@@ -47,4 +47,6 @@ export class IdentityProviderManagementConstants {
         "and federated authenticators.";
     public static readonly IDENTITY_PROVIDER_CLAIMS_UPDATE_ERROR: string = "An error occurred while updating claims " +
         "configurations of the identity provider.";
+    public static readonly IDENTITY_PROVIDER_CERTIFICATE_UPDATE_ERROR: string = "An error occurred while updating " +
+        "the certificate of the identity provider.";
 }
