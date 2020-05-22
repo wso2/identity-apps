@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { Logo, ProductBrand } from "../../../src";
-import React, { ReactElement } from "react";
+import { select, text, withKnobs } from "@storybook/addon-knobs";
 import { Logo as LogoImage } from "@wso2is/theme";
+import * as React from "react";
 import { meta } from "./brand.stories.meta";
-import { withKnobs } from "@storybook/addon-knobs";
+import { Logo, ProductBrand } from "../../../src";
 
 export default {
     decorators: [ withKnobs ],
@@ -36,10 +36,53 @@ export default {
  *
  * @return {React.ReactElement}
  */
-export const DefaultProductBrand = (): ReactElement => (
+export const DefaultProductBrand = (): React.ReactElement => (
     <ProductBrand
-        name="Developer Portal"
-        logo={ <Logo image={ LogoImage } /> }
+        name={ text("Product title", "Developer Portal") }
+        logo={
+            <Logo image={ text("Logo URL", null) ? text("Logo URL", null) : LogoImage }/>
+        }
+        version={ {
+            labelColor: select(
+                "Version label color",
+                {
+                    BLACK: "black",
+                    BLUE: "blue",
+                    BROWN: "brown",
+                    GREEN: "green",
+                    GREY: "grey",
+                    OLIVE: "olive",
+                    ORANGE: "orange",
+                    PINK: "pink",
+                    PURPLE: "purple",
+                    RED: "red",
+                    TEAL: "teal",
+                    VIOLET: "violet",
+                    YELLOW: "yellow"
+                },
+                null
+            ),
+            milestoneNumber: text("Milestone number", undefined),
+            releaseType: select(
+                "Release type",
+                {
+                    ALPHA: "alpha",
+                    BETA: "beta",
+                    MILESTONE: "milestone",
+                    RC: "rc"
+                },
+                "alpha"
+            ),
+            textCase: select(
+                "Version Text Case",
+                {
+                    Lowercase: "lowercase",
+                    Uppercase: "uppercase"
+                },
+                null
+            ),
+            versionNumber: text("Version number", "5.11.0")
+        } }
     />
 );
 
