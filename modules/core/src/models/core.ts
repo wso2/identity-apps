@@ -70,7 +70,7 @@ export interface RuntimeConfigInterface {
     /**
      * Name of the application. ex: "User Portal".
      */
-    applicationName: string;
+    applicationName?: string;
     /**
      * Client host. ex: "https://localhost:9000".
      */
@@ -86,7 +86,7 @@ export interface RuntimeConfigInterface {
     /**
      * Login callback URL. ex: "https://localhost:9000/user-portal/login".
      */
-    loginCallbackUrl: string;
+    loginCallbackUrl?: string;
     /**
      * Server host. ex: "https://localhost:9443".
      */
