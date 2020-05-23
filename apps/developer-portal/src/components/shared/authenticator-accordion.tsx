@@ -85,7 +85,7 @@ export interface AuthenticatorAccordionItemInterface {
     /**
      * Authenticator form.
      */
-    content: ReactElement;
+    content?: ReactElement;
 }
 
 /**

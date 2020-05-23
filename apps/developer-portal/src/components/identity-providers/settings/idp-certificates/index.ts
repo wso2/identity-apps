@@ -16,7 +16,6 @@
  * under the License.
  */
 
-export * from "./identity-provider-create-wizard";
-export * from "./steps";
-export * from "./outbound-provisioning-connector-create-wizard";
-export * from "./add-certificate-wizard";
+export * from "./idp-certificates";
+export * from "./idp-jwks-endpoint-form";
+export * from "./idp-certificate-list";

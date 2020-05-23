@@ -16,6 +16,7 @@
  * under the License
  */
 
+import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -28,7 +29,6 @@ import {
     PatchRoleDataInterface,
     RolesInterface
 } from "../../../models";
-import { addAlert } from "../../../store/actions";
 import { AddRoleUsers } from "../create-role-wizard";
 
 interface RoleUserDetailsProps {

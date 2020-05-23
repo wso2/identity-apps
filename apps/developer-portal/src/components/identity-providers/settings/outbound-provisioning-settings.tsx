@@ -300,8 +300,11 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                             <Grid>
                                 <Grid.Row>
                                     <Grid.Column>
-                                        <PrimaryButton floated="right" onClick={ () => setShowWizard(true) }
-                                                       data-testid={ `${ testId }-add-connector-button` }>
+                                        <PrimaryButton
+                                            floated="right"
+                                            onClick={ () => setShowWizard(true) }
+                                            data-testid={ `${ testId }-add-connector-button` }
+                                        >
                                             <Icon name="add"/>
                                             { t("devPortal:components.idp.buttons.addConnector") }
                                         </PrimaryButton>
@@ -370,11 +373,14 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                 <Divider hidden />
                                 <Segment>
                                     <EmptyPlaceholder
-                                        title={ t("devPortal:components.idp.placeHolders.emptyConnectorList.title") }
+                                        title={ t("devPortal:components.idp.placeHolders.emptyConnectorList." +
+                                            "title") }
                                         image={ EmptyPlaceholderIllustrations.emptyList }
                                         subtitle={ [
-                                            t("devPortal:components.idp.placeHolders.emptyConnectorList.subtitles.0"),
-                                            t("devPortal:components.idp.placeHolders.emptyConnectorList.subtitles.1")
+                                            t("devPortal:components.idp.placeHolders.emptyConnectorList." +
+                                                "subtitles.0"),
+                                            t("devPortal:components.idp.placeHolders.emptyConnectorList." +
+                                                "subtitles.1")
                                         ] }
                                         imageSize="tiny"
                                         action={ (

@@ -78,6 +78,10 @@ interface UploadCertificatePropsInterface extends TestableComponentInterface {
      * The forge certificate object.
      */
     forgeCertificateData: forge.pki.Certificate;
+    /**
+     * Hides the alias input.
+     */
+    hideAliasInput?: boolean;
 }
 
 /**
@@ -99,6 +103,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         fileDecodedData,
         fileData,
         forgeCertificateData,
+        hideAliasInput,
         [ "data-testid" ]: testId
     } = props;
 
@@ -347,12 +352,18 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
      * Submits the data to the wizard.
      */
     const onSubmit = (): void => {
-        !name && setNameError(true);
         (!file && !pem) && setCertEmpty(true);
         const certificate = resolveCertificate();
 
-        if (!name || (!file && !pem) || fileError || !certificate) {
-            return;
+        if (!hideAliasInput) {
+            !name && setNameError(true);
+            if (!name || (!file && !pem) || fileError || !certificate) {
+                return;
+            }
+        } else {
+            if ((!file && !pem) || fileError || !certificate) {
+                return;
+            }
         }
 
         let pemString;
@@ -512,30 +523,36 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 } }
                 data-testid={ `${ testId }-file-upload-input` }
             />
-            <Form>
-                <Form.Input
-                    fluid
-                    type="text"
-                    placeholder={ t("devPortal:components.certificates.keystore.forms.alias.placeholder") }
-                    label={ t("devPortal:components.certificates.keystore.forms.alias.label") }
-                    required={ true }
-                    error={
-                        nameError
-                            ? {
-                                content: t("devPortal:components.certificates.keystore." +
-                                    "forms.alias.requiredErrorMessage")
-                            }
-                            : false
-                    }
-                    value={ name }
-                    onChange={ (event) => {
-                        setName(event.target.value);
-                    } }
-                    data-testid={ `${ testId }-alias-input` }
-                />
-            </Form>
-            <Divider hidden />
-
+            {
+                !hideAliasInput && (
+                    <>
+                        <Form>
+                            <Form.Input
+                                fluid
+                                type="text"
+                                placeholder={ t("devPortal:components.certificates.keystore.forms.alias." +
+                                    "placeholder") }
+                                label={ t("devPortal:components.certificates.keystore.forms.alias.label") }
+                                required={ true }
+                                error={
+                                    nameError
+                                        ? {
+                                            content: t("devPortal:components.certificates.keystore." +
+                                                "forms.alias.requiredErrorMessage")
+                                        }
+                                        : false
+                                }
+                                value={ name }
+                                onChange={ (event) => {
+                                    setName(event.target.value);
+                                } }
+                                data-testid={ `${ testId }-alias-input` }
+                            />
+                        </Form>
+                        <Divider hidden />
+                    </>
+                )
+            }
             <Tab
                 className="tabs resource-tabs"
                 menu={ {
@@ -568,5 +585,6 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
  * Default props for the component.
  */
 UploadCertificate.defaultProps = {
-    "data-testid": "upload-certificate"
+    "data-testid": "upload-certificate",
+    hideAliasInput: false
 };

@@ -27,7 +27,7 @@ import {
     UserAvatar
 } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
-import {Trans, useTranslation} from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Grid, Icon, List, SemanticWIDTHS } from "semantic-ui-react";
 import { EmptyPlaceholderIllustrations } from "../../configs";
 import { UIConstants } from "../../constants";
@@ -228,7 +228,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     return (
         <>
             <ResourceList
-                className="applications-list"
+                className="application-list"
                 isLoading={ isLoading }
                 loadingStateOptions={ {
                     count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
