@@ -175,6 +175,13 @@
                 cursor: pointer;
                 color: @sidePanelDefaultFontColor;
                 padding: 10px 5px;
+
+                .feature-status-label {
+                    padding: 3px 6px;
+                    margin-left: 6px;
+                    font-size: 0.6em;
+                    font-weight: 600;
+                }
             }
 
             svg, .icon {

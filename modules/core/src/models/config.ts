@@ -90,6 +90,10 @@ export interface CommonDeploymentConfigInterface {
      */
     loginCallbackUrl: string;
     /**
+     * Product version.
+     */
+    productVersion: ProductVersionInterface;
+    /**
      * Host of the Identity Sever.
      * ex: https://localhost:9443
      */
@@ -108,6 +112,24 @@ export interface CommonDeploymentConfigInterface {
      * ex: `/t/`
      */
     tenantPath: string;
+}
+
+/**
+ * Product version config interface.
+ */
+export interface ProductVersionInterface {
+    /**
+     * Release type.
+     */
+    releaseType?: "milestone" | "alpha" | "beta" | "rc" | string;
+    /**
+     * Product version number.
+     */
+    versionNumber?: string;
+    /**
+     * Milestone version number.
+     */
+    milestoneNumber?: string;
 }
 
 /**

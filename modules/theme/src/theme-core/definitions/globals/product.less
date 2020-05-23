@@ -39,6 +39,22 @@ body {
     }
 
     .product-title {
+        .product-title-meta {
+            text-align: right;
+
+            .version-label {
+                padding: 3px 6px;
+                font-size: 0.6em;
+                font-weight: 600;
+
+                &.primary {
+                    background-color: @primaryColor !important;
+                }
+                &.secondary {
+                    background-color: @secondaryColor !important;
+                }
+            }
+        }
         .product-logo {
             width: 60px;
             vertical-align: text-top;

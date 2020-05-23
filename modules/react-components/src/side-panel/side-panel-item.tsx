@@ -18,8 +18,9 @@
 
 import { ChildRouteInterface, RouteInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { AuthenticateUtils } from "@wso2is/core/utils";
+import _ from "lodash";
 import React, { ReactElement } from "react";
-import { Menu } from "semantic-ui-react";
+import { Label, Menu, SemanticCOLORS } from "semantic-ui-react";
 import { CommonSidePanelPropsInterface } from "./side-panel";
 import { SidePanelItemGroup } from "./side-panel-item-group";
 import { GenericIcon, GenericIconSizes } from "../icon";
@@ -112,6 +113,23 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
         return recurse(children);
     };
 
+    /**
+     * Resolves the label color to display the status of the feature .
+     *
+     * @return {SemanticCOLORS} Resolved color.
+     */
+    const resolveFeatureStatusLabelColor = (): SemanticCOLORS => {
+        if (route.featureStatus === "new") {
+            return "red";
+        } else if (route.featureStatus === "beta") {
+            return "teal";
+        } else if (route.featureStatus === "alpha") {
+            return "orange";
+        }
+
+        return "blue";
+    };
+
     return (
         <>
             {
@@ -124,7 +142,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                             }` }
                             active={ selected && (selected.path === route.path) }
                             onClick={ (): void => onSidePanelItemClick(route) }
-                            data-testid={ testId }
+                            data-testid={ `${ testId }-${ _.kebabCase(route.id) }` }
                         >
                             <GenericIcon
                                 className="left-icon"
@@ -137,6 +155,16 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                             />
                             <span className="route-name" data-testid={ `${ testId }-label` }>
                                 { translationHook ? translationHook(route.name) : route.name }
+                                { route.featureStatus && (
+                                    <Label
+                                        color={ resolveFeatureStatusLabelColor() }
+                                        className="feature-status-label"
+                                        size="mini"
+                                        data-testid={ `${ testId }-version` }
+                                    >
+                                        { route.featureStatus.toUpperCase() }
+                                    </Label>
+                                ) }
                             </span>
                             {
                                 // Check if any of the child items are defined to be shown on the side panel.

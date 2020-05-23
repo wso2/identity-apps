@@ -42,6 +42,10 @@ interface TitleProps {
     children?: any;
 }
 
+/**
+ * TODO: Remove once `layouts/login` is removed.
+ * @deprecated Use `ProductBrand` from `@wso2is/react-components`.
+ */
 export const Title = (props: TitleProps) => {
     const { classes, style, children } = props;
 

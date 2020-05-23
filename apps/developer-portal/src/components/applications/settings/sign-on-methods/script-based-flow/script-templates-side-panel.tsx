@@ -34,7 +34,7 @@ import { AdaptiveAuthTemplateInterface } from "../../../../../models";
 /**
  * Component ref type.
  */
-export type ScriptTemplatesSidePanelRefType = HTMLFormElement;
+export type ScriptTemplatesSidePanelRefType = HTMLDivElement;
 
 /**
  * Proptypes for the adaptive scripts component.
@@ -64,7 +64,7 @@ interface ScriptTemplatesSidePanelInterface extends TestableComponentInterface {
     /**
      * Ref for the component.
      */
-    ref?: React.RefObject<ScriptTemplatesSidePanelRefType>;
+    ref?: React.Ref<ScriptTemplatesSidePanelRefType>;
     /**
      * Make the form read only.
      */

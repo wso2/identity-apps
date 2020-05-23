@@ -16,9 +16,11 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { ProductVersionInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import { Label, SemanticCOLORS } from "semantic-ui-react";
+import { Heading } from "../typography";
 
 /**
  * Product brand component Prop types.
@@ -40,6 +42,24 @@ export interface ProductBrandPropsInterface extends TestableComponentInterface {
      * Custom styles object.
      */
     style?: object;
+    /**
+     * Product version.
+     */
+    version?: ProductVersionUIInterface;
+}
+
+/**
+ * Product version interface for UI.
+ */
+export interface ProductVersionUIInterface extends ProductVersionInterface {
+    /**
+     * Color for the release label.
+     */
+    labelColor?: SemanticCOLORS | "auto" | "primary" | "secondary";
+    /**
+     * Text case.
+     */
+    textCase?: "lowercase" | "uppercase";
 }
 
 /**
@@ -59,20 +79,100 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
         logo,
         name,
         style,
+        version,
         [ "data-testid" ]: testId
     } = props;
 
+    const versionLabelClasses = classNames(
+        "version-label",
+        {
+            "primary" : !version.labelColor,
+            [ version.labelColor ]: version.labelColor === "primary" || version.labelColor === "secondary"
+        }
+    );
+
+    /**
+     * Resolves the version label color.
+     *
+     * @return {SemanticCOLORS} Resolved color.
+     */
+    const resolveVersionLabelColor = (): SemanticCOLORS => {
+        if (version.labelColor
+            && !(version.labelColor === "auto"
+                || version.labelColor === "primary"
+                || version.labelColor === "secondary")) {
+
+            return version.labelColor;
+        }
+
+        if (version.labelColor === "primary" || version.labelColor === "secondary") {
+            return "orange";
+        }
+
+        if (version.releaseType === "alpha") {
+            return "red";
+        } else if (version.releaseType === "beta") {
+            return "teal";
+        } else if (version.releaseType === "rc") {
+            return "green";
+        } else if (version.releaseType === "milestone") {
+            return "violet";
+        }
+
+        return "orange";
+    };
+
+    /**
+     * Resolves the release version.
+     *
+     * @return {string} Resolved release version.
+     */
+    const resolveReleaseVersion = (): string => {
+        if (!version.releaseType && !version.versionNumber) {
+            return null;
+        }
+
+        let releaseVersion = `${ version.versionNumber ?? "" } ${ version.releaseType ?? "" }`;
+
+        if (version.releaseType === "milestone" && version.milestoneNumber) {
+            releaseVersion = `${ version.versionNumber ?? "" } M${ version.milestoneNumber }`;
+        }
+
+        if (version.textCase === "lowercase") {
+            return releaseVersion.toLowerCase();
+        } else if (version.textCase === "uppercase") {
+            return releaseVersion.toUpperCase();
+        }
+
+        return releaseVersion.toUpperCase();
+    };
+
     return (
         <div className={ classNames(className, "product-title") } style={ style } data-testid={ testId }>
-            { logo && logo }
-            <h1
-                className={ classNames(className, "product-title-text") }
-                style={ style }
-                data-testid={ `${ testId }-title` }
-            >
-                { name }
-            </h1>
-            { children }
+            { version && (version.releaseType || version.versionNumber) && (
+                <div className="product-title-meta">
+                    <Label
+                        color={ resolveVersionLabelColor() }
+                        className={ versionLabelClasses }
+                        size="mini"
+                        data-testid={ `${ testId }-version` }
+                    >
+                        { resolveReleaseVersion() }
+                    </Label>
+                </div>
+            ) }
+            <div className="product-title-main">
+                { logo && logo }
+                <Heading
+                    className={ classNames(className, "product-title-text") }
+                    style={ style }
+                    data-testid={ `${ testId }-title` }
+                    compact
+                >
+                    { name }
+                </Heading>
+                { children }
+            </div>
         </div>
     );
 };
