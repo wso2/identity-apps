@@ -6,14 +6,15 @@
     "clientID": "DEVELOPER_PORTAL",
     "debug": false,
     "documentation": {
-        "baseURL": "https://devdocs.kubesb.com",
-        "contentBaseURL": "https://devdocs.kubesb.com/docs",
+        "baseURL": "https://api.github.com",
+        "contentBaseURL": "https://api.github.com/repos/wso2/docs-is/contents/en/docs",
         "githubOptions": {
             "branch": "new_restructure"
         },
-        "provider": "CUSTOM",
+        "imagePrefixURL": "https://github.com/wso2/docs-is/raw/new_restructure/en/docs/",
+        "provider": "GITHUB",
         "structureFileType": "YAML",
-        "structureFileURL": "https://devdocs.kubesb.com/mkdocs.yml"
+        "structureFileURL": "https://api.github.com/repos/wso2/docs-is/contents/en/mkdocs.yml"
     },
     "i18nResourcePath": "",
     "loginCallbackPath": "/login",
