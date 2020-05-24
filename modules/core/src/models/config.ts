@@ -137,6 +137,10 @@ export interface DocumentationInterface {
      */
     githubOptions: GithubDocumentationOptionsInterface;
     /**
+     * URL prefix for image assets.
+     */
+    imagePrefixURL: string;
+    /**
      * Content provider.
      */
     provider: DocumentationProviders;

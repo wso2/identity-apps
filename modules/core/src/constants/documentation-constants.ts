@@ -52,6 +52,20 @@ export class DocumentationConstants {
     public static readonly DEFAULT_BRANCH: string = "master";
 
     /**
+     * Documentation repo owner.
+     * @constant
+     * @type {string}
+     */
+    public static readonly DEFAULT_REPO_OWNER: string = "wso2";
+
+    /**
+     * Documentation repo.
+     * @constant
+     * @type {string}
+     */
+    public static readonly DEFAULT_REPO: string = "docs-is";
+
+    /**
      * Base path used by `markdown_include`plugin.
      * @constant
      * @type {string}
@@ -71,7 +85,8 @@ export class DocumentationConstants {
      * @type {string}
      */
     public static readonly GITHUB_CONTENTS_API_ENDPOINT: string = `${
-        DocumentationConstants.GITHUB_API_BASE_URL }/repos/wso2/docs-is/contents`;
+        DocumentationConstants.GITHUB_API_BASE_URL }/repos/${ DocumentationConstants.DEFAULT_REPO_OWNER }/${
+        DocumentationConstants.DEFAULT_REPO }/contents`;
 
     /**
      * Default content base URL.
@@ -90,6 +105,16 @@ export class DocumentationConstants {
     public static readonly DEFAULT_STRUCTURE_FILE_URL: string = `${
         DocumentationConstants.GITHUB_CONTENTS_API_ENDPOINT }/${ DocumentationConstants.DEFAULT_LOCALE }/${
         DocumentationConstants.STRUCTURE_FILE_NAME }`;
+
+    /**
+     * Default image prefix URL.
+     * @constant
+     * @type {string}
+     */
+    public static readonly DEFAULT_IMAGE_PREFIX_URL: string = `${
+        DocumentationConstants.GITHUB_CONTENTS_API_ENDPOINT }/${ DocumentationConstants.DEFAULT_REPO_OWNER }/${
+        DocumentationConstants.DEFAULT_REPO }/tree/${ DocumentationConstants.DEFAULT_BRANCH }/${
+        DocumentationConstants.DEFAULT_LOCALE }/${ DocumentationConstants.DEFAULT_CONTENT_BASE_PATH }`;
 
     // API errors
     public static readonly STRUCTURE_FETCH_ERROR: string = "Failed to fetch the documentation " +
