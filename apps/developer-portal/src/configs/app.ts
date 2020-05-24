@@ -64,7 +64,9 @@ export class Config {
                     branch: window["AppUtils"].getConfig().documentation?.githubOptions?.branch
                         ?? DocumentationConstants.DEFAULT_BRANCH
                 },
-                provider: window["AppUtils"].getConfig().documentation?.contentProvider
+                imagePrefixURL: window["AppUtils"].getConfig().documentation?.imagePrefixURL
+                    ?? DocumentationConstants.DEFAULT_IMAGE_PREFIX_URL,
+                provider: window["AppUtils"].getConfig().documentation?.provider
                     ?? DocumentationProviders.GITHUB,
                 structureFileType: window["AppUtils"].getConfig().documentation?.structureFileType
                     ?? DocumentationStructureFileTypes.YAML,

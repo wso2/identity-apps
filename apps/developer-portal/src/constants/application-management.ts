@@ -69,7 +69,7 @@ export class ApplicationManagementConstants {
      * @type {string}
      */
     public static readonly EDIT_APPLICATIONS_DOCS_KEY = `${
-        DocumentationConstants.PORTAL_DOCS_KEY}.Applications["Edit Application"]`;
+        DocumentationConstants.PORTAL_DOCS_KEY }.Applications["Edit Application"]`;
 
     /**
      * Key for the application samples tag in the docs structure object.

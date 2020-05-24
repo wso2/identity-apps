@@ -247,7 +247,12 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
             .finally(() => {
                 setHelpPanelSamplesContentRequestLoadingStatus(false);
             });
-    }, [ helpPanelSelectedSample ]);
+    },[
+        helpPanelSelectedSample,
+        config.deployment.documentation.githubOptions.branch,
+        config.deployment.documentation.provider,
+        config.endpoints.documentationContent
+    ]);
 
     /**
      * Remove template name if multiple protocols configured.
@@ -375,8 +380,8 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
                             transformImageUri={ (uri) =>
                                 uri.startsWith("http" || "https")
                                     ? uri
-                                    : UIConstants.HELP_PANEL_DOCS_ASSETS_URL_PREFIX +
-                                    StringUtils.removeDotsAndSlashesFromRelativePath(uri)
+                                    : config.deployment.documentation?.imagePrefixURL + "/"
+                                        + StringUtils.removeDotsAndSlashesFromRelativePath(uri)
                             }
                             data-testid={ `${ testId }-help-panel-docs-tab-markdown-renderer` }
                         />
