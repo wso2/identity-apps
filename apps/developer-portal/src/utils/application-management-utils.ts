@@ -30,6 +30,7 @@ import {
     ApplicationTemplateListInterface,
     ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
+    DocPanelUICardInterface,
     MainApplicationInterface
 } from "../models";
 import { store } from "../store";
@@ -277,16 +278,16 @@ export class ApplicationManagementUtils {
     /**
      * Generate the application samples for the help panel.
      *
-     * @param {object} raw  - Set of samples.
+     * @param {object} raw  - Object containing of samples/docs and their doc URLs.
      *
-     * @return {any[]} Generated application samples.
+     * @return {DocPanelUICardInterface[]} Generated application samples.
      */
-    public static generateSamplesAndSDKDocs = (raw: object): any[] => {
+    public static generateSamplesAndSDKDocs = (raw: object): DocPanelUICardInterface[] => {
         if (typeof raw !== "object") {
             return [];
         }
 
-        const samples: any[] = [];
+        const samples: DocPanelUICardInterface[] = [];
 
         for (const [ key, value ] of Object.entries(raw)) {
             samples.push({

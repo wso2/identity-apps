@@ -28,6 +28,7 @@ import { getSelectedFederatedAuthenticators, getSelectedLocalAuthenticators } fr
 import { AuthenticatorIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
+    DocPanelUICardInterface,
     GenericAuthenticatorInterface,
     IdentityProviderListResponseInterface,
     LocalAuthenticatorInterface,
@@ -218,16 +219,16 @@ export class IdentityProviderManagementUtils {
     /**
      * Generate IDP template docs for the help panel.
      *
-     * @param {object} raw  - Object with docs links.
+     * @param {object} raw  - Object with IDP template and corresponding docs links.
      *
-     * @return {any[]} Generated docs.
+     * @return {DocPanelUICardInterface[]} Generated docs.
      */
-    public static generateIDPTemplateDocs = (raw: object): any[] => {
+    public static generateIDPTemplateDocs = (raw: object): DocPanelUICardInterface[] => {
         if (typeof raw !== "object") {
             return [];
         }
 
-        const templates: any[] = [];
+        const templates: DocPanelUICardInterface[] = [];
 
         for (const [ key, value ] of Object.entries(raw)) {
             templates.push({

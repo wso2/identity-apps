@@ -47,6 +47,7 @@ import { history } from "../../helpers";
 import { HelpPanelLayout, PageLayout } from "../../layouts";
 import {
     ConfigReducerStateInterface,
+    DocPanelUICardInterface,
     IdentityProviderListResponseInterface,
     IdentityProviderTemplateListItemInterface,
     IdentityProviderTemplateListItemResponseInterface,
@@ -99,7 +100,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProvi
     const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
     const [ helpPanelSelectedTemplateDoc, setHelpPanelSelectedTemplateDoc ] = useState<any>(undefined);
     const [ docsTabBackButtonEnabled, setDocsTabBackButtonEnabled ] = useState<boolean>(true);
-    const [ templateDocs, setTemplateDocs ] = useState<any[]>(undefined);
+    const [ templateDocs, setTemplateDocs ] = useState<DocPanelUICardInterface[]>(undefined);
     const [
         isHelpPanelDocContentRequestLoading,
         setHelpPanelDocContentRequestLoadingStatus
@@ -144,8 +145,9 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProvi
             return;
         }
 
-        const templates = IdentityProviderManagementUtils.generateIDPTemplateDocs(templateDocs)
-            .filter((doc) => doc.name !== "overview");
+        const templates: DocPanelUICardInterface[] =
+            IdentityProviderManagementUtils.generateIDPTemplateDocs(templateDocs)
+                .filter((doc) => doc.name !== "overview");
 
         if (templates instanceof Array && templates.length === 1) {
             setHelpPanelSelectedTemplateDoc(templateDocs[ 0 ]);

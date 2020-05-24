@@ -39,18 +39,14 @@ import { Divider, Grid, Label, SemanticICONS } from "semantic-ui-react";
 import { getApplicationDetails, updateApplicationConfigurations } from "../../api";
 import { EditApplication } from "../../components";
 import { TechnologyLogos } from "../../configs";
-import {
-    ApplicationConstants,
-    ApplicationManagementConstants,
-    UIConstants
-} from "../../constants";
+import { ApplicationConstants, ApplicationManagementConstants } from "../../constants";
 import { history } from "../../helpers";
 import { HelpPanelLayout, PageLayout } from "../../layouts";
 import {
     ApplicationInterface,
-    ApplicationSampleInterface,
     ApplicationTemplateListItemInterface,
     ConfigReducerStateInterface,
+    DocPanelUICardInterface,
     FeatureConfigInterface,
     PortalDocumentationStructureInterface,
     emptyApplication
@@ -97,9 +93,9 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(false);
     const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
     const [ helpPanelSampleContent, setHelpPanelSampleContent ] = useState<string>(undefined);
-    const [ helpPanelSelectedSample, setHelpPanelSelectedSample ] = useState<ApplicationSampleInterface>(undefined);
+    const [ helpPanelSelectedSample, setHelpPanelSelectedSample ] = useState<DocPanelUICardInterface>(undefined);
     const [ samplesTabBackButtonEnabled, setSamplesTabBackButtonEnabled ] = useState<boolean>(true);
-    const [ samples, setSamples ] = useState<ApplicationSampleInterface[]>(undefined);
+    const [ samples, setSamples ] = useState<DocPanelUICardInterface[]>(undefined);
     const [
         isHelpPanelDocContentRequestLoading,
         setHelpPanelDocContentRequestLoadingStatus
@@ -193,7 +189,7 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
             return;
         }
 
-        const samples = ApplicationManagementUtils.generateSamplesAndSDKDocs(samplesDocs);
+        const samples: DocPanelUICardInterface[] = ApplicationManagementUtils.generateSamplesAndSDKDocs(samplesDocs);
 
         if (samples instanceof Array && samples.length === 1) {
             setHelpPanelSelectedSample(samples[ 0 ]);
