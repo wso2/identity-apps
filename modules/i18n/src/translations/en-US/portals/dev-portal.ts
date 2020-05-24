@@ -2701,6 +2701,21 @@ export const devPortal: DevPortalNS = {
                     }
                 }
             },
+            helpPanel: {
+                tabs: {
+                    samples: {
+                        content: {
+                            docs: {
+                                goBack: "Go back",
+                                hint: "Click on the following  Identity Provider types to check out the " +
+                                    "corresponding documentation.",
+                                title: "Select a Template Type"
+                            }
+                        },
+                        heading: "Docs"
+                    }
+                }
+            },
             modals: {
                 addAuthenticator: {
                     subTitle: "Add new authenticator to the identity provider: {{ idpName }}",

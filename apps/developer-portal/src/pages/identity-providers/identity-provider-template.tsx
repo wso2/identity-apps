@@ -16,11 +16,20 @@
  * under the License.
  */
 
-import { ContentLoader, EmptyPlaceholder, TemplateGrid } from "@wso2is/react-components";
+import { getRawDocumentation } from "@wso2is/core/api";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import {
+    ContentLoader,
+    EmptyPlaceholder, Heading,
+    HelpPanelTabInterface, Hint,
+    Markdown, PageHeader, SelectionCard,
+    TemplateGrid
+} from "@wso2is/react-components";
+import _ from "lodash";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider } from "semantic-ui-react";
+import { Divider, Grid, SemanticICONS } from "semantic-ui-react";
 import {
     getIdentityProviderList,
     getIdentityProviderTemplate,
@@ -32,28 +41,50 @@ import {
     handleGetIDPTemplateListError
 } from "../../components/identity-providers/utils";
 import { IdentityProviderCreateWizard } from "../../components/identity-providers/wizards";
-import { EmptyPlaceholderIllustrations, IdPCapabilityIcons, IdPIcons } from "../../configs";
+import { EmptyPlaceholderIllustrations, IdPCapabilityIcons, IdPIcons, IdPTemplateDocsIcons } from "../../configs";
+import { IdentityProviderManagementConstants } from "../../constants";
 import { history } from "../../helpers";
-import { PageLayout } from "../../layouts";
+import { HelpPanelLayout, PageLayout } from "../../layouts";
 import {
+    ConfigReducerStateInterface,
     IdentityProviderListResponseInterface,
     IdentityProviderTemplateListItemInterface,
     IdentityProviderTemplateListItemResponseInterface,
-    IdentityProviderTemplateListResponseInterface,
+    IdentityProviderTemplateListResponseInterface, PortalDocumentationStructureInterface,
     SupportedServices,
     SupportedServicesInterface
 } from "../../models";
 import { AppState } from "../../store";
 import { setAvailableAuthenticatorsMeta } from "../../store/actions/identity-provider";
+import { IdentityProviderManagementUtils } from "../../utils";
+
+/**
+ * Proptypes for the IDP template selection page component.
+ */
+type IdentityProviderTemplateSelectPagePropsInterface = TestableComponentInterface
 
 /**
  * Choose the application template from this page.
  *
- * @return {JSX.Element}
+ * @param {IdentityProviderTemplateSelectPagePropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): ReactElement => {
+export const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemplateSelectPagePropsInterface> = (
+    props: IdentityProviderTemplateSelectPagePropsInterface
+): ReactElement => {
 
+    const {
+        [ "data-testid" ]: testId
+    } = props;
+
+    const dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const availableAuthenticators = useSelector((state: AppState) => state.identityProvider.meta.authenticators);
+    const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
+        (state: AppState) => state.helpPanel.docStructure);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<IdentityProviderTemplateListItemInterface>(undefined);
@@ -65,10 +96,64 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
         isIDPTemplateRequestLoading,
         setIDPTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
+    const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
+    const [ helpPanelSelectedTemplateDoc, setHelpPanelSelectedTemplateDoc ] = useState<any>(undefined);
+    const [ docsTabBackButtonEnabled, setDocsTabBackButtonEnabled ] = useState<boolean>(true);
+    const [ templateDocs, setTemplateDocs ] = useState<any[]>(undefined);
+    const [
+        isHelpPanelDocContentRequestLoading,
+        setHelpPanelDocContentRequestLoadingStatus
+    ] = useState<boolean>(false);
 
-    const dispatch = useDispatch();
+    /**
+     * Called when the template doc is changed in the template section.
+     */
+    useEffect(() => {
+        if (!helpPanelSelectedTemplateDoc?.docs) {
+            return;
+        }
 
-    const availableAuthenticators = useSelector((state: AppState) => state.identityProvider.meta.authenticators);
+        setHelpPanelDocContentRequestLoadingStatus(true);
+
+        getRawDocumentation<string>(
+            config.endpoints.documentationContent,
+            helpPanelSelectedTemplateDoc.docs,
+            config.deployment.documentation.provider,
+            config.deployment.documentation.githubOptions.branch)
+            .then((response) => {
+                setHelpPanelDocContent(response);
+            })
+            .finally(() => {
+                setHelpPanelDocContentRequestLoadingStatus(false);
+            });
+    }, [
+        helpPanelSelectedTemplateDoc,
+        config.endpoints.documentationContent,
+        config.deployment.documentation.provider,
+        config.deployment.documentation.githubOptions.branch
+    ]);
+
+    /**
+     * Filter documents based on the template type.
+     */
+    useEffect(() => {
+        const templateDocs = _.get(helpPanelDocStructure,
+            IdentityProviderManagementConstants.IDP_TEMPLATES_CREATE_DOCS_KEY);
+
+        if (!templateDocs) {
+            return;
+        }
+
+        const templates = IdentityProviderManagementUtils.generateIDPTemplateDocs(templateDocs)
+            .filter((doc) => doc.name !== "overview");
+
+        if (templates instanceof Array && templates.length === 1) {
+            setHelpPanelSelectedTemplateDoc(templateDocs[ 0 ]);
+            setDocsTabBackButtonEnabled(false);
+        }
+
+        setTemplateDocs(templates);
+    }, [ helpPanelDocStructure ]);
 
     /**
      * Build supported services from the given service identifiers.
@@ -248,88 +333,181 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<{}> = (): Rea
         setShowWizard(true);
     }, [possibleListOfDuplicateIdps]);
 
-    return (
-        <PageLayout
-            title={ t("devPortal:pages.idpTemplate.title") }
-            contentTopMargin={ true }
-            description={ t("devPortal:pages.idpTemplate.subTitle") }
-            backButton={ {
-                onClick: handleBackButtonClick,
-                text: t("devPortal:pages.idpTemplate.backButton")
-            } }
-            titleTextAlign="left"
-            bottomMargin={ false }
-            showBottomDivider
-        >
-            {
-                (availableTemplates && !isIDPTemplateRequestLoading)
+    /**
+     * Handles help panel template doc change event.
+     *
+     * @param template - Selected template.
+     */
+    const handleHelpPanelSelectedTemplate = (template: any) => {
+        setHelpPanelSelectedTemplateDoc(template);
+    };
+
+    const helpPanelTabs: HelpPanelTabInterface[] = [
+        {
+            content: (
+                helpPanelSelectedTemplateDoc
                     ? (
-                        <div className="quick-start-templates">
-                            <TemplateGrid<IdentityProviderTemplateListItemInterface>
-                                type="idp"
-                                templates={ availableTemplates.filter((template) => template.id !== "expert-mode") }
-                                templateIcons={ IdPIcons }
-                                heading={ t("devPortal:components.idp.templates.quickSetup.heading") }
-                                subHeading={ t("devPortal:components.idp.templates.quickSetup.subHeading") }
-                                onTemplateSelect={ handleTemplateSelection }
-                                paginate={ true }
-                                paginationLimit={ 5 }
-                                paginationOptions={ {
-                                    showLessButtonLabel: t("common:showLess"),
-                                    showMoreButtonLabel: t("common:showMore")
+                        <>
+                            <PageHeader
+                                title={ helpPanelSelectedTemplateDoc.displayName }
+                                titleAs="h4"
+                                backButton={ docsTabBackButtonEnabled && {
+                                    onClick: () => setHelpPanelSelectedTemplateDoc(undefined),
+                                    text: t("devPortal:components.idp.helpPanel.tabs.samples.content.docs.goBack")
                                 } }
-                                emptyPlaceholder={ (
-                                    <EmptyPlaceholder
-                                        image={ EmptyPlaceholderIllustrations.newList }
-                                        imageSize="tiny"
-                                        title={ t("devPortal:components.templates.emptyPlaceholder.title") }
-                                        subtitle={ [ t("devPortal:components.templates.emptyPlaceholder.subtitles") ] }
-                                    />
-                                ) }
-                                tagsSectionTitle={ t("common:services") }
+                                bottomMargin={ false }
+                                data-testid={ `${ testId }-help-panel-docs-tab-page-header` }
                             />
-                        </div>
+                            <Divider hidden/>
+                            {
+                                helpPanelSelectedTemplateDoc.docs && (
+                                    isHelpPanelDocContentRequestLoading
+                                        ? <ContentLoader dimmer/>
+                                        : (
+                                            <Markdown
+                                                source={ helpPanelDocContent }
+                                                data-testid={ `${ testId }-help-panel-docs-tab-markdown-renderer` }
+                                            />
+                                        )
+                                )
+                            }
+                        </>
                     )
-                    : <ContentLoader dimmer />
-            }
-            <Divider hidden />
-            <div className="custom-templates">
-                <TemplateGrid<IdentityProviderTemplateListItemInterface>
-                    type="idp"
-                    templates={ [ ExpertModeTemplate ] }
-                    templateIcons={ IdPIcons }
-                    heading={ t("devPortal:components.idp.templates.manualSetup.heading") }
-                    subHeading={ t("devPortal:components.idp.templates.manualSetup.subHeading") }
-                    onTemplateSelect={ handleTemplateSelection }
-                    paginate={ true }
-                    paginationLimit={ 5 }
-                    paginationOptions={ {
-                        showLessButtonLabel: t("common:showLess"),
-                        showMoreButtonLabel: t("common:showMore")
-                    } }
-                    emptyPlaceholder={ (
-                        <EmptyPlaceholder
-                            image={ EmptyPlaceholderIllustrations.newList }
-                            imageSize="tiny"
-                            title={ t("devPortal:components.templates.emptyPlaceholder.title") }
-                            subtitle={ [ t("devPortal:components.templates.emptyPlaceholder.subtitles") ] }
-                        />
-                    ) }
-                    tagsSectionTitle={ t("common:services") }
-                />
-            </div>
-            { showWizard && (
-                <IdentityProviderCreateWizard
-                    title={ selectedTemplateWithUniqueName?.name }
-                    subTitle={ selectedTemplateWithUniqueName?.description }
-                    closeWizard={ () => {
-                        setSelectedTemplateWithUniqueName(undefined);
-                        setSelectedTemplate(undefined);
-                        setShowWizard(false);
-                    } }
-                    template={ selectedTemplateWithUniqueName?.idp }
-                />
-            ) }
-        </PageLayout>
+                    : (
+                        <>
+                            <Heading as="h4">
+                                { t("devPortal:components.idp.helpPanel.tabs.samples.content.docs.title") }
+                            </Heading>
+                            <Hint>
+                                { t("devPortal:components.idp.helpPanel.tabs.samples.content.docs.hint") }
+                            </Hint>
+                            <Divider hidden/>
+
+                            <Grid>
+                                <Grid.Row columns={ 4 }>
+                                    {
+                                        templateDocs && templateDocs.map((sample, index) => (
+                                            <Grid.Column key={ index }>
+                                                <SelectionCard
+                                                    size="auto"
+                                                    header={ sample.displayName }
+                                                    image={ IdPTemplateDocsIcons[ sample.image ] }
+                                                    imageSize="mini"
+                                                    spaced="bottom"
+                                                    onClick={ () => handleHelpPanelSelectedTemplate(sample) }
+                                                    data-testid={ `${ testId }-help-panel-docs-tab-selection-card` }
+                                                />
+                                            </Grid.Column>
+                                        ))
+                                    }
+                                </Grid.Row>
+                            </Grid>
+                        </>
+                    )
+            ),
+            heading: t("common:docs"),
+            hidden: !templateDocs || (templateDocs instanceof Array && templateDocs.length < 1),
+            icon: "file alternate outline" as SemanticICONS
+        }
+    ];
+
+    return (
+        <HelpPanelLayout
+            sidebarDirection="right"
+            sidebarMiniEnabled={ true }
+            tabs={ helpPanelTabs }
+        >
+            <PageLayout
+                title={ t("devPortal:pages.idpTemplate.title") }
+                contentTopMargin={ true }
+                description={ t("devPortal:pages.idpTemplate.subTitle") }
+                backButton={ {
+                    onClick: handleBackButtonClick,
+                    text: t("devPortal:pages.idpTemplate.backButton")
+                } }
+                titleTextAlign="left"
+                bottomMargin={ false }
+                showBottomDivider
+            >
+                {
+                    (availableTemplates && !isIDPTemplateRequestLoading)
+                        ? (
+                            <div className="quick-start-templates">
+                                <TemplateGrid<IdentityProviderTemplateListItemInterface>
+                                    type="idp"
+                                    templates={ availableTemplates.filter((template) => template.id !== "expert-mode") }
+                                    templateIcons={ IdPIcons }
+                                    heading={ t("devPortal:components.idp.templates.quickSetup.heading") }
+                                    subHeading={ t("devPortal:components.idp.templates.quickSetup.subHeading") }
+                                    onTemplateSelect={ handleTemplateSelection }
+                                    paginate={ true }
+                                    paginationLimit={ 5 }
+                                    paginationOptions={ {
+                                        showLessButtonLabel: t("common:showLess"),
+                                        showMoreButtonLabel: t("common:showMore")
+                                    } }
+                                    emptyPlaceholder={ (
+                                        <EmptyPlaceholder
+                                            image={ EmptyPlaceholderIllustrations.newList }
+                                            imageSize="tiny"
+                                            title={ t("devPortal:components.templates.emptyPlaceholder.title") }
+                                            subtitle={
+                                                [ t("devPortal:components.templates.emptyPlaceholder.subtitles") ]
+                                            }
+                                        />
+                                    ) }
+                                    tagsSectionTitle={ t("common:services") }
+                                />
+                            </div>
+                        )
+                        : <ContentLoader dimmer/>
+                }
+                <Divider hidden/>
+                <div className="custom-templates">
+                    <TemplateGrid<IdentityProviderTemplateListItemInterface>
+                        type="idp"
+                        templates={ [ ExpertModeTemplate ] }
+                        templateIcons={ IdPIcons }
+                        heading={ t("devPortal:components.idp.templates.manualSetup.heading") }
+                        subHeading={ t("devPortal:components.idp.templates.manualSetup.subHeading") }
+                        onTemplateSelect={ handleTemplateSelection }
+                        paginate={ true }
+                        paginationLimit={ 5 }
+                        paginationOptions={ {
+                            showLessButtonLabel: t("common:showLess"),
+                            showMoreButtonLabel: t("common:showMore")
+                        } }
+                        emptyPlaceholder={ (
+                            <EmptyPlaceholder
+                                image={ EmptyPlaceholderIllustrations.newList }
+                                imageSize="tiny"
+                                title={ t("devPortal:components.templates.emptyPlaceholder.title") }
+                                subtitle={ [ t("devPortal:components.templates.emptyPlaceholder.subtitles") ] }
+                            />
+                        ) }
+                        tagsSectionTitle={ t("common:services") }
+                    />
+                </div>
+                { showWizard && (
+                    <IdentityProviderCreateWizard
+                        title={ selectedTemplateWithUniqueName?.name }
+                        subTitle={ selectedTemplateWithUniqueName?.description }
+                        closeWizard={ () => {
+                            setSelectedTemplateWithUniqueName(undefined);
+                            setSelectedTemplate(undefined);
+                            setShowWizard(false);
+                        } }
+                        template={ selectedTemplateWithUniqueName?.idp }
+                    />
+                ) }
+            </PageLayout>
+        </HelpPanelLayout>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+IdentityProviderTemplateSelectPage.defaultProps = {
+    "data-testid": "idp-templates"
 };

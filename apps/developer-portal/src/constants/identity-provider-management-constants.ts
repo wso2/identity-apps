@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { DocumentationConstants } from "./documentation-constants";
+
 /**
  * Class containing identity provider management constants.
  */
@@ -28,6 +30,30 @@ export class IdentityProviderManagementConstants {
      * @default
      */
     public static readonly LOCAL_IDP_IDENTIFIER: string = "LOCAL";
+
+    /**
+     * Doc key for the IDP overview page.
+     * @constant
+     * @type {string}
+     */
+    public static readonly IDP_OVERVIEW_DOCS_KEY = `${
+        DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Overview"]`;
+
+    /**
+     * Doc key for the IDP edit page.
+     * @constant
+     * @type {string}
+     */
+    public static readonly IDP_EDIT_OVERVIEW_DOCS_KEY = `${
+        DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Edit Identity Provider"]["Overview"]`;
+
+    /**
+     * Doc key for the IDP create page.
+     * @constant
+     * @type {string}
+     */
+    public static readonly IDP_TEMPLATES_CREATE_DOCS_KEY = `${
+        DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Create New Identity Provider"]`;
 
     public static readonly IDENTITY_PROVIDER_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while fetching identity provider template.";

@@ -1185,6 +1185,7 @@ export interface DevPortalNS {
                     };
                 };
             };
+            helpPanel: HelpPanelInterface;
             templates: {
                 manualSetup: {
                     heading: string;

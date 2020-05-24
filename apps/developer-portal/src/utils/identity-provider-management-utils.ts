@@ -214,4 +214,30 @@ export class IdentityProviderManagementUtils {
 
         return AuthenticatorIcons.default;
     }
+
+    /**
+     * Generate IDP template docs for the help panel.
+     *
+     * @param {object} raw  - Object with docs links.
+     *
+     * @return {any[]} Generated docs.
+     */
+    public static generateIDPTemplateDocs = (raw: object): any[] => {
+        if (typeof raw !== "object") {
+            return [];
+        }
+
+        const templates: any[] = [];
+
+        for (const [ key, value ] of Object.entries(raw)) {
+            templates.push({
+                displayName: key,
+                docs: value.toString(),
+                image: _.camelCase(key).toLowerCase(),
+                name: _.camelCase(key).toLowerCase()
+            })
+        }
+
+        return templates;
+    };
 }
