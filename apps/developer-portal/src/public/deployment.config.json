@@ -5,6 +5,16 @@
     "appBaseName": "developer-portal",
     "clientID": "DEVELOPER_PORTAL",
     "debug": false,
+    "documentation": {
+        "baseURL": "https://devdocs.kubesb.com",
+        "contentBaseURL": "https://devdocs.kubesb.com/docs",
+        "githubOptions": {
+            "branch": "new_restructure"
+        },
+        "provider": "CUSTOM",
+        "structureFileType": "YAML",
+        "structureFileURL": "https://devdocs.kubesb.com/mkdocs.yml"
+    },
     "i18nResourcePath": "",
     "loginCallbackPath": "/login",
     "logoutCallbackPath": "/login",

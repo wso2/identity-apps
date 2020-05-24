@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { getRawDocumentation } from "@wso2is/core/api";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -35,16 +36,22 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Label, SemanticICONS } from "semantic-ui-react";
-import { getApplicationDetails, getRawDocumentation, updateApplicationConfigurations } from "../../api";
+import { getApplicationDetails, updateApplicationConfigurations } from "../../api";
 import { EditApplication } from "../../components";
 import { TechnologyLogos } from "../../configs";
-import { ApplicationConstants, ApplicationManagementConstants, HelpPanelConstants, UIConstants } from "../../constants";
-import { generateApplicationSamples, history } from "../../helpers";
+import {
+    ApplicationConstants,
+    ApplicationManagementConstants,
+    DocumentationConstants,
+    UIConstants
+} from "../../constants";
+import { history } from "../../helpers";
 import { HelpPanelLayout, PageLayout } from "../../layouts";
 import {
     ApplicationInterface,
     ApplicationSampleInterface,
     ApplicationTemplateListItemInterface,
+    ConfigReducerStateInterface,
     FeatureConfigInterface,
     PortalDocumentationStructureInterface,
     emptyApplication
@@ -77,6 +84,7 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
 
     const dispatch = useDispatch();
 
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const helpPanelDocURL: string = useSelector((state: AppState) => state.helpPanel.docURL);
     const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
         (state: AppState) => state.helpPanel.docStructure);
@@ -164,13 +172,13 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
             return;
         }
 
-        const editApplicationDocs = _.get(helpPanelDocStructure, HelpPanelConstants.EDIT_APPLICATIONS_DOCS_KEY);
+        const editApplicationDocs = _.get(helpPanelDocStructure, DocumentationConstants.EDIT_APPLICATIONS_DOCS_KEY);
 
         if (!editApplicationDocs) {
             return;
         }
 
-        dispatch(setHelpPanelDocsContentURL(editApplicationDocs[ HelpPanelConstants.APPLICATION_TEMPLATE_DOC_MAPPING
+        dispatch(setHelpPanelDocsContentURL(editApplicationDocs[ DocumentationConstants.APPLICATION_TEMPLATE_DOC_MAPPING
             .get(applicationTemplateName) ]));
     }, [ applicationTemplateName, helpPanelDocStructure ]);
 
@@ -178,13 +186,13 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
      * Filter application samples based on the template type.
      */
     useEffect(() => {
-        const samplesDocs = _.get(helpPanelDocStructure, HelpPanelConstants.APPLICATION_SAMPLES_DOCS_KEY);
+        const samplesDocs = _.get(helpPanelDocStructure, DocumentationConstants.APPLICATION_SAMPLES_DOCS_KEY);
 
         if (!samplesDocs) {
             return;
         }
 
-        const samples = generateApplicationSamples(samplesDocs);
+        const samples = ApplicationManagementUtils.generateSamplesAndSDKDocs(samplesDocs);
 
         if (samples instanceof Array && samples.length === 1) {
             setHelpPanelSelectedSample(samples[ 0 ]);
@@ -204,7 +212,11 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
 
         setHelpPanelDocContentRequestLoadingStatus(true);
 
-        getRawDocumentation<string>(helpPanelDocURL)
+        getRawDocumentation<string>(
+            config.endpoints.documentationContent,
+            helpPanelDocURL,
+            config.deployment.documentation.provider,
+            config.deployment.documentation.githubOptions.branch)
             .then((response) => {
                 setHelpPanelDocContent(response);
             })
@@ -223,7 +235,11 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
 
         setHelpPanelSamplesContentRequestLoadingStatus(true);
 
-        getRawDocumentation<string>(helpPanelSelectedSample.docs)
+        getRawDocumentation<string>(
+            config.endpoints.documentationContent,
+            helpPanelSelectedSample.docs,
+            config.deployment.documentation.provider,
+            config.deployment.documentation.githubOptions.branch)
             .then((response) => {
                 setHelpPanelSampleContent(response);
             })

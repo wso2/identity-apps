@@ -19,7 +19,7 @@
 /**
  * Class containing constants related to help panel.
  */
-export class HelpPanelConstants {
+export class DocumentationConstants {
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -31,46 +31,26 @@ export class HelpPanelConstants {
     private constructor() { }
 
     /**
-     * Base URL of the Github API.
+     * Key to find the developer portal docs.
      * @constant
      * @type {string}
      */
-    public static readonly GITHUB_API_BASE_URL: string = "https://api.github.com";
-
-    /**
-     * Fetches the documentation from the specified branch
-     * @constant
-     * @type {string}
-     */
-    public static readonly PORTAL_DOCUMENTATION_BRANCH: string = "new_restructure";
-
-    /**
-     * Base path used by `markdown_include`plugin.
-     * @constant
-     * @type {string}
-     */
-    public static readonly PORTAL_DOCUMENTATION_CONTENT_BASE_PATH: string = "docs";
-
-    /**
-     * Documentation default locale.
-     * @constant
-     * @type {string}
-     */
-    public static readonly PORTAL_DOCUMENTATION_DEFAULT_LOCALE: string = "en";
+    public static readonly PORTAL_DOCS_KEY = "[\"Developer Portal\"]";
 
     /**
      * Key for the `Edit Application` tag in the docs structure object.
      * @constant
      * @type {string}
      */
-    public static readonly EDIT_APPLICATIONS_DOCS_KEY = "[\"Developer Portal\"].Applications[\"Edit Application\"]";
+    public static readonly EDIT_APPLICATIONS_DOCS_KEY = `${
+        DocumentationConstants.PORTAL_DOCS_KEY}.Applications["Edit Application"]`;
 
     /**
      * Key for the application samples tag in the docs structure object.
      * @constant
      * @type {string}
      */
-    public static readonly APPLICATION_SAMPLES_DOCS_KEY = "Samples.Authentication";
+    public static readonly APPLICATION_SAMPLES_DOCS_KEY = "Quick Starts[\"Choose a Sample Type\"]";
 
     /**
      * Mapping for template and template DOC in the doc structure. i.e `<"TEMPLATE_NAME", "TAG_NAME_IN_DOC_STRUCTURE">`
@@ -84,19 +64,4 @@ export class HelpPanelConstants {
             .set("OIDC web application", "OIDC Web Application")
             .set("Single page application", "Single Page Aplication")
             .set("Mobile application", "OIDC Mobile Application");
-
-    /**
-     * Github contents API endpoint.
-     * @constant
-     * @type {string}
-     */
-    public static readonly GITHUB_CONTENTS_API_ENDPOINT: string = `${
-        HelpPanelConstants.GITHUB_API_BASE_URL }/repos/wso2/docs-is/contents/${
-        HelpPanelConstants.PORTAL_DOCUMENTATION_DEFAULT_LOCALE }`;
-
-    // API errors
-    public static readonly PORTAL_DOCUMENTATION_STRUCTURE_FETCH_ERROR: string = "Failed to fetch the documentation " +
-        "structure from Github API.";
-    public static readonly PORTAL_DOCUMENTATION_RAW_CONTENT_FETCH_ERROR: string = "Failed to fetch the " +
-        "documentation raw content from Github API.";
 }

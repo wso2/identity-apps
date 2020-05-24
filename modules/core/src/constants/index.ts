@@ -18,6 +18,7 @@
 
 export * from "./app-constants";
 export * from "./common-constants";
+export * from "./documentation-constants";
 export * from "./is-constants";
 export * from "./pattern-constants";
 export * from "./token-constants";

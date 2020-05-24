@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getAppConfig } from "@wso2is/core/api";
+import { getAppConfig, getPortalDocumentationStructure } from "@wso2is/core/api";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { CommonDeploymentConfigInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import {
@@ -35,7 +35,6 @@ import { Helmet } from "react-helmet";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
-import { getPortalDocumentationStructure } from "./api";
 import { ProtectedRoute } from "./components";
 import { Config, baseRoutes } from "./configs";
 import { ApplicationConstants } from "./constants";
@@ -47,6 +46,7 @@ import {
     ServiceResourceEndpointsInterface,
     UIConfigInterface
 } from "./models";
+import { PortalDocumentationStructureInterface } from "./models";
 import { AppState } from "./store";
 import { setHelpPanelDocStructure } from "./store/actions";
 
@@ -83,11 +83,19 @@ export const App = (): ReactElement => {
      * Set the help panel documentation structure in redux state.
      */
     useEffect(() => {
-        getPortalDocumentationStructure()
+        if (!config.deployment?.documentation) {
+            return;
+        }
+
+        getPortalDocumentationStructure<PortalDocumentationStructureInterface>(
+            config.endpoints.documentationStructure,
+            config.deployment.documentation.structureFileType,
+            config.deployment.documentation.provider,
+            config.deployment.documentation.githubOptions?.branch)
             .then((response) => {
                 dispatch(setHelpPanelDocStructure(response));
             });
-    }, []);
+    }, [ config ]);
 
     /**
      * Set the app loading status based on the availability of configs.

@@ -273,4 +273,30 @@ export class ApplicationManagementUtils {
             return imageName;
         }
     }
+
+    /**
+     * Generate the application samples for the help panel.
+     *
+     * @param {object} raw  - Set of samples.
+     *
+     * @return {any[]} Generated application samples.
+     */
+    public static generateSamplesAndSDKDocs = (raw: object): any[] => {
+        if (typeof raw !== "object") {
+            return [];
+        }
+
+        const samples: any[] = [];
+
+        for (const [ key, value ] of Object.entries(raw)) {
+            samples.push({
+                displayName: key,
+                docs: value.toString(),
+                image: _.camelCase(key).toLowerCase(),
+                name: _.camelCase(key).toLowerCase()
+            })
+        }
+
+        return samples;
+    };
 }
