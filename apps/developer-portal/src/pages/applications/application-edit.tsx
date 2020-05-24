@@ -42,7 +42,6 @@ import { TechnologyLogos } from "../../configs";
 import {
     ApplicationConstants,
     ApplicationManagementConstants,
-    DocumentationConstants,
     UIConstants
 } from "../../constants";
 import { history } from "../../helpers";
@@ -172,13 +171,15 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
             return;
         }
 
-        const editApplicationDocs = _.get(helpPanelDocStructure, DocumentationConstants.EDIT_APPLICATIONS_DOCS_KEY);
+        const editApplicationDocs = _.get(helpPanelDocStructure,
+            ApplicationManagementConstants.EDIT_APPLICATIONS_DOCS_KEY);
 
         if (!editApplicationDocs) {
             return;
         }
 
-        dispatch(setHelpPanelDocsContentURL(editApplicationDocs[ DocumentationConstants.APPLICATION_TEMPLATE_DOC_MAPPING
+        dispatch(setHelpPanelDocsContentURL(editApplicationDocs[
+            ApplicationManagementConstants.APPLICATION_TEMPLATE_DOC_MAPPING
             .get(applicationTemplateName) ]));
     }, [ applicationTemplateName, helpPanelDocStructure ]);
 
@@ -186,7 +187,7 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
      * Filter application samples based on the template type.
      */
     useEffect(() => {
-        const samplesDocs = _.get(helpPanelDocStructure, DocumentationConstants.APPLICATION_SAMPLES_DOCS_KEY);
+        const samplesDocs = _.get(helpPanelDocStructure, ApplicationManagementConstants.APPLICATION_SAMPLES_DOCS_KEY);
 
         if (!samplesDocs) {
             return;
