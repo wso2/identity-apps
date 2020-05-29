@@ -116,4 +116,12 @@ export class ApplicationManagementConstants {
         "invalid status code while fetching application templates list.";
     public static readonly APPLICATION_TEMPLATES_LIST_FETCH_ERROR: string = "An error occurred while fetching the " +
         "required adaptive application templates list.";
+    public static readonly OIDC_CONFIGURATIONS_STATUS_CODE_ERROR: string = "Received an invalid status " +
+        "code while retrieving the OIDC configurations of the IDP.";
+    public static readonly SAML_CONFIGURATIONS_STATUS_CODE_ERROR: string = "Received an invalid status " +
+        "code while retrieving the SAML configurations of the IDP.";
+    public static readonly APPLICATION_OIDC_CONFIGURATIONS_FETCH_ERROR: string = "An error occurred while fetching " +
+        "the OIDC configurations of the IDP.";
+    public static readonly APPLICATION_SAML_CONFIGURATIONS_FETCH_ERROR: string = "An error occurred while fetching " +
+        "the SAML configurations of the IDP.";
 }
