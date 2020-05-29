@@ -126,7 +126,7 @@ export class CertificateManagementUtils {
      *
      * @param issuerDN
      */
-    public static searchIssuerDNAlias (issuerDN: object[]): string {
+    public static searchIssuerDNAlias(issuerDN: object[]): string {
         let issuerAlias = "";
         issuerDN.map((issuer) => {
             if (Object.prototype.hasOwnProperty.call(issuer, "CN")) {
@@ -139,5 +139,42 @@ export class CertificateManagementUtils {
         });
 
         return issuerAlias;
+    }
+
+    /**
+     * This converts a PEM-encoded certificate to a
+     * DER encoded ASN.1 certificate and saves it to the disk.
+     *
+     * ```
+     * const intArray = der.data.split("").map(char => {
+            return char.charCodeAt(0);
+        });
+     * ```
+     * The `ByteStringBuffer` that holds the DER encoded
+     * string actually has `UTF-16` encoded string values.
+     *
+     * The above code snippet is used to decode the `UTF-16` string.
+     *
+     * @param {string} name The alias of the certificate.
+     * @param {string} pem The PEM encoded certificate content.
+     */
+    public static exportCertificate(name: string, pem: string) {
+        const certificate = CertificateManagementUtils.decodeCertificate(pem);
+
+        const der = forge.asn1.toDer(
+            forge.pki.certificateToAsn1(certificate)
+        );
+
+        const intArray = der.data.split("").map(char => {
+            return char.charCodeAt(0);
+        });
+
+        const buffer = new Uint8Array(intArray).buffer;
+
+        const blob = new Blob([ buffer ], {
+            type: "application/x-x509-ca-cert"
+        });
+
+        saveAs(blob, name + ".cer");
     }
 }

@@ -158,6 +158,7 @@ export class Config {
             requestPathAuthenticators:
                 `${this.getDeploymentConfig().serverHost}/api/server/v1/configs/authenticators?type=REQUEST_PATH`,
             revoke: `${this.getDeploymentConfig().serverHost}/oauth2/revoke`,
+            saml2Meta: `${this.getDeploymentConfig().serverHost}/identity/metadata/saml2`,
             selfSignUp: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
             }/connectors/${ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID}`,

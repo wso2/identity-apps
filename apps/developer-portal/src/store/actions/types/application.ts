@@ -18,8 +18,8 @@
 
 import {
     ApplicationTemplateListItemInterface,
-    AuthProtocolMetaListItemInterface,
-    OIDCMetadataInterface
+    AuthProtocolMetaListItemInterface, OIDCApplicationConfigurationInterface,
+    OIDCMetadataInterface, SAMLApplicationConfigurationInterface
 } from "../../../models";
 
 /**
@@ -58,7 +58,20 @@ export enum ApplicationActionTypes {
      *
      * @type {string}
      */
-    SET_APPLICATION_TEMPLATES = "SET_APPLICATION_TEMPLATES"
+    SET_APPLICATION_TEMPLATES = "SET_APPLICATION_TEMPLATES",
+    /**
+     * Action type to set oidc application configurations.
+     *
+     * @type {string}
+     */
+    SET_OIDC_APPLICATION_CONFIGURATIONS = "SET_OIDC_APPLICATION_CONFIGURATIONS",
+    /**
+     * Action type to set saml application configurations.
+     *
+     * @type {string}
+     */
+    SET_SAML_APPLICATION_CONFIGURATIONS = "SET_SAML_APPLICATION_CONFIGURATIONS"
+
 }
 
 /**
@@ -110,10 +123,28 @@ export interface SetApplicationTemplatesActionInterface extends ApplicationBaseA
 }
 
 /**
+ * Set oidc application configurations action interface.
+ */
+export interface SetOIDCApplicationConfigurationsActionInterface extends ApplicationBaseActionInterface {
+    payload: OIDCApplicationConfigurationInterface;
+    type: ApplicationActionTypes.SET_OIDC_APPLICATION_CONFIGURATIONS;
+}
+
+/**
+ * Set saml application configurations action interface.
+ */
+export interface SetSAMLApplicationConfigurationsActionInterface extends ApplicationBaseActionInterface {
+    payload: SAMLApplicationConfigurationInterface;
+    type: ApplicationActionTypes.SET_SAML_APPLICATION_CONFIGURATIONS;
+}
+
+/**
  * Export action interfaces.
  */
 export type ApplicationActions = CheckAvailableCustomInboundProtocolsMetaInterface
     | SetAvailableInboundProtocolsMetaInterface
     | SetAuthProtocolMetaInterface
     | SetApplicationTemplatesActionInterface
-    | SetAvailableCustomInboundProtocolsMetaInterface;
+    | SetAvailableCustomInboundProtocolsMetaInterface
+    | SetOIDCApplicationConfigurationsActionInterface
+    | SetSAMLApplicationConfigurationsActionInterface;
