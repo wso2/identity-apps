@@ -1127,6 +1127,35 @@ export const devPortal: DevPortalNS = {
                         content: null,
                         heading: "Docs"
                     },
+                    info: {
+                        content: {
+                            oidcConfigurations: {
+                                labels: {
+                                    authorize: "Authorize",
+                                    introspection: "Introspection",
+                                    keystore: "Key Set",
+                                    token: "Token",
+                                    userInfo: "UserInfo"
+                                }
+                            },
+                            samlConfigurations: {
+                                buttons: {
+                                    certificate: "Download Certificate",
+                                    metadata: "Download IDP Metadata"
+                                },
+                                labels: {
+                                    certificate: "IDP certificate",
+                                    issuer: "Issuer",
+                                    metadata: "IDP Metadata",
+                                    slo: "Single Logout",
+                                    sso: "Single Sign-On"
+                                }
+                            },
+                            subTitle: "Use the following endpoints to setup your application conveniently.",
+                            title: "Server Endpoints"
+                        },
+                        heading: "Info"
+                    },
                     samples: {
                         content: {
                             sample: {
@@ -1272,6 +1301,20 @@ export const devPortal: DevPortalNS = {
                         message: "Retrieval successful"
                     }
                 },
+                fetchOIDCIDPConfigs: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "An error occurred retrieving the IDP configurations for the OIDC application.",
+                        message: "Retrieval error"
+                    },
+                    success: {
+                        description: "Successfully retrieved the IDP configurations for the OIDC application.",
+                        message: "Retrieval successful"
+                    }
+                },
                 fetchProtocolMeta: {
                     error: {
                         description: "{{description}}",
@@ -1283,6 +1326,20 @@ export const devPortal: DevPortalNS = {
                     },
                     success: {
                         description: "Successfully retrieved the protocol metadata.",
+                        message: "Retrieval successful"
+                    }
+                },
+                fetchSAMLIDPConfigs: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "An error occurred retrieving the IDP configurations for the SAML application.",
+                        message: "Retrieval error"
+                    },
+                    success: {
+                        description: "Successfully retrieved the IDP configurations for the SAML application.",
                         message: "Retrieval successful"
                     }
                 },
