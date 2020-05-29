@@ -281,3 +281,9 @@
       padding-left: 0px;
    }
 }
+
+.ui.button {
+   &.idp-certificate-download-button {
+      width: 188px;
+   }
+}
