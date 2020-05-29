@@ -90,6 +90,17 @@ export const PackageIcon = require("../dist/lib/themes/default/assets/images/ico
 export const PadlockIcon = require("../dist/lib/themes/default/assets/images/icons/padlock-icon.svg");
 export const PaperRocketIcon = require("../dist/lib/themes/default/assets/images/icons/paper-rocket-icon.svg");
 export const UserGroupIcon = require("../dist/lib/themes/default/assets/images/icons/user-group-icon.svg");
+export const AuthorizeIcon = require("../dist/lib/themes/default/assets/images/icons/authorize.svg");
+export const IntrospectIcon = require("../dist/lib/themes/default/assets/images/icons/introspect.svg");
+export const JWKSIcon = require("../dist/lib/themes/default/assets/images/icons/jwks.svg");
+export const TokenIcon = require("../dist/lib/themes/default/assets/images/icons/token.svg");
+export const UserInfoIcon = require("../dist/lib/themes/default/assets/images/icons/userInfo.svg");
+export const SSOIcon = require("../dist/lib/themes/default/assets/images/icons/sso.svg");
+export const IssuerIcon = require("../dist/lib/themes/default/assets/images/icons/issuer.svg");
+export const SLOIcon = require("../dist/lib/themes/default/assets/images/icons/slo.svg");
+export const IDPCertificateIcon = require("../dist/lib/themes/default/assets/images/icons/idpCertificate.svg");
+export const IDPMetadataIcon = require("../dist/lib/themes/default/assets/images/icons/metadata.svg");
+
 
 /**
  * The following has been kept for backward compatibility.

@@ -128,6 +128,7 @@ export interface ServiceResourceEndpointsInterface {
     documentationContent: string;
     documentationStructure: string;
     profileSchemas: string;
+    saml2Meta: string;
     sessions: string;
     token: string;
     user: string;
