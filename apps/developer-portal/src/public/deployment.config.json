@@ -22,7 +22,7 @@
     "productVersion": {
         "releaseType": "milestone",
         "versionNumber": "5.11.0",
-        "milestoneNumber": "20"
+        "milestoneNumber": "21"
     },
     "routePaths": {
         "home": "/overview",
