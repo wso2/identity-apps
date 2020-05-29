@@ -325,6 +325,13 @@ export const IdPIcons = {
     yahoo: GoogleIdPIcon
 };
 
+export const IdPTemplateDocsIcons = {
+    facebook: FacebookIdPIcon,
+    google: GoogleIdPIcon,
+    openidconnect: OpenIDLogo,
+    manualsetup: ExpertModeIdPIcon
+};
+
 export const IdPCapabilityIcons = {
     [ SupportedServices.AUTHENTICATION ]: AuthenticationCapabilityIcon,
     [ SupportedServices.PROVISIONING ]: ProvisionCapabilityIcon

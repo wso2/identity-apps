@@ -94,7 +94,8 @@ var AppUtils = AppUtils || (function() {
                 clientOrigin: _config.clientOrigin,
                 clientOriginWithTenant: _config.clientOrigin + this.getTenantPath(),
                 debug: _config.debug,
-                loginCallbackURL: _config.clientOrigin + this.getTenantPath() + "/" + _config.appBaseName + 
+                documentation: _config.documentation,
+                loginCallbackURL: _config.clientOrigin + this.getTenantPath() + "/" + _config.appBaseName +
                     _config.loginCallbackPath,
                 logoutCallbackURL: _config.clientOrigin + this.getTenantPath() + "/" + _config.appBaseName + 
                     _config.logoutCallbackPath,

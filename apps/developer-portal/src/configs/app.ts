@@ -16,10 +16,14 @@
  * under the License.
  */
 
-import { CommonDeploymentConfigInterface } from "@wso2is/core/models";
+import { DocumentationConstants } from "@wso2is/core/constants";
+import {
+    CommonDeploymentConfigInterface,
+    DocumentationProviders,
+    DocumentationStructureFileTypes
+} from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { HelpPanelConstants, I18nConstants } from "../constants";
-import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
+import { I18nConstants, ServerConfigurationsConstants } from "../constants";
 import { ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 
 /**
@@ -51,6 +55,24 @@ export class Config {
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             clientOrigin: window["AppUtils"].getConfig().clientOrigin,
+            documentation: {
+                baseURL: window["AppUtils"].getConfig().documentation?.baseURL
+                    ?? DocumentationConstants.GITHUB_API_BASE_URL,
+                contentBaseURL: window["AppUtils"].getConfig().documentation?.contentBaseURL
+                    ?? DocumentationConstants.DEFAULT_CONTENT_BASE_URL,
+                githubOptions: {
+                    branch: window["AppUtils"].getConfig().documentation?.githubOptions?.branch
+                        ?? DocumentationConstants.DEFAULT_BRANCH
+                },
+                imagePrefixURL: window["AppUtils"].getConfig().documentation?.imagePrefixURL
+                    ?? DocumentationConstants.DEFAULT_IMAGE_PREFIX_URL,
+                provider: window["AppUtils"].getConfig().documentation?.provider
+                    ?? DocumentationProviders.GITHUB,
+                structureFileType: window["AppUtils"].getConfig().documentation?.structureFileType
+                    ?? DocumentationStructureFileTypes.YAML,
+                structureFileURL: window["AppUtils"].getConfig().documentation?.structureFileURL
+                    ?? DocumentationConstants.DEFAULT_STRUCTURE_FILE_URL
+            },
             loginCallbackUrl: window["AppUtils"].getConfig().loginCallbackURL,
             productVersion: window["AppUtils"].getConfig().productVersion,
             serverHost: window["AppUtils"].getConfig().serverOriginWithTenant,
@@ -105,6 +127,8 @@ export class Config {
             claims: `${this.getDeploymentConfig().serverHost}/api/server/v1/claim-dialects`,
             clientCertificates: `${this.getDeploymentConfig().serverHost}/api/server/v1/keystores/client-certs`,
             consents: `${this.getDeploymentConfig()}/api/identity/consent-mgt/v1.0/consents`,
+            documentationContent: this.getDeploymentConfig().documentation.contentBaseURL,
+            documentationStructure: this.getDeploymentConfig().documentation.structureFileURL,
             emailTemplateType: `${this.getDeploymentConfig().serverHost}/api/server/v1/email/template-types`,
             externalClaims:`${this.getDeploymentConfig().serverHost}/api/server/v1/claim-dialects/{}/claims`,
             groups: `${this.getDeploymentConfig().serverHost}/scim2/Groups`,
@@ -129,8 +153,6 @@ export class Config {
                 ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
             }/connectors/${ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID}`,
             permission: `${this.getDeploymentConfig().serverHost}/api/server/v1/permission-management/permissions`,
-            portalDocumentationRawContent: `${ HelpPanelConstants.GITHUB_CONTENTS_API_ENDPOINT }/docs`,
-            portalDocumentationStructure: `${ HelpPanelConstants.GITHUB_CONTENTS_API_ENDPOINT }/mkdocs.yml`,
             profileSchemas: `${this.getDeploymentConfig().serverHost}/scim2/Schemas`,
             publicCertificates: `${this.getDeploymentConfig().serverHost}/api/server/v1/keystores/certs/public`,
             requestPathAuthenticators:

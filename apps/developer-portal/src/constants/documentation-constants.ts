@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,24 @@
  * under the License.
  */
 
-export * from "./history";
-export * from "./http-headers";
-export * from "./image";
-export * from "./user-agent-parser";
-export * from "./user";
+/**
+ * Class containing constants related to help panel.
+ */
+export class DocumentationConstants {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    /* eslint-disable @typescript-eslint/no-empty-function */
+    private constructor() { }
+
+    /**
+     * Key to find the developer portal docs.
+     * @constant
+     * @type {string}
+     */
+    public static readonly PORTAL_DOCS_KEY = "[\"Developer Portal\"]";
+}

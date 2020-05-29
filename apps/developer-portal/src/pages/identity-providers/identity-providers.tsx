@@ -16,19 +16,28 @@
  * under the License.
  */
 
+import { getRawDocumentation } from "@wso2is/core/api";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { PrimaryButton } from "@wso2is/react-components";
+import { StringUtils } from "@wso2is/core/utils";
+import { ContentLoader, HelpPanelTabInterface, Markdown, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+import { DropdownItemProps, DropdownProps, Icon, PaginationProps, SemanticICONS } from "semantic-ui-react";
 import { getIdentityProviderList } from "../../api";
 import { AdvancedSearchWithBasicFilters, IdentityProviderList } from "../../components";
 import { handleGetIDPListCallError } from "../../components/identity-providers/utils";
-import { IdentityProviderConstants, UIConstants } from "../../constants";
+import { IdentityProviderConstants, IdentityProviderManagementConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
-import { ListLayout, PageLayout } from "../../layouts";
-import { IdentityProviderListResponseInterface } from "../../models";
+import { HelpPanelLayout, ListLayout, PageLayout } from "../../layouts";
+import {
+    ConfigReducerStateInterface,
+    IdentityProviderListResponseInterface,
+    PortalDocumentationStructureInterface
+} from "../../models";
+import { AppState } from "../../store";
+import { setHelpPanelDocsContentURL } from "../../store/actions";
 
 /**
  * Proptypes for the IDP edit page component.
@@ -71,7 +80,13 @@ export const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
+    const dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const helpPanelDocURL: string = useSelector((state: AppState) => state.helpPanel.docURL);
+    const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
+        (state: AppState) => state.helpPanel.docStructure);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
@@ -82,6 +97,56 @@ export const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+    const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
+    const [
+        isHelpPanelDocContentRequestLoading,
+        setHelpPanelDocContentRequestLoadingStatus
+    ] = useState<boolean>(false);
+
+    /**
+     * Set the default doc content URL for the tab.
+     */
+    useEffect(() => {
+        if (_.isEmpty(helpPanelDocStructure)) {
+            return;
+        }
+
+        const overviewDocs = _.get(helpPanelDocStructure, IdentityProviderManagementConstants.IDP_OVERVIEW_DOCS_KEY);
+
+        if (!overviewDocs) {
+            return;
+        }
+
+        dispatch(setHelpPanelDocsContentURL(overviewDocs));
+    }, [ helpPanelDocStructure, dispatch ]);
+
+    /**
+     * Called when help panel doc URL status changes.
+     */
+    useEffect(() => {
+        if (!helpPanelDocURL) {
+            return;
+        }
+
+        setHelpPanelDocContentRequestLoadingStatus(true);
+
+        getRawDocumentation<string>(
+            config.endpoints.documentationContent,
+            helpPanelDocURL,
+            config.deployment.documentation.provider,
+            config.deployment.documentation.githubOptions.branch)
+            .then((response) => {
+                setHelpPanelDocContent(response);
+            })
+            .finally(() => {
+                setHelpPanelDocContentRequestLoadingStatus(false);
+            });
+    }, [
+        helpPanelDocURL,
+        config.endpoints.documentationContent,
+        config.deployment.documentation.provider,
+        config.deployment.documentation.githubOptions.branch
+    ]);
 
     /**
      * Retrieves the list of identity providers.
@@ -173,78 +238,108 @@ export const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
         setTriggerClearQuery(!triggerClearQuery);
     };
 
-    return (
-        <PageLayout
-            title={ t("devPortal:pages.idp.title") }
-            description={ t("devPortal:pages.idp.subTitle") }
-            showBottomDivider={ true }
-            data-testid={ `${ testId }-page-layout` }
-        >
-            <ListLayout
-                advancedSearch={
-                    <AdvancedSearchWithBasicFilters
-                        onFilter={ handleIdentityProviderFilter  }
-                        filterAttributeOptions={ [
-                            {
-                                key: 0,
-                                text: t("common:name"),
-                                value: "name"
+    const helpPanelTabs: HelpPanelTabInterface[] = [
+        {
+            content: (
+                isHelpPanelDocContentRequestLoading
+                    ? <ContentLoader dimmer/>
+                    : (
+                        <Markdown
+                            source={ helpPanelDocContent }
+                            transformImageUri={ (uri) =>
+                                uri.startsWith("http" || "https")
+                                    ? uri
+                                    : config.deployment.documentation?.imagePrefixURL + "/"
+                                        + StringUtils.removeDotsAndSlashesFromRelativePath(uri)
                             }
-                        ] }
-                        filterAttributePlaceholder={
-                            t("devPortal:components.idp.advancedSearch.form.inputs.filterAttribute.placeholder")
-                        }
-                        filterConditionsPlaceholder={
-                            t("devPortal:components.idp.advancedSearch.form.inputs.filterCondition.placeholder")
-                        }
-                        filterValuePlaceholder={
-                            t("devPortal:components.idp.advancedSearch.form.inputs.filterValue.placeholder")
-                        }
-                        placeholder={ t("devPortal:components.idp.advancedSearch.placeholder") }
-                        defaultSearchAttribute="name"
-                        defaultSearchOperator="co"
-                        triggerClearQuery={ triggerClearQuery }
-                        data-testid={ `${ testId }-advance-search` }
-                    />
-                }
-                currentListSize={ idpList.count }
-                listItemLimit={ listItemLimit }
-                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                onPageChange={ handlePaginationChange }
-                onSortStrategyChange={ handleListSortingStrategyOnChange }
-                rightActionPanel={
-                    (
-                        <PrimaryButton
-                            onClick={ (): void => {
-                                history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDER_TEMPLATES"));
-                            } }
-                            data-testid={ `${ testId }-add-button` }
-                        >
-                            <Icon name="add"/>{ t("devPortal:components.idp.buttons.addIDP") }
-                        </PrimaryButton>
+                            data-testid={ `${ testId }-help-panel-docs-tab-markdown-renderer` }
+                        />
                     )
-                }
-                showPagination={ true }
-                showTopActionPanel={ isIdPListRequestLoading || !(!searchQuery && idpList?.totalResults <= 0) }
-                sortOptions={ IDENTITY_PROVIDER_LIST_SORTING_OPTIONS }
-                sortStrategy={ listSortingStrategy }
-                totalPages={ Math.ceil(idpList.totalResults / listItemLimit) }
-                totalListSize={ idpList.totalResults }
-                data-testid={ `${ testId }-list-layout` }
+            ),
+            heading: t("common:docs"),
+            hidden: !helpPanelDocURL,
+            icon: "file alternate outline" as SemanticICONS
+        }
+    ];
+
+    return (
+        <HelpPanelLayout
+            sidebarDirection="right"
+            sidebarMiniEnabled={ true }
+            tabs={ helpPanelTabs }
+        >
+            <PageLayout
+                title={ t("devPortal:pages.idp.title") }
+                description={ t("devPortal:pages.idp.subTitle") }
+                showBottomDivider={ true }
+                data-testid={ `${ testId }-page-layout` }
             >
-                <IdentityProviderList
-                    isLoading={ isIdPListRequestLoading }
-                    list={ idpList }
-                    onEmptyListPlaceholderActionClick={
-                        () => history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDER_TEMPLATES"))
+                <ListLayout
+                    advancedSearch={
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleIdentityProviderFilter }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: t("common:name"),
+                                    value: "name"
+                                }
+                            ] }
+                            filterAttributePlaceholder={
+                                t("devPortal:components.idp.advancedSearch.form.inputs.filterAttribute.placeholder")
+                            }
+                            filterConditionsPlaceholder={
+                                t("devPortal:components.idp.advancedSearch.form.inputs.filterCondition.placeholder")
+                            }
+                            filterValuePlaceholder={
+                                t("devPortal:components.idp.advancedSearch.form.inputs.filterValue.placeholder")
+                            }
+                            placeholder={ t("devPortal:components.idp.advancedSearch.placeholder") }
+                            defaultSearchAttribute="name"
+                            defaultSearchOperator="co"
+                            triggerClearQuery={ triggerClearQuery }
+                            data-testid={ `${ testId }-advance-search` }
+                        />
                     }
-                    onIdentityProviderDelete={ handleIdentityProviderDelete }
-                    onSearchQueryClear={ handleSearchQueryClear }
-                    searchQuery={ searchQuery }
-                    data-testid={ `${ testId }-list` }
-                />
-            </ListLayout>
-        </PageLayout>
+                    currentListSize={ idpList.count }
+                    listItemLimit={ listItemLimit }
+                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                    onPageChange={ handlePaginationChange }
+                    onSortStrategyChange={ handleListSortingStrategyOnChange }
+                    rightActionPanel={
+                        (
+                            <PrimaryButton
+                                onClick={ (): void => {
+                                    history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDER_TEMPLATES"));
+                                } }
+                                data-testid={ `${ testId }-add-button` }
+                            >
+                                <Icon name="add"/>{ t("devPortal:components.idp.buttons.addIDP") }
+                            </PrimaryButton>
+                        )
+                    }
+                    showPagination={ true }
+                    showTopActionPanel={ isIdPListRequestLoading || !(!searchQuery && idpList?.totalResults <= 0) }
+                    sortOptions={ IDENTITY_PROVIDER_LIST_SORTING_OPTIONS }
+                    sortStrategy={ listSortingStrategy }
+                    totalPages={ Math.ceil(idpList.totalResults / listItemLimit) }
+                    totalListSize={ idpList.totalResults }
+                    data-testid={ `${ testId }-list-layout` }
+                >
+                    <IdentityProviderList
+                        isLoading={ isIdPListRequestLoading }
+                        list={ idpList }
+                        onEmptyListPlaceholderActionClick={
+                            () => history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDER_TEMPLATES"))
+                        }
+                        onIdentityProviderDelete={ handleIdentityProviderDelete }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        searchQuery={ searchQuery }
+                        data-testid={ `${ testId }-list` }
+                    />
+                </ListLayout>
+            </PageLayout>
+        </HelpPanelLayout>
     );
 };
 

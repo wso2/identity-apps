@@ -36,6 +36,7 @@
     "peerDependencies": {
         "@types/history": "*",
         "@types/jest": "*",
+        "@types/js-yaml": "*",
         "@types/lodash": "*",
         "@types/node": "*",
         "@types/react": "*",
@@ -44,6 +45,7 @@
         "axios": "*",
         "history": "*",
         "jest": "*",
+        "js-yaml": "*",
         "lodash": "*",
         "react": "*",
         "react-notification-system": "*",

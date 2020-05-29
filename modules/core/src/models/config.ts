@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { DocumentationProviders, DocumentationStructureFileTypes } from "./documentation";
+
 /**
  * Common interface for configs.
  */
@@ -85,6 +87,10 @@ export interface CommonDeploymentConfigInterface {
      */
     clientOrigin: string;
     /**
+     * Portal Documentation configs.
+     */
+    documentation?: DocumentationInterface;
+    /**
      * Callback to directed on successful login.
      * ex: `/developer-portal/login`
      */
@@ -112,6 +118,50 @@ export interface CommonDeploymentConfigInterface {
      * ex: `/t/`
      */
     tenantPath: string;
+}
+
+/**
+ * Portal documentation configs interface.
+ */
+export interface DocumentationInterface {
+    /**
+     * Endpoint base URL.
+     */
+    baseURL: string;
+    /**
+     * Content base URL.
+     */
+    contentBaseURL: string;
+    /**
+     * Github API options.
+     */
+    githubOptions: GithubDocumentationOptionsInterface;
+    /**
+     * URL prefix for image assets.
+     */
+    imagePrefixURL: string;
+    /**
+     * Content provider.
+     */
+    provider: DocumentationProviders;
+    /**
+     * Structure file type.
+     */
+    structureFileType: DocumentationStructureFileTypes;
+    /**
+     * Structure file URL.
+     */
+    structureFileURL: string;
+}
+
+/**
+ * Github served documentation options interface.
+ */
+export interface GithubDocumentationOptionsInterface {
+    /**
+     * Github branch.
+     */
+    branch: string;
 }
 
 /**

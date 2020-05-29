@@ -74,21 +74,6 @@ export class UIConstants {
     public static readonly AJAX_TOP_LOADING_BAR_HEIGHT: number = 3;
 
     /**
-     * URL prefix to load assets from IS doc repository.
-     * @constant
-     * @type {string}
-     */
-    public static readonly HELP_PANEL_DOCS_ASSETS_URL_PREFIX: string = "https://github.com/wso2/docs-is/raw/5.10.0/en" +
-        "/docs/";
-
-    /**
-     * Github API base URL.
-     * @constant
-     * @type {string}
-     */
-    public static readonly GITHUB_API_BASE_URL: string = "https://api.github.com";
-
-    /**
      * Default list item size for resources such as applications, IdPs etc.
      * @type {number}
      */

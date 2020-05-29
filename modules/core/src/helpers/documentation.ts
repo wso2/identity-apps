@@ -17,25 +17,23 @@
  */
 
 import yaml, { Schema } from "js-yaml";
-import _ from "lodash";
-import { ApplicationSampleInterface, PortalDocumentationStructureInterface } from "../models";
 
 /**
  * Parses a raw YAML string to extract the portal document structure.
  *
  * @param {string} rawYAMLString - Raw YAML as a string.
  *
- * @return {PortalDocumentationStructureInterface} Parsed portal documentation structure.
+ * @return {T} Parsed portal documentation structure.
  */
-export const parsePortalDocumentationStructureYAML = (
-    rawYAMLString: string): PortalDocumentationStructureInterface => {
+export const parsePortalDocumentationStructureYAML = <T = {}>(
+    rawYAMLString: string): T => {
 
     const parsedStructure = yaml.safeLoad(
         sanitizeYAMLString(rawYAMLString),
         { json: true, schema: getCustomYAMLSchema() }
     );
 
-    return convertYAMLArrayToObject<PortalDocumentationStructureInterface>(parsedStructure.nav);
+    return convertYAMLArrayToObject<T>(parsedStructure.nav);
 };
 
 /**
@@ -102,30 +100,4 @@ const getCustomYAMLSchema = (): Schema => {
  */
 const sanitizeYAMLString = (raw: string): string => {
     return raw.replace("!!", "");
-};
-
-/**
- * Generate the application samples for the help panel.
- *
- * @param {object} raw  - Set of samples.
- *
- * @return {ApplicationSampleInterface[]} Generated application samples.
- */
-export const generateApplicationSamples = (raw: object): ApplicationSampleInterface[] => {
-    if (typeof raw !== "object") {
-        return [];
-    }
-
-    const samples: ApplicationSampleInterface[] = [];
-
-    for (const [ key, value ] of Object.entries(raw)) {
-        samples.push({
-            displayName: key,
-            docs: value.toString(),
-            image: _.camelCase(key).toLowerCase(),
-            name: _.camelCase(key).toLowerCase()
-        })
-    }
-
-    return samples;
 };
