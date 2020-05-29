@@ -18,7 +18,7 @@
  * under the License.
 -->
 
-<svg version="1.1" id="authorize-icon" x="0px" y="0px" class="icon" style="enable-background:new 0 0 14 14;" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" xml:space="preserve">
+<svg version="1.1" id="authorize-icon" x="0px" y="0px" class="icon" width="14" height="14" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" xml:space="preserve">
     <path d="m13.536 350 10.588-12c-5.163-4.558-8.122-11.113-8.124-18v-280c.015-13.248 10.752-23.985 24-24h400c13.248.015 23.985 10.752 24 24v280c-.015 13.248-10.752 23.985-24 24h-136v16h136c22.081-.025 39.975-17.919 40-40v-280c-.025-22.081-17.919-39.975-40-40h-400c-22.081.025-39.975 17.919-40 40v280c.003 11.478 4.932 22.403 13.536 30z" />
     <path d="m40 32h16v16h-16z" />
     <path d="m72 32h16v16h-16z" />

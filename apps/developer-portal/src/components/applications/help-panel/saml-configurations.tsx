@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon } from "semantic-ui-react";
 import { HelpPanelIcons } from "../../../configs";
 import { SAMLApplicationConfigurationInterface } from "../../../models";
+import { store } from "../../../store";
 import { CertificateManagementUtils } from "../../../utils";
 
 /**
@@ -48,6 +49,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
         samlConfigurations,
         [ "data-testid" ]: testId
     } = props;
+    const tenantName: string = store.getState().config.deployment.tenant;
 
     const exportMetadataFile = () => {
         const blob = new Blob([ samlConfigurations?.metadata ], {
@@ -160,7 +162,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             size="tiny"
                             color="orange"
                             onClick={ () => CertificateManagementUtils.exportCertificate(
-                                "SAMLPublicKey", samlConfigurations?.certificate) }
+                                tenantName, samlConfigurations?.certificate) }
                         >
                             <Icon name="download" />
                             { t("devPortal:components.applications.helpPanel.tabs.info.content." +

@@ -18,7 +18,7 @@
  * under the License.
 -->
 
-<svg version="1.1" id="sso-icon" class="icon" xmlns="http://www.w3.org/2000/svg" style="enable-background:new 0 0 14 14;" viewBox="0 0 60 60" xml:space="preserve">
+<svg version="1.1" id="sso-icon" class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 60 60" xml:space="preserve">
   <g id="coding" transform="translate(-2 -2)">
     <path id="Path_299" data-name="Path 299" d="M59,14H48V3a1,1,0,0,0-1-1H17a1,1,0,0,0-1,1V14H5a3.009,3.009,0,0,0-3,3V49a3.009,3.009,0,0,0,3,3H24.82l-.67,4H23a1.014,1.014,0,0,0-.8.4l-3,4A1,1,0,0,0,20,62H44a1,1,0,0,0,.8-1.6l-3-4A1.014,1.014,0,0,0,41,56H39.85l-.67-4H59a3.009,3.009,0,0,0,3-3V17a3.009,3.009,0,0,0-3-3ZM18,4H46V24H18ZM40.5,58,42,60H22l1.5-2ZM26.18,56l.67-4h10.3l.67,4ZM60,49a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V46H60Zm0-5H4V17a1,1,0,0,1,1-1H16v9a1,1,0,0,0,1,1H47a1,1,0,0,0,1-1V16H59a1,1,0,0,1,1,1Z"/>
     <path id="Path_300" data-name="Path 300" d="M57,28H45a1,1,0,0,0-1,1v1H36V29a1,1,0,0,0-1-1H29a1,1,0,0,0-1,1v1H20V29a1,1,0,0,0-1-1H7a1,1,0,0,0-1,1v4a1,1,0,0,0,1,1H19a1,1,0,0,0,1-1V32h8v1a1,1,0,0,0,1,1h2v2H29a1,1,0,0,0-1,1v4a1,1,0,0,0,1,1h6a1,1,0,0,0,1-1V37a1,1,0,0,0-1-1H33V34h2a1,1,0,0,0,1-1V32h8v1a1,1,0,0,0,1,1H57a1,1,0,0,0,1-1V29A1,1,0,0,0,57,28ZM18,32H8V30H18Zm16,6v2H30V38Zm0-6H30V30h4Zm22,0H46V30H56Z"/>

@@ -18,7 +18,7 @@
  * under the License.
 -->
 
-<svg version="1.1" id="metadata-icon" class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 370.61 447.293" style="enable-background:new 0 0 14 14;" xml:space="preserve">
+<svg version="1.1" id="metadata-icon" class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 370.61 447.293" width="14" height="14" xml:space="preserve">
   <path id="Path_261" data-name="Path 261" d="M336,272V72c0-.176-.09-.328-.105-.5a7.522,7.522,0,0,0-.406-2.055c-.09-.258-.152-.5-.266-.754a7.947,7.947,0,0,0-1.6-2.344l-64-64a8.046,8.046,0,0,0-2.352-1.6c-.242-.1-.473-.168-.723-.254A7.685,7.685,0,0,0,264.434.07C264.3.078,264.16,0,264,0H8A8,8,0,0,0,0,8V424a8,8,0,0,0,8,8H208V416H16V16H256V72a8,8,0,0,0,8,8h56V272ZM272,64V27.313L308.688,64Zm0,0"/>
   <path id="Path_262" data-name="Path 262" d="M48,256h64v16H48Zm0,0"/>
   <path id="Path_263" data-name="Path 263" d="M48,352H80v16H48Zm0,0"/>

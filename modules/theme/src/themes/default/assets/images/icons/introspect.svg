@@ -18,7 +18,7 @@
  * under the License.
 -->
 
-<svg version="1.1" id="introspect-icon" class="icon" style="enable-background:new 0 0 14 14;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480.027 479.893" xml:space="preserve">
+<svg version="1.1" id="introspect-icon" class="icon" width="14" height="14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480.027 479.893" xml:space="preserve">
   <g id="introspect" transform="translate(0 -0.067)">
     <path id="Path_272" data-name="Path 272" d="M478.87,335.674a8,8,0,0,0-7.99-7.607H448v16h15.264l.745,15.171a16.052,16.052,0,0,1-15.256,16.81q-.377.018-.753.019v16a32.051,32.051,0,0,0,32.027-32.075q0-.759-.037-1.518Z"/>
     <path id="Path_273" data-name="Path 273" d="M16,360.067v-16H152v-16H48v-216a24.028,24.028,0,0,1,24-24v224H88v-272a24.028,24.028,0,0,1,24-24H368a24.028,24.028,0,0,1,24,24v144h16v-96a24.028,24.028,0,0,1,24,24v120h16v-120a40.045,40.045,0,0,0-40-40v-32a40.045,40.045,0,0,0-40-40H112a40.045,40.045,0,0,0-40,40v32a40.045,40.045,0,0,0-40,40v216H8a8,8,0,0,0-8,8v24a32.036,32.036,0,0,0,32,32H176v-16H32A16.019,16.019,0,0,1,16,360.067Z"/>
