@@ -16,7 +16,6 @@
  * under the License.
  */
 
-export * from "./application-list";
-export * from "./edit-application";
-export * from "./wizard";
-export * from "./help-panel";
+export * from "./overview";
+export * from "./oidc-configurations";
+export * from "./saml-configurations";

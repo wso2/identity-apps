@@ -38,6 +38,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Label, SemanticICONS } from "semantic-ui-react";
 import { getApplicationDetails, updateApplicationConfigurations } from "../../api";
 import { EditApplication } from "../../components";
+import { HelpPanelOverview } from "../../components/applications";
 import { TechnologyLogos } from "../../configs";
 import { ApplicationConstants, ApplicationManagementConstants } from "../../constants";
 import { history } from "../../helpers";
@@ -366,6 +367,12 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
     };
 
     const helpPanelTabs: HelpPanelTabInterface[] = [
+        {
+            content: ( <HelpPanelOverview inboundProtocols={ application?.inboundProtocols }/> ),
+            heading: t("devPortal:components.applications.helpPanel.tabs.info.heading"),
+            hidden: application?.inboundProtocols?.length <= 0,
+            icon: "list alternate outline" as SemanticICONS
+        },
         {
             content: (
                 isHelpPanelDocContentRequestLoading
