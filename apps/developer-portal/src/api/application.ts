@@ -29,11 +29,14 @@ import {
     ApplicationTemplateListInterface,
     AuthProtocolMetaListItemInterface,
     HttpMethods,
+    OIDCApplicationConfigurationInterface,
     OIDCDataInterface,
-    SupportedAuthProtocolMetaTypes,
-    SupportedAuthProtocolTypes
+    SAMLApplicationConfigurationInterface,
+    SupportedAuthProtocolTypes,
+    SupportedAuthProtocolMetaTypes
 } from "../models";
 import { store } from "../store";
+import { ApplicationManagementUtils } from "../utils";
 
 /**
  * TODO: move the error messages to a constant file.
@@ -718,6 +721,93 @@ export const getApplicationTemplateList = (limit?: number, offset?: number,
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ApplicationManagementConstants.APPLICATION_TEMPLATES_LIST_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Gets the OIDC application configurations.
+ *
+ * @return {Promise<OIDCApplicationConfigurationInterface>} A promise containing the oidc configurations.
+ */
+export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfigurationInterface> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.wellKnown
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.OIDC_CONFIGURATIONS_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            const oidcConfigs = {
+                authorizeEndpoint: response.data.authorization_endpoint,
+                introspectionEndpoint: response.data.introspection_endpoint,
+                jwksEndpoint: response.data.jwks_uri,
+                tokenEndpoint: response.data.token_endpoint,
+                userEndpoint: response.data.userinfo_endpoint
+            };
+            return Promise.resolve(oidcConfigs);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.APPLICATION_OIDC_CONFIGURATIONS_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Gets the SAML application configurations.
+ *
+ * @return {Promise<SAMLApplicationConfigurationInterface>} A promise containing the meta data.
+ */
+export const getSAMLApplicationConfigurations = (): Promise<SAMLApplicationConfigurationInterface> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.saml2Meta
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.SAML_CONFIGURATIONS_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(ApplicationManagementUtils.getIDPDetailsFromMetaXML(response.data));
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.APPLICATION_SAML_CONFIGURATIONS_FETCH_ERROR,
                 error.stack,
                 error.code,
                 error.request,
