@@ -18,18 +18,22 @@
 
 import {
     ApplicationActionTypes,
+    CheckAvailableCustomInboundProtocolsMetaInterface,
     SetApplicationTemplatesActionInterface,
     SetAuthProtocolMetaInterface,
+    SetAvailableCustomInboundProtocolsMetaInterface,
     SetAvailableInboundProtocolsMetaInterface,
-    SetAvailableCustomInboundProtocolsMetaInterface
+    SetOIDCApplicationConfigurationsActionInterface,
+    SetSAMLApplicationConfigurationsActionInterface
 } from "./types";
 import {
     ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
+    OIDCApplicationConfigurationInterface,
     OIDCMetadataInterface,
+    SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolMetaTypes
 } from "../../models";
-import { CheckAvailableCustomInboundProtocolsMetaInterface } from "./types/application";
 
 /**
  * Redux action to set the list of available inbound authentication protocols.
@@ -95,4 +99,36 @@ export const setApplicationTemplates = (
 ): SetApplicationTemplatesActionInterface => ({
     payload: templates,
     type: ApplicationActionTypes.SET_APPLICATION_TEMPLATES
+});
+
+/**
+ * Redux action to set the oidc application configurations.
+ *
+ *
+ * @return {OIDCApplicationConfigurationInterface} An action of type
+ * `ApplicationActionTypes.SET_OIDC_APPLICATION_CONFIGURATIONS`
+ *
+ * @param oidcConfigurations
+ */
+export const setOIDCApplicationConfigs = (
+        oidcConfigurations: OIDCApplicationConfigurationInterface
+    ): SetOIDCApplicationConfigurationsActionInterface => ({
+        payload: oidcConfigurations,
+        type: ApplicationActionTypes.SET_OIDC_APPLICATION_CONFIGURATIONS
+    });
+
+/**
+ * Redux action to set the oidc application configurations.
+ *
+ *
+ * @return {SAMLApplicationConfigurationInterface} An action of type
+ * `ApplicationActionTypes.SET_SAML_APPLICATION_CONFIGURATIONS`
+ *
+ * @param samlConfigurations
+ */
+export const setSAMLApplicationConfigs = (
+    samlConfigurations: SAMLApplicationConfigurationInterface
+): SetSAMLApplicationConfigurationsActionInterface => ({
+    payload: samlConfigurations,
+    type: ApplicationActionTypes.SET_SAML_APPLICATION_CONFIGURATIONS
 });
