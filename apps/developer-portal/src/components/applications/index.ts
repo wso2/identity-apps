@@ -19,3 +19,4 @@
 export * from "./application-list";
 export * from "./edit-application";
 export * from "./wizard";
+export * from "./help-panel";

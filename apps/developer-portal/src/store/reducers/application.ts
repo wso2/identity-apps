@@ -24,11 +24,13 @@ import { ApplicationActionTypes, ApplicationActions } from "../actions/types";
  */
 const initialState: ApplicationReducerStateInterface = {
     meta: {
-        inboundProtocols: [],
-        customInboundProtocols: [],
         customInboundProtocolChecked: false,
+        customInboundProtocols: [],
+        inboundProtocols: [],
         protocolMeta: {}
     },
+    oidcConfigurations: undefined,
+    samlConfigurations: undefined,
     templates: undefined
 };
 
@@ -82,6 +84,16 @@ export const applicationReducer = (state: ApplicationReducerStateInterface = ini
             return {
                 ...state,
                 templates: action.payload
+            };
+        case ApplicationActionTypes.SET_OIDC_APPLICATION_CONFIGURATIONS:
+            return {
+                ...state,
+                oidcConfigurations: action.payload
+            };
+        case ApplicationActionTypes.SET_SAML_APPLICATION_CONFIGURATIONS:
+            return {
+                ...state,
+                samlConfigurations: action.payload
             };
         default:
             return state;

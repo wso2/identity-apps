@@ -25,6 +25,7 @@ import {
     AppleLogo,
     ArrowRight,
     AuthenticationCapabilityIcon,
+    AuthorizeIcon,
     BasicAuthIcon,
     BlockedMagnifierIcon,
     BoxIcon,
@@ -70,8 +71,13 @@ import {
     GoogleLogo,
     HTMLLogo,
     HomeTileIcons,
+    IDPCertificateIcon,
+    IDPMetadataIcon,
     InfoIcon,
+    IntrospectIcon,
+    IssuerIcon,
     JDBCUserstoreIllustration,
+    JWKSIcon,
     JWTLogo,
     JavaLogo,
     JavaScriptLogo,
@@ -101,9 +107,11 @@ import {
     ReportIcon,
     SAMLWebAppTemplateIllustration,
     SCIMLogo,
+    SLOIcon,
     SMSOTPIcon,
     SPATemplateIllustration,
     SPMLLogo,
+    SSOIcon,
     SalesforceLogo,
     SamlLogo,
     SecurityIllustration,
@@ -111,10 +119,12 @@ import {
     SpinWheelIcon,
     SuccessIcon,
     TOTPIcon,
+    TokenIcon,
     TwitterIdPIcon,
     TwitterLogo,
     UserGroupIcon,
     UserIcon,
+    UserInfoIcon,
     VueLogo,
     WSFedLogo,
     WSTrustLogo,
@@ -210,11 +220,11 @@ export const EmptyPlaceholderIllustrations = {
 export const InboundProtocolLogos = {
     oidc: OIDCLogo,
     openid: OpenIDLogo,
+    "passive-sts": WSFedLogo,
     saml: SamlLogo,
-    wsFed: WSFedLogo,
-    wsTrust: WSTrustLogo,
     "ws-trust": WSTrustLogo,
-    "passive-sts": WSFedLogo
+    wsFed: WSFedLogo,
+    wsTrust: WSTrustLogo
 };
 
 export const ApplicationTemplateIllustrations = {
@@ -325,6 +335,13 @@ export const IdPIcons = {
     yahoo: GoogleIdPIcon
 };
 
+export const IdPTemplateDocsIcons = {
+    facebook: FacebookIdPIcon,
+    google: GoogleIdPIcon,
+    openidconnect: OpenIDLogo,
+    manualsetup: ExpertModeIdPIcon
+};
+
 export const IdPCapabilityIcons = {
     [ SupportedServices.AUTHENTICATION ]: AuthenticationCapabilityIcon,
     [ SupportedServices.PROVISIONING ]: ProvisionCapabilityIcon
@@ -406,5 +423,20 @@ export const OverviewPageIllustrations = {
         application: AppIcon,
         idp: BuildingIcon,
         userstores: DatabaseIcon
+    }
+};
+
+export const HelpPanelIcons = {
+    endpoints: {
+        authorize: AuthorizeIcon,
+        certificate: IDPCertificateIcon,
+        introspect: IntrospectIcon,
+        issuer: IssuerIcon,
+        jwks: JWKSIcon,
+        metadata: IDPMetadataIcon,
+        samlSLO: SLOIcon,
+        samlSSO: SSOIcon,
+        token: TokenIcon,
+        userInfo: UserInfoIcon
     }
 };

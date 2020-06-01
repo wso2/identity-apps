@@ -16,18 +16,34 @@
  * under the License.
  */
 
+import { getRawDocumentation } from "@wso2is/core/api";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AppAvatar } from "@wso2is/react-components";
+import { StringUtils } from "@wso2is/core/utils";
+import {
+    AppAvatar,
+    ContentLoader,
+    HelpPanelTabInterface,
+    Markdown
+} from "@wso2is/react-components";
+import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { SemanticICONS } from "semantic-ui-react";
 import { getIdentityProviderDetail } from "../../api";
 import { EditIdentityProvider } from "../../components";
-import { IdentityProviderConstants } from "../../constants";
+import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../../constants";
 import { history } from "../../helpers";
-import { PageLayout } from "../../layouts";
-import { IdentityProviderInterface, emptyIdentityProvider } from "../../models";
+import { HelpPanelLayout, PageLayout } from "../../layouts";
+import {
+    ConfigReducerStateInterface,
+    IdentityProviderInterface,
+    PortalDocumentationStructureInterface,
+    emptyIdentityProvider
+} from "../../models";
+import { AppState } from "../../store";
+import { setHelpPanelDocsContentURL } from "../../store/actions";
 
 /**
  * Proptypes for the IDP edit page component.
@@ -47,12 +63,68 @@ export const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterfa
     const {
         [ "data-testid" ]: testId
     } = props;
-    
-    const [ identityProvider, setIdentityProvider ] = useState<IdentityProviderInterface>(emptyIdentityProvider);
-    const [ isIdentityProviderRequestLoading, setIdentityProviderRequestLoading ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const helpPanelDocURL: string = useSelector((state: AppState) => state.helpPanel.docURL);
+    const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
+        (state: AppState) => state.helpPanel.docStructure);
+
+    const [ identityProvider, setIdentityProvider ] = useState<IdentityProviderInterface>(emptyIdentityProvider);
+    const [ isIdentityProviderRequestLoading, setIdentityProviderRequestLoading ] = useState<boolean>(false);
+    const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
+    const [
+        isHelpPanelDocContentRequestLoading,
+        setHelpPanelDocContentRequestLoadingStatus
+    ] = useState<boolean>(false);
+
+    /**
+     * Set the default doc content URL for the tab.
+     */
+    useEffect(() => {
+        if (_.isEmpty(helpPanelDocStructure)) {
+            return;
+        }
+
+        const overviewDocs = _.get(helpPanelDocStructure,
+            IdentityProviderManagementConstants.IDP_EDIT_OVERVIEW_DOCS_KEY);
+
+        if (!overviewDocs) {
+            return;
+        }
+
+        dispatch(setHelpPanelDocsContentURL(overviewDocs));
+    }, [ helpPanelDocStructure, dispatch ]);
+
+    /**
+     * Called when help panel doc URL status changes.
+     */
+    useEffect(() => {
+        if (!helpPanelDocURL) {
+            return;
+        }
+
+        setHelpPanelDocContentRequestLoadingStatus(true);
+
+        getRawDocumentation<string>(
+            config.endpoints.documentationContent,
+            helpPanelDocURL,
+            config.deployment.documentation.provider,
+            config.deployment.documentation.githubOptions.branch)
+            .then((response) => {
+                setHelpPanelDocContent(response);
+            })
+            .finally(() => {
+                setHelpPanelDocContentRequestLoadingStatus(false);
+            });
+    }, [
+        helpPanelDocURL,
+        config.deployment.documentation.githubOptions.branch,
+        config.deployment.documentation.provider,
+        config.endpoints.documentationContent
+    ]);
 
     /**
      * Retrieves idp details from the API.
@@ -122,36 +194,66 @@ export const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterfa
         getIdentityProvider(id);
     }, []);
 
+    const helpPanelTabs: HelpPanelTabInterface[] = [
+        {
+            content: (
+                isHelpPanelDocContentRequestLoading
+                    ? <ContentLoader dimmer/>
+                    : (
+                        <Markdown
+                            source={ helpPanelDocContent }
+                            transformImageUri={ (uri) =>
+                                uri.startsWith("http" || "https")
+                                    ? uri
+                                    : config.deployment.documentation?.imagePrefixURL + "/"
+                                        + StringUtils.removeDotsAndSlashesFromRelativePath(uri)
+                            }
+                            data-testid={ `${ testId }-help-panel-docs-tab-markdown-renderer` }
+                        />
+                    )
+            ),
+            heading: t("common:docs"),
+            hidden: !helpPanelDocURL,
+            icon: "file alternate outline" as SemanticICONS
+        }
+    ];
+
     return (
-        <PageLayout
-            isLoading={ isIdentityProviderRequestLoading }
-            title={ identityProvider.name }
-            contentTopMargin={ true }
-            description={ identityProvider.description }
-            image={ (
-                <AppAvatar
-                    name={ identityProvider.name }
-                    image={ identityProvider.image }
-                    size="tiny"
-                    spaced="right"
-                />
-            ) }
-            backButton={ {
-                onClick: handleBackButtonClick,
-                text: t("devPortal:pages.idpTemplate.backButton")
-            } }
-            titleTextAlign="left"
-            bottomMargin={ false }
-            data-testid={ `${ testId }-page-layout` }
+        <HelpPanelLayout
+            sidebarDirection="right"
+            sidebarMiniEnabled={ true }
+            tabs={ helpPanelTabs }
         >
-            <EditIdentityProvider
-                identityProvider={ identityProvider }
+            <PageLayout
                 isLoading={ isIdentityProviderRequestLoading }
-                onDelete={ handleIdentityProviderDelete }
-                onUpdate={ handleIdentityProviderUpdate }
-                data-testid={ testId }
-            />
-        </PageLayout>
+                title={ identityProvider.name }
+                contentTopMargin={ true }
+                description={ identityProvider.description }
+                image={ (
+                    <AppAvatar
+                        name={ identityProvider.name }
+                        image={ identityProvider.image }
+                        size="tiny"
+                        spaced="right"
+                    />
+                ) }
+                backButton={ {
+                    onClick: handleBackButtonClick,
+                    text: t("devPortal:pages.idpTemplate.backButton")
+                } }
+                titleTextAlign="left"
+                bottomMargin={ false }
+                data-testid={ `${ testId }-page-layout` }
+            >
+                <EditIdentityProvider
+                    identityProvider={ identityProvider }
+                    isLoading={ isIdentityProviderRequestLoading }
+                    onDelete={ handleIdentityProviderDelete }
+                    onUpdate={ handleIdentityProviderUpdate }
+                    data-testid={ testId }
+                />
+            </PageLayout>
+        </HelpPanelLayout>
     );
 };
 

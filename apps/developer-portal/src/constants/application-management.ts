@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { DocumentationConstants } from "./documentation-constants";
+
 /**
  * Class containing application management constants.
  */
@@ -29,24 +31,6 @@ export class ApplicationManagementConstants {
      */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
-
-    // API errors
-    public static readonly AUTH_PROTOCOL_METADATA_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
-        "code while retrieving the auth protocol metadata.";
-    public static readonly AUTH_PROTOCOL_METADATA_FETCH_ERROR: string = "An error occurred while fetching the " +
-        "metadata related to the required auth protocol.";
-    public static readonly AUTH_PROTOCOL_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
-        "status code while updating the auth protocol config.";
-    public static readonly AUTH_PROTOCOL_CONFIG_UPDATE_ERROR: string = "An error occurred while updating the auth" +
-        "protocol config.";
-    public static readonly ADAPTIVE_AUTH_TEMPLATES_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
-        "status code while fetching adaptive authentication templates.";
-    public static readonly ADAPTIVE_AUTH_TEMPLATES_FETCH_ERROR: string = "An error occurred while fetching the " +
-        "required adaptive authentication template.";
-    public static readonly APP_PROTOCOL_DELETE_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
-        "status code while deleting the protocol config.";
-    public static readonly APP_PROTOCOL_DELETE_ERROR: string = "An error occurred while deleting the" +
-        "protocol config.";
 
     public static readonly DEFAULT_ADAPTIVE_AUTH_SCRIPT: string[] = [
         "var onLoginRequest = function(context) {",
@@ -70,6 +54,60 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_EDIT_PROVISIONING_SETTINGS", "applications.edit.provisioningSettings")
         .set("APPLICATION_EDIT_ADVANCED_SETTINGS", "applications.edit.advancedSettings");
 
+    /**
+     * Splitter token to split the description to extract the template.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly APPLICATION_DESCRIPTION_SPLITTER: string = ":::";
+
+
+    /**
+     * Key for the `Edit Application` tag in the docs structure object.
+     * @constant
+     * @type {string}
+     */
+    public static readonly EDIT_APPLICATIONS_DOCS_KEY = `${
+        DocumentationConstants.PORTAL_DOCS_KEY }.Applications["Edit Application"]`;
+
+    /**
+     * Key for the application samples tag in the docs structure object.
+     * @constant
+     * @type {string}
+     */
+    public static readonly APPLICATION_SAMPLES_DOCS_KEY = "Quick Starts[\"Choose a Sample Type\"]";
+
+    /**
+     * Mapping for template and template DOC in the doc structure. i.e `<"TEMPLATE_NAME", "TAG_NAME_IN_DOC_STRUCTURE">`
+     * @remarks
+     * If the template name is changed, this map has to be changed.
+     * @constant
+     * @type {Map<string, string>}
+     */
+    public static readonly APPLICATION_TEMPLATE_DOC_MAPPING: Map<string, string> = new Map<string, string>()
+        .set("SAML web application", "SAML Web Application")
+        .set("OIDC web application", "OIDC Web Application")
+        .set("Single page application", "Single Page Aplication")
+        .set("Mobile application", "OIDC Mobile Application");
+
+    // API errors
+    public static readonly AUTH_PROTOCOL_METADATA_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
+        "code while retrieving the auth protocol metadata.";
+    public static readonly AUTH_PROTOCOL_METADATA_FETCH_ERROR: string = "An error occurred while fetching the " +
+        "metadata related to the required auth protocol.";
+    public static readonly AUTH_PROTOCOL_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while updating the auth protocol config.";
+    public static readonly AUTH_PROTOCOL_CONFIG_UPDATE_ERROR: string = "An error occurred while updating the auth" +
+        "protocol config.";
+    public static readonly ADAPTIVE_AUTH_TEMPLATES_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while fetching adaptive authentication templates.";
+    public static readonly ADAPTIVE_AUTH_TEMPLATES_FETCH_ERROR: string = "An error occurred while fetching the " +
+        "required adaptive authentication template.";
+    public static readonly APP_PROTOCOL_DELETE_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while deleting the protocol config.";
+    public static readonly APP_PROTOCOL_DELETE_ERROR: string = "An error occurred while deleting the" +
+        "protocol config.";
     public static readonly APPLICATION_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching application template.";
     public static readonly APPLICATION_TEMPLATE_FETCH_ERROR: string = "An error occurred while fetching the " +
@@ -78,12 +116,12 @@ export class ApplicationManagementConstants {
         "invalid status code while fetching application templates list.";
     public static readonly APPLICATION_TEMPLATES_LIST_FETCH_ERROR: string = "An error occurred while fetching the " +
         "required adaptive application templates list.";
-
-    /**
-     * Splitter token to split the description to extract the template.
-     * @constant
-     * @type {string}
-     * @default
-     */
-    public static readonly APPLICATION_DESCRIPTION_SPLITTER: string = ":::";
+    public static readonly OIDC_CONFIGURATIONS_STATUS_CODE_ERROR: string = "Received an invalid status " +
+        "code while retrieving the OIDC configurations of the IDP.";
+    public static readonly SAML_CONFIGURATIONS_STATUS_CODE_ERROR: string = "Received an invalid status " +
+        "code while retrieving the SAML configurations of the IDP.";
+    public static readonly APPLICATION_OIDC_CONFIGURATIONS_FETCH_ERROR: string = "An error occurred while fetching " +
+        "the OIDC configurations of the IDP.";
+    public static readonly APPLICATION_SAML_CONFIGURATIONS_FETCH_ERROR: string = "An error occurred while fetching " +
+        "the SAML configurations of the IDP.";
 }

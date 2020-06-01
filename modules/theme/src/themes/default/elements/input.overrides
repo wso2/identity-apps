@@ -90,3 +90,15 @@
        margin: 10px 0px;
     }
 }
+
+.ui.input {
+    &.panel-url-input {
+        height: 2em;
+        font-size: 0.9em;
+        color: #666767 !important;
+
+        button {
+            height: 1.9em;
+        }
+    }
+}

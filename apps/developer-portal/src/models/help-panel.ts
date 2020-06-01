@@ -59,9 +59,9 @@ interface StrictPortalDocumentationStructureInterface {
 }
 
 /**
- * Application sample interface.
+ * Interface for generic doc panel UI card.
  */
-export interface ApplicationSampleInterface {
+export interface DocPanelUICardInterface {
     name: string;
     displayName: string;
     image: string;

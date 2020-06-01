@@ -19,4 +19,5 @@
 
 export * from "./common";
 export * from "./config";
+export * from "./documentation";
 export * from "./profile";

@@ -18,7 +18,11 @@
 
 import { CommonConfigReducerStateInterface, CommonDeploymentConfigInterface } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { ApplicationTemplateListItemInterface } from "./application";
+import {
+    ApplicationTemplateListItemInterface,
+    OIDCApplicationConfigurationInterface,
+    SAMLApplicationConfigurationInterface
+} from "./application";
 import { AuthProtocolMetaListItemInterface, OIDCMetadataInterface } from "./application-inbound";
 import { FeatureConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "./config";
 import { PortalDocumentationStructureInterface } from "./help-panel";
@@ -47,6 +51,8 @@ export interface HelpPanelReducerStateInterface {
 export interface ApplicationReducerStateInterface {
     meta: ApplicationMetaInterface;
     templates: ApplicationTemplateListItemInterface[];
+    oidcConfigurations: OIDCApplicationConfigurationInterface;
+    samlConfigurations: SAMLApplicationConfigurationInterface;
 }
 
 /**

@@ -22,7 +22,12 @@ import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { TemplateCardTagInterface } from "@wso2is/react-components";
 import _ from "lodash";
-import { getApplicationTemplateList, getAvailableInboundProtocols } from "../api";
+import {
+    getApplicationTemplateList,
+    getAvailableInboundProtocols,
+    getOIDCApplicationConfigurations,
+    getSAMLApplicationConfigurations
+} from "../api";
 import { CustomApplicationTemplate } from "../components/applications/meta";
 import { TechnologyLogos } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
@@ -30,14 +35,20 @@ import {
     ApplicationTemplateListInterface,
     ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
-    MainApplicationInterface
+    DocPanelUICardInterface,
+    emptySAMLAppConfiguration,
+    MainApplicationInterface,
+    OIDCApplicationConfigurationInterface,
+    SAMLApplicationConfigurationInterface
 } from "../models";
 import { store } from "../store";
 import {
     checkAvailableCustomInboundAuthProtocolMeta,
     setApplicationTemplates,
     setAvailableCustomInboundAuthProtocolMeta,
-    setAvailableInboundAuthProtocolMeta
+    setAvailableInboundAuthProtocolMeta,
+    setOIDCApplicationConfigs,
+    setSAMLApplicationConfigs
 } from "../store/actions";
 
 /**
@@ -273,4 +284,119 @@ export class ApplicationManagementUtils {
             return imageName;
         }
     }
+
+    /**
+     * Retrieve IDP details of the OIDC application and sets it in redux state.
+     */
+    public static getOIDCApplicationMeta = (): Promise<void> => {
+        return getOIDCApplicationConfigurations()
+            .then((response) => {
+                store.dispatch(setOIDCApplicationConfigs(response));
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    store.dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: I18n.instance.t("devPortal:components.applications.notifications." +
+                            "fetchOIDCIDPConfigs.error.message")
+                    }));
+
+                    return;
+                }
+
+                store.dispatch(addAlert({
+                    description: I18n.instance.t("devPortal:components.applications.notifications." +
+                        "fetchOIDCIDPConfigs.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: I18n.instance.t("devPortal:components.applications.notifications." +
+                        "fetchOIDCIDPConfigs.genericError.message")
+                }));
+            })
+    };
+
+    /**
+     * Retrieve IDP details of the SAML application and sets it in redux state.
+     */
+    public static getSAMLApplicationMeta = (): Promise<void> => {
+        return getSAMLApplicationConfigurations()
+            .then((response) => {
+                store.dispatch(setSAMLApplicationConfigs(response));
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    store.dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: I18n.instance.t("devPortal:components.applications.notifications." +
+                            "fetchSAMLIDPConfigs.error.message")
+                    }));
+
+                    return;
+                }
+
+                store.dispatch(addAlert({
+                    description: I18n.instance.t("devPortal:components.applications.notifications." +
+                        "fetchSAMLIDPConfigs.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: I18n.instance.t("devPortal:components.applications.notifications." +
+                        "fetchSAMLIDPConfigs.genericError.message")
+                }));
+            })
+    };
+
+    /**
+     * Retrieve IDP details from the SAML meta XML.
+     */
+    public static getIDPDetailsFromMetaXML = (strXML: string): SAMLApplicationConfigurationInterface => {
+        const samlConfigs: SAMLApplicationConfigurationInterface = emptySAMLAppConfiguration();
+        let doc;
+        if(window.ActiveXObject) {
+            // For IE6, IE5
+            doc = new ActiveXObject("Microsoft.XMLDOM");
+            doc.async = "false";
+            doc.loadXML(strXML);
+        }
+        else {
+            // For Firefox, Chrome etc
+            const parser = new DOMParser();
+            doc = parser.parseFromString(strXML, "text/xml");
+        }
+
+        samlConfigs.issuer = doc.getElementsByTagName("EntityDescriptor")[0].attributes[1].value;
+        samlConfigs.certificate = doc.getElementsByTagName("X509Certificate")[0].innerHTML;
+        samlConfigs.ssoUrl = doc.getElementsByTagName(
+            "IDPSSODescriptor")[0].childNodes[6].attributes.Location.nodeValue;
+        samlConfigs.sloUrl = doc.getElementsByTagName(
+            "IDPSSODescriptor")[0].childNodes[2].attributes.Location.nodeValue;
+        samlConfigs.metadata = strXML;
+
+        return samlConfigs;
+    };
+
+    /**
+     * Generate the application samples for the help panel.
+     *
+     * @param {object} raw  - Object containing of samples/docs and their doc URLs.
+     *
+     * @return {DocPanelUICardInterface[]} Generated application samples.
+     */
+    public static generateSamplesAndSDKDocs = (raw: object): DocPanelUICardInterface[] => {
+        if (typeof raw !== "object") {
+            return [];
+        }
+
+        const samples: DocPanelUICardInterface[] = [];
+
+        for (const [ key, value ] of Object.entries(raw)) {
+            samples.push({
+                displayName: key,
+                docs: value.toString(),
+                image: _.camelCase(key).toLowerCase(),
+                name: _.camelCase(key).toLowerCase()
+            })
+        }
+
+        return samples;
+    };
 }

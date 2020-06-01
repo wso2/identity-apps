@@ -545,6 +545,8 @@ export interface DevPortalNS {
                 fetchCustomInboundProtocols: Notification;
                 fetchInboundProtocols: Notification;
                 fetchProtocolMeta: Notification;
+                fetchSAMLIDPConfigs: Notification;
+                fetchOIDCIDPConfigs: Notification;
                 fetchTemplate: Notification;
                 fetchTemplates: Notification;
                 getInboundProtocolConfig: Notification;
@@ -1185,6 +1187,7 @@ export interface DevPortalNS {
                     };
                 };
             };
+            helpPanel: HelpPanelInterface;
             templates: {
                 manualSetup: {
                     heading: string;

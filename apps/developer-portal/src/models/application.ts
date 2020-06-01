@@ -420,3 +420,49 @@ export interface SimpleUserStoreListItemInterface {
     id?: string;
     name: string;
 }
+
+/**
+ * Captures name and id of the user store.
+ */
+export interface SimpleUserStoreListItemInterface {
+    id?: string;
+    name: string;
+}
+
+/**
+ * OIDC configurations for the application.
+ */
+export interface OIDCApplicationConfigurationInterface {
+    authorizeEndpoint: string;
+    introspectionEndpoint: string;
+    tokenEndpoint: string;
+    userEndpoint: string;
+    jwksEndpoint: string;
+}
+
+/**
+ * SAML configurations for the application.
+ */
+export interface SAMLApplicationConfigurationInterface {
+    issuer: string;
+    ssoUrl: string;
+    sloUrl: string;
+    certificate: string;
+    metadata: string;
+}
+
+export const emptyOIDCAppConfiguration = (): OIDCApplicationConfigurationInterface => ({
+    authorizeEndpoint: "",
+    introspectionEndpoint: "",
+    jwksEndpoint: "",
+    tokenEndpoint: "",
+    userEndpoint: ""
+});
+
+export const emptySAMLAppConfiguration = (): SAMLApplicationConfigurationInterface => ({
+    certificate: "",
+    issuer: "",
+    metadata: "",
+    sloUrl: "",
+    ssoUrl: ""
+});

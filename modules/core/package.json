@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/core",
-    "version": "1.0.272",
+    "version": "1.0.274",
     "description": "Commonly used configs, schemas, utilities and low level services for WSO2 Identity Server frontend apps",
     "keywords": [
         "WSO2",
@@ -26,8 +26,8 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/authentication": "^1.0.272",
-        "@wso2is/http": "^1.0.272"
+        "@wso2is/authentication": "^1.0.274",
+        "@wso2is/http": "^1.0.274"
     },
     "devDependencies": {
         "rimraf": "^3.0.2",
@@ -36,6 +36,7 @@
     "peerDependencies": {
         "@types/history": "*",
         "@types/jest": "*",
+        "@types/js-yaml": "*",
         "@types/lodash": "*",
         "@types/node": "*",
         "@types/react": "*",
@@ -44,6 +45,7 @@
         "axios": "*",
         "history": "*",
         "jest": "*",
+        "js-yaml": "*",
         "lodash": "*",
         "react": "*",
         "react-notification-system": "*",

@@ -125,9 +125,10 @@ export interface ServiceResourceEndpointsInterface {
     logout: string;
     me: string;
     permission: string;
-    portalDocumentationRawContent: string;
-    portalDocumentationStructure: string;
+    documentationContent: string;
+    documentationStructure: string;
     profileSchemas: string;
+    saml2Meta: string;
     sessions: string;
     token: string;
     user: string;

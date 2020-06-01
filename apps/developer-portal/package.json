@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/developer-portal",
-    "version": "1.0.272",
+    "version": "1.0.274",
     "description": "WSO2 Identity Server Developer Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -21,14 +21,14 @@
         "clean": "rm -rf build"
     },
     "dependencies": {
-        "@wso2is/authentication": "^1.0.272",
-        "@wso2is/core": "^1.0.272",
-        "@wso2is/forms": "^1.0.272",
-        "@wso2is/http": "^1.0.272",
-        "@wso2is/i18n": "^1.0.272",
-        "@wso2is/react-components": "^1.0.272",
-        "@wso2is/theme": "^1.0.272",
-        "@wso2is/validation": "^1.0.272",
+        "@wso2is/authentication": "^1.0.274",
+        "@wso2is/core": "^1.0.274",
+        "@wso2is/forms": "^1.0.274",
+        "@wso2is/http": "^1.0.274",
+        "@wso2is/i18n": "^1.0.274",
+        "@wso2is/react-components": "^1.0.274",
+        "@wso2is/theme": "^1.0.274",
+        "@wso2is/validation": "^1.0.274",
         "country-language": "^0.1.7"
     },
     "devDependencies": {
@@ -38,7 +38,6 @@
     "peerDependencies": {
         "@svgr/webpack": "*",
         "@types/file-saver": "*",
-        "@types/js-yaml": "*",
         "@types/node-forge": "*",
         "@types/react-beautiful-dnd": "*",
         "axios": "*",
@@ -47,7 +46,6 @@
         "fork-ts-checker-webpack-plugin": "*",
         "history": "*",
         "i18next": "*",
-        "js-yaml": "*",
         "lodash": "*",
         "log": "*",
         "moment": "*",

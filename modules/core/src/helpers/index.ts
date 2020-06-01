@@ -17,6 +17,7 @@
  */
 
 export * from "./access-control";
+export * from "./documentation";
 export * from "./portal-branding";
 export * from "./history";
 export * from "./http-headers";
