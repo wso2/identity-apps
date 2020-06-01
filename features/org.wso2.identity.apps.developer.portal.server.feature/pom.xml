@@ -88,6 +88,7 @@
                                         <include>build.properties</include>
                                         <include>developer-portal.war</include>
                                         <include>**/*.json</include>
+                                        <include>**/*.j2</include>
                                     </includes>
                                 </resource>
                             </resources>
