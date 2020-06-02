@@ -28,15 +28,12 @@ import { useDispatch } from "react-redux";
 import { Button, Divider, Grid, Modal } from "semantic-ui-react";
 import { CertificateIllustrations } from "../../../configs";
 import {
-    ApplicationInterface,
     CertificateInterface,
     CertificateTypeInterface,
     DisplayCertificate
 } from "../../../models";
 import { CertificateManagementUtils, CommonUtils } from "../../../utils";
 import { Certificate as CertificateDisplay } from "../../certificates";
-
-
 
 /**
  * Proptypes for the applications general details form component.
