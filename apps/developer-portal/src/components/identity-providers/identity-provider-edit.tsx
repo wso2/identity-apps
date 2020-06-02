@@ -85,7 +85,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     const GeneralIdentityProviderSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane attached={ false }>
             <GeneralSettings
-                idpId={ identityProvider.id }
+                editingIDP={ identityProvider }
                 description={ identityProvider.description }
                 isEnabled={ identityProvider.isEnabled }
                 imageUrl={ identityProvider.image }

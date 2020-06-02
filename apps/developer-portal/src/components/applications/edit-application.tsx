@@ -209,6 +209,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             <GeneralApplicationSettings
                 accessUrl={ application.accessUrl }
                 appId={ application.id }
+                certificate={ application.advancedConfigurations?.certificate }
                 description={ application.description }
                 discoverability={ application.advancedConfigurations?.discoverableByEndUsers }
                 imageUrl={ application.imageUrl }

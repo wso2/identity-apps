@@ -26,7 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteApplication, updateApplicationDetails } from "../../../api";
 import {
     ApplicationInterface,
-    ApplicationTemplateListItemInterface,
+    ApplicationTemplateListItemInterface, CertificateInterface,
     ConfigReducerStateInterface,
     FeatureConfigInterface
 } from "../../../models";
@@ -80,6 +80,10 @@ interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfi
      * Application template.
      */
     template?: ApplicationTemplateListItemInterface;
+    /**
+     * Current certificate configurations.
+     */
+    certificate: CertificateInterface;
 }
 
 /**
@@ -105,6 +109,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         onDelete,
         onUpdate,
         template,
+        certificate,
         [ "data-testid" ]: testId
     } = props;
 
@@ -242,6 +247,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
             ? (
                 <>
                     <GeneralDetailsForm
+                        certificate={ certificate }
                         name={ name }
                         appId={ appId }
                         description={ description }

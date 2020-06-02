@@ -22,19 +22,20 @@ import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid } from "semantic-ui-react";
+import { Button, Divider, Grid } from "semantic-ui-react";
 import { getIdentityProviderList } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";
 import { handleGetIDPListCallError } from "../utils";
+import { IdpCertificates } from "../settings/idp-certificates";
 
 /**
  * Proptypes for the identity provider general details form component.
  */
 interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
     /**
-     * Currently editing identity provider id.
+     * Currently editing IDP.
      */
-    idpId?: string;
+    editingIDP: IdentityProviderInterface;
     /**
      * Identity provider description.
      */
@@ -55,6 +56,10 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      * On submit callback.
      */
     onSubmit: (values: any) => void;
+    /**
+     * Callback to update the idp details.
+     */
+    onUpdate: (id: string) => void;
     /**
      * Externally trigger form submission.
      */
@@ -78,8 +83,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         description,
         imageUrl,
         onSubmit,
+        onUpdate,
         triggerSubmit,
         enableWizardMode,
+        editingIDP,
         [ "data-testid" ]: testId
     } = props;
 
@@ -128,101 +135,115 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     };
 
     return (
-        <Forms
-            onSubmit={ (values): void => {
-                onSubmit(updateConfigurations(values))
-            } }
-            submitState={ triggerSubmit }
-            onChange={ (isPure, values) => {
-                if (!enableWizardMode) {
-                    setModifiedName(values.get("name").toString());
-                }
-            } }
-            data-testid={ testId }
-        >
+        <>
+            <Forms
+                onSubmit={ (values): void => {
+                    onSubmit(updateConfigurations(values))
+                } }
+                submitState={ triggerSubmit }
+                onChange={ (isPure, values) => {
+                    if (!enableWizardMode) {
+                        setModifiedName(values.get("name").toString());
+                    }
+                } }
+                data-testid={ testId }
+            >
+                <Grid>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                name="name"
+                                label={ t("devPortal:components.idp.forms.generalDetails.name.label") }
+                                required={ true }
+                                requiredErrorMessage={ t("devPortal:components.idp.forms.generalDetails." +
+                                    "name.validations.empty") }
+                                placeholder={ name }
+                                type="text"
+                                validation={ (value: string, validation: Validation) => {
+                                    if (isNameValid === false) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(t("devPortal:components.idp.forms." +
+                                            "generalDetails.name.validations.duplicate"));
+                                    }
+                                } }
+                                value={ name }
+                                data-testid={ `${ testId }-idp-name` }
+                            />
+                            <Hint>
+                                { t("devPortal:components.idp.forms.generalDetails.name.hint") }
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                name="description"
+                                label={ t("devPortal:components.idp.forms.generalDetails.description.label") }
+                                required={ false }
+                                requiredErrorMessage=""
+                                placeholder={ t("devPortal:components.idp.forms." +
+                                    "generalDetails.description.placeholder") }
+                                type="textarea"
+                                value={ description }
+                                data-testid={ `${ testId }-idp-description` }
+                            />
+                            <Hint>
+                                { t("devPortal:components.idp.forms.generalDetails.description.hint") }
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                name="image"
+                                label={ t("devPortal:components.idp.forms.generalDetails.image.label") }
+                                required={ false }
+                                requiredErrorMessage=""
+                                placeholder={ t("devPortal:components.idp.forms.generalDetails.image.placeholder") }
+                                type="text"
+                                validation={ (value: string, validation: Validation) => {
+                                    if (!FormValidation.url(value)) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(t("devPortal:components.idp.forms." +
+                                            "common.invalidURLErrorMessage"));
+                                    }
+                                } }
+                                value={ imageUrl }
+                                data-testid={ `${ testId }-idp-image` }
+                            />
+                            <Hint>
+                                { t("devPortal:components.idp.forms.generalDetails.image.hint") }
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                    {
+                        !enableWizardMode ? (
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Button primary type="submit" size="small" className="form-button"
+                                            data-testid={ `${ testId }-update-button` }>
+                                        { t("common:update") }
+                                    </Button>
+                                </Grid.Column>
+                            </Grid.Row>
+                        ) : null
+                    }
+                </Grid>
+            </Forms>
+            <Divider hidden/>
+            <Divider/>
+            <Divider hidden/>
             <Grid>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            name="name"
-                            label={ t("devPortal:components.idp.forms.generalDetails.name.label") }
-                            required={ true }
-                            requiredErrorMessage={ t("devPortal:components.idp.forms.generalDetails." +
-                                "name.validations.empty") }
-                            placeholder={ name }
-                            type="text"
-                            validation={ (value: string, validation: Validation) => {
-                                if (isNameValid === false) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(t("devPortal:components.idp.forms." +
-                                        "generalDetails.name.validations.duplicate"));
-                                }
-                            } }
-                            value={ name }
-                            data-testid={ `${ testId }-idp-name` }
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <IdpCertificates
+                            editingIDP={ editingIDP }
+                            onUpdate={ onUpdate }
                         />
-                        <Hint>
-                            { t("devPortal:components.idp.forms.generalDetails.name.hint") }
-                        </Hint>
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            name="description"
-                            label={ t("devPortal:components.idp.forms.generalDetails.description.label") }
-                            required={ false }
-                            requiredErrorMessage=""
-                            placeholder={ t("devPortal:components.idp.forms." +
-                                "generalDetails.description.placeholder") }
-                            type="textarea"
-                            value={ description }
-                            data-testid={ `${ testId }-idp-description` }
-                        />
-                        <Hint>
-                            { t("devPortal:components.idp.forms.generalDetails.description.hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            name="image"
-                            label={ t("devPortal:components.idp.forms.generalDetails.image.label") }
-                            required={ false }
-                            requiredErrorMessage=""
-                            placeholder={ t("devPortal:components.idp.forms.generalDetails.image.placeholder") }
-                            type="text"
-                            validation={ (value: string, validation: Validation) => {
-                                if (!FormValidation.url(value)) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(t("devPortal:components.idp.forms." +
-                                        "common.invalidURLErrorMessage"));
-                                }
-                            } }
-                            value={ imageUrl }
-                            data-testid={ `${ testId }-idp-image` }
-                        />
-                        <Hint>
-                            { t("devPortal:components.idp.forms.generalDetails.image.hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
-
-                {
-                    !enableWizardMode ? (
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Button primary type="submit" size="small" className="form-button"
-                                        data-testid={ `${ testId }-update-button` }>
-                                    { t("common:update") }
-                                </Button>
-                            </Grid.Column>
-                        </Grid.Row>
-                    ) : null
-                }
             </Grid>
-        </Forms>
+        </>
     );
 };
 
