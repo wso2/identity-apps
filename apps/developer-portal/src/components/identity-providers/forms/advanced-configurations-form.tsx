@@ -18,21 +18,16 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
-import { Heading, Hint } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Hint } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { IdentityProviderAdvanceInterface, IdentityProviderInterface } from "../../../models";
-import { IdpCertificates } from "../settings/idp-certificates";
+import { IdentityProviderAdvanceInterface } from "../../../models";
 
 /**
  *  Advance Configurations for the Identity Provider.
  */
 interface AdvanceConfigurationsFormPropsInterface extends IdentityProviderAdvanceInterface, TestableComponentInterface {
-    /**
-     * Currently editing IDP.
-     */
-    editingIDP: IdentityProviderInterface;
     /**
      * IDP configuration details.
      */
@@ -41,10 +36,6 @@ interface AdvanceConfigurationsFormPropsInterface extends IdentityProviderAdvanc
      * Callback to update the idp details.
      */
     onSubmit: (values: any) => void;
-    /**
-     * Callback to update the idp details.
-     */
-    onUpdate: (id: string) => void;
 }
 
 /**
@@ -58,10 +49,8 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
 ): ReactElement => {
 
     const {
-        editingIDP,
         config,
         onSubmit,
-        onUpdate,
         [ "data-testid" ]: testId
     } = props;
 
@@ -86,91 +75,79 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
     };
 
     return (
-        <>
-            <Forms onSubmit={ (values) => onSubmit(updateConfiguration(values)) }>
-                <Grid>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                name="federationHub"
-                                label=""
-                                required={ false }
-                                requiredErrorMessage={ t("devPortal:components.idp.forms.common." +
-                                    "requiredErrorMessage") }
-                                value={ config?.isFederationHub ? ["federationHub"] : [] }
-                                type="checkbox"
-                                children={ [
-                                    {
-                                        label: t("devPortal:components.idp.forms.advancedConfigs." +
-                                            "federationHub.label"),
-                                        value: "federationHub"
-                                    }
-                                ] }
-                                toggle
-                                data-testid={ `${ testId }-federation-hub` }
-                            />
-                            <Hint>
-                                { t("devPortal:components.idp.forms.advancedConfigs.federationHub.hint") }
-                            </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                name="homeRealmIdentifier"
-                                label={ t("devPortal:components.idp.forms.advancedConfigs." +
-                                    "homeRealmIdentifier.label") }
-                                required={ false }
-                                requiredErrorMessage=""
-                                placeholder={ name }
-                                type="text"
-                                value={ config.homeRealmIdentifier }
-                                data-testid={ `${ testId }-home-realm-identifier` }
-                            />
-                            <Hint>
-                                { t("devPortal:components.idp.forms.advancedConfigs.homeRealmIdentifier.hint") }
-                            </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                name="alias"
-                                label={ t("devPortal:components.idp.forms.advancedConfigs.alias.label") }
-                                required={ false }
-                                requiredErrorMessage=""
-                                placeholder={ name }
-                                type="text"
-                                value={ config.alias }
-                                data-testid={ `${ testId }-alias` }
-                            />
-                            <Hint>
-                                { t("devPortal:components.idp.forms.advancedConfigs.alias.hint") }
-                            </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Button primary type="submit" size="small" className="form-button"
-                                    data-testid={ `${ testId }-update-button` }>
-                                { t("common:update") }
-                            </Button>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Divider/>
-                </Grid>
-            </Forms>
+        <Forms onSubmit={ (values) => onSubmit(updateConfiguration(values)) }>
             <Grid>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <IdpCertificates
-                            editingIDP={ editingIDP }
-                            onUpdate={ onUpdate }
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            name="federationHub"
+                            label=""
+                            required={ false }
+                            requiredErrorMessage={ t("devPortal:components.idp.forms.common." +
+                                "requiredErrorMessage") }
+                            value={ config?.isFederationHub ? ["federationHub"] : [] }
+                            type="checkbox"
+                            children={ [
+                                {
+                                    label: t("devPortal:components.idp.forms.advancedConfigs." +
+                                        "federationHub.label"),
+                                    value: "federationHub"
+                                }
+                            ] }
+                            toggle
+                            data-testid={ `${ testId }-federation-hub` }
                         />
+                        <Hint>
+                            { t("devPortal:components.idp.forms.advancedConfigs.federationHub.hint") }
+                        </Hint>
                     </Grid.Column>
                 </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            name="homeRealmIdentifier"
+                            label={ t("devPortal:components.idp.forms.advancedConfigs." +
+                                "homeRealmIdentifier.label") }
+                            required={ false }
+                            requiredErrorMessage=""
+                            placeholder={ name }
+                            type="text"
+                            value={ config.homeRealmIdentifier }
+                            data-testid={ `${ testId }-home-realm-identifier` }
+                        />
+                        <Hint>
+                            { t("devPortal:components.idp.forms.advancedConfigs.homeRealmIdentifier.hint") }
+                        </Hint>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            name="alias"
+                            label={ t("devPortal:components.idp.forms.advancedConfigs.alias.label") }
+                            required={ false }
+                            requiredErrorMessage=""
+                            placeholder={ name }
+                            type="text"
+                            value={ config.alias }
+                            data-testid={ `${ testId }-alias` }
+                        />
+                        <Hint>
+                            { t("devPortal:components.idp.forms.advancedConfigs.alias.hint") }
+                        </Hint>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Button primary type="submit" size="small" className="form-button"
+                                data-testid={ `${ testId }-update-button` }>
+                            { t("common:update") }
+                        </Button>
+                    </Grid.Column>
+                </Grid.Row>
+                <Divider/>
             </Grid>
-        </>
+        </Forms>
     );
 };
 
