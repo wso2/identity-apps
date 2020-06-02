@@ -176,7 +176,6 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
-
                         {
                             isPEMSelected ?
                                 (

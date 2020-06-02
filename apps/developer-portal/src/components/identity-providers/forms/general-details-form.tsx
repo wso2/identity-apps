@@ -35,7 +35,7 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
     /**
      * Currently editing IDP.
      */
-    editingIDP: IdentityProviderInterface;
+    editingIDP?: IdentityProviderInterface;
     /**
      * Identity provider description.
      */
@@ -59,7 +59,7 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
     /**
      * Callback to update the idp details.
      */
-    onUpdate: (id: string) => void;
+    onUpdate?: (id: string) => void;
     /**
      * Externally trigger form submission.
      */
