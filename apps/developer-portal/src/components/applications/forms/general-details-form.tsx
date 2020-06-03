@@ -207,7 +207,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      *
      * @param event Button click event.
      */
-    const handleCertificateView = (event: MouseEvent<HTMLButtonElement>) => {
+    const handleCertificateView = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         viewCertificate()
     };

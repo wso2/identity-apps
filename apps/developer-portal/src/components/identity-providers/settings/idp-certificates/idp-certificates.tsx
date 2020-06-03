@@ -68,6 +68,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
     const dispatch = useDispatch();
 
     const [ isPEMSelected, setPEMSelected ] = useState<boolean>(false);
+    const [ isJWKSSelected, setJWKSSelected ] = useState<boolean>(false);
 
     /**
      * The following function update the IDP JWKS endpoint.
@@ -152,6 +153,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
                             listen={
                                 (values) => {
                                     setPEMSelected(values.get("type") === "PEM");
+                                    setJWKSSelected(values.get("type") === "JWKS");
                                     handleCertificateTypeChange(values.get("type").toString());
                                 }
                             }
@@ -168,6 +170,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
                                     value: "PEM"
                                 }
                             ] }
+                            value={ editingIDP?.certificate?.certificates ? "PEM" : "JWKS" }
                             data-testid={ `${ testId }-certificate` }
                         />
                         <Hint>
@@ -177,7 +180,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                         {
-                            isPEMSelected ?
+                            (isPEMSelected || editingIDP?.certificate?.certificates) && !isJWKSSelected ?
                                 (
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <IdpCertificatesListComponent

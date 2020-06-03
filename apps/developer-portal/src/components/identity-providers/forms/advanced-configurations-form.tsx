@@ -145,7 +145,6 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                         </Button>
                     </Grid.Column>
                 </Grid.Row>
-                <Divider/>
             </Grid>
         </Forms>
     );
