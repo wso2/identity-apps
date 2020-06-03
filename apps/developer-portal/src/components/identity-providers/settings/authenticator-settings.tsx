@@ -26,15 +26,18 @@ import { useDispatch } from "react-redux";
 import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
 import {
     getFederatedAuthenticatorDetails,
-    getFederatedAuthenticatorMeta, getIdentityProviderTemplate,
+    getFederatedAuthenticatorMeta,
+    getIdentityProviderTemplate,
     getIdentityProviderTemplateList,
-    updateFederatedAuthenticator
+    updateFederatedAuthenticator,
+    updateFederatedAuthenticators
 } from "../../../api";
 import { EmptyPlaceholderIllustrations } from "../../../configs";
 import {
     FederatedAuthenticatorListItemInterface,
-    FederatedAuthenticatorListResponseInterface, FederatedAuthenticatorMetaDataInterface,
+    FederatedAuthenticatorMetaDataInterface,
     FederatedAuthenticatorWithMetaInterface,
+    IdentityProviderInterface,
     IdentityProviderTemplateListItemInterface,
     IdentityProviderTemplateListItemResponseInterface,
     IdentityProviderTemplateListResponseInterface
@@ -54,19 +57,9 @@ import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizar
  */
 interface IdentityProviderSettingsPropsInterface extends TestableComponentInterface {
     /**
-     * Currently editing idp id.
+     * Currently editing idp.
      */
-    idpId: string;
-
-    /**
-     * Currently editing idp name.
-     */
-    idpName: string;
-
-    /**
-     * federatedAuthenticators of the IDP
-     */
-    federatedAuthenticators: FederatedAuthenticatorListResponseInterface;
+    identityProvider: IdentityProviderInterface;
     /**
      * Is the idp info request loading.
      */
@@ -88,9 +81,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 ): ReactElement => {
 
     const {
-        idpId,
-        idpName,
-        federatedAuthenticators,
+        identityProvider,
         isLoading,
         onUpdate,
         [ "data-testid" ]: testId
@@ -122,7 +113,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      */
     const handleAuthenticatorConfigFormSubmit = (values: any): void => {
         setIsPageLoading(true);
-        updateFederatedAuthenticator(idpId, values)
+        updateFederatedAuthenticator(identityProvider.id, values)
             .then(() => {
                 dispatch(addAlert({
                     description: t("devPortal:components.idp.notifications.updateFederatedAuthenticator." +
@@ -130,7 +121,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     level: AlertLevels.SUCCESS,
                     message: t("devPortal:components.idp.notifications.updateFederatedAuthenticator.success.message")
                 }));
-                onUpdate(idpId)
+                onUpdate(identityProvider.id)
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -180,7 +171,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      */
     const fetchAuthenticator = (authenticatorId: string) => {
         return new Promise(resolve => {
-            getFederatedAuthenticatorDetails(idpId, authenticatorId)
+            getFederatedAuthenticatorDetails(identityProvider.id, authenticatorId)
                 .then(data => {
                     getFederatedAuthenticatorMeta(authenticatorId)
                         .then(meta => {
@@ -206,14 +197,14 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      */
     async function fetchAuthenticators() {
         const authenticators: FederatedAuthenticatorWithMetaInterface[] = [];
-        for (const authenticator of federatedAuthenticators.authenticators) {
+        for (const authenticator of identityProvider.federatedAuthenticators.authenticators) {
             authenticators.push(await fetchAuthenticator(authenticator.authenticatorId));
         }
         return authenticators;
     }
 
     useEffect(() => {
-        if (_.isEmpty(federatedAuthenticators)) {
+        if (_.isEmpty(identityProvider.federatedAuthenticators)) {
             return;
         }
         setIsPageLoading(true);
@@ -221,8 +212,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         fetchAuthenticators()
             .then((res) => {
                 // Make default authenticator if not added.
-                if (!federatedAuthenticators.defaultAuthenticatorId &&
-                    federatedAuthenticators.authenticators.length > 0) {
+                if (!identityProvider.federatedAuthenticators.defaultAuthenticatorId &&
+                    identityProvider.federatedAuthenticators.authenticators.length > 0) {
                     const authenticator = res[0].data;
                     authenticator.isDefault = true;
                     handleAuthenticatorConfigFormSubmit(authenticator)
@@ -230,7 +221,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 setAvailableAuthenticators(res);
                 setIsPageLoading(false);
             })
-    }, [federatedAuthenticators]);
+    }, [identityProvider?.federatedAuthenticators]);
 
     /**
      * Handles default authenticator change event.
@@ -262,7 +253,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 level: AlertLevels.WARNING,
                 message: t("devPortal:components.idp.notifications.disableAuthenticator.error.message")
             }));
-            onUpdate(idpId);
+            onUpdate(identityProvider.id);
         } else {
             authenticator.isEnabled = data.checked;
             handleAuthenticatorConfigFormSubmit(authenticator);
@@ -275,7 +266,55 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * @param {string} id - Id of the authenticator.
      */
     const handleAuthenticatorDelete = (id: string): void => {
-        // TODO: Implement deletion logic here.
+        const authenticatorsList = [];
+        const deletingAuthenticator = availableAuthenticators.find((authenticator) => authenticator.id === id);
+
+        availableAuthenticators.map((authenticator) => {
+            if (authenticator.id !== deletingAuthenticator.id) {
+                authenticatorsList.push(authenticator.data);
+            }
+        });
+
+        const data = {
+            authenticators: authenticatorsList,
+            defaultAuthenticatorId: identityProvider.federatedAuthenticators.defaultAuthenticatorId
+        };
+
+        updateFederatedAuthenticators(data, identityProvider.id)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("devPortal:components.idp.notifications.updateFederatedAuthenticators" +
+                        ".success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("devPortal:components.idp.notifications.updateFederatedAuthenticators" +
+                        ".success.message")
+                }));
+
+                onUpdate(identityProvider.id);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("devPortal:components.idp.notifications.updateFederatedAuthenticators" +
+                            ".error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("devPortal:components.idp.notifications.updateFederatedAuthenticators" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("devPortal:components.idp.notifications.updateFederatedAuthenticators" +
+                        ".genericError.message")
+                }));
+            });
+
+        setDeletingAuthenticator(undefined);
+        setShowDeleteConfirmationModal(false);
     };
 
     /**
@@ -289,8 +328,18 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             return;
         }
 
-        const deletingAuthenticator = availableAuthenticators
-            .find((authenticator) => authenticator.id === id);
+        if (id == identityProvider.federatedAuthenticators.defaultAuthenticatorId) {
+            dispatch(addAlert({
+                description: t("devPortal:components.idp.notifications.deleteDefaultAuthenticator" +
+                    ".error.description"),
+                level: AlertLevels.WARNING,
+                message: t("devPortal:components.idp.notifications.deleteDefaultAuthenticator" +
+                    ".error.message")
+            }));
+            return;
+        }
+
+        const deletingAuthenticator = availableAuthenticators.find((authenticator) => authenticator.id === id);
 
         if (!deletingAuthenticator) {
             return;
@@ -412,61 +461,72 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <AuthenticatorAccordion
-                            globalActions={ [
-                                // TODO: Uncomment the delete icon once backend support is available.
-                                // {
-                                //     icon: "trash alternate",
-                                //     onClick: handleAuthenticatorDeleteOnClick,
-                                //     type: "icon"
-                                // }
-                            ] }
-                            authenticators={
-                                availableAuthenticators.map((authenticator) => {
-                                    return {
-                                        actions: [
+                        {
+                            availableAuthenticators.map((authenticator, index) => {
+                                return (
+                                    <AuthenticatorAccordion
+                                        key={ index }
+                                        globalActions={ [
                                             {
-                                                defaultChecked: authenticator.data?.isDefault,
-                                                disabled: (authenticator.data?.isDefault ||
-                                                    !authenticator.data?.isEnabled),
-                                                label: (authenticator.data?.isDefault ? t("devPortal:components." +
-                                                    "idp.forms.authenticatorAccordion.default.0") : 
-                                                    t("devPortal:components.idp.forms.authenticatorAccordion." +
-                                                        "default.1")),
-                                                onChange: handleDefaultAuthenticatorChange,
-                                                type: "checkbox"
-                                            },
-                                            {
-                                                defaultChecked: authenticator.data?.isEnabled,
-                                                label: (authenticator.data?.isEnabled ? t("devPortal:components." +
-                                                    "idp.forms.authenticatorAccordion.enable.0") :
-                                                    t("devPortal:components.idp.forms.authenticatorAccordion." +
-                                                        "enable.1")),
-                                                onChange: handleAuthenticatorEnableToggle,
-                                                type: "toggle"
+                                                icon: "trash alternate",
+                                                onClick: handleAuthenticatorDeleteOnClick,
+                                                type: "icon"
                                             }
-                                        ],
-                                        content: authenticator && (
-                                            <AuthenticatorFormFactory
-                                                metadata={ authenticator.meta }
-                                                initialValues={ authenticator.data }
-                                                onSubmit={ handleAuthenticatorConfigFormSubmit }
-                                                type={ authenticator.meta?.name }
-                                                data-testid={ `${ testId }-${ authenticator.meta?.name }-content` }
-                                            />
-                                        ),
-                                        icon: {
-                                            icon: authenticator.id && (getFederatedAuthenticators().find((fedAuth) =>
-                                                    (fedAuth.authenticatorId === authenticator.id))).icon
-                                        },
-                                        id: authenticator?.id,
-                                        title: authenticator.id && (getFederatedAuthenticators().find((fedAuth) =>
-                                            (fedAuth.authenticatorId === authenticator.id))).displayName
-                                    }
-                                })
-                            }
-                            data-testid={ `${ testId }-accordion` }
-                        />
+                                        ] }
+                                        authenticators={
+                                            [
+                                                {
+                                                    actions: [
+                                                        {
+                                                            defaultChecked: authenticator.data?.isDefault,
+                                                            disabled: (authenticator.data?.isDefault ||
+                                                                !authenticator.data?.isEnabled),
+                                                            label: (authenticator.data?.isDefault
+                                                                ? t("devPortal:components.idp.forms." +
+                                                                    "authenticatorAccordion.default.0")
+                                                                : t("devPortal:components.idp.forms." +
+                                                                    "authenticatorAccordion.default.1")),
+                                                            onChange: handleDefaultAuthenticatorChange,
+                                                            type: "checkbox"
+                                                        },
+                                                        {
+                                                            defaultChecked: authenticator.data?.isEnabled,
+                                                            label: (authenticator.data?.isEnabled
+                                                                ? t("devPortal:components.idp.forms." +
+                                                                    "authenticatorAccordion.enable.0")
+                                                                : t("devPortal:components.idp.forms." +
+                                                                    "authenticatorAccordion.enable.1")),
+                                                            onChange: handleAuthenticatorEnableToggle,
+                                                            type: "toggle"
+                                                        }
+                                                    ],
+                                                    content: authenticator && (
+                                                        <AuthenticatorFormFactory
+                                                            metadata={ authenticator.meta }
+                                                            initialValues={ authenticator.data }
+                                                            onSubmit={ handleAuthenticatorConfigFormSubmit }
+                                                            type={ authenticator.meta?.name }
+                                                            data-testid={ `${ testId }-${ authenticator.meta?.name }
+                                                            -content` }
+                                                        />
+                                                    ),
+                                                    icon: {
+                                                        icon: authenticator.id && (getFederatedAuthenticators().find(
+                                                            (fedAuth) =>
+                                                            (fedAuth.authenticatorId === authenticator.id))).icon
+                                                    },
+                                                    id: authenticator?.id,
+                                                    title: authenticator.id && (getFederatedAuthenticators().find(
+                                                        (fedAuth) =>
+                                                        (fedAuth.authenticatorId === authenticator.id))).displayName
+                                                }
+                                            ]
+                                        }
+                                        data-testid={ `${ testId }-accordion` }
+                                    />
+                                )
+                            })
+                        }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -527,15 +587,15 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                              <AuthenticatorCreateWizard
                                  title={ t("devPortal:components.idp.modals.addAuthenticator.title") }
                                  subTitle={ t("devPortal:components.idp.modals.addAuthenticator.subTitle",
-                                     { idpName: idpName }) }
+                                     { idpName: identityProvider.name }) }
                                  closeWizard={ () => {
                                      setShowAddAuthenticatorWizard(false);
                                      setAvailableAuthenticators([]);
-                                     onUpdate(idpId)
+                                     onUpdate(identityProvider.id)
                                  } }
                                  manualModeOptions={ availableManualModeOptions }
                                  availableTemplates={ availableTemplates }
-                                 idpId={ idpId }
+                                 idpId={ identityProvider.id }
                                  data-testid={ `${ testId }-authenticator-create-wizard` }
                              />
                          )

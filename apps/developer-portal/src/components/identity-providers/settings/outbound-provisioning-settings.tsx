@@ -27,13 +27,13 @@ import { OutboundProvisioningRoles } from "./outbound-provisioning";
 import {
     getOutboundProvisioningConnector,
     getOutboundProvisioningConnectorMetadata,
-    updateOutboundProvisioningConnector
+    updateOutboundProvisioningConnector,
+    updateOutboundProvisioningConnectors
 } from "../../../api";
 import { EmptyPlaceholderIllustrations } from "../../../configs";
 import {
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface,
-    OutboundProvisioningConnectorListItemInterface,
     OutboundProvisioningConnectorWithMetaInterface,
     OutboundProvisioningConnectorsInterface
 } from "../../../models";
@@ -98,7 +98,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     const [
         deletingConnector,
         setDeletingConnector
-    ] = useState<OutboundProvisioningConnectorListItemInterface>(undefined);
+    ] = useState<OutboundProvisioningConnectorWithMetaInterface>(undefined);
 
     /**
      * Fetch available connectors for the identity provider.
@@ -109,7 +109,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
             .then((res) => {
                 setAvailableConnectors(res);
             })
-    }, [ props ]);
+    }, [ identityProvider ]);
 
     /**
      * Fetch data and metadata of a given connector id and return a promise.
@@ -165,7 +165,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
      */
     async function fetchConnectors() {
         const connectors: OutboundProvisioningConnectorWithMetaInterface[] = [];
-        for (const connector of outboundConnectors.connectors) {
+        for (const connector of identityProvider.provisioning.outboundConnectors.connectors) {
             connectors.push(await fetchConnector(connector.connectorId));
         }
         return connectors;
@@ -197,53 +197,88 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     /**
      * Handles the outbound provisioning connector deletion.
      */
-    const handleDeleteConnector = (deletingConnector: OutboundProvisioningConnectorListItemInterface) => {
-        // TODO: Enable when api supports PUT operation.
-        // let idp: IdentityProviderInterface = { ...identityProvider };
-        // const connectorList = idp.provisioning.outboundConnectors.connectors;
-        // if (deletingConnector.connectorId == idp.provisioning.outboundConnectors.defaultConnectorId) {
-        //     idp.provisioning.outboundConnectors.defaultConnectorId = ""
-        // }
-        //
-        // if (connectorList.includes(deletingConnector)) {
-        //     connectorList.splice(connectorList.indexOf(deletingConnector));
-        //     idp = {
-        //         ...idp,
-        //         provisioning: {
-        //             outboundConnectors: {
-        //                 ...outboundConnectors,
-        //                 connectors: connectorList
-        //             }
-        //         }
-        //     };
-        //     updateIdentityProviderDetails(idp)
-        //         .then(() => {
-        //             dispatch(addAlert({
-        //                 description: "Successfully updated the Identity Provider.",
-        //                 level: AlertLevels.SUCCESS,
-        //                 message: "Update successful"
-        //             }));
-        //
-        //             onUpdate(identityProvider.id);
-        //         })
-        //         .catch((error) => {
-        //             if (error.response && error.response.data && error.response.data.description) {
-        //                 dispatch(addAlert({
-        //                     description: error.response.data.description,
-        //                     level: AlertLevels.ERROR,
-        //                     message: "Update error"
-        //                 }));
-        //
-        //                 return;
-        //             }
-        //
-        //             dispatch(addAlert({
-        //                 description: "An error occurred while updating the identity provider.",
-        //                 level: AlertLevels.ERROR,
-        //                 message: "Update error"
-        //             }));
-        //         });
-        // }
+    const handleDeleteConnector = (deletingConnector: OutboundProvisioningConnectorWithMetaInterface) => {
+
+        const connectorList = [];
+
+        availableConnectors.map((connector) => {
+            if (connector.id !== deletingConnector.id) {
+                connectorList.push(connector.data);
+            }
+        });
+
+        const data = {
+            connectors: connectorList,
+            defaultConnectorId: identityProvider.provisioning.outboundConnectors.defaultConnectorId
+        };
+
+        updateOutboundProvisioningConnectors(data, identityProvider.id)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnectors" +
+                        ".success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnectors" +
+                        ".success.message")
+                }));
+
+                onUpdate(identityProvider.id);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnectors" +
+                            ".error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnectors" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnectors" +
+                        ".genericError.message")
+                }));
+            });
+
+        setDeletingConnector(undefined);
+        setShowDeleteConfirmationModal(false);
+    };
+
+    /**
+     * Handles connector delete button on click action.
+     *
+     * @param {React.MouseEvent<HTMLDivElement>} e - Click event.
+     * @param {string} id - Id of the connector.
+     */
+    const handleAuthenticatorDeleteOnClick = (e: React.MouseEvent<HTMLDivElement>, id: string): void => {
+        if (!id) {
+            return;
+        }
+
+        if (id == identityProvider.provisioning.outboundConnectors.defaultConnectorId) {
+            dispatch(addAlert({
+                description: t("devPortal:components.idp.notifications.deleteDefaultConnector" +
+                    ".error.description"),
+                level: AlertLevels.WARNING,
+                message: t("devPortal:components.idp.notifications.deleteDefaultConnector" +
+                    ".error.message")
+            }));
+            return;
+        }
+
+        const deletingConnector = availableConnectors.find((connector) => connector.id == id);
+
+        if (!deletingConnector) {
+            return;
+        }
+
+        setDeletingConnector(deletingConnector);
+        setShowDeleteConfirmationModal(true);
     };
 
     /**
@@ -312,54 +347,61 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                 </Grid.Row>
                                 <Grid.Row>
                                     <Grid.Column>
-                                        <AuthenticatorAccordion
-                                            globalActions={ [
-                                                // TODO: Enable when api supports PUT operation.
-                                                // {
-                                                //     icon: 'trash alternate',
-                                                //     onClick: (e, id: string): void => {
-                                                //         setShowDeleteConfirmationModal(true);
-                                                //         setDeletingConnector(connector);
-                                                //     },
-                                                //     type: 'icon',
-                                                // },
-                                            ] }
-                                            authenticators={
-                                                availableConnectors.map((connector) => {
-                                                    return {
-                                                        actions: [
-                                                            {
-                                                                defaultChecked: connector.data?.isDefault,
-                                                                label: t("devPortal:components.idp.forms." +
-                                                                    "outboundConnectorAccordion.default"),
-                                                                onChange: handleDefaultConnectorChange,
-                                                                type: "checkbox"
-                                                            },
-                                                            {
-                                                                defaultChecked: connector?.data?.isEnabled,
-                                                                label: t("devPortal:components.idp.forms." +
-                                                                    "outboundConnectorAccordion.enable"),
-                                                                onChange: handleConnectorEnableToggle,
-                                                                type: "toggle"
-                                                            }
-                                                        ],
-                                                        content: (
-                                                            <OutboundProvisioningConnectorFormFactory
-                                                                metadata={ connector.meta }
-                                                                initialValues={ connector.data }
-                                                                onSubmit={ handleConnectorConfigFormSubmit }
-                                                                type={ connector.meta?.name }
-                                                                data-testid={ `${ testId }-${ 
-                                                                    connector.meta?.name }-content` }
-                                                            />
-                                                        ),
-                                                        id: connector?.id,
-                                                        title: connector?.meta?.displayName
-                                                    }
-                                                })
-                                            }
-                                            data-testid={ `${ testId }-accordion` }
-                                        />
+                                        {
+                                            availableConnectors.map((connector, index) => {
+                                                return (
+                                                    <AuthenticatorAccordion
+                                                        key={ index }
+                                                        globalActions = {
+                                                            [
+                                                                {
+                                                                    icon: "trash alternate",
+                                                                    onClick: handleAuthenticatorDeleteOnClick,
+                                                                    type: "icon"
+                                                                }
+                                                            ]
+                                                        }
+                                                        authenticators={
+                                                            [
+                                                                {
+                                                                    actions: [
+                                                                        {
+                                                                            defaultChecked: connector.data?.isDefault,
+                                                                            label: t("devPortal:components.idp." +
+                                                                                "forms.outboundConnectorAccordion." +
+                                                                                "default"),
+                                                                            onChange: handleDefaultConnectorChange,
+                                                                            type: "checkbox"
+                                                                        },
+                                                                        {
+                                                                            defaultChecked: connector?.data?.isEnabled,
+                                                                            label: t("devPortal:components.idp." +
+                                                                                "forms.outboundConnectorAccordion." +
+                                                                                "enable"),
+                                                                            onChange: handleConnectorEnableToggle,
+                                                                            type: "toggle"
+                                                                        }
+                                                                    ],
+                                                                    content: (
+                                                                        <OutboundProvisioningConnectorFormFactory
+                                                                            metadata={ connector.meta }
+                                                                            initialValues={ connector.data }
+                                                                            onSubmit={ handleConnectorConfigFormSubmit }
+                                                                            type={ connector.meta?.name }
+                                                                            data-testid={ `${testId}-${
+                                                                                connector.meta?.name}-content` }
+                                                                        />
+                                                                    ),
+                                                                    id: connector?.id,
+                                                                    title: connector?.meta?.displayName
+                                                                }
+                                                            ]
+                                                        }
+                                                        data-testid={ `${testId}-accordion` }
+                                                    />
+                                                )
+                                            })
+                                        }
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
@@ -405,14 +447,14 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
                         open={ showDeleteConfirmationModal }
-                        assertion={ deletingConnector?.name }
+                        assertion={ deletingConnector?.meta.name }
                         assertionHint={ (
                             <p>
                                 <Trans
                                     i18nKey="devPortal:components.idp.confirmations.deleteConnector.assertionHint"
-                                    tOptions={ { name: deletingConnector?.name } }
+                                    tOptions={ { name: deletingConnector?.meta.name } }
                                 >
-                                    Please type <strong>{ deletingConnector?.name }</strong> to confirm.
+                                    Please type <strong>{ deletingConnector?.meta.name }</strong> to confirm.
                                 </Trans>
                             </p>
                         ) }

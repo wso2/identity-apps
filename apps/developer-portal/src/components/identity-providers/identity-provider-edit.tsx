@@ -114,9 +114,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     const AuthenticatorSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane attached={ false }>
             <AuthenticatorSettings
-                idpId={ identityProvider.id }
-                idpName={ identityProvider.name }
-                federatedAuthenticators={ identityProvider.federatedAuthenticators }
+                identityProvider={ identityProvider }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-authenticator-settings` }
