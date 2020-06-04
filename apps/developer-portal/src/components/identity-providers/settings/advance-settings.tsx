@@ -89,10 +89,8 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
         <>
             <div className="advanced-configuration-section">
                 <AdvanceConfigurationsForm
-                    editingIDP={ editingIDP }
                     config={ advancedConfigurations }
                     onSubmit={ handleAdvancedConfigFormSubmit }
-                    onUpdate={ onUpdate }
                     data-testid={ testId }
                 />
             </div>

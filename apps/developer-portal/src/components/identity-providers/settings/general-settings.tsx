@@ -37,9 +37,9 @@ import { handleIDPDeleteError, handleIDPUpdateError } from "../utils";
  */
 interface GeneralSettingsInterface extends TestableComponentInterface {
     /**
-     * Currently editing idp id.
+     * Currently editing IDP.
      */
-    idpId?: string;
+    editingIDP: IdentityProviderInterface;
     /**
      * Identity provider description.
      */
@@ -81,7 +81,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
 ): ReactElement => {
 
     const {
-        idpId,
+        editingIDP,
         name,
         description,
         isEnabled,
@@ -108,7 +108,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
      * Deletes an identity provider.
      */
     const handleIdentityProviderDelete = (): void => {
-        deleteIdentityProvider(idpId)
+        deleteIdentityProvider(editingIDP.id)
             .then(() => {
                 dispatch(addAlert({
                     description: t("devPortal:components.idp.notifications.deleteIDP.success.description"),
@@ -130,14 +130,14 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
      * @param {IdentityProviderInterface} updatedDetails - Form values.
      */
     const handleFormSubmit = (updatedDetails: IdentityProviderInterface): void => {
-        updateIdentityProviderDetails({ id: idpId, ...updatedDetails })
+        updateIdentityProviderDetails({ id: editingIDP.id, ...updatedDetails })
             .then(() => {
                 dispatch(addAlert({
                     description: t("devPortal:components.idp.notifications.updateIDP.success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t("devPortal:components.idp.notifications.updateIDP.success.message")
                 }));
-                onUpdate(idpId);
+                onUpdate(editingIDP.id);
             })
             .catch((error) => {
                 handleIDPUpdateError(error);
@@ -158,9 +158,10 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                 <>
                     <GeneralDetailsForm
                         name={ name }
-                        idpId={ idpId }
+                        editingIDP={ editingIDP }
                         description={ description }
                         onSubmit={ handleFormSubmit }
+                        onUpdate={ onUpdate }
                         imageUrl={ imageUrl }
                         data-testid={ `${ testId }-form` }
 
