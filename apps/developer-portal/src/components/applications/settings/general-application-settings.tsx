@@ -26,7 +26,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteApplication, updateApplicationDetails } from "../../../api";
 import {
     ApplicationInterface,
-    ApplicationTemplateListItemInterface, CertificateInterface,
+    ApplicationTemplateListItemInterface,
+    CertificateInterface,
     ConfigReducerStateInterface,
     FeatureConfigInterface
 } from "../../../models";
