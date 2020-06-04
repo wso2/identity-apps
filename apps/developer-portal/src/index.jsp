@@ -52,7 +52,7 @@
 
             var state = new URL(window.location.href).searchParams.get("state");
     
-            if (state !== null && state === "checkSession") {
+            if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
                 // Prompt none response.
                 var code = new URL(window.location.href).searchParams.get("code");
     
