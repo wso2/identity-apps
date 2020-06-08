@@ -17,6 +17,14 @@
  */
 
 /**
+ * Features key.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const FEATURES = "features";
+
+/**
  * Overview key.
  * @constant
  * @type {string}

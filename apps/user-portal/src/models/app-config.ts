@@ -71,9 +71,11 @@ interface MultiFactorAuthentication {
  * Model of the app configuration
  */
 export interface AppConfigInterface {
-    overview: Overview;
-    personalInfo: PersonalInfo;
-    applications: boolean;
-    security: Security;
-    operations: boolean;
+    features: {
+        overview: Overview;
+        personalInfo: PersonalInfo;
+        applications: boolean;
+        security: Security;
+        operations: boolean;
+    };
 }
