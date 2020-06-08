@@ -19,20 +19,21 @@
 import React, { FunctionComponent, useContext } from "react";
 import { Divider, Grid } from "semantic-ui-react";
 import {
-    ACCOUNT_ACTIVITY,
-    ACCOUNT_SECURITY,
-    ACCOUNT_STATUS,
-    CONSENTS_CONTROL,
-    OVERVIEW
-} from "../../constants";
-import { AppConfig } from "../../helpers";
-import { checkEnabled } from "../../utils";
-import {
     AccountSecurityWidget,
     AccountStatusWidget,
     ConsentManagementWidget,
     UserSessionsWidget
 } from "./widgets";
+import {
+    ACCOUNT_ACTIVITY,
+    ACCOUNT_SECURITY,
+    ACCOUNT_STATUS,
+    CONSENTS_CONTROL,
+    FEATURES,
+    OVERVIEW
+} from "../../constants";
+import { AppConfig } from "../../helpers";
+import { checkEnabled } from "../../utils";
 
 /**
  * Overview component.
@@ -40,7 +41,7 @@ import {
  * @return {JSX.Element}
  */
 export const Overview: FunctionComponent<{}> = (): JSX.Element => {
-    const overViewConfig = useContext(AppConfig)[OVERVIEW];
+    const overViewConfig = useContext(AppConfig)[FEATURES][OVERVIEW];
 
     return (
         <Grid className="overview-page">

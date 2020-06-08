@@ -19,12 +19,12 @@
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { List } from "semantic-ui-react";
-import { ACCOUNT_RECOVERY, EMAIL_RECOVERY, SECURITY, SECURITY_QUESTIONS } from "../../constants";
+import { EmailRecovery, SecurityQuestionsComponent } from "./options";
+import { ACCOUNT_RECOVERY, EMAIL_RECOVERY, FEATURES, SECURITY, SECURITY_QUESTIONS } from "../../constants";
 import { AppConfig } from "../../helpers";
 import { AlertInterface } from "../../models";
 import { checkEnabled } from "../../utils";
 import { SettingsSection } from "../shared";
-import { EmailRecovery, SecurityQuestionsComponent } from "./options";
 
 /**
  * Prop types for AccountRecoveryComponent component.
@@ -44,7 +44,7 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
 ): JSX.Element => {
     const { t } = useTranslation();
     const { onAlertFired } = props;
-    const accountRecoveryConfig = useContext(AppConfig)[SECURITY][ACCOUNT_RECOVERY];
+    const accountRecoveryConfig = useContext(AppConfig)[FEATURES][SECURITY][ACCOUNT_RECOVERY];
 
     return (
         <SettingsSection

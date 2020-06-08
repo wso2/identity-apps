@@ -31,6 +31,7 @@ import {
     ACCOUNT_RECOVERY,
     ACTIVE_SESSIONS,
     CHANGE_PASSWORD,
+    FEATURES,
     MANAGE_CONSENTS,
     MULTI_FACTOR_AUTHENTICATION,
     SECURITY
@@ -49,7 +50,7 @@ import { checkEnabled } from "../utils";
 export const AccountSecurityPage = (): JSX.Element => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const securityConfig = useContext(AppConfig)[SECURITY];
+    const securityConfig = useContext(AppConfig)[FEATURES][SECURITY];
 
     /**
      * Dispatches the alert object to the redux store.

@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { FederatedAssociations, LinkedAccounts, Profile, ProfileExport } from "../components";
-import { EXPORT_PROFILE, EXTERNAL_LOGINS, LINKED_ACCOUNTS, PERSONAL_INFO, PROFILE } from "../constants";
+import { EXPORT_PROFILE, EXTERNAL_LOGINS, FEATURES, LINKED_ACCOUNTS, PERSONAL_INFO, PROFILE } from "../constants";
 import { AppConfig } from "../helpers";
 import { InnerPageLayout } from "../layouts";
 import { AlertInterface } from "../models";
@@ -36,7 +36,7 @@ import { checkEnabled } from "../utils";
 export const PersonalInfoPage = (): JSX.Element => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const personalInfoConfig = useContext(AppConfig)[PERSONAL_INFO];
+    const personalInfoConfig = useContext(AppConfig)[FEATURES][PERSONAL_INFO];
 
     /**
      * Dispatches the alert object to the redux store.
