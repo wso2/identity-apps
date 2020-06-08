@@ -197,7 +197,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     /**
      * Handles the outbound provisioning connector deletion.
      */
-    const handleDeleteConnector = (deletingConnector: OutboundProvisioningConnectorWithMetaInterface) => {
+    const handleDeleteConnector = (deletingConnector: OutboundProvisioningConnectorWithMetaInterface): void => {
 
         const connectorList = [];
 
