@@ -256,29 +256,32 @@ export const BiometricAuthenticator: React.FunctionComponent<BiometricAuthentica
                     <Divider hidden/>
                     <p className="link" onClick = { refreshCode } > { t ( translateKey + "modals.scan.generate")}</p>
                 </Segment>
-                { biometricConfig?.apps?.length > 0
-                    ? (
                         <Message info>
                             <Message.Header>{ t (translateKey + "modals.scan.messageHeading") } </Message.Header>
                             <Message.Content>
-                                { t (translateKey + "modals.scan.messageBody") + " " }
                                 <List bulleted>
-                                    { biometricConfig?.apps?.map((app, index) => (
-                                        <List.Item key = { index }>
+                                        <List.Item >
                                             <a
                                                 target = "_blank"
-                                                href = { app.link }
+                                                href = "#"
                                                 rel = "noopener noreferrer"
                                             >
-                                                { app.name }
+                                                { t (translateKey + "modals.scan.playStoreLink") }
                                             </a>
                                         </List.Item>
-                                    ))}
+                                    <List.Item >
+                                        <a
+                                            target = "_blank"
+                                            href = "#"
+                                            rel = "noopener noreferrer"
+                                        >
+                                            { t (translateKey + "modals.scan.appStoreLink") }
+                                        </a>
+                                    </List.Item>
                                 </List>
                             </Message.Content>
                         </Message>
-                    )
-                    : null}
+
             </>
         );
     };
@@ -296,7 +299,7 @@ export const BiometricAuthenticator: React.FunctionComponent<BiometricAuthentica
                 >
                     <Field
                         name="newName"
-                        label={ t(translateKey + "form.placeholder") }
+                        label={ t(translateKey + "form.label") }
                         type="text"
                         required={ true }
                         value={ biometricDevice.name }
@@ -473,7 +476,7 @@ export const BiometricAuthenticator: React.FunctionComponent<BiometricAuthentica
                                         />
                                     )
                                 }
-                                content = { t(translateKey + "hint") }
+                                content = { t(translateKey + "modals.scan.generate") }
                                 inverted
                             />
                         </List.Content>
@@ -496,7 +499,7 @@ export const BiometricAuthenticator: React.FunctionComponent<BiometricAuthentica
                                                     <Grid.Row columns={ 2 }>
                                                         <Grid.Column width={ 4 }>
                                                             {
-                                                                t("views:components.mfa.fido.form.label")
+                                                                t("views:components.mfa.biometricAuthentication.form.label")
                                                                 + ` ${index + 1}`
                                                             }
                                                         </Grid.Column>
@@ -571,7 +574,7 @@ export const BiometricAuthenticator: React.FunctionComponent<BiometricAuthentica
                                                                 />
                                                                 {
                                                                     device.name
-                                                                    || t("views:components.mfa.fido.form.label")
+                                                                    || t("views:components.mfa.biometricAuthentication.form.label")
                                                                     + ` ${index + 1}`
                                                                 }
                                                             </List.Header>
@@ -593,7 +596,7 @@ export const BiometricAuthenticator: React.FunctionComponent<BiometricAuthentica
                                                                 />
                                                                 <Popup
                                                                     content={
-                                                                        t("views:components.mfa.fido.form.remove")
+                                                                        t("views:components.mfa.biometricAuthentication.form.remove")
                                                                     }
                                                                     inverted
                                                                     trigger={ (

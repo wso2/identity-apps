@@ -608,11 +608,12 @@ export const views: Views = {
                     },
                     done: "வெற்றி! இப்போது இரண்டு காரணி உறுதிப்பாட்டிற்கு உங்கள் உறுதிப்பாட்டு செயலியை பயன்படுத்தலாம்",
                     scan: {
-                        authenticatorApps: "உறுதிப்பாட்டு செயலிகள்",
                         generate: "புதிய குறியீட்டை உருவாக்கவும்",
                         heading: "ஒரு உறுதிப்பாட்டு செயலியை பயன்படுத்தி இந்த QR குறியீட்டை பதிவு செய்யுங்கள்",
                         messageBody: "உறுதிப்பாட்டு செயலிகளின் பட்டியலை இங்கே காணலாம்.",
-                        messageHeading: "உங்களிடம் உறுதிப்பாட்டு செயலி இல்லையா?"
+                        messageHeading: "உங்களிடம் உறுதிப்பாட்டு செயலி இல்லையா?",
+                        playStoreLink: "Android Play Store",
+                        appStoreLink: "Apple App Store"
                     }
                 },
                 notifications: {

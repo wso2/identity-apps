@@ -606,11 +606,12 @@ export const views: Views = {
                     },
                     done: "Sucesso! Agora você pode usar seu aplicativo de autenticação para autenticação de dois fatores",
                     scan: {
-                        authenticatorApps: "Authenticator Apps",
                         generate: "Gere um novo código",
                         heading: "Leia este QR Code usando um aplicativo Authenticator",
                         messageBody: "Você pode encontrar uma lista de aplicativos autenticadores disponíveis aqui.",
-                        messageHeading: "Não tem um aplicativo autenticador instalado?"
+                        messageHeading: "Não tem um aplicativo autenticador instalado?",
+                        playStoreLink: "Android Play Store",
+                        appStoreLink: "Apple App Store"
                     }
                 },
                 notifications: {

@@ -676,10 +676,10 @@ export const views: Views = {
             biometricAuthentication: {
                 description: "Biometric Authentication using the WSO2 Verify Mobile App",
                 form: {
-                    label: "Enter new device name",
-                    placeholder: "Enter a device name",
+                    label: "Enter a unique name to identify your device ",
+                    placeholder: "Device Name",
                     remove: "Remove the device",
-                    required: "Enter a Unique Name To Identify This Device"
+                    required: "Device Name cannot be blank"
                 },
                 heading: "via Mobile Device",
                 modals: {
@@ -689,11 +689,12 @@ export const views: Views = {
                     },
                     done: "Your device was registered successfully!",
                     scan: {
-                        authenticatorApps: "Authenticator Apps",
                         generate: "Generate a new code",
                         heading: "Scan this QR Code using the WSO2 Verify App",
                         messageBody: "You can find it in the below links",
-                        messageHeading: "Don't have the WSO2 Verify App installed?"
+                        messageHeading: "Don't have  WSO2 Verify installed yet?",
+                        playStoreLink: "Android Play Store",
+                        appStoreLink: "Apple App Store"
                     }
                 },
                 notifications: {

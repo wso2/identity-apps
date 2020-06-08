@@ -401,7 +401,8 @@ export interface Views {
                         generate: string;
                         messageHeading: string;
                         messageBody: string;
-                        authenticatorApps: string;
+                        playStoreLink: string;
+                        appStoreLink: string;
                     };
                     done: string;
                 };

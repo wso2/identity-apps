@@ -606,11 +606,12 @@ export const views: Views = {
                     },
                     done: "සාර්ථකත්වය! දැන් ඔබට සාධක දෙකක සත්‍යාපනය සඳහා ඔබේ සත්‍යාපන යෙදුම භාවිතා කළ හැකිය",
                     scan: {
-                        authenticatorApps: "සත්‍යාපන යෙදුම්",
                         generate: "නව කේතයක් ජනනය කරන්න",
                         heading: "සත්‍යාපන යෙදුමක් භාවිතයෙන් මෙම QR කේතය පරිලෝකනය කරන්න",
                         messageBody: "ඔබට මෙහි ඇති සත්‍යාපන යෙදුම් ලැයිස්තුවක් සොයාගත හැකිය.",
-                        messageHeading: "සත්‍යාපන යෙදුමක් ස්ථාපනය කර නොමැතිද?"
+                        messageHeading: "සත්‍යාපන යෙදුමක් ස්ථාපනය කර නොමැතිද?",
+                        playStoreLink: "Android Play Store",
+                        appStoreLink: "Apple App Store"
                     }
                 },
                 notifications: {
