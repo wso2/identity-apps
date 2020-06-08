@@ -22,6 +22,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
     FederatedAuthenticatorListItemInterface,
+    FederatedAuthenticatorListResponseInterface,
     FederatedAuthenticatorMetaInterface,
     HttpMethods,
     IdentityProviderClaimsInterface,
@@ -35,7 +36,7 @@ import {
     LocalAuthenticatorInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorListItemInterface,
-    OutboundProvisioningConnectorMetaInterface
+    OutboundProvisioningConnectorMetaInterface,
 } from "../models";
 import { store } from "../store";
 
@@ -790,5 +791,73 @@ export const updateIDPCertificate = (
                 error.request,
                 error.response,
                 error.config);
+        });
+};
+
+/**
+ * Update the outbound provisioning connectors list of a specified IDP.
+ *
+ * @param connectorList
+ * @param idpId ID of the Identity Provider.
+ * @return {Promise<OutboundProvisioningConnectorListItemInterface>} A promise containing the response.
+ */
+export const updateOutboundProvisioningConnectors = (
+    connectorList: any,
+    idpId: string
+): Promise<OutboundProvisioningConnectorListItemInterface> => {
+
+    const requestConfig = {
+        data: connectorList,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/provisioning/outbound-connectors/"
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update identity provider: " + idpId));
+            }
+            return Promise.resolve(response.data as IdentityProviderInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Update a federated authenticators list of a specified IDP.
+ *
+ * @param authenticatorList
+ * @param idpId ID of the Identity Provider.
+ * @return {Promise<FederatedAuthenticatorListResponseInterface>} A promise containing the response.
+ */
+export const updateFederatedAuthenticators = (
+    authenticatorList: FederatedAuthenticatorListResponseInterface,
+    idpId: string
+): Promise<any> => {
+
+    const requestConfig = {
+        data: authenticatorList,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/federated-authenticators/"
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update identity provider: " + idpId));
+            }
+            return Promise.resolve(response.data as IdentityProviderInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
         });
 };

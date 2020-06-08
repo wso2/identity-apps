@@ -2835,6 +2835,22 @@ export const devPortal: DevPortalNS = {
                         message: "Warning!"
                     }
                 },
+                deleteDefaultAuthenticator: {
+                    error: {
+                        description: "The default federated authenticator cannot be deleted.",
+                        message: "Federated Authenticator Deletion Error"
+                    },
+                    genericError: null,
+                    success: null
+                },
+                deleteDefaultConnector: {
+                    error: {
+                        description: "The default outbound provisioning connector cannot be deleted.",
+                        message: "Outbound Connector Deletion error"
+                    },
+                    genericError: null,
+                    success: null
+                },
                 deleteIDP: {
                     error: {
                         description: "{{ description }}",
@@ -3101,6 +3117,20 @@ export const devPortal: DevPortalNS = {
                         message: "Update successful"
                     }
                 },
+                updateFederatedAuthenticators: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Update error"
+                    },
+                    genericError: {
+                        description: "An error occurred while updating the federated authenticators.",
+                        message: "Update error"
+                    },
+                    success: {
+                        description: "Successfully updated the federated authenticators.",
+                        message: "Update successful"
+                    }
+                },
                 updateIDP: {
                     error: {
                         description: "{{ description }}",
@@ -3169,6 +3199,20 @@ export const devPortal: DevPortalNS = {
                     success: {
                         description: "Successfully updated the outbound provisioning connector.",
                         message: "Update successful"
+                    }
+                },
+                updateOutboundProvisioningConnectors: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Update Error"
+                    },
+                    genericError: {
+                        description: "An error occurred while updating the outbound provisioning connectors.",
+                        message: "Update Error"
+                    },
+                    success: {
+                        description: "Successfully updated the outbound provisioning connectors.",
+                        message: "Update Successful"
                     }
                 }
             },

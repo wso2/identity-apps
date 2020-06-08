@@ -1249,12 +1249,16 @@ export interface DevPortalNS {
                 getAllLocalClaims: Notification;
                 getRolesList: Notification;
                 submitAttributeSettings: Notification;
+                deleteDefaultAuthenticator: Notification;
+                deleteDefaultConnector: Notification;
                 updateClaimsConfigs: Notification;
                 updateFederatedAuthenticator: Notification;
+                updateFederatedAuthenticators: Notification;
                 updateIDP: Notification;
                 updateIDPCertificate: Notification;
                 updateIDPRoleMappings: Notification;
                 updateJITProvisioning: Notification;
+                updateOutboundProvisioningConnectors: Notification;
                 updateOutboundProvisioningConnector: Notification;
             };
             placeHolders: {
