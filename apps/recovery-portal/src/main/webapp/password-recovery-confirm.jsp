@@ -25,6 +25,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.NotificationApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.CodeValidationRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <jsp:directive.include file="includes/localize.jsp"/>
@@ -35,7 +36,12 @@
     if (StringUtils.isBlank(callback)) {
         callback = request.getParameter("redirect_uri");
     }
-    String tenantDomain = request.getParameter(IdentityManagementEndpointConstants.TENANT_DOMAIN);
+    String tenantDomain;
+    if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
+    } else {
+        tenantDomain = request.getParameter(IdentityManagementEndpointConstants.TENANT_DOMAIN);
+    }
     NotificationApi notificationApi = new NotificationApi();
     try {
         List<Property> properties = new ArrayList<>();

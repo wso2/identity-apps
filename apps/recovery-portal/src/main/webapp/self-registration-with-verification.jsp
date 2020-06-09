@@ -33,6 +33,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.List" %>
@@ -47,7 +48,12 @@
     Integer defaultPurposeCatId = null;
     Integer userNameValidityStatusCode = null;
     String username = request.getParameter("username");
-    String tenantDomain = request.getParameter("tenantDomain");
+    String tenantDomain;
+    if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
+    } else {
+        tenantDomain = request.getParameter("tenantDomain");
+    }
     String consentPurposeGroupName = "SELF-SIGNUP";
     String consentPurposeGroupType = "SYSTEM";
     String[] missingClaimList = new String[0];
@@ -503,8 +509,14 @@
                                     <input id="isSelfRegistrationWithVerification" type="hidden"
                                            name="isSelfRegistrationWithVerification"
                                            value="true"/>
+                                    <%
+                                        if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+                                    %>
                                     <input id="tenantDomain" name="tenantDomain" type="hidden"
                                            value="<%=user.getTenantDomain()%>"/>
+                                    <%
+                                        }
+                                    %>
                                 </div>
                                 <% if (!skipSignUpEnableCheck) { %>
                                 <div>

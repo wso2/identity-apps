@@ -24,6 +24,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.SelfRegisterApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.CodeValidationRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
@@ -34,7 +35,12 @@
 
 
     String username = request.getParameter("username");
-    String tenantdomain = request.getParameter("tenantdomain");
+    String tenantDomain;
+    if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
+    } else {
+        tenantDomain = request.getParameter("tenantDomain");
+    }
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
 
@@ -55,7 +61,7 @@
         List<Property> properties = new ArrayList<>();
         Property tenantDomainProperty = new Property();
         tenantDomainProperty.setKey(MultitenantConstants.TENANT_DOMAIN);
-        tenantDomainProperty.setValue(tenantdomain);
+        tenantDomainProperty.setValue(tenantDomain);
         properties.add(tenantDomainProperty);
 
         validationRequest.setCode(confirmationKey);

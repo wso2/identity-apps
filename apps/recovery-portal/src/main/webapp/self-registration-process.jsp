@@ -25,6 +25,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.SelfRegisterApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.*" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URLEncoder" %>
@@ -85,7 +86,12 @@
             String username = request.getParameter("username");
             String password = request.getParameter("password");
             String callback = request.getParameter("callback");
-            String tenantDomain = request.getParameter("tenantDomain");
+            String tenantDomain;
+            if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+                tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
+            } else {
+                tenantDomain = request.getParameter("tenantDomain");
+            }
             String consent = request.getParameter("consent");
             String policyURL = IdentityManagementServiceUtil.getInstance().getServiceContextURL().replace("/services",
                     "/authenticationendpoint/privacy_policy.do");

@@ -25,6 +25,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.*" %>
 
@@ -34,7 +35,12 @@
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
     String username = request.getParameter("username");
-    String tenantDomain = request.getParameter("tenantDomain");
+    String tenantDomain;
+    if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
+    } else {
+        tenantDomain = request.getParameter("tenantDomain");
+    }
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
 
     if (StringUtils.isBlank(tenantDomain)) {
@@ -136,7 +142,13 @@
                             </label>
                             <input id="usernameUserInput" name="usernameUserInput" type="text" tabindex="0" required>
                             <input id="username" name="username" type="hidden">
+                            <%
+                                if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+                            %>
                             <input id="tenantDomain" name="tenantDomain" value="<%= tenantDomain %>" type="hidden">
+                            <%
+                                }
+                            %>
                             <input id="isSaaSApp" name="isSaaSApp" value="<%= isSaaSApp %>" type="hidden">
                         </div>
 

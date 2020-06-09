@@ -45,8 +45,13 @@
     }
     
     ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
-    String tenantDomain = request.getParameter("tenantDomain");
-    
+    String tenantDomain;
+    if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
+    } else {
+        tenantDomain = request.getParameter("tenantDomain");
+    }
+
     if (StringUtils.isNotEmpty(tenantDomain)) {
         try {
             IdentityTenantUtil.getTenantId(tenantDomain);

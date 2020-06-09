@@ -21,13 +21,19 @@
 <%@ page import="java.io.File" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
-    String tenantDomain = request.getParameter("tenantDomain");
+    String tenantDomain;
+    if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
+    } else {
+        tenantDomain = request.getParameter("tenantDomain");
+    }
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
 
     if (StringUtils.isBlank(tenantDomain)) {
@@ -89,7 +95,13 @@
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")%>
                                 </label>
                                 <input id="usernameUserInput" name="usernameUserInput" type="text" tabindex="0" required>
+                                <%
+                                    if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+                                %>
                                 <input id="tenantDomain" name="tenantDomain" value="<%= tenantDomain %>" type="hidden">
+                                <%
+                                    }
+                                %>
                                 <input id="isSaaSApp" name="isSaaSApp" value="<%= isSaaSApp %>" type="hidden">
                             </div> 
                             <div class="ui message info">

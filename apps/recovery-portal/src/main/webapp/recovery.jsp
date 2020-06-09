@@ -25,6 +25,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.UserClaim" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
@@ -40,8 +41,10 @@
     String confirmationKey = request.getParameter("confirmationKey");
     String callback = request.getParameter("callback");
     String tenantDomain = StringUtils.EMPTY;
-    if(StringUtils.isNotBlank(request.getParameter("tenantDomain"))){
-        tenantDomain = request.getParameter("tenantDomain").trim();
+    if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
+    } else {
+        tenantDomain = StringUtils.trim(request.getParameter("tenantDomain"));
     }
 
     if (StringUtils.isBlank(callback)) {

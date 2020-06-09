@@ -20,6 +20,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
 <jsp:directive.include file="includes/localize.jsp"/>
 
@@ -71,9 +72,19 @@
 
             <div class="segment-form">
                 <form class="ui large form" method="post" action="recoverusername.do" id="tenantBasedRecovery">
+                    <%
+                        if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+                    %>
                     <input id="tenant-domain" type="text" name="tenantDomain"
                                 class="form-control ">
-                        
+                    <%
+                        } else {
+                    %>
+                    <input id="tenant-domain" type="hidden" name="tenantDomain" value='<%=Encode.forHtmlAttribute
+                                (IdentityTenantUtil.getTenantDomainFromContext())%>' class="form-control">
+                    <%
+                        }
+                    %>
                         <%
                             String callback = Encode.forHtmlAttribute
                                     (request.getParameter("callback"));
