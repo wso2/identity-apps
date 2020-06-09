@@ -16,17 +16,33 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import { CommonDeploymentConfigInterface } from "@wso2is/core//models";
+import { getAppConfig } from "@wso2is/core/api";
+import {
+    setDeploymentConfigs,
+    setFeatureConfigs,
+    setServiceResourceEndpoints,
+    setUIConfigs
+} from "@wso2is/core/store";
+import * as _ from "lodash";
+import React, { useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
-import { Provider } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
 import { SignIn, SignOut } from "./components/authentication";
-import { i18n } from "./configs";
+import { Config, i18n } from "./configs";
+import { ApplicationConstants } from "./constants";
 import { AppConfig, history } from "./helpers";
-import { AppConfigInterface } from "./models";
-import { store } from "./store";
-import { filteredRoutes, getAppConfig } from "./utils";
+import {
+    ConfigInterface,
+    ConfigReducerStateInterface,
+    FeatureConfigInterface,
+    ServiceResourceEndpointsInterface,
+    UIConfigInterface
+} from "./models";
+import { AppState } from "./store";
+import { filteredRoutes } from "./utils";
 
 /**
  * Main App component.
@@ -35,66 +51,89 @@ import { filteredRoutes, getAppConfig } from "./utils";
  */
 export const App = (): JSX.Element => {
 
-    const [appConfig, setAppConfig] = useState<AppConfigInterface>(null);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const dispatch = useDispatch();
+
+    /**
+     * Set the deployment configs in redux state.
+     */
+    useEffect(() => {
+        // Replace `RuntimeConfigInterface` with the proper deployment config interface,
+        // once runtime config is refactored.
+        dispatch(setDeploymentConfigs<CommonDeploymentConfigInterface>(Config.getDeploymentConfig()));
+        dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
+        dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
+    }, []);
 
     /**
      * Obtain app.config.json from the server root when the app mounts.
      */
     useEffect(() => {
-        getAppConfig().then((appConfigModule) => {
-            setAppConfig(appConfigModule);
-        });
-    }, []);
+        if (!config?.deployment || _.isEmpty(config.deployment) || !config.deployment.appBaseNameWithoutTenant) {
+            return;
+        }
+
+        // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
+        // will fail. Using `appBaseNameWithoutTenant` will create a path without the tenant. Therefore,
+        // `getAppConfig()` will look for the app config file in `https://localhost:9443/user-portal` rather than
+        // looking it in `https://localhost:9443/t/wso2.com/user-portal`.
+        getAppConfig<ConfigInterface>(ApplicationConstants.APP_CONFIG_FILE_NAME,
+            config.deployment.appBaseNameWithoutTenant)
+            .then((response) => {
+                dispatch(setFeatureConfigs<FeatureConfigInterface>(response?.features));
+            })
+            .catch(() => {
+                // TODO: Log the error here.
+            });
+    }, [ config?.deployment?.appBaseNameWithoutTenant ]);
 
     return (
         <Router history={ history }>
             <div className="container-fluid">
                 <I18nextProvider i18n={ i18n }>
-                    <Provider store={ store }>
-                        <AppConfig.Provider value={ appConfig }>
-                            <Switch>
-                                <Redirect exact={ true } path="/" to={ window["AppUtils"].getConfig().routes.login } />
-                                <Route
-                                    path={ window["AppUtils"].getConfig().routes.login }
-                                    render={ (props) => {
-                                        return <SignIn { ...props } />;
-                                    } }
-                                />
-                                <Route
-                                    path={ window["AppUtils"].getConfig().routes.logout }
-                                    render={ () => {
-                                        return <SignOut />;
-                                    } }
-                                />
-                                {
-                                    appConfig
-                                        ? filteredRoutes(appConfig).map((route, index) => {
-                                            return (
-                                                route.protected ?
-                                                    (
-                                                        <ProtectedRoute
-                                                            component={ route.component }
-                                                            path={ route.path }
-                                                            key={ index }
-                                                        />
-                                                    )
-                                                    :
-                                                    (
-                                                        <Route
-                                                            path={ route.path }
-                                                            render={ (props) =>
-                                                                (<route.component { ...props } />)
-                                                            }
-                                                            key={ index }
-                                                        />
-                                                    )
-                                            );
-                                        })
-                                        : null
-                                }
-                            </Switch>
-                        </AppConfig.Provider>
-                    </Provider>
+                    <AppConfig.Provider value={ config }>
+                        <Switch>
+                            <Redirect exact={ true } path="/" to={ window["AppUtils"].getConfig().routes.login } />
+                            <Route
+                                path={ window["AppUtils"].getConfig().routes.login }
+                                render={ (props) => {
+                                    return <SignIn { ...props } />;
+                                } }
+                            />
+                            <Route
+                                path={ window["AppUtils"].getConfig().routes.logout }
+                                render={ () => {
+                                    return <SignOut />;
+                                } }
+                            />
+                            {
+                                config
+                                    ? filteredRoutes(config).map((route, index) => {
+                                        return (
+                                            route.protected ?
+                                                (
+                                                    <ProtectedRoute
+                                                        component={ route.component }
+                                                        path={ route.path }
+                                                        key={ index }
+                                                    />
+                                                )
+                                                :
+                                                (
+                                                    <Route
+                                                        path={ route.path }
+                                                        render={ (props) =>
+                                                            (<route.component { ...props } />)
+                                                        }
+                                                        key={ index }
+                                                    />
+                                                )
+                                        );
+                                    })
+                                    : null
+                            }
+                        </Switch>
+                    </AppConfig.Provider>
                 </I18nextProvider>
             </div>
         </Router>
