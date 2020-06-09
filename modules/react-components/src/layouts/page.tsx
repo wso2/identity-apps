@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { PropsWithChildren, ReactElement } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Divider } from "semantic-ui-react";
 import { PageHeader, PageHeaderPropsInterface } from "../components";
 
@@ -51,7 +51,7 @@ export interface PageLayoutPropsInterface extends PageHeaderPropsInterface, Test
  *
  * @return {React.ReactElement}
  */
-export const PageLayout: React.FunctionComponent<PropsWithChildren<PageLayoutPropsInterface>> = (
+export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutPropsInterface>> = (
     props: PropsWithChildren<PageLayoutPropsInterface>
 ): ReactElement => {
 

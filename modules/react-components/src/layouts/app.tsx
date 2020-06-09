@@ -22,6 +22,8 @@ import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react
  * Main app layout.
  * Used to render all the layouts that's being used inside the app.
  *
+ * @param {React.PropsWithChildren<{}>} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
 export const AppLayout: FunctionComponent<PropsWithChildren<{}>> = (
