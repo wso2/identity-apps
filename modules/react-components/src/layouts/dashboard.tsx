@@ -17,7 +17,13 @@
  */
 
 import classNames from "classnames";
-import { FunctionComponent, default as React, ReactElement, ReactNode, SyntheticEvent } from "react";
+import React, {
+    FunctionComponent,
+    PropsWithChildren,
+    ReactElement,
+    ReactNode,
+    SyntheticEvent
+} from "react";
 import { Responsive } from "semantic-ui-react";
 import { BaseLayout, BaseLayoutInterface } from "./base";
 
@@ -38,7 +44,7 @@ export interface DashboardLayoutPropsInterface extends BaseLayoutInterface {
      * @param {React.SyntheticEvent<HTMLElement>} event - Event.
      * @param {ResponsiveOnUpdateData} data - Metadata.
      */
-    handleLayoutOnUpdate: (event: SyntheticEvent<HTMLElement>, data: any) => void;
+    onLayoutOnUpdate?: (event: SyntheticEvent<HTMLElement>, data: any) => void;
     /**
      * App header component.
      */
@@ -46,26 +52,27 @@ export interface DashboardLayoutPropsInterface extends BaseLayoutInterface {
     /**
      * App side navigation component.
      */
-    sidePanel?: ReactNode;
+    sidePanel?: ReactElement;
 }
 
 /**
  * Dashboard layout.
  *
- * @param {DashboardLayoutPropsInterface} props - Props injected to the component.
+ * @param {React.PropsWithChildren<DashboardLayoutPropsInterface>} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> = (
-    props: DashboardLayoutPropsInterface
+export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayoutPropsInterface>> = (
+    props: PropsWithChildren<DashboardLayoutPropsInterface>
 ): ReactElement => {
 
     const {
         alert,
+        children,
         className,
         footer,
         fluid,
-        handleLayoutOnUpdate,
+        onLayoutOnUpdate,
         header,
         sidePanel,
         topLoadingBar
@@ -88,10 +95,10 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
             <Responsive
                 className={ classes }
                 fireOnMount
-                onUpdate={ handleLayoutOnUpdate }
+                onUpdate={ onLayoutOnUpdate }
             >
                 { header }
-                { sidePanel }
+                { React.cloneElement(sidePanel, { children: children }) }
                 { footer }
             </Responsive>
         </BaseLayout>
