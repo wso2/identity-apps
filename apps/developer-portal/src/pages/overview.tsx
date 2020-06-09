@@ -18,7 +18,13 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Jumbotron, StatsInsightsWidget, StatsOverviewWidget, StatsQuickLinksWidget } from "@wso2is/react-components";
+import {
+    Jumbotron,
+    PageLayout,
+    StatsInsightsWidget,
+    StatsOverviewWidget,
+    StatsQuickLinksWidget
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,7 +34,6 @@ import { ApplicationList, IdentityProviderList, handleGetIDPListCallError } from
 import { OverviewPageIllustrations } from "../configs";
 import { ApplicationConstants, UIConstants } from "../constants";
 import { history, resolveUserDisplayName } from "../helpers";
-import { PageLayout } from "../layouts";
 import {
     ApplicationListInterface,
     AuthStateInterface,

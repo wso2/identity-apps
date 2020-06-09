@@ -17,14 +17,13 @@
  */
 
 import { addAlert } from "@wso2is/core/store";
-import { UserAvatar } from "@wso2is/react-components";
+import { PageLayout, UserAvatar } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { getUserDetails } from "../../api";
 import { EditUser } from "../../components";
 import { history } from "../../helpers";
-import { PageLayout } from "../../layouts";
 import { AlertInterface, BasicProfileInterface, createEmptyProfile } from "../../models";
 
 /**

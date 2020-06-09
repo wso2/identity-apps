@@ -29,6 +29,7 @@ import {
     Hint,
     Markdown,
     PageHeader,
+    PageLayout,
     SelectionCard
 } from "@wso2is/react-components";
 import _ from "lodash";
@@ -42,7 +43,7 @@ import { HelpPanelOverview } from "../../components/applications";
 import { TechnologyLogos } from "../../configs";
 import { ApplicationConstants, ApplicationManagementConstants } from "../../constants";
 import { history } from "../../helpers";
-import { HelpPanelLayout, PageLayout } from "../../layouts";
+import { HelpPanelLayout } from "../../layouts";
 import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface,

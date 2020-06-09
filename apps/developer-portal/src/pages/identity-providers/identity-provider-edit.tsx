@@ -24,7 +24,8 @@ import {
     AppAvatar,
     ContentLoader,
     HelpPanelTabInterface,
-    Markdown
+    Markdown,
+    PageLayout
 } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -35,7 +36,7 @@ import { getIdentityProviderDetail } from "../../api";
 import { EditIdentityProvider } from "../../components";
 import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../../constants";
 import { history } from "../../helpers";
-import { HelpPanelLayout, PageLayout } from "../../layouts";
+import { HelpPanelLayout } from "../../layouts";
 import {
     ConfigReducerStateInterface,
     IdentityProviderInterface,

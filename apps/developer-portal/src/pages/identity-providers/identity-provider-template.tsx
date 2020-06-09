@@ -20,9 +20,14 @@ import { getRawDocumentation } from "@wso2is/core/api";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
-    EmptyPlaceholder, Heading,
-    HelpPanelTabInterface, Hint,
-    Markdown, PageHeader, SelectionCard,
+    EmptyPlaceholder,
+    Heading,
+    HelpPanelTabInterface,
+    Hint,
+    Markdown,
+    PageHeader,
+    PageLayout,
+    SelectionCard,
     TemplateGrid
 } from "@wso2is/react-components";
 import _ from "lodash";
@@ -44,7 +49,7 @@ import { IdentityProviderCreateWizard } from "../../components/identity-provider
 import { EmptyPlaceholderIllustrations, IdPCapabilityIcons, IdPIcons, IdPTemplateDocsIcons } from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
 import { history } from "../../helpers";
-import { HelpPanelLayout, PageLayout } from "../../layouts";
+import { HelpPanelLayout } from "../../layouts";
 import {
     ConfigReducerStateInterface,
     DocPanelUICardInterface,

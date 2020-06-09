@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, TemplateGrid } from "@wso2is/react-components";
+import { EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -32,7 +32,6 @@ import {
     USER_STORE_TYPE_DESCRIPTIONS
 } from "../../constants";
 import { history } from "../../helpers";
-import { PageLayout } from "../../layouts";
 import { AlertLevels, TypeResponse, UserstoreType } from "../../models";
 
 /**

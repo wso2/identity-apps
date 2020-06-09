@@ -17,6 +17,7 @@
 */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { PageLayout } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import * as CountryLanguage from "country-language";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -25,7 +26,6 @@ import { getEmailTemplate } from "../../api";
 import { AddLocaleTemplate } from "../../components";
 import { EMAIL_TEMPLATE_VIEW_PATH } from "../../constants";
 import { history } from "../../helpers";
-import { PageLayout } from "../../layouts";
 import { EmailTemplateDetails } from "../../models";
 
 /**

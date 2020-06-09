@@ -20,7 +20,7 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { PrimaryButton } from "@wso2is/react-components";
+import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,7 +35,6 @@ import {
 } from "../../components";
 import { LOCAL_CLAIMS_PATH, UIConstants } from "../../constants";
 import { history } from "../../helpers";
-import { ListLayout, PageLayout } from "../../layouts";
 import { AlertLevels, ClaimDialect, FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
 import { filterList, sortList } from "../../utils";

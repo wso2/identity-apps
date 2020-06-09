@@ -19,7 +19,14 @@
 import { getRawDocumentation } from "@wso2is/core/api";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
-import { ContentLoader, HelpPanelTabInterface, Markdown, PrimaryButton } from "@wso2is/react-components";
+import {
+    ContentLoader,
+    HelpPanelTabInterface,
+    ListLayout,
+    Markdown,
+    PageLayout,
+    PrimaryButton
+} from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,7 +37,7 @@ import { AdvancedSearchWithBasicFilters, IdentityProviderList } from "../../comp
 import { handleGetIDPListCallError } from "../../components/identity-providers/utils";
 import { IdentityProviderConstants, IdentityProviderManagementConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
-import { HelpPanelLayout, ListLayout, PageLayout } from "../../layouts";
+import { HelpPanelLayout } from "../../layouts";
 import {
     ConfigReducerStateInterface,
     IdentityProviderListResponseInterface,

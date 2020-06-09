@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, EmptyPlaceholder, TemplateGrid } from "@wso2is/react-components";
+import { ContentLoader, EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -27,7 +27,6 @@ import { CustomApplicationTemplate } from "../../components/applications/meta";
 import { ApplicationTemplateIllustrations, EmptyPlaceholderIllustrations } from "../../configs";
 import { ApplicationConstants } from "../../constants";
 import { history } from "../../helpers";
-import { PageLayout } from "../../layouts";
 import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../../models";
 import { AppState } from "../../store";
 import { ApplicationManagementUtils } from "../../utils";

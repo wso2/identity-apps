@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { PrimaryButton } from "@wso2is/react-components";
+import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -28,7 +28,6 @@ import { deleteLocaleTemplate, getEmailTemplate } from "../../api";
 import { EmailTemplateList } from "../../components";
 import { EMAIL_TEMPLATE_VIEW_PATH, UIConstants } from "../../constants";
 import { history } from "../../helpers";
-import { ListLayout, PageLayout } from "../../layouts";
 import { AlertInterface, AlertLevels, EmailTemplate, EmailTemplateDetails } from "../../models";
 
 /**

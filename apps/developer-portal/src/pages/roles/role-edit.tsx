@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getRoleById } from "../../api";
 import { EditRole } from "../../components/roles/edit-role";
 import { GROUP_VIEW_PATH, ROLE_VIEW_PATH } from "../../constants";
 import { history } from "../../helpers";
-import { PageLayout } from "../../layouts";
 import { RolesInterface } from "../../models";
 
 export const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
