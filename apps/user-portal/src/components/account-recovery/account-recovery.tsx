@@ -16,20 +16,20 @@
  * under the License.
  */
 
-import React, { useContext } from "react";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { SBACInterface } from "@wso2is/core/models";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { List } from "semantic-ui-react";
 import { EmailRecovery, SecurityQuestionsComponent } from "./options";
-import { ACCOUNT_RECOVERY, EMAIL_RECOVERY, FEATURES, SECURITY, SECURITY_QUESTIONS } from "../../constants";
-import { AppConfig } from "../../helpers";
-import { AlertInterface } from "../../models";
-import { checkEnabled } from "../../utils";
+import { ApplicationConstants } from "../../constants";
+import { AlertInterface, FeatureConfigInterface } from "../../models";
 import { SettingsSection } from "../shared";
 
 /**
  * Prop types for AccountRecoveryComponent component.
  */
-interface AccountRecoveryProps {
+interface AccountRecoveryProps extends SBACInterface<FeatureConfigInterface> {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -43,8 +43,7 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
     props: AccountRecoveryProps
 ): JSX.Element => {
     const { t } = useTranslation();
-    const { onAlertFired } = props;
-    const accountRecoveryConfig = useContext(AppConfig)[FEATURES][SECURITY][ACCOUNT_RECOVERY];
+    const { onAlertFired, featureConfig } = props;
 
     return (
         <SettingsSection
@@ -54,20 +53,28 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
                     {
-                        checkEnabled(accountRecoveryConfig, SECURITY_QUESTIONS)
-                            ? (
-                                <SecurityQuestionsComponent onAlertFired={ onAlertFired } />
-                            )
-                            : null
+                        hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read) &&
+                        isFeatureEnabled(
+                            featureConfig?.security,
+                            ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_CHALLENGE_QUESTIONS")
+                        )
+                        ? (
+                            <SecurityQuestionsComponent onAlertFired={ onAlertFired } />
+                        )
+                        : null
                     }
                 </List.Item>
                 <List.Item className="inner-list-item">
                     {
-                        checkEnabled(accountRecoveryConfig, EMAIL_RECOVERY)
-                            ? (
-                                <EmailRecovery onAlertFired={ onAlertFired } />
-                            )
-                            : null
+                        hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read) &&
+                        isFeatureEnabled(
+                            featureConfig?.security,
+                            ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_EMAIL_RECOVERY")
+                        )
+                        ? (
+                            <EmailRecovery onAlertFired={ onAlertFired } />
+                        )
+                        : null
                     }
                 </List.Item>
             </List>

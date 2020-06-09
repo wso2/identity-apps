@@ -20,20 +20,20 @@ import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentic
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
+import { AllApplications } from "./all-applications";
+import { ApplicationSearch } from "./application-search";
+import { RecentApplications } from "./recent-applications";
 import { fetchApplications } from "../../api";
-import * as ApplicationConstants from "../../constants/application-constants";
+import { ApplicationConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
 import {
     AlertInterface,
     AlertLevels,
     Application,
-    emptyStorageApplicationSettingsItem,
-    StorageApplicationSettingsInterface
+    StorageApplicationSettingsInterface,
+    emptyStorageApplicationSettingsItem
 } from "../../models";
 import { getValueFromLocalStorage, setValueInLocalStorage } from "../../utils";
-import { AllApplications } from "./all-applications";
-import { ApplicationSearch } from "./application-search";
-import { RecentApplications } from "./recent-applications";
 
 /**
  * Proptypes for the applications component.

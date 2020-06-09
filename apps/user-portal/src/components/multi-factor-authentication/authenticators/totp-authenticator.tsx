@@ -18,15 +18,15 @@
 
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import QRCode from "qrcode.react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Icon, List, Message, Modal, Popup, Segment } from "semantic-ui-react";
 import { initTOTPCode, refreshTOTPCode, validateTOTPCode } from "../../../api";
 import { EnterCode, MFAIcons, QRCodeScan } from "../../../configs";
-import { AUTHENTICATOR_APP, FEATURES, MULTI_FACTOR_AUTHENTICATION, SECURITY } from "../../../constants";
-import { AppConfig } from "../../../helpers";
 import { AlertLevels } from "../../../models";
 import { ThemeIcon } from "../../shared";
+import { useSelector } from "react-redux";
+import { AppState } from "../../../store";
 
 export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Element => {
 
@@ -41,7 +41,7 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
 
     const { t } = useTranslation();
 
-    const totpConfig = useContext(AppConfig)[FEATURES][SECURITY][MULTI_FACTOR_AUTHENTICATION][AUTHENTICATOR_APP];
+    const totpConfig = useSelector((state: AppState) => state?.config?.features.security.enabled);
 
     const translateKey = "views:components.mfa.authenticatorApp.";
 

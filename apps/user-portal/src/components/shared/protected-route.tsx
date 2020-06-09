@@ -20,7 +20,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
 import { GlobalConfig } from "../../configs";
-import * as ApplicationConstants from "../../constants/application-constants";
+import { ApplicationConstants } from "../../constants";
 import { history } from "../../helpers";
 import { updateAuthenticationCallbackUrl } from "../../store/middleware";
 
