@@ -18,11 +18,11 @@
  */
 
 import { OPConfigurationUtil } from "@wso2is/authentication";
-import * as ApplicationConstants from "../constants/application-constants";
+import { hasLoginPermission } from "./authenticate-util";
+import { ApplicationConstants } from "../constants";
 import { history } from "../helpers";
 import { store } from "../store";
 import { hideGlobalLoader, showGlobalLoader } from "../store/actions";
-import { hasLoginPermission } from "./authenticate-util";
 
 /**
  * Callback to be fired on every Http request start.

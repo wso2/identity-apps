@@ -19,3 +19,4 @@
 export * from "./authenticate";
 export * from "./global";
 export * from "./profile";
+export * from "./config";

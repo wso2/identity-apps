@@ -16,9 +16,17 @@
  * under the License.
  */
 
+import { CommonDeploymentConfigInterface } from "@wso2is/core/models";
+import { commonConfigReducer } from "@wso2is/core/store";
+import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { combineReducers } from "redux";
-import { authenticateReducer, globalReducer, profileReducer } from "./reducers";
+import { authenticateReducer, commonConfigReducerInitialState, globalReducer, profileReducer } from "./reducers";
 import { LoadersReducer } from "./reducers/loaders";
+import {
+    FeatureConfigInterface,
+    ServiceResourceEndpointsInterface,
+    UIConfigInterface
+} from "../models";
 
 /**
  * Combines all the reducers.
@@ -27,6 +35,13 @@ import { LoadersReducer } from "./reducers/loaders";
  */
 export const reducers = combineReducers({
     authenticationInformation: authenticateReducer,
+    config: commonConfigReducer<
+        CommonDeploymentConfigInterface,
+        ServiceResourceEndpointsInterface,
+        FeatureConfigInterface,
+        I18nModuleOptionsInterface,
+        UIConfigInterface
+        >(commonConfigReducerInitialState),
     global: globalReducer,
     loaders: LoadersReducer,
     profile: profileReducer

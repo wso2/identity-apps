@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import Axios from "axios";
 import { Route, routes } from "../configs";
 
 /**
@@ -44,14 +43,5 @@ export const checkEnabled = (appConfig: any, key: string): boolean => {
 export const filteredRoutes = (appConfig): Route[] => {
     return routes.filter((route: Route) => {
         return checkEnabled(appConfig, route.id);
-    });
-};
-
-/**
- * This obtains the app.config.json file from the server
- */
-export const getAppConfig = (): Promise<any> => {
-    return Axios.get(`/${window["AppUtils"].getConfig().appBase}/app.config.json`).then((response) => {
-        return Promise.resolve(response.data);
     });
 };
