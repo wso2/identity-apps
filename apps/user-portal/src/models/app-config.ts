@@ -16,7 +16,14 @@
  * under the License.
  */
 
- /**
+import {
+    CommonConfigInterface,
+    CommonDeploymentConfigInterface,
+    FeatureAccessConfigInterface
+} from "@wso2is/core/models";
+import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+
+/**
   * Model of the Overview page
   */
 interface Overview {
@@ -71,11 +78,88 @@ interface MultiFactorAuthentication {
  * Model of the app configuration
  */
 export interface AppConfigInterface {
-    features: {
-        overview: Overview;
-        personalInfo: PersonalInfo;
-        applications: boolean;
-        security: Security;
-        operations: boolean;
-    };
+    overview: Overview;
+    personalInfo: PersonalInfo;
+    applications: boolean;
+    security: Security;
+    operations: boolean;
+}
+
+export type ConfigInterface = CommonConfigInterface<
+    CommonDeploymentConfigInterface,
+    ServiceResourceEndpointsInterface,
+    FeatureConfigInterface,
+    I18nModuleOptionsInterface,
+    UIConfigInterface>;
+
+/**
+ * Model of the application configurations.
+ */
+export interface FeatureConfigInterface {
+    /**
+     * User overview feature.
+     */
+    overview: FeatureAccessConfigInterface;
+    /**
+     * Personal info feature.
+     */
+    personalInfo: FeatureAccessConfigInterface;
+    /**
+     * Application management feature.
+     */
+    applications: FeatureAccessConfigInterface;
+    /**
+     * Account security feature.
+     */
+    security: FeatureAccessConfigInterface;
+    /**
+     * Pending operation tasks feature.
+     */
+    operations: FeatureAccessConfigInterface;
+}
+
+/**
+ * Service resource endpoints config.
+ */
+export interface ServiceResourceEndpointsInterface {
+    applications: string;
+    associations: string;
+    authorize: string;
+    challenges: string;
+    challengeAnswers: string;
+    consents: string;
+    federatedAssociations: string;
+    fidoEnd: string;
+    fidoMetaData: string;
+    fidoStart: string;
+    fidoStartUsernameless: string;
+    issuer: string;
+    jwks: string;
+    logout: string;
+    me: string;
+    pendingApprovals: string;
+    profileSchemas: string;
+    receipts: string;
+    sessions: string;
+    token: string;
+    totp: string;
+    totpSecret: string;
+    user: string;
+    revoke: string;
+    wellKnown: string;
+}
+
+/**
+ * Dev portal UI config interface.
+ */
+export interface UIConfigInterface {
+    /**
+     * Copyright text for the footer.
+     */
+    copyrightText: string;
+    /**
+     * Title text.
+     * ex: `WSO2 Identity Server`
+     */
+    titleText?: string;
 }
