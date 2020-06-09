@@ -16,24 +16,38 @@
  * under the License.
  */
 
-import React, { PropsWithChildren } from "react";
+import { ErrorLayout as ErrorLayoutSkeleton } from "@wso2is/react-components";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { Container, Divider } from "semantic-ui-react";
 import { ProtectedRoute } from "../components";
 import { errorLayoutRoutes } from "../configs";
 
 /**
- * Error page layout.
- *
- * @param {React.PropsWithChildren<{}>} props - Props injected to the error page layout component.
- * @return {JSX.Element}
- * @constructor
+ * Error layout Prop types.
  */
-export const ErrorPageLayout: React.FunctionComponent<PropsWithChildren<{}>> = (): JSX.Element => {
+export interface ErrorLayoutPropsInterface {
+    /**
+     * Is layout fluid.
+     */
+    fluid?: boolean;
+}
+
+/**
+ * Implementation of the error layout skeleton.
+ * Used to render error pages.
+ *
+ * @param {React.PropsWithChildren<ErrorLayoutPropsInterface>} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
+ */
+export const ErrorLayout: FunctionComponent<PropsWithChildren<ErrorLayoutPropsInterface>> = (
+    props: PropsWithChildren<ErrorLayoutPropsInterface>
+): ReactElement => {
+
+    const { fluid } = props;
 
     return (
-        <Container className="layout-content error-page-layout">
-            <Divider className="x4" hidden/>
+        <ErrorLayoutSkeleton fluid={ fluid }>
             <Switch>
                 {
                     errorLayoutRoutes.map((route, index) => (
@@ -59,7 +73,13 @@ export const ErrorPageLayout: React.FunctionComponent<PropsWithChildren<{}>> = (
                     ))
                 }
             </Switch>
-            <Divider className="x3" hidden/>
-        </Container>
+        </ErrorLayoutSkeleton>
     );
+};
+
+/**
+ * Default props for the error layout.
+ */
+ErrorLayout.defaultProps = {
+    fluid: true
 };

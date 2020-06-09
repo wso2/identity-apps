@@ -16,48 +16,74 @@
  * under the License.
  */
 
-import React from "react";
+import { AuthLayout as AuthLayoutSkeleton } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { ProtectedRoute } from "../components";
 import { authLayoutRoutes } from "../configs";
 
 /**
- * Auth layout.
+ * Auth layout props interface.
+ */
+interface AuthLayoutPropsInterface {
+    /**
+     * Is layout fluid.
+     */
+    fluid?: boolean;
+}
+
+/**
+ * Implementation of the Auth layout skeleton.
  * Used to render the authentication related components.
  *
- * @return {JSX.Element}
+ * @param {AuthLayoutPropsInterface} props - Props injected to the component.
+ *
+ * @return {React.ReactElement}
  */
-export const AuthLayout: React.FunctionComponent<{}> = (): JSX.Element => {
+export const AuthLayout: FunctionComponent<AuthLayoutPropsInterface> = (
+    props: AuthLayoutPropsInterface
+): ReactElement => {
+
+    const { fluid } = props;
 
     return (
-        <Switch>
-            {
-                authLayoutRoutes.map((route, index) => (
-                    route.redirectTo
-                        ? <Redirect to={ route.redirectTo } />
-                        : route.protected
-                            ? (
-                                <ProtectedRoute
-                                    component={ route.component ? route.component : null }
-                                    path={ route.path }
-                                    key={ index }
-                                    exact={ route.exact }
-                                />
-                            )
-                            : (
-                                <Route
-                                    path={ route.path }
-                                    render={ (renderProps) =>
-                                        route.component
-                                            ? <route.component { ...renderProps } />
-                                            : null
-                                    }
-                                    key={ index }
-                                    exact={ route.exact }
-                                />
-                            )
-                ))
-            }
-        </Switch>
+        <AuthLayoutSkeleton fluid={ fluid }>
+            <Switch>
+                {
+                    authLayoutRoutes.map((route, index) => (
+                        route.redirectTo
+                            ? <Redirect to={ route.redirectTo } />
+                            : route.protected
+                                ? (
+                                    <ProtectedRoute
+                                        component={ route.component ? route.component : null }
+                                        path={ route.path }
+                                        key={ index }
+                                        exact={ route.exact }
+                                    />
+                                )
+                                : (
+                                    <Route
+                                        path={ route.path }
+                                        render={ (renderProps) =>
+                                            route.component
+                                                ? <route.component { ...renderProps } />
+                                                : null
+                                        }
+                                        key={ index }
+                                        exact={ route.exact }
+                                    />
+                                )
+                    ))
+                }
+            </Switch>
+        </AuthLayoutSkeleton>
     );
+};
+
+/**
+ * Default props for the auth layout.
+ */
+AuthLayout.defaultProps = {
+    fluid: true
 };

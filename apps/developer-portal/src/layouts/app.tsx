@@ -16,48 +16,51 @@
  * under the License.
  */
 
-import React from "react";
+import { AppLayout as AppLayoutSkeleton } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { ProtectedRoute } from "../components";
 import { appRoutes } from "../configs";
 
 /**
- * Main app layout.
+ * Implementation of the Main app layout skeleton.
  * Used to render all the layouts that's being used inside the app.
  *
- * @return {JSX.Element}
+ * @return {React.Element}
  */
-export const AppLayout: React.FunctionComponent<{}> = (): JSX.Element => {
+export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
 
     return (
-        <Switch>
-            {
-                appRoutes.map((route, index) => (
-                    route.redirectTo
-                        ? <Redirect to={ route.redirectTo } />
-                        : route.protected
-                            ? (
-                                <ProtectedRoute
-                                    component={ route.component ? route.component : null }
-                                    path={ route.path }
-                                    key={ index }
-                                    exact={ route.exact }
-                                />
-                            )
-                            : (
-                                <Route
-                                    path={ route.path }
-                                    render={ (renderProps) =>
-                                        route.component
-                                            ? <route.component { ...renderProps } />
-                                            : null
-                                    }
-                                    key={ index }
-                                    exact={ route.exact }
-                                />
-                            )
-                ))
-            }
-        </Switch>
+        <AppLayoutSkeleton>
+            <Switch>
+                {
+                    appRoutes.map((route, index) => (
+                        route.redirectTo
+                            ? <Redirect to={ route.redirectTo } />
+                            : route.protected
+                                ? (
+                                    <ProtectedRoute
+                                        component={ route.component ? route.component : null }
+                                        path={ route.path }
+                                        key={ index }
+                                        exact={ route.exact }
+                                    />
+                                )
+                                : (
+                                    <Route
+                                        path={ route.path }
+                                        render={ (renderProps) =>
+                                            route.component
+                                                ? <route.component { ...renderProps } />
+                                                : null
+                                        }
+                                        key={ index }
+                                        exact={ route.exact }
+                                    />
+                                )
+                    ))
+                }
+            </Switch>
+        </AppLayoutSkeleton>
     );
 };
