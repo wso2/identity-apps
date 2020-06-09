@@ -1,39 +1,54 @@
 {
     "features": {
         "overview": {
+            "disabledFeatures": [],
             "enabled": true,
-            "accountStatus": true,
-            "accountActivity": true,
-            "accountSecurity": true,
-            "consentsControl": true
+            "scopes": {
+                "create": [],
+                "read": [],
+                "update": [],
+                "delete": []
+            }
         },
         "personalInfo": {
+            "disabledFeatures": [],
             "enabled": true,
-            "profile": true,
-            "linkedAccounts": true,
-            "externalLogins": true,
-            "exportProfile": true
+            "scopes": {
+                "create": [],
+                "read": [],
+                "update": [],
+                "delete": []
+            }
         },
-        "applications": true,
+        "applications": {
+            "disabledFeatures": [],
+            "enabled": true,
+            "scopes": {
+                "create": [],
+                "read": [],
+                "update": [],
+                "delete": []
+            }
+        },
         "security": {
+            "disabledFeatures": [],
             "enabled": true,
-            "changePassword": true,
-            "accountRecovery": {
-                "enabled": true,
-                "securityQuestions": true,
-                "emailRecovery": true
-            },
-            "multiFactorAuthentication": {
-                "enabled": true,
-                "sms": true,
-                "fido": true,
-                "authenticatorApp": {
-                    "enabled": true
-                }
-            },
-            "activeSessions": true,
-            "manageConsents": true
+            "scopes": {
+                "create": [],
+                "read": [],
+                "update": [],
+                "delete": []
+            }
         },
-        "operations": true
+        "operations": {
+            "disabledFeatures": [],
+            "enabled": true,
+            "scopes": {
+                "create": [],
+                "read": [ "internal_humantask_view" ],
+                "update": [],
+                "delete": []
+            }
+        }
     }
 }
