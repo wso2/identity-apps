@@ -24,16 +24,11 @@
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
+<jsp:directive.include file="tenant-resolve.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
-    String tenantDomain;
-    if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
-        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
-    } else {
-        tenantDomain = request.getParameter("tenantDomain");
-    }
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
 
     if (StringUtils.isBlank(tenantDomain)) {

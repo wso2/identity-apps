@@ -31,6 +31,7 @@
 <%@ page import="java.util.List" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
+<jsp:directive.include file="tenant-resolve.jsp"/>
 
 <%
     String ERROR_MESSAGE = "errorMsg";
@@ -42,12 +43,6 @@
             IdentityManagementEndpointUtil.getStringValue(request.getSession().getAttribute("confirmationKey"));
     String newPassword = request.getParameter("reset-password");
     String callback = request.getParameter("callback");
-    String tenantDomain;
-    if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
-        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
-    } else {
-        tenantDomain = request.getParameter(IdentityManagementEndpointConstants.TENANT_DOMAIN);
-    }
 
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(

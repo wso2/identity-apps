@@ -37,15 +37,10 @@
 <%@ page import="java.util.Map" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
+<jsp:directive.include file="tenant-resolve.jsp"/>
 
 <%
     String username = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("username"));
-    String tenantDomain;
-    if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
-        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
-    } else {
-        tenantDomain = request.getParameter("tenantDomain");
-    }
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
     User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
 

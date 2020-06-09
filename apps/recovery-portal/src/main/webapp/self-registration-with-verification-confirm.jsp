@@ -29,18 +29,14 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <jsp:directive.include file="includes/localize.jsp"/>
+<jsp:directive.include file="tenant-resolve.jsp"/>
+
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
 
 
     String username = request.getParameter("username");
-    String tenantDomain;
-    if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
-        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
-    } else {
-        tenantDomain = request.getParameter("tenantDomain");
-    }
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
 

@@ -29,18 +29,13 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <jsp:directive.include file="includes/localize.jsp"/>
+<jsp:directive.include file="tenant-resolve.jsp"/>
 
 <%
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
     if (StringUtils.isBlank(callback)) {
         callback = request.getParameter("redirect_uri");
-    }
-    String tenantDomain;
-    if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
-        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
-    } else {
-        tenantDomain = request.getParameter(IdentityManagementEndpointConstants.TENANT_DOMAIN);
     }
     NotificationApi notificationApi = new NotificationApi();
     try {

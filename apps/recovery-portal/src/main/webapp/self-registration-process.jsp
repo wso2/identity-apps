@@ -33,6 +33,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <jsp:directive.include file="includes/localize.jsp"/>
+<jsp:directive.include file="tenant-resolve.jsp"/>
 
 <html>
 <head>
@@ -86,12 +87,6 @@
             String username = request.getParameter("username");
             String password = request.getParameter("password");
             String callback = request.getParameter("callback");
-            String tenantDomain;
-            if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
-                tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
-            } else {
-                tenantDomain = request.getParameter("tenantDomain");
-            }
             String consent = request.getParameter("consent");
             String policyURL = IdentityManagementServiceUtil.getInstance().getServiceContextURL().replace("/services",
                     "/authenticationendpoint/privacy_policy.do");
