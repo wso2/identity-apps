@@ -36,11 +36,15 @@ export interface HelpPanelLayoutLayoutPropsInterface {
     /**
      * Set of icons for the action panel.
      */
-    icons?: HelpPanelIconsInterface;
+    icons: HelpPanelIconsInterface;
     /**
      * Callback for pin button click.
      */
-    onHelpPanelPin: () => void;
+    onHelpPanelPinToggle: () => void;
+    /**
+     * Flag to distinguish if the panel is pinned.
+     */
+    isPinned?: boolean;
     /**
      * Direction of the sidebar.
      */
@@ -92,7 +96,8 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
         className,
         enabled,
         icons,
-        onHelpPanelPin,
+        onHelpPanelPinToggle,
+        isPinned,
         sidebarDirection,
         tabs,
         ...rest
@@ -116,6 +121,12 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
 
         contentRef.current.style.width = "calc(100% - " + sidebarRef?.current?.clientWidth + "px)";
     }, [ helpSidebarVisibility ]);
+
+    useEffect(() => {
+        if (isPinned) {
+            setHelpSidebarVisibility(true);
+        }
+    }, [ isPinned ]);
 
     /**
      * Handles sidebar mini item click event.
@@ -163,7 +174,7 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
                         actions={ [
                             {
                                 icon: icons.pin,
-                                onClick: onHelpPanelPin
+                                onClick: onHelpPanelPinToggle
                             },
                             {
                                 icon: icons.close,
