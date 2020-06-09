@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import * as ApplicationConstants from "../constants/application-constants";
+import { ApplicationConstants } from "../constants";
 import * as TokenConstants from "../constants/token-constants";
 import {
     AccountSecurityPage,
