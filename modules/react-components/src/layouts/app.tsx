@@ -14,7 +14,27 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-export * from "./components";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+
+/**
+ * Main app layout.
+ * Used to render all the layouts that's being used inside the app.
+ *
+ * @return {React.ReactElement}
+ */
+export const AppLayout: FunctionComponent<PropsWithChildren<{}>> = (
+    props: PropsWithChildren<{}>
+): ReactElement => {
+
+    const {
+        children
+    } = props;
+
+    return (
+        <>
+            { children }
+        </>
+    );
+};
