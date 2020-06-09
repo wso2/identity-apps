@@ -21,6 +21,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
 import {
     ContentLoader,
+    HelpPanelLayout,
     HelpPanelTabInterface,
     ListLayout,
     Markdown,
@@ -35,9 +36,9 @@ import { DropdownItemProps, DropdownProps, Icon, PaginationProps, SemanticICONS 
 import { getIdentityProviderList } from "../../api";
 import { AdvancedSearchWithBasicFilters, IdentityProviderList } from "../../components";
 import { handleGetIDPListCallError } from "../../components/identity-providers/utils";
+import { HelpSidebarIcons } from "../../configs";
 import { IdentityProviderConstants, IdentityProviderManagementConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
-import { HelpPanelLayout } from "../../layouts";
 import {
     ConfigReducerStateInterface,
     IdentityProviderListResponseInterface,
@@ -45,6 +46,7 @@ import {
 } from "../../models";
 import { AppState } from "../../store";
 import { setHelpPanelDocsContentURL } from "../../store/actions";
+import { HelpPanelUtils } from "../../utils";
 
 /**
  * Proptypes for the IDP edit page component.
@@ -274,6 +276,9 @@ export const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
             sidebarDirection="right"
             sidebarMiniEnabled={ true }
             tabs={ helpPanelTabs }
+            onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
+            isPinned={ HelpPanelUtils.isPanelPinned() }
+            icons={ HelpSidebarIcons.actionPanel }
         >
             <PageLayout
                 title={ t("devPortal:pages.idp.title") }

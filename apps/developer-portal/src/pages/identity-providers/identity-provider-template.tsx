@@ -22,6 +22,7 @@ import {
     ContentLoader,
     EmptyPlaceholder,
     Heading,
+    HelpPanelLayout,
     HelpPanelTabInterface,
     Hint,
     Markdown,
@@ -46,10 +47,15 @@ import {
     handleGetIDPTemplateListError
 } from "../../components/identity-providers/utils";
 import { IdentityProviderCreateWizard } from "../../components/identity-providers/wizards";
-import { EmptyPlaceholderIllustrations, IdPCapabilityIcons, IdPIcons, IdPTemplateDocsIcons } from "../../configs";
+import {
+    EmptyPlaceholderIllustrations,
+    HelpSidebarIcons,
+    IdPCapabilityIcons,
+    IdPIcons,
+    IdPTemplateDocsIcons
+} from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
 import { history } from "../../helpers";
-import { HelpPanelLayout } from "../../layouts";
 import {
     ConfigReducerStateInterface,
     DocPanelUICardInterface,
@@ -62,7 +68,7 @@ import {
 } from "../../models";
 import { AppState } from "../../store";
 import { setAvailableAuthenticatorsMeta } from "../../store/actions/identity-provider";
-import { IdentityProviderManagementUtils } from "../../utils";
+import { HelpPanelUtils, IdentityProviderManagementUtils } from "../../utils";
 
 /**
  * Proptypes for the IDP template selection page component.
@@ -423,6 +429,9 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProvi
             sidebarDirection="right"
             sidebarMiniEnabled={ true }
             tabs={ helpPanelTabs }
+            onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
+            isPinned={ HelpPanelUtils.isPanelPinned() }
+            icons={ HelpSidebarIcons.actionPanel }
         >
             <PageLayout
                 title={ t("devPortal:pages.idpTemplate.title") }

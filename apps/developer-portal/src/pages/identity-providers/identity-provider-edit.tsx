@@ -23,6 +23,7 @@ import { StringUtils } from "@wso2is/core/utils";
 import {
     AppAvatar,
     ContentLoader,
+    HelpPanelLayout,
     HelpPanelTabInterface,
     Markdown,
     PageLayout
@@ -34,9 +35,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { SemanticICONS } from "semantic-ui-react";
 import { getIdentityProviderDetail } from "../../api";
 import { EditIdentityProvider } from "../../components";
+import { HelpSidebarIcons } from "../../configs";
 import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../../constants";
 import { history } from "../../helpers";
-import { HelpPanelLayout } from "../../layouts";
 import {
     ConfigReducerStateInterface,
     IdentityProviderInterface,
@@ -45,6 +46,7 @@ import {
 } from "../../models";
 import { AppState } from "../../store";
 import { setHelpPanelDocsContentURL } from "../../store/actions";
+import { HelpPanelUtils } from "../../utils";
 
 /**
  * Proptypes for the IDP edit page component.
@@ -224,6 +226,9 @@ export const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterfa
             sidebarDirection="right"
             sidebarMiniEnabled={ true }
             tabs={ helpPanelTabs }
+            onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
+            isPinned={ HelpPanelUtils.isPanelPinned() }
+            icons={ HelpSidebarIcons.actionPanel }
         >
             <PageLayout
                 isLoading={ isIdentityProviderRequestLoading }
