@@ -51,7 +51,6 @@
             }
 
             var state = new URL(window.location.href).searchParams.get("state");
-    
             if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
                 // Prompt none response.
                 var code = new URL(window.location.href).searchParams.get("code");
@@ -60,6 +59,13 @@
                     var newSessionState = new URL(window.location.href).searchParams.get("session_state");
     
                     sessionStorage.setItem("session_state", newSessionState);
+
+                    // Stop loading rest of the page inside the iFrame
+                    if (navigator.appName === 'Microsoft Internet Explorer') {
+                        document.execCommand("Stop");
+                    } else {
+                        window.stop();
+                    }
                 } else {
                     var config = window["AppUtils"].getConfig();
     

@@ -41,11 +41,24 @@
         }
 
         function setTimer() {
+            document.getElementById("opIFrame").src = targetOrigin + "?client_id=" +
+                clientId + "&redirect_uri=" + redirectUri;
             check_session();
             setInterval("check_session()", 4 * 1000);
         }
 
         window.addEventListener("message", receiveMessage, false);
+
+        function getRandomPKCEChallenge() {
+            var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz-_";
+            var string_length = 43;
+            var randomString = "";
+            for (var i = 0; i < string_length; i++) {
+                var rnum = Math.floor(Math.random() * chars.length);
+                randomString += chars.substring(rnum, rnum + 1);
+            }
+            return randomString;
+        }
 
         function receiveMessage(e) {
 
@@ -63,12 +76,11 @@
                     "&scope=openid" +
                     "&redirect_uri=" + redirectUri +
                     "&state=Y2hlY2tTZXNzaW9u" +
-                    "&prompt=none";
+                    "&prompt=none" +
+                    "&code_challenge_method=S256&code_challenge=" + getRandomPKCEChallenge();
             }
         }
 
-        document.getElementById("opIFrame").src = targetOrigin + "?client_id=" +
-            clientId + "&redirect_uri=" + redirectUri;
     </script>
 </head>
 <body onload="setTimer()">
