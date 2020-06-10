@@ -36,11 +36,7 @@ export class ProfileUtils {
     private constructor() { }
 
     /**
-     * Returns the runtime config.
-     *
-     * @return {RuntimeConfigInterface}
-     */
-    /**
+     * Builds the Gravatar URL.
      *
      * @param {string} emailAddress - Gravatar qualified email address.
      * @param {number} size - Size of the image from 1 up to 2048.
@@ -49,10 +45,10 @@ export class ProfileUtils {
      * @see {@link https://en.gravatar.com/site/implement/images/}
      * @return {string} Gravatar Image URL.
      */
-    public static getGravatar(emailAddress: string,
-                              size?: number,
-                              defaultImage?: string,
-                              fallback: GravatarFallbackTypes = "404"): string {
+    public static buildGravatarURL(emailAddress: string,
+                                   size?: number,
+                                   defaultImage?: string,
+                                   fallback: GravatarFallbackTypes = "404"): string {
 
         const URL: string = UIConstants.GRAVATAR_URL + "/avatar/" + CryptoUtils.MD5Hash(emailAddress);
         const params: string[] = [];

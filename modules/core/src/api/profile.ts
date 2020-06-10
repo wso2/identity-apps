@@ -27,6 +27,7 @@ import { HTTPRequestHeaders } from "../helpers";
 import {
     AcceptHeaderValues,
     ContentTypeHeaderValues,
+    GravatarFallbackTypes,
     HttpMethods,
     LinkedAccountInterface,
     ProfileInfoInterface,
@@ -44,20 +45,26 @@ const httpClient: AxiosHttpClientInstance = AxiosHttpClient.getInstance();
 /**
  * Get Gravatar image using the email address.
  *
- * @param email - Email address.
+ * @param {string} email - Email address.
+ * @param {number} size - Size of the image from 1 up to 2048.
+ * @param {string} defaultImage - Custom default fallback image URL.
+ * @param {GravatarFallbackTypes} fallback - Built in fallback strategy.
  * @return {Promise<string>} Valid Gravatar URL as a Promise.
  * @throws {IdentityAppsApiException}
  */
-export const getGravatarImage = (email: string): Promise<string> => {
+export const getGravatarImage = (email: string,
+                                 size?: number,
+                                 defaultImage?: string,
+                                 fallback: GravatarFallbackTypes = "404"): Promise<string> => {
 
     const requestConfig = {
         method: HttpMethods.GET,
-        url: ProfileUtils.getGravatar(email)
+        url: ProfileUtils.buildGravatarURL(email, size, defaultImage, fallback)
     };
 
     return axios.request(requestConfig)
         .then(() => {
-            return Promise.resolve(requestConfig.url.split("?")[ 0 ]);
+            return Promise.resolve(requestConfig.url);
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
