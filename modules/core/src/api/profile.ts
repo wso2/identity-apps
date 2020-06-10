@@ -18,8 +18,11 @@
 
 import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authentication";
 import { AxiosHttpClient, AxiosHttpClientInstance } from "@wso2is/http";
+import axios from "axios";
 import _ from "lodash";
 import { CommonServiceResourcesEndpoints } from "../configs";
+import { ProfileConstants } from "../constants";
+import { IdentityAppsApiException } from "../exceptions";
 import { HTTPRequestHeaders } from "../helpers";
 import {
     AcceptHeaderValues,
@@ -29,8 +32,7 @@ import {
     ProfileInfoInterface,
     ProfileSchemaInterface
 } from "../models";
-import { ContextUtils } from "../utils";
-import axios from "axios";
+import { ContextUtils, ProfileUtils } from "../utils";
 
 /**
  * Get an http client instance.
@@ -74,7 +76,7 @@ export const getGravatarImage = (email: string): Promise<string> => {
 
     const requestConfig = {
         method: HttpMethods.GET,
-        url: SignInUtil.getGravatar(email)
+        url: ProfileUtils.getGravatar(email)
     };
 
     return axios.request(requestConfig)
@@ -82,12 +84,14 @@ export const getGravatarImage = (email: string): Promise<string> => {
             return Promise.resolve(requestConfig.url.split("?")[ 0 ]);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            throw new IdentityAppsApiException(
+                ProfileConstants.GRAVATAR_IMAGE_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         })
-        .finally(() => {
-            // Re-enable the handler.
-            httpClient.enableHandler();
-        });
 };
 
 /**
