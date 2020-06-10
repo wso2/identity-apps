@@ -213,3 +213,21 @@ export type GravatarFallbackTypes =
     | "retro"
     | "robohash"
     | "blank";
+
+/**
+ * Configuration for Gravatar.
+ */
+export interface GravatarConfig {
+    /**
+     * Image Sizee.
+     */
+    size?: number;
+    /**
+     * Custom fallback image URL.
+     */
+    defaultImage?: string;
+    /**
+     * Fallback types.
+     */
+    fallback?: GravatarFallbackTypes;
+}
