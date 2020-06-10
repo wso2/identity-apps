@@ -27,6 +27,7 @@ import { HTTPRequestHeaders } from "../helpers";
 import {
     AcceptHeaderValues,
     ContentTypeHeaderValues,
+    GravatarConfig,
     GravatarFallbackTypes,
     HttpMethods,
     LinkedAccountInterface,
@@ -81,10 +82,12 @@ export const getGravatarImage = (email: string,
  * Retrieve the user profile details of the currently authenticated user.
  *
  * @param {() => void} onSCIMDisabled - Callback to be fired if SCIM is disabled for the user store.
+ * @param {GravatarConfig} gravatarConfig - Gravatar configurations.
  * @returns {Promise<ProfileInfoInterface>} Profile information as a Promise.
  * @throws {IdentityAppsApiException}
  */
-export const getProfileInfo = (onSCIMDisabled: () => void): Promise<ProfileInfoInterface> => {
+export const getProfileInfo = (onSCIMDisabled: () => void,
+                               gravatarConfig?: GravatarConfig): Promise<ProfileInfoInterface> => {
 
     const orgKey = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
 
@@ -114,7 +117,10 @@ export const getProfileInfo = (onSCIMDisabled: () => void): Promise<ProfileInfoI
                     gravatar = await getGravatarImage(
                         typeof response.data.emails[0] === "string"
                             ? response.data.emails[0]
-                            : response.data.emails[0].value
+                            : response.data.emails[0].value,
+                        gravatarConfig?.size,
+                        gravatarConfig?.defaultImage,
+                        gravatarConfig?.fallback
                     );
                 } catch (error) {
                     gravatar = "";

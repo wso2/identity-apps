@@ -271,7 +271,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
         setFilteredRoutes(RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(routes, featureConfig));
 
         if (_.isEmpty(profileDetails)) {
-            dispatch(getProfileInfo(() => null));
+            dispatch(getProfileInfo(() => null, config.ui.gravatarConfig));
         }
     }, []);
 
@@ -414,8 +414,8 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     copyright={ state.copyrightText && state.copyrightText !== "" ?
                         state.copyrightText
                         :
-                        config.ui.copyrightText
-                            ? config.ui.copyrightText
+                        config.ui.appCopyright
+                            ? config.ui.appCopyright
                             : null
                     }
                     fixed="bottom"
