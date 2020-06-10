@@ -23,7 +23,7 @@ import { Container, Divider } from "semantic-ui-react";
 /**
  * Error layout Prop types.
  */
-export interface ErrorPageLayoutPropsInterface {
+export interface ErrorLayoutPropsInterface {
     /**
      * Extra CSS classes.
      */
@@ -35,14 +35,14 @@ export interface ErrorPageLayoutPropsInterface {
 }
 
 /**
- * Error page layout.
+ * Error layout.
  *
- * @param {React.PropsWithChildren<ErrorPageLayoutPropsInterface>} props - Props injected to the component.
+ * @param {React.PropsWithChildren<ErrorLayoutPropsInterface>} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const ErrorPageLayout: FunctionComponent<PropsWithChildren<ErrorPageLayoutPropsInterface>> = (
-    props: PropsWithChildren<ErrorPageLayoutPropsInterface>
+export const ErrorLayout: FunctionComponent<PropsWithChildren<ErrorLayoutPropsInterface>> = (
+    props: PropsWithChildren<ErrorLayoutPropsInterface>
 ): ReactElement => {
 
     const {

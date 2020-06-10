@@ -18,6 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { ListLayout, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -25,7 +26,6 @@ import { DropdownProps, PaginationProps } from "semantic-ui-react";
 import { listClientCertificates } from "../../api";
 import { AdvancedSearchWithBasicFilters, CertificatesList } from "../../components";
 import { UIConstants } from "../../constants";
-import { ListLayout, PageLayout } from "../../layouts";
 import { AlertLevels, Certificate } from "../../models";
 import { filterList, sortList } from "../../utils";
 

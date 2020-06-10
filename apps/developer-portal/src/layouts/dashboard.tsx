@@ -18,11 +18,21 @@
 
 import { getProfileInfo } from "@wso2is/core/api";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
-import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
+import { AlertInterface, ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
+import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils } from "@wso2is/core/utils";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
-import { Footer, Header, Logo, ProductBrand, SidePanel, ThemeContext } from "@wso2is/react-components";
-import classNames from "classnames";
+import {
+    Alert,
+    DashboardLayout as DashboardLayoutSkeleton,
+    Footer,
+    Header,
+    Logo,
+    ProductBrand,
+    SidePanel,
+    ThemeContext,
+    TopLoadingBar
+} from "@wso2is/react-components";
 import _ from "lodash";
 import React, {
     FunctionComponent,
@@ -37,7 +47,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Button, Image, Responsive } from "semantic-ui-react";
-import { BaseLayout } from "./base";
 import { ProtectedRoute } from "../components";
 import { SidePanelIcons, SidePanelMiscIcons, routes } from "../configs";
 import { UIConstants } from "../constants";
@@ -50,13 +59,17 @@ import { AppState } from "../store";
  * Dashboard layout Prop types.
  */
 interface DashboardLayoutPropsInterface {
+    /**
+     * Is layout fluid.
+     */
     fluid?: boolean;
 }
 
 /**
- * Dashboard layout.
+ * Implementation of the Dashboard layout skeleton.
  *
  * @param {DashboardLayoutPropsInterface} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
 export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> = (
@@ -74,21 +87,16 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
         (state: AppState) => state.global.supportedI18nLanguages);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
+    const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
+    const alertSystem: any = useSelector((state: AppState) => state.global.alertSystem);
+    const ajaxLoaderVisibility: boolean = useSelector((state: AppState) => state.global.isGlobalLoaderVisible);
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(routes);
-    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(routes[0]);
+    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(routes[ 0 ]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
     const [ footerHeight, setFooterHeight ] = useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
-
-    const classes = classNames(
-        "layout",
-        "dashboard-layout",
-        {
-            ["fluid-dashboard-layout"]: fluid
-        }
-    );
 
     /**
      * Checks if the URL path is similar to the path of the route that's passed in.
@@ -100,7 +108,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
         const pathname = window.location.pathname.split("/").pop();
         if (route.path) {
             const urlTokens = route.path.split("/");
-            return pathname === urlTokens[1];
+            return pathname === urlTokens[ 1 ];
         } else if (!route.path && route.children && route.children.length > 0) {
             return route.children.some((childRoute) => {
                 return pathname === childRoute.path;
@@ -296,27 +304,44 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
             })
     };
 
+    const handleAlertSystemInitialize = (system) => {
+        dispatch(initializeAlertSystem(system));
+    };
+
     return (
-        <BaseLayout>
-            <Responsive
-                className={ classes }
-                fireOnMount
-                onUpdate={ handleLayoutOnUpdate }
-            >
+        <DashboardLayoutSkeleton
+            alert={ (
+                <Alert
+                    dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
+                    alertsPosition="br"
+                    alertSystem={ alertSystem }
+                    alert={ alert }
+                    onAlertSystemInitialize={ handleAlertSystemInitialize }
+                    withIcon={ true }
+                />
+            ) }
+            topLoadingBar={ (
+                <TopLoadingBar
+                    height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT }
+                    visibility={ ajaxLoaderVisibility }
+                />
+            ) }
+            onLayoutOnUpdate={ handleLayoutOnUpdate }
+            header={ (
                 <Header
                     brand={ (
                         <ProductBrand
                             style={ { marginTop: 0 } }
                             logo={
                                 (state.logo && state.logo !== "")
-                                    ? <Image src={ state.logo } style={ { maxHeight: 25 } } />
+                                    ? <Image src={ state.logo } style={ { maxHeight: 25 } }/>
                                     : (
                                         <Logo
                                             className="portal-logo"
                                             image={
-                                                resolveAppLogoFilePath(window["AppUtils"].getConfig().ui.appLogoPath,
-                                                    `${window["AppUtils"].getConfig().clientOrigin}/` +
-                                                    `${window["AppUtils"].getConfig().appBase}/libs/themes/` +
+                                                resolveAppLogoFilePath(window[ "AppUtils" ].getConfig().ui.appLogoPath,
+                                                    `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
+                                                    `${ window[ "AppUtils" ].getConfig().appBase }/libs/themes/` +
                                                     state.theme)
                                             }
                                         />
@@ -344,7 +369,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                             primary
                             onClick={
                                 (): void => {
-                                    window.open(window["AppUtils"].getConfig().accountAppURL);
+                                    window.open(window[ "AppUtils" ].getConfig().accountAppURL);
                                 }
                             }
                         >
@@ -361,8 +386,10 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     showUserDropdown={ true }
                     onSidePanelToggleClick={ handleSidePanelToggleClick }
                 >
-                    <ComponentPlaceholder section="feedback-button" type="component" />
+                    <ComponentPlaceholder section="feedback-button" type="component"/>
                 </Header>
+            ) }
+            sidePanel={ (
                 <SidePanel
                     bordered="right"
                     caretIcon={ SidePanelMiscIcons.caretRight }
@@ -376,11 +403,9 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     icons={ SidePanelIcons }
                     routes={ filteredRoutes }
                     selected={ selectedRoute }
-                >
-                    <Switch>
-                        { resolveRoutes() }
-                    </Switch>
-                </SidePanel>
+                />
+            ) }
+            footer={ (
                 <Footer
                     showLanguageSwitcher
                     currentLanguage={ I18n.instance?.language }
@@ -402,8 +427,12 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                         }
                     ] }
                 />
-            </Responsive>
-        </BaseLayout>
+            ) }
+        >
+            <Switch>
+                { resolveRoutes() }
+            </Switch>
+        </DashboardLayoutSkeleton>
     );
 };
 

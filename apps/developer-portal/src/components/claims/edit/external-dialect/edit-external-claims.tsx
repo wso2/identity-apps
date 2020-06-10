@@ -19,14 +19,13 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { LinkButton, ListLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, DropdownProps, Grid, Icon, Modal, PaginationProps } from "semantic-ui-react";
 import { AddExternalClaims, ClaimsList, ListType } from "../../..";
 import { UIConstants } from "../../../../constants";
-import { ListLayout } from "../../../../layouts";
 import { AlertLevels, ExternalClaim } from "../../../../models";
 import { filterList, sortList } from "../../../../utils";
 import { AdvancedSearchWithBasicFilters } from "../../../shared";

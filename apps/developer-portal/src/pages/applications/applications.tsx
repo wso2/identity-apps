@@ -20,7 +20,7 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import { PrimaryButton } from "@wso2is/react-components";
+import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, {
     FunctionComponent,
@@ -37,7 +37,6 @@ import { getApplicationList } from "../../api";
 import { AdvancedSearchWithBasicFilters, ApplicationList } from "../../components";
 import { ApplicationConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
-import { ListLayout, PageLayout } from "../../layouts";
 import { ApplicationListInterface, FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
 

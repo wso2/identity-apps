@@ -20,9 +20,15 @@ import { getRawDocumentation } from "@wso2is/core/api";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
-    EmptyPlaceholder, Heading,
-    HelpPanelTabInterface, Hint,
-    Markdown, PageHeader, SelectionCard,
+    EmptyPlaceholder,
+    Heading,
+    HelpPanelLayout,
+    HelpPanelTabInterface,
+    Hint,
+    Markdown,
+    PageHeader,
+    PageLayout,
+    SelectionCard,
     TemplateGrid
 } from "@wso2is/react-components";
 import _ from "lodash";
@@ -41,10 +47,15 @@ import {
     handleGetIDPTemplateListError
 } from "../../components/identity-providers/utils";
 import { IdentityProviderCreateWizard } from "../../components/identity-providers/wizards";
-import { EmptyPlaceholderIllustrations, IdPCapabilityIcons, IdPIcons, IdPTemplateDocsIcons } from "../../configs";
+import {
+    EmptyPlaceholderIllustrations,
+    HelpSidebarIcons,
+    IdPCapabilityIcons,
+    IdPIcons,
+    IdPTemplateDocsIcons
+} from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
 import { history } from "../../helpers";
-import { HelpPanelLayout, PageLayout } from "../../layouts";
 import {
     ConfigReducerStateInterface,
     DocPanelUICardInterface,
@@ -57,7 +68,7 @@ import {
 } from "../../models";
 import { AppState } from "../../store";
 import { setAvailableAuthenticatorsMeta } from "../../store/actions/identity-provider";
-import { IdentityProviderManagementUtils } from "../../utils";
+import { HelpPanelUtils, IdentityProviderManagementUtils } from "../../utils";
 
 /**
  * Proptypes for the IDP template selection page component.
@@ -418,6 +429,9 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProvi
             sidebarDirection="right"
             sidebarMiniEnabled={ true }
             tabs={ helpPanelTabs }
+            onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
+            isPinned={ HelpPanelUtils.isPanelPinned() }
+            icons={ HelpSidebarIcons.actionPanel }
         >
             <PageLayout
                 title={ t("devPortal:pages.idpTemplate.title") }

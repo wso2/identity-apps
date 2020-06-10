@@ -22,7 +22,7 @@ import { Container } from "semantic-ui-react";
 /**
  * Default layout Prop types.
  */
-export interface DefaultPageLayoutPropsInterface {
+export interface DefaultLayoutPropsInterface {
     /**
      * Extra CSS classes.
      */
@@ -34,14 +34,14 @@ export interface DefaultPageLayoutPropsInterface {
 }
 
 /**
- * Default page layout.
+ * Default layout.
  *
- * @param {React.PropsWithChildren<DefaultPageLayoutPropsInterface>} props - Props injected to the component.
+ * @param {React.PropsWithChildren<DefaultLayoutPropsInterface>} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const DefaultPageLayout: FunctionComponent<PropsWithChildren<DefaultPageLayoutPropsInterface>> = (
-    props: PropsWithChildren<DefaultPageLayoutPropsInterface>
+export const DefaultLayout: FunctionComponent<PropsWithChildren<DefaultLayoutPropsInterface>> = (
+    props: PropsWithChildren<DefaultLayoutPropsInterface>
 ): ReactElement => {
 
     const {
@@ -60,6 +60,6 @@ export const DefaultPageLayout: FunctionComponent<PropsWithChildren<DefaultPageL
 /**
  * Default props for the default layout.
  */
-DefaultPageLayout.defaultProps = {
+DefaultLayout.defaultProps = {
     fluid: true
 };

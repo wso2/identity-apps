@@ -28,7 +28,7 @@ import {
     USERSTORE_TEMPLATES_PATH,
     USER_STORES_PATH
 } from "../constants";
-import { AppLayout, AuthLayout, DashboardLayout, DefaultPageLayout, ErrorPageLayout } from "../layouts";
+import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../layouts";
 import {
     AddTemplateLocale,
     ApplicationEditPage,
@@ -487,7 +487,7 @@ const APP_ROUTES: RouteInterface[] = [
         showOnSidePanel: false
     },
     {
-        component: DefaultPageLayout,
+        component: DefaultLayout,
         icon: null,
         id: "appRoutePrivacy",
         name: "Privacy",
@@ -496,7 +496,7 @@ const APP_ROUTES: RouteInterface[] = [
         showOnSidePanel: false
     },
     {
-        component: ErrorPageLayout,
+        component: ErrorLayout,
         exact: true,
         icon: null,
         id: "unauthorized",
@@ -506,7 +506,7 @@ const APP_ROUTES: RouteInterface[] = [
         showOnSidePanel: false
     },
     {
-        component: ErrorPageLayout,
+        component: ErrorLayout,
         exact: true,
         icon: null,
         id: "appRoute404",

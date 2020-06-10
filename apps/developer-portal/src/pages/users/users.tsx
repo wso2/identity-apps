@@ -20,7 +20,7 @@ import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentic
 import { CommonHelpers } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
-import { Button, PrimaryButton } from "@wso2is/react-components";
+import { Button, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -28,7 +28,6 @@ import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-
 import { deleteUser, getUserStoreList, getUsersList } from "../../api";
 import { AddUserWizard, AdvancedSearchWithBasicFilters, UsersList, UsersListOptionsComponent } from "../../components";
 import { UIConstants, UserConstants } from "../../constants";
-import { ListLayout, PageLayout } from "../../layouts";
 import { AlertInterface, AlertLevels, UserListInterface } from "../../models";
 import { store } from "../../store";
 

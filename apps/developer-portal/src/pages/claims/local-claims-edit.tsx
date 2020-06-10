@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ResourceTab } from "@wso2is/react-components";
+import { PageLayout, ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -33,7 +33,6 @@ import {
 } from "../../components";
 import { LOCAL_CLAIMS_PATH } from "../../constants";
 import { history } from "../../helpers";
-import { PageLayout } from "../../layouts"
 import { AlertLevels, Claim } from "../../models";
 
 /**

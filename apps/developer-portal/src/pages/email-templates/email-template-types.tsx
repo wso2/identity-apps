@@ -18,7 +18,7 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { PrimaryButton } from "@wso2is/react-components";
+import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,7 +27,6 @@ import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { deleteEmailTemplateType, getEmailTemplateTypes } from "../../api";
 import { EmailTemplateTypeList, EmailTemplateTypeWizard } from "../../components";
 import { UIConstants } from "../../constants";
-import { ListLayout, PageLayout } from "../../layouts";
 import { AlertInterface, EmailTemplateType } from "../../models";
 
 /**

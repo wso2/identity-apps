@@ -25,10 +25,12 @@ import {
     AppAvatar,
     ContentLoader,
     Heading,
+    HelpPanelLayout,
     HelpPanelTabInterface,
     Hint,
     Markdown,
     PageHeader,
+    PageLayout,
     SelectionCard
 } from "@wso2is/react-components";
 import _ from "lodash";
@@ -39,10 +41,9 @@ import { Divider, Grid, Label, SemanticICONS } from "semantic-ui-react";
 import { getApplicationDetails, updateApplicationConfigurations } from "../../api";
 import { EditApplication } from "../../components";
 import { HelpPanelOverview } from "../../components/applications";
-import { TechnologyLogos } from "../../configs";
+import { HelpSidebarIcons, TechnologyLogos } from "../../configs";
 import { ApplicationConstants, ApplicationManagementConstants } from "../../constants";
 import { history } from "../../helpers";
-import { HelpPanelLayout, PageLayout } from "../../layouts";
 import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
@@ -54,7 +55,7 @@ import {
 } from "../../models";
 import { AppState } from "../../store";
 import { setHelpPanelDocsContentURL } from "../../store/actions";
-import { ApplicationManagementUtils } from "../../utils";
+import { ApplicationManagementUtils, HelpPanelUtils } from "../../utils";
 
 /**
  * Proptypes for the applications edit page component.
@@ -470,6 +471,9 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
             sidebarDirection="right"
             sidebarMiniEnabled={ true }
             tabs={ helpPanelTabs }
+            onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
+            isPinned={ HelpPanelUtils.isPanelPinned() }
+            icons={ HelpSidebarIcons.actionPanel }
         >
             <PageLayout
                 isLoading={ isApplicationRequestLoading }

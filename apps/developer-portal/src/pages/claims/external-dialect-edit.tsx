@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
+import { ConfirmationModal, DangerZone, DangerZoneGroup, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react"
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -32,7 +32,6 @@ import {
 } from "../../components";
 import { CLAIM_DIALECTS_PATH } from "../../constants";
 import { history } from "../../helpers";
-import { PageLayout } from "../../layouts"
 import { AlertLevels, ClaimDialect, ExternalClaim } from "../../models";
 
 /**

@@ -18,6 +18,7 @@
 
 import { AlertInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -25,7 +26,6 @@ import { Divider, Grid } from "semantic-ui-react";
 import {
     AccountRecovery, LoginPolicies, PasswordPolicies, RealmConfiguration, UserSelfRegistration
 } from "../../components";
-import { PageLayout } from "../../layouts";
 
 /**
  * Props for the Server Configurations page.
