@@ -78,11 +78,6 @@
                     <input id="tenant-domain" type="text" name="tenantDomain"
                                 class="form-control ">
                     <%
-                        } else {
-                    %>
-                    <input id="tenant-domain" type="hidden" name="tenantDomain" value='<%=Encode.forHtmlAttribute
-                                (IdentityTenantUtil.getTenantDomainFromContext())%>' class="form-control">
-                    <%
                         }
                     %>
                         <%
@@ -146,8 +141,9 @@
                 var errorMessage = $("#error-msg");
                 errorMessage.hide();
                 var tenantDomain = $("#tenant-domain").val();
+                var isTenantQualifiedUrlsEnabled = '<%= IdentityTenantUtil.isTenantQualifiedUrlsEnabled() %>';
 
-                if (tenantDomain == '') {
+                if (isTenantQualifiedUrlsEnabled == 'false' && tenantDomain == '') {
                     errorMessage.text("Please enter your tenant domain.");
                     errorMessage.show();
                     $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
