@@ -157,6 +157,7 @@ export class Config {
      */
     public static getUIConfig(): UIConfigInterface {
         return {
+            authenticatorApp: { apps: [ { link: "", name: "" } ] },
             copyrightText: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${ new Date().getFullYear() }`,
             titleText: window["AppUtils"].getConfig().appTitle
         };

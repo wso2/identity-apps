@@ -23,68 +23,6 @@ import {
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 
-/**
-  * Model of the Overview page
-  */
-interface Overview {
-    enabled: boolean;
-    accountStatus: boolean;
-    accountActivity: boolean;
-    accountSecurity: boolean;
-    consentsControl: boolean;
-}
-
-/**
- * Model of the Personal Info page
- */
-interface PersonalInfo {
-    enabled: true;
-    profile: true;
-    linkedAccounts: true;
-    exportProfile: true;
-}
-
-/**
- * Model of the Security Page configuration
- */
-interface Security {
-    enabled: boolean;
-    changePassword: boolean;
-    accountRecovery: AccountRecovery;
-    multiFactorAuthentication: MultiFactorAuthentication;
-    activeSessions: boolean;
-    manageConsents: boolean;
-}
-
-/**
- * Model of the Account Recovery configuration
- */
-interface AccountRecovery {
-    enabled: boolean;
-    securityQuestions: boolean;
-    emailRecovery: boolean;
-}
-
-/**
- * Model of the MFA configuration
- */
-interface MultiFactorAuthentication {
-    enabled: boolean;
-    sms: boolean;
-    fido: boolean;
-}
-
-/**
- * Model of the app configuration
- */
-export interface AppConfigInterface {
-    overview: Overview;
-    personalInfo: PersonalInfo;
-    applications: boolean;
-    security: Security;
-    operations: boolean;
-}
-
 export type ConfigInterface = CommonConfigInterface<
     CommonDeploymentConfigInterface,
     ServiceResourceEndpointsInterface,
@@ -150,6 +88,21 @@ export interface ServiceResourceEndpointsInterface {
 }
 
 /**
+ * Authenticator app interface.
+ */
+export interface AuthenticatorAppInterface {
+    link: string;
+    name: string;
+}
+
+/**
+ * Authenticator app list interface.
+ */
+export interface AuthenticatorAppListInterface {
+    apps: AuthenticatorAppInterface[];
+}
+
+/**
  * Dev portal UI config interface.
  */
 export interface UIConfigInterface {
@@ -162,4 +115,8 @@ export interface UIConfigInterface {
      * ex: `WSO2 Identity Server`
      */
     titleText?: string;
+    /**
+     * TOTP authenticator apps.
+     */
+    authenticatorApp?: AuthenticatorAppListInterface;
 }

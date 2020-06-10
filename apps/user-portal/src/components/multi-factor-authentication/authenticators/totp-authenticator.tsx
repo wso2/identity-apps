@@ -20,13 +20,13 @@ import { Field, Forms, useTrigger } from "@wso2is/forms";
 import QRCode from "qrcode.react";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Button, Divider, Grid, Icon, List, Message, Modal, Popup, Segment } from "semantic-ui-react";
 import { initTOTPCode, refreshTOTPCode, validateTOTPCode } from "../../../api";
 import { EnterCode, MFAIcons, QRCodeScan } from "../../../configs";
 import { AlertLevels } from "../../../models";
-import { ThemeIcon } from "../../shared";
-import { useSelector } from "react-redux";
 import { AppState } from "../../../store";
+import { ThemeIcon } from "../../shared";
 
 export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Element => {
 
@@ -41,7 +41,7 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
 
     const { t } = useTranslation();
 
-    const totpConfig = useSelector((state: AppState) => state?.config?.features.security.enabled);
+    const totpConfig = useSelector((state: AppState) => state?.config?.ui?.authenticatorApp);
 
     const translateKey = "views:components.mfa.authenticatorApp.";
 

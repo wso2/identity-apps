@@ -24,8 +24,8 @@ import {
     setServiceResourceEndpoints,
     setUIConfigs
 } from "@wso2is/core/store";
-import * as _ from "lodash";
-import React, { useEffect } from "react";
+import _ from "lodash";
+import React, { ReactElement, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
@@ -47,9 +47,9 @@ import { filteredRoutes } from "./utils";
 /**
  * Main App component.
  *
- * @return {JSX.Element}
+ * @return {React.Element}
  */
-export const App = (): JSX.Element => {
+export const App = (): ReactElement => {
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const dispatch = useDispatch();

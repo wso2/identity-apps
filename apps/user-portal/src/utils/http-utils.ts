@@ -18,7 +18,7 @@
  */
 
 import { OPConfigurationUtil } from "@wso2is/authentication";
-import { hasLoginPermission } from "./authenticate-util";
+import { AuthenticateUtils } from "@wso2is/core/utils";
 import { ApplicationConstants } from "../constants";
 import { history } from "../helpers";
 import { store } from "../store";
@@ -88,7 +88,7 @@ export const onHttpRequestError = (error: any): null => {
     }
 
     // If the user doesn't have login permission, redirect to login error page.
-    if (!hasLoginPermission()) {
+    if (!AuthenticateUtils.hasLoginPermission()) {
         history.push(ApplicationConstants.LOGIN_ERROR_PAGE_PATH);
         return;
     }

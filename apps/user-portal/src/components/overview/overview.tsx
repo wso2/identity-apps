@@ -44,9 +44,9 @@ export const Overview: FunctionComponent<{}> = (): JSX.Element => {
             <Grid.Row>
                 <Grid.Column computer={ 9 } mobile={ 16 }>
                     {
-                        hasRequiredScopes(accessConfig.overview, accessConfig.overview.scopes.read) &&
+                        hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read) &&
                         isFeatureEnabled(
-                            accessConfig.overview,
+                            accessConfig?.overview,
                             ApplicationConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_STATUS")
                         )
                         ? (
@@ -56,9 +56,9 @@ export const Overview: FunctionComponent<{}> = (): JSX.Element => {
                 </Grid.Column>
                 <Grid.Column computer={ 7 } mobile={ 16 }>
                     {
-                        hasRequiredScopes(accessConfig.overview, accessConfig.overview.scopes.read) &&
+                        hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read) &&
                         isFeatureEnabled(
-                            accessConfig.overview,
+                            accessConfig?.overview,
                             ApplicationConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_ACTIVITY")
                         )
                         ? (
@@ -68,9 +68,9 @@ export const Overview: FunctionComponent<{}> = (): JSX.Element => {
                 </Grid.Column>
                 <Grid.Column computer={ 8 } mobile={ 16 }>
                     {
-                        hasRequiredScopes(accessConfig.overview, accessConfig.overview.scopes.read) &&
+                        hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read) &&
                         isFeatureEnabled(
-                            accessConfig.overview,
+                            accessConfig?.overview,
                             ApplicationConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_SECURITY")
                         )
                         ? (
@@ -80,9 +80,9 @@ export const Overview: FunctionComponent<{}> = (): JSX.Element => {
                 </Grid.Column>
                 <Grid.Column computer={ 8 } mobile={ 16 }>
                     {
-                        hasRequiredScopes(accessConfig.overview, accessConfig.overview.scopes.read) &&
+                        hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read) &&
                         isFeatureEnabled(
-                            accessConfig.overview,
+                            accessConfig?.overview,
                             ApplicationConstants.FEATURE_DICTIONARY.get("OVERVIEW_CONSENTS")
                         )
                         ? (
