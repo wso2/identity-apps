@@ -31,11 +31,19 @@ export class ProfileConstants {
     private constructor() { }
 
     // API errors
-    public static readonly SCHEMA_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received an invalid status " +
+    public static readonly SCHEMA_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received an invalid status " +
         "code while retrieving the profile schemas.";
-    public static readonly SCHEMA_FETCH_ERROR: string = "An error occurred while fetching the profile schemas.";
-    public static readonly PROFILE_INFO_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received an invalid status " +
-        "code while retrieving profile info.";
-    public static readonly PROFILE_INFO_FETCH_ERROR: string = "An error occurred while fetching the profile info.";
-    public static readonly GRAVATAR_IMAGE_FETCH_ERROR: string = "An error occurred while fetching the gravatar.";
+    public static readonly SCHEMA_FETCH_REQUEST_ERROR: string = "An error occurred while fetching the profile " +
+        "schemas.";
+    public static readonly PROFILE_INFO_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received an invalid " +
+        "status code while retrieving profile info.";
+    public static readonly PROFILE_INFO_FETCH_REQUEST_ERROR: string = "An error occurred while fetching the profile " +
+        "info.";
+    public static readonly PROFILE_INFO_UPDATE_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received an invalid " +
+        "status code while updating profile info.";
+    public static readonly PROFILE_INFO_UPDATE_REQUEST_ERROR: string = "An error occurred while updating the " +
+        "profile info.";
+    public static readonly ACCOUNT_SWITCH_REQUEST_ERROR: string = "An error occurred while switching the account.";
+    public static readonly GRAVATAR_IMAGE_FETCH_REQUEST_ERROR: string = "An error occurred while fetching the " +
+        "gravatar.";
 }

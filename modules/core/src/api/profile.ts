@@ -18,7 +18,7 @@
 
 import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authentication";
 import { AxiosHttpClient, AxiosHttpClientInstance } from "@wso2is/http";
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import _ from "lodash";
 import { CommonServiceResourcesEndpoints } from "../configs";
 import { ProfileConstants } from "../constants";
@@ -42,35 +42,11 @@ import { ContextUtils, ProfileUtils } from "../utils";
 const httpClient: AxiosHttpClientInstance = AxiosHttpClient.getInstance();
 
 /**
- * Retrieve the user information of the currently authenticated user.
- *
- * @return {Promise<ProfileInfoInterface>} User information as a Promise.
- */
-export const getUserInfo = (): Promise<ProfileInfoInterface> => {
-
-    const requestConfig = {
-        headers: HTTPRequestHeaders(ContextUtils.getRuntimeConfig().clientHost, null, ContentTypeHeaderValues.APP_JSON),
-        method: HttpMethods.GET,
-        url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).me
-    };
-
-    return httpClient.request(requestConfig)
-        .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject("Failed get user info.");
-            }
-            return Promise.resolve(response.data);
-        })
-        .catch((error) => {
-            return Promise.reject(error);
-        });
-};
-
-/**
- *  Get Gravatar image using the email address.
+ * Get Gravatar image using the email address.
  *
  * @param email - Email address.
  * @return {Promise<string>} Valid Gravatar URL as a Promise.
+ * @throws {IdentityAppsApiException}
  */
 export const getGravatarImage = (email: string): Promise<string> => {
 
@@ -83,9 +59,9 @@ export const getGravatarImage = (email: string): Promise<string> => {
         .then(() => {
             return Promise.resolve(requestConfig.url.split("?")[ 0 ]);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                ProfileConstants.GRAVATAR_IMAGE_FETCH_ERROR,
+                ProfileConstants.GRAVATAR_IMAGE_FETCH_REQUEST_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -99,6 +75,7 @@ export const getGravatarImage = (email: string): Promise<string> => {
  *
  * @param {() => void} onSCIMDisabled - Callback to be fired if SCIM is disabled for the user store.
  * @returns {Promise<ProfileInfoInterface>} Profile information as a Promise.
+ * @throws {IdentityAppsApiException}
  */
 export const getProfileInfo = (onSCIMDisabled: () => void): Promise<ProfileInfoInterface> => {
 
@@ -112,11 +89,17 @@ export const getProfileInfo = (onSCIMDisabled: () => void): Promise<ProfileInfoI
     };
 
     return httpClient.request(requestConfig)
-        .then(async (response) => {
+        .then(async (response: AxiosResponse) => {
             let gravatar = "";
 
             if (response.status !== 200) {
-                return Promise.reject("Failed get user profile info.");
+                throw new IdentityAppsApiException(
+                    ProfileConstants.PROFILE_INFO_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
             }
 
             if (_.isEmpty(response.data.userImage) && !response.data.profileUrl) {
@@ -135,7 +118,7 @@ export const getProfileInfo = (onSCIMDisabled: () => void): Promise<ProfileInfoI
 
             const profileResponse: ProfileInfoInterface = {
                 emails: response.data.emails || "",
-                name: response.data.name || { givenName: "", familyName: "" },
+                name: response.data.name || { familyName: "", givenName: "" },
                 organisation: response.data[orgKey] ? response.data[orgKey].organization : "",
                 phoneNumbers: response.data.phoneNumbers || [],
                 profileUrl: response.data.profileUrl || "",
@@ -148,7 +131,7 @@ export const getProfileInfo = (onSCIMDisabled: () => void): Promise<ProfileInfoI
 
             return Promise.resolve(profileResponse);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             // Check if the API responds with a `500` error, if it does,
             // navigate the user to the login error page.
             if (error.response
@@ -161,7 +144,13 @@ export const getProfileInfo = (onSCIMDisabled: () => void): Promise<ProfileInfoI
                 onSCIMDisabled();
             }
 
-            return Promise.reject(error);
+            throw new IdentityAppsApiException(
+                ProfileConstants.PROFILE_INFO_FETCH_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 
@@ -170,6 +159,7 @@ export const getProfileInfo = (onSCIMDisabled: () => void): Promise<ProfileInfoI
  *
  * @param {object} info - Information that needs to ber updated.
  * @return {Promise<ProfileInfoInterface>} Updated profile info as a Promise.
+ * @throws {IdentityAppsApiException}
  */
 export const updateProfileInfo = (info: object): Promise<ProfileInfoInterface> => {
 
@@ -181,14 +171,27 @@ export const updateProfileInfo = (info: object): Promise<ProfileInfoInterface> =
     };
 
     return httpClient.request(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject("Failed update user profile info.");
+                throw new IdentityAppsApiException(
+                    ProfileConstants.PROFILE_INFO_UPDATE_REQUEST_INVALID_RESPONSE_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
             }
+
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
-            return Promise.reject(error);
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ProfileConstants.PROFILE_INFO_UPDATE_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 
@@ -196,6 +199,7 @@ export const updateProfileInfo = (info: object): Promise<ProfileInfoInterface> =
  * Retrieve the profile schemas of the user claims of the currently authenticated user.
  *
  * @return {Promise<ProfileSchemaInterface[]>} Array of profile schemas as a Promise.
+ * @throws {IdentityAppsApiException}
  */
 export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
 
@@ -208,12 +212,25 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
     return httpClient.request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed get user schemas"));
+                throw new IdentityAppsApiException(
+                    ProfileConstants.SCHEMA_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
             }
+
             return Promise.resolve(response.data[0].attributes as ProfileSchemaInterface[]);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            throw new IdentityAppsApiException(
+                ProfileConstants.SCHEMA_FETCH_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 
@@ -226,6 +243,7 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
  * @param {string} clientID - Client ID.
  * @param {string} clientHost - Client Host URL.
  * @return {Promise<any>}
+ * @throws {IdentityAppsApiException}
  */
 export const switchAccount = (account: LinkedAccountInterface,
                               scopes: string[],
@@ -246,7 +264,13 @@ export const switchAccount = (account: LinkedAccountInterface,
                 SignInUtil.getAuthenticatedUser(response.idToken));
             return Promise.resolve(response);
         })
-        .catch((error) => {
-            return Promise.reject(error);
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ProfileConstants.ACCOUNT_SWITCH_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
