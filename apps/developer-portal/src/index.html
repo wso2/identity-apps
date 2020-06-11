@@ -38,6 +38,8 @@
                 });
             }
 
+            var config = window["AppUtils"].getConfig();
+
             var state = new URL(window.location.href).searchParams.get("state");
             if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
                 // Prompt none response.
@@ -55,10 +57,50 @@
                         window.stop();
                     }
                 } else {
-                    var config = window["AppUtils"].getConfig();
-                    
-                    window.top.location.href = config.clientOriginWithTenant +
-                        config.appBaseWithTenant + config.routes.logout;
+                    window.top.location.href = config.clientOriginWithTenant + config.appBaseWithTenant +
+                        config.routes.logout;
+                }
+            } else {
+                // Tracking user interactions
+                var IDLE_TIMEOUT = 600;
+                var IDLE_WARNING_TIMEOUT = 580;
+                var SESSION_REFRESH_TIMEOUT = 300;
+
+                var _idleSecondsCounter = 0;
+                var _sessionAgeCounter = 0;
+
+                document.onclick = function () {
+                    _idleSecondsCounter = 0;
+                };
+                document.onmousemove = function () {
+                    _idleSecondsCounter = 0;
+                };
+                document.onkeypress = function () {
+                    _idleSecondsCounter = 0;
+                };
+
+                window.setInterval(CheckIdleTime, 1000);
+
+                function CheckIdleTime () {
+                    _idleSecondsCounter++;
+                    _sessionAgeCounter++;
+
+                    // Logout user if idle
+                    if (_idleSecondsCounter >= IDLE_TIMEOUT) {
+                        window.top.location.href = config.clientOriginWithTenant + config.appBaseWithTenant +
+                            config.routes.logout;
+                    } else if (_idleSecondsCounter === IDLE_WARNING_TIMEOUT) {
+                        console.log("You will be logged out of the system after " +
+                            (IDLE_TIMEOUT - IDLE_WARNING_TIMEOUT) + " seconds! Click OK to stay logged in.");
+                    }
+
+                    // Keep user session intact if the user is active
+                    if (_sessionAgeCounter > SESSION_REFRESH_TIMEOUT) {
+                        if (_sessionAgeCounter > _idleSecondsCounter) {
+                            sendPromptNoneRequest();
+                        }
+                        _sessionAgeCounter = 0;
+                    }
                 }
             }
 
