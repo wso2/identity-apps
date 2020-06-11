@@ -57,11 +57,11 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const fireFailureNotification = () => {
         onAlertFired({
             description: t(
-                "views:components.mfa.fido.notifications.startFidoFlow.genericError.description"
+                "userPortal:components.mfa.fido.notifications.startFidoFlow.genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: t(
-                "views:components.mfa.fido.notifications.startFidoFlow.genericError.message"
+                "userPortal:components.mfa.fido.notifications.startFidoFlow.genericError.message"
             )
         });
     };
@@ -101,11 +101,11 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const fireDeletionSuccessNotification = () => {
         onAlertFired({
             description: t(
-                "views:components.mfa.fido.notifications.removeDevice.success.description"
+                "userPortal:components.mfa.fido.notifications.removeDevice.success.description"
             ),
             level: AlertLevels.SUCCESS,
             message: t(
-                "views:components.mfa.fido.notifications.removeDevice.success.message"
+                "userPortal:components.mfa.fido.notifications.removeDevice.success.message"
             )
         });
     };
@@ -116,14 +116,14 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const fireDeletionFailureNotification = (error: string) => {
         onAlertFired({
             description: t(
-                "views:components.mfa.fido.notifications.removeDevice.error.description",
+                "userPortal:components.mfa.fido.notifications.removeDevice.error.description",
                 {
                     description: error
                 }
             ),
             level: AlertLevels.ERROR,
             message: t(
-                "views:components.mfa.fido.notifications.removeDevice.error.message"
+                "userPortal:components.mfa.fido.notifications.removeDevice.error.message"
             )
         });
     };
@@ -134,11 +134,11 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const fireDeviceNameUpdateSuccessNotification = () => {
         onAlertFired({
             description: t(
-                "views:components.mfa.fido.notifications.updateDeviceName.success.description"
+                "userPortal:components.mfa.fido.notifications.updateDeviceName.success.description"
             ),
             level: AlertLevels.SUCCESS,
             message: t(
-                "views:components.mfa.fido.notifications.updateDeviceName.success.message"
+                "userPortal:components.mfa.fido.notifications.updateDeviceName.success.message"
             )
         });
     };
@@ -149,14 +149,14 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const fireDeviceNameUpdateFailureNotification = (error: string) => {
         onAlertFired({
             description: t(
-                "views:components.mfa.fido.notifications.updateDeviceName.genericError.description",
+                "userPortal:components.mfa.fido.notifications.updateDeviceName.genericError.description",
                 {
                     description: error
                 }
             ),
             level: AlertLevels.ERROR,
             message: t(
-                "views:components.mfa.fido.notifications.updateDeviceName.error.message"
+                "userPortal:components.mfa.fido.notifications.updateDeviceName.error.message"
             )
         });
     };
@@ -287,15 +287,15 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 open={ isDeviceErrorModalVisible }
                 onClose={ handleDeviceErrorModalClose }
                 type="negative"
-                header={ t("views:components.mfa.fido.modals.deviceRegistrationErrorModal.heading") }
-                content={ t("views:components.mfa.fido.modals.deviceRegistrationErrorModal.description") }
+                header={ t("userPortal:components.mfa.fido.modals.deviceRegistrationErrorModal.heading") }
+                content={ t("userPortal:components.mfa.fido.modals.deviceRegistrationErrorModal.description") }
             >
                 <ModalContent>
                     <Button
                         className="negative-modal-link-button"
                         onClick={ addDevice }
                     >
-                        { t("views:components.mfa.fido.tryButton") }
+                        { t("userPortal:components.mfa.fido.tryButton") }
                     </Button>
                 </ModalContent>
             </ModalComponent>
@@ -317,8 +317,8 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 open={ isDeviceSuccessModalVisible }
                 onClose={ handleDeviceSuccessModalClose }
                 type="positive"
-                header={ t("views:components.mfa.fido.notifications.startFidoFlow.success.message") }
-                content={ t("views:components.mfa.fido.notifications.startFidoFlow.success.description") }
+                header={ t("userPortal:components.mfa.fido.notifications.startFidoFlow.success.message") }
+                content={ t("userPortal:components.mfa.fido.notifications.startFidoFlow.success.description") }
             >
                 <ModalContent>
                     <Form>
@@ -328,14 +328,14 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                 type="text"
                                 label=""
                                 placeholder={
-                                    t("views:components" +
+                                    t("userPortal:components" +
                                         ".mfa.fido.form.placeholder")
                                 }
                                 onChange={ handleDeviceNameChange }
                                 error={
                                     recentFIDONameError
                                         ? {
-                                            content: t("views:components.mfa.fido.form.required"),
+                                            content: t("userPortal:components.mfa.fido.form.required"),
                                             pointing: "above"
                                         }
                                         : false
@@ -365,9 +365,9 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                 />
                             </List.Content>
                             <List.Content>
-                                <List.Header>{ t("views:components.mfa.fido.heading") }</List.Header>
+                                <List.Header>{ t("userPortal:components.mfa.fido.heading") }</List.Header>
                                 <List.Description>
-                                    { t("views:components.mfa.fido.description") }
+                                    { t("userPortal:components.mfa.fido.description") }
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
@@ -402,7 +402,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                     <Grid.Row columns={ 2 }>
                                                         <Grid.Column width={ 4 }>
                                                             {
-                                                                t("views:components.mfa.fido.form.label")
+                                                                t("userPortal:components.mfa.fido.form.label")
                                                                 + ` ${index + 1}`
                                                             }
                                                         </Grid.Column>
@@ -427,12 +427,12 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                             value={ device.displayName || "" }
                                                                             required={ true }
                                                                             requiredErrorMessage={
-                                                                                t("views:components" +
+                                                                                t("userPortal:components" +
                                                                                     ".mfa.fido.form.required")
                                                                             }
                                                                             name={ device.credential.credentialId }
                                                                             placeholder={
-                                                                                t("views:components" +
+                                                                                t("userPortal:components" +
                                                                                     ".mfa.fido.form.placeholder")
                                                                             }
                                                                             type="text"
@@ -485,7 +485,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                 />
                                                                 {
                                                                     device.displayName
-                                                                    || t("views:components.mfa.fido.form.label")
+                                                                    || t("userPortal:components.mfa.fido.form.label")
                                                                     + ` ${index + 1}`
                                                                 }
                                                             </List.Header>
@@ -507,7 +507,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                 />
                                                                 <Popup
                                                                     content={
-                                                                        t("views:components.mfa.fido.form.remove")
+                                                                        t("userPortal:components.mfa.fido.form.remove")
                                                                     }
                                                                     inverted
                                                                     trigger={ (

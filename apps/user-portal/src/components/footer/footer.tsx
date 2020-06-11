@@ -16,18 +16,19 @@
  * under the License.
  */
 
-import React from "react";
+import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
+import { Footer, ThemeContext } from "@wso2is/react-components";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { Container, Menu } from "semantic-ui-react";
-import { GlobalConfig } from "../../configs";
-import { LanguageSwitcher } from "../shared";
+import { useSelector } from "react-redux";
+import { ConfigReducerStateInterface } from "../../models";
+import { AppState } from "../../store";
 
 /**
  * Footer component prop types.
  */
 interface AppFooterProps {
-    copyright?: string;
+    fluid?: boolean;
 }
 
 /**
@@ -39,24 +40,45 @@ interface AppFooterProps {
 export const AppFooter: React.FunctionComponent<AppFooterProps> = (
     props: AppFooterProps
 ): JSX.Element => {
-    const { copyright } = props;
     const { t } = useTranslation();
+
+    const { state } = useContext(ThemeContext);
+    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state.global.supportedI18nLanguages);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
+    /**
+     * Handles language switch action.
+     * @param {string} language - Selected language.
+     */
+    const handleLanguageSwitch = (language: string): void => {
+        I18n.instance.changeLanguage(language)
+            .catch((error) => {
+                throw new LanguageChangeException(language, error)
+            })
+    };
+
     return (
-        <Menu id="app-footer" className="app-footer" fixed="bottom" borderless>
-            <Container>
-                <Menu.Item className="copyright">
-                    {
-                        copyright
-                            ? copyright
-                            : t("views:footer.copyright", { year: new Date().getFullYear() })
-                    }
-                </Menu.Item>
-                <Menu.Menu position="right">
-                    <LanguageSwitcher className="footer-dropdown"/>
-                    <Menu.Item className="footer-link" as={ Link } to="/privacy">{ t("common:privacy") }</Menu.Item>
-                </Menu.Menu>
-            </Container>
-        </Menu>
+        <Footer
+            showLanguageSwitcher
+            currentLanguage={ I18n.instance?.language }
+            supportedLanguages={ supportedI18nLanguages }
+            onLanguageChange={ handleLanguageSwitch }
+            copyright={ state.copyrightText && state.copyrightText !== "" ?
+                state.copyrightText
+                :
+                config.ui.copyrightText
+                    ? config.ui.copyrightText
+                    : null
+            }
+            fixed="bottom"
+            links={ [
+                {
+                    name: t("common:privacy"),
+                    to: "/privacy"
+                }
+            ] }
+        />
     );
 };
 
@@ -64,5 +86,5 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (
  * Default proptypes for the footer component.
  */
 AppFooter.defaultProps = {
-    copyright: GlobalConfig.copyrightText
+    fluid: true
 };

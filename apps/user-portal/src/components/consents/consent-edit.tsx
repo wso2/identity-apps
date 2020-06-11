@@ -85,7 +85,7 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         <List.Description>
-                            { t("views:components.consentManagement.editConsent.piiCategoryHeading") }
+                            { t("userPortal:components.consentManagement.editConsent.piiCategoryHeading") }
                         </List.Description>
                     </Grid.Column>
                 </Grid.Row>
@@ -177,11 +177,11 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                     <Grid.Column width={ 16 }>
                         <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
                             <DangerZone
-                                actionTitle={ t("views:components.consentManagement.editConsent.dangerZones." +
+                                actionTitle={ t("userPortal:components.consentManagement.editConsent.dangerZones." +
                                     "revoke.actionTitle") }
-                                header={ t("views:components.consentManagement.editConsent.dangerZones." +
+                                header={ t("userPortal:components.consentManagement.editConsent.dangerZones." +
                                     "revoke.header") }
-                                subheader={ t("views:components.consentManagement.editConsent.dangerZones." +
+                                subheader={ t("userPortal:components.consentManagement.editConsent.dangerZones." +
                                     "revoke.subheader") }
                                 onActionClick={ () => onAppConsentRevoke(editingConsent) }
                             />

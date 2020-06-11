@@ -44,8 +44,8 @@ export const ApplicationsPage = (): JSX.Element => {
 
     return (
         <InnerPageLayout
-            pageTitle={ t("views:pages.applications.title") }
-            pageDescription={ t("views:pages.applications.subTitle") }
+            pageTitle={ t("userPortal:pages.applications.title") }
+            pageDescription={ t("userPortal:pages.applications.subTitle") }
         >
             <Grid>
                 <Grid.Row columns={ 1 }>

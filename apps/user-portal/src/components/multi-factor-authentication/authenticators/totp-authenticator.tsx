@@ -43,7 +43,7 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
 
     const totpConfig = useSelector((state: AppState) => state?.config?.ui?.authenticatorApp);
 
-    const translateKey = "views:components.mfa.authenticatorApp.";
+    const translateKey = "userPortal:components.mfa.authenticatorApp.";
 
     /**
      * Reset error and step when the modal is closed

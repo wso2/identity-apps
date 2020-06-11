@@ -37,9 +37,9 @@ export const AccountSecurityWidget: FunctionComponent<{}> = (): JSX.Element => {
     return (
         <div className="widget account-security">
             <SettingsSection
-                header={ t("views:components.overview.widgets.accountSecurity.header") }
-                description={ t("views:components.overview.widgets.accountSecurity.description") }
-                primaryAction={ t("views:components.overview.widgets.accountSecurity.actionTitles.update") }
+                header={ t("userPortal:components.overview.widgets.accountSecurity.header") }
+                description={ t("userPortal:components.overview.widgets.accountSecurity.description") }
+                primaryAction={ t("userPortal:components.overview.widgets.accountSecurity.actionTitles.update") }
                 onPrimaryActionClick={ navigate }
                 icon={ WidgetIcons.accountSecurity }
                 iconMini={ WidgetIcons.accountSecurity }

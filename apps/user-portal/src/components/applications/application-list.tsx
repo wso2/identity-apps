@@ -62,15 +62,15 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                             className="link-button"
                             onClick={ onSearchQueryClear }
                         >
-                            { t("views:placeholders.emptySearchResult.action") }
+                            { t("userPortal:placeholders.emptySearchResult.action") }
                         </Button>
                     ) }
                     image={ EmptyPlaceholderIllustrations.search }
-                    title={ t("views:placeholders.emptySearchResult.title") }
+                    title={ t("userPortal:placeholders.emptySearchResult.title") }
                     subtitle={ [
-                        t("views:placeholders.emptySearchResult.subtitles.0",
+                        t("userPortal:placeholders.emptySearchResult.subtitles.0",
                             { query: searchQuery }),
-                        t("views:placeholders.emptySearchResult.subtitles.1"),
+                        t("userPortal:placeholders.emptySearchResult.subtitles.1"),
                     ] }
                 />
             );
@@ -83,16 +83,16 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                         className="link-button"
                         onClick={ onListRefresh }
                     >
-                        { t("views:components.applications.placeholders.emptyList.action") }
+                        { t("userPortal:components.applications.placeholders.emptyList.action") }
                     </Button>
                 ) }
                 image={ EmptyPlaceholderIllustrations.emptyList }
                 imageSize="tiny"
-                title={ t("views:components.applications.placeholders.emptyList.title") }
+                title={ t("userPortal:components.applications.placeholders.emptyList.title") }
                 subtitle={ [
-                    t("views:components.applications.placeholders.emptyList.subtitles.0"),
-                    t("views:components.applications.placeholders.emptyList.subtitles.1"),
-                    t("views:components.applications.placeholders.emptyList.subtitles.2")
+                    t("userPortal:components.applications.placeholders.emptyList.subtitles.0"),
+                    t("userPortal:components.applications.placeholders.emptyList.subtitles.1"),
+                    t("userPortal:components.applications.placeholders.emptyList.subtitles.2")
                 ] }
             />
         );

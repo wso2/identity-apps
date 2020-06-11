@@ -76,12 +76,12 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
-                            "views:components.applications.notifications.fetchApplications.error.description",
+                            "userPortal:components.applications.notifications.fetchApplications.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.applications.notifications.fetchApplications.error.message"
+                            "userPortal:components.applications.notifications.fetchApplications.error.message"
                         ),
                     });
 
@@ -90,11 +90,11 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
 
                 onAlertFired({
                     description: t(
-                        "views:components.applications.notifications.fetchApplications.genericError.description"
+                        "userPortal:components.applications.notifications.fetchApplications.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.applications.notifications.fetchApplications.genericError.message"
+                        "userPortal:components.applications.notifications.fetchApplications.genericError.message"
                     )
                 });
             });
@@ -259,7 +259,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
             <div className="search-results-indicator">
                 {
                     searchQuery
-                        ? t("views:components.applications.search.resultsIndicator", { query: searchQuery })
+                        ? t("userPortal:components.applications.search.resultsIndicator", { query: searchQuery })
                         : ""
                 }
             </div>
@@ -274,14 +274,14 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
                     ? (
                         <>
                             <h3 className="section-header">
-                                {t("views:components.applications.recent.heading")}
+                                {t("userPortal:components.applications.recent.heading")}
                             </h3>
                             <RecentApplications
                                 onAppNavigate={ handleAppNavigation }
                                 recentApps={ recentApplications }
                                 showFavourites={ false }
                             />
-                            <h3 className="section-header">{t("views:components.applications.all.heading")}</h3>
+                            <h3 className="section-header">{t("userPortal:components.applications.all.heading")}</h3>
                         </>
                     )
                     : null

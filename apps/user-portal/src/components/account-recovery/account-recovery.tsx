@@ -47,8 +47,8 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
 
     return (
         <SettingsSection
-            description={ t("views:sections.accountRecovery.description") }
-            header={ t("views:sections.accountRecovery.heading") }
+            description={ t("userPortal:sections.accountRecovery.description") }
+            header={ t("userPortal:sections.accountRecovery.heading") }
         >
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
