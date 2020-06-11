@@ -16,6 +16,24 @@
  * under the License.
  */
 
-export * from "./admin-portal";
-export * from "./dev-portal";
-export * from "./common";
+import {
+    CommonProfileReducerStateInterface,
+    LinkedAccountInterface,
+    ProfileInfoInterface,
+    ProfileSchemaInterface,
+    emptyProfileInfo
+} from "@wso2is/core/models";
+
+/**
+ * Initial state for the common profile reducer.
+ */
+export const commonProfileReducerInitialState: CommonProfileReducerStateInterface<
+    ProfileInfoInterface,
+    ProfileSchemaInterface[],
+    LinkedAccountInterface[]> = {
+
+    isSCIMEnabled: true,
+    linkedAccounts: [],
+    profileInfo: emptyProfileInfo(),
+    profileSchemas: []
+};

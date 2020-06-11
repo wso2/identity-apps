@@ -38,7 +38,7 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
         <filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
         <init-param>
             <param-name>cors.allowOrigin</param-name>
-            <param-value>https://localhost:9000, https://localhost:9001</param-value>
+            <param-value>https://localhost:9000, https://localhost:9001, https://localhost:9002</param-value>
         </init-param>
         <init-param>
             <param-name>cors.supportedMethods</param-name>
@@ -81,15 +81,19 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
 regexp=(https://localhost:9443/user-portal/login|https://localhost:9443/user-portal/logout|https://localhost:9000/user-portal/login|https://localhost:9000/user-portal/logout)
 ```
 
-7. Similarly, update the callback url of the `DEVELOPER_PORTAL` application to the following.
+7. Similarly, update the callback urls of the `DEVELOPER_PORTAL` & `ADMIN_PORTAL` applications to the following.
 
 ```
 regexp=(https://localhost:9443/developer-portal/login|https://localhost:9443/developer-portal/logout|https://localhost:9001/developer-portal/login|https://localhost:9001/developer-portal/logout)
 ```
 
+```
+regexp=(https://localhost:9443/admin-portal/login|https://localhost:9443/admin-portal/logout|https://localhost:9002/admin-portal/login|https://localhost:9002/admin-portal/logout)
+```
+
 8. Open cloned or downloaded Identity Apps repo and Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependencies. _(Note:- Not necessary if you have already done above identity apps build steps)_
 9. Start the apps in development mode, Execute `cd apps/<app> && npm start` command. E.g. `cd apps/user-portal && npm start`.
-10. Once the app is successfully started, you can access the via the URLs `https://localhost:9000/user-portal` or `https://localhost:9001/developer-portal`.
+10. Once the app is successfully started, you can access the via the URLs `https://localhost:9000/user-portal`, `https://localhost:9001/developer-portal` or `https://localhost:9002/admin-portal`.
 
 ## Reporting Issues
 

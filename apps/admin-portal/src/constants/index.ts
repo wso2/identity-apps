@@ -16,6 +16,6 @@
  * under the License.
  */
 
-export * from "./admin-portal";
-export * from "./dev-portal";
-export * from "./common";
+export * from "./app-constants";
+export * from "./i18n-constants";
+export * from "./ui-constants";

@@ -16,6 +16,21 @@
  * under the License.
  */
 
-export * from "./admin-portal";
-export * from "./dev-portal";
-export * from "./common";
+module.exports = {
+    env: {
+        development: {
+            compact: false
+        },
+        test: {
+            plugins: ["@babel/plugin-transform-modules-commonjs"]
+        }
+    },
+    presets: [
+        [
+            "@babel/preset-env",
+            {
+                "useBuiltIns": "entry"
+            }
+        ]
+    ]
+};

@@ -1,0 +1,30 @@
+{
+    "accountAppURL": {
+        "path": "/user-portal/overview"
+    },
+    "appBaseName": "admin-portal",
+    "clientID": "ADMIN_PORTAL",
+    "debug": false,
+    "i18nResourcePath": "",
+    "loginCallbackPath": "/login",
+    "logoutCallbackPath": "/login",
+    "productVersion": {
+        "releaseType": "milestone",
+        "versionNumber": "5.11.0",
+        "milestoneNumber": "23"
+    },
+    "routePaths": {
+        "home": "/overview",
+        "login": "/login",
+        "logout": "/logout"
+    },
+    "ui": {
+        "appCopyright": "WSO2 Identity Server",
+        "appTitle": "WSO2 Identity Server Admin Dashboard",
+        "appName": "Identity Server",
+        "appLogoPath": "/assets/images/logo.svg",
+        "gravatarConfig": {
+            "fallback": "404"
+        }
+    }
+}

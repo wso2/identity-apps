@@ -16,6 +16,27 @@
  * under the License.
  */
 
-export * from "./admin-portal";
-export * from "./dev-portal";
-export * from "./common";
+import { FunctionComponent, ReactElement, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "../../store";
+import { handleSignOut } from "../../store/actions";
+
+/**
+ * Virtual component used to handle Sign in action.
+ *
+ * @return {React.ReactElement}
+ */
+export const SignOut: FunctionComponent<{}> = (): ReactElement => {
+
+    const dispatch = useDispatch();
+
+    const logoutInit: boolean = useSelector((state: AppState) => state.auth.logoutInit);
+
+    useEffect(() => {
+        if (!logoutInit) {
+            dispatch(handleSignOut());
+        }
+    }, [ logoutInit ]);
+
+    return null;
+};

@@ -16,6 +16,20 @@
  * under the License.
  */
 
-export * from "./admin-portal";
-export * from "./dev-portal";
-export * from "./common";
+import { AlertInterface, CommonGlobalReducerStateInterface } from "@wso2is/core/models";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
+import { System } from "react-notification-system";
+
+/**
+ * Initial state for the common global reducer.
+ */
+export const commonGlobalReducerInitialState: CommonGlobalReducerStateInterface<
+    AlertInterface,
+    System,
+    SupportedLanguagesMeta> = {
+
+    alert: null,
+    alertSystem: null,
+    isAJAXTopLoaderVisible: false,
+    supportedI18nLanguages: null
+};

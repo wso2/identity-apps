@@ -16,6 +16,15 @@
  * under the License.
  */
 
-export * from "./admin-portal";
-export * from "./dev-portal";
-export * from "./common";
+import { CommonRequestLoadersReducerStateInterface } from "@wso2is/core/models";
+
+/**
+ * Initial state for the common request loaders reducer.
+ */
+export const commonRequestLoadersInitialState: CommonRequestLoadersReducerStateInterface = {
+    isProfileInfoRequestLoading: false,
+    isProfileSchemaRequestLoading: false,
+    isSignOutRequestLoading: false,
+    isTokenRequestLoading: false,
+    isTokenRevokeRequestLoading: false
+};

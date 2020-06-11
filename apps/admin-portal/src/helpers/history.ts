@@ -16,6 +16,6 @@
  * under the License.
  */
 
-export * from "./admin-portal";
-export * from "./dev-portal";
-export * from "./common";
+import { createBrowserHistory } from "history";
+
+export const history = createBrowserHistory({ basename: window["AppUtils"].getConfig().appBaseWithTenant });
