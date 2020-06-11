@@ -16,51 +16,63 @@
  * under the License.
  */
 
-import { AlertInterface } from "../../models";
 import {
     AddAlertAction,
-    GlobalActionTypes,
-    HideGlobalLoaderAction,
+    CommonGlobalActionTypes,
+    HideAJAXTopLoadingBarAction,
     InitializeAlertSystemAction,
-    ShowGlobalLoaderAction
+    SetSupportedI18nLanguagesActionInterface,
+    ShowAJAXTopLoadingBarAction
 } from "./types";
 
 /**
- * Redux action to show global loader.
+ * Show AJAX top loading bar loader action.
  *
- * @return {ShowGlobalLoaderAction} An action of type `SHOW_GLOBAL_LOADER`
+ * @return {ShowAJAXTopLoadingBarAction}
  */
-export const showGlobalLoader = (): ShowGlobalLoaderAction => ({
-    type: GlobalActionTypes.SHOW_GLOBAL_LOADER
+export const showAJAXTopLoadingBar = (): ShowAJAXTopLoadingBarAction => ({
+    type: CommonGlobalActionTypes.SHOW_AJAX_TOP_LOADING_BAR
 });
 
 /**
- * Redux action to hide the global loader.
+ * Hide AJAX top loading bar loader action.
  *
- * @return {HideGlobalLoaderAction} An action of type `HIDE_GLOBAL_LOADER`
+ * @return {HideAJAXTopLoadingBarAction}
  */
-export const hideGlobalLoader = (): HideGlobalLoaderAction => ({
-    type: GlobalActionTypes.HIDE_GLOBAL_LOADER
+export const hideAJAXTopLoadingBar = (): HideAJAXTopLoadingBarAction => ({
+    type: CommonGlobalActionTypes.HIDE_AJAX_TOP_LOADING_BAR
 });
 
 /**
- * Redux action to initialize the alerting system.
+ * Dispatches an action to initialize the alerting system.
  *
- * @param alertSystem - Alert system.
- * @return {InitializeAlertSystemAction} An action of type `INITIALIZE_ALERT_SYSTEM`
+ * @param {T} alertSystem - Alert system object.
+ *
+ * @return {InitializeAlertSystemAction<T>}
  */
-export const initializeAlertSystem = (alertSystem: any): InitializeAlertSystemAction => ({
+export const initializeAlertSystem = <T = {}>(alertSystem: T): InitializeAlertSystemAction<T> => ({
     payload: alertSystem,
-    type: GlobalActionTypes.INITIALIZE_ALERT_SYSTEM
+    type: CommonGlobalActionTypes.INITIALIZE_ALERT_SYSTEM
 });
 
 /**
- * Redux action to add a new alert.
+ * Dispatches an action to add a new alert.
  *
- * @param {AlertInterface} alert - Alert object.
- * @return {AddAlertAction} An action of type `ADD_ALERT`
+ * @param {T} alert - Alert
+ * @return {AddAlertAction<T>}
  */
-export const addAlert = (alert: AlertInterface): AddAlertAction => ({
+export const addAlert = <T = {}>(alert: T): AddAlertAction<T> => ({
     payload: alert,
-    type: GlobalActionTypes.ADD_ALERT
+    type: CommonGlobalActionTypes.ADD_ALERT
+});
+
+/**
+ * Redux action to set the supported i18n languages.
+ *
+ * @param {T} languages - Supported i18n languages.
+ * @return {SetSupportedI18nLanguagesActionInterface<T>}
+ */
+export const setSupportedI18nLanguages = <T = {}>(languages: T): SetSupportedI18nLanguagesActionInterface<T> => ({
+    payload: languages,
+    type: CommonGlobalActionTypes.SET_SUPPORTED_I18N_LANGUAGES
 });

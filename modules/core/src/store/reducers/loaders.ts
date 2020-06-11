@@ -17,29 +17,18 @@
  */
 
 import { CommonRequestLoadersReducerStateInterface } from "../../models";
-import { CommonRequestLoadersActions, CommonRequestLoadersActionTypes, } from "../actions/types";
-
-/**
- * Common request loaders reducer initial state.
- */
-const commonRequestLoadersInitialState: CommonRequestLoadersReducerStateInterface = {
-    isProfileInfoRequestLoading: false,
-    isProfileSchemaRequestLoading: false,
-    isSignOutRequestLoading: false,
-    isTokenRequestLoading: false,
-    isTokenRevokeRequestLoading: false
-};
+import { CommonRequestLoadersActionTypes, CommonRequestLoadersActions } from "../actions/types";
 
 /**
  * Reducer to handle the state of common request loaders actions.
  *
- * @param {CommonRequestLoadersReducerStateInterface} state - Previous state.
- * @param {CommonRequestLoadersActions} action - Action types.
- * @return The new state.
+ * @param {CommonRequestLoadersReducerStateInterface} initialState - Reducer initial state.
+ * @return {CommonRequestLoadersReducerStateInterface} The new state.
  */
-export const commonRequestLoadersReducer = (state: CommonRequestLoadersReducerStateInterface =
-                                                commonRequestLoadersInitialState,
-                                            action: CommonRequestLoadersActions) => {
+export const commonRequestLoadersReducer = (initialState: CommonRequestLoadersReducerStateInterface) => (
+    state: CommonRequestLoadersReducerStateInterface = initialState,
+    action: CommonRequestLoadersActions
+): CommonRequestLoadersReducerStateInterface => {
 
     switch (action.type) {
         case CommonRequestLoadersActionTypes.SET_PROFILE_INFO_REQUEST_LOADING_STATUS:

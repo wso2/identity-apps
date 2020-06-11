@@ -17,12 +17,12 @@
  */
 
 /**
- * Enum for authenticate action types.
+ * Enum for common authenticate action types.
  *
  * @readonly
  * @enum {string}
  */
-export enum AuthenticateActionTypes {
+export enum CommonAuthenticateActionTypes {
     /**
      * Redux action type to handle the reset authentication requests.
      *
@@ -44,36 +44,36 @@ export enum AuthenticateActionTypes {
 }
 
 /**
- * Authenticate base action interface.
+ * Common authenticate base action interface.
  */
-interface AuthenticateBaseActionInterface {
-    type: AuthenticateActionTypes;
+interface CommonAuthenticateBaseActionInterface {
+    type: CommonAuthenticateActionTypes;
 }
 
 /**
  * Set sign in action interface.
  */
-export interface SetSignInActionInterface extends AuthenticateBaseActionInterface {
-    type: AuthenticateActionTypes.SET_SIGN_IN;
+export interface SetSignInActionInterface extends CommonAuthenticateBaseActionInterface {
+    type: CommonAuthenticateActionTypes.SET_SIGN_IN;
 }
 
 /**
  * Set sign out action interface.
  */
-export interface SetSignOutActionInterface extends AuthenticateBaseActionInterface {
-    type: AuthenticateActionTypes.SET_SIGN_OUT;
+export interface SetSignOutActionInterface extends CommonAuthenticateBaseActionInterface {
+    type: CommonAuthenticateActionTypes.SET_SIGN_OUT;
 }
 
 /**
  * Reset authentication action interface.
  */
-export interface ResetAuthenticationActionInterface extends AuthenticateBaseActionInterface {
-    type: AuthenticateActionTypes.RESET_AUTHENTICATION;
+export interface ResetAuthenticationActionInterface extends CommonAuthenticateBaseActionInterface {
+    type: CommonAuthenticateActionTypes.RESET_AUTHENTICATION;
 }
 
 /**
  * Export action interfaces.
  */
-export type AuthenticateActions = ResetAuthenticationActionInterface
+export type CommonAuthenticateActions = ResetAuthenticationActionInterface
     | SetSignInActionInterface
     | SetSignOutActionInterface;

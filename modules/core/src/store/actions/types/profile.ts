@@ -16,15 +16,13 @@
  * under the License.
  */
 
-import { LinkedAccountInterface, ProfileSchemaInterface } from "../../../models";
-
 /**
- * Enum for profile action types.
+ * Enum for common profile action types.
  *
  * @readonly
  * @enum {string}
  */
-export enum ProfileActionTypes {
+export enum CommonProfileActionTypes {
     /**
      * Action type to set the profile info.
      *
@@ -52,48 +50,48 @@ export enum ProfileActionTypes {
 }
 
 /**
- * User profile base action interface.
+ * Common user profile base action interface.
  */
-interface ProfileBaseActionInterface {
-    type: ProfileActionTypes;
+interface CommonProfileBaseActionInterface {
+    type: CommonProfileActionTypes;
 }
 
 /**
  * Set profile info action interface.
  */
-export interface SetProfileInfoActionInterface extends ProfileBaseActionInterface {
-    payload: any;
-    type: ProfileActionTypes.SET_PROFILE_INFO;
+export interface SetProfileInfoActionInterface<T = {}> extends CommonProfileBaseActionInterface {
+    payload: T;
+    type: CommonProfileActionTypes.SET_PROFILE_INFO;
 }
 
 /**
  * Set profile schemas action interface.
  */
-export interface SetProfileSchemasActionInterface extends ProfileBaseActionInterface {
-    payload: ProfileSchemaInterface[];
-    type: ProfileActionTypes.SET_PROFILE_SCHEMAS;
+export interface SetProfileSchemasActionInterface<S = {}> extends CommonProfileBaseActionInterface {
+    payload: S;
+    type: CommonProfileActionTypes.SET_PROFILE_SCHEMAS;
 }
 
 /**
  * Set profile linked accounts action interface.
  */
-export interface SetProfileLinkedAccountsActionInterface extends ProfileBaseActionInterface {
-    payload: LinkedAccountInterface[];
-    type: ProfileActionTypes.SET_PROFILE_LINKED_ACCOUNTS;
+export interface SetProfileLinkedAccountsActionInterface<U = {}> extends CommonProfileBaseActionInterface {
+    payload: U;
+    type: CommonProfileActionTypes.SET_PROFILE_LINKED_ACCOUNTS;
 }
 
 /**
  * Action interface to handle if SCIM is enabled.
  */
-export interface ToggleSCIMEnabledActionInterface extends ProfileBaseActionInterface {
+export interface ToggleSCIMEnabledActionInterface extends CommonProfileBaseActionInterface {
     payload: boolean;
-    type: ProfileActionTypes.TOGGLE_SCIM_ENABLED;
+    type: CommonProfileActionTypes.TOGGLE_SCIM_ENABLED;
 }
 
 /**
  * Export action interfaces.
  */
-export type ProfileActions = SetProfileInfoActionInterface
-    | SetProfileSchemasActionInterface
-    | SetProfileLinkedAccountsActionInterface
+export type CommonProfileActions<T, S, U> = SetProfileInfoActionInterface<T>
+    | SetProfileSchemasActionInterface<S>
+    | SetProfileLinkedAccountsActionInterface<U>
     | ToggleSCIMEnabledActionInterface;

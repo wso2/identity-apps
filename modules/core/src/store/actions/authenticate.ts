@@ -24,8 +24,6 @@ import {
     SignInUtil,
     SignOutUtil
 } from "@wso2is/authentication";
-import { CommonServiceResourcesEndpoints } from "../../configs";
-import { ContextUtils } from "../../utils";
 import {
     setSignOutRequestLoadingStatus,
     setTokenRequestLoadingStatus,
@@ -33,11 +31,13 @@ import {
 } from "./loaders";
 import { getProfileInformation } from "./profile";
 import {
-    AuthenticateActionTypes,
+    CommonAuthenticateActionTypes,
     ResetAuthenticationActionInterface,
     SetSignInActionInterface,
     SetSignOutActionInterface
 } from "./types";
+import { CommonServiceResourcesEndpoints } from "../../configs";
+import { ContextUtils } from "../../utils";
 
 /**
  * Redux action to set sign in.
@@ -45,7 +45,7 @@ import {
  * @return {SetSignInActionInterface} An action of type `SET_SIGN_IN`
  */
 export const setSignIn = (): SetSignInActionInterface => ({
-    type: AuthenticateActionTypes.SET_SIGN_IN
+    type: CommonAuthenticateActionTypes.SET_SIGN_IN
 });
 
 /**
@@ -54,7 +54,7 @@ export const setSignIn = (): SetSignInActionInterface => ({
  * @return {SetSignOutActionInterface} An action of type `SET_SIGN_OUT`
  */
 export const setSignOut = (): SetSignOutActionInterface => ({
-    type: AuthenticateActionTypes.SET_SIGN_OUT
+    type: CommonAuthenticateActionTypes.SET_SIGN_OUT
 });
 
 /**
@@ -63,7 +63,7 @@ export const setSignOut = (): SetSignOutActionInterface => ({
  * @return {ResetAuthenticationActionInterface} An action of type `RESET_AUTHENTICATION`
  */
 export const resetAuthentication = (): ResetAuthenticationActionInterface => ({
-    type: AuthenticateActionTypes.RESET_AUTHENTICATION
+    type: CommonAuthenticateActionTypes.RESET_AUTHENTICATION
 });
 
 /**

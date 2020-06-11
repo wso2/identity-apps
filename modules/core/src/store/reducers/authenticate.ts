@@ -17,51 +17,41 @@
  */
 
 import { AuthenticateSessionUtil, AuthenticateTokenKeys, AuthenticateUserKeys } from "@wso2is/authentication";
-import { AuthReducerStateInterface } from "../../models";
-import { AuthenticateActions, AuthenticateActionTypes } from "../actions/types";
+import { CommonAuthReducerStateInterface } from "../../models";
+import { CommonAuthenticateActionTypes, CommonAuthenticateActions } from "../actions/types";
 
 /**
- * Initial authenticate state.
- */
-const initialState: AuthReducerStateInterface = {
-    displayName: "",
-    emails: "",
-    isAuthenticated: false,
-    loginInit: false,
-    logoutInit: false,
-    username: ""
-};
-
-/**
- * Reducer to handle the state of authentication related actions.
+ * Reducer to handle the state of common authentication related actions.
  *
- * @param {AuthReducerStateInterface} state - Previous state.
- * @param {AuthenticateActions} action - Action type.
- * @returns The new state.
+ * @param {CommonAuthReducerStateInterface} initialState - Reducer initial state.
+ * @returns {CommonAuthReducerStateInterface} The new state.
  */
-export const authenticateReducer = (state: AuthReducerStateInterface = initialState, action: AuthenticateActions) => {
+export const commonAuthenticateReducer = (initialState: CommonAuthReducerStateInterface) => (
+    state: CommonAuthReducerStateInterface = initialState,
+    action: CommonAuthenticateActions
+): CommonAuthReducerStateInterface => {
 
     switch (action.type) {
-        case AuthenticateActionTypes.SET_SIGN_IN:
+        case CommonAuthenticateActionTypes.SET_SIGN_IN:
             if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
                 return {
                     ...state,
                     displayName: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.DISPLAY_NAME),
                     emails: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.EMAIL),
-                    isAuth: true,
+                    isAuthenticated: true,
                     loginInit: true,
                     logoutInit: false,
                     username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME),
                 };
             }
             break;
-        case AuthenticateActionTypes.SET_SIGN_OUT:
+        case CommonAuthenticateActionTypes.SET_SIGN_OUT:
             return {
                 ...state,
                 loginInit: false,
                 logoutInit: true
             };
-        case AuthenticateActionTypes.RESET_AUTHENTICATION:
+        case CommonAuthenticateActionTypes.RESET_AUTHENTICATION:
             return {
                 ...initialState
             };

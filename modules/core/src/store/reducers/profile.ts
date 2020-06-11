@@ -16,46 +16,37 @@
  * under the License.
  */
 
-import { CommonProfileReducerStateInterface, emptyProfileInfo } from "../../models";
-import { ProfileActions, ProfileActionTypes } from "../actions/types";
-
-/**
- * Common profile reducer initial state.
- */
-export const commonProfileReducerInitialState: CommonProfileReducerStateInterface = {
-    isSCIMEnabled: true,
-    linkedAccounts: [],
-    profileInfo: emptyProfileInfo(),
-    profileSchemas: []
-};
+import { CommonProfileReducerStateInterface } from "../../models";
+import { CommonProfileActionTypes, CommonProfileActions } from "../actions/types";
 
 /**
  * Reducer to handle the state of profile related actions.
  *
- * @param {CommonProfileReducerStateInterface} state - Previous state
- * @param {ProfileActions} action - Action type
- * @returns The new state
+ * @param {CommonProfileReducerStateInterface<T, S, U>} initialState - Reducer initial state.
+ * @returns {CommonProfileReducerStateInterface<T, S, U>} The new state
  */
-export const commonProfileReducer = (state: CommonProfileReducerStateInterface = commonProfileReducerInitialState,
-                                     action: ProfileActions) => {
+export const commonProfileReducer = <T, S, U>(initialState: CommonProfileReducerStateInterface<T, S, U>) => (
+    state: CommonProfileReducerStateInterface<T, S, U> = initialState,
+    action: CommonProfileActions<T, S, U>
+): CommonProfileReducerStateInterface<T, S, U> => {
 
     switch (action.type) {
-        case ProfileActionTypes.SET_PROFILE_INFO:
+        case CommonProfileActionTypes.SET_PROFILE_INFO:
             return {
                 ...state,
                 profileInfo: action.payload
             };
-        case ProfileActionTypes.SET_PROFILE_SCHEMAS:
+        case CommonProfileActionTypes.SET_PROFILE_SCHEMAS:
             return {
                 ...state,
                 profileSchemas: action.payload
             };
-        case ProfileActionTypes.SET_PROFILE_LINKED_ACCOUNTS:
+        case CommonProfileActionTypes.SET_PROFILE_LINKED_ACCOUNTS:
             return {
                 ...state,
                 linkedAccounts: action.payload
             };
-        case ProfileActionTypes.TOGGLE_SCIM_ENABLED:
+        case CommonProfileActionTypes.TOGGLE_SCIM_ENABLED:
             return {
                 ...state,
                 isSCIMEnabled: action.payload
