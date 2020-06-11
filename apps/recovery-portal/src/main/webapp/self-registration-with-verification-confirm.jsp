@@ -24,17 +24,19 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.SelfRegisterApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.CodeValidationRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <jsp:directive.include file="includes/localize.jsp"/>
+<jsp:directive.include file="tenant-resolve.jsp"/>
+
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
 
 
     String username = request.getParameter("username");
-    String tenantdomain = request.getParameter("tenantdomain");
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
 
@@ -55,7 +57,7 @@
         List<Property> properties = new ArrayList<>();
         Property tenantDomainProperty = new Property();
         tenantDomainProperty.setKey(MultitenantConstants.TENANT_DOMAIN);
-        tenantDomainProperty.setValue(tenantdomain);
+        tenantDomainProperty.setValue(tenantDomain);
         properties.add(tenantDomainProperty);
 
         validationRequest.setCode(confirmationKey);

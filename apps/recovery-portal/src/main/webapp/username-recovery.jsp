@@ -36,6 +36,7 @@
 <%@ page import="java.util.Map" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
+<jsp:directive.include file="tenant-resolve.jsp"/>
 
 <%
     if (!Boolean.parseBoolean(application.getInitParameter(
@@ -45,8 +46,7 @@
     }
     
     ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
-    String tenantDomain = request.getParameter("tenantDomain");
-    
+
     if (StringUtils.isNotEmpty(tenantDomain)) {
         try {
             IdentityTenantUtil.getTenantId(tenantDomain);

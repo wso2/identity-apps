@@ -20,6 +20,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
 <jsp:directive.include file="includes/localize.jsp"/>
 
@@ -71,9 +72,14 @@
 
             <div class="segment-form">
                 <form class="ui large form" method="post" action="recoverusername.do" id="tenantBasedRecovery">
+                    <%
+                        if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+                    %>
                     <input id="tenant-domain" type="text" name="tenantDomain"
                                 class="form-control ">
-                        
+                    <%
+                        }
+                    %>
                         <%
                             String callback = Encode.forHtmlAttribute
                                     (request.getParameter("callback"));
@@ -135,8 +141,9 @@
                 var errorMessage = $("#error-msg");
                 errorMessage.hide();
                 var tenantDomain = $("#tenant-domain").val();
+                var isTenantQualifiedUrlsEnabled = '<%= IdentityTenantUtil.isTenantQualifiedUrlsEnabled() %>';
 
-                if (tenantDomain == '') {
+                if (isTenantQualifiedUrlsEnabled == 'false' && tenantDomain == '') {
                     errorMessage.text("Please enter your tenant domain.");
                     errorMessage.show();
                     $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
