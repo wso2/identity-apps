@@ -403,6 +403,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     icons={ SidePanelIcons }
                     routes={ filteredRoutes }
                     selected={ selectedRoute }
+                    translationHook={ t }
                 />
             ) }
             footer={ (
