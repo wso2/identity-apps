@@ -16,6 +16,11 @@
  * under the License.
  */
 
-export * from "./admin-portal";
-export * from "./dev-portal";
-export * from "./common";
+/**
+ * @remarks
+ * Always keep the `app.ts` import at the top of the order, to avoid
+ * potential circular dependencies.
+ */
+export * from "./app";
+export * from "./routes";
+export * from "./ui";

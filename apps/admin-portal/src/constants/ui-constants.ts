@@ -17,9 +17,9 @@
  */
 
 /**
- * Class containing i18n module constants.
+ * Class containing ui constants.
  */
-export class I18nModuleConstants {
+export class UIConstants {
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -27,46 +27,41 @@ export class I18nModuleConstants {
      *
      * @hideconstructor
      */
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
     /**
-     * Name of the i18n module.
+     * Default header height to be used in state initialisations
      * @constant
-     * @type {string}
-     * @default
+     * @type {number}
      */
-    public static readonly MODULE_NAME: string = "@wso2is/i18n";
+    public static readonly DEFAULT_HEADER_HEIGHT = 59;
 
     /**
-     * Common namespace.
+     * Default footer height to be used in state initialisations
      * @constant
-     * @type {string}
-     * @default
+     * @type {number}
      */
-    public static readonly COMMON_NAMESPACE: string = "common";
+    public static readonly DEFAULT_FOOTER_HEIGHT = 60;
 
     /**
-     * Dev portal namespace.
+     * Constant to handle dashboard layout's desktop content top spacing.
      * @constant
-     * @type {string}
-     * @default
+     * @type {number}
      */
-    public static readonly DEV_PORTAL_NAMESPACE: string = "devPortal";
+    public static readonly DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING: number = 0;
 
     /**
-     * Admin portal namespace.
+     * Interval to dismiss the alerts.
      * @constant
-     * @type {string}
-     * @default
+     * @type {number}
      */
-    public static readonly ADMIN_PORTAL_NAMESPACE: string = "adminPortal";
+    public static readonly ALERT_DISMISS_INTERVAL: number = 5;
 
     /**
-     * Default fallback language.
+     * AJAX top loading bar height.
      * @constant
-     * @type {string}
-     * @default
+     * @type {number}
      */
-    public static readonly DEFAULT_FALLBACK_LANGUAGE: string = "en-US";
+    public static readonly AJAX_TOP_LOADING_BAR_HEIGHT: number = 3;
 }

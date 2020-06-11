@@ -16,6 +16,5 @@
  * under the License.
  */
 
-export * from "./admin-portal";
-export * from "./dev-portal";
-export * from "./common";
+export * from "./authentication";
+export * from "./protected-route";

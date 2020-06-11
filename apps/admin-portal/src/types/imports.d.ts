@@ -16,6 +16,7 @@
  * under the License.
  */
 
-export * from "./admin-portal";
-export * from "./dev-portal";
-export * from "./common";
+declare module "*.json" {
+    const value: any;
+    export default value;
+}
