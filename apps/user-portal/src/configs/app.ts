@@ -17,7 +17,9 @@
  */
 
 import { CommonDeploymentConfigInterface } from "@wso2is/core/models";
+import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { GlobalConfig } from "./globals";
+import { I18nConstants } from "../constants";
 import { ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 
 interface ServiceResourcesType {
@@ -160,6 +162,22 @@ export class Config {
             authenticatorApp: { apps: [ { link: "", name: "" } ] },
             copyrightText: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${ new Date().getFullYear() }`,
             titleText: window["AppUtils"].getConfig().appTitle
+        };
+    }
+
+    /**
+     * Get i18n module config.
+     *
+     * @return {I18nModuleOptionsInterface} i18n config object.
+     */
+    public static getI18nConfig(): I18nModuleOptionsInterface {
+        return {
+            initOptions: I18nConstants.MODULE_INIT_OPTIONS,
+            langAutoDetectEnabled: I18nConstants.LANG_AUTO_DETECT_ENABLED,
+            namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
+            overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
+            resourcePath: "/resources/i18n",
+            xhrBackendPluginEnabled: I18nConstants.XHR_BACKEND_PLUGIN_ENABLED
         };
     }
 }
