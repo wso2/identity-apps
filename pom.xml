@@ -46,6 +46,7 @@
     <modules>
         <module>apps/user-portal</module>
         <module>apps/developer-portal</module>
+        <module>apps/admin-portal</module>
         <module>apps/authentication-portal</module>
         <module>apps/recovery-portal</module>
         <module>apps/email-otp-authentication-portal</module>
