@@ -95,6 +95,7 @@ module.exports = {
                 "react/prop-types": "off",
                 "@typescript-eslint/no-explicit-any": 0,
                 "@typescript-eslint/explicit-function-return-type": 0,
+                "@typescript-eslint/no-inferrable-types": "off",
                 "react/display-name": 0,
                 "no-use-before-define": "off",
                 "@typescript-eslint/no-use-before-define": [
