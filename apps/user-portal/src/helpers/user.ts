@@ -17,7 +17,7 @@
  */
 
 import { isEmpty } from "lodash";
-import * as ApplicationConstants from "../constants/application-constants";
+import { ApplicationConstants } from "../constants";
 import { AuthStateInterface } from "../models";
 
 /**

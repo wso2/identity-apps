@@ -1,4 +1,3 @@
-
 /**
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -17,10 +16,23 @@
  * under the License.
  */
 
-import React from "react";
-import { ConfigInterface } from "../models";
+import { CommonConfigReducerStateInterface, CommonDeploymentConfigInterface } from "@wso2is/core/models";
+import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { FeatureConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../../models";
 
 /**
- * This creates a React context that will hold the application configuration
+ * Initial state for the common config reducer.
  */
-export const AppConfig = React.createContext<ConfigInterface>(null);
+export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<CommonDeploymentConfigInterface,
+    ServiceResourceEndpointsInterface,
+    FeatureConfigInterface,
+    I18nModuleOptionsInterface,
+    UIConfigInterface> = {
+
+    deployment: null,
+    endpoints: null,
+    features: null,
+    i18n: null,
+    ui: null
+};
+

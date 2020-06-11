@@ -16,64 +16,107 @@
  * under the License.
  */
 
- /**
-  * Model of the Overview page
-  */
-interface Overview {
-    enabled: boolean;
-    accountStatus: boolean;
-    accountActivity: boolean;
-    accountSecurity: boolean;
-    consentsControl: boolean;
+import {
+    CommonConfigInterface,
+    CommonDeploymentConfigInterface,
+    FeatureAccessConfigInterface
+} from "@wso2is/core/models";
+import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+
+export type ConfigInterface = CommonConfigInterface<
+    CommonDeploymentConfigInterface,
+    ServiceResourceEndpointsInterface,
+    FeatureConfigInterface,
+    I18nModuleOptionsInterface,
+    UIConfigInterface>;
+
+/**
+ * Model of the application configurations.
+ */
+export interface FeatureConfigInterface {
+    /**
+     * User overview feature.
+     */
+    overview: FeatureAccessConfigInterface;
+    /**
+     * Personal info feature.
+     */
+    personalInfo: FeatureAccessConfigInterface;
+    /**
+     * Application management feature.
+     */
+    applications: FeatureAccessConfigInterface;
+    /**
+     * Account security feature.
+     */
+    security: FeatureAccessConfigInterface;
+    /**
+     * Pending operation tasks feature.
+     */
+    operations: FeatureAccessConfigInterface;
 }
 
 /**
- * Model of the Personal Info page
+ * Service resource endpoints config.
  */
-interface PersonalInfo {
-    enabled: true;
-    profile: true;
-    linkedAccounts: true;
-    exportProfile: true;
+export interface ServiceResourceEndpointsInterface {
+    applications: string;
+    associations: string;
+    authorize: string;
+    challenges: string;
+    challengeAnswers: string;
+    consents: string;
+    federatedAssociations: string;
+    fidoEnd: string;
+    fidoMetaData: string;
+    fidoStart: string;
+    fidoStartUsernameless: string;
+    issuer: string;
+    jwks: string;
+    logout: string;
+    me: string;
+    pendingApprovals: string;
+    profileSchemas: string;
+    receipts: string;
+    sessions: string;
+    token: string;
+    totp: string;
+    totpSecret: string;
+    user: string;
+    revoke: string;
+    wellKnown: string;
 }
 
 /**
- * Model of the Security Page configuration
+ * Authenticator app interface.
  */
-interface Security {
-    enabled: boolean;
-    changePassword: boolean;
-    accountRecovery: AccountRecovery;
-    multiFactorAuthentication: MultiFactorAuthentication;
-    activeSessions: boolean;
-    manageConsents: boolean;
+export interface AuthenticatorAppInterface {
+    link: string;
+    name: string;
 }
 
 /**
- * Model of the Account Recovery configuration
+ * Authenticator app list interface.
  */
-interface AccountRecovery {
-    enabled: boolean;
-    securityQuestions: boolean;
-    emailRecovery: boolean;
+export interface AuthenticatorAppListInterface {
+    apps: AuthenticatorAppInterface[];
 }
 
 /**
- * Model of the MFA configuration
+ * Dev portal UI config interface.
  */
-interface MultiFactorAuthentication {
-    enabled: boolean;
-    sms: boolean;
-    fido: boolean;
-}
-
-/**
- * Model of the app configuration
- */
-export interface AppConfigInterface {
-    overview: Overview;
-    personalInfo: PersonalInfo;
-    applications: boolean;
-    security: Security;
-    operations: boolean;
+export interface UIConfigInterface {
+    /**
+     * Copyright text for the footer.
+     */
+    copyrightText: string;
+    /**
+     * Title text.
+     * ex: `WSO2 Identity Server`
+     */
+    titleText?: string;
+    /**
+     * TOTP authenticator apps.
+     */
+    authenticatorApp?: AuthenticatorAppListInterface;
 }

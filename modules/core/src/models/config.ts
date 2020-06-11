@@ -194,6 +194,10 @@ export interface FeatureAccessConfigInterface {
      * Set of disabled features.
      */
     disabledFeatures?: string[];
+    /**
+     * Enable the feature.
+     */
+    enabled?: boolean;
 }
 
 /**

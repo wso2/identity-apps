@@ -17,6 +17,7 @@
  */
 
 import { ContextUtils, HttpUtils } from "@wso2is/core/utils";
+import { ThemeProvider } from "@wso2is/react-components";
 import * as React from "react";
 // tslint:disable:no-submodule-imports
 import "react-app-polyfill/ie11";
@@ -24,22 +25,34 @@ import "react-app-polyfill/ie9";
 import "react-app-polyfill/stable";
 // tslint:enable
 import * as ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
 import { GlobalConfig } from "./configs";
+import { store } from "./store";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(GlobalConfig);
 
 // Set up the Http client.
-HttpUtils.setupHttpClient(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
+HttpUtils.setupHttpClient(
+    true,
+    onHttpRequestStart,
+    onHttpRequestSuccess,
+    onHttpRequestError,
+    onHttpRequestFinish
+);
 
 ReactDOM.render(
     (
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
+        <Provider store={ store }>
+            <ThemeProvider>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </ThemeProvider>
+        </Provider>
     ),
     document.getElementById("root")
 );

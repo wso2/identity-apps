@@ -18,11 +18,11 @@
  */
 
 import { OPConfigurationUtil } from "@wso2is/authentication";
-import * as ApplicationConstants from "../constants/application-constants";
+import { AuthenticateUtils } from "@wso2is/core/utils";
+import { ApplicationConstants } from "../constants";
 import { history } from "../helpers";
 import { store } from "../store";
 import { hideGlobalLoader, showGlobalLoader } from "../store/actions";
-import { hasLoginPermission } from "./authenticate-util";
 
 /**
  * Callback to be fired on every Http request start.
@@ -88,7 +88,7 @@ export const onHttpRequestError = (error: any): null => {
     }
 
     // If the user doesn't have login permission, redirect to login error page.
-    if (!hasLoginPermission()) {
+    if (!AuthenticateUtils.hasLoginPermission()) {
         history.push(ApplicationConstants.LOGIN_ERROR_PAGE_PATH);
         return;
     }

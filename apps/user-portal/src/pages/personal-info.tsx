@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import React, { useContext } from "react";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { FederatedAssociations, LinkedAccounts, Profile, ProfileExport } from "../components";
-import { EXPORT_PROFILE, EXTERNAL_LOGINS, LINKED_ACCOUNTS, PERSONAL_INFO, PROFILE } from "../constants";
-import { AppConfig } from "../helpers";
+import { ApplicationConstants } from "../constants";
 import { InnerPageLayout } from "../layouts";
-import { AlertInterface } from "../models";
+import { AlertInterface, FeatureConfigInterface } from "../models";
+import { AppState } from "../store";
 import { addAlert } from "../store/actions";
-import { checkEnabled } from "../utils";
 
 /**
  * Personal Info page.
@@ -36,7 +36,7 @@ import { checkEnabled } from "../utils";
 export const PersonalInfoPage = (): JSX.Element => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const personalInfoConfig = useContext(AppConfig)[PERSONAL_INFO];
+    const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.features);
 
     /**
      * Dispatches the alert object to the redux store.
@@ -56,9 +56,13 @@ export const PersonalInfoPage = (): JSX.Element => {
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         {
-                            checkEnabled(personalInfoConfig, PROFILE)
+                            hasRequiredScopes(accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read) &&
+                            isFeatureEnabled(
+                                accessConfig?.personalInfo,
+                                ApplicationConstants.FEATURE_DICTIONARY.get("PROFILEINFO_PROFILE")
+                            )
                             ? (
-                                < Profile onAlertFired={ handleAlerts } />
+                                <Profile onAlertFired={ handleAlerts } />
                             )
                             : null
                         }
@@ -67,33 +71,45 @@ export const PersonalInfoPage = (): JSX.Element => {
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         {
-                            checkEnabled(personalInfoConfig, LINKED_ACCOUNTS)
-                                ? (
-                                    <LinkedAccounts onAlertFired={ handleAlerts } />
-                                )
-                                : null
+                            hasRequiredScopes(accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read) &&
+                            isFeatureEnabled(
+                                accessConfig?.personalInfo,
+                                ApplicationConstants.FEATURE_DICTIONARY.get("PROFILEINFO_LINKED_ACCOUNTS")
+                            )
+                            ? (
+                                <LinkedAccounts onAlertFired={ handleAlerts } />
+                            )
+                            : null
                         }
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         {
-                            checkEnabled(personalInfoConfig, EXTERNAL_LOGINS)
-                                ? (
-                                    <FederatedAssociations onAlertFired={ handleAlerts } />
-                                )
-                                : null
+                            hasRequiredScopes(accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read) &&
+                            isFeatureEnabled(
+                                accessConfig?.personalInfo,
+                                ApplicationConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXTERNAL_LOGINS")
+                            )
+                            ? (
+                                <FederatedAssociations onAlertFired={ handleAlerts } />
+                            )
+                            : null
                         }
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         {
-                            checkEnabled(personalInfoConfig, EXPORT_PROFILE)
-                                ? (
-                                    <ProfileExport onAlertFired={ handleAlerts } />
-                                )
-                                : null
+                            hasRequiredScopes(accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read) &&
+                            isFeatureEnabled(
+                                accessConfig?.personalInfo,
+                                ApplicationConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXPORT_PROFILE")
+                            )
+                            ? (
+                                <ProfileExport onAlertFired={ handleAlerts } />
+                            )
+                            : null
                         }
                     </Grid.Column>
                 </Grid.Row>

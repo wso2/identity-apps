@@ -16,9 +16,10 @@
  * under the License.
  */
 
-import React, { useContext } from "react";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import React  from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import {
     AccountRecoveryComponent,
@@ -27,19 +28,11 @@ import {
     MultiFactorAuthentication,
     UserSessionsComponent
 } from "../components";
-import {
-    ACCOUNT_RECOVERY,
-    ACTIVE_SESSIONS,
-    CHANGE_PASSWORD,
-    MANAGE_CONSENTS,
-    MULTI_FACTOR_AUTHENTICATION,
-    SECURITY
-} from "../constants";
-import { AppConfig } from "../helpers";
+import { ApplicationConstants } from "../constants";
 import { InnerPageLayout } from "../layouts";
-import { AlertInterface } from "../models";
+import { AlertInterface, FeatureConfigInterface } from "../models";
+import { AppState } from "../store";
 import { addAlert } from "../store/actions";
-import { checkEnabled } from "../utils";
 
 /**
  * Account security page.
@@ -49,7 +42,7 @@ import { checkEnabled } from "../utils";
 export const AccountSecurityPage = (): JSX.Element => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const securityConfig = useContext(AppConfig)[SECURITY];
+    const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.features);
 
     /**
      * Dispatches the alert object to the redux store.
@@ -68,55 +61,78 @@ export const AccountSecurityPage = (): JSX.Element => {
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         {
-                            checkEnabled(securityConfig, CHANGE_PASSWORD)
-                                ? (
-                                    <ChangePassword onAlertFired={ handleAlerts } />
-                                )
-                                : null
+                            hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read) &&
+                            isFeatureEnabled(
+                                accessConfig?.security,
+                                ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_CHANGE_PASSWORD")
+                            )
+                            ? (
+                                <ChangePassword onAlertFired={ handleAlerts } />
+                            )
+                            : null
                         }
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         {
-                            checkEnabled(securityConfig, ACCOUNT_RECOVERY)
-                                ? (
-                                    <AccountRecoveryComponent onAlertFired={ handleAlerts } />
-                                )
-                                : null
+                            hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read) &&
+                            isFeatureEnabled(
+                                accessConfig?.security,
+                                ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY")
+                            )
+                            ? (
+                                <AccountRecoveryComponent
+                                    featureConfig={ accessConfig }
+                                    onAlertFired={ handleAlerts }
+                                />
+                            )
+                            : null
                         }
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         {
-                            checkEnabled(securityConfig, MULTI_FACTOR_AUTHENTICATION)
-                                ? (
-                                    <MultiFactorAuthentication onAlertFired={ handleAlerts } />
-                                )
-                                : null
+                            hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read) &&
+                            isFeatureEnabled(
+                                accessConfig?.security,
+                                ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")
+                            )
+                            ? (
+                                <MultiFactorAuthentication onAlertFired={ handleAlerts } />
+                            )
+                            : null
                         }
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         {
-                            checkEnabled(securityConfig, ACTIVE_SESSIONS)
-                                ? (
-                                    <UserSessionsComponent onAlertFired={ handleAlerts } />
-                                )
-                                : null
+                            hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read) &&
+                            isFeatureEnabled(
+                                accessConfig?.security,
+                                ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_ACTIVE_SESSIONS")
+                            )
+                            ? (
+                                <UserSessionsComponent onAlertFired={ handleAlerts } />
+                            )
+                            : null
                         }
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         {
-                            checkEnabled(securityConfig, MANAGE_CONSENTS)
-                                ? (
-                                    <Consents onAlertFired={ handleAlerts } />
-                                )
-                                : null
+                            hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read) &&
+                            isFeatureEnabled(
+                                accessConfig?.security,
+                                ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_CONSENTS")
+                            )
+                            ? (
+                                <Consents onAlertFired={ handleAlerts } />
+                            )
+                            : null
                         }
                     </Grid.Column>
                 </Grid.Row>

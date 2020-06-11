@@ -20,8 +20,14 @@ import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Message, Modal } from "semantic-ui-react";
-import { fetchConsentedApps, fetchConsentReceipt, revokeConsentedApp, updateConsentedClaims } from "../../api/consents";
-import * as ApplicationConstants from "../../constants/application-constants";
+import { AppConsentList } from "./consents-list";
+import {
+    fetchConsentReceipt,
+    fetchConsentedApps,
+    revokeConsentedApp,
+    updateConsentedClaims
+} from "../../api/consents";
+import { ApplicationConstants } from "../../constants";
 import {
     AlertInterface,
     AlertLevels,
@@ -32,7 +38,6 @@ import {
 } from "../../models";
 import { endUserSession } from "../../utils";
 import { ModalComponent, SettingsSection } from "../shared";
-import { AppConsentList } from "./consents-list";
 
 /**
  * Proptypes for the user sessions component.

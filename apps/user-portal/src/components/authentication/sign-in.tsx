@@ -22,7 +22,7 @@ import { GlobalConfig } from "../../configs";
 import { handleSignIn } from "../../store/actions";
 import { history } from "../../helpers";
 import { useEffect } from "react";
-import { USER_DENIED_CONSENT } from "../../constants";
+import { ApplicationConstants } from "../../constants";
 
 /**
  * This component handles the sign-in function
@@ -50,7 +50,7 @@ export const SignIn = (props) => {
     useEffect(() => {
         if (!isAuth && !error) {
             dispatch(handleSignIn());
-        } else if (error === USER_DENIED_CONSENT) {
+        } else if (error === ApplicationConstants.USER_DENIED_CONSENT) {
             // dispatch(handleSignIn());
             // TODO: Send it to an error page
         } else {

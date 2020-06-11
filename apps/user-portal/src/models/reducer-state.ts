@@ -1,4 +1,3 @@
-
 /**
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -17,10 +16,16 @@
  * under the License.
  */
 
-import React from "react";
-import { ConfigInterface } from "../models";
+import { CommonConfigReducerStateInterface, CommonDeploymentConfigInterface } from "@wso2is/core/models";
+import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { FeatureConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "./app-config";
 
 /**
- * This creates a React context that will hold the application configuration
+ * Dev portal config reducer state interface.
  */
-export const AppConfig = React.createContext<ConfigInterface>(null);
+export type ConfigReducerStateInterface = CommonConfigReducerStateInterface<
+    CommonDeploymentConfigInterface,
+    ServiceResourceEndpointsInterface,
+    FeatureConfigInterface,
+    I18nModuleOptionsInterface,
+    UIConfigInterface>;

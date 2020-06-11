@@ -21,7 +21,7 @@ import { AxiosHttpClient } from "@wso2is/http";
 import axios from "axios";
 import _ from "lodash";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
-import * as ApplicationConstants from "../constants/application-constants";
+import { ApplicationConstants } from "../constants";
 import { history } from "../helpers";
 import { BasicProfileInterface, HttpMethods, MultiValue, ProfileSchema } from "../models";
 import { store } from "../store";

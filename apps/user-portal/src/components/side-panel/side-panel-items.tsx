@@ -16,20 +16,21 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/dist/src/helpers";
 import _ from "lodash";
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
 import { fetchApplications } from "../../api";
 import { SidePanelIcons } from "../../configs";
-import * as ApplicationConstants from "../../constants/application-constants";
+import { ApplicationConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
-import { AppConfig } from "../../helpers";
+import { FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
 import { toggleApplicationsPageVisibility } from "../../store/actions";
-import { filteredRoutes, hasScope } from "../../utils";
+import { filteredRoutes } from "../../utils";
 import { ThemeIcon } from "../shared";
 
 /**
@@ -54,7 +55,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const isApplicationsPageVisible = useSelector((state: AppState) => state.global.isApplicationsPageVisible);
-    const appConfig = useContext(AppConfig);
+    const appConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.features);
     const activeRoute = (path: string) => {
         const pathname = window.location.pathname;
         const urlTokens = path.split("/");
@@ -105,32 +106,34 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
     return (
         <Menu className={ `side-panel ${ type }` } style={ style } vertical fluid>
             {
-                filteredRoutes(appConfig).map((route, index) => (
-                    (route.showOnSidePanel
-                        && (route.scope ? hasScope(route.scope) : true)
-                        && validateSidePanelVisibility(route.path))
-                        ? (
-                            <Menu.Item
-                                as={ NavLink }
-                                to={ route.path }
-                                name={ route.name }
-                                className={ `side-panel-item ${ activeRoute(route.path) }` }
-                                active={ activeRoute(route.path) === "active" }
-                                onClick={ onSidePanelItemClick }
-                                key={ index }
-                            >
-                                <ThemeIcon
-                                    icon={ SidePanelIcons[ route.icon ] }
-                                    size="micro"
-                                    floated="left"
-                                    spaced="right"
-                                    transparent
-                                />
-                                <span className="route-name">{ t(route.name) }</span>
-                            </Menu.Item>
-                        )
-                        : null
-                ))
+                appConfig && (
+                    filteredRoutes(appConfig).map((route, index) => (
+                        (route.showOnSidePanel
+                            && hasRequiredScopes(appConfig[route.id], appConfig[route.id]?.scopes?.read)
+                            && validateSidePanelVisibility(route.path))
+                            ? (
+                                <Menu.Item
+                                    as={ NavLink }
+                                    to={ route.path }
+                                    name={ route.name }
+                                    className={ `side-panel-item ${ activeRoute(route.path) }` }
+                                    active={ activeRoute(route.path) === "active" }
+                                    onClick={ onSidePanelItemClick }
+                                    key={ index }
+                                >
+                                    <ThemeIcon
+                                        icon={ SidePanelIcons[ route.icon ] }
+                                        size="micro"
+                                        floated="left"
+                                        spaced="right"
+                                        transparent
+                                    />
+                                    <span className="route-name">{ t(route.name) }</span>
+                                </Menu.Item>
+                            )
+                            : null
+                    ))
+                )
             }
         </Menu>
     );

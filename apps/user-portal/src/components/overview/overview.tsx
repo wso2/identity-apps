@@ -16,23 +16,19 @@
  * under the License.
  */
 
-import React, { FunctionComponent, useContext } from "react";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import React, { FunctionComponent } from "react";
+import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import {
-    ACCOUNT_ACTIVITY,
-    ACCOUNT_SECURITY,
-    ACCOUNT_STATUS,
-    CONSENTS_CONTROL,
-    OVERVIEW
-} from "../../constants";
-import { AppConfig } from "../../helpers";
-import { checkEnabled } from "../../utils";
 import {
     AccountSecurityWidget,
     AccountStatusWidget,
     ConsentManagementWidget,
     UserSessionsWidget
 } from "./widgets";
+import { ApplicationConstants } from "../../constants";
+import { FeatureConfigInterface } from "../../models";
+import { AppState } from "../../store";
 
 /**
  * Overview component.
@@ -40,7 +36,7 @@ import {
  * @return {JSX.Element}
  */
 export const Overview: FunctionComponent<{}> = (): JSX.Element => {
-    const overViewConfig = useContext(AppConfig)[OVERVIEW];
+    const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.features);
 
     return (
         <Grid className="overview-page">
@@ -48,38 +44,50 @@ export const Overview: FunctionComponent<{}> = (): JSX.Element => {
             <Grid.Row>
                 <Grid.Column computer={ 9 } mobile={ 16 }>
                     {
-                        checkEnabled(overViewConfig, ACCOUNT_STATUS)
-                            ? (
-                                <AccountStatusWidget />
-                            )
-                            : null
+                        hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read) &&
+                        isFeatureEnabled(
+                            accessConfig?.overview,
+                            ApplicationConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_STATUS")
+                        )
+                        ? (
+                            <AccountStatusWidget />
+                        ) : null
                     }
                 </Grid.Column>
                 <Grid.Column computer={ 7 } mobile={ 16 }>
                     {
-                        checkEnabled(overViewConfig, ACCOUNT_ACTIVITY)
-                            ? (
-                                <UserSessionsWidget />
-                            )
-                            : null
+                        hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read) &&
+                        isFeatureEnabled(
+                            accessConfig?.overview,
+                            ApplicationConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_ACTIVITY")
+                        )
+                        ? (
+                            <UserSessionsWidget />
+                        ) : null
                     }
                 </Grid.Column>
                 <Grid.Column computer={ 8 } mobile={ 16 }>
                     {
-                        checkEnabled(overViewConfig, ACCOUNT_SECURITY)
-                            ? (
-                                <AccountSecurityWidget />
-                            )
-                            : null
+                        hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read) &&
+                        isFeatureEnabled(
+                            accessConfig?.overview,
+                            ApplicationConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_SECURITY")
+                        )
+                        ? (
+                            <AccountSecurityWidget />
+                        ) : null
                     }
                 </Grid.Column>
                 <Grid.Column computer={ 8 } mobile={ 16 }>
                     {
-                        checkEnabled(overViewConfig, CONSENTS_CONTROL)
-                            ? (
-                                <ConsentManagementWidget />
-                            )
-                            : null
+                        hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read) &&
+                        isFeatureEnabled(
+                            accessConfig?.overview,
+                            ApplicationConstants.FEATURE_DICTIONARY.get("OVERVIEW_CONSENTS")
+                        )
+                        ? (
+                            <ConsentManagementWidget />
+                        ) : null
                     }
                 </Grid.Column>
             </Grid.Row>
