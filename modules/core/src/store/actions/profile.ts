@@ -17,47 +17,48 @@
  */
 
 import _ from "lodash";
-import { getProfileInfo, getProfileSchemas } from "../../api";
-import { LinkedAccountInterface, ProfileInfoInterface, ProfileSchemaInterface } from "../../models";
 import { setProfileInfoRequestLoadingStatus, setProfileSchemaRequestLoadingStatus } from "./loaders";
 import {
-    ProfileActionTypes,
+    CommonProfileActionTypes,
     SetProfileInfoActionInterface,
+    SetProfileLinkedAccountsActionInterface,
     SetProfileSchemasActionInterface,
     ToggleSCIMEnabledActionInterface
 } from "./types";
+import { getProfileInfo, getProfileSchemas } from "../../api";
+import { ProfileInfoInterface, ProfileSchemaInterface } from "../../models";
 
 /**
  * Redux action to set profile info.
  *
- * @param info - Profile information.
- * @return {SetProfileInfoActionInterface} An action of type `SET_PROFILE_INFO`
+ * @param {T} info - Profile information.
+ * @return {SetProfileInfoActionInterface<T>}
  */
-export const setProfileInfo = (info: any): SetProfileInfoActionInterface => ({
+export const setProfileInfo = <T = {}>(info: T): SetProfileInfoActionInterface<T> => ({
     payload: info,
-    type: ProfileActionTypes.SET_PROFILE_INFO
+    type: CommonProfileActionTypes.SET_PROFILE_INFO
 });
 
 /**
  * Redux action to set profile schemas.
  *
- * @param {ProfileSchemaInterface[]} schemas - Profile schemas.
- * @return {SetProfileSchemasActionInterface} An action of type `SET_PROFILE_SCHEMAS`
+ * @param {T} schemas - Profile schemas.
+ * @return {SetProfileSchemasActionInterface<T>}
  */
-export const setSCIMSchemas = (schemas: ProfileSchemaInterface[]): SetProfileSchemasActionInterface => ({
+export const setSCIMSchemas = <T = {}>(schemas: T): SetProfileSchemasActionInterface<T> => ({
     payload: schemas,
-    type: ProfileActionTypes.SET_PROFILE_SCHEMAS
+    type: CommonProfileActionTypes.SET_PROFILE_SCHEMAS
 });
 
 /**
  * Redux action to set profile linked accounts.
  *
- * @param {LinkedAccountInterface[]} accounts - Profile schemas.
- * @return {SetProfileSchemasActionInterface} An action of type `SET_PROFILE_SCHEMAS`
+ * @param {T} accounts - Profile schemas.
+ * @return {SetProfileSchemasActionInterface<T>}
  */
-export const setProfileLinkedAccounts = (accounts: LinkedAccountInterface[]) => ({
+export const setProfileLinkedAccounts = <T = {}>(accounts: T): SetProfileLinkedAccountsActionInterface => ({
     payload: accounts,
-    type: ProfileActionTypes.SET_PROFILE_LINKED_ACCOUNTS
+    type: CommonProfileActionTypes.SET_PROFILE_LINKED_ACCOUNTS
 });
 
 /**
@@ -68,7 +69,7 @@ export const setProfileLinkedAccounts = (accounts: LinkedAccountInterface[]) => 
  */
 export const toggleSCIMEnabled = (isEnabled: boolean): ToggleSCIMEnabledActionInterface => ({
     payload: isEnabled,
-    type: ProfileActionTypes.TOGGLE_SCIM_ENABLED
+    type: CommonProfileActionTypes.TOGGLE_SCIM_ENABLED
 });
 
 /**

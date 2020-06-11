@@ -19,6 +19,7 @@
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
+    CommonUIConfigInterface,
     FeatureAccessConfigInterface
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
@@ -79,11 +80,7 @@ export interface FeatureConfigInterface {
 /**
  * Dev portal UI config interface.
  */
-export interface UIConfigInterface {
-    /**
-     * Copyright text for the footer.
-     */
-    copyrightText: string;
+export interface UIConfigInterface extends CommonUIConfigInterface {
     /**
      * Application(SPs) that shouldn't be allowed to delete.
      */
@@ -92,11 +89,6 @@ export interface UIConfigInterface {
      * Application(SPs) that shouldn't be allowed to delete.
      */
     doNotDeleteIdentityProviders?: string[];
-    /**
-     * Title text.
-     * ex: `WSO2 Identity Server`
-     */
-    titleText?: string;
 }
 
 /**

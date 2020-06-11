@@ -17,6 +17,7 @@
  */
 
 import { DocumentationProviders, DocumentationStructureFileTypes } from "./documentation";
+import { GravatarConfig } from "./profile";
 
 /**
  * Common interface for configs.
@@ -118,6 +119,25 @@ export interface CommonDeploymentConfigInterface {
      * ex: `/t/`
      */
     tenantPath: string;
+}
+
+/**
+ * Common config interface for UI settings.
+ */
+export interface CommonUIConfigInterface {
+    /**
+     * Copyright text for the footer.
+     */
+    appCopyright?: string;
+    /**
+     * Title text for the browser window.
+     * ex: `WSO2 Identity Server`
+     */
+    appTitle?: string;
+    /**
+     * Gravatar service configurations.
+     */
+    gravatarConfig?: GravatarConfig;
 }
 
 /**

@@ -271,7 +271,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
         setFilteredRoutes(RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(routes, featureConfig));
 
         if (_.isEmpty(profileDetails)) {
-            dispatch(getProfileInfo(() => null));
+            dispatch(getProfileInfo(() => null, config.ui.gravatarConfig));
         }
     }, []);
 
@@ -378,8 +378,8 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     ) }
                     userDropdownLinks={ [
                         {
-                            name: "Logout",
-                            to: "/logout"
+                            name: t("common:logout"),
+                            to: window[ "AppUtils" ].getConfig().routes.logout
                         }
                     ] }
                     profileInfo={ profileDetails.profileInfo }
@@ -403,6 +403,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     icons={ SidePanelIcons }
                     routes={ filteredRoutes }
                     selected={ selectedRoute }
+                    translationHook={ t }
                 />
             ) }
             footer={ (
@@ -414,8 +415,8 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     copyright={ state.copyrightText && state.copyrightText !== "" ?
                         state.copyrightText
                         :
-                        config.ui.copyrightText
-                            ? config.ui.copyrightText
+                        config.ui.appCopyright
+                            ? config.ui.appCopyright
                             : null
                     }
                     fixed="bottom"

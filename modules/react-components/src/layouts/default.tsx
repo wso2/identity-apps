@@ -16,13 +16,19 @@
  * under the License.
  */
 
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
-import { Container } from "semantic-ui-react";
+import classNames from "classnames";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode, SyntheticEvent } from "react";
+import { Container, Responsive } from "semantic-ui-react";
+import { BaseLayout, BaseLayoutInterface } from "./base";
 
 /**
  * Default layout Prop types.
  */
-export interface DefaultLayoutPropsInterface {
+export interface DefaultLayoutPropsInterface extends BaseLayoutInterface {
+    /**
+     * App footer component.
+     */
+    footer?: ReactNode;
     /**
      * Extra CSS classes.
      */
@@ -31,6 +37,28 @@ export interface DefaultLayoutPropsInterface {
      * Is layout fluid.
      */
     fluid?: boolean;
+    /**
+     * App header component.
+     */
+    header?: ReactNode;
+    /**
+     * Content spacing.
+     */
+    desktopContentTopSpacing?: number;
+    /**
+     * height of the footer.
+     */
+    footerHeight: number;
+    /**
+     * Height of the header.
+     */
+    headerHeight: number;
+    /**
+     * Fired on layout update to handle responsiveness.
+     * @param {React.SyntheticEvent<HTMLElement>} event - Event.
+     * @param {ResponsiveOnUpdateData} data - Metadata.
+     */
+    onLayoutOnUpdate?: (event: SyntheticEvent<HTMLElement>, data: any) => void;
 }
 
 /**
@@ -45,14 +73,59 @@ export const DefaultLayout: FunctionComponent<PropsWithChildren<DefaultLayoutPro
 ): ReactElement => {
 
     const {
+        alert,
         children,
-        fluid
+        className,
+        desktopContentTopSpacing,
+        footer,
+        footerHeight,
+        fluid,
+        header,
+        headerHeight,
+        onLayoutOnUpdate,
+        topLoadingBar
     } = props;
 
+    const classes = classNames(
+        "layout",
+        "default-layout",
+        {
+            [ "fluid-default-layout" ]: fluid
+        },
+        className
+    );
+
+    const mainLayoutStyles = {
+        paddingBottom: `${ footerHeight }px`,
+        paddingTop: `${ headerHeight }px`
+    };
+
+    const mainContentStyle = {
+        minHeight: `calc(100vh - ${ headerHeight + footerHeight }px`,
+        paddingTop: `${ desktopContentTopSpacing }px`
+    };
+
     return (
-        <Container fluid={ fluid }>
-            { children }
-        </Container>
+        <BaseLayout
+            alert={ alert }
+            topLoadingBar={ topLoadingBar }
+        >
+            <Responsive
+                as={ Container }
+                fluid={ fluid }
+                className={ classes }
+                fireOnMount
+                onUpdate={ onLayoutOnUpdate }
+            >
+                { header }
+                <div style={ mainLayoutStyles } className="layout-content-wrapper">
+                    <div style={ mainContentStyle } className="layout-content">
+                        { children }
+                    </div>
+                </div>
+                { footer }
+            </Responsive>
+        </BaseLayout>
     );
 };
 

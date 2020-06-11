@@ -33,6 +33,9 @@
         "appCopyright": "WSO2 Identity Server",
         "appTitle": "WSO2 Identity Server Developer Dashboard",
         "appName": "Identity Server",
-        "appLogoPath": "/assets/images/logo.svg"
+        "appLogoPath": "/assets/images/logo.svg",
+        "gravatarConfig": {
+            "fallback": "404"
+        }
     }
 }

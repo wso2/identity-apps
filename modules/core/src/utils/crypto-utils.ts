@@ -17,15 +17,34 @@
  *
  */
 
-export * from "./authenticate-utils";
-export * from "./context-utils";
-export * from "./crypto-utils";
-export * from "./encode-decode-utils";
-export * from "./http-utils";
-export * from "./image-utils";
-export * from "./profile-utils";
-export * from "./route-utils";
-export * from "./search-utils";
-export * from "./storage-utils";
-export * from "./string-utils";
-export * from "./url-utils";
+import { MD5, WordArray } from "crypto-js";
+
+/**
+ * Utility class for cryptography operations.
+ */
+export class CryptoUtils {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() { }
+
+    /**
+     * Hashes a string using MD5 hashing.
+     *
+     * @param {string} raw - Raw string.
+     * @return {CryptoJS.WordArray} Hashed string
+     */
+    public static MD5Hash(raw: string): WordArray {
+
+        if (!raw) {
+            return null;
+        }
+
+        return MD5((raw).trim());
+    }
+}

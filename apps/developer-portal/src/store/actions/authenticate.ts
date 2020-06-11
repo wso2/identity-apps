@@ -89,7 +89,7 @@ export const getProfileInformation = () => (dispatch): void => {
 
     // Get the profile info.
     // TODO: Add the function to handle SCIM disabled error.
-    getProfileInfo(null)
+    getProfileInfo(null, store.getState().config.ui.gravatarConfig)
         .then((infoResponse) => {
             if (infoResponse.responseStatus === 200) {
                 dispatch(

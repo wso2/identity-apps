@@ -200,3 +200,34 @@ export const emptyProfileInfo = (): ProfileInfoInterface => ({
     userImage: "",
     userName: ""
 });
+
+/**
+ * Fallback types for gravatar images.
+ */
+export type GravatarFallbackTypes =
+    "404"
+    | "mp"
+    | "identicon"
+    | "monsterid"
+    | "wavatar"
+    | "retro"
+    | "robohash"
+    | "blank";
+
+/**
+ * Configuration for Gravatar.
+ */
+export interface GravatarConfig {
+    /**
+     * Image Sizee.
+     */
+    size?: number;
+    /**
+     * Custom fallback image URL.
+     */
+    defaultImage?: string;
+    /**
+     * Fallback types.
+     */
+    fallback?: GravatarFallbackTypes;
+}

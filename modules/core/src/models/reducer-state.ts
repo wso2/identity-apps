@@ -17,11 +17,41 @@
  */
 
 import { CommonConfigInterface } from "./config";
-import { AlertInterface } from "./core";
-import { LinkedAccountInterface, ProfileInfoInterface, ProfileSchemaInterface } from "./profile";
+
+/**
+ * Common Interface for the Auth reducer state.
+ */
+export interface CommonAuthReducerStateInterface {
+    /**
+     * Display name decoded from the ID token.
+     */
+    displayName: string;
+    /**
+     * Emails decoded from the ID token.
+     */
+    emails: string;
+    /**
+     * Flag to determine if the user is authenticated.
+     */
+    isAuthenticated: boolean;
+    /**
+     * Flag to determine if login is initiated.
+     */
+    loginInit: boolean;
+    /**
+     * Flag to determine if logout is initiated.
+     */
+    logoutInit: boolean;
+    /**
+     * Username decoded from the ID token.
+     */
+    username: string;
+}
 
 /**
  * Interface for the Auth reducer state.
+ *
+ * @deprecated Remove once `UserAvatar` in react components library is refactored.
  */
 export interface AuthReducerStateInterface {
     /**
@@ -51,29 +81,33 @@ export interface AuthReducerStateInterface {
 }
 
 /**
- * Interface for the Global reducer state.
+ * Interface for the common global reducer state.
  */
-export interface GlobalReducerStateInterface {
+export interface CommonGlobalReducerStateInterface<T, S, U> {
     /**
      * Alert object.
      */
-    alert: AlertInterface;
+    alert: T;
     /**
      * Alert system instance.
      */
-    alertSystem: any;
+    alertSystem: S;
     /**
-     * Flag to determine if the global loader is visible.
+     * Flag to determine if the AJAX top loader is visible.
      */
-    isGlobalLoaderVisible: boolean;
+    isAJAXTopLoaderVisible: boolean;
+    /**
+     * Supported languages.
+     */
+    supportedI18nLanguages: U;
 }
 
 /**
  * Interface for the common request loaders reducer state.
  */
 export interface CommonRequestLoadersReducerStateInterface {
-    isProfileInfoRequestLoading: boolean;
-    isProfileSchemaRequestLoading: boolean;
+    isProfileInfoRequestLoading?: boolean;
+    isProfileSchemaRequestLoading?: boolean;
     isSignOutRequestLoading: boolean;
     isTokenRequestLoading: boolean;
     isTokenRevokeRequestLoading: boolean;
@@ -82,11 +116,11 @@ export interface CommonRequestLoadersReducerStateInterface {
 /**
  * Interface for common profile reducer state.
  */
-export interface CommonProfileReducerStateInterface {
+export interface CommonProfileReducerStateInterface<T, S, U> {
     isSCIMEnabled: boolean;
-    linkedAccounts: LinkedAccountInterface[];
-    profileInfo: ProfileInfoInterface;
-    profileSchemas: ProfileSchemaInterface[];
+    profileInfo: T;
+    profileSchemas: S;
+    linkedAccounts: U;
 }
 
 /**

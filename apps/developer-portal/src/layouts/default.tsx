@@ -16,11 +16,31 @@
  * under the License.
  */
 
-import { DefaultLayout as DefaultLayoutSkeleton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
+import { AlertInterface } from "@wso2is/core/models";
+import { initializeAlertSystem } from "@wso2is/core/store";
+import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
+import {
+    Alert,
+    DefaultLayout as DefaultLayoutSkeleton,
+    Footer,
+    Header,
+    Logo,
+    ProductBrand,
+    ThemeContext,
+    TopLoadingBar
+} from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
+import { Button, Image, Responsive } from "semantic-ui-react";
 import { ProtectedRoute } from "../components";
 import { defaultLayoutRoutes } from "../configs";
+import { UIConstants } from "../constants";
+import { ComponentPlaceholder } from "../extensions";
+import { AuthStateInterface, ConfigReducerStateInterface } from "../models";
+import { AppState } from "../store";
 
 /**
  * Default page layout component Prop types.
@@ -45,8 +65,183 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
 
     const { fluid } = props;
 
+    const dispatch = useDispatch();
+
+    const { t } = useTranslation();
+
+    const { state } = useContext(ThemeContext);
+
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+    const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
+    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state.global.supportedI18nLanguages);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
+    const alertSystem: any = useSelector((state: AppState) => state.global.alertSystem);
+    const ajaxLoaderVisibility: boolean = useSelector((state: AppState) => state.global.isGlobalLoaderVisible);
+
+    const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
+    const [ footerHeight, setFooterHeight ] = useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
+    const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (headerHeight === document.getElementById("app-header").offsetHeight) {
+            return;
+        }
+        setHeaderHeight(document.getElementById("app-header").offsetHeight - UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT);
+    }, []);
+
+    useEffect(() => {
+        if (footerHeight === document.getElementById("app-footer").offsetHeight) {
+            return;
+        }
+        setFooterHeight(document.getElementById("app-footer").offsetHeight);
+    }, []);
+
+    /**
+     * Handles the layout on change event.
+     *
+     * @param {React.SyntheticEvent<HTMLElement>} event - On change event.
+     * @param {any} width - Width of the browser window.
+     */
+    const handleLayoutOnUpdate = (event: SyntheticEvent<HTMLElement>, { width }): void => {
+        if (width < Responsive.onlyTablet.minWidth) {
+            setIsMobileViewport(true);
+            return;
+        }
+
+        if (!isMobileViewport) {
+            return;
+        }
+
+        setIsMobileViewport(false);
+    };
+
+    /**
+     * Handles language switch action.
+     *
+     * @param {string} language - Selected language.
+     */
+    const handleLanguageSwitch = (language: string): void => {
+        I18n.instance.changeLanguage(language)
+            .catch((error) => {
+                throw new LanguageChangeException(language, error)
+            })
+    };
+
+    const handleAlertSystemInitialize = (system) => {
+        dispatch(initializeAlertSystem(system));
+    };
+
     return (
-        <DefaultLayoutSkeleton fluid={ fluid }>
+        <DefaultLayoutSkeleton
+            fluid={ fluid }
+            alert={ (
+                <Alert
+                    dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
+                    alertsPosition="br"
+                    alertSystem={ alertSystem }
+                    alert={ alert }
+                    onAlertSystemInitialize={ handleAlertSystemInitialize }
+                    withIcon={ true }
+                />
+            ) }
+            topLoadingBar={ (
+                <TopLoadingBar
+                    height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT }
+                    visibility={ ajaxLoaderVisibility }
+                />
+            ) }
+            footerHeight={ footerHeight }
+            headerHeight={ headerHeight }
+            desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
+            onLayoutOnUpdate={ handleLayoutOnUpdate }
+            header={ (
+                <Header
+                    brand={ (
+                        <ProductBrand
+                            style={ { marginTop: 0 } }
+                            logo={
+                                (state.logo && state.logo !== "")
+                                    ? <Image src={ state.logo } style={ { maxHeight: 25 } }/>
+                                    : (
+                                        <Logo
+                                            className="portal-logo"
+                                            image={
+                                                resolveAppLogoFilePath(window[ "AppUtils" ].getConfig().ui.appLogoPath,
+                                                    `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
+                                                    `${ window[ "AppUtils" ].getConfig().appBase }/libs/themes/` +
+                                                    state.theme)
+                                            }
+                                        />
+                                    )
+                            }
+                            name={
+                                (state.productName && state.productName !== "")
+                                    ? state.productName
+                                    : config.deployment.applicationName
+                            }
+                            version={ {
+                                milestoneNumber: config.deployment.productVersion?.milestoneNumber,
+                                releaseType: config.deployment.productVersion?.releaseType,
+                                versionNumber: config.deployment.productVersion?.versionNumber
+                            } }
+                        />
+                    ) }
+                    brandLink={ config.deployment.appHomePath }
+                    basicProfileInfo={ profileDetails }
+                    fluid={ !isMobileViewport ? fluid : false }
+                    isProfileInfoLoading={ isProfileInfoLoading }
+                    userDropdownInfoAction={ (
+                        <Button
+                            size="tiny"
+                            primary
+                            onClick={
+                                (): void => {
+                                    window.open(window[ "AppUtils" ].getConfig().accountAppURL);
+                                }
+                            }
+                        >
+                            { t("common:myAccount") }
+                        </Button>
+                    ) }
+                    userDropdownLinks={ [
+                        {
+                            name: t("common:logout"),
+                            to: window[ "AppUtils" ].getConfig().routes.logout
+                        }
+                    ] }
+                    profileInfo={ profileDetails.profileInfo }
+                    showUserDropdown={ true }
+                    showSidePanelToggle={ false }
+                >
+                    <ComponentPlaceholder section="feedback-button" type="component"/>
+                </Header>
+            ) }
+            footer={ (
+                <Footer
+                    showLanguageSwitcher
+                    currentLanguage={ I18n.instance?.language }
+                    supportedLanguages={ supportedI18nLanguages }
+                    onLanguageChange={ handleLanguageSwitch }
+                    copyright={
+                        (state.copyrightText && state.copyrightText !== "")
+                            ? state.copyrightText
+                            : config.ui.appCopyright
+                                ? config.ui.appCopyright
+                                : null
+                    }
+                    fixed="bottom"
+                    fluid={ !isMobileViewport ? fluid : false }
+                    links={ [
+                        {
+                            name: t("common:privacy"),
+                            to: "/privacy"
+                        }
+                    ] }
+                />
+            ) }
+        >
             <Switch>
                 {
                     defaultLayoutRoutes.map((route, index) => (

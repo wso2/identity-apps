@@ -34,6 +34,7 @@
         "run-script-os": "^1.0.7"
     },
     "peerDependencies": {
+        "@types/crypto-js": "*",
         "@types/history": "*",
         "@types/jest": "*",
         "@types/js-yaml": "*",
@@ -43,6 +44,7 @@
         "@types/react-notification-system": "*",
         "@types/ua-parser-js": "*",
         "axios": "*",
+        "crypto-js": "*",
         "history": "*",
         "jest": "*",
         "js-yaml": "*",

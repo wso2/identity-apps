@@ -17,26 +17,21 @@
  */
 
 /**
- * Enum for global action types.
- *
- * @readonly
- * @enum {string}
+ * Enum for common global action types.
  */
-import { AlertInterface } from "../../../models";
-
-export enum GlobalActionTypes {
+export enum CommonGlobalActionTypes {
     /**
-     * Action type to show the global loader.
+     * Action type to show the top AJAX loading bar.
      *
      * @type {string}
      */
-    SHOW_GLOBAL_LOADER = "SHOW_GLOBAL_LOADER",
+    SHOW_AJAX_TOP_LOADING_BAR = "SHOW_AJAX_TOP_LOADING_BAR",
     /**
-     * Action type to hide the global loader.
+     * Action type to hide the top AJAX loading bar.
      *
      * @type {string}
      */
-    HIDE_GLOBAL_LOADER = "HIDE_GLOBAL_LOADER",
+    HIDE_AJAX_TOP_LOADING_BAR = "HIDE_GLOBAL_LOADER",
     /**
      * Action type to initialize the alert system.
      *
@@ -48,50 +43,65 @@ export enum GlobalActionTypes {
      *
      * @type {string}
      */
-    ADD_ALERT = "ADD_ALERT"
+    ADD_ALERT = "ADD_ALERT",
+    /**
+     * Action type to set the supported languages.
+     *
+     * @type {string}
+     */
+    SET_SUPPORTED_I18N_LANGUAGES = "SET_SUPPORTED_I18N_LANGUAGES"
 }
 
 /**
- * Global base action interface.
+ * Common global base action interface.
  */
-interface GlobalBaseAction {
-    type: GlobalActionTypes;
+interface CommonGlobalBaseAction {
+    type: CommonGlobalActionTypes;
 }
 
 /**
- * Action interface to show global loader.
+ * Show AJAX top loading bar action interface.
  */
-export interface ShowGlobalLoaderAction extends GlobalBaseAction {
-    type: GlobalActionTypes.SHOW_GLOBAL_LOADER;
+export interface ShowAJAXTopLoadingBarAction extends CommonGlobalBaseAction {
+    type: CommonGlobalActionTypes.SHOW_AJAX_TOP_LOADING_BAR;
 }
 
 /**
- * Action interface to hide global loader.
+ * Hide AJAX top loading bar action interface.
  */
-export interface HideGlobalLoaderAction extends GlobalBaseAction {
-    type: GlobalActionTypes.HIDE_GLOBAL_LOADER;
+export interface HideAJAXTopLoadingBarAction extends CommonGlobalBaseAction {
+    type: CommonGlobalActionTypes.HIDE_AJAX_TOP_LOADING_BAR;
 }
 
 /**
- * Action interface to initialize alert system.
+ * Alert system initialize action interface.
  */
-export interface InitializeAlertSystemAction extends GlobalBaseAction {
-    payload: any;
-    type: GlobalActionTypes.INITIALIZE_ALERT_SYSTEM;
+export interface InitializeAlertSystemAction<S = {}> extends CommonGlobalBaseAction {
+    payload: S;
+    type: CommonGlobalActionTypes.INITIALIZE_ALERT_SYSTEM;
 }
 
 /**
  * Add alert action interface.
  */
-export interface AddAlertAction extends GlobalBaseAction {
-    payload: AlertInterface;
-    type: GlobalActionTypes.ADD_ALERT;
+export interface AddAlertAction<T = {}> extends CommonGlobalBaseAction {
+    payload: T;
+    type: CommonGlobalActionTypes.ADD_ALERT;
+}
+
+/**
+ * Set supported i18n languages action interface.
+ */
+export interface SetSupportedI18nLanguagesActionInterface <U = {}>extends CommonGlobalBaseAction {
+    payload: U;
+    type: CommonGlobalActionTypes.SET_SUPPORTED_I18N_LANGUAGES;
 }
 
 /**
  * Export action interfaces.
  */
-export type GlobalActions = ShowGlobalLoaderAction
-    | HideGlobalLoaderAction
-    | InitializeAlertSystemAction
-    | AddAlertAction;
+export type CommonGlobalActions<T, S, U> = ShowAJAXTopLoadingBarAction
+    | HideAJAXTopLoadingBarAction
+    | AddAlertAction<T>
+    | InitializeAlertSystemAction<S>
+    | SetSupportedI18nLanguagesActionInterface<U>;

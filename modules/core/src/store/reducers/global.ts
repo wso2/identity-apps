@@ -16,47 +16,45 @@
  * under the License.
  */
 
-import { GlobalReducerStateInterface } from "../../models";
-import { GlobalActions, GlobalActionTypes } from "../actions/types";
+import { CommonGlobalReducerStateInterface } from "../../models";
+import { CommonGlobalActionTypes, CommonGlobalActions } from "../actions/types";
 
 /**
- * Initial global state.
- */
-const initialState: GlobalReducerStateInterface = {
-    alert: null,
-    alertSystem: null,
-    isGlobalLoaderVisible: false
-};
-
-/**
- * Reducer to handle the state of global app actions.
+ * Reducer to handle the state of common global app actions.
  *
- * @param {GlobalReducerStateInterface} state - Previous state.
- * @param {GlobalActions} action - Action type.
- * @return The new state.
+ * @param {CommonGlobalReducerStateInterface<T, S, U>} initialState - Reducer initial state.
+ * @return {CommonGlobalReducerStateInterface<T, S, U>} The new state.
  */
-export const globalReducer = (state: GlobalReducerStateInterface = initialState, action: GlobalActions) => {
+export const commonGlobalReducer = <T, S, U>(initialState: CommonGlobalReducerStateInterface<T, S, U>) => (
+    state: CommonGlobalReducerStateInterface<T, S, U> = initialState,
+    action: CommonGlobalActions<T, S, U>
+): CommonGlobalReducerStateInterface<T, S, U> => {
 
     switch (action.type) {
-        case GlobalActionTypes.SHOW_GLOBAL_LOADER:
+        case CommonGlobalActionTypes.SHOW_AJAX_TOP_LOADING_BAR:
             return {
                 ...state,
-                isGlobalLoaderVisible: true
+                isAJAXTopLoaderVisible: true
             };
-        case GlobalActionTypes.HIDE_GLOBAL_LOADER:
+        case CommonGlobalActionTypes.HIDE_AJAX_TOP_LOADING_BAR:
             return {
                 ...state,
-                isGlobalLoaderVisible: false
+                isAJAXTopLoaderVisible: false
             };
-        case GlobalActionTypes.INITIALIZE_ALERT_SYSTEM:
+        case CommonGlobalActionTypes.INITIALIZE_ALERT_SYSTEM:
             return {
                 ...state,
-                alertSystem: action.payload,
+                alertSystem: action.payload
             };
-        case GlobalActionTypes.ADD_ALERT:
+        case CommonGlobalActionTypes.ADD_ALERT:
             return {
                 ...state,
-                alert: action.payload,
+                alert: action.payload
+            };
+        case CommonGlobalActionTypes.SET_SUPPORTED_I18N_LANGUAGES:
+            return {
+                ...state,
+                supportedI18nLanguages: action.payload
             };
         default:
             return state;
