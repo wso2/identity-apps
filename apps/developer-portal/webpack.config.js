@@ -62,6 +62,7 @@ module.exports = (env) => {
                 tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
                 tenantPrefix: "<%=TENANT_AWARE_URL_PREFIX%>",
                 authorizationCode: "<%=request.getParameter(\"code\")%>",
+                sessionState: "<%=request.getParameter(\"session_state\")%>",
                 NODE_ENV: JSON.stringify(env.NODE_ENV)
             });
         }

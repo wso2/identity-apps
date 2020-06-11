@@ -190,7 +190,9 @@ export const sendTokenRequest = (
 
     // Extract session state and set to the sessionStorage
     const sessionState = new URL(window.location.href).searchParams.get(SESSION_STATE);
-    setSessionParameter(SESSION_STATE, sessionState);
+    if (sessionState !== null && sessionState.length > 0) {
+        setSessionParameter(SESSION_STATE, sessionState);
+    }
 
     const body = [];
     body.push(`client_id=${requestParams.clientID}`);

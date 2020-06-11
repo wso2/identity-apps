@@ -37,9 +37,13 @@
             // When OAuth2 response mode is set to "form_post", Authorization code sent in a POST.
             // In such cases, the code is added to the sessionStorage under the key "code".
             var authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>";
-
             if (authorizationCode !== "null") {
                 window.sessionStorage.setItem("code", authorizationCode);
+            }
+
+            var sessionState = "<%= htmlWebpackPlugin.options.sessionState %>";
+            if (sessionState !== "null") {
+                sessionStorage.setItem("session_state", sessionState);
             }
 
             if (window["AppUtils"].getConfig() === null) {
@@ -54,10 +58,10 @@
             if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
                 // Prompt none response.
                 var code = new URL(window.location.href).searchParams.get("code");
-    
+
                 if (code !== null && code.length !== 0) {
                     var newSessionState = new URL(window.location.href).searchParams.get("session_state");
-    
+
                     sessionStorage.setItem("session_state", newSessionState);
 
                     // Stop loading rest of the page inside the iFrame
@@ -68,9 +72,9 @@
                     }
                 } else {
                     var config = window["AppUtils"].getConfig();
-    
-                    window.top.location.href = config.clientOriginWithTenant +
-                    config.appBaseWithTenant + config.routes.logout;
+
+                    window.top.location.href = config.clientOriginWithTenant + config.appBaseWithTenant +
+                        config.routes.logout;
                 }
             }
 
