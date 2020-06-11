@@ -384,6 +384,8 @@ body {
                 Layout
 *****************************************/
 
+@fluidDefaultLayoutHeaderPadding: 0 @fluidLayoutHorizontalPadding;
+@fluidDefaultLayoutFooterPadding: 0 @fluidLayoutHorizontalPadding;
 @defaultLayoutPadding: 4em 6em;
 
 .layout {
@@ -478,6 +480,16 @@ body {
     &.default-layout {
         .layout-content {
             padding: @defaultLayoutPadding !important;
+        }
+
+        &.fluid-default-layout {
+            .app-header {
+                padding: @fluidDefaultLayoutHeaderPadding;
+            }
+
+            .app-footer {
+                padding: @fluidDefaultLayoutFooterPadding;
+            }
         }
     }
 }
