@@ -45,4 +45,12 @@ export class TokenConstants {
      * @default
      */
     public static readonly HUMAN_TASK_SCOPE: string = "internal_humantask_view";
+
+    /**
+     * System scope.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly SYSTEM_SCOPE: string = "SYSTEM";
 }
