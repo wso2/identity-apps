@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { LocaleMeta } from "../../models";
 import { I18nModuleConstants } from "../../constants";
+import { LocaleMeta } from "../../models";
 
 export const meta: LocaleMeta = {
     code: "en-US",

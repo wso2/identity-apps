@@ -17,7 +17,6 @@
  */
 
 import { DevPortalNS } from "../../../models";
-import { FormAttributes } from "../../../models/common";
 
 export const devPortal: DevPortalNS = {
     components: {
