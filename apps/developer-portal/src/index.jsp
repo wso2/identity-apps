@@ -103,9 +103,9 @@
                 }
             } else {
                 // Tracking user interactions
-                var IDLE_TIMEOUT = 600;
-                var IDLE_WARNING_TIMEOUT = 580;
-                var SESSION_REFRESH_TIMEOUT = 300;
+                var IDLE_TIMEOUT = config.session.userIdleTimeOut;
+                var IDLE_WARNING_TIMEOUT = config.session.userIdleWarningTimeOut;
+                var SESSION_REFRESH_TIMEOUT = config.session.sessionRefreshTimeOut;
 
                 var _idleSecondsCounter = 0;
                 var _sessionAgeCounter = 0;

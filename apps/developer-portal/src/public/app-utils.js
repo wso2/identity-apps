@@ -109,7 +109,8 @@ var AppUtils = AppUtils || (function() {
                 serverOriginWithTenant: _config.serverOrigin + this.getTenantPath(),
                 tenant: (this.isSuperTenant()) ? this.getSuperTenant() : this.getTenantName(),
                 tenantPath: this.getTenantPath(),
-                ui: _config.ui
+                ui: _config.ui,
+                session: _config.session
             };
         },
 
