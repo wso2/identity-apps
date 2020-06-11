@@ -384,6 +384,8 @@ body {
                 Layout
 *****************************************/
 
+@defaultLayoutPadding: 4em 6em;
+
 .layout {
     &.dashboard-layout {
         .layout-content {
@@ -470,6 +472,12 @@ body {
                     }
                 }
             }
+        }
+    }
+
+    &.default-layout {
+        .layout-content {
+            padding: @defaultLayoutPadding !important;
         }
     }
 }
