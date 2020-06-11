@@ -21,17 +21,20 @@ import { getAppConfig } from "@wso2is/core/api";
 import {
     setDeploymentConfigs,
     setFeatureConfigs,
+    setI18nConfigs,
     setServiceResourceEndpoints,
     setUIConfigs
 } from "@wso2is/core/store";
+import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { ContentLoader } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement, Suspense, useEffect, useState } from "react";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
 import { SignIn, SignOut } from "./components/authentication";
-import { Config, i18n } from "./configs";
+import { Config } from "./configs";
 import { ApplicationConstants } from "./constants";
 import { AppConfig, history } from "./helpers";
 import {
@@ -53,6 +56,7 @@ export const App = (): ReactElement => {
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const dispatch = useDispatch();
+    const [ isAppLoading, setAppLoadingStatus ] = useState<boolean>(false);
 
     /**
      * Set the deployment configs in redux state.
@@ -62,6 +66,7 @@ export const App = (): ReactElement => {
         // once runtime config is refactored.
         dispatch(setDeploymentConfigs<CommonDeploymentConfigInterface>(Config.getDeploymentConfig()));
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
+        dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
         dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
     }, []);
 
@@ -87,53 +92,66 @@ export const App = (): ReactElement => {
             });
     }, [ config?.deployment?.appBaseNameWithoutTenant ]);
 
+    /**
+     * Set the app loading status based on the availability of configs.
+     */
+    useEffect(() => {
+        if (config?.deployment && !_.isEmpty(config.deployment) && config?.endpoints && !_.isEmpty(config.endpoints)) {
+            setAppLoadingStatus(false);
+        }
+
+        setAppLoadingStatus(true);
+    }, [ config ]);
+
     return (
         <Router history={ history }>
             <div className="container-fluid">
-                <I18nextProvider i18n={ i18n }>
-                    <AppConfig.Provider value={ config }>
-                        <Switch>
-                            <Redirect exact={ true } path="/" to={ window["AppUtils"].getConfig().routes.login } />
-                            <Route
-                                path={ window["AppUtils"].getConfig().routes.login }
-                                render={ (props) => {
-                                    return <SignIn { ...props } />;
-                                } }
-                            />
-                            <Route
-                                path={ window["AppUtils"].getConfig().routes.logout }
-                                render={ () => {
-                                    return <SignOut />;
-                                } }
-                            />
-                            {
-                                config
-                                    ? filteredRoutes(config).map((route, index) => {
-                                        return (
-                                            route.protected ?
-                                                (
-                                                    <ProtectedRoute
-                                                        component={ route.component }
-                                                        path={ route.path }
-                                                        key={ index }
-                                                    />
-                                                )
-                                                :
-                                                (
-                                                    <Route
-                                                        path={ route.path }
-                                                        render={ (props) =>
-                                                            (<route.component { ...props } />)
-                                                        }
-                                                        key={ index }
-                                                    />
-                                                )
-                                        );
-                                    })
-                                    : null
-                            }
-                        </Switch>
-                    </AppConfig.Provider>
+                <I18nextProvider i18n={ I18n.instance }>
+                    <Suspense fallback={ <ContentLoader dimmer/> }>
+                        <AppConfig.Provider value={ config }>
+                            <Switch>
+                                <Redirect exact={ true } path="/" to={ window["AppUtils"].getConfig().routes.login } />
+                                <Route
+                                    path={ window["AppUtils"].getConfig().routes.login }
+                                    render={ (props) => {
+                                        return <SignIn { ...props } />;
+                                    } }
+                                />
+                                <Route
+                                    path={ window["AppUtils"].getConfig().routes.logout }
+                                    render={ () => {
+                                        return <SignOut />;
+                                    } }
+                                />
+                                {
+                                    config
+                                        ? filteredRoutes(config).map((route, index) => {
+                                            return (
+                                                route.protected ?
+                                                    (
+                                                        <ProtectedRoute
+                                                            component={ route.component }
+                                                            path={ route.path }
+                                                            key={ index }
+                                                        />
+                                                    )
+                                                    :
+                                                    (
+                                                        <Route
+                                                            path={ route.path }
+                                                            render={ (props) =>
+                                                                (<route.component { ...props } />)
+                                                            }
+                                                            key={ index }
+                                                        />
+                                                    )
+                                            );
+                                        })
+                                        : null
+                                }
+                            </Switch>
+                        </AppConfig.Provider>
+                    </Suspense>
                 </I18nextProvider>
             </div>
         </Router>

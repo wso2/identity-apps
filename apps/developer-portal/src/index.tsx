@@ -40,7 +40,13 @@ import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequ
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
 // Set up the Http client.
-HttpUtils.setupHttpClient(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
+HttpUtils.setupHttpClient(
+    true,
+    onHttpRequestStart,
+    onHttpRequestSuccess,
+    onHttpRequestError,
+    onHttpRequestFinish
+);
 
 // Set up the i18n module.
 I18n.init({
