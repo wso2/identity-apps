@@ -176,10 +176,10 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                                         />
                                     )
                             }
-                            name={ state.productName && state.productName !== "" ?
-                                state.productName
-                                :
-                                config.deployment.applicationName
+                            name={
+                                (state.productName && state.productName !== "")
+                                    ? state.productName
+                                    : config.deployment.applicationName
                             }
                             version={ {
                                 milestoneNumber: config.deployment.productVersion?.milestoneNumber,
@@ -224,12 +224,12 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                     currentLanguage={ I18n.instance?.language }
                     supportedLanguages={ supportedI18nLanguages }
                     onLanguageChange={ handleLanguageSwitch }
-                    copyright={ state.copyrightText && state.copyrightText !== "" ?
-                        state.copyrightText
-                        :
-                        config.ui.appCopyright
-                            ? config.ui.appCopyright
-                            : null
+                    copyright={
+                        (state.copyrightText && state.copyrightText !== "")
+                            ? state.copyrightText
+                            : config.ui.appCopyright
+                                ? config.ui.appCopyright
+                                : null
                     }
                     fixed="bottom"
                     fluid={ !isMobileViewport ? fluid : false }

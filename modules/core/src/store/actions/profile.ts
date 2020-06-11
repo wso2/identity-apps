@@ -20,7 +20,8 @@ import _ from "lodash";
 import { setProfileInfoRequestLoadingStatus, setProfileSchemaRequestLoadingStatus } from "./loaders";
 import {
     CommonProfileActionTypes,
-    SetProfileInfoActionInterface, SetProfileLinkedAccountsActionInterface,
+    SetProfileInfoActionInterface,
+    SetProfileLinkedAccountsActionInterface,
     SetProfileSchemasActionInterface,
     ToggleSCIMEnabledActionInterface
 } from "./types";
