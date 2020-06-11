@@ -378,8 +378,8 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     ) }
                     userDropdownLinks={ [
                         {
-                            name: "Logout",
-                            to: "/logout"
+                            name: t("common:logout"),
+                            to: window[ "AppUtils" ].getConfig().routes.logout
                         }
                     ] }
                     profileInfo={ profileDetails.profileInfo }
