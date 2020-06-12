@@ -20,17 +20,17 @@ import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Container, Modal } from "semantic-ui-react";
+import { UserSessionsList } from "./user-sessions-list";
 import { fetchUserSessions, terminateAllUserSessions, terminateUserSession } from "../../api";
 import {
     AlertInterface,
     AlertLevels,
-    emptyUserSession,
-    emptyUserSessions,
     UserSession,
-    UserSessions
+    UserSessions,
+    emptyUserSession,
+    emptyUserSessions
 } from "../../models";
 import { SettingsSection } from "../shared";
-import { UserSessionsList } from "./user-sessions-list";
 
 /**
  * Proptypes for the user sessions component.
@@ -99,7 +99,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.userSessions.notifications.fetchSessions.genericError.message"
+                        "userPortal:components.userSessions.notifications.fetchSessions.genericError.message"
                     )
                 });
             });
@@ -140,11 +140,11 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
             .then(() => {
                 onAlertFired({
                     description: t(
-                        "views:components.userSessions.notifications.terminateUserSession.success.description"
+                        "userPortal:components.userSessions.notifications.terminateUserSession.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "views:components.userSessions.notifications.terminateUserSession.success.message"
+                        "userPortal:components.userSessions.notifications.terminateUserSession.success.message"
                     )
                 });
             })
@@ -152,22 +152,23 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
-                            "views:components.userSessions.notifications.revokeUserSession.error.description",
+                            "userPortal:components.userSessions.notifications.revokeUserSession.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.userSessions.notifications.revokeUserSession.error.message"
+                            "userPortal:components.userSessions.notifications.revokeUserSession.error.message"
                         ),
                     });
                 } else {
                     onAlertFired({
                         description: t(
-                            "views:components.userSessions.notifications.revokeUserSession.genericError.description"
+                            "userPortal:components.userSessions.notifications.revokeUserSession.genericError." +
+                            "description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.userSessions.notifications.revokeUserSession.genericError.message"
+                            "userPortal:components.userSessions.notifications.revokeUserSession.genericError.message"
                         )
                     });
                 }
@@ -186,11 +187,11 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
             .then(() => {
                 onAlertFired({
                     description: t(
-                        "views:components.userSessions.notifications.terminateAllUserSessions.success.description"
+                        "userPortal:components.userSessions.notifications.terminateAllUserSessions.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "views:components.userSessions.notifications.terminateAllUserSessions.success.message"
+                        "userPortal:components.userSessions.notifications.terminateAllUserSessions.success.message"
                     )
                 });
             })
@@ -198,22 +199,26 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
-                            "views:components.userSessions.notifications.terminateAllUserSessions.error.description",
+                            "userPortal:components.userSessions.notifications.terminateAllUserSessions." +
+                            "error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.userSessions.notifications.terminateAllUserSessions.error.message"
-                        ),
+                            "userPortal:components.userSessions.notifications.terminateAllUserSessions.error" +
+                            ".message"
+                        )
                     });
                 } else {
                     onAlertFired({
                         description: t(
-                            "views:components.userSessions.notifications.terminateAllUserSessions.genericError.description"
+                            "userPortal:components.userSessions.notifications.terminateAllUserSessions." +
+                            "genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.userSessions.notifications.terminateAllUserSessions.genericError.message"
+                            "userPortal:components.userSessions.notifications.terminateAllUserSessions." +
+                            "genericError.message"
                         )
                     });
                 }

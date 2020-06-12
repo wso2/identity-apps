@@ -17,8 +17,8 @@
  */
 
 import { AxiosHttpClient } from "@wso2is/http";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { HttpMethods } from "../models";
+import { store } from "../store";
 
 /**
  * Get an axios instance.
@@ -41,7 +41,7 @@ export const fetchApplications = (
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -50,7 +50,7 @@ export const fetchApplications = (
             limit,
             offset
         },
-        url: ServiceResourcesEndpoint.applications
+        url: store.getState().config.endpoints.applications
     };
 
     return httpClient.request(requestConfig)
@@ -62,7 +62,8 @@ export const fetchApplications = (
                 && response.data.applications
                 && response.data.applications.length
                 && response.data.applications.length > 0) {
-                applications = response.data.applications.filter((app) => app.name !== GlobalConfig.applicationName);
+                applications = response.data.applications.filter(
+                    (app) => app.name !== store.getState().config.ui.applicationName);
             }
 
             return Promise.resolve({

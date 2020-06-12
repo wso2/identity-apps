@@ -20,7 +20,6 @@ import { SignInUtil } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
 import axios from "axios";
 import _ from "lodash";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { ApplicationConstants } from "../constants";
 import { history } from "../helpers";
 import { BasicProfileInterface, HttpMethods, MultiValue, ProfileSchema } from "../models";
@@ -43,18 +42,19 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getUserInfo = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.user
+        url: store.getState().config.endpoints.user
     };
 
     return httpClient
         .request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error(`Failed get user info from: ${ServiceResourcesEndpoint.user}`));
+                return Promise.reject(new Error(`Failed get user info from: 
+                ${store.getState().config.endpoints.user}`));
             }
             return Promise.resolve(response);
         })
@@ -115,11 +115,11 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/scim+json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.me
+        url: store.getState().config.endpoints.me
     };
 
     return httpClient
@@ -128,7 +128,8 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
             let gravatar = "";
 
             if (response.status !== 200) {
-                return Promise.reject(new Error(`Failed get user profile info from: ${ServiceResourcesEndpoint.me}`));
+                return Promise.reject(new Error(`Failed get user profile info from: 
+                ${store.getState().config.endpoints.me}`));
             }
             if (_.isEmpty(response.data.userImage) && !response.data.profileUrl) {
                 gravatar = await findGravatar(response.data.emails);
@@ -181,11 +182,11 @@ export const updateProfileInfo = (info: object): Promise<any> => {
     const requestConfig = {
         data: info,
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.me
+        url: store.getState().config.endpoints.me
     };
 
     return httpClient
@@ -193,7 +194,7 @@ export const updateProfileInfo = (info: object): Promise<any> => {
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
-                    new Error(`Failed update user profile info with: ${ServiceResourcesEndpoint.me}`)
+                    new Error(`Failed update user profile info with: ${store.getState().config.endpoints.me}`)
                 );
             }
             return Promise.resolve(response);
@@ -212,11 +213,11 @@ export const updateProfileInfo = (info: object): Promise<any> => {
 export const getProfileSchemas = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.profileSchemas
+        url: store.getState().config.endpoints.profileSchemas
     };
 
     return httpClient

@@ -18,7 +18,7 @@
 
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosHttpClient } from "@wso2is/http";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
+import { store } from "../store";
 
 /**
  * Get an axios instance.
@@ -42,11 +42,11 @@ enum PostTOTPActions {
 export const getTotpQrCode = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.totp
+        url: store.getState().config.endpoints.totp
     };
 
     return httpClient
@@ -73,11 +73,11 @@ export const validateTOTPCode = (code: string): Promise<any> => {
             verificationCode: code
         },
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.totp
+        url: store.getState().config.endpoints.totp
     };
 
     return httpClient
@@ -102,11 +102,11 @@ export const refreshTOTPCode = (): Promise<any> => {
             action: PostTOTPActions.REFRESH
         },
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.totp
+        url: store.getState().config.endpoints.totp
     };
 
     return httpClient
@@ -132,11 +132,11 @@ export const initTOTPCode = (): Promise<any> => {
             action: PostTOTPActions.INIT
         },
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.totp
+        url: store.getState().config.endpoints.totp
     };
 
     return httpClient
@@ -158,11 +158,11 @@ export const initTOTPCode = (): Promise<any> => {
 export const deleteTOTP = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: ServiceResourcesEndpoint.totp
+        url: store.getState().config.endpoints.totp
     };
 
     return httpClient
@@ -184,11 +184,11 @@ export const deleteTOTP = (): Promise<any> => {
 export const getTOTPSecret = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.totpSecret
+        url: store.getState().config.endpoints.totpSecret
     };
 
     return httpClient

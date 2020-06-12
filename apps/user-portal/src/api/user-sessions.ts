@@ -17,11 +17,11 @@
  */
 
 import { AxiosHttpClient } from "@wso2is/http";
-import { ServiceResourcesEndpoint } from "../configs";
 import {
     HttpMethods,
     UserSessions
 } from "../models";
+import { store } from "../store";
 
 /**
  * Get an axios instance.
@@ -42,7 +42,7 @@ export const fetchUserSessions = (): Promise<any> => {
             Accept: "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.sessions
+        url: store.getState().config.endpoints.sessions
     };
 
     return httpClient.request(requestConfig)
@@ -67,7 +67,7 @@ export const terminateUserSession = (id: string): Promise<any> => {
             Accept: "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${ ServiceResourcesEndpoint.sessions }/${ id }`
+        url: `${ store.getState().config.endpoints.sessions }/${ id }`
     };
 
     return httpClient.request(requestConfig)
@@ -91,7 +91,7 @@ export const terminateAllUserSessions = (): Promise<any> => {
             Accept: "application/json"
         },
         method: HttpMethods.DELETE,
-        url: ServiceResourcesEndpoint.sessions
+        url: store.getState().config.endpoints.sessions
     };
 
     return httpClient.request(requestConfig)

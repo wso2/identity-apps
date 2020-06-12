@@ -24,10 +24,10 @@ import {
     SignOutUtil
 } from "@wso2is/authentication";
 import { getAssociations, getProfileInfo } from "../../api";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../../configs";
 import * as TokenConstants from "../../constants/token-constants";
 import { history } from "../../helpers";
 import { setProfileInfo, setSignIn, setSignOut } from "../actions";
+import { store } from "../index";
 
 /**
  * Get location history path from sessionStorage
@@ -48,8 +48,8 @@ export const handleSignIn = (state, dispatch): void => {
     const loginSuccessRedirect = (): void => {
         const AuthenticationCallbackUrl = getAuthenticationCallbackUrl();
         const location = ((!AuthenticationCallbackUrl)
-            || (AuthenticationCallbackUrl === GlobalConfig.appLoginPath)) ?
-                GlobalConfig.appHomePath : AuthenticationCallbackUrl;
+            || (AuthenticationCallbackUrl === store.getState().config.deployment.appLoginPath)) ?
+            store.getState().config.deployment.appHomePath : AuthenticationCallbackUrl;
 
         history.push(location);
     };
@@ -73,13 +73,13 @@ export const handleSignIn = (state, dispatch): void => {
 
     const sendSignInRequest = (): void => {
         const requestParams = {
-            clientHost: GlobalConfig.clientHost,
-            clientId: GlobalConfig.clientID,
+            clientHost: store.getState().config.deployment.clientHost,
+            clientId: store.getState().config.deployment.clientID,
             clientSecret: null,
             enablePKCE: true,
-            redirectUri: GlobalConfig.loginCallbackUrl,
+            redirectUri: store.getState().config.deployment.loginCallbackUrl,
             scope: [ TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE ],
-            serverOrigin: GlobalConfig.serverOrigin
+            serverOrigin: store.getState().config.deployment.serverOrigin
         };
         if (SignInUtil.hasAuthorizationCode()) {
             SignInUtil.sendTokenRequest(requestParams)
@@ -104,16 +104,16 @@ export const handleSignIn = (state, dispatch): void => {
         setProfileDetails();
         loginSuccessRedirect();
     } else {
-        OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false)
+        OPConfigurationUtil.initOPConfiguration(store.getState().config.endpoints.wellKnown, false)
             .then(() => {
                 sendSignInRequest();
             }).catch(() => {
-                OPConfigurationUtil.setAuthorizeEndpoint(ServiceResourcesEndpoint.authorize);
-                OPConfigurationUtil.setTokenEndpoint(ServiceResourcesEndpoint.token);
-                OPConfigurationUtil.setRevokeTokenEndpoint(ServiceResourcesEndpoint.revoke);
-                OPConfigurationUtil.setEndSessionEndpoint(ServiceResourcesEndpoint.logout);
-                OPConfigurationUtil.setJwksUri(ServiceResourcesEndpoint.jwks);
-                OPConfigurationUtil.setIssuer(ServiceResourcesEndpoint.issuer);
+                OPConfigurationUtil.setAuthorizeEndpoint(store.getState().config.endpoints.authorize);
+                OPConfigurationUtil.setTokenEndpoint(store.getState().config.endpoints.token);
+                OPConfigurationUtil.setRevokeTokenEndpoint(store.getState().config.endpoints.revoke);
+                OPConfigurationUtil.setEndSessionEndpoint(store.getState().config.endpoints.logout);
+                OPConfigurationUtil.setJwksUri(store.getState().config.endpoints.jwks);
+                OPConfigurationUtil.setIssuer(store.getState().config.endpoints.issuer);
                 OPConfigurationUtil.setOPConfigInitiated();
 
                 sendSignInRequest();
@@ -129,7 +129,7 @@ export const handleSignIn = (state, dispatch): void => {
  */
 export const handleSignOut = (state, dispatch): void => {
     if (!state.logoutInit) {
-        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl).then(() => {
+        SignOutUtil.sendSignOutRequest(store.getState().config.deployment.loginCallbackUrl).then(() => {
             dispatch(setSignOut());
             AuthenticateSessionUtil.endAuthenticatedSession();
             OPConfigurationUtil.resetOPConfiguration();
@@ -137,7 +137,7 @@ export const handleSignOut = (state, dispatch): void => {
             // TODO show error page.
         );
     } else {
-        history.push(GlobalConfig.appLoginPath);
+        history.push(store.getState().config.deployment.appLoginPath);
     }
 };
 

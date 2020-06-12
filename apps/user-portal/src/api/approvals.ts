@@ -17,8 +17,8 @@
  */
 
 import { AxiosHttpClient } from "@wso2is/http";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskSummary, HttpMethods } from "../models";
+import { store } from "../store";
 
 /**
  * Get an axios instance.
@@ -45,7 +45,7 @@ export const fetchPendingApprovals = (
     let requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -54,7 +54,7 @@ export const fetchPendingApprovals = (
             offset,
             status
         },
-        url: ServiceResourcesEndpoint.pendingApprovals
+        url: store.getState().config.endpoints.pendingApprovals
     };
 
     // To fetch all the approvals from the api, the status
@@ -89,11 +89,11 @@ export const fetchPendingApprovalDetails = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ ServiceResourcesEndpoint.pendingApprovals }/${ id }`
+        url: `${ store.getState().config.endpoints.pendingApprovals }/${ id }`
     };
 
     return httpClient.request(requestConfig)
@@ -124,11 +124,11 @@ export const updatePendingApprovalStatus = (
         },
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${ ServiceResourcesEndpoint.pendingApprovals }/${ id }/state`
+        url: `${ store.getState().config.endpoints.pendingApprovals }/${ id }/state`
     };
 
     return httpClient.request(requestConfig)

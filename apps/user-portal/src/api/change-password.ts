@@ -18,8 +18,8 @@
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
-import { ServiceResourcesEndpoint } from "../configs";
 import { HttpMethods } from "../models";
+import { store } from "../store";
 
 /**
  * Get an axios instance.
@@ -63,7 +63,7 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.me
+        url: store.getState().config.endpoints.me
     };
 
     return httpClient.request(requestConfig)

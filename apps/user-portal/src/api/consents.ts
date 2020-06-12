@@ -18,8 +18,8 @@
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { ConsentReceiptInterface, ConsentState, HttpMethods, UpdateReceiptInterface } from "../models";
+import { store } from "../store";
 
 /**
  * Initialize an axios Http client.
@@ -43,7 +43,7 @@ export const fetchConsentedApps = (state: ConsentState): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -51,7 +51,7 @@ export const fetchConsentedApps = (state: ConsentState): Promise<any> => {
             piiPrincipalId: userName.join("@"),
             state
         },
-        url: ServiceResourcesEndpoint.consents
+        url: store.getState().config.endpoints.consents
     };
 
     return httpClient
@@ -74,11 +74,11 @@ export const fetchConsentReceipt = (receiptId: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.receipts + `/${receiptId}`
+        url: store.getState().config.endpoints.receipts + `/${receiptId}`
     };
 
     return httpClient
@@ -103,7 +103,7 @@ export const revokeConsentedApp = (appId: string): Promise<any> => {
             Accept: "application/json"
         },
         method: HttpMethods.DELETE,
-        url: ServiceResourcesEndpoint.receipts + `/${appId}`
+        url: store.getState().config.endpoints.receipts + `/${appId}`
     };
 
     return httpClient
@@ -158,7 +158,7 @@ export const updateConsentedClaims = (receipt: ConsentReceiptInterface): Promise
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.consents
+        url: store.getState().config.endpoints.consents
     };
 
     return httpClient
