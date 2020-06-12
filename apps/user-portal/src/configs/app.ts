@@ -18,65 +18,8 @@
 
 import { CommonDeploymentConfigInterface } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { GlobalConfig } from "./globals";
 import { I18nConstants } from "../constants";
 import { ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
-
-interface ServiceResourcesType {
-    applications: string;
-    associations: string;
-    authorize: string;
-    challenges: string;
-    challengeAnswers: string;
-    consents: string;
-    federatedAssociations: string;
-    fidoEnd: string;
-    fidoMetaData: string;
-    fidoStart: string;
-    fidoStartUsernameless: string;
-    issuer: string;
-    jwks: string;
-    logout: string;
-    me: string;
-    pendingApprovals: string;
-    profileSchemas: string;
-    receipts: string;
-    sessions: string;
-    token: string;
-    totp: string;
-    totpSecret: string;
-    user: string;
-    revoke: string;
-    wellKnown: string;
-}
-
-export const ServiceResourcesEndpoint: ServiceResourcesType = {
-    applications: `${GlobalConfig.serverHost}/api/users/v1/me/applications`,
-    associations: `${GlobalConfig.serverHost}/api/users/v1/me/associations`,
-    authorize: `${GlobalConfig.serverHost}/oauth2/authorize`,
-    challengeAnswers: `${GlobalConfig.serverHost}/api/users/v1/me/challenge-answers`,
-    challenges: `${GlobalConfig.serverHost}/api/users/v1/me/challenges`,
-    consents: `${GlobalConfig.serverHost}/api/identity/consent-mgt/v1.0/consents`,
-    federatedAssociations: `${GlobalConfig.serverHost}/api/users/v1/me/federated-associations`,
-    fidoEnd: `${GlobalConfig.serverHost}/api/users/v2/me/webauthn/finish-registration`,
-    fidoMetaData: `${GlobalConfig.serverHost}/api/users/v2/me/webauthn`,
-    fidoStart: `${GlobalConfig.serverHost}/api/users/v2/me/webauthn/start-registration`,
-    fidoStartUsernameless: `${GlobalConfig.serverHost}/api/users/v2/me/webauthn/start-usernameless-registration`,
-    issuer: `${GlobalConfig.serverHost}/oauth2/token`,
-    jwks: `${GlobalConfig.serverHost}/oauth2/jwks`,
-    logout: `${GlobalConfig.serverHost}/oidc/logout`,
-    me: `${GlobalConfig.serverHost}/scim2/Me`,
-    pendingApprovals: `${GlobalConfig.serverHost}/api/users/v1/me/approval-tasks`,
-    profileSchemas: `${GlobalConfig.serverHost}/scim2/Schemas`,
-    receipts: `${GlobalConfig.serverHost}/api/identity/consent-mgt/v1.0/consents/receipts`,
-    revoke: `${GlobalConfig.serverHost}/oauth2/revoke`,
-    sessions: `${GlobalConfig.serverHost}/api/users/v1/me/sessions`,
-    token: `${GlobalConfig.serverHost}/oauth2/token`,
-    totp: `${GlobalConfig.serverHost}/api/users/v1/me/totp`,
-    totpSecret: `${GlobalConfig.serverHost}/api/users/v1/me/totp/secret`,
-    user: `${GlobalConfig.serverHost}/api/identity/user/v1.0/me`,
-    wellKnown: `${GlobalConfig.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
-};
 
 /**
  * Class to handle application config operations.
@@ -161,6 +104,7 @@ export class Config {
         return {
             authenticatorApp: { apps: [ { link: "", name: "" } ] },
             copyrightText: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${ new Date().getFullYear() }`,
+            features: window["AppUtils"].getConfig().ui.features,
             titleText: window["AppUtils"].getConfig().appTitle
         };
     }

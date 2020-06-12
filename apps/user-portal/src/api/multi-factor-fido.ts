@@ -17,9 +17,9 @@
  */
 
 import { AxiosHttpClient } from "@wso2is/http";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { Decode, Encode } from "../helpers/base64-utils";
 import { HttpMethods } from "../models";
+import { store } from "../store";
 
 /**
  * Get an axios instance.
@@ -37,11 +37,11 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getMetaData = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.fidoMetaData
+        url: store.getState().config.endpoints.fidoMetaData
     };
 
     return httpClient
@@ -49,7 +49,7 @@ export const getMetaData = (): Promise<any> => {
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
-                    new Error(`Failed get meta info from: ${ServiceResourcesEndpoint.fidoMetaData}`)
+                    new Error(`Failed get meta info from: ${store.getState().config.endpoints.fidoMetaData}`)
                 );
             }
             return Promise.resolve(response);
@@ -73,11 +73,11 @@ export const updateDeviceName = (credentialId: string, deviceName: string): Prom
             value: deviceName
         }],
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: `${ServiceResourcesEndpoint.fidoMetaData}/${credentialId}`
+        url: `${store.getState().config.endpoints.fidoMetaData}/${credentialId}`
     };
 
     return httpClient
@@ -85,7 +85,7 @@ export const updateDeviceName = (credentialId: string, deviceName: string): Prom
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
-                    new Error(`Failed update device name from: ${ServiceResourcesEndpoint.fidoMetaData}`)
+                    new Error(`Failed update device name from: ${store.getState().config.endpoints.fidoMetaData}`)
                 );
             }
             return Promise.resolve(response);
@@ -105,10 +105,10 @@ export const deleteDevice = (credentialId): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost.clientHost
         },
         method: HttpMethods.DELETE,
-        url: `${ServiceResourcesEndpoint.fidoMetaData}/${credentialId}`
+        url: `${store.getState().config.endpoints.fidoMetaData}/${credentialId}`
     };
 
     return httpClient
@@ -180,11 +180,11 @@ export const endFidoFlow = (clientResponse): Promise<any> => {
         data: clientResponse,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.fidoEnd
+        url: store.getState().config.endpoints.fidoEnd
     };
 
     return httpClient
@@ -192,7 +192,7 @@ export const endFidoFlow = (clientResponse): Promise<any> => {
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
-                    new Error(`Failed to end registration flow at: ${ServiceResourcesEndpoint.fidoEnd}`)
+                    new Error(`Failed to end registration flow at: ${store.getState().config.endpoints.fidoEnd}`)
                 );
             }
             return Promise.resolve(response);
@@ -270,11 +270,11 @@ export const startFidoFlow = (): Promise<any> => {
     const requestConfig = {
         data: { appId: window.location.origin },
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.fidoStart
+        url: store.getState().config.endpoints.fidoStart
     };
 
     return httpClient
@@ -282,7 +282,7 @@ export const startFidoFlow = (): Promise<any> => {
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
-                    new Error(`Failed to start registration flow at: ${ServiceResourcesEndpoint.fidoStart}`)
+                    new Error(`Failed to start registration flow at: ${store.getState().config.endpoints.fidoStart}`)
                 );
             }
             return connectToDevice(
@@ -311,11 +311,11 @@ export const startFidoUsernamelessFlow = (): Promise<any> => {
     const requestConfig = {
         data: { appId: window.location.origin },
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.fidoStartUsernameless
+        url: store.getState().config.endpoints.fidoStartUsernameless
     };
 
     return httpClient
@@ -324,7 +324,7 @@ export const startFidoUsernamelessFlow = (): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(
                     new Error(`Failed to start registration flow at:
-                    ${ServiceResourcesEndpoint.fidoStartUsernameless}`)
+                    ${store.getState().config.endpoints.fidoStartUsernameless}`)
                 );
             }
             return connectToDevice(

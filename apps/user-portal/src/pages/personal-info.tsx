@@ -36,7 +36,7 @@ import { addAlert } from "../store/actions";
 export const PersonalInfoPage = (): JSX.Element => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.features);
+    const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
     /**
      * Dispatches the alert object to the redux store.

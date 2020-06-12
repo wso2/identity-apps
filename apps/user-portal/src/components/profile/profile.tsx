@@ -257,7 +257,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                         autoFocus={ true }
                                         label=""
                                         name={ schema.name }
-                                        placeholder={ t("userPortal:components.profile.forms.generic.inputs.placeholder", {
+                                        placeholder={ t("userPortal:components.profile.forms.generic.inputs." +
+                                            "placeholder", {
                                             fieldName
                                         }) }
                                         required={ schema.required }

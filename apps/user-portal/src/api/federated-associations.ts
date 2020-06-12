@@ -17,8 +17,8 @@
  */
 
 import { AxiosHttpClient } from "@wso2is/http";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { HttpMethods } from "../models";
+import { store } from "../store";
 
 /**
  * Get an axios instance.
@@ -34,11 +34,11 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getFederatedAssociations = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.federatedAssociations
+        url: store.getState().config.endpoints.federatedAssociations
     };
 
     return httpClient
@@ -63,11 +63,11 @@ export const getFederatedAssociations = (): Promise<any> => {
 export const deleteFederatedAssociation = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${ServiceResourcesEndpoint.federatedAssociations}/${id}`
+        url: `${ store.getState().config.endpoints.federatedAssociations }/${id}`
     };
 
     return httpClient
@@ -87,11 +87,11 @@ export const deleteFederatedAssociation = (id: string): Promise<any> => {
 export const deleteAllFederatedAssociation = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: ServiceResourcesEndpoint.federatedAssociations
+        url: store.getState().config.endpoints.federatedAssociations
     };
 
     return httpClient

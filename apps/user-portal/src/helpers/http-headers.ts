@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { GlobalConfig } from "../configs";
+import { store } from "../store";
 
 /**
  * Get OAuth2 token request header.
@@ -28,7 +28,7 @@ export const getTokenRequestHeaders = (): any => {
     return {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         }
     };

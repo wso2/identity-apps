@@ -17,8 +17,8 @@
  */
 
 import { AxiosHttpClient } from "@wso2is/http";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { HttpMethods } from "../models";
+import { store } from "../store";
 
 /**
  * Get an axios instance.
@@ -36,7 +36,7 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getSecurityQs = (): Promise<any> => {
     const headers = {
         "Accept": "application/json",
-        "Access-Control-Allow-Origin": GlobalConfig.clientHost
+        "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
     };
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -44,7 +44,7 @@ export const getSecurityQs = (): Promise<any> => {
         const requestConfig = {
             headers,
             method: HttpMethods.GET,
-            url: ServiceResourcesEndpoint.challenges
+            url: store.getState().config.endpoints.challenges
         };
 
         return httpClient.request(requestConfig);
@@ -55,7 +55,7 @@ export const getSecurityQs = (): Promise<any> => {
         const requestConfig = {
             headers,
             method: HttpMethods.GET,
-            url: ServiceResourcesEndpoint.challengeAnswers
+            url: store.getState().config.endpoints.challengeAnswers
         };
 
         return httpClient.request(requestConfig);
@@ -82,10 +82,10 @@ export const addSecurityQs = (data: object): Promise<any> => {
         data,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.challengeAnswers
+        url: store.getState().config.endpoints.challengeAnswers
     };
 
     return httpClient.request(requestConfig)
@@ -112,10 +112,10 @@ export const updateSecurityQs = (data: object): Promise<any> => {
         data,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
         },
         method: HttpMethods.PUT,
-        url: ServiceResourcesEndpoint.challengeAnswers
+        url: store.getState().config.endpoints.challengeAnswers
     };
 
     return httpClient.request(requestConfig)

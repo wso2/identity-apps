@@ -17,10 +17,9 @@
  */
 
 import { CommonDeploymentConfigInterface } from "@wso2is/core//models";
-import { getAppConfig } from "@wso2is/core/api";
+import { isPortalAccessGranted } from "@wso2is/core/helpers";
 import {
     setDeploymentConfigs,
-    setFeatureConfigs,
     setI18nConfigs,
     setServiceResourceEndpoints,
     setUIConfigs
@@ -38,7 +37,6 @@ import { Config } from "./configs";
 import { ApplicationConstants } from "./constants";
 import { AppConfig, history } from "./helpers";
 import {
-    ConfigInterface,
     ConfigReducerStateInterface,
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface,
@@ -57,6 +55,7 @@ export const App = (): ReactElement => {
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const dispatch = useDispatch();
     const [ isAppLoading, setAppLoadingStatus ] = useState<boolean>(false);
+    const loginInit: boolean = useSelector((state: AppState) => state.authenticationInformation.loginInit);
 
     /**
      * Set the deployment configs in redux state.
@@ -71,28 +70,6 @@ export const App = (): ReactElement => {
     }, []);
 
     /**
-     * Obtain app.config.json from the server root when the app mounts.
-     */
-    useEffect(() => {
-        if (!config?.deployment || _.isEmpty(config.deployment) || !config.deployment.appBaseNameWithoutTenant) {
-            return;
-        }
-
-        // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
-        // will fail. Using `appBaseNameWithoutTenant` will create a path without the tenant. Therefore,
-        // `getAppConfig()` will look for the app config file in `https://localhost:9443/user-portal` rather than
-        // looking it in `https://localhost:9443/t/wso2.com/user-portal`.
-        getAppConfig<ConfigInterface>(ApplicationConstants.APP_CONFIG_FILE_NAME,
-            config.deployment.appBaseNameWithoutTenant)
-            .then((response) => {
-                dispatch(setFeatureConfigs<FeatureConfigInterface>(response?.features));
-            })
-            .catch(() => {
-                // TODO: Log the error here.
-            });
-    }, [ config?.deployment?.appBaseNameWithoutTenant ]);
-
-    /**
      * Set the app loading status based on the availability of configs.
      */
     useEffect(() => {
@@ -102,6 +79,21 @@ export const App = (): ReactElement => {
 
         setAppLoadingStatus(true);
     }, [ config ]);
+
+    /**
+     * Checks if the portal access should be granted based on the feature config.
+     */
+    useEffect(() => {
+        if (!config?.ui?.features || !loginInit) {
+            return;
+        }
+
+        if (isPortalAccessGranted<FeatureConfigInterface>(config?.ui?.features)) {
+            return;
+        }
+
+        history.push(ApplicationConstants.PATHS.get("UNAUTHORIZED"));
+    }, [ config?.ui?.features, loginInit ]);
 
     return (
         <Router history={ history }>

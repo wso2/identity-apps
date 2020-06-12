@@ -21,7 +21,8 @@ import { Logo } from "@wso2is/react-components";
 import classNames from "classnames";
 import * as React from "react";
 import { Image } from "semantic-ui-react";
-import { GlobalConfig, HomeTileIconImages, UserImage } from "../../configs";
+import { HomeTileIconImages, UserImage } from "../../configs";
+import { store } from "../../store";
 
 interface ImageProps {
     classes?: any;
@@ -60,7 +61,7 @@ export const Title = (props: TitleProps) => {
                 }
             />
             <h1 className={ classNames(classes, "product-title-text") } style={ style }>
-                { GlobalConfig.applicationName }
+                { store.getState().config.deployment.applicationName }
             </h1>
             { children }
         </div>
