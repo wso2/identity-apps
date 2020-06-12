@@ -30,7 +30,7 @@ import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ContentLoader, ThemeContext } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, Suspense, useContext, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -60,8 +60,6 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
 
     const dispatch = useDispatch();
 
-    const [ isAppLoading, setAppLoadingStatus ] = useState<boolean>(false);
-
     const userName: string = useSelector((state: AppState) => state.auth.username);
     const loginInit: boolean = useSelector((state: AppState) => state.auth.loginInit);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -77,17 +75,6 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
         dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
         dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
     }, []);
-
-    /**
-     * Set the app loading status based on the availability of configs.
-     */
-    useEffect(() => {
-        if (config?.deployment && !_.isEmpty(config.deployment) && config?.endpoints && !_.isEmpty(config.endpoints)) {
-            setAppLoadingStatus(false);
-        }
-
-        setAppLoadingStatus(true);
-    }, [ config ]);
 
     /**
      * Obtain app.config.json from the server root when the app mounts.
@@ -160,7 +147,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
     return (
         <>
             {
-                isAppLoading
+                (!_.isEmpty(config?.deployment) && !_.isEmpty(config?.endpoints))
                     ? (
                         <Router history={ history }>
                             <div className="container-fluid">
