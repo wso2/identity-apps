@@ -467,7 +467,7 @@ export const sendSignInRequest = (requestParams: ConfigInterface, callback?: () 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const handleSignIn = (requestParams: ConfigInterface, callback?: () => void): Promise<any> => {
     if (getSessionParameter(ACCESS_TOKEN)) {
-        if (!isValidOPConfig(requestParams.tenant)) {
+        if (!isValidOPConfig(requestParams.tenant, requestParams.clientID)) {
             handleSignOut();
         }
 

@@ -21,6 +21,7 @@ import { getSessionParameter, removeSessionParameter, setSessionParameter } from
 import {
     AUTHORIZATION_ENDPOINT,
     CALLBACK_URL,
+    CLIENT_ID,
     END_SESSION_ENDPOINT,
     ISSUER,
     JWKS_ENDPOINT,
@@ -125,6 +126,14 @@ export const setIssuer = (issuer): void => {
     setSessionParameter(ISSUER, issuer);
 };
 
+/**
+ * Set Client ID.
+ *
+ * @param {string} clientID - Client ID of the application.
+ */
+export const setClientID = (clientID: string): void => {
+    setSessionParameter(CLIENT_ID, clientID);
+};
 
 /**
  * Initialize openid provider configuration.
@@ -139,7 +148,7 @@ export const initOPConfiguration = (
         forceInit: boolean
     ): Promise<any> => {
 
-    if (!forceInit && isValidOPConfig(requestParams.tenant)) {
+    if (!forceInit && isValidOPConfig(requestParams.tenant, requestParams.clientID)) {
         return Promise.resolve();
     }
 
@@ -159,6 +168,7 @@ export const initOPConfiguration = (
             setRevokeTokenEndpoint(response.data.token_endpoint
                 .substring(0, response.data.token_endpoint.lastIndexOf("token")) + "revoke");
             setIssuer(response.data.issuer);
+            setClientID(requestParams.clientID);
             setOIDCSessionIFrameURL(response.data.check_session_iframe);
             setTenant(requestParams.tenant);
             setCallbackURL(requestParams.callbackURL);
@@ -173,6 +183,7 @@ export const initOPConfiguration = (
             setEndSessionEndpoint(requestParams.serverOrigin + SERVICE_RESOURCES.logout);
             setJwksUri(serverHost + SERVICE_RESOURCES.jwks);
             setIssuer(requestParams.serverOrigin + SERVICE_RESOURCES.token);
+            setClientID(requestParams.clientID);
             setOIDCSessionIFrameURL(requestParams.serverOrigin + SERVICE_RESOURCES.oidcSessionIFrame);
             setTenant(requestParams.tenant);
             setCallbackURL(requestParams.callbackURL);
@@ -194,6 +205,7 @@ export const resetOPConfiguration = (): void => {
     removeSessionParameter(REVOKE_TOKEN_ENDPOINT);
     removeSessionParameter(OP_CONFIG_INITIATED);
     removeSessionParameter(ISSUER);
+    removeSessionParameter(CLIENT_ID);
     removeSessionParameter(TENANT);
     removeSessionParameter(CALLBACK_URL);
 };
@@ -271,10 +283,23 @@ export const getIssuer = (): string => {
 };
 
 /**
+ * Get Client ID.
+ *
+ * @return {string}
+ */
+export const getClientID = (): string => {
+    return getSessionParameter(CLIENT_ID);
+};
+
+/**
  * Checks whether openid configuration initiated is valid.
  *
- * @returns {boolean}
+ * @param {string} tenant - Tenant of the logged in user.
+ * @param {string} clientID - Client ID of the application.
+ * @return {boolean}
  */
-export const isValidOPConfig = (tenant): boolean => {
-    return isOPConfigInitiated() && (getTenant() && (getTenant() === tenant));
+export const isValidOPConfig = (tenant: string, clientID: string): boolean => {
+    return isOPConfigInitiated()
+        && (getTenant() && (getTenant() === tenant))
+        && (getClientID() && (getClientID() === clientID));
 };
