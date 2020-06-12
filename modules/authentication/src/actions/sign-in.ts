@@ -25,10 +25,16 @@ import {
     getRevokeTokenEndpoint,
     getTokenEndpoint,
     initOPConfiguration,
-    isValidOPConfig
+    isValidOPConfig,
+    resetOPConfiguration
 } from "./op-config";
-import { getSessionParameter, initUserSession, removeSessionParameter, setSessionParameter } from "./session";
-import { handleSignOut } from "./sign-out";
+import {
+    endAuthenticatedSession,
+    getSessionParameter,
+    initUserSession,
+    removeSessionParameter,
+    setSessionParameter
+} from "./session";
 import {
     ACCESS_TOKEN,
     AUTHORIZATION_CODE,
@@ -468,7 +474,15 @@ export const sendSignInRequest = (requestParams: ConfigInterface, callback?: () 
 export const handleSignIn = (requestParams: ConfigInterface, callback?: () => void): Promise<any> => {
     if (getSessionParameter(ACCESS_TOKEN)) {
         if (!isValidOPConfig(requestParams.tenant, requestParams.clientID)) {
-            handleSignOut();
+            endAuthenticatedSession();
+            resetOPConfiguration();
+
+            initOPConfiguration(requestParams, true)
+                .then(() => {
+                    sendSignInRequest(requestParams, callback);
+                });
+
+            return;
         }
 
         if (callback) {
