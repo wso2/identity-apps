@@ -87,7 +87,7 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
         (state: AppState) => state.helpPanel.docStructure);
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
     const [ applicationTemplateName, setApplicationTemplateName ] = useState<string>(undefined);

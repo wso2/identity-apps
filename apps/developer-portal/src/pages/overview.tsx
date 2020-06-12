@@ -67,7 +67,7 @@ export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
 
     const dispatch = useDispatch();
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
 
     const [ appList, setAppList ] = useState<ApplicationListInterface>({});

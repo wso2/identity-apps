@@ -87,7 +87,7 @@ export const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 
     const dispatch = useDispatch();
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(

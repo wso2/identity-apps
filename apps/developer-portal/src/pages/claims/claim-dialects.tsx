@@ -72,7 +72,7 @@ export const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = 
         }
     ];
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ dialects, setDialects ] = useState<ClaimDialect[]>(null);
     const [ offset, setOffset ] = useState(0);

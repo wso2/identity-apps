@@ -71,7 +71,7 @@ export const UserStores: FunctionComponent<UserStoresPageInterface> = (
         }
     ];
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ userStores, setUserStores ] = useState<UserStoreListItem[]>([]);
     const [ offset, setOffset ] = useState(0);

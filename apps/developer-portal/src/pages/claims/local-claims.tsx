@@ -71,7 +71,7 @@ export const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
         }
     ];
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ claims, setClaims ] = useState<Claim[]>(null);
     const [ offset, setOffset ] = useState(0);
