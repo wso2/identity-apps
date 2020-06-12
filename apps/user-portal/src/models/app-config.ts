@@ -19,7 +19,8 @@
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
-    FeatureAccessConfigInterface
+    FeatureAccessConfigInterface,
+    CommonUIConfigInterface
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 
@@ -37,23 +38,23 @@ export interface FeatureConfigInterface {
     /**
      * User overview feature.
      */
-    overview: FeatureAccessConfigInterface;
+    overview?: FeatureAccessConfigInterface;
     /**
      * Personal info feature.
      */
-    personalInfo: FeatureAccessConfigInterface;
+    personalInfo?: FeatureAccessConfigInterface;
     /**
      * Application management feature.
      */
-    applications: FeatureAccessConfigInterface;
+    applications?: FeatureAccessConfigInterface;
     /**
      * Account security feature.
      */
-    security: FeatureAccessConfigInterface;
+    security?: FeatureAccessConfigInterface;
     /**
      * Pending operation tasks feature.
      */
-    operations: FeatureAccessConfigInterface;
+    operations?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -105,7 +106,7 @@ export interface AuthenticatorAppListInterface {
 /**
  * Dev portal UI config interface.
  */
-export interface UIConfigInterface {
+export interface UIConfigInterface extends CommonUIConfigInterface {
     /**
      * Copyright text for the footer.
      */

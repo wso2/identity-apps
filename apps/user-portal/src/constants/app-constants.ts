@@ -58,6 +58,15 @@ export class ApplicationConstants {
         .set("OPERATIONS", "operations");
 
     /**
+     * Application Paths.
+     * @constant
+     * @type {Map<string, string>}
+     */
+    public static readonly PATHS: Map<string, string> = new Map<string, string>()
+        .set("404", "/404")
+        .set("UNAUTHORIZED", "/unauthorized");
+
+    /**
      * Name of the app config file for the user portal.
      * @constant
      * @type {string}
