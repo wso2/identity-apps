@@ -58,7 +58,6 @@
         <jsp:directive.include file="includes/header.jsp"/>
         <% } %>
 
-        <script src="js/scripts.js"></script>
         <!--[if lt IE 9]>
         <script src="js/html5shiv.min.js"></script>
         <script src="js/respond.min.js"></script>
@@ -117,6 +116,8 @@
                             </div>
                             <input type="hidden" name="sessionDataKey"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
+                            <input type='hidden' name='resendCode' id='resendCode' value='false'/>
+                            
                             <div class="ui divider hidden"></div>
                             <div class="align-right buttons">
                                 <%
@@ -172,7 +173,7 @@
                 });
             });
             $(document).ready(function () {
-                $('#resendCodeLinkDiv').click(function () {
+                $('#resend').click(function () {
                     document.getElementById("resendCode").value = "true";
                     $('#codeForm').submit();
                 });
