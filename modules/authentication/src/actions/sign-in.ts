@@ -476,6 +476,8 @@ export const handleSignIn = (requestParams: ConfigInterface, callback?: () => vo
         if (!isValidOPConfig(requestParams.tenant, requestParams.clientID)) {
             endAuthenticatedSession();
             resetOPConfiguration();
+            // TODO: Better to have a callback to clear this on the app side.
+            removeSessionParameter("auth_callback_url");
 
             initOPConfiguration(requestParams, true)
                 .then(() => {
