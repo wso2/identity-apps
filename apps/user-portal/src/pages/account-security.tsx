@@ -42,7 +42,7 @@ import { addAlert } from "../store/actions";
 export const AccountSecurityPage = (): JSX.Element => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.features);
+    const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
     /**
      * Dispatches the alert object to the redux store.
@@ -100,7 +100,10 @@ export const AccountSecurityPage = (): JSX.Element => {
                                 ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")
                             )
                             ? (
-                                <MultiFactorAuthentication onAlertFired={ handleAlerts } />
+                                <MultiFactorAuthentication
+                                    featureConfig={ accessConfig }
+                                    onAlertFired={ handleAlerts }
+                                />
                             )
                             : null
                         }

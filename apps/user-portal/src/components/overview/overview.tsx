@@ -36,7 +36,7 @@ import { AppState } from "../../store";
  * @return {JSX.Element}
  */
 export const Overview: FunctionComponent<{}> = (): JSX.Element => {
-    const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.features);
+    const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
     return (
         <Grid className="overview-page">

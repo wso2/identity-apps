@@ -55,7 +55,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const isApplicationsPageVisible = useSelector((state: AppState) => state.global.isApplicationsPageVisible);
-    const appConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.features);
+    const appConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const activeRoute = (path: string) => {
         const pathname = window.location.pathname;
         const urlTokens = path.split("/");

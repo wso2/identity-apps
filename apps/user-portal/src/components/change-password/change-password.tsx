@@ -103,7 +103,8 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.validations.submitSuccess.message"
+                            "userPortal:components.changePassword.forms.passwordResetForm.validations." +
+                            "submitSuccess.message"
                         )
                     });
 
@@ -150,7 +151,8 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.validations.submitError.message"
+                            "userPortal:components.changePassword.forms.passwordResetForm.validations." +
+                            "submitError.message"
                         )
                     });
                 } else {
@@ -167,7 +169,8 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.validations.genericError.message"
+                            "userPortal:components.changePassword.forms.passwordResetForm.validations." +
+                            "genericError.message"
                         )
                     });
                 }
