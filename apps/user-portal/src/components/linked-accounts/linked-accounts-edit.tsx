@@ -48,7 +48,7 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
             <Grid>
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 4 }>
-                        { t("views:components.linkedAccounts.accountTypes.local.label") }
+                        { t("userPortal:components.linkedAccounts.accountTypes.local.label") }
                     </Grid.Column>
                     <Grid.Column width={ 12 }>
                         <Forms
@@ -59,17 +59,17 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
                             <Field
                                 autoFocus={ true }
                                 label={ t(
-                                    "views:components.linkedAccounts.forms.addAccountForm" +
+                                    "userPortal:components.linkedAccounts.forms.addAccountForm" +
                                     ".inputs.username.label"
                                 ) }
                                 name="username"
                                 placeholder={ t(
-                                    "views:components.linkedAccounts.forms." +
+                                    "userPortal:components.linkedAccounts.forms." +
                                     "addAccountForm.inputs.username.placeholder"
                                 ) }
                                 required={ true }
                                 requiredErrorMessage={ t(
-                                    "views:components.linkedAccounts.forms" +
+                                    "userPortal:components.linkedAccounts.forms" +
                                     ".addAccountForm.inputs.username.validations.empty"
                                 ) }
                                 type="text"
@@ -77,17 +77,17 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
                             <Field
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
-                                    "views:components.linkedAccounts.forms.addAccountForm." +
+                                    "userPortal:components.linkedAccounts.forms.addAccountForm." +
                                     "inputs.password.label"
                                 ) }
                                 name="password"
                                 placeholder={ t(
-                                    "views:components.linkedAccounts.forms" +
+                                    "userPortal:components.linkedAccounts.forms" +
                                     ".addAccountForm.inputs.password.placeholder"
                                 ) }
                                 required={ true }
                                 requiredErrorMessage={ t(
-                                    "views:components.linkedAccounts.forms" +
+                                    "userPortal:components.linkedAccounts.forms" +
                                     ".addAccountForm.inputs.password.validations.empty"
                                 ) }
                                 showPassword={ t("common:showPassword") }

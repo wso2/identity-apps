@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { RouteInterface } from "@wso2is/core/models";
+import { AppLayout } from "@wso2is/react-components";
 import { ApplicationConstants } from "../constants";
 import * as TokenConstants from "../constants/token-constants";
 import {
@@ -121,4 +123,20 @@ const ROUTES: Route[] = [
     }
 ];
 
+/**
+ * Default page layout routes array.
+ */
+const BASE_ROUTES: RouteInterface[] = [
+    {
+        component: AppLayout,
+        icon: null,
+        id: "app",
+        name: "App",
+        path: "/",
+        protected: false,
+        showOnSidePanel: false
+    }
+];
+
 export const routes = ROUTES;
+export const baseRoutes = BASE_ROUTES;

@@ -44,8 +44,8 @@ export const ConsentManagementPage = (): JSX.Element => {
 
     return (
         <InnerPageLayout
-            pageTitle={ t("views:pages.consentManagement.title") }
-            pageDescription={ t("views:pages.consentManagement.subTitle") }
+            pageTitle={ t("userPortal:pages.consentManagement.title") }
+            pageDescription={ t("userPortal:pages.consentManagement.subTitle") }
         >
             <Divider hidden />
             <Grid>

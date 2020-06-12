@@ -114,12 +114,12 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                     dispatch(
                         addAlert({
                             description: t(
-                                "views:components.linkedAccounts.notifications.switchAccount.error.description",
+                                "userPortal:components.linkedAccounts.notifications.switchAccount.error.description",
                                 { description: error.response.data.detail }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "views:components.linkedAccounts.notifications.switchAccount.error.message"
+                                "userPortal:components.linkedAccounts.notifications.switchAccount.error.message"
                             )
                         })
                     );
@@ -130,11 +130,11 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                 dispatch(
                     addAlert({
                         description: t(
-                            "views:components.linkedAccounts.notifications.switchAccount.genericError.description"
+                            "userPortal:components.linkedAccounts.notifications.switchAccount.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.linkedAccounts.notifications.switchAccount.genericError.message"
+                            "userPortal:components.linkedAccounts.notifications.switchAccount.genericError.message"
                         )
                     })
                 );

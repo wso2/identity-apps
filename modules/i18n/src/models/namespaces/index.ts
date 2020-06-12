@@ -19,3 +19,4 @@
 export * from "./admin-portal-ns";
 export * from "./common-ns";
 export * from "./dev-portal-ns";
+export * from "./user-portal-ns";

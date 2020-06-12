@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import { AlertLevels, BasicProfileInterface, ProfileSchema } from "../../models";
-import { GlobalConfig, i18n } from "../../configs";
-import { authenticateActionTypes, AuthAction } from "./types";
-import { getProfileInfo, getProfileSchemas } from "../../api";
-import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
-import { ClientInteface, IdentityClient } from "@wso2is/authentication";
+import { ConfigInterface, IdentityClient } from "@wso2is/authentication";
 import _ from "lodash";
 import { addAlert } from "./global";
-import { getProfileCompletion } from "../../utils";
+import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
+import { AuthAction, authenticateActionTypes } from "./types";
+import { getProfileInfo, getProfileSchemas } from "../../api";
+import { i18n } from "../../configs";
 import { history } from "../../helpers";
+import { AlertLevels, BasicProfileInterface, ProfileSchema } from "../../models";
+import { getProfileCompletion } from "../../utils";
 import { store } from "../index";
 
 /**
@@ -171,7 +171,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
  * Initialize identityManager client
  */
 const identityManager = (() => {
-    let instance: ClientInteface;
+    let instance: ConfigInterface;
 
     const createInstance = () => {
         return new IdentityClient({
@@ -220,6 +220,6 @@ export const handleSignOut = () => (dispatch) => {
             dispatch(setSignOut());
         })
         .catch(() => {
-            history.push(GlobalConfig.appLoginPath);
+            history.push(store?.getState()?.config?.deployment?.appLoginPath);
         });
 };

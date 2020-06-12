@@ -63,6 +63,14 @@ export class I18nModuleConstants {
     public static readonly ADMIN_PORTAL_NAMESPACE: string = "adminPortal";
 
     /**
+     * User portal namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly USER_PORTAL_NAMESPACE: string = "userPortal";
+
+    /**
      * Default fallback language.
      * @constant
      * @type {string}

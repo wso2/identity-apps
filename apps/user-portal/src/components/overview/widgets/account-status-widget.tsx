@@ -135,7 +135,7 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                         <>
                                             <div className="header">
                                                 <Icon color="green" name="check circle" />
-                                                { t("views:components.overview.widgets.accountStatus." +
+                                                { t("userPortal:components.overview.widgets.accountStatus." +
                                                     "completedFields") }
                                             </div>
                                             <ul>
@@ -144,10 +144,10 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                                         .map((attr, index) => (
                                                             <li key={ index }>
                                                                 { attr.name === "profileUrl"
-                                                                    ? t("views:components.profile.fields."
+                                                                    ? t("userPortal:components.profile.fields."
                                                                         + "profileImage",
                                                                         { defaultValue: attr.displayName })
-                                                                    : t("views:components.profile.fields."
+                                                                    : t("userPortal:components.profile.fields."
                                                                         + attr.name.replace(".", "_"),
                                                                         { defaultValue: attr.displayName })
                                                                 }
@@ -168,7 +168,7 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                         <>
                                             <div className="header">
                                                 <Icon color="red" name="times circle" />
-                                                { t("views:components.overview.widgets.accountStatus." +
+                                                { t("userPortal:components.overview.widgets.accountStatus." +
                                                     "inCompleteFields") }
                                             </div>
                                             <ul>
@@ -177,10 +177,10 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                                         .map((attr, index) => (
                                                             <li key={ index }>
                                                                 { attr.name === "profileUrl"
-                                                                    ? t("views:components.profile.fields."
+                                                                    ? t("userPortal:components.profile.fields."
                                                                         + "profileImage",
                                                                         { defaultValue: attr.displayName })
-                                                                    : t("views:components.profile.fields."
+                                                                    : t("userPortal:components.profile.fields."
                                                                         + attr.name.replace(".", "_"),
                                                                         { defaultValue: attr.displayName })
                                                                 }
@@ -216,7 +216,7 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                 profileCompletion.required, false)}` }
                         >
                             {
-                                t("views:components.overview.widgets.accountStatus" +
+                                t("userPortal:components.overview.widgets.accountStatus" +
                                     ".mandatoryFieldsCompletion",
                                     {
                                         completed: profileCompletion.required.completedCount,
@@ -239,7 +239,7 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                 profileCompletion.optional, true)}` }
                         >
                             {
-                                t("views:components.overview.widgets.accountStatus" +
+                                t("userPortal:components.overview.widgets.accountStatus" +
                                     ".optionalFieldsCompletion",
                                     {
                                         completed: profileCompletion.optional.completedCount,
@@ -269,8 +269,8 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                             <Header className="status-header" as="h3">
                                 {
                                     (getProfileCompletionPercentage() === 100)
-                                        ? t("views:components.overview.widgets.accountStatus.complete")
-                                        : t("views:components.overview.widgets.accountStatus.inComplete")
+                                        ? t("userPortal:components.overview.widgets.accountStatus.complete")
+                                        : t("userPortal:components.overview.widgets.accountStatus.inComplete")
                                 }
                             </Header>
                             <Progress
@@ -286,7 +286,7 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                 error={ getProfileStatus() === ProfileCompletionStatus.ERROR }
                             >
                                 {
-                                    t("views:components.overview.widgets.accountStatus.completionPercentage",
+                                    t("userPortal:components.overview.widgets.accountStatus.completionPercentage",
                                         {
                                             percentage: profileCompletion && profileCompletion.percentage
                                                 ? profileCompletion.percentage

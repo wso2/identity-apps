@@ -60,7 +60,7 @@ export const LinkedAccountsList: FunctionComponent<LinkedAccountsListProps> = (
                 onClose={ () => { setConfirmDelete(false); } }
             >
                 <Modal.Content>
-                    { t("views:components.linkedAccounts.deleteConfirmation") }
+                    { t("userPortal:components.linkedAccounts.deleteConfirmation") }
                 </Modal.Content>
                 <Modal.Actions>
                     <Button

@@ -44,8 +44,8 @@ export const OperationsPage = (): JSX.Element => {
 
     return (
         <InnerPageLayout
-            pageTitle={ t("views:pages.operations.title") }
-            pageDescription={ t("views:pages.operations.subTitle") }
+            pageTitle={ t("userPortal:pages.operations.title") }
+            pageDescription={ t("userPortal:pages.operations.subTitle") }
         >
             <Divider hidden/>
             <Grid>

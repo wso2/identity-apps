@@ -191,11 +191,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             if (response.status === 200) {
                 onAlertFired({
                     description: t(
-                        "views:components.profile.notifications.updateProfileInfo.success.description"
+                        "userPortal:components.profile.notifications.updateProfileInfo.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "views:components.profile.notifications.updateProfileInfo.success.message"
+                        "userPortal:components.profile.notifications.updateProfileInfo.success.message"
                     )
                 });
 
@@ -238,7 +238,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      */
     const generateSchemaForm = (schema: ProfileSchema): JSX.Element => {
         if (editingForm && editingForm.size > 0 && editingForm.get(schema.name)) {
-            const fieldName = t("views:components.profile.fields." + schema.name.replace(".", "_"),
+            const fieldName = t("userPortal:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
             );
 
@@ -257,12 +257,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                         autoFocus={ true }
                                         label=""
                                         name={ schema.name }
-                                        placeholder={ t("views:components.profile.forms.generic.inputs.placeholder", {
+                                        placeholder={ t("userPortal:components.profile.forms.generic.inputs.placeholder", {
                                             fieldName
                                         }) }
                                         required={ schema.required }
                                         requiredErrorMessage={ t(
-                                            "views:components.profile.forms.generic.inputs.validations.empty",
+                                            "userPortal:components.profile.forms.generic.inputs.validations.empty",
                                             {
                                                 fieldName
                                             }
@@ -273,7 +273,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                 if (!FormValidation.email(value)) {
                                                     validation.errorMessages.push(
                                                         t(
-                                                            "views:components.profile.forms." +
+                                                            "userPortal:components.profile.forms." +
                                                             "generic.inputs.validations.invalidFormat",
                                                             {
                                                                 fieldName
@@ -286,7 +286,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             if (checkSchemaType(schema.name, "mobile")) {
                                                 if (!FormValidation.mobileNumber(value)) {
                                                     validation.errorMessages.push(t(
-                                                        "views:components.profile.forms." +
+                                                        "userPortal:components.profile.forms." +
                                                         "generic.inputs.validations.invalidFormat",
                                                         {
                                                             fieldName
@@ -325,7 +325,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 </EditSection >
             );
         } else {
-            const fieldName = t("views:components.profile.fields." + schema.name.replace(".", "_"),
+            const fieldName = t("userPortal:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
             );
             return (
@@ -348,7 +348,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                     className="placeholder-text"
                                                     onClick={ () => { showFormEditView(schema.name); } }
                                                 >
-                                                    {t("views:components.profile.forms.generic.inputs.placeholder",
+                                                    {t("userPortal:components.profile.forms.generic.inputs.placeholder",
                                                         {
                                                             fieldName
                                                         })
@@ -405,8 +405,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
 
     return (
         <SettingsSection
-            description={ t("views:sections.profile.description") }
-            header={ t("views:sections.profile.heading") }
+            description={ t("userPortal:sections.profile.description") }
+            header={ t("userPortal:sections.profile.heading") }
             icon={ (
                 <UserAvatar
                     authState={ profileDetails }
@@ -417,7 +417,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     onAlertFired={ onAlertFired }
                     showGravatarLabel
                     gravatarInfoPopoverText={ (
-                        <Trans i18nKey="views:components.userAvatar.infoPopover">
+                        <Trans i18nKey="userPortal:components.userAvatar.infoPopover">
                             This image has been retrieved from
                             <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener noreferrer">
                                 Gravatar
@@ -436,7 +436,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     onAlertFired={ onAlertFired }
                     showGravatarLabel
                     gravatarInfoPopoverText={ (
-                        <Trans i18nKey="views:components.userAvatar.infoPopover">
+                        <Trans i18nKey="userPortal:components.userAvatar.infoPopover">
                             This image has been retrieved from
                             <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener noreferrer">
                                 Gravatar
@@ -447,7 +447,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             ) }
             placeholder={
                 !isSCIMEnabled
-                    ? t("views:components.profile.placeholders.SCIMDisabled.heading")
+                    ? t("userPortal:components.profile.placeholders.SCIMDisabled.heading")
                     : null
             }
         >

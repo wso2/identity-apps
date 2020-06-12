@@ -59,7 +59,7 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
             .catch((error) => {
                 onAlertFired({
                     description:
-                        t("views:components.federatedAssociations.notifications.getFederatedAssociations."
+                        t("userPortal:components.federatedAssociations.notifications.getFederatedAssociations."
                             + "error.description",
                             {
                                 description: error
@@ -67,7 +67,7 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
                         ),
                     level: AlertLevels.ERROR,
                     message:
-                        t("views:components.federatedAssociations.notifications.getFederatedAssociations.error.message")
+                        t("userPortal:components.federatedAssociations.notifications.getFederatedAssociations.error.message")
                 });
             });
     };
@@ -88,22 +88,22 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
             .then(() => {
                 getFederatedAssociationsList();
                 onAlertFired({
-                    description: t("views:components.federatedAssociations.notifications"
+                    description: t("userPortal:components.federatedAssociations.notifications"
                         + ".removeFederatedAssociation.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("views:components.federatedAssociations.notifications"
+                    message: t("userPortal:components.federatedAssociations.notifications"
                         + ".removeFederatedAssociation.success.message")
                 });
             })
             .catch((error) => {
                 onAlertFired({
-                    description: t("views:components.federatedAssociations.notifications"
+                    description: t("userPortal:components.federatedAssociations.notifications"
                         + ".removeFederatedAssociation.error.description",
                         {
                             description: error
                         }),
                     level: AlertLevels.ERROR,
-                    message: t("views:components.federatedAssociations.notifications"
+                    message: t("userPortal:components.federatedAssociations.notifications"
                         + ".removeFederatedAssociation.error.message")
                 });
             });
@@ -121,7 +121,7 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
                 onClose={ () => { setConfirmDelete(false); } }
             >
                 <Modal.Content>
-                    { t("views:components.federatedAssociations.deleteConfirmation") }
+                    { t("userPortal:components.federatedAssociations.deleteConfirmation") }
                 </Modal.Content>
                 <Modal.Actions>
                     <Button
@@ -216,8 +216,8 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
 
     return (
         <SettingsSection
-            description={ t("views:sections.federatedAssociations.description") }
-            header={ t("views:sections.federatedAssociations.heading") }
+            description={ t("userPortal:sections.federatedAssociations.description") }
+            header={ t("userPortal:sections.federatedAssociations.heading") }
             icon={ SettingsSectionIcons.federatedAssociations }
             iconMini={ SettingsSectionIcons.federatedAssociationsMini }
             iconSize="auto"

@@ -64,12 +64,12 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): JSX.Element => {
                     dispatch(
                         addAlert({
                             description: t(
-                                "views:components.userSessions.notifications.fetchSessions.error.description",
+                                "userPortal:components.userSessions.notifications.fetchSessions.error.description",
                                 { description: error.response.data.detail }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "views:components.userSessions.notifications.fetchSessions.error.message"
+                                "userPortal:components.userSessions.notifications.fetchSessions.error.message"
                             ),
                         })
                     );
@@ -80,11 +80,11 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): JSX.Element => {
                 dispatch(
                     addAlert({
                         description: t(
-                            "views:components.userSessions.notifications.fetchSessions.genericError.description"
+                            "userPortal:components.userSessions.notifications.fetchSessions.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.userSessions.notifications.fetchSessions.genericError.message"
+                            "userPortal:components.userSessions.notifications.fetchSessions.genericError.message"
                         ),
                     })
                 );
@@ -105,14 +105,14 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): JSX.Element => {
     return (
         <div className="widget account-status">
             <SettingsSection
-                description={ t("views:components.overview.widgets.accountActivity.description") }
-                header={ t("views:components.overview.widgets.accountActivity.header") }
+                description={ t("userPortal:components.overview.widgets.accountActivity.description") }
+                header={ t("userPortal:components.overview.widgets.accountActivity.header") }
                 placeholder={
                     !(userSessions && userSessions.sessions && (userSessions.sessions.length > 0))
-                        ? t("views:sections.userSessions.actionTitles.empty")
+                        ? t("userPortal:sections.userSessions.actionTitles.empty")
                         : null
                 }
-                primaryAction={ t("views:components.overview.widgets.accountActivity.actionTitles.update") }
+                primaryAction={ t("userPortal:components.overview.widgets.accountActivity.actionTitles.update") }
                 onPrimaryActionClick={ navigate }
             >
                 <UserSessionsList

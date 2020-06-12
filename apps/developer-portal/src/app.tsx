@@ -43,10 +43,10 @@ import {
     ConfigInterface,
     ConfigReducerStateInterface,
     FeatureConfigInterface,
+    PortalDocumentationStructureInterface,
     ServiceResourceEndpointsInterface,
     UIConfigInterface
 } from "./models";
-import { PortalDocumentationStructureInterface } from "./models";
 import { AppState } from "./store";
 import { setHelpPanelDocStructure } from "./store/actions";
 

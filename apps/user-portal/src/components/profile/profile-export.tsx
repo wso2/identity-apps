@@ -65,21 +65,21 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
                     // Sets a success notification.
                     onAlertFired({
                         description: t(
-                            "views:components.profileExport.notifications.downloadProfileInfo.success.description"
+                            "userPortal:components.profileExport.notifications.downloadProfileInfo.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "views:components.profileExport.notifications.downloadProfileInfo.success.message"
+                            "userPortal:components.profileExport.notifications.downloadProfileInfo.success.message"
                         )
                     });
                 } else {
                     onAlertFired({
                         description: t(
-                            "views:components.profileExport.notifications.downloadProfileInfo.genericError.description"
+                            "userPortal:components.profileExport.notifications.downloadProfileInfo.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.profileExport.notifications.downloadProfileInfo.genericError.message"
+                            "userPortal:components.profileExport.notifications.downloadProfileInfo.genericError.message"
                         )
                     });
                 }
@@ -88,12 +88,12 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
                 if (error.response && error.response.data && error.response.data.detail) {
                     onAlertFired({
                         description: t(
-                            "views:components.profileExport.notifications.downloadProfileInfo.error.description",
+                            "userPortal:components.profileExport.notifications.downloadProfileInfo.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.profileExport.notifications.downloadProfileInfo.error.message"
+                            "userPortal:components.profileExport.notifications.downloadProfileInfo.error.message"
                         )
                     });
 
@@ -102,11 +102,11 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
 
                 onAlertFired({
                     description: t(
-                        "views:components.profileExport.notifications.downloadProfileInfo.genericError.description"
+                        "userPortal:components.profileExport.notifications.downloadProfileInfo.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.profileExport.notifications.downloadProfileInfo.genericError.message"
+                        "userPortal:components.profileExport.notifications.downloadProfileInfo.genericError.message"
                     )
                 });
             });
@@ -115,15 +115,15 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
     return (
         <SettingsSection
             contentPadding={ false }
-            description={ t("views:sections.profileExport.description") }
-            header={ t("views:sections.profileExport.heading") }
+            description={ t("userPortal:sections.profileExport.description") }
+            header={ t("userPortal:sections.profileExport.heading") }
             icon={ SettingsSectionIcons.profileExport }
             iconMini={ SettingsSectionIcons.profileExportMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
             onPrimaryActionClick={ downloadUserProfile }
-            primaryAction={ t("views:sections.profileExport.actionTitles.export") }
+            primaryAction={ t("userPortal:sections.profileExport.actionTitles.export") }
             primaryActionIcon="cloud download"
         />
     );

@@ -37,10 +37,10 @@ export const OverviewPage = (): JSX.Element => {
     return (
         <InnerPageLayout
             pageTitle={ t(
-                "views:pages:overview.title",
+                "userPortal:pages:overview.title",
                 { firstName: resolveUserDisplayName(profileDetails) }
                 ) }
-            pageDescription={ t("views:pages:overview.subTitle") }
+            pageDescription={ t("userPortal:pages:overview.subTitle") }
             pageTitleTextAlign="left"
         >
             <Overview />

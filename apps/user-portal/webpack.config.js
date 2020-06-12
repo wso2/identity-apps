@@ -199,6 +199,11 @@ module.exports = (env) => {
                     to: "libs"
                 },
                 {
+                    context: path.join(__dirname, "node_modules", "@wso2is", "i18n"),
+                    from: path.join("dist", "bundle"),
+                    to: path.join("resources", "i18n")
+                },
+                {
                     context: path.join(__dirname, "src"),
                     from: "public",
                     to: ".",

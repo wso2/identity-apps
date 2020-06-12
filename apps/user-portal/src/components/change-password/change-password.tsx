@@ -98,12 +98,12 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
 
                     onAlertFired({
                         description: t(
-                            "views:components.changePassword.forms.passwordResetForm.validations.submitSuccess." +
+                            "userPortal:components.changePassword.forms.passwordResetForm.validations.submitSuccess." +
                             "description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "views:components.changePassword.forms.passwordResetForm.validations.submitSuccess.message"
+                            "userPortal:components.changePassword.forms.passwordResetForm.validations.submitSuccess.message"
                         )
                     });
 
@@ -120,19 +120,19 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     setErrors({
                         ...errors,
                         currentPassword: t(
-                            "views:components.changePassword.forms.passwordResetForm.inputs.currentPassword." +
+                            "userPortal:components.changePassword.forms.passwordResetForm.inputs.currentPassword." +
                             "validations.invalid"
                         )
                     });
 
                     onAlertFired({
                         description: t(
-                            "views:components.changePassword.forms.passwordResetForm.validations." +
+                            "userPortal:components.changePassword.forms.passwordResetForm.validations." +
                             "invalidCurrentPassword.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.changePassword.forms.passwordResetForm.validations." +
+                            "userPortal:components.changePassword.forms.passwordResetForm.validations." +
                             "invalidCurrentPassword.message"
                         )
                     });
@@ -144,13 +144,13 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
 
                     onAlertFired({
                         description: t(
-                            "views:components.changePassword.forms.passwordResetForm.validations." +
+                            "userPortal:components.changePassword.forms.passwordResetForm.validations." +
                             "submitError.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.changePassword.forms.passwordResetForm.validations.submitError.message"
+                            "userPortal:components.changePassword.forms.passwordResetForm.validations.submitError.message"
                         )
                     });
                 } else {
@@ -162,12 +162,12 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     // Generic error message
                     onAlertFired({
                         description: t(
-                            "views:components.changePassword.forms.passwordResetForm.validations." +
+                            "userPortal:components.changePassword.forms.passwordResetForm.validations." +
                             "genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.changePassword.forms.passwordResetForm.validations.genericError.message"
+                            "userPortal:components.changePassword.forms.passwordResetForm.validations.genericError.message"
                         )
                     });
                 }
@@ -200,10 +200,10 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
         <Modal size="mini" open={ showConfirmationModal } onClose={ handleConfirmationModalClose } dimmer="blurring">
             <Modal.Content>
                 <Container>
-                    <h3>{ t("views:components.changePassword.modals.confirmationModal.heading") }</h3>
+                    <h3>{ t("userPortal:components.changePassword.modals.confirmationModal.heading") }</h3>
                 </Container>
                 <Divider hidden={ true } />
-                <p>{ t("views:components.changePassword.modals.confirmationModal.message") }</p>
+                <p>{ t("userPortal:components.changePassword.modals.confirmationModal.message") }</p>
             </Modal.Content>
             <Modal.Actions>
                 <Button className="link-button" onClick={ handleConfirmationModalClose }>
@@ -230,16 +230,16 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     autoFocus={ true }
                     hidePassword={ t("common:hidePassword") }
                     label={ t(
-                        "views:components.changePassword.forms.passwordResetForm.inputs" + ".currentPassword.label"
+                        "userPortal:components.changePassword.forms.passwordResetForm.inputs" + ".currentPassword.label"
                     ) }
                     name="currentPassword"
                     placeholder={ t(
-                        "views:components.changePassword.forms.passwordResetForm.inputs." +
+                        "userPortal:components.changePassword.forms.passwordResetForm.inputs." +
                         "currentPassword.placeholder"
                     ) }
                     required={ true }
                     requiredErrorMessage={ t(
-                        "views:components.changePassword.forms.passwordResetForm." +
+                        "userPortal:components.changePassword.forms.passwordResetForm." +
                         "inputs.currentPassword.validations.empty"
                     ) }
                     showPassword={ t("common:showPassword") }
@@ -249,16 +249,16 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                 <Field
                     hidePassword={ t("common:hidePassword") }
                     label={ t(
-                        "views:components.changePassword.forms.passwordResetForm.inputs" + ".newPassword.label"
+                        "userPortal:components.changePassword.forms.passwordResetForm.inputs" + ".newPassword.label"
                     ) }
                     name="newPassword"
                     placeholder={ t(
-                        "views:components.changePassword.forms.passwordResetForm.inputs." +
+                        "userPortal:components.changePassword.forms.passwordResetForm.inputs." +
                         "newPassword.placeholder"
                     ) }
                     required={ true }
                     requiredErrorMessage={ t(
-                        "views:components.changePassword.forms.passwordResetForm." +
+                        "userPortal:components.changePassword.forms.passwordResetForm." +
                         "inputs.newPassword.validations.empty"
                     ) }
                     showPassword={ t("common:showPassword") }
@@ -268,16 +268,16 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                 <Field
                     hidePassword={ t("common:hidePassword") }
                     label={ t(
-                        "views:components.changePassword.forms.passwordResetForm.inputs" + ".confirmPassword.label"
+                        "userPortal:components.changePassword.forms.passwordResetForm.inputs" + ".confirmPassword.label"
                     ) }
                     name="confirmPassword"
                     placeholder={ t(
-                        "views:components.changePassword.forms.passwordResetForm.inputs." +
+                        "userPortal:components.changePassword.forms.passwordResetForm.inputs." +
                         "confirmPassword.placeholder"
                     ) }
                     required={ true }
                     requiredErrorMessage={ t(
-                        "views:components.changePassword.forms.passwordResetForm." +
+                        "userPortal:components.changePassword.forms.passwordResetForm." +
                         "inputs.confirmPassword.validations.empty"
                     ) }
                     showPassword={ t("common:showPassword") }
@@ -287,7 +287,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                             validation.isValid = false;
                             validation.errorMessages.push(
                                 t(
-                                    "views:components.changePassword.forms.passwordResetForm.inputs" +
+                                    "userPortal:components.changePassword.forms.passwordResetForm.inputs" +
                                     ".confirmPassword.validations.mismatch"
                                 )
                             );
@@ -322,15 +322,15 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
 
     return (
         <SettingsSection
-            description={ t("views:sections.changePassword.description") }
-            header={ t("views:sections.changePassword.heading") }
+            description={ t("userPortal:sections.changePassword.description") }
+            header={ t("userPortal:sections.changePassword.heading") }
             icon={ SettingsSectionIcons.changePassword }
             iconMini={ SettingsSectionIcons.changePasswordMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
             onPrimaryActionClick={ () => showFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER) }
-            primaryAction={ t("views:sections.changePassword.actionTitles.change") }
+            primaryAction={ t("userPortal:sections.changePassword.actionTitles.change") }
             primaryActionIcon="key"
             showActionBar={ !editingForm[CHANGE_PASSWORD_FORM_IDENTIFIER] }
         >

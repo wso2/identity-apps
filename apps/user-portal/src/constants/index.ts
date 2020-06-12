@@ -20,3 +20,4 @@ export * from "./app-constants";
 export * from "./token-constants";
 export * from "./ui-constants";
 export * from "./filter-constants";
+export * from "./i18n-constants";

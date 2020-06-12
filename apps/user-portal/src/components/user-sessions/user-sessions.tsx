@@ -81,12 +81,12 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
-                            "views:components.userSessions.notifications.fetchSessions.error.description",
+                            "userPortal:components.userSessions.notifications.fetchSessions.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.userSessions.notifications.fetchSessions.error.message"
+                            "userPortal:components.userSessions.notifications.fetchSessions.error.message"
                         ),
                     });
 
@@ -95,7 +95,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
 
                 onAlertFired({
                     description: t(
-                        "views:components.userSessions.notifications.fetchSessions.genericError.description"
+                        "userPortal:components.userSessions.notifications.fetchSessions.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
@@ -264,10 +264,10 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
         >
             <Modal.Content>
                 <Container>
-                    <h3>{ t("views:components.userSessions.modals.terminateAllUserSessionsModal.heading") }</h3>
+                    <h3>{ t("userPortal:components.userSessions.modals.terminateAllUserSessionsModal.heading") }</h3>
                 </Container>
                 <br/>
-                <p>{ t("views:components.userSessions.modals.terminateAllUserSessionsModal.message") }</p>
+                <p>{ t("userPortal:components.userSessions.modals.terminateAllUserSessionsModal.message") }</p>
             </Modal.Content>
             <Modal.Actions>
                 <Button className="link-button" onClick={ handleTerminateAllUserSessionsModalClose }>
@@ -289,10 +289,10 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
         >
             <Modal.Content>
                 <Container>
-                    <h3>{ t("views:components.userSessions.modals.terminateUserSessionModal.heading") }</h3>
+                    <h3>{ t("userPortal:components.userSessions.modals.terminateUserSessionModal.heading") }</h3>
                 </Container>
                 <br/>
-                <p>{ t("views:components.userSessions.modals.terminateUserSessionModal.message") }</p>
+                <p>{ t("userPortal:components.userSessions.modals.terminateUserSessionModal.message") }</p>
             </Modal.Content>
             <Modal.Actions>
                 <Button className="link-button" onClick={ handleTerminateUserSessionModalClose }>
@@ -307,11 +307,11 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
 
     return (
         <SettingsSection
-            description={ t("views:sections.userSessions.description") }
-            header={ t("views:sections.userSessions.heading") }
+            description={ t("userPortal:sections.userSessions.description") }
+            header={ t("userPortal:sections.userSessions.heading") }
             placeholder={
                 !(userSessions && userSessions.sessions && (userSessions.sessions.length > 0))
-                    ? t("views:sections.userSessions.actionTitles.empty")
+                    ? t("userPortal:sections.userSessions.actionTitles.empty")
                     : null
             }
             topActionBar={

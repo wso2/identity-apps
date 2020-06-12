@@ -48,8 +48,8 @@ export const PersonalInfoPage = (): JSX.Element => {
 
     return (
         <InnerPageLayout
-            pageTitle={ t("views:pages.personalInfo.title") }
-            pageDescription={ t("views:pages.personalInfo.subTitle") }
+            pageTitle={ t("userPortal:pages.personalInfo.title") }
+            pageDescription={ t("userPortal:pages.personalInfo.subTitle") }
         >
             <Divider hidden/>
             <Grid>

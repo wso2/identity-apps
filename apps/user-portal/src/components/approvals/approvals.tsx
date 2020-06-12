@@ -108,23 +108,23 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
-                            "views:components.approvals.notifications.fetchPendingApprovals.error.description",
+                            "userPortal:components.approvals.notifications.fetchPendingApprovals.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.approvals.notifications.fetchPendingApprovals.error.message"
+                            "userPortal:components.approvals.notifications.fetchPendingApprovals.error.message"
                         ),
                     });
                 }
 
                 onAlertFired({
                     description: t(
-                        "views:components.approvals.notifications.fetchPendingApprovals.genericError.description"
+                        "userPortal:components.approvals.notifications.fetchPendingApprovals.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.approvals.notifications.fetchPendingApprovals.genericError.message"
+                        "userPortal:components.approvals.notifications.fetchPendingApprovals.genericError.message"
                     )
                 });
             });
@@ -213,12 +213,12 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
-                            "views:components.approvals.notifications.updatePendingApprovals.error.description",
+                            "userPortal:components.approvals.notifications.updatePendingApprovals.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.approvals.notifications.updatePendingApprovals.error.message"
+                            "userPortal:components.approvals.notifications.updatePendingApprovals.error.message"
                         )
                     });
 
@@ -227,11 +227,11 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
 
                 onAlertFired({
                     description: t(
-                        "views:components.approvals.notifications.updatePendingApprovals.genericError.description"
+                        "userPortal:components.approvals.notifications.updatePendingApprovals.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.approvals.notifications.updatePendingApprovals.genericError.message"
+                        "userPortal:components.approvals.notifications.updatePendingApprovals.genericError.message"
                     )
                 });
             });
@@ -273,12 +273,12 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
-                            "views:components.approvals.notifications.fetchApprovalDetails.error.description",
+                            "userPortal:components.approvals.notifications.fetchApprovalDetails.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.approvals.notifications.fetchApprovalDetails.error.message"
+                            "userPortal:components.approvals.notifications.fetchApprovalDetails.error.message"
                         ),
                     });
 
@@ -287,11 +287,11 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
 
                 onAlertFired({
                     description: t(
-                        "views:components.approvals.notifications.fetchApprovalDetails.genericError.description"
+                        "userPortal:components.approvals.notifications.fetchApprovalDetails.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.approvals.notifications.fetchApprovalDetails.genericError.message"
+                        "userPortal:components.approvals.notifications.fetchApprovalDetails.genericError.message"
                     )
                 });
             });
@@ -441,8 +441,8 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
 
     return (
         <SettingsSection
-            description={ t("views:sections.approvals:description") }
-            header={ t("views:sections.approvals.heading") }
+            description={ t("userPortal:sections.approvals:description") }
+            header={ t("userPortal:sections.approvals.heading") }
             primaryAction={
                 (
                     approvals
@@ -456,7 +456,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
             placeholder={
                 !(approvals && (approvals.length > 0))
                     ? t(
-                        "views:sections.approvals.placeholders.emptyApprovalList.heading",
+                        "userPortal:sections.approvals.placeholders.emptyApprovalList.heading",
                         { status: filterStatus !== ApprovalStatus.ALL ? filterStatus.toLocaleLowerCase() : "" }
                     )
                     : null

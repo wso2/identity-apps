@@ -54,8 +54,8 @@ export const AccountSecurityPage = (): JSX.Element => {
 
     return (
         <InnerPageLayout
-            pageTitle={ t("views:pages.security.title") }
-            pageDescription={ t("views:pages.security.subTitle") }
+            pageTitle={ t("userPortal:pages.security.title") }
+            pageDescription={ t("userPortal:pages.security.subTitle") }
         >
             <Grid>
                 <Grid.Row>
