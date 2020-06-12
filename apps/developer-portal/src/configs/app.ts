@@ -183,6 +183,7 @@ export class Config {
             appTitle: window["AppUtils"].getConfig().ui.appTitle,
             doNotDeleteApplications: window["doNotDeleteApplications"] || [],
             doNotDeleteIdentityProviders: window["doNotDeleteIdentityProviders"] || [],
+            features: window["AppUtils"].getConfig().ui.features,
             gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig
         };
     }

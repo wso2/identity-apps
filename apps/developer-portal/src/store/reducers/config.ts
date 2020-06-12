@@ -35,7 +35,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
 
     deployment: null,
     endpoints: null,
-    features: null,
     i18n: null,
     ui: null
 };
