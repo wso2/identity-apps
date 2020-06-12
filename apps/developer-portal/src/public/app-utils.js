@@ -85,12 +85,12 @@ var AppUtils = AppUtils || (function() {
                 return null;
             }
 
-            if (_config.accountAppURL && _config.accountAppURL.origin) {
-                _config.accountAppOrigin = _config.accountAppURL.origin;
+            if (_config.accountApp && _config.accountApp.origin) {
+                _config.accountAppOrigin = _config.accountApp.origin;
             }
 
             return {
-                accountAppURL: _config.accountAppOrigin + this.getTenantPath() + _config.accountAppURL.path,
+                accountApp: _config.accountAppOrigin + this.getTenantPath() + _config.accountApp.path,
                 appBase: _config.appBaseName,
                 appBaseWithTenant: this.getTenantPath() + "/" + _config.appBaseName,
                 clientID: (this.isSuperTenant()) ?
@@ -168,8 +168,8 @@ var AppUtils = AppUtils || (function() {
             loadUserConfig(userConfigFile, function(response) {
                 var configResponse = JSON.parse(response);
 
-                if (!{}.hasOwnProperty.call(configResponse, "accountAppURL"))
-                    throw "'accountAppURL' config is missing in " + _args.deploymentConfigFile;
+                if (!{}.hasOwnProperty.call(configResponse, "accountApp"))
+                    throw "'accountApp' config is missing in " + _args.deploymentConfigFile;
                 if (!{}.hasOwnProperty.call(configResponse, "appBaseName"))
                     throw "'appBaseName' config is missing in " + _args.deploymentConfigFile;
                 if (!{}.hasOwnProperty.call(configResponse, "clientID"))
