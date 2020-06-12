@@ -17,7 +17,6 @@
  */
 
 import { AuthenticateSessionUtil, AuthenticateTokenKeys, AuthenticateUserKeys } from "@wso2is/authentication";
-import { Config } from "../../configs";
 import { AuthStateInterface, createEmptyProfile } from "../../models";
 import { authenticateActionTypes } from "../actions/types";
 
@@ -28,7 +27,7 @@ const authenticateInitialState: AuthStateInterface = {
     displayName: "",
     emails: "",
     isAuth: false,
-    location: Config?.getDeploymentConfig().appHomePath,
+    location: window["AppUtils"].getConfig().routes.home,
     loginInit: false,
     logoutInit: false,
     profileInfo: createEmptyProfile(),
