@@ -101,6 +101,7 @@ export const App = (): ReactElement => {
     useEffect(() => {
         if (config?.deployment && !_.isEmpty(config.deployment) && config?.endpoints && !_.isEmpty(config.endpoints)) {
             setAppLoadingStatus(false);
+            return;
         }
 
         setAppLoadingStatus(true);
