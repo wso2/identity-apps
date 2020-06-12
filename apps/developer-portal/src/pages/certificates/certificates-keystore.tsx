@@ -78,7 +78,7 @@ export const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInt
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const tenantDomain: string = useSelector<AppState, string>((state: AppState) => state.config.deployment.tenant);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ resetPagination, setResetPagination ] = useTrigger();
 

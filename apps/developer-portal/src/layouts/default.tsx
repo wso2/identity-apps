@@ -198,7 +198,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                             primary
                             onClick={
                                 (): void => {
-                                    window.open(window[ "AppUtils" ].getConfig().accountAppURL);
+                                    window.open(window[ "AppUtils" ].getConfig().accountApp);
                                 }
                             }
                         >
