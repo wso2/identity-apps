@@ -25,6 +25,7 @@ export const OIDC_SCOPE = "openid";
 export const PKCE_CODE_VERIFIER = "pkce_code_verifier";
 export const REFRESH_TOKEN = "refresh_token";
 export const SCOPE = "scope";
+export const SESSION_STATE = "session_state";
 export const TOKEN_TYPE = "token_type";
 export const REQUEST_PARAMS = "request_params";
 export const ISSUER = "issuer";

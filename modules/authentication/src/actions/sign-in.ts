@@ -35,7 +35,8 @@ import {
     OIDC_SCOPE,
     PKCE_CODE_VERIFIER,
     REQUEST_PARAMS,
-    SERVICE_RESOURCES
+    SERVICE_RESOURCES,
+    SESSION_STATE
 } from "../constants";
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { ConfigInterface } from "../models/client";
@@ -185,6 +186,12 @@ export const sendTokenRequest = (
 
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
         return Promise.reject(new Error("Invalid token endpoint found."));
+    }
+
+    // Extract session state and set to the sessionStorage
+    const sessionState = new URL(window.location.href).searchParams.get(SESSION_STATE);
+    if (sessionState !== null && sessionState.length > 0) {
+        setSessionParameter(SESSION_STATE, sessionState);
     }
 
     const body = [];

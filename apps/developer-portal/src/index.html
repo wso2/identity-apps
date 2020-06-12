@@ -29,12 +29,89 @@
 
         <script src="<%= htmlWebpackPlugin.options.publicPath %>/app-utils.js"></script>
         <script>
-            AppUtils.init({
-                accountAppOrigin: "https://localhost:9000",
-                serverOrigin: "https://localhost:9443",
-                superTenant: "carbon.super",
-                tenantPrefix: "t"
-            });
+            if (window["AppUtils"] === null || window["AppUtils"].getConfig() === null) {
+                AppUtils.init({
+                    accountAppOrigin: "https://localhost:9000",
+                    serverOrigin: "https://localhost:9443",
+                    superTenant: "carbon.super",
+                    tenantPrefix: "t"
+                });
+            }
+
+            var config = window["AppUtils"].getConfig();
+
+            var state = new URL(window.location.href).searchParams.get("state");
+            if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
+                // Prompt none response.
+                var code = new URL(window.location.href).searchParams.get("code");
+                
+                if (code !== null && code.length !== 0) {
+                    var newSessionState = new URL(window.location.href).searchParams.get("session_state");
+                    
+                    sessionStorage.setItem("session_state", newSessionState);
+
+                    // Stop loading rest of the page inside the iFrame
+                    if (navigator.appName === 'Microsoft Internet Explorer') {
+                        document.execCommand("Stop");
+                    } else {
+                        window.stop();
+                    }
+                } else {
+                    window.top.location.href = config.clientOriginWithTenant + config.appBaseWithTenant +
+                        config.routes.logout;
+                }
+            } else {
+                // Tracking user interactions
+                var IDLE_TIMEOUT = config.session.userIdleTimeOut;
+                if (IDLE_TIMEOUT === null || IDLE_TIMEOUT === 0) {
+                    IDLE_TIMEOUT = 600;
+                }
+                var IDLE_WARNING_TIMEOUT = config.session.userIdleWarningTimeOut;
+                if (IDLE_WARNING_TIMEOUT === null || IDLE_WARNING_TIMEOUT === 0) {
+                    IDLE_WARNING_TIMEOUT = 580;
+                }
+                var SESSION_REFRESH_TIMEOUT = config.session.sessionRefreshTimeOut;
+                if (SESSION_REFRESH_TIMEOUT === null || SESSION_REFRESH_TIMEOUT === 0) {
+                    SESSION_REFRESH_TIMEOUT = 300;
+                }
+
+                var _idleSecondsCounter = 0;
+                var _sessionAgeCounter = 0;
+
+                document.onclick = function () {
+                    _idleSecondsCounter = 0;
+                };
+                document.onmousemove = function () {
+                    _idleSecondsCounter = 0;
+                };
+                document.onkeypress = function () {
+                    _idleSecondsCounter = 0;
+                };
+
+                window.setInterval(CheckIdleTime, 1000);
+
+                function CheckIdleTime () {
+                    _idleSecondsCounter++;
+                    _sessionAgeCounter++;
+
+                    // Logout user if idle
+                    if (_idleSecondsCounter >= IDLE_TIMEOUT) {
+                        window.top.location.href = config.clientOriginWithTenant + config.appBaseWithTenant +
+                            config.routes.logout;
+                    } else if (_idleSecondsCounter === IDLE_WARNING_TIMEOUT) {
+                        console.log("You will be logged out of the system after " +
+                            (IDLE_TIMEOUT - IDLE_WARNING_TIMEOUT) + " seconds! Click OK to stay logged in.");
+                    }
+
+                    // Keep user session intact if the user is active
+                    if (_sessionAgeCounter > SESSION_REFRESH_TIMEOUT) {
+                        if (_sessionAgeCounter > _idleSecondsCounter) {
+                            sendPromptNoneRequest();
+                        }
+                        _sessionAgeCounter = 0;
+                    }
+                }
+            }
 
             var doNotDeleteApplications = ["Developer Portal", "User Portal"];
         </script>
@@ -43,6 +120,7 @@
         <noscript>
             You need to enable JavaScript to run this app.
         </noscript>
+        <iframe id="rpIFrame" src="rpIFrame.html" frameborder="0" width="0" height="0"></iframe>
         <div id="root"></div>
     </body>
 </html>

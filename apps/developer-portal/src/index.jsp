@@ -18,7 +18,7 @@
 
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importTenantPrefix %>
-<%= htmlWebpackPlugin.options.importSuperTenantConstant %>
+<%= htmlWebpackPlugin.options.importSuperTenantvarant %>
 
 <!DOCTYPE HTML>
 <html>
@@ -36,17 +36,123 @@
         <script>
             // When OAuth2 response mode is set to "form_post", Authorization code sent in a POST.
             // In such cases, the code is added to the sessionStorage under the key "code".
-            const authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>";
-
+            var authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>";
             if (authorizationCode !== "null") {
                 window.sessionStorage.setItem("code", authorizationCode);
             }
 
-            AppUtils.init({
-                serverOrigin: "<%= htmlWebpackPlugin.options.serverUrl %>",
-                superTenant: "<%= htmlWebpackPlugin.options.superTenantConstant %>",
-                tenantPrefix: "<%= htmlWebpackPlugin.options.tenantPrefix %>"
-            });
+            var sessionState = "<%= htmlWebpackPlugin.options.sessionState %>";
+            if (sessionState !== "null") {
+                sessionStorage.setItem("session_state", sessionState);
+            }
+
+            if (window["AppUtils"] === null || window["AppUtils"].getConfig() === null) {
+                AppUtils.init({
+                    serverOrigin: "<%= htmlWebpackPlugin.options.serverUrl %>",
+                    superTenant: "<%= htmlWebpackPlugin.options.superTenantvarant %>",
+                    tenantPrefix: "<%= htmlWebpackPlugin.options.tenantPrefix %>"
+                });
+            }
+
+            function getRandomPKCEChallenge() {
+                var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz-_";
+                var string_length = 43;
+                var randomString = "";
+                for (var i = 0; i < string_length; i++) {
+                    var rnum = Math.floor(Math.random() * chars.length);
+                    randomString += chars.substring(rnum, rnum + 1);
+                }
+                return randomString;
+            }
+
+            function sendPromptNoneRequest() {
+                var rpIFrame = document.getElementById("rpIFrame");
+                var promptNoneIFrame = rpIFrame.contentWindow.document.getElementById("promptNoneIFrame");
+                var config = window.parent["AppUtils"].getConfig();
+                promptNoneIFrame.src = sessionStorage.getItem("authorization_endpoint") +
+                    "?response_type=code" +
+                    "&client_id=" + config.clientID +
+                    "&scope=openid" +
+                    "&redirect_uri=" + config.loginCallbackURL +
+                    "&state=Y2hlY2tTZXNzaW9u" +
+                    "&prompt=none" +
+                    "&code_challenge_method=S256&code_challenge=" + getRandomPKCEChallenge();
+            }
+
+            var config = window["AppUtils"].getConfig();
+
+            var state = new URL(window.location.href).searchParams.get("state");
+            if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
+                // Prompt none response.
+                var code = new URL(window.location.href).searchParams.get("code");
+
+                if (code !== null && code.length !== 0) {
+                    var newSessionState = new URL(window.location.href).searchParams.get("session_state");
+
+                    sessionStorage.setItem("session_state", newSessionState);
+
+                    // Stop loading rest of the page inside the iFrame
+                    if (navigator.appName === 'Microsoft Internet Explorer') {
+                        document.execCommand("Stop");
+                    } else {
+                        window.stop();
+                    }
+                } else {
+                    window.top.location.href = config.clientOriginWithTenant + config.appBaseWithTenant +
+                        config.routes.logout;
+                }
+            } else {
+                // Tracking user interactions
+                var IDLE_TIMEOUT = config.session.userIdleTimeOut;
+                if (IDLE_TIMEOUT === null || IDLE_TIMEOUT === 0) {
+                    IDLE_TIMEOUT = 600;
+                }
+                var IDLE_WARNING_TIMEOUT = config.session.userIdleWarningTimeOut;
+                if (IDLE_WARNING_TIMEOUT === null || IDLE_WARNING_TIMEOUT === 0) {
+                    IDLE_WARNING_TIMEOUT = 580;
+                }
+                var SESSION_REFRESH_TIMEOUT = config.session.sessionRefreshTimeOut;
+                if (SESSION_REFRESH_TIMEOUT === null || SESSION_REFRESH_TIMEOUT === 0) {
+                    SESSION_REFRESH_TIMEOUT = 300;
+                }
+
+                var _idleSecondsCounter = 0;
+                var _sessionAgeCounter = 0;
+
+                document.onclick = function () {
+                    _idleSecondsCounter = 0;
+                };
+                document.onmousemove = function () {
+                    _idleSecondsCounter = 0;
+                };
+                document.onkeypress = function () {
+                    _idleSecondsCounter = 0;
+                };
+
+                window.setInterval(CheckIdleTime, 1000);
+
+                function CheckIdleTime () {
+                    _idleSecondsCounter++;
+                    _sessionAgeCounter++;
+
+                    // Logout user if idle
+                    if (_idleSecondsCounter >= IDLE_TIMEOUT) {
+                        window.top.location.href = config.clientOriginWithTenant + config.appBaseWithTenant +
+                            config.routes.logout;
+                    } else if (_idleSecondsCounter === IDLE_WARNING_TIMEOUT) {
+                        console.log("You will be logged out of the system after " +
+                            (IDLE_TIMEOUT - IDLE_WARNING_TIMEOUT) + " seconds! Click OK to stay logged in.");
+                    }
+
+                    // Keep user session intact if the user is active
+                    if (_sessionAgeCounter > SESSION_REFRESH_TIMEOUT) {
+                        if (_sessionAgeCounter > _idleSecondsCounter) {
+                            sendPromptNoneRequest();
+                        }
+                        _sessionAgeCounter = 0;
+                    }
+                }
+            }
 
             var doNotDeleteApplications = ["Developer Portal", "User Portal"];
         </script>
@@ -55,6 +161,7 @@
         <noscript>
             You need to enable JavaScript to run this app.
         </noscript>
+        <iframe id="rpIFrame" src="rpIFrame.html" frameborder="0" width="0" height="0"></iframe>
         <div id="root"></div>
     </body>
 </html>

@@ -81,6 +81,10 @@ var AppUtils = AppUtils || (function() {
         },
 
         getConfig: function() {
+            if (Object.entries(_config).length === 0) {
+                return null;
+            }
+
             if (_config.accountAppURL && _config.accountAppURL.origin) {
                 _config.accountAppOrigin = _config.accountAppURL.origin;
             }
@@ -105,7 +109,8 @@ var AppUtils = AppUtils || (function() {
                 serverOriginWithTenant: _config.serverOrigin + this.getTenantPath(),
                 tenant: (this.isSuperTenant()) ? this.getSuperTenant() : this.getTenantName(),
                 tenantPath: this.getTenantPath(),
-                ui: _config.ui
+                ui: _config.ui,
+                session: _config.session
             };
         },
 

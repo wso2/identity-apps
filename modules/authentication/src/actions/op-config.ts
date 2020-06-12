@@ -24,6 +24,7 @@ import {
     END_SESSION_ENDPOINT,
     ISSUER,
     JWKS_ENDPOINT,
+    OIDC_SESSION_IFRAME_ENDPOINT,
     OP_CONFIG_INITIATED,
     REVOKE_TOKEN_ENDPOINT,
     SERVICE_RESOURCES,
@@ -102,6 +103,13 @@ export const setCallbackURL = (url: string): void => {
 };
 
 /**
+ * Set OIDC Session IFrame URL.
+ */
+export const setOIDCSessionIFrameURL = (url: string): void => {
+    setSessionParameter(OIDC_SESSION_IFRAME_ENDPOINT, url);
+};
+
+/**
  * Set tenant name.
  */
 export const setTenant = (tenant: string): void => {
@@ -151,12 +159,13 @@ export const initOPConfiguration = (
             setRevokeTokenEndpoint(response.data.token_endpoint
                 .substring(0, response.data.token_endpoint.lastIndexOf("token")) + "revoke");
             setIssuer(response.data.issuer);
+            setOIDCSessionIFrameURL(response.data.check_session_iframe);
             setTenant(requestParams.tenant);
             setCallbackURL(requestParams.callbackURL);
             setOPConfigInitiated();
-
             return Promise.resolve("Initialized OpenID Provider configuration from: "
                 + serverHost + SERVICE_RESOURCES.wellKnown);
+
         }).catch(() => {
             setAuthorizeEndpoint(requestParams.serverOrigin + SERVICE_RESOURCES.authorize);
             setTokenEndpoint(requestParams.serverOrigin + SERVICE_RESOURCES.token);
@@ -164,6 +173,7 @@ export const initOPConfiguration = (
             setEndSessionEndpoint(requestParams.serverOrigin + SERVICE_RESOURCES.logout);
             setJwksUri(serverHost + SERVICE_RESOURCES.jwks);
             setIssuer(requestParams.serverOrigin + SERVICE_RESOURCES.token);
+            setOIDCSessionIFrameURL(requestParams.serverOrigin + SERVICE_RESOURCES.oidcSessionIFrame);
             setTenant(requestParams.tenant);
             setCallbackURL(requestParams.callbackURL);
             setOPConfigInitiated();
