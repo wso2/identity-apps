@@ -19,7 +19,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteProps } from "react-router-dom";
-import * as ApplicationConstants from "../constants/application-constants";
+import { ApplicationConstants } from "../constants";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
@@ -45,8 +45,8 @@ export const ProtectedRoute = (props: RouteProps): JSX.Element => {
      * The login path and the login error path have been skipped.
      */
     if ((history.location.pathname !== config.deployment.appLoginPath)
-        && (history.location.pathname !== ApplicationConstants.LOGIN_ERROR_PAGE_PATH)
-        && (history.location.pathname !== ApplicationConstants.PAGE_NOT_FOUND_PATH)) {
+        && (history.location.pathname !== ApplicationConstants.PATHS.get("UNAUTHORIZED"))
+        && (history.location.pathname !== ApplicationConstants.PATHS.get("PAGE_NOT_FOUND"))) {
         updateAuthenticationCallbackUrl(history.location.pathname);
     }
     else {

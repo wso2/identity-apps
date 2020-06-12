@@ -158,7 +158,7 @@ export class ApplicationConstants {
      * @type {Map<string, string>}
      */
     public static readonly PATHS: Map<string, string> = new Map<string, string>()
-        .set("404", "/404")
+        .set("PAGE_NOT_FOUND", "/404")
         .set("UNAUTHORIZED", "/unauthorized")
         .set("APPLICATIONS", "/applications")
         .set("APPLICATION_TEMPLATES", "/applications/templates")

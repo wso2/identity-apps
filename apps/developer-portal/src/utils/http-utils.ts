@@ -19,7 +19,7 @@
 
 import { OPConfigurationUtil } from "@wso2is/authentication";
 import { hasLoginPermission } from "./authenticate-util";
-import * as ApplicationConstants from "../constants/application-constants";
+import { ApplicationConstants } from "../constants";
 import { history } from "../helpers";
 import { store } from "../store";
 import { hideGlobalLoader, showGlobalLoader } from "../store/actions";
@@ -67,7 +67,7 @@ export const onHttpRequestError = (error: any): void => {
 
     // If the user doesn't have login permission, redirect to login error page.
     if (!hasLoginPermission()) {
-        history.push(ApplicationConstants.LOGIN_ERROR_PAGE_PATH);
+        history.push(ApplicationConstants.PATHS.get("UNAUTHORIZED"));
         return;
     }
 
