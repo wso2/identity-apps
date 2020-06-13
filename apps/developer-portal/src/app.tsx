@@ -29,7 +29,7 @@ import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ContentLoader, ThemeContext } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { ReactElement, Suspense, useContext, useEffect, useState } from "react";
+import React, { ReactElement, Suspense, useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -58,8 +58,6 @@ export const App = (): ReactElement => {
     const { state } = useContext(ThemeContext);
 
     const dispatch = useDispatch();
-
-    const [ isAppLoading, setAppLoadingStatus ] = useState<boolean>(false);
 
     const userName: string = useSelector((state: AppState) => state.authenticationInformation.username);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -93,18 +91,6 @@ export const App = (): ReactElement => {
             .then((response) => {
                 dispatch(setHelpPanelDocStructure(response));
             });
-    }, [ config ]);
-
-    /**
-     * Set the app loading status based on the availability of configs.
-     */
-    useEffect(() => {
-        if (config?.deployment && !_.isEmpty(config.deployment) && config?.endpoints && !_.isEmpty(config.endpoints)) {
-            setAppLoadingStatus(false);
-            return;
-        }
-
-        setAppLoadingStatus(true);
     }, [ config ]);
 
     /**
@@ -153,7 +139,7 @@ export const App = (): ReactElement => {
     return (
         <>
             {
-                isAppLoading
+                (!_.isEmpty(config?.deployment) && !_.isEmpty(config?.endpoints))
                     ? (
                         <Router history={ history }>
                             <div className="container-fluid">

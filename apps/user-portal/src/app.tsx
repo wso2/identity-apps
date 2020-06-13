@@ -27,7 +27,7 @@ import {
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ContentLoader } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { ReactElement, Suspense, useEffect, useState } from "react";
+import React, { ReactElement, Suspense, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
@@ -57,8 +57,6 @@ export const App = (): ReactElement => {
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const loginInit: boolean = useSelector((state: AppState) => state.authenticationInformation.loginInit);
 
-    const [ isAppLoading, setAppLoadingStatus ] = useState<boolean>(false);
-
     /**
      * Set the deployment configs in redux state.
      */
@@ -70,18 +68,6 @@ export const App = (): ReactElement => {
         dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
         dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
     }, []);
-
-    /**
-     * Set the app loading status based on the availability of configs.
-     */
-    useEffect(() => {
-        if (config?.deployment && !_.isEmpty(config.deployment) && config?.endpoints && !_.isEmpty(config.endpoints)) {
-            setAppLoadingStatus(false);
-            return;
-        }
-
-        setAppLoadingStatus(true);
-    }, [ config ]);
 
     /**
      * Checks if the portal access should be granted based on the feature config.
@@ -101,7 +87,7 @@ export const App = (): ReactElement => {
     return (
         <>
             {
-                isAppLoading
+                (!_.isEmpty(config?.deployment) && !_.isEmpty(config?.endpoints))
                         ? (
                         <Router history={ history }>
                             <div className="container-fluid">
