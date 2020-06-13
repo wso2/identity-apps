@@ -41,6 +41,10 @@
         }
 
         function setTimer() {
+            if (!targetOrigin || !clientId || !redirectUri) {
+                return;
+            }
+
             document.getElementById("opIFrame").src = targetOrigin + "?client_id=" +
                 clientId + "&redirect_uri=" + redirectUri;
             check_session();
