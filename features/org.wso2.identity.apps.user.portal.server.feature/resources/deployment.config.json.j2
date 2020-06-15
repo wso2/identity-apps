@@ -1,0 +1,159 @@
+{
+    "appBaseName": "{{ user_portal.app_base_name }}",
+    "clientID": "{{ user_portal.client_id }}",
+    "loginCallbackPath": "{{ user_portal.login_callback_path }}",
+    "logoutCallbackPath": "{{ user_portal.logout_callback_path }}",
+    "productVersion": "{{ product.version }}",
+    "routePaths": {
+        {% if user_portal.route_paths is defined %}
+        {% for path, value in user_portal.route_paths.items() %}
+            "{{ path }}": "{{ value }}"{{ "," if not loop.last }}
+        {% endfor %}
+        {% endif %}
+    },
+    "ui": {
+        "appCopyright": "{{ user_portal.ui.app_copyright }}",
+        "appTitle": "{{ user_portal.ui.app_title }}",
+        "appName": "{{ user_portal.ui.app_name }}",
+        "appLogoPath": "{{ user_portal.ui.app_logo_path }}",
+        "authenticatorApp": {
+                {% if user_portal.authenticator_app_configs is defined %}
+                {% for key, value in user_portal.authenticator_app_configs.items() %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+                {% endfor %}
+                {% endif %}
+        },
+        "features": {
+            "overview": {
+                "disabledFeatures": [
+                    {% if user_portal.overview.disabled_features is defined %}
+                    {% for feature in user_portal.overview.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": true,
+                "scopes": {
+                    {% if user_portal.overview.scopes is defined %}
+                    {% for operation, scopes in user_portal.overview.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "personalInfo": {
+                "disabledFeatures": [
+                    {% if user_portal.personal_info.disabled_features is defined %}
+                    {% for feature in user_portal.personal_info.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": true,
+                "scopes": {
+                    {% if user_portal.personal_info.scopes is defined %}
+                    {% for operation, scopes in user_portal.personal_info.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "applications": {
+                "disabledFeatures": [
+                    {% if user_portal.applications.disabled_features is defined %}
+                    {% for feature in applications.users.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": true,
+                "scopes": {
+                    {% if user_portal.applications.scopes is defined %}
+                    {% for operation, scopes in user_portal.applications.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "security": {
+                "disabledFeatures": [
+                    {% if user_portal.security.disabled_features is defined %}
+                    {% for feature in user_portal.security.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": true,
+                "scopes": {
+                    {% if user_portal.security.scopes is defined %}
+                    {% for operation, scopes in user_portal.security.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "operations": {
+                "disabledFeatures": [
+                    {% if user_portal.operations.disabled_features is defined %}
+                    {% for feature in user_portal.operations.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": true,
+                "scopes": {
+                    {% if user_portal.operations.scopes is defined %}
+                    {% for operation, scopes in user_portal.operations.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            }
+        }
+    }
+}
