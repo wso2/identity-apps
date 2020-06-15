@@ -57,8 +57,7 @@
                         window.stop();
                     }
                 } else {
-                    window.top.location.href = config.clientOriginWithTenant + config.appBaseWithTenant +
-                        config.routes.logout;
+                    window.top.location.href = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
                 }
             } else {
                 // Tracking user interactions
@@ -120,7 +119,7 @@
         <noscript>
             You need to enable JavaScript to run this app.
         </noscript>
-        <iframe id="rpIFrame" src="rpIFrame.html" frameborder="0" width="0" height="0"></iframe>
+        <iframe id="rpIFrame" src="/developer-portal/rpIFrame.html" frameborder="0" width="0" height="0"></iframe>
         <div id="root"></div>
     </body>
 </html>
