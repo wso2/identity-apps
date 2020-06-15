@@ -16,27 +16,15 @@
  * under the License.
  */
 
-import { LoadersInterface } from "../../models";
-import { LoaderAction, SET_PROFILE_INFO_LOADER, SET_PROFILE_SCHEMA_LOADER } from "../actions/types";
+import { CommonRequestLoadersReducerStateInterface } from "@wso2is/core/models";
 
-const initialState: LoadersInterface = {
-    isProfileInfoLoading: false,
-    isProfileSchemaLoading: false
-};
-
-export const LoadersReducer = (state: LoadersInterface = initialState, action: LoaderAction): LoadersInterface => {
-    switch (action.type) {
-        case SET_PROFILE_INFO_LOADER:
-            return {
-                ...state,
-                isProfileInfoLoading: action.payload
-            };
-        case SET_PROFILE_SCHEMA_LOADER:
-            return {
-                ...state,
-                isProfileSchemaLoading: action.payload
-            };
-        default:
-            return state;
-    }
+/**
+ * Initial state for the common request loaders reducer.
+ */
+export const commonRequestLoadersInitialState: CommonRequestLoadersReducerStateInterface = {
+    isProfileInfoRequestLoading: false,
+    isProfileSchemaRequestLoading: false,
+    isSignOutRequestLoading: false,
+    isTokenRequestLoading: false,
+    isTokenRevokeRequestLoading: false
 };

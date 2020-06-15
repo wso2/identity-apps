@@ -33,7 +33,7 @@ import { Icon, ListItemProps } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
 import { deleteIdentityProvider } from "../../api";
 import { EmptyPlaceholderIllustrations } from "../../configs";
-import { ApplicationConstants, UIConstants } from "../../constants";
+import { AppConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import {
     ConfigReducerStateInterface,
@@ -123,7 +123,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
      * @param {string} idpId Identity provider id.
      */
     const handleIdentityProviderEdit = (idpId: string): void => {
-        history.push(ApplicationConstants.PATHS.get("IDP_EDIT").replace(":id", idpId));
+        history.push(AppConstants.PATHS.get("IDP_EDIT").replace(":id", idpId));
     };
 
     /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { ContextUtils, HttpUtils, StringUtils } from "@wso2is/core/utils";
+import { setSupportedI18nLanguages } from "@wso2is/core/store";
+import { HttpUtils as CommonHttpUtils, ContextUtils, StringUtils } from "@wso2is/core/utils";
 import {
     I18n,
     I18nInstanceInitException,
@@ -33,25 +34,23 @@ import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
 import { Config } from "./configs";
 import { store } from "./store";
-import { setSupportedI18nLanguages } from "./store/actions";
-import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
+import { HttpUtils } from "./utils";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
 // Set up the Http client.
-HttpUtils.setupHttpClient(
+CommonHttpUtils.setupHttpClient(
     true,
-    onHttpRequestStart,
-    onHttpRequestSuccess,
-    onHttpRequestError,
-    onHttpRequestFinish
-);
+    HttpUtils.onHttpRequestStart,
+    HttpUtils.onHttpRequestSuccess,
+    HttpUtils.onHttpRequestError,
+    HttpUtils.onHttpRequestFinish);
 
 // Set up the i18n module.
 I18n.init({
-    ...Config.getI18nConfig()?.initOptions,
-    debug: window["AppUtils"].getConfig().debug
+        ...Config.getI18nConfig()?.initOptions,
+        debug: window["AppUtils"].getConfig().debug
     },
     Config.getI18nConfig()?.overrideOptions,
     Config.getI18nConfig()?.langAutoDetectEnabled,
@@ -64,7 +63,7 @@ I18n.init({
         // `https://localhost:9443/t/wso2.com/developer-portal/resources/i18n/meta.json`.
         const metaPath = `/${
             StringUtils.removeSlashesFromPath(Config.getDeploymentConfig().appBaseNameWithoutTenant)
-        }/${ StringUtils.removeSlashesFromPath(Config.getI18nConfig().resourcePath) }/meta.json`;
+            }/${ StringUtils.removeSlashesFromPath(Config.getI18nConfig().resourcePath) }/meta.json`;
 
         // Fetch the meta file to get the supported languages.
         axios.get(metaPath)

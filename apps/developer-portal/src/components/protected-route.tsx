@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,28 +16,29 @@
  * under the License.
  */
 
-import React from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
-import { Redirect, Route, RouteProps } from "react-router-dom";
-import * as ApplicationConstants from "../constants/application-constants";
+import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router-dom";
+import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
-import { updateAuthenticationCallbackUrl } from "../store/actions";
+import { AuthenticateUtils } from "../utils";
 
 /**
  * Protected route component.
  *
- * @return {JSX.Element}
+ * @param {RouteProps} props - Props injected to the component.
+ * @return {React.ReactElement}
  */
-export const ProtectedRoute = (props: RouteProps): JSX.Element => {
+export const ProtectedRoute: FunctionComponent<RouteProps> = (props: RouteProps): ReactElement => {
 
     const {
         component: Component,
         ...rest
     } = props;
 
-    const isAuth = useSelector((state: any) => state.authenticationInformation.isAuth);
+    const isAuthenticated: boolean = useSelector((state: AppState) => state.auth.isAuthenticated);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     /**
@@ -45,21 +46,21 @@ export const ProtectedRoute = (props: RouteProps): JSX.Element => {
      * The login path and the login error path have been skipped.
      */
     if ((history.location.pathname !== config.deployment.appLoginPath)
-        && (history.location.pathname !== ApplicationConstants.LOGIN_ERROR_PAGE_PATH)
-        && (history.location.pathname !== ApplicationConstants.PAGE_NOT_FOUND_PATH)) {
-        updateAuthenticationCallbackUrl(history.location.pathname);
-    }
-    else {
-        updateAuthenticationCallbackUrl(config.deployment.appHomePath);
+        && (history.location.pathname !== AppConstants.PATHS.get("UNAUTHORIZED"))
+        && (history.location.pathname !== AppConstants.PATHS.get("PAGE_NOT_FOUND"))) {
+
+        AuthenticateUtils.updateAuthenticationCallbackUrl(history.location.pathname);
+    } else {
+        AuthenticateUtils.updateAuthenticationCallbackUrl(config.deployment.appHomePath);
     }
 
     return (
         <Route
-            render={ (renderProps) =>
-                isAuth
+            render={ (renderProps: RouteComponentProps<any>) =>
+                isAuthenticated
                     ? Component
-                        ? <Component { ...renderProps } />
-                        : null
+                    ? <Component { ...renderProps } />
+                    : null
                     : <Redirect to={ config.deployment.appLoginPath } />
             }
             { ...rest }

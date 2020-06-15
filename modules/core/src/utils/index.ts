@@ -18,6 +18,8 @@
  */
 
 export * from "./authenticate-utils";
+export * from "./certificate-management-utils";
+export * from "./common-utils";
 export * from "./context-utils";
 export * from "./crypto-utils";
 export * from "./encode-decode-utils";

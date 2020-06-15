@@ -16,8 +16,16 @@
  * under the License.
  */
 
+import { getAllExternalClaims, getAllLocalClaims, getDialects } from "@wso2is/core/api";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    AlertLevels,
+    Claim,
+    ClaimDialect,
+    ExternalClaim,
+    SBACInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { ContentLoader } from "@wso2is/react-components";
@@ -29,13 +37,10 @@ import { Button, Grid } from "semantic-ui-react";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { RoleMapping } from "./role-mapping";
-import { getAllExternalClaims, getAllLocalClaims, getDialects, updateClaimConfiguration } from "../../../../api/";
+import { updateClaimConfiguration } from "../../../../api/";
 import {
-    Claim,
     ClaimConfigurationInterface,
-    ClaimDialect,
     ClaimMappingInterface,
-    ExternalClaim,
     FeatureConfigInterface,
     RoleConfigInterface,
     RoleMappingInterface,

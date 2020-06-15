@@ -25,7 +25,7 @@ import { Divider } from "semantic-ui-react";
 import { ApplicationCreateWizard } from "../../components";
 import { CustomApplicationTemplate } from "../../components/applications/meta";
 import { ApplicationTemplateIllustrations, EmptyPlaceholderIllustrations } from "../../configs";
-import { ApplicationConstants } from "../../constants";
+import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
 import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../../models";
 import { AppState } from "../../store";
@@ -83,7 +83,7 @@ export const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplat
      * Handles back button click.
      */
     const handleBackButtonClick = (): void => {
-        history.push(ApplicationConstants.PATHS.get("APPLICATIONS"));
+        history.push(AppConstants.PATHS.get("APPLICATIONS"));
     };
 
     /**

@@ -35,7 +35,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getApplicationList } from "../../api";
 import { AdvancedSearchWithBasicFilters, ApplicationList } from "../../components";
-import { ApplicationConstants, UIConstants } from "../../constants";
+import { AppConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import { ApplicationListInterface, FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
@@ -251,7 +251,7 @@ export const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         ? (
                             <PrimaryButton
                                 onClick={ (): void => {
-                                    history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
+                                    history.push(AppConstants.PATHS.get("APPLICATION_TEMPLATES"));
                                 } }
                                 data-testid={ `${ testId }-list-layout-add-button` }
                             >
@@ -275,7 +275,7 @@ export const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     list={ appList }
                     onApplicationDelete={ handleApplicationDelete }
                     onEmptyListPlaceholderActionClick={
-                        () => history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"))
+                        () => history.push(AppConstants.PATHS.get("APPLICATION_TEMPLATES"))
                     }
                     onSearchQueryClear={ handleSearchQueryClear }
                     searchQuery={ searchQuery }

@@ -15,7 +15,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+
+import { getRolesList } from "@wso2is/core/api";
+import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, Hint } from "@wso2is/react-components";
 import _ from "lodash";
@@ -23,8 +25,8 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, DropdownItemProps, Form, Grid, Icon, Label, Popup } from "semantic-ui-react";
-import { getRolesList, updateIDPRoleMappings } from "../../../../api";
-import { IdentityProviderRolesInterface, RoleListInterface, RolesInterface } from "../../../../models";
+import { updateIDPRoleMappings } from "../../../../api";
+import { IdentityProviderRolesInterface } from "../../../../models";
 import { handleGetRoleListError, handleUpdateIDPRoleMappingsError } from "../../utils";
 
 interface OutboundProvisioningRolesPropsInterface extends TestableComponentInterface {

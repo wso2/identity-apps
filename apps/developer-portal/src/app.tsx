@@ -18,7 +18,7 @@
 
 import { getPortalDocumentationStructure } from "@wso2is/core/api";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
-import { CommonDeploymentConfigInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
+import { emptyIdentityAppsSettings } from "@wso2is/core/models";
 import {
     setDeploymentConfigs,
     setI18nConfigs,
@@ -29,17 +29,18 @@ import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ContentLoader, ThemeContext } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { ReactElement, Suspense, useContext, useEffect } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
 import { Config, baseRoutes } from "./configs";
-import { ApplicationConstants } from "./constants";
+import { AppConstants } from "./constants";
 import { history } from "./helpers";
 import {
     ConfigReducerStateInterface,
+    DeploymentConfigInterface,
     FeatureConfigInterface,
     PortalDocumentationStructureInterface,
     ServiceResourceEndpointsInterface,
@@ -53,15 +54,15 @@ import { setHelpPanelDocStructure } from "./store/actions";
  *
  * @return {React.ReactElement}
  */
-export const App = (): ReactElement => {
+export const App: FunctionComponent<{}> = (): ReactElement => {
 
     const { state } = useContext(ThemeContext);
 
     const dispatch = useDispatch();
 
-    const userName: string = useSelector((state: AppState) => state.authenticationInformation.username);
+    const userName: string = useSelector((state: AppState) => state.auth.username);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const loginInit: boolean = useSelector((state: AppState) => state.authenticationInformation.loginInit);
+    const loginInit: boolean = useSelector((state: AppState) => state.auth.loginInit);
 
     /**
      * Set the deployment configs in redux state.
@@ -69,7 +70,7 @@ export const App = (): ReactElement => {
     useEffect(() => {
         // Replace `RuntimeConfigInterface` with the proper deployment config interface,
         // once runtime config is refactored.
-        dispatch(setDeploymentConfigs<CommonDeploymentConfigInterface>(Config.getDeploymentConfig()));
+        dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
         dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
         dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
@@ -133,7 +134,10 @@ export const App = (): ReactElement => {
             return;
         }
 
-        history.push(ApplicationConstants.PATHS.get("UNAUTHORIZED"));
+        history.push({
+            pathname: AppConstants.PATHS.get("UNAUTHORIZED"),
+            search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
+        });
     }, [ config?.ui?.features, loginInit ]);
 
     return (

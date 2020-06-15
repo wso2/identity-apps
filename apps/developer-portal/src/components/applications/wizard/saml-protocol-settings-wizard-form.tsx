@@ -18,13 +18,12 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import { ContentLoader, Hint } from "@wso2is/react-components";
+import { ContentLoader, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { URLInputComponent } from "../../shared";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -168,7 +167,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>
-                    <URLInputComponent
+                    <URLInput
                         urlState={ assertionConsumerUrls }
                         setURLState={ setAssertionConsumerUrls }
                         labelName={
@@ -192,6 +191,8 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                         hint={
                             t("devPortal:components.applications.forms.inboundSAML.fields.assertionURLs.hint")
                         }
+                        addURLTooltip={ t("common:addURL") }
+                        duplicateURLErrorMessage={ t("common:duplicateURLError") }
                         data-testid={ `${ testId }-assertion-consumer-url-input` }
                     />
                 </Grid>

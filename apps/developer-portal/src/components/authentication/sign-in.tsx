@@ -16,25 +16,33 @@
  * under the License.
  */
 
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux"; 
-import { USER_DENIED_CONSENT } from "../../constants";
+import { FunctionComponent, ReactElement, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RouteComponentProps } from "react-router";
+import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
 import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 import { handleSignIn } from "../../store/actions";
 
 /**
- * This component handles the sign-in function
+ * Virtual component used to handle Sign in action.
+ *
+ * @param props - Props injected to the component.
+ * @return {React.ReactElement}
  */
-export const SignIn = (props) => {
+export const SignIn: FunctionComponent<RouteComponentProps> = (
+    props: RouteComponentProps
+): ReactElement => {
+
+    const { location }  = props;
 
     const dispatch = useDispatch();
 
-    const isAuth = useSelector((state: AppState) => state.authenticationInformation.isAuth);
+    const isAuthenticated = useSelector((state: AppState) => state.auth.isAuthenticated);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-    const error = new URLSearchParams(props.location.search).get("error_description");
+    const error = new URLSearchParams(location.search).get("error_description");
 
     const getAuthenticationCallbackUrl = () => {
         return window.sessionStorage.getItem("auth_callback_url");
@@ -52,15 +60,22 @@ export const SignIn = (props) => {
     };
 
     useEffect(() => {
-        if (!isAuth && !error) {
+        if (!isAuthenticated && !error) {
             dispatch(handleSignIn());
-        } else if (error === USER_DENIED_CONSENT) {
-            // dispatch(handleSignIn());
-            // TODO: Send it to an error page
-        } else {
-            loginSuccessRedirect();
+            return;
         }
-    }, [isAuth]);
+
+        if (error === AppConstants.USER_DENIED_CONSENT_SERVER_ERROR) {
+            history.push({
+                pathname: AppConstants.PATHS.get("UNAUTHORIZED"),
+                search: "?error=" + AppConstants.LOGIN_ERRORS.get("USER_DENIED_CONSENT")
+            });
+
+            return;
+        }
+
+        loginSuccessRedirect();
+    }, [ isAuthenticated ]);
 
     return null;
 };

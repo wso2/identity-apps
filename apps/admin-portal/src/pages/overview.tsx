@@ -53,9 +53,9 @@ export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
         <>
             <Jumbotron
                 heading={ t(
-                    "adminPortal:pages.overView.title", { firstName: resolveUserDisplayName(profileInfo) }
+                    "adminPortal:pages.overview.title", { firstName: resolveUserDisplayName(profileInfo) }
                 ) }
-                subHeading={ t("adminPortal:pages.overView.subTitle") }
+                subHeading={ t("adminPortal:pages.overview.subTitle") }
                 icon={ OverviewPageIllustrations.jumbotronIllustration }
             />
             <PageLayout

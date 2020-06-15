@@ -16,11 +16,16 @@
  * under the License.
  */
 
+export * from "./certificates";
+export * from "./claim";
+export * from "./common";
 export * from "./config";
 export * from "./core";
 export * from "./documentation";
 export * from "./http";
 export * from "./profile";
 export * from "./reducer-state";
+export * from "./roles";
 export * from "./route";
 export * from "./storage";
+export * from "./userstores";

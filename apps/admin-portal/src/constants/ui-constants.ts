@@ -64,4 +64,16 @@ export class UIConstants {
      * @type {number}
      */
     public static readonly AJAX_TOP_LOADING_BAR_HEIGHT: number = 3;
+
+    /**
+     * Default list item size for resources such as applications, IdPs etc.
+     * @type {number}
+     */
+    public static readonly DEFAULT_RESOURCE_LIST_ITEM_LIMIT: number = 10;
+
+    /**
+     * Default overview statistics insights list item limit.
+     * @type {number}
+     */
+    public static readonly DEFAULT_STATS_LIST_ITEM_LIMIT: number = 5;
 }

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { LinkInterface } from "@wso2is/core/models";
 import {
     OIDCDataInterface,
     PassiveStsConfigurationInterface,
@@ -194,11 +195,6 @@ export interface AdvancedConfigurationsInterface {
     skipLogoutConsent?: boolean;
     returnAuthenticatedIdpList?: boolean;
     enableAuthorization?: boolean;
-}
-
-export interface LinkInterface {
-    href: string;
-    rel: string;
 }
 
 export enum AuthenticationSequenceType {

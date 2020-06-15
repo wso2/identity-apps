@@ -36,10 +36,6 @@ export type ConfigInterface = CommonConfigInterface<
  */
 export interface FeatureConfigInterface {
     /**
-     * Application management feature.
-     */
-    applications?: FeatureAccessConfigInterface;
-    /**
      * Attribute dialects(Claim dialects) feature.
      */
     attributeDialects?: FeatureAccessConfigInterface;
@@ -59,10 +55,6 @@ export interface FeatureConfigInterface {
      * Groups feature.
      */
     groups?: FeatureAccessConfigInterface;
-    /**
-     * Identity provider management feature.
-     */
-    identityProviders?: FeatureAccessConfigInterface;
     /**
      * Role management feature.
      */
@@ -91,12 +83,29 @@ export type UIConfigInterface = CommonUIConfigInterface;
  * Service resource endpoints config.
  */
 export interface ServiceResourceEndpointsInterface {
-    authorize: string;
-    jwks: string;
-    logout: string;
+    accountDisabling: string;
+    accountLocking: string;
+    accountRecovery: string;
+    bulk: string;
+    captchaForSSOLogin: string;
+    certificates: string;
+    claims: string;
+    clientCertificates: string;
+    emailTemplateType: string;
+    externalClaims: string;
+    groups: string;
+    localClaims: string;
+    loginPolicies: string;
+    // TODO: Remove this endpoint and use ID token to get the details
     me: string;
-    profileSchemas: string;
-    token: string;
-    revoke: string;
-    wellKnown: string;
+    passwordHistory: string;
+    passwordPolicies: string;
+    passwordPolicy: string;
+    permission: string;
+    publicCertificates: string;
+    requestPathAuthenticators: string;
+    selfSignUp: string;
+    serverConfigurations: string;
+    userStores: string;
+    users: string;
 }
