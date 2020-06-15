@@ -17,24 +17,22 @@
  */
 
 /**
- * Action type to set the loader for profile schema
+ * Class containing user role operation constants.
  */
-export const SET_PROFILE_SCHEMA_LOADER: ActionTypes = "SET_PROFILE_SCHEMA_LOADER";
+export class RoleConstants {
 
-/**
- * Action type to set the loader for profile info
- */
-export const SET_PROFILE_INFO_LOADER: ActionTypes = "SET_PROFILE_INFO_LOADER";
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    /* eslint-disable @typescript-eslint/no-empty-function */
+    private constructor() { }
 
-/**
- * Type for loader action types
- */
-export type ActionTypes = "SET_PROFILE_SCHEMA_LOADER" | "SET_PROFILE_INFO_LOADER";
-
-/**
- * Loader action model
- */
-export interface LoaderAction {
-    payload: boolean;
-    type: ActionTypes;
+    // API errors
+    public static readonly ROLES_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received an invalid " +
+        "status code while retrieving user roles.";
+    public static readonly ROLES_FETCH_REQUEST_ERROR: string = "An error occurred while fetching the " +
+        "user roles.";
 }
