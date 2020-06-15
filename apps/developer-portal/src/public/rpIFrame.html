@@ -48,7 +48,11 @@
             document.getElementById("opIFrame").src = targetOrigin + "?client_id=" +
                 clientId + "&redirect_uri=" + redirectUri;
             check_session();
-            setInterval("check_session()", config.session.checkSessionInterval * 1000);
+            var checkSessionInterval = config.session.checkSessionInterval;
+            if (checkSessionInterval === null || checkSessionInterval > 1) {
+                checkSessionInterval = 3;
+            }
+            setInterval("check_session()", checkSessionInterval * 1000);
         }
 
         window.addEventListener("message", receiveMessage, false);
