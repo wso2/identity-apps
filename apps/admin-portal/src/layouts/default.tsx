@@ -183,11 +183,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                                 :
                                 config.deployment.applicationName
                             }
-                            version={ {
-                                milestoneNumber: config.deployment.productVersion?.milestoneNumber,
-                                releaseType: config.deployment.productVersion?.releaseType,
-                                versionNumber: config.deployment.productVersion?.versionNumber
-                            } }
+                            version={ config.deployment.productVersion }
                         />
                     ) }
                     brandLink={ config.deployment.appHomePath }
