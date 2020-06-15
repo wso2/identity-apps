@@ -155,5 +155,12 @@
                 }
             }
         }
+    },
+    "session": {
+        {% if user_portal.session.params is defined %}
+            {% for param, value in user_portal.session.params.items() %}
+                "{{ param }}": {{ value }}{{ "," if not loop.last }}
+            {% endfor %}
+        {% endif %}
     }
 }

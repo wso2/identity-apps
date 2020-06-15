@@ -42,17 +42,46 @@
                 window.sessionStorage.setItem("code", authorizationCode);
             }
 
+            var sessionState = "<%= htmlWebpackPlugin.options.sessionState %>";
+            if (sessionState !== "null") {
+                sessionStorage.setItem("session_state", sessionState);
+            }
+
             AppUtils.init({
                 serverOrigin: "<%= htmlWebpackPlugin.options.serverUrl %>",
                 superTenant: "<%= htmlWebpackPlugin.options.superTenantConstant %>",
                 tenantPrefix: "<%= htmlWebpackPlugin.options.tenantPrefix %>"
             });
+
+            var config = window["AppUtils"].getConfig();
+
+            var state = new URL(window.location.href).searchParams.get("state");
+            if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
+                // Prompt none response.
+                var code = new URL(window.location.href).searchParams.get("code");
+
+                if (code !== null && code.length !== 0) {
+                    var newSessionState = new URL(window.location.href).searchParams.get("session_state");
+
+                    sessionStorage.setItem("session_state", newSessionState);
+
+                    // Stop loading rest of the page inside the iFrame
+                    if (navigator.appName === 'Microsoft Internet Explorer') {
+                        document.execCommand("Stop");
+                    } else {
+                        window.stop();
+                    }
+                } else {
+                    window.top.location.href = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
+                }
+            }
         </script>
     </head>
     <body>
         <noscript>
             You need to enable JavaScript to run this app.
         </noscript>
+        <iframe id="rpIFrame" src="/user-portal/rpIFrame.html" frameborder="0" width="0" height="0"></iframe>
         <div id="root"></div>
     </body>
 </html>
