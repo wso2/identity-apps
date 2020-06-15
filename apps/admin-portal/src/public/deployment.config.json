@@ -4,7 +4,7 @@
     },
     "appBaseName": "admin-portal",
     "clientID": "ADMIN_PORTAL",
-    "debug": true,
+    "debug": false,
     "i18nResourcePath": "",
     "loginCallbackPath": "/login",
     "logoutCallbackPath": "/login",
