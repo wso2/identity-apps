@@ -99,7 +99,7 @@ export interface CommonDeploymentConfigInterface {
     /**
      * Product version.
      */
-    productVersion: ProductVersionInterface;
+    productVersion: string;
     /**
      * Host of the Identity Sever.
      * ex: https://localhost:9443
@@ -232,24 +232,6 @@ export interface GithubDocumentationOptionsInterface {
      * Github branch.
      */
     branch: string;
-}
-
-/**
- * Product version config interface.
- */
-export interface ProductVersionInterface {
-    /**
-     * Release type.
-     */
-    releaseType?: "milestone" | "alpha" | "beta" | "rc" | string;
-    /**
-     * Product version number.
-     */
-    versionNumber?: string;
-    /**
-     * Milestone version number.
-     */
-    milestoneNumber?: string;
 }
 
 /**

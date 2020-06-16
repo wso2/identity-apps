@@ -17,6 +17,7 @@
  */
 
 import moment from "moment";
+import { ProductReleaseTypes } from "../models";
 
 /**
  * Class containing common utility methods used across application.
@@ -42,4 +43,41 @@ export class CommonUtils {
         const recievedDate = moment(date);
         return "Last modified " + moment.duration(now.diff(recievedDate)).humanize() + " ago";
     };
+
+    /**
+     * Parses the product version.
+     * @example
+     * // returns [ version = "5.11.0", release = "m23", type = "milestone" ]
+     * const [ version, release, type ] = CommonUtils.parseProductVersion("5.11.0-m23-SNAPSHOT");
+     *
+     * @param {string} version- Raw version in the form of `5.11.0-m23-SNAPSHOT`.
+     * @param {boolean} allowSnapshot - Show the SNAPSHOT label.
+     * @return {[string, string, ProductReleaseTypes]}
+     */
+    public static parseProductVersion(version: string,
+                                      allowSnapshot: boolean = false): [ string, string, ProductReleaseTypes ]  {
+
+        const tokens: string[] = version.split("-");
+        const versionNo: string = tokens[0];
+        const release: string = tokens[1];
+        let releaseType: ProductReleaseTypes = undefined;
+
+        if (release) {
+            if(release.startsWith("m")) {
+                releaseType = ProductReleaseTypes.MILESTONE;
+            } else if (release.startsWith("alpha")) {
+                releaseType = ProductReleaseTypes.ALPHA;
+            } else if (release.startsWith("beta")) {
+                releaseType = ProductReleaseTypes.BETA;
+            } else if (release.startsWith("rc")) {
+                releaseType = ProductReleaseTypes.RC;
+            }
+        }
+
+        if (allowSnapshot && tokens[2] === "SNAPSHOT") {
+            return [ versionNo, `${ release }-SNAPSHOT`, releaseType ];
+        }
+
+        return [ versionNo, release, releaseType ];
+    }
 }

@@ -19,11 +19,7 @@
     "i18nResourcePath": "",
     "loginCallbackPath": "/login",
     "logoutCallbackPath": "/login",
-    "productVersion": {
-        "releaseType": "milestone",
-        "versionNumber": "5.11.0",
-        "milestoneNumber": "23"
-    },
+    "productVersion": "5.11.0-m24-SNAPSHOT",
     "routePaths": {
         "home": "/overview",
         "login": "/login",

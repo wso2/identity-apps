@@ -166,11 +166,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                             />
                         ) }
                         name={ GlobalConfig.applicationName }
-                        version={ {
-                            milestoneNumber: window[ "AppUtils" ].getConfig().productVersion?.milestoneNumber,
-                            releaseType: window[ "AppUtils" ].getConfig().productVersion?.releaseType,
-                            versionNumber: window[ "AppUtils" ].getConfig().productVersion?.versionNumber
-                        } }
+                        version={ window[ "AppUtils" ].getConfig().productVersion }
                     />
                 </Menu.Item>
                 { (

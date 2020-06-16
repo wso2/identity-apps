@@ -16,9 +16,10 @@
  * under the License.
  */
 
-import { ProductVersionInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { ProductReleaseTypes, TestableComponentInterface } from "@wso2is/core/models";
+import { CommonUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { Label, SemanticCOLORS } from "semantic-ui-react";
 import { Heading } from "../typography";
 
@@ -45,13 +46,21 @@ export interface ProductBrandPropsInterface extends TestableComponentInterface {
     /**
      * Product version.
      */
-    version?: ProductVersionUIInterface;
+    version?: string;
+    /**
+     * Product version UI settings.
+     */
+    versionUISettings?: ProductVersionUIInterface;
 }
 
 /**
  * Product version interface for UI.
  */
-export interface ProductVersionUIInterface extends ProductVersionInterface {
+export interface ProductVersionUIInterface {
+    /**
+     * Show snapshot label.
+     */
+    allowSnapshot?: boolean;
     /**
      * Color for the release label.
      */
@@ -80,14 +89,16 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
         name,
         style,
         version,
+        versionUISettings,
         [ "data-testid" ]: testId
     } = props;
 
     const versionLabelClasses = classNames(
         "version-label",
         {
-            "primary" : !version.labelColor,
-            [ version.labelColor ]: version.labelColor === "primary" || version.labelColor === "secondary"
+            "primary" : !versionUISettings.labelColor,
+            [ versionUISettings.labelColor ]: (versionUISettings.labelColor === "primary"
+                || versionUISettings.labelColor === "secondary")
         }
     );
 
@@ -96,30 +107,30 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
      *
      * @return {SemanticCOLORS} Resolved color.
      */
-    const resolveVersionLabelColor = (): SemanticCOLORS => {
-        if (version.labelColor
-            && !(version.labelColor === "auto"
-                || version.labelColor === "primary"
-                || version.labelColor === "secondary")) {
+    const resolveVersionLabelColor = (releaseType: ProductReleaseTypes): SemanticCOLORS => {
+        if (versionUISettings?.labelColor
+            && !(versionUISettings.labelColor === "auto"
+                || versionUISettings.labelColor === "primary"
+                || versionUISettings.labelColor === "secondary")) {
 
-            return version.labelColor;
+            return versionUISettings.labelColor;
         }
 
-        if (version.labelColor === "primary" || version.labelColor === "secondary") {
-            return "orange";
+        if (versionUISettings.labelColor === "primary" || versionUISettings.labelColor === "secondary") {
+            return "grey";
         }
 
-        if (version.releaseType === "alpha") {
+        if (releaseType === ProductReleaseTypes.ALPHA) {
             return "red";
-        } else if (version.releaseType === "beta") {
+        } else if (releaseType === ProductReleaseTypes.BETA) {
             return "teal";
-        } else if (version.releaseType === "rc") {
+        } else if (releaseType === ProductReleaseTypes.RC) {
             return "green";
-        } else if (version.releaseType === "milestone") {
+        } else if (releaseType === ProductReleaseTypes.MILESTONE) {
             return "violet";
         }
 
-        return "orange";
+        return "grey";
     };
 
     /**
@@ -127,40 +138,41 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
      *
      * @return {string} Resolved release version.
      */
-    const resolveReleaseVersion = (): string => {
-        if (!version.releaseType && !version.versionNumber) {
-            return null;
+    const resolveReleaseVersionLabel = (): ReactNode => {
+
+        const [
+            versionNumber,
+            release,
+            releaseType
+        ] = CommonUtils.parseProductVersion(version, versionUISettings.allowSnapshot);
+
+        let constructed = `${ versionNumber ?? "" } ${ release ?? "" }`;
+
+        if (versionUISettings) {
+            if (versionUISettings.textCase === "lowercase") {
+                constructed = constructed.toLowerCase();
+            } else if (versionUISettings.textCase === "uppercase") {
+                constructed = constructed.toUpperCase();
+            }
         }
 
-        let releaseVersion = `${ version.versionNumber ?? "" } ${ version.releaseType ?? "" }`;
-
-        if (version.releaseType === "milestone" && version.milestoneNumber) {
-            releaseVersion = `${ version.versionNumber ?? "" } M${ version.milestoneNumber }`;
-        }
-
-        if (version.textCase === "lowercase") {
-            return releaseVersion.toLowerCase();
-        } else if (version.textCase === "uppercase") {
-            return releaseVersion.toUpperCase();
-        }
-
-        return releaseVersion.toUpperCase();
+        return (
+            <div className="product-title-meta">
+                <Label
+                    color={ resolveVersionLabelColor(releaseType) }
+                    className={ versionLabelClasses }
+                    size="mini"
+                    data-testid={ `${ testId }-version` }
+                >
+                    { constructed }
+                </Label>
+            </div>
+        )
     };
 
     return (
         <div className={ classNames(className, "product-title") } style={ style } data-testid={ testId }>
-            { version && (version.releaseType || version.versionNumber) && (
-                <div className="product-title-meta">
-                    <Label
-                        color={ resolveVersionLabelColor() }
-                        className={ versionLabelClasses }
-                        size="mini"
-                        data-testid={ `${ testId }-version` }
-                    >
-                        { resolveReleaseVersion() }
-                    </Label>
-                </div>
-            ) }
+            { version && resolveReleaseVersionLabel() }
             <div className="product-title-main">
                 { logo && logo }
                 <Heading
@@ -181,5 +193,10 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
  * Default props for the product brand component.
  */
 ProductBrand.defaultProps = {
-    "data-testid": "product-brand"
+    "data-testid": "product-brand",
+    versionUISettings: {
+        allowSnapshot: false,
+        labelColor: "primary",
+        textCase: "uppercase"
+    }
 };
