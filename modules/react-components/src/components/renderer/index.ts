@@ -16,4 +16,5 @@
  * under the License.
  */
 
+export * from "./certificate";
 export * from "./markdown";

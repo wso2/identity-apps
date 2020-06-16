@@ -16,9 +16,10 @@
  * under the License.
  */
 
+import { CommonDeploymentConfigInterface } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { I18nConstants } from "../constants";
-import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
+import { I18nConstants, ServerConfigurationsConstants } from "../constants";
+import { ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 
 /**
  * Class to handle application config operations.
@@ -37,9 +38,9 @@ export class Config {
     /**
      * Get the deployment config.
      *
-     * @return {DeploymentConfigInterface} Deployment config object.
+     * @return {CommonDeploymentConfigInterface} Deployment config object.
      */
-    public static getDeploymentConfig(): DeploymentConfigInterface {
+    public static getDeploymentConfig(): CommonDeploymentConfigInterface {
         return {
             appBaseName: window["AppUtils"].getConfig().appBaseWithTenant,
             appBaseNameWithoutTenant: window["AppUtils"].getConfig().appBase,
@@ -81,14 +82,50 @@ export class Config {
      */
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
-            authorize: `${this.getDeploymentConfig().serverHost}/oauth2/authorize`,
-            jwks: `${this.getDeploymentConfig().serverHost}/oauth2/jwks`,
-            logout: `${this.getDeploymentConfig().serverHost}/oidc/logout`,
+            accountDisabling: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
+                }/connectors/${ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID}`,
+            accountLocking: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
+                }/connectors/${ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID}`,
+            accountRecovery: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
+                }/connectors/${ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID}`,
+            bulk: `${this.getDeploymentConfig().serverHost}/scim2/Bulk`,
+            captchaForSSOLogin: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
+                }/connectors/${ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID}`,
+            certificates: `${this.getDeploymentConfig().serverHost}/api/server/v1/keystores/certs`,
+            claims: `${this.getDeploymentConfig().serverHost}/api/server/v1/claim-dialects`,
+            clientCertificates: `${this.getDeploymentConfig().serverHost}/api/server/v1/keystores/client-certs`,
+            emailTemplateType: `${this.getDeploymentConfig().serverHost}/api/server/v1/email/template-types`,
+            externalClaims:`${this.getDeploymentConfig().serverHost}/api/server/v1/claim-dialects/{}/claims`,
+            groups: `${this.getDeploymentConfig().serverHost}/scim2/Groups`,
+            localClaims: `${this.getDeploymentConfig().serverHost}/api/server/v1/claim-dialects/local/claims`,
+            loginPolicies: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
+                }`,
+            // TODO: Remove this endpoint and use ID token to get the details
             me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,
-            profileSchemas: `${this.getDeploymentConfig().serverHost}/scim2/Schemas`,
-            revoke: `${this.getDeploymentConfig().serverHost}/oauth2/revoke`,
-            token: `${this.getDeploymentConfig().serverHost}/oauth2/token`,
-            wellKnown: `${this.getDeploymentConfig().serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
+            passwordHistory: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
+                }/connectors/${ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID}`,
+            passwordPolicies: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
+                }`,
+            passwordPolicy: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
+                }/connectors/${ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID}`,
+            permission: `${this.getDeploymentConfig().serverHost}/api/server/v1/permission-management/permissions`,
+            publicCertificates: `${this.getDeploymentConfig().serverHost}/api/server/v1/keystores/certs/public`,
+            requestPathAuthenticators:
+                `${this.getDeploymentConfig().serverHost}/api/server/v1/configs/authenticators?type=REQUEST_PATH`,
+            selfSignUp: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
+                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
+                }/connectors/${ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID}`,
+            serverConfigurations: `${this.getDeploymentConfig().serverHost}/api/server/v1/configs`,
+            userStores: `${this.getDeploymentConfig().serverHost}/api/server/v1/userstores`,
+            users: `${this.getDeploymentConfig().serverHost}/scim2/Users`
         };
     }
 
@@ -101,6 +138,7 @@ export class Config {
         return {
             appCopyright: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${ new Date().getFullYear() }`,
             appTitle: window["AppUtils"].getConfig().ui.appTitle,
+            features: window["AppUtils"].getConfig().ui.features,
             gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig
         };
     }

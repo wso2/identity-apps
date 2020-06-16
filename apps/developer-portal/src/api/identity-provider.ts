@@ -17,6 +17,7 @@
  */
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods } from "@wso2is/core/models";
 import { AxiosHttpClient } from "@wso2is/http";
 import { AxiosError, AxiosResponse } from "axios";
 import { IdentityProviderManagementConstants } from "../constants";
@@ -24,7 +25,6 @@ import {
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
     FederatedAuthenticatorMetaInterface,
-    HttpMethods,
     IdentityProviderClaimsInterface,
     IdentityProviderInterface,
     IdentityProviderListResponseInterface,

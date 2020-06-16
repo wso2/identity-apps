@@ -17,4 +17,12 @@
  */
 
 export * from "./authentication";
+export * from "./certificates";
+export * from "./claims";
+export * from "./email-templates";
+export * from "./roles";
+export * from "./server-configurations";
+export * from "./shared";
+export * from "./user-stores";
+export * from "./users";
 export * from "./protected-route";

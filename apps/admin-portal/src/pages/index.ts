@@ -16,6 +16,14 @@
  * under the License.
  */
 
+export * from "./certificates";
+export * from "./claims";
+export * from "./configurations";
+export * from "./email-templates";
 export * from "./errors";
+export * from "./groups";
+export * from "./roles";
+export * from "./user-stores";
+export * from "./users";
 export * from "./overview";
 export * from "./privacy";

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { LinkInterface } from "@wso2is/core/models";
 import { TestableComponentInterface } from "@wso2is/core/models";
 
 /**
@@ -27,11 +28,6 @@ export interface IdentityProviderListResponseInterface {
     count?: number;
     links?: LinkInterface[];
     identityProviders?: StrictIdentityProviderInterface[];
-}
-
-interface LinkInterface {
-    href: string;
-    rel: string;
 }
 
 /**

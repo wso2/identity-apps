@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import {
@@ -23,45 +22,72 @@ import {
     OPConfigurationUtil,
     SignInUtil
 } from "@wso2is/authentication";
-import * as TokenConstants from "../constants";
+import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { I18n } from "@wso2is/i18n";
+import { AxiosError } from "axios";
 import { store } from "../store";
 import { handleSignIn } from "../store/actions";
 
 /**
- * Clears the session related information and sign out from the session.
+ * Utility class for authenticate operations.
  */
-export const endUserSession = (): void => {
-    SignInUtil.sendRevokeTokenRequest(
-        JSON.parse(AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.REQUEST_PARAMS)),
-        AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)
-    )
-        .then(() => {
-            // Clear out the session info.
-            AuthenticateSessionUtil.endAuthenticatedSession();
-            OPConfigurationUtil.resetOPConfiguration();
-            store.dispatch(handleSignIn());
-        })
-        .catch(() => {
-            // TODO: Add a notification message.
-        });
-};
+export class AuthenticateUtils {
 
-/**
- * Checks if the logged in user has login scope.
- *
- * @return {boolean}
- */
-export const hasLoginPermission = (): boolean => {
-    const scopes = AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.SCOPE).split(" ");
-    return scopes.includes(TokenConstants.LOGIN_SCOPE);
-};
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() { }
 
-/**
- * Checks if the logged in user has a specific scope.
- *
- * @return {boolean}
- */
-export const hasScope = (scope: string): boolean => {
-    const scopes = AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.SCOPE).split(" ");
-    return scopes.includes(scope);
-};
+    /**
+     * Clears the session related information and sign out from the session.
+     */
+    public static endUserSession(): void {
+        SignInUtil.sendRevokeTokenRequest(
+            JSON.parse(AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.REQUEST_PARAMS)),
+            AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN))
+            .then(() => {
+                // Clear out the session info.
+                AuthenticateSessionUtil.endAuthenticatedSession();
+                OPConfigurationUtil.resetOPConfiguration();
+                store.dispatch(handleSignIn());
+            })
+            .catch((error: AxiosError) => {
+                if (error.response && error.response.data && error.response.data.detail) {
+                    store.dispatch(
+                        addAlert<AlertInterface>({
+                            description: I18n.instance.t(
+                                "devPortal:notifications.endSession.error.description",
+                                { description: error.response.data.detail }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: I18n.instance.t("devPortal:notifications.endSession.error.message")
+                        })
+                    );
+
+                    return;
+                }
+
+                store.dispatch(
+                    addAlert<AlertInterface>({
+                        description: I18n.instance.t("devPortal:notifications.endSession.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: I18n.instance.t("devPortal:notifications.endSession.genericError.message")
+                    })
+                );
+            });
+    }
+
+    /**
+     * Update sessionStorage with location history path
+     *
+     * @param {string} location - history path.
+     */
+    public static updateAuthenticationCallbackUrl(location: string): void {
+        window.sessionStorage.setItem("auth_callback_url", location);
+    }
+}

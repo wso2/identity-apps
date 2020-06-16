@@ -16,9 +16,11 @@
  * under the License.
  */
 
-export * from "./authenticate";
 export * from "./application";
+export * from "./authenticate";
 export * from "./config";
 export * from "./global";
+export * from "./help-panel";
 export * from "./identity-provider";
 export * from "./loaders";
+export * from "./profile";

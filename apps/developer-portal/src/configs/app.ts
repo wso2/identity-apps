@@ -23,7 +23,7 @@ import {
     DocumentationStructureFileTypes
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { I18nConstants, ServerConfigurationsConstants } from "../constants";
+import { I18nConstants } from "../constants";
 import { ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 
 /**
@@ -105,69 +105,16 @@ export class Config {
      */
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
-            accountDisabling: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
-            }/connectors/${ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID}`,
-            accountLocking: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
-            }/connectors/${ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID}`,
-            accountRecovery: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
-            }/connectors/${ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID}`,
             applications: `${this.getDeploymentConfig().serverHost}/api/server/v1/applications`,
-            associations: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/associations`,
-            authorize: `${this.getDeploymentConfig().serverHost}/oauth2/authorize`,
-            bulk: `${this.getDeploymentConfig().serverHost}/scim2/Bulk`,
-            captchaForSSOLogin: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
-            }/connectors/${ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID}`,
-            certificates: `${this.getDeploymentConfig().serverHost}/api/server/v1/keystores/certs`,
-            challengeAnswers: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/challenge-answers`,
-            challenges: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/challenges`,
-            claims: `${this.getDeploymentConfig().serverHost}/api/server/v1/claim-dialects`,
-            clientCertificates: `${this.getDeploymentConfig().serverHost}/api/server/v1/keystores/client-certs`,
-            consents: `${this.getDeploymentConfig()}/api/identity/consent-mgt/v1.0/consents`,
             documentationContent: this.getDeploymentConfig().documentation.contentBaseURL,
             documentationStructure: this.getDeploymentConfig().documentation.structureFileURL,
-            emailTemplateType: `${this.getDeploymentConfig().serverHost}/api/server/v1/email/template-types`,
-            externalClaims:`${this.getDeploymentConfig().serverHost}/api/server/v1/claim-dialects/{}/claims`,
-            groups: `${this.getDeploymentConfig().serverHost}/scim2/Groups`,
             identityProviders: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-providers`,
-            issuer: `${this.getDeploymentConfig().serverHost}/oauth2/token`,
-            jwks: `${this.getDeploymentConfig().serverHost}/oauth2/jwks`,
             localAuthenticators: `${this.getDeploymentConfig().serverHost}/api/server/v1/configs/authenticators`,
-            localClaims: `${this.getDeploymentConfig().serverHost}/api/server/v1/claim-dialects/local/claims`,
-            loginPolicies: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
-            }`,
-            logout: `${this.getDeploymentConfig().serverHost}/oidc/logout`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,
-            passwordHistory: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
-            }/connectors/${ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID}`,
-            passwordPolicies: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
-            }`,
-            passwordPolicy: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
-            }/connectors/${ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID}`,
-            permission: `${this.getDeploymentConfig().serverHost}/api/server/v1/permission-management/permissions`,
-            profileSchemas: `${this.getDeploymentConfig().serverHost}/scim2/Schemas`,
-            publicCertificates: `${this.getDeploymentConfig().serverHost}/api/server/v1/keystores/certs/public`,
             requestPathAuthenticators:
                 `${this.getDeploymentConfig().serverHost}/api/server/v1/configs/authenticators?type=REQUEST_PATH`,
-            revoke: `${this.getDeploymentConfig().serverHost}/oauth2/revoke`,
             saml2Meta: `${this.getDeploymentConfig().serverHost}/identity/metadata/saml2`,
-            selfSignUp: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
-            }/connectors/${ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID}`,
-            serverConfigurations: `${this.getDeploymentConfig().serverHost}/api/server/v1/configs`,
-            sessions: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/sessions`,
-            token: `${this.getDeploymentConfig().serverHost}/oauth2/token`,
-            user: `${this.getDeploymentConfig().serverHost}/api/identity/user/v1.0/me`,
-            userStores: `${this.getDeploymentConfig().serverHost}/api/server/v1/userstores`,
-            users: `${this.getDeploymentConfig().serverHost}/scim2/Users`,
             wellKnown: `${this.getDeploymentConfig().serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
         };
     }

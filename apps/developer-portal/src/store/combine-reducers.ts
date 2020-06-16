@@ -16,20 +16,34 @@
  * under the License.
  */
 
-import { CommonDeploymentConfigInterface } from "@wso2is/core/models";
-import { commonConfigReducer } from "@wso2is/core/store";
-import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+import {
+    AlertInterface,
+    LinkedAccountInterface,
+    ProfileInfoInterface,
+    ProfileSchemaInterface
+} from "@wso2is/core/models";
+import {
+    commonAuthenticateReducer,
+    commonConfigReducer,
+    commonGlobalReducer,
+    commonProfileReducer,
+    commonRequestLoadersReducer
+} from "@wso2is/core/store";
+import { I18nModuleOptionsInterface, SupportedLanguagesMeta } from "@wso2is/i18n";
+import { System } from "react-notification-system";
 import { combineReducers } from "redux";
 import {
-    LoadersReducer,
     applicationReducer,
-    authenticateReducer,
+    commonAuthenticateReducerInitialState,
     commonConfigReducerInitialState,
-    globalReducer,
+    commonGlobalReducerInitialState,
+    commonProfileReducerInitialState,
+    commonRequestLoadersInitialState,
+    helpPanelReducer,
     identityProviderReducer
 } from "./reducers";
-import { helpPanelReducer } from "./reducers/help-panel";
 import {
+    DeploymentConfigInterface,
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface,
     UIConfigInterface
@@ -42,16 +56,21 @@ import {
  */
 export const reducers = combineReducers({
     application: applicationReducer,
-    authenticationInformation: authenticateReducer,
+    auth: commonAuthenticateReducer(commonAuthenticateReducerInitialState),
     config: commonConfigReducer<
-        CommonDeploymentConfigInterface,
+        DeploymentConfigInterface,
         ServiceResourceEndpointsInterface,
         FeatureConfigInterface,
         I18nModuleOptionsInterface,
         UIConfigInterface
         >(commonConfigReducerInitialState),
-    global: globalReducer,
+    global: commonGlobalReducer<AlertInterface, System, SupportedLanguagesMeta>(commonGlobalReducerInitialState),
     helpPanel: helpPanelReducer,
     identityProvider: identityProviderReducer,
-    loaders: LoadersReducer
+    loaders: commonRequestLoadersReducer(commonRequestLoadersInitialState),
+    profile: commonProfileReducer<
+        ProfileInfoInterface,
+        ProfileSchemaInterface[],
+        LinkedAccountInterface[]
+        >(commonProfileReducerInitialState)
 });

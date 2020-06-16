@@ -40,45 +40,18 @@ export interface FeatureConfigInterface {
      */
     applications?: FeatureAccessConfigInterface;
     /**
-     * Attribute dialects(Claim dialects) feature.
-     */
-    attributeDialects?: FeatureAccessConfigInterface;
-    /**
-     * Certificates configurations feature.
-     */
-    certificates?: FeatureAccessConfigInterface;
-    /**
-     * Email templates feature.
-     */
-    emailTemplates?: FeatureAccessConfigInterface;
-    /**
-     * General Configuration settings feature.
-     */
-    generalConfigurations?: FeatureAccessConfigInterface;
-    /**
-     * Groups feature.
-     */
-    groups?: FeatureAccessConfigInterface;
-    /**
      * Identity provider management feature.
      */
     identityProviders?: FeatureAccessConfigInterface;
-    /**
-     * Role management feature.
-     */
-    roles?: FeatureAccessConfigInterface;
-    /**
-     * User store configurations feature.
-     */
-    userStores?: FeatureAccessConfigInterface;
-    /**
-     * User management feature.
-     */
-    users?: FeatureAccessConfigInterface;
 }
 
 /**
- * Dev portal UI config interface.
+ * Portal Deployment config interface inheriting the common configs from core module.
+ */
+export type DeploymentConfigInterface = CommonDeploymentConfigInterface;
+
+/**
+ * Portal UI config interface inheriting the common configs from core module.
  */
 export interface UIConfigInterface extends CommonUIConfigInterface {
     /**
@@ -96,47 +69,12 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
  */
 export interface ServiceResourceEndpointsInterface {
     applications: string;
-    associations: string;
-    authorize: string;
-    bulk: string;
-    challenges: string;
-    challengeAnswers: string;
-    consents: string;
-    publicCertificates: string;
-    certificates: string;
-    clientCertificates: string;
-    groups: string;
-    claims: string;
-    externalClaims: string;
-    emailTemplateType: string;
-    identityProviders: string;
-    issuer: string;
-    jwks: string;
-    localAuthenticators: string;
-    localClaims: string;
-    logout: string;
-    me: string;
-    permission: string;
     documentationContent: string;
     documentationStructure: string;
-    profileSchemas: string;
-    saml2Meta: string;
-    sessions: string;
-    token: string;
-    user: string;
-    users: string;
-    userStores: string;
-    revoke: string;
-    wellKnown: string;
-    selfSignUp: string;
-    accountRecovery: string;
-    loginPolicies: string;
-    passwordPolicies: string;
-    accountLocking: string;
-    accountDisabling: string;
-    captchaForSSOLogin: string;
-    passwordHistory: string;
-    passwordPolicy: string;
+    identityProviders: string;
+    localAuthenticators: string;
+    me: string;
     requestPathAuthenticators: string;
-    serverConfigurations: string;
+    saml2Meta: string;
+    wellKnown: string;
 }

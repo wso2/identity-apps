@@ -21,10 +21,27 @@ import { SignIn, SignOut } from "../components";
 import { AppConstants } from "../constants";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../layouts";
 import {
+    AddTemplateLocale,
+    CertificatesKeystore,
+    ClaimDialectsPage,
+    EmailTemplateTypes,
+    EmailTemplates,
+    ExternalDialectEditPage,
+    GroupsPage,
+    LocalClaimsEditPage,
+    LocalClaimsPage,
     OverviewPage,
     PageNotFound,
     PrivacyPage,
-    UnauthorizedErrorPage
+    RoleEditPage,
+    RolesPage,
+    ServerConfigurationsPage,
+    UnauthorizedErrorPage,
+    UserEditPage,
+    UserStores,
+    UserStoresEditPage,
+    UsersPage,
+    UserstoresTemplates
 } from "../pages";
 
 /**
@@ -50,8 +67,220 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         component: OverviewPage,
         icon: "overview",
         id: "overview",
-        name: "common:overview",
+        name: "adminPortal:components.sidePanel.overview",
         path: AppConstants.PATHS.get("OVERVIEW"),
+        protected: true,
+        showOnSidePanel: true
+    },
+    {
+        children: [
+            {
+                component: UserEditPage,
+                exact: true,
+                icon: "childIcon",
+                id: "usersEdit",
+                name: "adminPortal:components.sidePanel.editUsers",
+                path: AppConstants.PATHS.get("USER_EDIT"),
+                protected: true,
+                showOnSidePanel: false
+            }
+        ],
+        component: UsersPage,
+        exact: true,
+        icon: "users",
+        id: "users",
+        name: "adminPortal:components.sidePanel.users",
+        path: AppConstants.PATHS.get("USERS"),
+        protected: true,
+        showOnSidePanel: true
+    },
+    {
+        children: [
+            {
+                component: RoleEditPage,
+                exact: true,
+                icon: "childIcon",
+                id: "groupsEdit",
+                name: "adminPortal:components.sidePanel.editGroups",
+                path: AppConstants.PATHS.get("GROUP_EDIT"),
+                protected: true,
+                showOnSidePanel: false
+            }
+        ],
+        component: GroupsPage,
+        exact: true,
+        icon: "groups",
+        id: "groups",
+        name: "adminPortal:components.sidePanel.groups",
+        path: AppConstants.PATHS.get("GROUPS"),
+        protected: true,
+        showOnSidePanel: true
+    },
+    {
+        children: [
+            {
+                component: RoleEditPage,
+                exact: true,
+                icon: "childIcon",
+                id: "rolesEdit",
+                name: "adminPortal:components.sidePanel.editRoles",
+                path: AppConstants.PATHS.get("ROLE_EDIT"),
+                protected: true,
+                showOnSidePanel: false
+            }
+        ],
+        component: RolesPage,
+        exact: true,
+        icon: "roles",
+        id: "roles",
+        name: "adminPortal:components.sidePanel.roles",
+        path: AppConstants.PATHS.get("ROLES"),
+        protected: true,
+        showOnSidePanel: true
+    },
+    {
+        children: [
+            {
+                component: LocalClaimsEditPage,
+                exact: true,
+                icon: "childIcon",
+                id: "editLocalClaims",
+                level: 2,
+                name: "adminPortal:components.sidePanel.editLocalClaims",
+                path: AppConstants.PATHS.get("LOCAL_CLAIMS_EDIT"),
+                protected: true,
+                showOnSidePanel: false
+            },
+            {
+                component: LocalClaimsPage,
+                exact: true,
+                icon: "childIcon",
+                id: "localDialect",
+                level: 2,
+                name: "adminPortal:components.sidePanel.localDialect",
+                path: AppConstants.PATHS.get("LOCAL_CLAIMS"),
+                protected: true,
+                showOnSidePanel: false
+            },
+            {
+                component: ExternalDialectEditPage,
+                exact: true,
+                icon: "childIcon",
+                id: "editExternalDialect",
+                level: 2,
+                name: "adminPortal:components.sidePanel.editExternalDialect",
+                path: AppConstants.PATHS.get("EXTERNAL_DIALECT_EDIT"),
+                protected: true,
+                showOnSidePanel: false
+            }
+        ],
+        component: ClaimDialectsPage,
+        exact: true,
+        icon: "claims",
+        id: "attributeDialects",
+        level: 2,
+        name: "adminPortal:components.sidePanel.attributeDialects",
+        path: AppConstants.PATHS.get("CLAIM_DIALECTS"),
+        protected: true,
+        showOnSidePanel: true
+    },
+    {
+        children: [
+            {
+                component: UserStoresEditPage,
+                icon: "childIcon",
+                id: "edit-user-store",
+                name: "adminPortal:components.sidePanel.editUserstore",
+                path: AppConstants.PATHS.get("USERSTORES_EDIT"),
+                protected: true,
+                showOnSidePanel: false
+            },
+            {
+                component: UserstoresTemplates,
+                icon: "childIcon",
+                id: "userstore-templates",
+                name: "adminPortal:components.sidePanel.userstoreTemplates",
+                path: AppConstants.PATHS.get("USERSTORE_TEMPLATES"),
+                protected: true,
+                showOnSidePanel: false
+            }
+        ],
+        component: UserStores,
+        icon: "userStore",
+        id: "userStores",
+        name: "adminPortal:components.sidePanel.userstores",
+        path: AppConstants.PATHS.get("USERSTORES"),
+        protected: true,
+        showOnSidePanel: true
+    },
+    {
+        component: CertificatesKeystore,
+        icon: "certificate",
+        id: "certificates",
+        name: "adminPortal:components.sidePanel.certificates",
+        path: AppConstants.PATHS.get("CERTIFICATES"),
+        protected: true,
+        showOnSidePanel: true
+    },
+    {
+        children: [
+            {
+                component: ServerConfigurationsPage,
+                exact: true,
+                icon: "childIcon",
+                id: "generalConfigurations",
+                level: 2,
+                name: "adminPortal:components.sidePanel.generalConfigurations",
+                path: AppConstants.PATHS.get("SERVER_CONFIGS"),
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
+                component: EmailTemplateTypes,
+                exact: true,
+                icon: "childIcon",
+                id: "emailTemplates",
+                level: 2,
+                name: "adminPortal:components.sidePanel.emailTemplates",
+                path: AppConstants.PATHS.get("EMAIL_TEMPLATES"),
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
+                component: EmailTemplates,
+                exact: true,
+                icon: "childIcon",
+                id: "emailTemplates",
+                name: "adminPortal:components.sidePanel.emailTemplates",
+                path: AppConstants.PATHS.get("EMAIL_TEMPLATE"),
+                protected: true,
+                showOnSidePanel: false
+            },
+            {
+                component: AddTemplateLocale,
+                exact: true,
+                icon: "childIcon",
+                id: "emailTemplates",
+                name: "adminPortal:components.sidePanel.addEmailTemplate",
+                path: AppConstants.PATHS.get("EMAIL_TEMPLATE_ADD"),
+                protected: true,
+                showOnSidePanel: false
+            },
+            {
+                component: AddTemplateLocale,
+                exact: true,
+                icon: "childIcon",
+                id: "emailTemplates",
+                name: "adminPortal:components.sidePanel.addEmailTemplateLocale",
+                path: AppConstants.PATHS.get("EMAIL_TEMPLATE_LOCALE_ADD"),
+                protected: true,
+                showOnSidePanel: false
+            }
+        ],
+        exact: true,
+        icon: "serverConfigurations",
+        id: "serverConfigurations",
+        name: "adminPortal:components.sidePanel.configurations",
         protected: true,
         showOnSidePanel: true
     },
@@ -75,7 +304,7 @@ const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
         component: PrivacyPage,
         icon: null,
         id: "privacy",
-        name: "Privacy",
+        name: "adminPortal:components.sidePanel.privacy",
         path: AppConstants.PATHS.get("PRIVACY"),
         protected: true,
         showOnSidePanel: false
@@ -157,7 +386,7 @@ const APP_ROUTES: RouteInterface[] = [
         icon: null,
         id: "appRoutePrivacy",
         name: "Privacy",
-        path: "/privacy",
+        path: AppConstants.PATHS.get("PRIVACY"),
         protected: true,
         showOnSidePanel: false
     },
@@ -177,7 +406,7 @@ const APP_ROUTES: RouteInterface[] = [
         icon: null,
         id: "appRoute404",
         name: "Error",
-        path: "/404",
+        path: AppConstants.PATHS.get("PAGE_NOT_FOUND"),
         protected: true,
         showOnSidePanel: false
     },

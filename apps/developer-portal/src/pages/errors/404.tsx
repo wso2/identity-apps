@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import React from "react";
+import { EmptyPlaceholder } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
-import { EmptyPlaceholder } from "../../components/shared";
 import { EmptyPlaceholderIllustrations } from "../../configs";
 import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
@@ -29,9 +29,9 @@ import { AppState } from "../../store";
 /**
  * 404 error page.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const PageNotFound = (): JSX.Element => {
+export const PageNotFound: FunctionComponent<{}> = (): ReactElement => {
 
     const { t } = useTranslation();
 

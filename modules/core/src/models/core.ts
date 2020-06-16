@@ -116,3 +116,32 @@ export interface LoadableComponentInterface {
      */
     isLoading?: boolean;
 }
+
+/**
+ * Enum for Product release types.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum ProductReleaseTypes {
+    /**
+     * Milestone release.
+     * @type {string}
+     */
+    MILESTONE = "milestone",
+    /**
+     * Alpha release.
+     * @type {string}
+     */
+    ALPHA = "alpha",
+    /**
+     * Beta Release.
+     * @type {string}
+     */
+    BETA = "beta",
+    /**
+     * Release candidate.
+     * @type {string}
+     */
+    RC = "rc"
+}

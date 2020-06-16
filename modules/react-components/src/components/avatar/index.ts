@@ -17,6 +17,7 @@
  *
  */
 
+export * from "./animated-avatar";
 export * from "./app-avatar";
 export * from "./avatar";
 export * from "./user-avatar";

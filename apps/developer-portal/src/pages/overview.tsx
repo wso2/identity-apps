@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { resolveUserDisplayName } from "@wso2is/core/helpers";
+import { AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     Jumbotron,
@@ -29,17 +30,15 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Icon, Responsive } from "semantic-ui-react";
-import { getApplicationList, getIdentityProviderList, getUserStores } from "../api";
+import { getApplicationList, getIdentityProviderList } from "../api";
 import { ApplicationList, IdentityProviderList, handleGetIDPListCallError } from "../components";
 import { OverviewPageIllustrations } from "../configs";
-import { ApplicationConstants, UIConstants } from "../constants";
-import { history, resolveUserDisplayName } from "../helpers";
+import { AppConstants, UIConstants } from "../constants";
+import { history } from "../helpers";
 import {
     ApplicationListInterface,
-    AuthStateInterface,
     FeatureConfigInterface,
-    IdentityProviderListResponseInterface,
-    QueryParams
+    IdentityProviderListResponseInterface
 } from "../models";
 import { AppState } from "../store";
 
@@ -68,20 +67,18 @@ export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
     const dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
 
     const [ appList, setAppList ] = useState<ApplicationListInterface>({});
     const [ appCount, setAppCount ] = useState<number>(0);
     const [ idpList, setIdPList ] = useState<IdentityProviderListResponseInterface>({});
     const [ idpCount, setIdPCount ] = useState<number>(0);
-    const [ userstoresCount, setUserstoresCount ] = useState<number>(0);
     const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
     const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(false);
 
     useEffect(() => {
-        getAppLists(5, null, null);
-        getIdPList(5, null, null);
-        getUserstoresList(null, null, null, null);
+        getAppLists(UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT , null, null);
+        getIdPList(UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT , null, null);
     }, []);
 
     /**
@@ -147,113 +144,8 @@ export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
             });
     };
 
-    /**
-     * Fetches all userstores.
-     *
-     * @param {number} limit - List limit.
-     * @param {string} sort - Sort strategy.
-     * @param {number} offset - List offset.
-     * @param {string} filter - Search query.
-     */
-    const getUserstoresList = (limit?: number, sort?: string, offset?: number, filter?: string) => {
-        const params: QueryParams = {
-            filter: filter || null,
-            limit: limit || null,
-            offset: offset || null,
-            sort: sort || null
-        };
-
-        getUserStores(params)
-            .then(response => {
-                if (response && response instanceof Array) {
-                    setUserstoresCount(response.length)
-                }
-            })
-            .catch(error => {
-                dispatch(addAlert(
-                    {
-                        description: error?.description
-                            || t("devPortal:components.userstores.notifications.fetchUserstores.genericError" +
-                                ".description"),
-                        level: AlertLevels.ERROR,
-                        message: error?.message
-                            || t("devPortal:components.userstores.notifications.fetchUserstores.genericError" +
-                                ".message")
-                    }
-                ));
-            });
-    };
-
     const resolveGridContent = () => (
         <>
-            <Grid.Column className="with-bottom-gutters">
-                <StatsQuickLinksWidget
-                    heading={ t("devPortal:components.overview.widgets.quickLinks.heading") }
-                    subHeading={ t("devPortal:components.overview.widgets.quickLinks.subHeading") }
-                    links={ [
-                        {
-                            description: t("devPortal:components.overview.widgets.quickLinks.cards" +
-                                ".groups.subHeading"),
-                            header: t("devPortal:components.overview.widgets.quickLinks.cards.groups" +
-                                ".heading"),
-                            image: OverviewPageIllustrations.quickLinks.groups,
-                            onClick: () => {
-                                history.push(ApplicationConstants.PATHS.get("GROUPS"))
-                            }
-                        },
-                        {
-                            description: t("devPortal:components.overview.widgets.quickLinks.cards" +
-                                ".roles.subHeading"),
-                            header: t("devPortal:components.overview.widgets.quickLinks.cards.roles" +
-                                ".heading"),
-                            image: OverviewPageIllustrations.quickLinks.roles,
-                            onClick: () => {
-                                history.push(ApplicationConstants.PATHS.get("ROLES"))
-                            }
-                        },
-                        {
-                            description: t("devPortal:components.overview.widgets.quickLinks.cards" +
-                                ".dialects.subHeading"),
-                            header: t("devPortal:components.overview.widgets.quickLinks.cards" +
-                                ".dialects.heading"),
-                            image: OverviewPageIllustrations.quickLinks.dialects,
-                            onClick: () => {
-                                history.push(ApplicationConstants.PATHS.get("ATTRIBUTE_DIALECTS"))
-                            }
-                        },
-                        {
-                            description: t("devPortal:components.overview.widgets.quickLinks.cards" +
-                                ".certificates.subHeading"),
-                            header: t("devPortal:components.overview.widgets.quickLinks.cards" +
-                                ".certificates.heading"),
-                            image: OverviewPageIllustrations.quickLinks.certificates,
-                            onClick: () => {
-                                history.push(ApplicationConstants.PATHS.get("CERTIFICATES"))
-                            }
-                        },
-                        {
-                            description: t("devPortal:components.overview.widgets.quickLinks" +
-                                ".cards.generalConfigs.subHeading"),
-                            header: t("devPortal:components.overview.widgets.quickLinks.cards" +
-                                ".generalConfigs.heading"),
-                            image: OverviewPageIllustrations.quickLinks.generalConfigs,
-                            onClick: () => {
-                                history.push(ApplicationConstants.PATHS.get("GENERAL_CONFIGS"))
-                            }
-                        },
-                        {
-                            description: t("devPortal:components.overview.widgets.quickLinks" +
-                                ".cards.emailTemplates.subHeading"),
-                            header: t("devPortal:components.overview.widgets.quickLinks.cards" +
-                                ".emailTemplates.heading"),
-                            image: OverviewPageIllustrations.quickLinks.emailTemplates,
-                            onClick: () => {
-                                history.push(ApplicationConstants.PATHS.get("EMAIL_TEMPLATES"))
-                            }
-                        }
-                    ] }
-                />
-            </Grid.Column>
             <Grid.Column className="with-bottom-gutters">
                 <StatsInsightsWidget
                     heading={ t("devPortal:components.overview.widgets.insights.applications.heading") }
@@ -262,7 +154,7 @@ export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     }
                     primaryAction={ <><Icon name="location arrow"/>{ t("common:explore") }</> }
                     onPrimaryActionClick={
-                        () => history.push(ApplicationConstants.PATHS.get("APPLICATIONS"))
+                        () => history.push(AppConstants.PATHS.get("APPLICATIONS"))
                     }
                     showExtraContent={
                         appList?.applications
@@ -277,7 +169,7 @@ export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         isLoading={ isApplicationListRequestLoading }
                         list={ appList }
                         onEmptyListPlaceholderActionClick={
-                            () => history.push(ApplicationConstants.PATHS.get("APPLICATIONS"))
+                            () => history.push(AppConstants.PATHS.get("APPLICATIONS"))
                         }
                         showListItemActions={ false }
                         data-testid={ `${ testId }-list` }
@@ -291,7 +183,7 @@ export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         t("devPortal:components.overview.widgets.insights.idp.subHeading")
                     }
                     primaryAction={ <><Icon name="location arrow"/>{ t("common:explore") }</> }
-                    onPrimaryActionClick={ () => history.push(ApplicationConstants.PATHS.get("IDP")) }
+                    onPrimaryActionClick={ () => history.push(AppConstants.PATHS.get("IDP")) }
                     showExtraContent={
                         idpList?.identityProviders
                         && idpList.identityProviders instanceof Array
@@ -304,7 +196,7 @@ export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         isLoading={ isIdPListRequestLoading }
                         list={ idpList }
                         onEmptyListPlaceholderActionClick={
-                            () => history.push(ApplicationConstants.PATHS.get("IDP"))
+                            () => history.push(AppConstants.PATHS.get("IDP"))
                         }
                         showListItemActions={ false }
                         data-testid={ `${ testId }-list` }
@@ -318,9 +210,10 @@ export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
         <>
             <Jumbotron
                 heading={ t(
-                    "devPortal:pages.overView.title", { firstName: resolveUserDisplayName(profileDetails) }
+                    "devPortal:pages.overview.title",
+                    { firstName: resolveUserDisplayName(profileInfo as ProfileInfoInterface) }
                 ) }
-                subHeading={ t("devPortal:pages.overView.subTitle") }
+                subHeading={ t("devPortal:pages.overview.subTitle") }
                 icon={ OverviewPageIllustrations.jumbotronIllustration }
             />
             <PageLayout
@@ -348,15 +241,6 @@ export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                             },
                             label: t("devPortal:components.overview.widgets.overview.cards.idp.heading"),
                             value: idpCount
-                        },
-                        {
-                            icon: OverviewPageIllustrations.statsOverview.userstores,
-                            iconOptions: {
-                                background: "accent3",
-                                fill: "white"
-                            },
-                            label: t("devPortal:components.overview.widgets.overview.cards.userstores.heading"),
-                            value: userstoresCount
                         }
                     ] }
                 />
@@ -364,7 +248,7 @@ export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                 <Grid>
                     <Responsive
                         as={ Grid.Row }
-                        columns={ 3 }
+                        columns={ 2 }
                         minWidth={ Responsive.onlyComputer.minWidth }
                     >
                         { resolveGridContent() }

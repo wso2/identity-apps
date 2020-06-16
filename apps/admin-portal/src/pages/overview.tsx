@@ -17,12 +17,23 @@
  */
 
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
-import { ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { Jumbotron, PageLayout } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import { AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import {
+    Jumbotron,
+    PageLayout,
+    StatsOverviewWidget,
+    StatsQuickLinksWidget
+} from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Divider, Grid, Responsive } from "semantic-ui-react";
+import { getUserStores } from "../api";
 import { OverviewPageIllustrations } from "../configs";
+import { AppConstants } from "../constants";
+import { history } from "../helpers";
+import { QueryParams } from "../models";
 import { AppState } from "../store";
 
 /**
@@ -47,21 +58,171 @@ export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
 
     const { t } = useTranslation();
 
+    const dispatch = useDispatch();
+
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
+
+    const [ userstoresCount, setUserstoresCount ] = useState<number>(0);
+
+    useEffect(() => {
+        getUserstoresList(null, null, null, null);
+    }, []);
+
+    /**
+     * Fetches all userstores.
+     *
+     * @param {number} limit - List limit.
+     * @param {string} sort - Sort strategy.
+     * @param {number} offset - List offset.
+     * @param {string} filter - Search query.
+     */
+    const getUserstoresList = (limit?: number, sort?: string, offset?: number, filter?: string) => {
+        const params: QueryParams = {
+            filter: filter || null,
+            limit: limit || null,
+            offset: offset || null,
+            sort: sort || null
+        };
+
+        getUserStores(params)
+            .then(response => {
+                if (response && response instanceof Array) {
+                    setUserstoresCount(response.length)
+                }
+            })
+            .catch(error => {
+                dispatch(addAlert(
+                    {
+                        description: error?.description
+                            || t("adminPortal:components.userstores.notifications.fetchUserstores.genericError" +
+                                ".description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.message
+                            || t("adminPortal:components.userstores.notifications.fetchUserstores.genericError" +
+                                ".message")
+                    }
+                ));
+            });
+    };
+
+    const resolveGridContent = () => (
+        <>
+            <Grid.Column className="with-bottom-gutters">
+                <StatsQuickLinksWidget
+                    heading={ t("adminPortal:components.overview.widgets.quickLinks.heading") }
+                    subHeading={ t("adminPortal:components.overview.widgets.quickLinks.subHeading") }
+                    links={ [
+                        {
+                            description: t("adminPortal:components.overview.widgets.quickLinks.cards" +
+                                ".groups.subHeading"),
+                            header: t("adminPortal:components.overview.widgets.quickLinks.cards.groups" +
+                                ".heading"),
+                            image: OverviewPageIllustrations.quickLinks.groups,
+                            onClick: () => {
+                                history.push(AppConstants.PATHS.get("GROUPS"))
+                            }
+                        },
+                        {
+                            description: t("adminPortal:components.overview.widgets.quickLinks.cards" +
+                                ".roles.subHeading"),
+                            header: t("adminPortal:components.overview.widgets.quickLinks.cards.roles" +
+                                ".heading"),
+                            image: OverviewPageIllustrations.quickLinks.roles,
+                            onClick: () => {
+                                history.push(AppConstants.PATHS.get("ROLES"))
+                            }
+                        },
+                        {
+                            description: t("adminPortal:components.overview.widgets.quickLinks.cards" +
+                                ".dialects.subHeading"),
+                            header: t("adminPortal:components.overview.widgets.quickLinks.cards" +
+                                ".dialects.heading"),
+                            image: OverviewPageIllustrations.quickLinks.dialects,
+                            onClick: () => {
+                                history.push(AppConstants.PATHS.get("CLAIM_DIALECTS"))
+                            }
+                        },
+                        {
+                            description: t("adminPortal:components.overview.widgets.quickLinks.cards" +
+                                ".certificates.subHeading"),
+                            header: t("adminPortal:components.overview.widgets.quickLinks.cards" +
+                                ".certificates.heading"),
+                            image: OverviewPageIllustrations.quickLinks.certificates,
+                            onClick: () => {
+                                history.push(AppConstants.PATHS.get("CERTIFICATES"))
+                            }
+                        },
+                        {
+                            description: t("adminPortal:components.overview.widgets.quickLinks" +
+                                ".cards.generalConfigs.subHeading"),
+                            header: t("adminPortal:components.overview.widgets.quickLinks.cards" +
+                                ".generalConfigs.heading"),
+                            image: OverviewPageIllustrations.quickLinks.generalConfigs,
+                            onClick: () => {
+                                history.push(AppConstants.PATHS.get("SERVER_CONFIGS"))
+                            }
+                        },
+                        {
+                            description: t("adminPortal:components.overview.widgets.quickLinks" +
+                                ".cards.emailTemplates.subHeading"),
+                            header: t("adminPortal:components.overview.widgets.quickLinks.cards" +
+                                ".emailTemplates.heading"),
+                            image: OverviewPageIllustrations.quickLinks.emailTemplates,
+                            onClick: () => {
+                                history.push(AppConstants.PATHS.get("EMAIL_TEMPLATES"))
+                            }
+                        }
+                    ] }
+                />
+            </Grid.Column>
+        </>
+    );
 
     return (
         <>
             <Jumbotron
                 heading={ t(
-                    "adminPortal:pages.overView.title", { firstName: resolveUserDisplayName(profileInfo) }
+                    "adminPortal:pages.overview.title", { firstName: resolveUserDisplayName(profileInfo) }
                 ) }
-                subHeading={ t("adminPortal:pages.overView.subTitle") }
+                subHeading={ t("adminPortal:pages.overview.subTitle") }
                 icon={ OverviewPageIllustrations.jumbotronIllustration }
             />
             <PageLayout
                 contentTopMargin={ false }
                 data-testid={ `${ testId }-page-layout` }
             >
+                <StatsOverviewWidget
+                    heading={ t("adminPortal:components.overview.widgets.overview.heading") }
+                    subHeading={ t("adminPortal:components.overview.widgets.overview.subHeading") }
+                    stats={ [
+                        {
+                            icon: OverviewPageIllustrations.statsOverview.userstores,
+                            iconOptions: {
+                                background: "accent3",
+                                fill: "white"
+                            },
+                            label: t("adminPortal:components.overview.widgets.overview.cards.userstores.heading"),
+                            value: userstoresCount
+                        }
+                    ] }
+                />
+                <Divider hidden/>
+                <Grid>
+                    <Responsive
+                        as={ Grid.Row }
+                        columns={ 3 }
+                        minWidth={ Responsive.onlyComputer.minWidth }
+                    >
+                        { resolveGridContent() }
+                    </Responsive>
+                    <Responsive
+                        as={ Grid.Row }
+                        columns={ 1 }
+                        maxWidth={ Responsive.onlyComputer.minWidth }
+                    >
+                        { resolveGridContent() }
+                    </Responsive>
+                </Grid>
             </PageLayout>
         </>
     );

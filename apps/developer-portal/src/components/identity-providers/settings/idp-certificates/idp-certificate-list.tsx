@@ -16,18 +16,24 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
+import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { Forms } from "@wso2is/forms";
-import { EmptyPlaceholder, PrimaryButton, ResourceList, ResourceListItem, UserAvatar } from "@wso2is/react-components";
+import {
+    Certificate as CertificateDisplay,
+    EmptyPlaceholder,
+    PrimaryButton,
+    ResourceList,
+    ResourceListItem,
+    UserAvatar
+} from "@wso2is/react-components";
 import moment from "moment";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid, Icon, Modal, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { CertificateIllustrations, EmptyPlaceholderIllustrations } from "../../../../configs";
 import { UIConstants } from "../../../../constants";
-import { DisplayCertificate, IdentityProviderInterface } from "../../../../models";
-import { CertificateManagementUtils } from "../../../../utils";
-import { Certificate as CertificateDisplay } from "../../../certificates";
+import { IdentityProviderInterface } from "../../../../models";
 import { AddIDPCertificateWizard } from "../../wizards";
 
 /**
@@ -123,7 +129,16 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                     </div>
                 </Modal.Header>
                 <Modal.Content className="certificate-content">
-                    <CertificateDisplay certificate={ certificateDisplay }/>
+                    <CertificateDisplay
+                        certificate={ certificateDisplay }
+                        labels={ {
+                            issuerDN: t("devPortal:components.certificates.keystore.summary.issuerDN"),
+                            subjectDN: t("devPortal:components.certificates.keystore.summary.subjectDN"),
+                            validFrom: t("devPortal:components.certificates.keystore.summary.validFrom"),
+                            validTill: t("devPortal:components.certificates.keystore.summary.validTill"),
+                            version: t("devPortal:components.certificates.keystore.summary.version")
+                        } }
+                    />
                 </Modal.Content>
             </Modal>
         )

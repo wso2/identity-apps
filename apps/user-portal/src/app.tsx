@@ -27,7 +27,7 @@ import {
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ContentLoader } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { ReactElement, Suspense, useEffect, useState } from "react";
+import React, { ReactElement, Suspense, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";

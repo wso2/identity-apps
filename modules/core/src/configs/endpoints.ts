@@ -21,12 +21,17 @@
  */
 interface CommonServiceResourceEndpointsInterface {
     authorize: string;
+    claims: string;
+    externalClaims: string;
+    groups: string;
     jwks: string;
+    localClaims: string;
     logout: string;
     me: string;
     profileSchemas: string;
     revoke: string;
     token: string;
+    userstores: string;
     wellKnown: string;
 }
 
@@ -35,11 +40,16 @@ interface CommonServiceResourceEndpointsInterface {
  */
 export const CommonServiceResourcesEndpoints = (serverHost: string): CommonServiceResourceEndpointsInterface => ({
     authorize: `${serverHost}/oauth2/authorize`,
+    claims: `${serverHost}/api/server/v1/claim-dialects`,
+    externalClaims:`${serverHost}/api/server/v1/claim-dialects/{0}/claims`,
+    groups: `${serverHost}/scim2/Groups`,
     jwks: `${serverHost}/oauth2/jwks`,
+    localClaims: `${serverHost}/api/server/v1/claim-dialects/local/claims`,
     logout: `${serverHost}/oidc/logout`,
     me: `${serverHost}/scim2/Me`,
     profileSchemas: `${serverHost}/scim2/Schemas`,
     revoke: `${serverHost}/oauth2/revoke`,
     token: `${serverHost}/oauth2/token`,
+    userstores: `${serverHost}/api/server/v1/userstores`,
     wellKnown: `${serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
 });

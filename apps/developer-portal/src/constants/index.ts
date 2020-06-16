@@ -16,17 +16,11 @@
  * under the License.
  */
 
-export * from "./application-constants";
+export * from "./app-constants";
 export * from "./application-management";
-export * from "./email-constants";
 export * from "./documentation-constants";
 export * from "./i18n-constants";
 export * from "./identity-provider-constants";
 export * from "./token-constants";
 export * from "./ui-constants";
-export * from "./user-constants";
-export * from "./role-constants";
 export * from "./identity-provider-management-constants";
-export * from "./user-store-constants";
-export * from "./certificates";
-export * from "./server-configurations-constants";

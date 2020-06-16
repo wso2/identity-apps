@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { Heading, Hint, LinkButton } from "@wso2is/react-components";
+import { Certificate as CertificateDisplay, Heading, Hint, LinkButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -29,11 +29,9 @@ import { Button, Divider, Grid, Modal } from "semantic-ui-react";
 import { CertificateIllustrations } from "../../../configs";
 import {
     CertificateInterface,
-    CertificateTypeInterface,
-    DisplayCertificate
+    CertificateTypeInterface
 } from "../../../models";
-import { CertificateManagementUtils, CommonUtils } from "../../../utils";
-import { Certificate as CertificateDisplay } from "../../certificates";
+import { CertificateManagementUtils } from "@wso2is/core/utils";
 
 /**
  * Proptypes for the applications general details form component.
@@ -177,7 +175,16 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     </div>
                 </Modal.Header>
                 <Modal.Content className="certificate-content">
-                    <CertificateDisplay certificate={ certificateDisplay }/>
+                    <CertificateDisplay
+                        certificate={ certificateDisplay }
+                        labels={ {
+                            issuerDN: t("devPortal:components.certificates.keystore.summary.issuerDN"),
+                            subjectDN: t("devPortal:components.certificates.keystore.summary.subjectDN"),
+                            validFrom: t("devPortal:components.certificates.keystore.summary.validFrom"),
+                            validTill: t("devPortal:components.certificates.keystore.summary.validTill"),
+                            version: t("devPortal:components.certificates.keystore.summary.version")
+                        } }
+                    />
                 </Modal.Content>
             </Modal>
         )
@@ -188,7 +195,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     const viewCertificate = () => {
         if (isPEMSelected && PEMValue) {
-            const displayCertificate: DisplayCertificate = CommonUtils.displayCertificate(PEMValue);
+            const displayCertificate: DisplayCertificate = CertificateManagementUtils.displayCertificate(
+                null, PEMValue);
+
             if (displayCertificate) {
                 setCertificateDisplay(displayCertificate);
                 setCertificateModal(true)

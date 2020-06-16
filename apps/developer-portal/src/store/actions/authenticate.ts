@@ -17,118 +17,99 @@
  */
 
 import { ConfigInterface, IdentityClient } from "@wso2is/authentication";
-import { getProfileInfo } from "@wso2is/core/api";
-import { addAlert } from "@wso2is/core/store";
+import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
+import { TokenConstants } from "@wso2is/core/constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { AlertInterface, AlertLevels, ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
+import {
+    addAlert,
+    setProfileInfo,
+    setProfileInfoRequestLoadingStatus,
+    setProfileSchemaRequestLoadingStatus,
+    setSCIMSchemas,
+    setSignIn,
+    setSignOut
+} from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
-import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
-import { AuthAction, authenticateActionTypes } from "./types";
-import { getProfileSchemas } from "../../api";
-import { SYSTEM_SCOPE } from "../../constants";
 import { history } from "../../helpers";
-import { AlertLevels, ProfileSchema } from "../../models";
 import { store } from "../index";
-
-/**
- * Dispatches an action of type `SET_SIGN_IN`.
- */
-export const setSignIn = (): AuthAction => ({
-    type: authenticateActionTypes.SET_SIGN_IN
-});
-
-/**
- * Dispatches an action of type `SET_SIGN_OUT`.
- */
-export const setSignOut = (): AuthAction => ({
-    type: authenticateActionTypes.SET_SIGN_OUT
-});
-
-/**
- * Dispatches an action of type `RESET_AUTHENTICATION`.
- */
-export const resetAuthentication = (): AuthAction => ({
-    type: authenticateActionTypes.RESET_AUTHENTICATION
-});
-
-/**
- * Dispatches an action of type `SET_PROFILE_INFO`.
- */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const setProfileInfo = (details: any): AuthAction => ({
-    payload: details,
-    type: authenticateActionTypes.SET_PROFILE_INFO
-});
-
-/**
- * Dispatches an action of type `SET_SCHEMAS`
- * @param schemas
- */
-export const setScimSchemas = (schemas: ProfileSchema[]): AuthAction => ({
-    payload: schemas,
-    type: authenticateActionTypes.SET_SCHEMAS
-});
-
-/**
- * Get SCIM2 schemas
- */
-export const getScimSchemas = () => (dispatch): void => {
-    dispatch(setProfileSchemaLoader(true));
-    getProfileSchemas()
-        .then((response: ProfileSchema[]) => {
-            dispatch(setProfileSchemaLoader(false));
-            dispatch(setScimSchemas(response));
-        });
-};
 
 /**
  *  Gets profile information by making an API call
  */
 export const getProfileInformation = () => (dispatch): void => {
 
-    dispatch(setProfileInfoLoader(true));
+    dispatch(setProfileInfoRequestLoadingStatus(true));
 
     // Get the profile info.
     // TODO: Add the function to handle SCIM disabled error.
     getProfileInfo(null, store.getState().config.ui.gravatarConfig)
-        .then((infoResponse) => {
-            if (infoResponse.responseStatus === 200) {
+        .then((infoResponse: ProfileInfoInterface) => {
+
+            if (infoResponse.responseStatus !== 200) {
                 dispatch(
-                    setProfileInfo({
-                        ...infoResponse
+                    addAlert({
+                        description: I18n.instance.t(
+                            "devPortal:notifications.getProfileInfo.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: I18n.instance.t("devPortal:notifications.getProfileInfo.genericError.message")
                     })
                 );
-
-                // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
-                if (_.isEmpty(store.getState().authenticationInformation.profileSchemas)) {
-                    dispatch(getScimSchemas());
-                }
 
                 return;
             }
 
-            dispatch(
-                addAlert({
-                    description: I18n.instance.t(
-                        "devPortal:components.user.profile.notifications.getProfileInfo.genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: I18n.instance.t(
-                        "devPortal:components.user.profile.notifications.getProfileInfo.genericError.message"
-                    )
-                })
-            );
+            dispatch(setProfileInfo<ProfileInfoInterface>(infoResponse));
+
+            // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
+            if (_.isEmpty(store.getState().profile.profileSchemas)) {
+                dispatch(setProfileSchemaRequestLoadingStatus(true));
+
+                getProfileSchemas()
+                    .then((response: ProfileSchemaInterface[]) => {
+                        dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
+                    })
+                    .catch((error: IdentityAppsApiException) => {
+
+                        if (error?.response?.data?.description) {
+                            dispatch(
+                                addAlert<AlertInterface>({
+                                    description: error.response.data.description,
+                                    level: AlertLevels.ERROR,
+                                    message: I18n.instance.t("devPortal:notifications.getProfileSchema.error.message")
+                                })
+                            );
+                        }
+
+                        dispatch(
+                            addAlert<AlertInterface>({
+                                description: I18n.instance.t(
+                                    "devPortal:notifications.getProfileSchema.genericError.description"),
+                                level: AlertLevels.ERROR,
+                                message: I18n.instance.t(
+                                    "devPortal:notifications.getProfileSchema.genericError.message")
+                            })
+                        );
+                    })
+                    .finally(() => {
+                        dispatch(setProfileSchemaRequestLoadingStatus(false));
+                    });
+            }
+
+            return;
         })
-        .catch((error) => {
+        .catch((error: IdentityAppsApiException) => {
             if (error.response && error.response.data && error.response.data.detail) {
                 dispatch(
                     addAlert({
                         description: I18n.instance.t(
-                            "devPortal:components.user.profile.notifications.getProfileInfo.error.description",
+                            "devPortal:notifications.getProfileInfo.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: I18n.instance.t(
-                            "devPortal:components.user.profile.notifications.getProfileInfo.error.message"
+                            "devPortal:notifications.getProfileInfo.error.message"
                         )
                     })
                 );
@@ -138,18 +119,14 @@ export const getProfileInformation = () => (dispatch): void => {
 
             dispatch(
                 addAlert({
-                    description: I18n.instance.t(
-                        "devPortal:components.user.profile.notifications.getProfileInfo.genericError.description"
-                    ),
+                    description: I18n.instance.t("devPortal:notifications.getProfileInfo.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: I18n.instance.t(
-                        "devPortal:components.user.profile.notifications.getProfileInfo.genericError.message"
-                    )
+                    message: I18n.instance.t("devPortal:notifications.getProfileInfo.genericError.message")
                 })
             );
         })
         .finally(() => {
-            dispatch(setProfileInfoLoader(false));
+            dispatch(setProfileInfoRequestLoadingStatus(false));
         });
 };
 
@@ -165,13 +142,13 @@ const identityManager = (() => {
             clientHost: store.getState().config.deployment.clientHost,
             clientID: store.getState().config.deployment.clientID,
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
-            scope: [ SYSTEM_SCOPE ],
+            scope: [ TokenConstants.SYSTEM_SCOPE ],
             serverOrigin: store.getState().config.deployment.serverOrigin,
             tenant: store.getState().config.deployment.tenant,
             tenantPath: store.getState().config.deployment.tenantPath
         });
     };
- 
+
     return {
         getInstance: () => {
             if (!instance) {
@@ -209,13 +186,4 @@ export const handleSignOut = () => (dispatch) => {
         .catch(() => {
             history.push(store.getState().config.deployment.appLoginPath);
         });
-};
-
-/**
- * Update sessionStorage with location history path
- *
- * @param {string} location - history path.
- */
-export const updateAuthenticationCallbackUrl = (location): void => {
-    window.sessionStorage.setItem("auth_callback_url", location);
 };

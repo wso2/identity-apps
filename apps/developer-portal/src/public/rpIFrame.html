@@ -41,10 +41,19 @@
         }
 
         function setTimer() {
+            if (!targetOrigin || !clientId || !redirectUri) {
+                return;
+            }
+
             document.getElementById("opIFrame").src = targetOrigin + "?client_id=" +
                 clientId + "&redirect_uri=" + redirectUri;
             check_session();
-            setInterval("check_session()", config.session.checkSessionInterval * 1000);
+            var checkSessionInterval = 3;
+            if (config.session != null && config.session.checkSessionInterval != null
+                && config.session.checkSessionInterval > 1) {
+                checkSessionInterval = config.session.checkSessionInterval;
+            }
+            setInterval("check_session()", checkSessionInterval * 1000);
         }
 
         window.addEventListener("message", receiveMessage, false);

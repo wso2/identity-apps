@@ -42,7 +42,7 @@ import {
     updateAuthProtocolConfig
 } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
-import { ApplicationConstants } from "../../../constants";
+import { AppConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import {
     ApplicationTemplateInterface,
@@ -221,14 +221,14 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     const location = response.headers.location;
                     const createdAppID = location.substring(location.lastIndexOf("/") + 1);
 
-                    history.push(ApplicationConstants.PATHS.get("APPLICATION_EDIT").replace(":id",
+                    history.push(AppConstants.PATHS.get("APPLICATION_EDIT").replace(":id",
                         createdAppID));
 
                     return;
                 }
 
                 // Fallback to applications page, if the location header is not present.
-                history.push(ApplicationConstants.PATHS.get("APPLICATIONS"));
+                history.push(AppConstants.PATHS.get("APPLICATIONS"));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {

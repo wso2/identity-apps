@@ -16,9 +16,10 @@
  * under the License.
  */
 
-import { CommonConfigReducerStateInterface, CommonDeploymentConfigInterface } from "@wso2is/core/models";
+import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
+    DeploymentConfigInterface,
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface,
     UIConfigInterface
@@ -27,7 +28,8 @@ import {
 /**
  * Initial state for the common config reducer.
  */
-export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<CommonDeploymentConfigInterface,
+export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
+    DeploymentConfigInterface,
     ServiceResourceEndpointsInterface,
     FeatureConfigInterface,
     I18nModuleOptionsInterface,
@@ -35,6 +37,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
 
     deployment: null,
     endpoints: null,
+    features: null,
     i18n: null,
     ui: null
 };

@@ -18,7 +18,7 @@
 
 import { getProfileInfo } from "@wso2is/core/api";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
-import { AlertInterface, ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
+import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils } from "@wso2is/core/utils";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
@@ -44,6 +44,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Button, Image, Responsive } from "semantic-ui-react";
@@ -52,8 +53,8 @@ import { SidePanelIcons, SidePanelMiscIcons, routes } from "../configs";
 import { UIConstants } from "../constants";
 import { ComponentPlaceholder } from "../extensions";
 import { history } from "../helpers";
-import { AuthStateInterface, ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
-import { AppState } from "../store";
+import { ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
+import { AppState, store } from "../store";
 
 /**
  * Dashboard layout Prop types.
@@ -81,15 +82,16 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
-    const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
+    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
+    const isProfileInfoLoading: boolean = useSelector(
+        (state: AppState) => state.loaders.isProfileInfoRequestLoading);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
-    const alertSystem: any = useSelector((state: AppState) => state.global.alertSystem);
-    const ajaxLoaderVisibility: boolean = useSelector((state: AppState) => state.global.isGlobalLoaderVisible);
+    const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
+    const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(routes);
     const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(routes[ 0 ]);
@@ -270,10 +272,10 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
         // Filter the routes and get only the enabled routes defined in the app config.
         setFilteredRoutes(RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(routes, featureConfig));
 
-        if (_.isEmpty(profileDetails)) {
-            dispatch(getProfileInfo(() => null, config.ui.gravatarConfig));
+        if (_.isEmpty(profileInfo)) {
+            dispatch(getProfileInfo(null, store.getState().config.ui.gravatarConfig));
         }
-    }, []);
+    }, [ featureConfig ]);
 
     useEffect(() => {
         setSelectedRoute(getInitialActiveRoute());
@@ -323,7 +325,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
             topLoadingBar={ (
                 <TopLoadingBar
                     height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT }
-                    visibility={ ajaxLoaderVisibility }
+                    visibility={ isAJAXTopLoaderVisible }
                 />
             ) }
             onLayoutOnUpdate={ handleLayoutOnUpdate }
@@ -352,15 +354,11 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                                 :
                                 config.deployment.applicationName
                             }
-                            version={ {
-                                milestoneNumber: config.deployment.productVersion?.milestoneNumber,
-                                releaseType: config.deployment.productVersion?.releaseType,
-                                versionNumber: config.deployment.productVersion?.versionNumber
-                            } }
+                            version={ config.deployment.productVersion }
                         />
                     ) }
                     brandLink={ config.deployment.appHomePath }
-                    basicProfileInfo={ profileDetails }
+                    basicProfileInfo={ profileInfo }
                     fluid={ !isMobileViewport ? fluid : false }
                     isProfileInfoLoading={ isProfileInfoLoading }
                     userDropdownInfoAction={ (
@@ -369,7 +367,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                             primary
                             onClick={
                                 (): void => {
-                                    window.open(window[ "AppUtils" ].getConfig().accountApp);
+                                    window.open(window[ "AppUtils" ].getConfig().accountAppURL);
                                 }
                             }
                         >
@@ -382,7 +380,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                             to: window[ "AppUtils" ].getConfig().routes.logout
                         }
                     ] }
-                    profileInfo={ profileDetails.profileInfo }
+                    profileInfo={ profileInfo }
                     showUserDropdown={ true }
                     onSidePanelToggleClick={ handleSidePanelToggleClick }
                 >
@@ -412,10 +410,10 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     currentLanguage={ I18n.instance?.language }
                     supportedLanguages={ supportedI18nLanguages }
                     onLanguageChange={ handleLanguageSwitch }
-                    copyright={ state.copyrightText && state.copyrightText !== "" ?
-                        state.copyrightText
-                        :
-                        config.ui.appCopyright
+                    copyright={
+                        (state.copyrightText && state.copyrightText !== "")
+                            ? state.copyrightText
+                            : config.ui.appCopyright
                             ? config.ui.appCopyright
                             : null
                     }

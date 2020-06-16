@@ -16,13 +16,12 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { Certificate, TestableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
 import * as forge from "node-forge";
 import React, { ReactElement, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
-import { Certificate } from "../../../../../models";
-import { UploadCertificate } from "../../../../certificates/wizard";
+import { UploadCertificate } from "../../../../shared";
 
 /**
  * Proptypes for the add IDP certificate form component.

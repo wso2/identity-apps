@@ -18,46 +18,20 @@
 
 import { RouteInterface } from "@wso2is/core/models";
 import { SignIn, SignOut } from "../components/authentication";
-import {
-    ApplicationConstants,
-    CLAIM_DIALECTS_PATH,
-    EDIT_EXTERNAL_DIALECT,
-    EDIT_LOCAL_CLAIMS_PATH,
-    EDIT_USER_STORE_PATH,
-    LOCAL_CLAIMS_PATH,
-    USERSTORE_TEMPLATES_PATH,
-    USER_STORES_PATH
-} from "../constants";
+import { AppConstants } from "../constants";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../layouts";
 import {
-    AddTemplateLocale,
     ApplicationEditPage,
     ApplicationTemplateSelectPage,
     ApplicationsPage,
-    CertificatesKeystore,
-    ClaimDialectsPage,
     CustomizePage,
-    EmailTemplateTypes,
-    EmailTemplates,
-    ExternalDialectEditPage,
-    GroupsPage,
     IdentityProviderEditPage,
     IdentityProviderTemplateSelectPage,
     IdentityProvidersPage,
-    LocalClaimsEditPage,
-    LocalClaimsPage,
     OverviewPage,
     PageNotFound,
     PrivacyPage,
-    RoleEditPage,
-    RolesPage,
-    ServerConfigurationsPage,
-    UnauthorizedErrorPage,
-    UserEditPage,
-    UserStores,
-    UserStoresEditPage,
-    UsersPage,
-    UserstoresTemplates
+    UnauthorizedErrorPage
 } from "../pages";
 
 /**
@@ -83,8 +57,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         component: OverviewPage,
         icon: "overview",
         id: "overview",
-        name: "Overview",
-        path: "/overview",
+        name: "common:overview",
+        path: AppConstants.PATHS.get("OVERVIEW"),
         protected: true,
         showOnSidePanel: true
     },
@@ -96,7 +70,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 icon: null,
                 id: "applicationTemplate",
                 name: "Application Templates",
-                path: "/applications/templates",
+                path: AppConstants.PATHS.get("APPLICATION_TEMPLATES"),
                 protected: true,
                 showOnSidePanel: false
             },
@@ -105,8 +79,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 exact: true,
                 icon: "applications",
                 id: "applicationsEdit",
-                name: "Application-Edit",
-                path: "/applications/:id",
+                name: "Application Edit",
+                path: AppConstants.PATHS.get("APPLICATION_EDIT"),
                 protected: true,
                 showOnSidePanel: false
             }
@@ -115,8 +89,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         exact: true,
         icon: "applications",
         id: "applications",
-        name: "Applications",
-        path: "/applications",
+        name: "common:applications",
+        path: AppConstants.PATHS.get("APPLICATIONS"),
         protected: true,
         showOnSidePanel: true
     },
@@ -127,8 +101,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 exact: true,
                 icon: null,
                 id: "identityProviderTemplate",
-                name: "Identity-Provider-Template",
-                path: "/identity-providers/templates",
+                name: "Identity Provider Templates",
+                path: AppConstants.PATHS.get("IDP_TEMPLATES"),
                 protected: true,
                 showOnSidePanel: false
             },
@@ -137,8 +111,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 exact: true,
                 icon: "applications",
                 id: "identityProvidersEdit",
-                name: "Identity-Providers-Edit",
-                path: "/identity-providers/:id",
+                name: "Identity Providers Edit",
+                path: AppConstants.PATHS.get("IDP_EDIT"),
                 protected: true,
                 showOnSidePanel: false
             }
@@ -147,227 +121,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         exact: true,
         icon: "connections",
         id: "identityProviders",
-        name: "Identity Providers",
-        path: "/identity-providers",
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
-        children: [
-            {
-                component: UsersPage,
-                exact: true,
-                icon: "childIcon",
-                id: "users",
-                level: 2,
-                name: "Users",
-                path: "/users",
-                protected: true,
-                showOnSidePanel: true
-            },
-            {
-                component: GroupsPage,
-                exact: true,
-                icon: "childIcon",
-                id: "groups",
-                level: 2,
-                name: "Groups",
-                path: "/groups",
-                protected: true,
-                showOnSidePanel: true
-            },
-            {
-                component: RolesPage,
-                exact: true,
-                icon: "childIcon",
-                id: "roles",
-                level: 2,
-                name: "Roles",
-                path: "/roles",
-                protected: true,
-                showOnSidePanel: true
-            },
-            {
-                component: RoleEditPage,
-                exact: true,
-                icon: "usersAndRoles",
-                id: "rolesEdit",
-                name: "Role-Edit",
-                path: "/roles/:id",
-                protected: true,
-                showOnSidePanel: false
-            },
-            {
-                component: RoleEditPage,
-                exact: true,
-                icon: "usersAndRoles",
-                id: "groupsEdit",
-                name: "Group-Edit",
-                path: "/groups/:id",
-                protected: true,
-                showOnSidePanel: false
-            },
-            {
-                component: UserEditPage,
-                exact: true,
-                icon: "usersAndRoles",
-                id: "usersEdit",
-                name: "User-Edit",
-                path: "/users/:id",
-                protected: true,
-                showOnSidePanel: false
-            }
-        ],
-        exact: true,
-        icon: "usersAndRoles",
-        id: "usersAndRoles",
-        name: "Users & Groups",
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
-        children: [
-            {
-                component: LocalClaimsEditPage,
-                exact: true,
-                icon: "childIcon",
-                id: "editLocalClaims",
-                level: 2,
-                name: "Edit Local Claims",
-                path: `${EDIT_LOCAL_CLAIMS_PATH}/:id`,
-                protected: true,
-                showOnSidePanel: false
-            },
-            {
-                component: LocalClaimsPage,
-                exact: true,
-                icon: "childIcon",
-                id: "localDialect",
-                level: 2,
-                name: "Local Dialect",
-                path: LOCAL_CLAIMS_PATH,
-                protected: true,
-                showOnSidePanel: false
-            },
-            {
-                component: ExternalDialectEditPage,
-                exact: true,
-                icon: "childIcon",
-                id: "editExternalDialect",
-                level: 2,
-                name: "Edit External Dialect",
-                path: `${EDIT_EXTERNAL_DIALECT}/:id`,
-                protected: true,
-                showOnSidePanel: false
-            }
-        ],
-        component: ClaimDialectsPage,
-        exact: true,
-        icon: "claims",
-        id: "attributeDialects",
-        level: 2,
-        name: "Attribute Dialects",
-        path: CLAIM_DIALECTS_PATH,
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
-        children: [
-            {
-                component: UserStoresEditPage,
-                icon: "userStore",
-                id: "edit-user-store",
-                name: "Edit Userstore",
-                path: `${EDIT_USER_STORE_PATH}/:id`,
-                protected: true,
-                showOnSidePanel: false
-            },
-            {
-                component: UserstoresTemplates,
-                icon: "userStore",
-                id: "userstore-templates",
-                name: "Userstore Templates",
-                path: USERSTORE_TEMPLATES_PATH,
-                protected: true,
-                showOnSidePanel: false
-            }
-        ],
-        component: UserStores,
-        icon: "userStore",
-        id: "userStores",
-        name: "Userstores",
-        path: USER_STORES_PATH,
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
-        component: CertificatesKeystore,
-        icon: "certificate",
-        id: "certificates",
-        name: "Certificates",
-        path: "/certificates",
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
-        children: [
-            {
-                component: ServerConfigurationsPage,
-                exact: true,
-                icon: "childIcon",
-                id: "generalConfigurations",
-                level: 2,
-                name: "General",
-                path: "/server-configurations",
-                protected: true,
-                showOnSidePanel: true
-            },
-            {
-                component: EmailTemplateTypes,
-                exact: true,
-                icon: "childIcon",
-                id: "emailTemplates",
-                level: 2,
-                name: "Email Templates",
-                path: "/email-templates",
-                protected: true,
-                showOnSidePanel: true
-            },
-            {
-                component: EmailTemplates,
-                exact: true,
-                icon: "serverConfigurations",
-                id: "emailTemplates",
-                name: "Email-Templates",
-                path: "/email-templates/:typeId",
-                protected: true,
-                showOnSidePanel: false
-            },
-            {
-                component: AddTemplateLocale,
-                exact: true,
-                icon: "serverConfigurations",
-                id: "emailTemplates",
-                name: "Add-Email-Template",
-                path: "/email-templates/:typeId/add-template",
-                protected: true,
-                showOnSidePanel: false
-            },
-            {
-                component: AddTemplateLocale,
-                exact: true,
-                icon: "serverConfigurations",
-                id: "emailTemplates",
-                name: "Edit-Email-Template",
-                path: "/email-templates/:typeId/add-template/:templateId",
-                protected: true,
-                showOnSidePanel: false
-            }
-        ],
-        exact: true,
-        icon: "serverConfigurations",
-        id: "serverConfigurations",
-        name: "Configurations",
+        name: "common:identityProviders",
+        path: AppConstants.PATHS.get("IDP"),
         protected: true,
         showOnSidePanel: true
     },
@@ -376,7 +131,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         icon: "overview",
         id: "customize",
         name: "Customize",
-        path: "/customize",
+        path: AppConstants.PATHS.get("CUSTOMIZE"),
         protected: true,
         showOnSidePanel: false
     },
@@ -385,7 +140,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         icon: null,
         id: "privacy",
         name: "common:privacy",
-        path: "/privacy",
+        path: AppConstants.PATHS.get("PRIVACY"),
         protected: true,
         showOnSidePanel: false
     },
@@ -396,7 +151,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         name: "404",
         path: "*",
         protected: true,
-        redirectTo: "/404",
+        redirectTo: AppConstants.PATHS.get("PAGE_NOT_FOUND"),
         showOnSidePanel: false
     }
 ];
@@ -408,9 +163,9 @@ const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: PrivacyPage,
         icon: null,
-        id: "defaultPrivacy",
+        id: "privacy",
         name: "Privacy",
-        path: "/privacy",
+        path: AppConstants.PATHS.get("PRIVACY"),
         protected: true,
         showOnSidePanel: false
     }
@@ -425,16 +180,16 @@ const ERROR_LAYOUT_ROUTES: RouteInterface[] = [
         icon: null,
         id: "unauthorized",
         name: "Unauthorized",
-        path: ApplicationConstants.PATHS.get("UNAUTHORIZED"),
+        path: AppConstants.PATHS.get("UNAUTHORIZED"),
         protected: true,
         showOnSidePanel: false
     },
     {
         component: PageNotFound,
         icon: null,
-        id: "error404",
+        id: "pageNotFound",
         name: "404",
-        path: "/404",
+        path: AppConstants.PATHS.get("PAGE_NOT_FOUND"),
         protected: true,
         showOnSidePanel: false
     }
@@ -491,7 +246,7 @@ const APP_ROUTES: RouteInterface[] = [
         icon: null,
         id: "appRoutePrivacy",
         name: "Privacy",
-        path: "/privacy",
+        path: AppConstants.PATHS.get("PRIVACY"),
         protected: true,
         showOnSidePanel: false
     },
@@ -501,7 +256,7 @@ const APP_ROUTES: RouteInterface[] = [
         icon: null,
         id: "unauthorized",
         name: "Unauthorized",
-        path: ApplicationConstants.PATHS.get("UNAUTHORIZED"),
+        path: AppConstants.PATHS.get("UNAUTHORIZED"),
         protected: true,
         showOnSidePanel: false
     },
@@ -511,7 +266,7 @@ const APP_ROUTES: RouteInterface[] = [
         icon: null,
         id: "appRoute404",
         name: "Error",
-        path: "/404",
+        path: AppConstants.PATHS.get("PAGE_NOT_FOUND"),
         protected: true,
         showOnSidePanel: false
     },

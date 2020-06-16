@@ -58,6 +58,7 @@ module.exports = (env) => {
                 importSuperTenantConstant: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
                     "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>",
                 serverUrl: "<%=getServerURL(\"\", true, true)%>",
+                sessionState: "<%=request.getParameter(\"session_state\")%>",
                 superTenantConstant: "<%=SUPER_TENANT_DOMAIN_NAME%>",
                 tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
                 tenantPrefix: "<%=TENANT_AWARE_URL_PREFIX%>",

@@ -19,7 +19,7 @@
 
 import { CryptoUtils } from "./crypto-utils";
 import { UIConstants } from "../constants";
-import { GravatarFallbackTypes } from "../models";
+import { GravatarFallbackTypes, ProfileSchemaInterface } from "../models";
 
 /**
  * Utility class for profile related operations.
@@ -64,5 +64,41 @@ export class ProfileUtils {
         }
 
         return URL + "?" + params.join("&");
+    }
+
+    /**
+     * This function extracts the sub attributes from the schemas and appends them to the main schema iterable.
+     * The returned iterable will have all the schema attributes in a flat structure so that
+     * you can just iterate through them to display them.
+     *
+     * @param {ProfileSchemaInterface[]} schemas - Array of Profile schemas
+     * @param {string} parentSchemaName - Name of the parent attribute.
+     * @return {ProfileSchemaInterface[]}
+     */
+    public static flattenSchemas(schemas: ProfileSchemaInterface[],
+                                 parentSchemaName?: string): ProfileSchemaInterface[] {
+
+        const tempSchemas: ProfileSchemaInterface[] = [];
+
+        schemas.forEach((schema: ProfileSchemaInterface) => {
+            if (schema.subAttributes && schema.subAttributes.length > 0) {
+
+                /**
+                 * If the schema has sub attributes, then this function will be recursively called.
+                 * The returned attributes are pushed into the `tempSchemas` array.
+                 */
+                tempSchemas.push(...ProfileUtils.flattenSchemas(schema.subAttributes, schema.name));
+            } else {
+                const tempSchema = { ...schema };
+
+                if (parentSchemaName) {
+                    tempSchema.name = parentSchemaName + "." + schema.name;
+                }
+
+                tempSchemas.push(tempSchema);
+            }
+        });
+
+        return tempSchemas;
     }
 }

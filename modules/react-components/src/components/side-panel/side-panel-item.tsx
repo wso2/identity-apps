@@ -199,6 +199,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                             selected={ selected }
                             open={ validateOpenState(route.open, selected, route.children) }
                             sidePanelItemHeight={ sidePanelItemHeight }
+                            translationHook={ translationHook }
                         />
                     )
                     : null
