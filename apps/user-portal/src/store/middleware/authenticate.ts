@@ -140,12 +140,3 @@ export const handleSignOut = (state, dispatch): void => {
         history.push(store.getState().config.deployment.appLoginPath);
     }
 };
-
-/**
- * Update sessionStorage with location history path
- *
- * @param {string} location - history path.
- */
-export const updateAuthenticationCallbackUrl = (location): void => {
-    window.sessionStorage.setItem("auth_callback_url", location);
-};

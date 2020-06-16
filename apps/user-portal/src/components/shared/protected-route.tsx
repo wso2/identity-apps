@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { AuthenticateUtils } from "@wso2is/core/utils";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
 import { GlobalConfig } from "../../configs";
 import { ApplicationConstants } from "../../constants";
 import { history } from "../../helpers";
-import { updateAuthenticationCallbackUrl } from "../../store/middleware";
 
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
 
@@ -35,10 +35,10 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
     if ((history.location.pathname !== GlobalConfig.appLoginPath)
         && (history.location.pathname !== ApplicationConstants.LOGIN_ERROR_PAGE_PATH)
         && (history.location.pathname !== ApplicationConstants.PAGE_NOT_FOUND_PATH)) {
-        updateAuthenticationCallbackUrl(history.location.pathname);
+        AuthenticateUtils.updateAuthenticationCallbackUrl(history.location.pathname);
     }
     else {
-        updateAuthenticationCallbackUrl(GlobalConfig.appHomePath);
+        AuthenticateUtils.updateAuthenticationCallbackUrl(GlobalConfig.appHomePath);
     }
 
     return (

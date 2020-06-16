@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AuthenticateUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router-dom";
@@ -23,7 +24,6 @@ import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
-import { AuthenticateUtils } from "../utils";
 
 /**
  * Protected route component.
