@@ -18,6 +18,9 @@
         "login": "/login",
         "logout": "/logout"
     },
+    "session": {
+        "checkSessionInterval": 3
+    },
     "ui": {
         "appCopyright": "WSO2 Identity Server",
         "appTitle": "WSO2 Identity Server Admin Dashboard",
