@@ -30,6 +30,7 @@ import {
     setSignIn,
     setSignOut
 } from "@wso2is/core/store";
+import { AuthenticateUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
 import { history } from "../../helpers";
@@ -181,6 +182,7 @@ export const handleSignIn = () => (dispatch) => {
 export const handleSignOut = () => (dispatch) => {
     identityManager.getInstance().signOut(
         () => {
+            AuthenticateUtils.removeAuthenticationCallbackUrl();
             dispatch(setSignOut());
         })
         .catch(() => {
