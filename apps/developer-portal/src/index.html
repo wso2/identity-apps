@@ -38,6 +38,31 @@
                 });
             }
 
+            function getRandomPKCEChallenge() {
+                var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz-_";
+                var string_length = 43;
+                var randomString = "";
+                for (var i = 0; i < string_length; i++) {
+                    var rnum = Math.floor(Math.random() * chars.length);
+                    randomString += chars.substring(rnum, rnum + 1);
+                }
+                return randomString;
+            }
+
+            function sendPromptNoneRequest() {
+                var rpIFrame = document.getElementById("rpIFrame");
+                var promptNoneIFrame = rpIFrame.contentWindow.document.getElementById("promptNoneIFrame");
+                var config = window.parent["AppUtils"].getConfig();
+                promptNoneIFrame.src = sessionStorage.getItem("authorization_endpoint") +
+                    "?response_type=code" +
+                    "&client_id=" + config.clientID +
+                    "&scope=openid" +
+                    "&redirect_uri=" + config.loginCallbackURL +
+                    "&state=Y2hlY2tTZXNzaW9u" +
+                    "&prompt=none" +
+                    "&code_challenge_method=S256&code_challenge=" + getRandomPKCEChallenge();
+            }
+
             var config = window["AppUtils"].getConfig();
 
             var state = new URL(window.location.href).searchParams.get("state");
@@ -61,17 +86,20 @@
                 }
             } else {
                 // Tracking user interactions
-                var IDLE_TIMEOUT = config.session.userIdleTimeOut;
-                if (IDLE_TIMEOUT === null || IDLE_TIMEOUT === 0) {
-                    IDLE_TIMEOUT = 600;
+                var IDLE_TIMEOUT = 600;
+                if (config.session != null && config.session.userIdleTimeOut != null
+                    && config.session.userIdleTimeOut > 1) {
+                    IDLE_TIMEOUT = config.session.userIdleTimeOut;
                 }
-                var IDLE_WARNING_TIMEOUT = config.session.userIdleWarningTimeOut;
-                if (IDLE_WARNING_TIMEOUT === null || IDLE_WARNING_TIMEOUT === 0) {
-                    IDLE_WARNING_TIMEOUT = 580;
+                var IDLE_WARNING_TIMEOUT = 580;
+                if (config.session != null && config.session.userIdleWarningTimeOut != null
+                    && config.session.userIdleWarningTimeOut > 1) {
+                    IDLE_WARNING_TIMEOUT = config.session.userIdleWarningTimeOut;
                 }
-                var SESSION_REFRESH_TIMEOUT = config.session.sessionRefreshTimeOut;
-                if (SESSION_REFRESH_TIMEOUT === null || SESSION_REFRESH_TIMEOUT === 0) {
-                    SESSION_REFRESH_TIMEOUT = 300;
+                var SESSION_REFRESH_TIMEOUT = 300;
+                if (config.session != null && config.session.sessionRefreshTimeOut != null
+                    && config.session.sessionRefreshTimeOut > 1) {
+                    SESSION_REFRESH_TIMEOUT = config.session.sessionRefreshTimeOut;
                 }
 
                 var _idleSecondsCounter = 0;
