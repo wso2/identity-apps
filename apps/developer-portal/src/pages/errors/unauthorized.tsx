@@ -17,34 +17,117 @@
  */
 
 import { EmptyPlaceholder, LinkButton } from "@wso2is/react-components";
-import React, { ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps } from "react-router-dom";
 import { EmptyPlaceholderIllustrations } from "../../configs";
+import { AppConstants } from "../../constants";
 
 /**
  * Unauthorized error page.
  *
+ * @param {RouteComponentProps} props - Props injected to the component.
  * @return {React.ReactElement}
  */
-export const UnauthorizedErrorPage = (): ReactElement => {
+export const UnauthorizedErrorPage: FunctionComponent<RouteComponentProps> = (
+    props: RouteComponentProps
+): ReactElement => {
+
+    const { location } = props;
+
+    const error = new URLSearchParams(location.search).get("error");
 
     const { t } = useTranslation();
 
-    return (
-        <EmptyPlaceholder
-            action={ (
-                <LinkButton as={ Link } to={ window["AppUtils"].getConfig().routes.logout }>
+    /**
+     * Resolve error action.
+     *
+     * @param {string} error - Error decoded from URL.
+     * @return {ReactNode} Resolved action.
+     */
+    const resolveAction = (error: string): ReactNode => {
+        if (error === AppConstants.LOGIN_ERRORS.get("NO_LOGIN_PERMISSION")) {
+            return (
+                <LinkButton as={ Link } to={ window[ "AppUtils" ].getConfig().routes.logout }>
                     { t("devPortal:placeholders.loginError.action") }
                 </LinkButton>
-            ) }
-            image={ EmptyPlaceholderIllustrations.loginError }
-            imageSize="tiny"
-            subtitle={ [
+            );
+        } else if (error === AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")) {
+            return (
+                <LinkButton as={ Link } to={ window[ "AppUtils" ].getConfig().routes.logout }>
+                    { t("devPortal:placeholders.accessDenied.action") }
+                </LinkButton>
+            );
+        } else if (error === AppConstants.LOGIN_ERRORS.get("USER_DENIED_CONSENT")) {
+            return (
+                <LinkButton as={ Link } to={ window[ "AppUtils" ].getConfig().routes.logout }>
+                    { t("devPortal:placeholders.consentDenied.action") }
+                </LinkButton>
+            );
+        }
+
+        return (
+            <LinkButton as={ Link } to={ window[ "AppUtils" ].getConfig().routes.logout }>
+                { t("devPortal:placeholders.unauthorized.action") }
+            </LinkButton>
+        );
+    };
+
+    /**
+     * Resolve error title.
+     *
+     * @param {string} error - Error decoded from URL.
+     * @return {string} Resolved title.
+     */
+    const resolveTitle = (error: string): string => {
+        if (error === AppConstants.LOGIN_ERRORS.get("NO_LOGIN_PERMISSION")) {
+            return t("devPortal:placeholders.loginError.title");
+        } else if (error === AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")) {
+            return t("devPortal:placeholders.accessDenied.title");
+        } else if (error === AppConstants.LOGIN_ERRORS.get("USER_DENIED_CONSENT")) {
+            return t("devPortal:placeholders.consentDenied.title");
+        }
+
+        return t("devPortal:placeholders.unauthorized.title");
+    };
+
+    /**
+     * Resolve error subtitles.
+     *
+     * @param {string} error - Error decoded from URL.
+     * @return {string | string[]} Resolved subtitles.
+     */
+    const resolveSubTitles = (error: string): string | string[] => {
+        if (error === AppConstants.LOGIN_ERRORS.get("NO_LOGIN_PERMISSION")) {
+            return [
                 t("devPortal:placeholders.loginError.subtitles.0"),
                 t("devPortal:placeholders.loginError.subtitles.1")
-            ] }
-            title={ t("devPortal:placeholders.loginError.title") }
+            ];
+        } else if (error === AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")) {
+            return [
+                t("devPortal:placeholders.accessDenied.subtitles.0"),
+                t("devPortal:placeholders.accessDenied.subtitles.1")
+            ];
+        } else if (error === AppConstants.LOGIN_ERRORS.get("USER_DENIED_CONSENT")) {
+            return [
+                t("devPortal:placeholders.consentDenied.subtitles.0"),
+                t("devPortal:placeholders.consentDenied.subtitles.1")
+            ];
+        }
+
+        return [
+            t("devPortal:placeholders.unauthorized.subtitles.0"),
+            t("devPortal:placeholders.unauthorized.subtitles.1")
+        ];
+    };
+
+    return (
+        <EmptyPlaceholder
+            action={ resolveAction(error) }
+            image={ EmptyPlaceholderIllustrations.loginError }
+            imageSize="tiny"
+            subtitle={ resolveSubTitles(error) }
+            title={ resolveTitle(error) }
         />
     );
 };

@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { CopyInputField, Heading, Hint } from "@wso2is/react-components";
+import { CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -30,7 +30,6 @@ import {
     SAML2ServiceProviderInterface,
     SAMLMetaDataInterface
 } from "../../../models";
-import { URLInputComponent } from "../../shared";
 
 interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
     initialValues: SAML2ServiceProviderInterface;
@@ -263,7 +262,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
-                        <URLInputComponent
+                        <URLInput
                             urlState={ assertionConsumerUrls }
                             setURLState={ setAssertionConsumerUrls }
                             labelName={
@@ -288,6 +287,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 t("devPortal:components.applications.forms.inboundSAML.fields.assertionURLs.hint")
                             }
                             readOnly={ readOnly }
+                            addURLTooltip={ t("common:addURL") }
+                            duplicateURLErrorMessage={ t("common:duplicateURLError") }
                             data-testid={ `${ testId }-assertion-consumer-url-input` }
                         />
                         <Grid.Row columns={ 1 }>
@@ -635,7 +636,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
-                        <URLInputComponent
+                        <URLInput
                             urlState={ audiences }
                             setURLState={ setAudiences }
                             labelName={
@@ -661,9 +662,11 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     ".fields.audience.hint")
                             }
                             readOnly={ readOnly }
+                            addURLTooltip={ t("common:addURL") }
+                            duplicateURLErrorMessage={ t("common:duplicateURLError") }
                             data-testid={ `${ testId }-audience-url-input` }
                         />
-                        <URLInputComponent
+                        <URLInput
                             urlState={ recipients }
                             setURLState={ setRecipients }
                             labelName={
@@ -689,6 +692,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     ".fields.recipients.hint")
                             }
                             readOnly={ readOnly }
+                            addURLTooltip={ t("common:addURL") }
+                            duplicateURLErrorMessage={ t("common:duplicateURLError") }
                             data-testid={ `${ testId }-recipients-url-input` }
                         />
                         <Grid.Row columns={ 1 }>
@@ -1081,7 +1086,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
-                        <URLInputComponent
+                        <URLInput
                             urlState={ returnToURLS }
                             setURLState={ setReturnToURLS }
                             labelName={
@@ -1106,6 +1111,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             setShowError={ setReturnToURLSError }
                             disabled={ !isIdpInitiatedSingleLogoutEnabled || !isSingleLogoutProfileEnabled }
                             readOnly={ readOnly }
+                            addURLTooltip={ t("common:addURL") }
+                            duplicateURLErrorMessage={ t("common:duplicateURLError") }
                             data-testid={ `${ testId }-return-to-urls-input` }
                         />
 

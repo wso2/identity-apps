@@ -42,7 +42,7 @@ import { getApplicationDetails, updateApplicationConfigurations } from "../../ap
 import { EditApplication } from "../../components";
 import { HelpPanelOverview } from "../../components/applications";
 import { HelpSidebarIcons, TechnologyLogos } from "../../configs";
-import { ApplicationConstants, ApplicationManagementConstants } from "../../constants";
+import { AppConstants, ApplicationManagementConstants } from "../../constants";
 import { history } from "../../helpers";
 import {
     ApplicationInterface,
@@ -132,7 +132,7 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
         if(!isFeatureEnabled(featureConfig.applications,
             ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT"))) {
 
-            history.push(ApplicationConstants.PATHS.get("404"));
+            history.push(AppConstants.PATHS.get("PAGE_NOT_FOUND"));
         }
     }, [ featureConfig ]);
 
@@ -339,14 +339,14 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-        history.push(ApplicationConstants.PATHS.get("APPLICATIONS"));
+        history.push(AppConstants.PATHS.get("APPLICATIONS"));
     };
 
     /**
      * Called when an application is deleted.
      */
     const handleApplicationDelete = (): void => {
-        history.push(ApplicationConstants.PATHS.get("APPLICATIONS"));
+        history.push(AppConstants.PATHS.get("APPLICATIONS"));
     };
 
     /**

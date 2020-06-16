@@ -39,7 +39,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Icon, Label, ListItemProps } from "semantic-ui-react";
 import { deleteApplication } from "../../api";
 import { EmptyPlaceholderIllustrations } from "../../configs";
-import { ApplicationConstants, ApplicationManagementConstants, UIConstants } from "../../constants";
+import { AppConstants, ApplicationManagementConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import {
     ApplicationListInterface,
@@ -159,7 +159,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      * @param {string} appId - Application id.
      */
     const handleApplicationEdit = (appId: string): void => {
-        history.push(ApplicationConstants.PATHS.get("APPLICATION_EDIT").replace(":id", appId));
+        history.push(AppConstants.PATHS.get("APPLICATION_EDIT").replace(":id", appId));
     };
 
     /**

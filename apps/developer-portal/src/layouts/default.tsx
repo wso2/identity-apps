@@ -17,7 +17,7 @@
  */
 
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
-import { AlertInterface } from "@wso2is/core/models";
+import { AlertInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
@@ -32,6 +32,7 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Button, Image, Responsive } from "semantic-ui-react";
@@ -39,7 +40,7 @@ import { ProtectedRoute } from "../components";
 import { defaultLayoutRoutes } from "../configs";
 import { UIConstants } from "../constants";
 import { ComponentPlaceholder } from "../extensions";
-import { AuthStateInterface, ConfigReducerStateInterface } from "../models";
+import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
 
 /**
@@ -71,14 +72,15 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
 
     const { state } = useContext(ThemeContext);
 
-    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
-    const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
+    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
+    const isProfileInfoLoading: boolean = useSelector(
+        (state: AppState) => state.loaders.isProfileInfoRequestLoading);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
-    const alertSystem: any = useSelector((state: AppState) => state.global.alertSystem);
-    const ajaxLoaderVisibility: boolean = useSelector((state: AppState) => state.global.isGlobalLoaderVisible);
+    const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
+    const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
 
     const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
     const [ footerHeight, setFooterHeight ] = useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
@@ -149,7 +151,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
             topLoadingBar={ (
                 <TopLoadingBar
                     height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT }
-                    visibility={ ajaxLoaderVisibility }
+                    visibility={ isAJAXTopLoaderVisible }
                 />
             ) }
             footerHeight={ footerHeight }
@@ -189,7 +191,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                         />
                     ) }
                     brandLink={ config.deployment.appHomePath }
-                    basicProfileInfo={ profileDetails }
+                    basicProfileInfo={ profileInfo }
                     fluid={ !isMobileViewport ? fluid : false }
                     isProfileInfoLoading={ isProfileInfoLoading }
                     userDropdownInfoAction={ (
@@ -198,7 +200,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                             primary
                             onClick={
                                 (): void => {
-                                    window.open(window[ "AppUtils" ].getConfig().accountApp);
+                                    window.open(window[ "AppUtils" ].getConfig().accountApp.path);
                                 }
                             }
                         >
@@ -211,7 +213,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                             to: window[ "AppUtils" ].getConfig().routes.logout
                         }
                     ] }
-                    profileInfo={ profileDetails.profileInfo }
+                    profileInfo={ profileInfo }
                     showUserDropdown={ true }
                     showSidePanelToggle={ false }
                 >

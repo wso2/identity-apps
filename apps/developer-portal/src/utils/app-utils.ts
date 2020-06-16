@@ -42,7 +42,7 @@ export class AppUtils {
      */
     public static getUserPreferences(): StorageIdentityAppsSettingsInterface {
         const tenantName: string = store.getState().config.deployment.tenant;
-        const username: string = store.getState().authenticationInformation.username;
+        const username: string = store.getState().auth.username;
 
         if (!tenantName || !username) {
             return;
@@ -59,7 +59,7 @@ export class AppUtils {
      */
     public static setUserPreferences(preferences: StorageIdentityAppsSettingsInterface): void {
         const tenantName: string = store.getState().config.deployment.tenant;
-        const username: string = store.getState().authenticationInformation.username;
+        const username: string = store.getState().auth.username;
 
         if (!tenantName || !username) {
             return;

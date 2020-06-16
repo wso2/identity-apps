@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
-import { ConfirmationModal, CopyInputField, Heading, Hint } from "@wso2is/react-components";
+import { ConfirmationModal, CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
@@ -33,7 +33,6 @@ import {
     State,
     emptyOIDCConfig
 } from "../../../models";
-import { URLInputComponent } from "../../shared";
 
 /**
  * Proptypes for the inbound OIDC form component.
@@ -475,7 +474,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Hint>This will determine how the application communicates with the token service</Hint>
                             </Grid.Column>
                         </Grid.Row>
-                        <URLInputComponent
+                        <URLInput
                             urlState={ callBackUrls }
                             setURLState={ setCallBackUrls }
                             labelName={
@@ -500,6 +499,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.hint")
                             }
                             readOnly={ readOnly }
+                            addURLTooltip={ t("common:addURL") }
+                            duplicateURLErrorMessage={ t("common:duplicateURLError") }
                             data-testid={ `${ testId }-callback-url-input` }
                         />
                         {/*TODO: Enable this after the backend is fixed*/ }

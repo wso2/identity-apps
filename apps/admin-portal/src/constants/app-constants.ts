@@ -36,10 +36,29 @@ export class AppConstants {
      * @type {Map<string, string>}
      */
     public static readonly PATHS: Map<string, string> = new Map<string, string>()
-        .set("PAGE_NOT_FOUND", "/404")
-        .set("UNAUTHORIZED", "/unauthorized")
+        .set("CERTIFICATES", "/certificates")
+        .set("CLAIM_DIALECTS", "/claim-dialects")
+        .set("EMAIL_TEMPLATES", "/email-templates")
+        .set("EMAIL_TEMPLATE", "/email-templates/:typeId")
+        .set("EMAIL_TEMPLATE_ADD", "/email-templates/:typeId/add-template")
+        .set("EMAIL_TEMPLATE_LOCALE_ADD", "/email-templates/:typeId/add-template/:templateId")
+        .set("EXTERNAL_DIALECT_EDIT", "/edit-external-dialect/:id")
+        .set("GROUPS", "/groups")
+        .set("GROUP_EDIT", "/groups/:id")
+        .set("LOCAL_CLAIMS", "/local-claims")
+        .set("LOCAL_CLAIMS_EDIT", "/edit-local-claims/:id")
         .set("OVERVIEW", "/overview")
-        .set("PRIVACY", "/privacy");
+        .set("PAGE_NOT_FOUND", "/404")
+        .set("PRIVACY", "/privacy")
+        .set("ROLES", "/roles")
+        .set("ROLE_EDIT", "/roles/:id")
+        .set("SERVER_CONFIGS", "/server-configurations")
+        .set("UNAUTHORIZED", "/unauthorized")
+        .set("USERS", "/users")
+        .set("USER_EDIT", "/users/:id")
+        .set("USERSTORES", "/user-stores")
+        .set("USERSTORES_EDIT", "/edit-user-store/:id")
+        .set("USERSTORE_TEMPLATES", "/userstore-templates");
 
     /**
      * Name of the app config file for the admin portal.

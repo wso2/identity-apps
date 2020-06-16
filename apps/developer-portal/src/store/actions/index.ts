@@ -16,9 +16,7 @@
  * under the License.
  */
 
-export * from "./api";
-export * from "./authenticate";
 export * from "./application";
-export * from "./global";
+export * from "./authenticate";
 export * from "./help-panel";
-export * from "./loaders";
+export * from "./identity-provider";

@@ -1,4 +1,3 @@
-
 /**
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -17,60 +16,20 @@
  * under the License.
  */
 
-import { GlobalInterface } from "../../models";
-import { GlobalActionTypes, GlobalActions } from "../actions/types";
+import { AlertInterface, CommonGlobalReducerStateInterface } from "@wso2is/core/models";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
+import { System } from "react-notification-system";
 
 /**
- * Initial state.
+ * Initial state for the common global reducer.
  */
-const initialState: GlobalInterface = {
+export const commonGlobalReducerInitialState: CommonGlobalReducerStateInterface<
+    AlertInterface,
+    System,
+    SupportedLanguagesMeta> = {
+
     alert: null,
     alertSystem: null,
-    isApplicationsPageVisible: undefined,
-    isGlobalLoaderVisible: false,
+    isAJAXTopLoaderVisible: false,
     supportedI18nLanguages: null
-};
-
-/**
- * Reducer to handle the state of global app actions.
- *
- * @param state - Previous state
- * @param action - Action type
- * @returns The new state
- */
-export const globalReducer = (state: GlobalInterface = initialState, action: GlobalActions): GlobalInterface => {
-    switch (action.type) {
-        case GlobalActionTypes.SHOW_GLOBAL_LOADER:
-            return {
-                ...state,
-                isGlobalLoaderVisible: true
-            };
-        case GlobalActionTypes.HIDE_GLOBAL_LOADER:
-            return {
-                ...state,
-                isGlobalLoaderVisible: false
-            };
-        case GlobalActionTypes.TOGGLE_APPLICATIONS_PAGE_VISIBILITY:
-            return {
-                ...state,
-                isApplicationsPageVisible: action.payload
-            };
-        case GlobalActionTypes.INITIALIZE_ALERT_SYSTEM:
-            return {
-                ...state,
-                alertSystem: action.payload
-            };
-        case GlobalActionTypes.ADD_ALERT:
-            return {
-                ...state,
-                alert: action.payload
-            };
-        case GlobalActionTypes.SET_SUPPORTED_I18N_LANGUAGES:
-            return {
-                ...state,
-                supportedI18nLanguages: action.payload
-            };
-        default:
-            return state;
-    }
 };

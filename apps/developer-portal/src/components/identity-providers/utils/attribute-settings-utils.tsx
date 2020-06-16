@@ -15,14 +15,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AlertLevels } from "@wso2is/core/models";
+
+import { getAllLocalClaims } from "@wso2is/core/api";
+import { AlertLevels, Claim } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
 import { handleUpdateIDPRoleMappingsError } from "./common-utils";
-import { getAllLocalClaims, updateClaimsConfigs, updateIDPRoleMappings } from "../../../api";
+import { updateClaimsConfigs, updateIDPRoleMappings } from "../../../api";
 import {
-    Claim,
     IdentityProviderClaimInterface,
     IdentityProviderClaimMappingInterface,
     IdentityProviderClaimsInterface,

@@ -16,14 +16,16 @@
  * under the License.
  */
 
+import { getUserStoreList } from "@wso2is/core/api";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { getUserStoreList, updateApplicationConfigurations } from "../../../../api";
+import { updateApplicationConfigurations } from "../../../../api";
 import {
     FeatureConfigInterface,
     ProvisioningConfigurationInterface,
@@ -31,7 +33,6 @@ import {
 } from "../../../../models";
 import { AuthenticatorAccordion } from "../../../shared";
 import { ProvisioningConfigurationsForm } from "../../forms";
-import { useTranslation } from "react-i18next";
 
 /**
  *  Inbound Provisioning Configurations for the Application.

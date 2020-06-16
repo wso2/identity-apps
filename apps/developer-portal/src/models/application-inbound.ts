@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { MandatoryArray } from "./global";
+import { MandatoryArray } from "@wso2is/core/models";
 
 /**
  * Captures the auth protocols

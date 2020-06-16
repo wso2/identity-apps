@@ -17,6 +17,7 @@
  */
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods } from "@wso2is/core/models";
 import { AxiosHttpClient } from "@wso2is/http";
 import { AxiosError, AxiosResponse } from "axios";
 import { ApplicationManagementConstants } from "../constants";
@@ -28,12 +29,9 @@ import {
     ApplicationTemplateInterface,
     ApplicationTemplateListInterface,
     AuthProtocolMetaListItemInterface,
-    HttpMethods,
     OIDCApplicationConfigurationInterface,
     OIDCDataInterface,
-    SAMLApplicationConfigurationInterface,
-    SupportedAuthProtocolTypes,
-    SupportedAuthProtocolMetaTypes
+    SAMLApplicationConfigurationInterface
 } from "../models";
 import { store } from "../store";
 import { ApplicationManagementUtils } from "../utils";
@@ -206,7 +204,7 @@ export const getAvailableInboundProtocols = (customOnly: boolean): Promise<AuthP
 /**
  * Get all the metadata related to the passed in auth protocol.
  *
- * @param {SupportedAuthProtocolMetaTypes} protocol - The protocol to get the meta.
+ * @param {string} protocol - The protocol to get the meta.
  * @return {Promise<T>} Promise of type T.
  * @throws {IdentityAppsApiException}
  */
@@ -340,7 +338,7 @@ export const updateOIDCData = (id: string, OIDC: object): Promise<any> => {
  *
  * @param {string} id - Application ID.
  * @param config - Protocol config.
- * @param {SupportedAuthProtocolTypes} protocol - The protocol to be updated.
+ * @param {string} protocol - The protocol to be updated.
  * @return {Promise<T>} Promise of type T.
  * @throws {IdentityAppsApiException}
  */
@@ -385,7 +383,7 @@ export const updateAuthProtocolConfig = <T>(id: string, config: any,
  * Generic function to delete the authentication protocol config of an application.
  *
  * @param {string} id - Application ID.
- * @param {SupportedAuthProtocolTypes} protocol - The protocol to be deleted.
+ * @param {string} protocol - The protocol to be deleted.
  *
  * @return {Promise<T>} Promise of type T.
  * @throws {IdentityAppsApiException}
@@ -808,6 +806,47 @@ export const getSAMLApplicationConfigurations = (): Promise<SAMLApplicationConfi
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ApplicationManagementConstants.APPLICATION_SAML_CONFIGURATIONS_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Retrieve available request path authenticators.
+ *
+ * @returns {Promise<any>} a promise containing the response.
+ */
+export const getRequestPathAuthenticators = (): Promise<any> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.requestPathAuthenticators
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.REQUEST_PATH_AUTHENTICATORS_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.REQUEST_PATH_AUTHENTICATORS_FETCH_ERROR,
                 error.stack,
                 error.code,
                 error.request,

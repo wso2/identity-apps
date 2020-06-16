@@ -16,14 +16,13 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading, Hint } from "@wso2is/react-components";
+import { getRolesList } from "@wso2is/core/api";
+import { RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { DynamicField, Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
-import { getRolesList } from "../../../../api";
-import { IdentityProviderRoleMappingInterface, RoleListInterface, RolesInterface } from "../../../../models";
-import { DynamicField } from "../../../shared";
+import { IdentityProviderRoleMappingInterface } from "../../../../models";
 import { handleGetRoleListError } from "../../utils";
 
 /**

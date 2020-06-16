@@ -18,14 +18,13 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
-import { ContentLoader, Hint } from "@wso2is/react-components";
+import { ContentLoader, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { MainApplicationInterface } from "../../../models";
-import { URLInputComponent } from "../../shared";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -203,7 +202,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                 submitState={ triggerSubmit }
             >
                 <Grid>
-                    <URLInputComponent
+                    <URLInput
                         urlState={ callBackUrls }
                         setURLState={ setCallBackUrls }
                         labelName={
@@ -226,6 +225,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                         hint={
                             t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.hint")
                         }
+                        addURLTooltip={ t("common:addURL") }
+                        duplicateURLErrorMessage={ t("common:duplicateURLError") }
                         data-testid={ `${ testId }-callback-url-input` }
                     />
                     <Grid.Row columns={ 1 }>

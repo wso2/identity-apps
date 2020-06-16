@@ -16,16 +16,14 @@
  * under the License.
  */
 
+import { getUserStoreList } from "@wso2is/core/api";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import {
-    getUserStoreList,
-    updateJITProvisioningConfigs
-} from "../../../api";
+import { updateJITProvisioningConfigs } from "../../../api";
 import {
     JITProvisioningResponseInterface,
     SimpleUserStoreListItemInterface

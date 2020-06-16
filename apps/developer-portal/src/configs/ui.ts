@@ -210,6 +210,7 @@ export const EmptyPlaceholderIllustrations = {
     alert: AlertIcon,
     emptyList: BoxIcon,
     emptySearch: MagnifierIcon,
+    fileUpload: FileUploadIllustration,
     genericError: CloseIcon,
     loginError: ForbiddenIcon,
     newList: LaunchIcon,

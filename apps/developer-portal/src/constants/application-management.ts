@@ -124,4 +124,8 @@ export class ApplicationManagementConstants {
         "the OIDC configurations of the IDP.";
     public static readonly APPLICATION_SAML_CONFIGURATIONS_FETCH_ERROR: string = "An error occurred while fetching " +
         "the SAML configurations of the IDP.";
+    public static readonly REQUEST_PATH_AUTHENTICATORS_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while retrieving the request path authenticators.";
+    public static readonly REQUEST_PATH_AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the " +
+        "request path authenticators.";
 }
