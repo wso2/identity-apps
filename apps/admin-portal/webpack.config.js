@@ -57,6 +57,7 @@ module.exports = (env) => {
                     "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
                 publicPath: publicPath,
                 serverUrl: "<%=getServerURL(\"\", true, true)%>",
+                sessionState: "<%=request.getParameter(\"session_state\")%>",
                 superTenantConstant: "<%=SUPER_TENANT_DOMAIN_NAME%>",
                 template: path.join(__dirname, "src", "index.jsp"),
                 tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",

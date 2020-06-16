@@ -102,17 +102,20 @@
                 }
             } else {
                 // Tracking user interactions
-                var IDLE_TIMEOUT = config.session.userIdleTimeOut;
-                if (IDLE_TIMEOUT === null || IDLE_TIMEOUT === 0) {
-                    IDLE_TIMEOUT = 600;
+                var IDLE_TIMEOUT = 600;
+                if (config.session != null && config.session.userIdleTimeOut != null
+                        && config.session.userIdleTimeOut > 1) {
+                    IDLE_TIMEOUT = config.session.userIdleTimeOut;
                 }
-                var IDLE_WARNING_TIMEOUT = config.session.userIdleWarningTimeOut;
-                if (IDLE_WARNING_TIMEOUT === null || IDLE_WARNING_TIMEOUT === 0) {
-                    IDLE_WARNING_TIMEOUT = 580;
+                var IDLE_WARNING_TIMEOUT = 580;
+                if (config.session != null && config.session.userIdleWarningTimeOut != null
+                        && config.session.userIdleWarningTimeOut > 1) {
+                    IDLE_WARNING_TIMEOUT = config.session.userIdleWarningTimeOut;
                 }
-                var SESSION_REFRESH_TIMEOUT = config.session.sessionRefreshTimeOut;
-                if (SESSION_REFRESH_TIMEOUT === null || SESSION_REFRESH_TIMEOUT === 0) {
-                    SESSION_REFRESH_TIMEOUT = 300;
+                var SESSION_REFRESH_TIMEOUT = 300;
+                if (config.session != null && config.session.sessionRefreshTimeOut != null
+                        && config.session.sessionRefreshTimeOut > 1) {
+                    SESSION_REFRESH_TIMEOUT = config.session.sessionRefreshTimeOut;
                 }
 
                 var _idleSecondsCounter = 0;
