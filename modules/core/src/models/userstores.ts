@@ -40,7 +40,7 @@ export interface UserstoreListResponseInterface {
     /**
      * Requested configured user store property for the set.
      */
-    properties:	UserstorePropertiesResponseInterface[];
+    properties: UserstorePropertiesResponseInterface[];
 }
 
 /**

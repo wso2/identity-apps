@@ -19,8 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { SearchUtils } from "@wso2is/core/utils";
 import { DropdownChild, Field, Forms } from "@wso2is/forms";
-import { AdvancedSearch, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { AdvancedSearchPropsInterface } from "@wso2is/react-components/src";
+import { AdvancedSearch, AdvancedSearchPropsInterface, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";

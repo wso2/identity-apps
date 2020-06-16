@@ -222,7 +222,6 @@ export const getUserDetails = (id: string): Promise<any> => {
 /**
  * Update the required details of the user profile.
  *
-
  * @param userId - User ID.
  * @param data - Data to be updated.
  * @return {Promise<ProfileInfoInterface>} a promise containing the response.

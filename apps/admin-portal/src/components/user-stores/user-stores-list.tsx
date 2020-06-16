@@ -17,7 +17,12 @@
 */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    AlertLevels,
+    LoadableComponentInterface,
+    SBACInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,

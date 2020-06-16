@@ -29,7 +29,7 @@ import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ContentLoader, ThemeContext } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, Suspense, useContext, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

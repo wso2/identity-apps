@@ -17,7 +17,8 @@
 */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import {     AlertLevels,
+import {
+    AlertLevels,
     Claim,
     ClaimDialect,
     ExternalClaim,
