@@ -96,6 +96,7 @@ var AppUtils = AppUtils || (function() {
                 routes: _config.routePaths,
                 serverOrigin: _config.serverOrigin,
                 serverOriginWithTenant: _config.serverOrigin + this.getTenantPath(),
+                session: _config.session,
                 tenant: (this.isSuperTenant()) ? this.getSuperTenant() : this.getTenantName(),
                 tenantPath: this.getTenantPath(),
                 ui: _config.ui
