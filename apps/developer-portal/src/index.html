@@ -123,8 +123,7 @@
 
                     // Logout user if idle
                     if (_idleSecondsCounter >= IDLE_TIMEOUT) {
-                        window.top.location.href = config.clientOriginWithTenant + config.appBaseWithTenant +
-                            config.routes.logout;
+                        window.top.location.href = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
                     } else if (_idleSecondsCounter === IDLE_WARNING_TIMEOUT) {
                         console.log("You will be logged out of the system after " +
                             (IDLE_TIMEOUT - IDLE_WARNING_TIMEOUT) + " seconds! Click OK to stay logged in.");
