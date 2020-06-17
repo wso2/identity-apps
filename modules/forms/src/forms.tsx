@@ -45,6 +45,9 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         // This holds the values of the form fields
         const [ form, setForm ] = useState(new Map<string, FormValue>());
 
+        // This holds the set of initial values of the form fields
+        const [ initialValues, setInitialValues ] = useState<Map<string, FormValue>>(undefined);
+
         // This specifies if any of the fields in the form has been touched or not
         const [ isPure, setIsPure ] = useState(true);
 
@@ -325,7 +328,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                 });
 
                 return tempIterable;
-            }
+            };
 
             /**
              * In case an existing form field is dynamically removed, remove all its data.
@@ -344,6 +347,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             setForm(leanForm);
             setValidFields(leanValidFields);
             setRequiredFields(leanRequiredFields);
+            setInitialFormValues(tempForm);
         };
 
         /**
@@ -529,6 +533,19 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                     }
                 }
             });
+        };
+
+        /**
+         * Sets the initial form values.
+         *
+         * @param {Map<string, FormValue>} values - Form values.
+         */
+        const setInitialFormValues = (values: Map<string, FormValue>): void => {
+            if (initialValues !== undefined) {
+                return;
+            }
+
+            setInitialValues(values);
         };
 
         const mutatedChildren: React.ReactElement[] = children ? [ ...parseChildren(children, formFields) ] : null;
