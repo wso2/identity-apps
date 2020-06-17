@@ -81,7 +81,15 @@
         <noscript>
             You need to enable JavaScript to run this app.
         </noscript>
-        <iframe id="rpIFrame" src="/admin-portal/rpIFrame.html" frameborder="0" width="0" height="0"></iframe>
+        <iframe
+            id="rpIFrame"
+            style="display: block"
+            src="/admin-portal/rpIFrame.html"
+            frameborder="0"
+            width="0"
+            height="0"
+        >
+        </iframe>
         <div id="root"></div>
     </body>
 </html>

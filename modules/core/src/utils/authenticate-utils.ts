@@ -56,4 +56,21 @@ export class AuthenticateUtils {
         const scopes = AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.SCOPE).split(" ");
         return scopes.includes(scope);
     }
+
+    /**
+     * Update the authentication callback URL in the session storage.
+     * This is used to improve UX in automatic sign-out scenarios due to session timeouts etc.
+     *
+     * @param {string} location - history path.
+     */
+    public static updateAuthenticationCallbackUrl(location: string): void {
+        window.sessionStorage.setItem("auth_callback_url", location);
+    }
+
+    /**
+     * Removes the authentication callback URL from the session storage.
+     */
+    public static removeAuthenticationCallbackUrl(): void {
+        window.sessionStorage.removeItem("auth_callback_url");
+    }
 }

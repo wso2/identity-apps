@@ -81,13 +81,4 @@ export class AuthenticateUtils {
                 );
             });
     }
-
-    /**
-     * Update sessionStorage with location history path
-     *
-     * @param {string} location - history path.
-     */
-    public static updateAuthenticationCallbackUrl(location: string): void {
-        window.sessionStorage.setItem("auth_callback_url", location);
-    }
 }

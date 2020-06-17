@@ -17,6 +17,7 @@
  */
 
 import { ConfigInterface, IdentityClient } from "@wso2is/authentication";
+import { AuthenticateUtils } from "@wso2is/core/utils";
 import _ from "lodash";
 import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
@@ -217,6 +218,7 @@ export const handleSignIn = () => (dispatch) => {
 export const handleSignOut = () => (dispatch) => {
     identityManager.getInstance().signOut(
         () => {
+            AuthenticateUtils.removeAuthenticationCallbackUrl();
             dispatch(setSignOut());
         })
         .catch(() => {

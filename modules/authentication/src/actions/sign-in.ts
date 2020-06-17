@@ -25,10 +25,16 @@ import {
     getRevokeTokenEndpoint,
     getTokenEndpoint,
     initOPConfiguration,
-    isValidOPConfig
+    isValidOPConfig,
+    resetOPConfiguration
 } from "./op-config";
-import { getSessionParameter, initUserSession, removeSessionParameter, setSessionParameter } from "./session";
-import { handleSignOut } from "./sign-out";
+import {
+    endAuthenticatedSession,
+    getSessionParameter,
+    initUserSession,
+    removeSessionParameter,
+    setSessionParameter
+} from "./session";
 import {
     ACCESS_TOKEN,
     AUTHORIZATION_CODE,
@@ -467,8 +473,18 @@ export const sendSignInRequest = (requestParams: ConfigInterface, callback?: () 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const handleSignIn = (requestParams: ConfigInterface, callback?: () => void): Promise<any> => {
     if (getSessionParameter(ACCESS_TOKEN)) {
-        if (!isValidOPConfig(requestParams.tenant)) {
-            handleSignOut();
+        if (!isValidOPConfig(requestParams.tenant, requestParams.clientID)) {
+            endAuthenticatedSession();
+            resetOPConfiguration();
+            // TODO: Better to have a callback to clear this on the app side.
+            removeSessionParameter("auth_callback_url");
+
+            initOPConfiguration(requestParams, true)
+                .then(() => {
+                    sendSignInRequest(requestParams, callback);
+                });
+
+            return;
         }
 
         if (callback) {

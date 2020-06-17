@@ -20,6 +20,7 @@ export const ACCESS_TOKEN = "access_token";
 export const ACCESS_TOKEN_EXPIRE_IN = "expires_in";
 export const ACCESS_TOKEN_ISSUED_AT = "issued_at";
 export const AUTHORIZATION_CODE = "code";
+export const CLIENT_ID = "client_id";
 export const ID_TOKEN = "id_token";
 export const OIDC_SCOPE = "openid";
 export const PKCE_CODE_VERIFIER = "pkce_code_verifier";
