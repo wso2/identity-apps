@@ -2681,6 +2681,16 @@ export const devPortal: DevPortalNS = {
             searchPlaceholder: "Search {{type}}"
         }
     },
+    confirmations: {
+        resourceEditTabNav: {
+            content: "You have unsaved changes. If you move to a different section, you will loose all the changes " +
+                "and will not be able to recover again. Are you sure you want proceed?",
+            header: "Confirm Navigation",
+            message: "If you leave this section , any changes you have made will be lost.",
+            primaryAction: "Leave",
+            secondaryAction: "Stay"
+        }
+    },
     notifications: {
         endSession: {
             error: {

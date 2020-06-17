@@ -64,7 +64,9 @@ export interface Confirmation {
     header: string;
     message: string;
     content: string;
-    assertionHint: string;
+    assertionHint?: string;
+    primaryAction?: string;
+    secondaryAction?: string;
 }
 
 /**

@@ -18,4 +18,5 @@
 
 export * from "./advanced-search-with-basic-filters";
 export * from "./authenticator-accordion";
+export * from "./editing-resource-navigation-confirmation-modal";
 export * from "./upload-certificate";

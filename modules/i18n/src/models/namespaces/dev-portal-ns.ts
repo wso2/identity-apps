@@ -1120,6 +1120,9 @@ export interface DevPortalNS {
             };
         };
     };
+    confirmations: {
+        resourceEditTabNav: Confirmation;
+    };
     notifications: {
         endSession: Notification;
         getProfileInfo: Notification;
