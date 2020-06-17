@@ -269,3 +269,11 @@ export type FormField =
  * FormField value types
  */
 export type FormValue = string | string[];
+
+/**
+ * Interface for form state.
+ */
+export interface FormState {
+    dirty: boolean;
+    pristine: boolean;
+}

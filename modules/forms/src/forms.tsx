@@ -16,11 +16,12 @@
  * under the License.
  */
 
+import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { Form } from "semantic-ui-react";
 import { Field, GroupFields, InnerField, InnerGroupFields } from "./components";
 import { isCheckBoxField, isDropdownField, isInputField, isRadioField, isTextField, isToggleField } from "./helpers";
-import { Error, FormField, FormValue, Validation } from "./models";
+import { Error, FormField, FormState, FormValue, Validation } from "./models";
 import { useNonInitialEffect } from "./utils";
 
 /**
@@ -29,6 +30,11 @@ import { useNonInitialEffect } from "./utils";
 interface FormPropsInterface {
     onSubmit?: (values: Map<string, FormValue>) => void;
     onChange?: (isPure: boolean, values: Map<string, FormValue>) => void;
+    /**
+     * Callback for form state change.
+     * @param {FormState} state - From state.
+     */
+    onFormStateChange?: (state: FormState) => void;
     resetState?: boolean;
     submitState?: boolean;
     ref?: React.Ref<any>;
@@ -40,7 +46,7 @@ interface FormPropsInterface {
 export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInterface>> =
     React.forwardRef((props: React.PropsWithChildren<FormPropsInterface>, ref): JSX.Element => {
 
-        const { onSubmit, resetState, submitState, onChange, children } = props;
+        const { onSubmit, resetState, submitState, onChange, children, onFormStateChange } = props;
 
         // This holds the values of the form fields
         const [ form, setForm ] = useState(new Map<string, FormValue>());
@@ -50,6 +56,12 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
         // This specifies if any of the fields in the form has been touched or not
         const [ isPure, setIsPure ] = useState(true);
+
+        // This specifies if the values have NOT been altered from the original initialValues provided.
+        const [ isPristine, setIsPristine ] = useState(true);
+
+        // This specifies if the values have been altered from the original initialValues provided.
+        const [ isDirty, setIsDirty ] = useState(false);
 
         // This specifies if a field's value is valid or not
         const [ validFields, setValidFields ] = useState(new Map<string, Validation>());
@@ -70,6 +82,15 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         // The lock to be used by `initMutex`
         let locked = false;
 
+        useEffect(() => {
+            if (onFormStateChange && typeof onFormStateChange === "function") {
+                onFormStateChange({
+                    dirty: isFormDirty(),
+                    pristine: isFormPristine()
+                })
+            }
+        }, [ initialValues, form ]);
+
         /**
          * Calls the onChange prop
          */
@@ -77,6 +98,32 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             if (onChange && typeof onChange === "function") {
                 onChange(isPure, formValue);
             }
+        };
+
+        /**
+         * Checks if the initial values provided to the form have not been altered.
+         *
+         * @return {boolean} True is Pristine.
+         */
+        const isFormPristine = (): boolean => {
+            const pristine = _.isEqual(initialValues, form);
+
+            setIsPristine(pristine);
+
+            return pristine;
+        };
+
+        /**
+         * Checks if the initial values provided to the form have been altered.
+         *
+         * @return {boolean} True is Dirty.
+         */
+        const isFormDirty = (): boolean => {
+            const dirty = !isFormPristine();
+
+            setIsDirty(dirty);
+
+            return isDirty;
         };
 
         /**
@@ -550,7 +597,19 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
         const mutatedChildren: React.ReactElement[] = children ? [ ...parseChildren(children, formFields) ] : null;
 
-        return <Form noValidate ref={ ref } onSubmit={ handleSubmit }>{ mutatedChildren }</Form>;
+        return (
+            <Form
+                noValidate
+                ref={ ref }
+                dirty={ isDirty }
+                pristine={ isPristine }
+                values={ form }
+                initialValues={ initialValues }
+                onSubmit={ handleSubmit }
+            >
+                { mutatedChildren }
+            </Form>
+        );
     });
 
 Forms.defaultProps = {
