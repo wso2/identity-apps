@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,19 @@
  * under the License.
  */
 
-export * from "./forms";
-export * from "./models";
-export * from "./selectors";
-export { Field, GroupFields } from "./components";
-export * from "./utils";
+import { RefObject } from "react";
+import { isPristine } from "./is-pristine";
+
+/**
+ * This selector checks if the initial values provided to the form
+ * have been altered.
+ * @example
+ * const formRef = useRef(null);
+ * isDirty(formRef);
+ *
+ * @param {React.RefObject<HTMLFormElement>} ref - Form ref.
+ * @return {boolean} If dirty or not.
+ */
+export const isDirty = (ref: RefObject<HTMLFormElement>): boolean => {
+    return !isPristine(ref);
+};

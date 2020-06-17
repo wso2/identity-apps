@@ -26,7 +26,9 @@
         "run-script-os": "^1.0.7"
     },
     "peerDependencies": {
-        "classnames": "*"
+        "@types/lodash": "*",
+        "classnames": "*",
+        "lodash": "*"
     },
     "author": "WSO2",
     "license": "Apache-2.0"

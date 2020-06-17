@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,5 @@
  * under the License.
  */
 
-export * from "./forms";
-export * from "./models";
-export * from "./selectors";
-export { Field, GroupFields } from "./components";
-export * from "./utils";
+export * from "./is-dirty";
+export * from "./is-pristine";
