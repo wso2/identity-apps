@@ -23,4 +23,5 @@ export interface AuthenticatedUserInterface {
     display_name?: string;
     email?: string;
     username: string;
+    scope?: string;
 }
