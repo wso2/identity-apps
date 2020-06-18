@@ -86,7 +86,7 @@ export const handleSignIn = (state, dispatch): void => {
                 .then((response) => {
                     AuthenticateSessionUtil.initUserSession(response,
                         SignInUtil.getAuthenticatedUser(response.idToken));
-                    dispatch(setSignIn());
+                    dispatch(setSignIn(null));
                     setProfileDetails();
                     loginSuccessRedirect();
                 }).catch((error) => {
@@ -100,7 +100,7 @@ export const handleSignIn = (state, dispatch): void => {
     };
 
     if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
-        dispatch(setSignIn());
+        dispatch(setSignIn(null));
         setProfileDetails();
         loginSuccessRedirect();
     } else {
