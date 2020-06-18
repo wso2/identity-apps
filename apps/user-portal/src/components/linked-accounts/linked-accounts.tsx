@@ -240,7 +240,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                     level: AlertLevels.ERROR,
                     message: t(
                         "userPortal:components.linkedAccounts.notifications.removeAssociation.genericError.message"
-                    ),
+                    )
                 });
             });
     };
