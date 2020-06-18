@@ -28,10 +28,18 @@
     "loginCallbackPath": "{{ developer_portal.login_callback_path }}",
     "logoutCallbackPath": "{{ developer_portal.logout_callback_path }}",
     "productVersion": "{{ product.version }}",
+    "serverOrigin": "{{ developer_portal.server_origin }}",
     "routePaths": {
         {% if developer_portal.route_paths is defined %}
         {% for path, value in developer_portal.route_paths.items() %}
             "{{ path }}": "{{ value }}"{{ "," if not loop.last }}
+        {% endfor %}
+        {% endif %}
+    },
+    "session": {
+        {% if developer_portal.session.params is defined %}
+        {% for param, value in developer_portal.session.params.items() %}
+            "{{ param }}": {{ value }}{{ "," if not loop.last }}
         {% endfor %}
         {% endif %}
     },
@@ -42,7 +50,6 @@
         "appLogoPath": "{{ developer_portal.ui.app_logo_path }}",
         "features": {
             "applications": {
-                "enabled": true,
                 "disabledFeatures": [
                     {% if developer_portal.applications.disabled_features is defined %}
                     {% for feature in developer_portal.applications.disabled_features %}
@@ -50,6 +57,7 @@
                     {% endfor %}
                     {% endif %}
                 ],
+                "enabled": {{ developer_portal.applications.enabled }},
                 "scopes": {
                     {% if developer_portal.applications.scopes is defined %}
                     {% for operation, scopes in developer_portal.applications.scopes.items() %}
@@ -68,7 +76,6 @@
                 }
             },
             "identityProviders": {
-                "enabled": true,
                 "disabledFeatures": [
                     {% if developer_portal.identity_providers.disabled_features is defined %}
                     {% for feature in developer_portal.identity_providers.disabled_features %}
@@ -76,217 +83,10 @@
                     {% endfor %}
                     {% endif %}
                 ],
+                "enabled": {{ developer_portal.identity_providers.enabled }},
                 "scopes": {
                     {% if developer_portal.identity_providers.scopes is defined %}
                     {% for operation, scopes in developer_portal.identity_providers.scopes.items() %}
-                    "{{ operation }}": [
-                        {% for scope in scopes %}
-                            "{{ scope }}"{{ "," if not loop.last }}
-                        {% endfor %}
-                    ]{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% else %}
-                        "create": [],
-                        "read": [],
-                        "update": [],
-                        "delete": []
-                    {% endif %}
-                }
-            },
-            "users": {
-                "enabled": true,
-                "disabledFeatures": [
-                    {% if developer_portal.users.disabled_features is defined %}
-                    {% for feature in developer_portal.users.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
-                ],
-                "scopes": {
-                    {% if developer_portal.users.scopes is defined %}
-                    {% for operation, scopes in developer_portal.users.scopes.items() %}
-                    "{{ operation }}": [
-                        {% for scope in scopes %}
-                            "{{ scope }}"{{ "," if not loop.last }}
-                        {% endfor %}
-                    ]{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% else %}
-                        "create": [],
-                        "read": [],
-                        "update": [],
-                        "delete": []
-                    {% endif %}
-                }
-            },
-            "groups": {
-                "enabled": true,
-                "disabledFeatures": [
-                    {% if developer_portal.groups.disabled_features is defined %}
-                    {% for feature in developer_portal.groups.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
-                ],
-                "scopes": {
-                    {% if developer_portal.groups.scopes is defined %}
-                    {% for operation, scopes in developer_portal.groups.scopes.items() %}
-                    "{{ operation }}": [
-                        {% for scope in scopes %}
-                            "{{ scope }}"{{ "," if not loop.last }}
-                        {% endfor %}
-                    ]{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% else %}
-                        "create": [],
-                        "read": [],
-                        "update": [],
-                        "delete": []
-                    {% endif %}
-                }
-            },
-            "roles": {
-                "enabled": true,
-                "disabledFeatures": [
-                    {% if developer_portal.roles.disabled_features is defined %}
-                    {% for feature in developer_portal.roles.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
-                ],
-                "scopes": {
-                    {% if developer_portal.roles.scopes is defined %}
-                    {% for operation, scopes in developer_portal.roles.scopes.items() %}
-                    "{{ operation }}": [
-                        {% for scope in scopes %}
-                            "{{ scope }}"{{ "," if not loop.last }}
-                        {% endfor %}
-                    ]{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% else %}
-                        "create": [],
-                        "read": [],
-                        "update": [],
-                        "delete": []
-                    {% endif %}
-                }
-            },
-            "attributeDialects": {
-                "enabled": true,
-                "disabledFeatures": [
-                    {% if developer_portal.attribute_dialects.disabled_features is defined %}
-                    {% for feature in developer_portal.attribute_dialects.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
-                ],
-                "scopes": {
-                    {% if developer_portal.attribute_dialects.scopes is defined %}
-                    {% for operation, scopes in developer_portal.attribute_dialects.scopes.items() %}
-                    "{{ operation }}": [
-                        {% for scope in scopes %}
-                            "{{ scope }}"{{ "," if not loop.last }}
-                        {% endfor %}
-                    ]{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% else %}
-                        "create": [],
-                        "read": [],
-                        "update": [],
-                        "delete": []
-                    {% endif %}
-                }
-            },
-            "userStores": {
-                "enabled": true,
-                "disabledFeatures": [
-                    {% if developer_portal.user_stores.disabled_features is defined %}
-                    {% for feature in developer_portal.user_stores.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
-                ],
-                "scopes": {
-                    {% if developer_portal.user_stores.scopes is defined %}
-                    {% for operation, scopes in developer_portal.user_stores.scopes.items() %}
-                    "{{ operation }}": [
-                        {% for scope in scopes %}
-                            "{{ scope }}"{{ "," if not loop.last }}
-                        {% endfor %}
-                    ]{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% else %}
-                        "create": [],
-                        "read": [],
-                        "update": [],
-                        "delete": []
-                    {% endif %}
-                }
-            },
-            "certificates": {
-                "enabled": true,
-                "disabledFeatures": [
-                    {% if developer_portal.certificates.disabled_features is defined %}
-                    {% for feature in developer_portal.certificates.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
-                ],
-                "scopes": {
-                    {% if developer_portal.certificates.scopes is defined %}
-                    {% for operation, scopes in developer_portal.certificates.scopes.items() %}
-                    "{{ operation }}": [
-                        {% for scope in scopes %}
-                            "{{ scope }}"{{ "," if not loop.last }}
-                        {% endfor %}
-                    ]{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% else %}
-                        "create": [],
-                        "read": [],
-                        "update": [],
-                        "delete": []
-                    {% endif %}
-                }
-            },
-            "generalConfigurations": {
-                "enabled": true,
-                "disabledFeatures": [
-                    {% if developer_portal.general_configurations.disabled_features is defined %}
-                    {% for feature in developer_portal.general_configurations.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
-                ],
-                "scopes": {
-                    {% if developer_portal.general_configurations.scopes is defined %}
-                    {% for operation, scopes in developer_portal.general_configurations.scopes.items() %}
-                    "{{ operation }}": [
-                        {% for scope in scopes %}
-                            "{{ scope }}"{{ "," if not loop.last }}
-                        {% endfor %}
-                    ]{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% else %}
-                        "create": [],
-                        "read": [],
-                        "update": [],
-                        "delete": []
-                    {% endif %}
-                }
-            },
-            "emailTemplates": {
-                "enabled": true,
-                "disabledFeatures": [
-                    {% if developer_portal.email_templates.disabled_features is defined %}
-                    {% for feature in developer_portal.email_templates.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
-                ],
-                "scopes": {
-                    {% if developer_portal.email_templates.scopes is defined %}
-                    {% for operation, scopes in developer_portal.email_templates.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
@@ -309,12 +109,5 @@
            {% endfor %}
            {% endif %}
         }
-    },
-    "session": {
-        {% if developer_portal.session.params is defined %}
-        {% for param, value in developer_portal.session.params.items() %}
-            "{{ param }}": {{ value }}{{ "," if not loop.last }}
-        {% endfor %}
-        {% endif %}
     }
 }

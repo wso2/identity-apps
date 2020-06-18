@@ -4,6 +4,7 @@
     "loginCallbackPath": "/login",
     "logoutCallbackPath": "/login",
     "productVersion": "5.11.0-m24-SNAPSHOT",
+    "serverOrigin": "https://localhost:9443",
     "routePaths": {
         "home": "/overview",
         "login": "/login",
@@ -24,6 +25,26 @@
             "enabled": true
         },
         "features": {
+            "applications": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [],
+                    "read": [],
+                    "update": [],
+                    "delete": []
+                }
+            },
+            "operations": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [],
+                    "read": [ "internal_humantask_view" ],
+                    "update": [],
+                    "delete": []
+                }
+            },
             "overview": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -44,32 +65,12 @@
                     "delete": []
                 }
             },
-            "applications": {
-                "disabledFeatures": [],
-                "enabled": true,
-                "scopes": {
-                    "create": [],
-                    "read": [],
-                    "update": [],
-                    "delete": []
-                }
-            },
             "security": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
                     "create": [],
                     "read": [],
-                    "update": [],
-                    "delete": []
-                }
-            },
-            "operations": {
-                "disabledFeatures": [],
-                "enabled": true,
-                "scopes": {
-                    "create": [],
-                    "read": [ "internal_humantask_view" ],
                     "update": [],
                     "delete": []
                 }
