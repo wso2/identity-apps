@@ -151,6 +151,7 @@
         "webpack": "^4.41.5",
         "webpack-cli": "^3.3.7",
         "webpack-dev-server": "^3.11.0",
-        "write-file-webpack-plugin": "^4.5.1"
+        "write-file-webpack-plugin": "^4.5.1",
+        "worker-loader": "^2.0.0"
     }
 }
