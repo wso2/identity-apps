@@ -304,7 +304,7 @@ export const LoginPolicies: FunctionComponent<LoginPoliciesProps> = (
      */
     useEffect(() => {
         setLoginPoliciesConfigsFromAPI()
-    }, [props]);
+    }, []);
 
     const extractArrayValue = (response, key) => {
         return response.properties.find(prop => prop.name === key).value === "true" ? [key] : [];

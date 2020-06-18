@@ -354,6 +354,27 @@ export const devPortal: DevPortalNS = {
                                             "authenticators on to the relevant steps."
                                     }
                                 }
+                            },
+                            requestPathAuthenticators: {
+                                notifications: {
+                                    getRequestPathAuthenticators: {
+                                        error: {
+                                            description: "{{ description }}",
+                                            message: "Retrieval Error"
+                                        },
+                                        genericError: {
+                                            description: "An error occurred while retrieving request path " +
+                                                "authenticators.",
+                                            message: "Retrieval Error"
+                                        },
+                                        success: {
+                                            description: "",
+                                            message: ""
+                                        }
+                                    }
+                                },
+                                subTitle: "Local authenticators for request path authentication.",
+                                title: "Request Path Authentication"
                             }
                         },
                         tabName: "Sign-on Method"

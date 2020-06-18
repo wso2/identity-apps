@@ -120,7 +120,7 @@ export const RealmConfiguration: FunctionComponent<RealmConfigurationProps> = (
      */
     useEffect((): void => {
         setRealmConfigurationConfigsFromAPI();
-    }, [props]);
+    }, []);
 
     const saveRealmConfigurations = (values): void => {
         const data = [

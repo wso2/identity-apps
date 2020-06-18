@@ -1088,13 +1088,6 @@ export interface AdminPortalNS {
                     rememberMePeriod: FormAttributes;
                 };
             };
-            requestPathAuthenticators: {
-                title: string;
-                subTitle: string;
-                notifications: {
-                    getRequestPathAuthenticators: Notification;
-                };
-            };
         };
         sidePanel: {
             addEmailTemplate: string;

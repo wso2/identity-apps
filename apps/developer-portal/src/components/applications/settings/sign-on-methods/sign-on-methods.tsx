@@ -103,7 +103,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      */
     useEffect(() => {
         fetchRequestPathAuthenticators();
-    }, [ props ]);
+    }, [] );
 
     /**
      * Handles the data loading from a adaptive auth template when it is selected
@@ -206,21 +206,22 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(addAlert({
-                        description: t("devPortal:components.serverConfigs.requestPathAuthenticators." +
-                            "notifications.getRequestPathAuthenticators.error.description",
+                        description: t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                            "requestPathAuthenticators.notifications.getRequestPathAuthenticators.error.description",
                             { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.serverConfigs.requestPathAuthenticators." +
-                            "notifications.getRequestPathAuthenticators.error.message")
+                        message: t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                            "requestPathAuthenticators.notifications.getRequestPathAuthenticators.error.message")
                     }));
                 } else {
                     // Generic error message
                     dispatch(addAlert({
-                        description: t("devPortal:components.serverConfigs.requestPathAuthenticators." +
-                            "notifications.getRequestPathAuthenticators.genericError.description"),
+                        description: t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                            "requestPathAuthenticators.notifications.getRequestPathAuthenticators.genericError." +
+                            "description"),
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.serverConfigs.requestPathAuthenticators." +
-                            "notifications.getRequestPathAuthenticators.genericError.message")
+                        message: t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                            "requestPathAuthenticators.notifications.getRequestPathAuthenticators.genericError.message")
                     }));
                 }
             });
@@ -245,8 +246,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const showRequestPathAuthenticators: ReactElement = (
         <>
             <Divider />
-            <Heading as="h4">{ t("devPortal:components.serverConfigs.requestPathAuthenticators.title") }</Heading>
-            <Hint>{ t("devPortal:components.serverConfigs.requestPathAuthenticators.subTitle") }</Hint>
+            <Heading as="h4">{ t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                "requestPathAuthenticators.title") }</Heading>
+            <Hint>{ t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                "requestPathAuthenticators.subTitle") }</Hint>
             <Forms>
                 <Grid>
                     <Grid.Row columns={ 1 }>
