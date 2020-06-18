@@ -77,28 +77,6 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
     }, []);
 
     /**
-     * Obtain app.config.json from the server root when the app mounts.
-     */
-    useEffect(() => {
-        if (!config?.deployment || _.isEmpty(config.deployment) || !config.deployment.appBaseNameWithoutTenant) {
-            return;
-        }
-
-        // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
-        // will fail. Using `appBaseNameWithoutTenant` will create a path without the tenant. Therefore,
-        // `getAppConfig()` will look for the app config file in `https://localhost:9443/developer-portal` rather than
-        // looking it in `https://localhost:9443/t/wso2.com/developer-portal`.
-        getAppConfig<ConfigInterface>(AppConstants.APP_CONFIG_FILE_NAME,
-            config.deployment.appBaseNameWithoutTenant)
-            .then((response) => {
-                dispatch(setFeatureConfigs<FeatureConfigInterface>(response?.features));
-            })
-            .catch(() => {
-                // TODO: Log the error here.
-            });
-    }, [ config?.deployment?.appBaseNameWithoutTenant ]);
-
-    /**
      * Set the application settings of the user to the local storage.
      */
     useEffect(() => {
@@ -130,11 +108,11 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
      * Checks if the portal access should be granted based on the feature config.
      */
     useEffect(() => {
-        if (!config?.features || !loginInit) {
+        if (!config?.ui?.features || !loginInit) {
             return;
         }
 
-        if (isPortalAccessGranted<FeatureConfigInterface>(config.features)) {
+        if (isPortalAccessGranted<FeatureConfigInterface>(config?.ui?.features)) {
             return;
         }
 
