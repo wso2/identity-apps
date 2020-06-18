@@ -16,18 +16,23 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authentication";
 import { OAuth } from "@wso2is/oauth-web-worker";
-import * as TokenConstants from "../constants";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { store } from "../store";
+
+/**
+ * OAuth object.
+ * 
+ * @type {OAuthSingletonInterface}
+ */
+const oAuth = OAuth.getInstance();
 
 /**
  * Get an axios instance.
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = oAuth.httpRequest;
 
 /**
  * Retrieve the user account associations of the currently authenticated user.
@@ -147,23 +152,27 @@ export const removeAllLinkedAccounts = (): Promise<any> => {
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
-    const requestParams = {
-        "clientHost": store.getState().config.deployment.clientHost,
-        "client_id": store.getState().config.deployment.clientID,
-        "scope": [ TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE ],
-        "serverOrigin": store.getState().config.deployment.serverOrigin,
-        "tenant-domain": account.tenantDomain,
-        "username": account.username,
-        "userstore-domain": account.userStoreDomain
-    };
 
-    return SignInUtil.sendAccountSwitchRequest(requestParams)
-        .then((response) => {
-            AuthenticateSessionUtil.initUserSession(response,
-                SignInUtil.getAuthenticatedUser(response.idToken));
-            return Promise.resolve(response);
-        })
-        .catch((error) => {
-            return Promise.reject(error);
-        });
+    return oAuth
+		.customGrant({
+			attachToken: false,
+			data: {
+				"client_id": "{{clientId}}",
+				"grant_type": "account_switch",
+				scope: "{{scope}}",
+				"tenant-domain": account.tenantDomain,
+				token: "{{token}}",
+				username: account.username,
+				"userstore-domain": account.userStoreDomain
+			},
+			returnResponse: false,
+			returnsSession: true,
+			signInRequired: true
+		})
+		.then((response) => {
+			return Promise.resolve(response);
+		})
+		.catch((error) => {
+			return Promise.reject(error);
+		});
 };
