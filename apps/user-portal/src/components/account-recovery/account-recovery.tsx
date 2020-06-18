@@ -20,13 +20,13 @@ import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface } from "@wso2is/core/models";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { List } from "semantic-ui-react";
 import { EmailRecovery, SecurityQuestionsComponent } from "./options";
 import { ApplicationConstants } from "../../constants";
 import { AlertInterface, FeatureConfigInterface } from "../../models";
-import { SettingsSection } from "../shared";
-import { useSelector } from "react-redux";
 import { AppState } from "../../store";
+import { SettingsSection } from "../shared";
 
 /**
  * Prop types for AccountRecoveryComponent component.
