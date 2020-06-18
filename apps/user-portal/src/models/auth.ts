@@ -30,4 +30,5 @@ export interface AuthStateInterface {
     profileSchemas: ProfileSchema[];
     profileInfo: BasicProfileInterface;
     username: string;
+    scope: string;
 }
