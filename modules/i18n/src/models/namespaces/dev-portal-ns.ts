@@ -297,6 +297,13 @@ export interface DevPortalNS {
                                     };
                                 };
                             };
+                            requestPathAuthenticators: {
+                                title: string;
+                                subTitle: string;
+                                notifications: {
+                                    getRequestPathAuthenticators: Notification;
+                                };
+                            };
                         };
                     };
                 };

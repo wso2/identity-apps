@@ -252,7 +252,7 @@ export const PasswordPolicies: FunctionComponent<PasswordPoliciesProps> = (
      */
     useEffect(() => {
         setPasswordPolicyConfigsFromAPI()
-    }, [props]);
+    }, []);
 
     const extractBooleanValue = (response, key) => {
         return response.properties.find(prop => prop.name === key).value === "true";

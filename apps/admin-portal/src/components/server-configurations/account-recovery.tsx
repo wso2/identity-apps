@@ -305,7 +305,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (
      */
     useEffect(() => {
         setAccountRecoveryConfigsFromAPI();
-    }, [props]);
+    }, []);
 
     const extractArrayValue = (response, key) => {
         return response.properties.find(prop => prop.name === key).value === "true" ? [key] : [];

@@ -2049,26 +2049,6 @@ export const adminPortal: AdminPortalNS = {
                     }
                 }
             },
-            requestPathAuthenticators: {
-                notifications: {
-                    getRequestPathAuthenticators: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Retrieval Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while retrieving request path authenticators.",
-                            message: "Retrieval Error"
-                        },
-                        success: {
-                            description: "",
-                            message: ""
-                        }
-                    }
-                },
-                subTitle: "Local authenticators for request path authentication.",
-                title: "Request Path Authentication"
-            },
             selfRegistration: {
                 actionTitles: {
                     config: "More"

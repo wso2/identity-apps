@@ -213,7 +213,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
      */
     useEffect(() => {
         setSelfSignUpConfigsFromAPI();
-    }, [props]);
+    }, []);
 
     const extractArrayValue = (response, key) => {
         return response.properties.find(prop => prop.name === key).value === "true" ? [key] : [];
