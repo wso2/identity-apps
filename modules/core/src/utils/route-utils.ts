@@ -43,14 +43,15 @@ export class RouteUtils {
      *
      * @return {RouteInterface[] | ChildRouteInterface[]} Filtered routes.
      */
-    public static filterEnabledRoutes<T>(routes: RouteInterface[] | ChildRouteInterface[],
-                                         featureConfig: T): RouteInterface[] | ChildRouteInterface[] {
+    public static filterEnabledRoutes<T>(
+        routes: RouteInterface[] | ChildRouteInterface[],featureConfig: T, allowedScopes: string
+    ): RouteInterface[] | ChildRouteInterface[] { 
 
         // Filters features based on scope requirements.
-        const filter = (routeArr: RouteInterface[] | ChildRouteInterface[]) => {
+        const filter = (routeArr: RouteInterface[] | ChildRouteInterface[], allowedScopes: string) => {
             return routeArr.filter((route: RouteInterface | ChildRouteInterface) => {
                 if (route.children) {
-                    route.children = filter(route.children);
+                    route.children = filter(route.children, allowedScopes);
                 }
 
                 let feature: FeatureAccessConfigInterface = null;
@@ -67,7 +68,7 @@ export class RouteUtils {
                     return true;
                 }
 
-                return hasRequiredScopes(feature, feature?.scopes?.read);
+                return hasRequiredScopes(feature, feature?.scopes?.read, allowedScopes);
             });
         };
 
@@ -96,6 +97,6 @@ export class RouteUtils {
             });
         };
 
-        return sanitize(filter(routes));
+        return sanitize(filter(routes, allowedScopes));
     }
 }

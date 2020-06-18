@@ -56,6 +56,7 @@ export const App = (): ReactElement => {
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const loginInit: boolean = useSelector((state: AppState) => state.authenticationInformation.loginInit);
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
     /**
      * Set the deployment configs in redux state.
@@ -67,7 +68,7 @@ export const App = (): ReactElement => {
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
         dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
         dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
-    }, []);
+    }, [dispatch]);
 
     /**
      * Checks if the portal access should be granted based on the feature config.
@@ -77,12 +78,12 @@ export const App = (): ReactElement => {
             return;
         }
 
-        if (isPortalAccessGranted<FeatureConfigInterface>(config?.ui?.features)) {
+        if (isPortalAccessGranted<FeatureConfigInterface>(config?.ui?.features, allowedScopes)) {
             return;
         }
 
         history.push(ApplicationConstants.PATHS.get("UNAUTHORIZED"));
-    }, [ config?.ui?.features, loginInit ]);
+    }, [ loginInit, allowedScopes, config ]);
 
     return (
         <>

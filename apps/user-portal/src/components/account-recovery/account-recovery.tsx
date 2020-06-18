@@ -25,6 +25,8 @@ import { EmailRecovery, SecurityQuestionsComponent } from "./options";
 import { ApplicationConstants } from "../../constants";
 import { AlertInterface, FeatureConfigInterface } from "../../models";
 import { SettingsSection } from "../shared";
+import { useSelector } from "react-redux";
+import { AppState } from "../../store";
 
 /**
  * Prop types for AccountRecoveryComponent component.
@@ -45,6 +47,8 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
     const { t } = useTranslation();
     const { onAlertFired, featureConfig } = props;
 
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
+
     return (
         <SettingsSection
             description={ t("userPortal:sections.accountRecovery.description") }
@@ -53,7 +57,11 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
                     {
-                        hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read) &&
+                        hasRequiredScopes(
+                            featureConfig?.security,
+                            featureConfig?.security?.scopes?.read,
+                            allowedScopes
+                        ) &&
                         isFeatureEnabled(
                             featureConfig?.security,
                             ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_CHALLENGE_QUESTIONS")
@@ -66,7 +74,11 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
                 </List.Item>
                 <List.Item className="inner-list-item">
                     {
-                        hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read) &&
+                        hasRequiredScopes(
+                            featureConfig?.security,
+                            featureConfig?.security?.scopes?.read,
+                            allowedScopes
+                        ) &&
                         isFeatureEnabled(
                             featureConfig?.security,
                             ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_EMAIL_RECOVERY")

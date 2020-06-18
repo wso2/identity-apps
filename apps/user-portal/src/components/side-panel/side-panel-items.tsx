@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/dist/src/helpers";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import _ from "lodash";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -56,6 +56,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
     const dispatch = useDispatch();
     const isApplicationsPageVisible = useSelector((state: AppState) => state.global.isApplicationsPageVisible);
     const appConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const activeRoute = (path: string) => {
         const pathname = window.location.pathname;
         const urlTokens = path.split("/");
@@ -88,7 +89,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
                     dispatch(toggleApplicationsPageVisibility(false));
                 });
         }
-    }, []);
+    }, [dispatch, isApplicationsPageVisible ]);
 
     /**
      * Validates if the side panel item should be displayed.
@@ -109,7 +110,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
                 appConfig && (
                     filteredRoutes(appConfig).map((route, index) => (
                         (route.showOnSidePanel
-                            && hasRequiredScopes(appConfig[route.id], appConfig[route.id]?.scopes?.read)
+                            && hasRequiredScopes(appConfig[route.id], appConfig[route.id]?.scopes?.read, allowedScopes)
                             && validateSidePanelVisibility(route.path))
                             ? (
                                 <Menu.Item

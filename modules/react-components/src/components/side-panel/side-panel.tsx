@@ -73,6 +73,10 @@ export interface CommonSidePanelPropsInterface extends TestableComponentInterfac
      * i18next translation hook.
      */
     translationHook?: any;
+    /**
+     * Scopes allowed for the user.
+     */
+    allowedScopes: string;
 }
 
 /**
@@ -98,6 +102,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
 ): ReactElement => {
 
     const {
+        allowedScopes,
         bordered,
         children,
         desktopContentTopSpacing,
@@ -186,7 +191,8 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
                             type="mobile"
                             onSidePanelItemClick={ handleItemOnClick }
                             routes={ items }
-                            data-testid={ `${ testId }-items` }
+                            data-testid={ `${testId}-items` }
+                            allowedScopes={ allowedScopes }
                         />
                     </Sidebar>
                     <Sidebar.Pusher

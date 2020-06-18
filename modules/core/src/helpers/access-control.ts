@@ -52,7 +52,9 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
  * @param {string[]} scopes - Set of scopes to check.
  * @return {boolean} True is scopes are enough and false if not.
  */
-export const hasRequiredScopes = (feature: FeatureAccessConfigInterface, scopes: string[]): boolean => {
+export const hasRequiredScopes = (
+    feature: FeatureAccessConfigInterface, scopes: string[], allowedScopes: string
+): boolean => {
     const isDefined = feature?.scopes && !_.isEmpty(feature.scopes) && scopes && !_.isEmpty(scopes);
 
     if (!isDefined) {
@@ -60,7 +62,7 @@ export const hasRequiredScopes = (feature: FeatureAccessConfigInterface, scopes:
     }
 
     if (scopes instanceof Array) {
-        return scopes.every((scope) => AuthenticateUtils.hasScope(scope));
+        return scopes.every((scope) => AuthenticateUtils.hasScope(scope, allowedScopes));
     }
 
     return true;
@@ -76,7 +78,7 @@ export const hasRequiredScopes = (feature: FeatureAccessConfigInterface, scopes:
  *
  * @return {boolean} True is access is granted, false if not.
  */
-export const isPortalAccessGranted = <T = {}>(featureConfig: T): boolean => {
+export const isPortalAccessGranted = <T = {}>(featureConfig: T, allowedScopes: string): boolean => {
     const isDefined = featureConfig && !_.isEmpty(featureConfig);
 
     if (!isDefined) {
@@ -88,7 +90,7 @@ export const isPortalAccessGranted = <T = {}>(featureConfig: T): boolean => {
     for (const value of Object.values(featureConfig)) {
         const feature: FeatureAccessConfigInterface = value;
 
-        if (hasRequiredScopes(feature, feature?.scopes?.read)) {
+        if (hasRequiredScopes(feature, feature?.scopes?.read, allowedScopes)) {
             isAllowed = true;
 
             break;
