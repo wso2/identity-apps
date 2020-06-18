@@ -1,0 +1,269 @@
+{
+    "accountApp": {
+        {% if admin_portal.applications.account_app.configs is defined %}
+        {% for key, value in admin_portal.applications.account_app.configs.items() %}
+            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+        {% endfor %}
+        {% endif %}
+    },
+    "appBaseName": "{{ admin_portal.app_base_name }}",
+    "clientID": "{{ admin_portal.client_id }}",
+    "debug": {{ admin_portal.debug.enable }},
+    "documentation": {
+        "baseURL": "{{ admin_portal.documentation.base_url }}",
+        "contentBaseURL": "{{ admin_portal.documentation.content_base_url }}",
+        "githubOptions": {
+            {% if admin_portal.documentation.github_options is defined %}
+            {% for option, value in admin_portal.documentation.github_options.items() %}
+                "{{ option }}": "{{ value }}"{{ "," if not loop.last }}
+            {% endfor %}
+            {% endif %}
+        },
+        "imagePrefixURL": "{{ admin_portal.documentation.image_prefix_url }}",
+        "provider": "{{ admin_portal.documentation.provider }}",
+        "structureFileType": "{{ admin_portal.documentation.structure_file_type }}",
+        "structureFileURL": "{{ admin_portal.documentation.structure_file_url }}"
+    },
+    "i18nResourcePath": "{{ admin_portal.i18n_resource_path }}",
+    "loginCallbackPath": "{{ admin_portal.login_callback_path }}",
+    "logoutCallbackPath": "{{ admin_portal.logout_callback_path }}",
+    "productVersion": "{{ product.version }}",
+    "serverOrigin": "{{ admin_portal.server_origin }}",
+    "routePaths": {
+        {% if admin_portal.route_paths is defined %}
+        {% for path, value in admin_portal.route_paths.items() %}
+            "{{ path }}": "{{ value }}"{{ "," if not loop.last }}
+        {% endfor %}
+        {% endif %}
+    },
+    "session": {
+        {% if admin_portal.session.params is defined %}
+        {% for param, value in admin_portal.session.params.items() %}
+            "{{ param }}": {{ value }}{{ "," if not loop.last }}
+        {% endfor %}
+        {% endif %}
+    },
+    "ui": {
+        "appCopyright": "{{ admin_portal.ui.app_copyright }}",
+        "appTitle": "{{ admin_portal.ui.app_title }}",
+        "appName": "{{ admin_portal.ui.app_name }}",
+        "appLogoPath": "{{ admin_portal.ui.app_logo_path }}",
+        "features": {
+            "attributeDialects": {
+                "disabledFeatures": [
+                    {% if admin_portal.attribute_dialects.disabled_features is defined %}
+                    {% for feature in admin_portal.attribute_dialects.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ admin_portal.attribute_dialects.enabled }},
+                "scopes": {
+                    {% if admin_portal.attribute_dialects.scopes is defined %}
+                    {% for operation, scopes in admin_portal.attribute_dialects.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "certificates": {
+                "disabledFeatures": [
+                    {% if admin_portal.certificates.disabled_features is defined %}
+                    {% for feature in admin_portal.certificates.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ admin_portal.certificates.enabled }},
+                "scopes": {
+                    {% if admin_portal.certificates.scopes is defined %}
+                    {% for operation, scopes in admin_portal.certificates.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "emailTemplates": {
+                "disabledFeatures": [
+                    {% if admin_portal.email_templates.disabled_features is defined %}
+                    {% for feature in admin_portal.email_templates.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ admin_portal.email_templates.enabled }},
+                "scopes": {
+                    {% if admin_portal.email_templates.scopes is defined %}
+                    {% for operation, scopes in admin_portal.email_templates.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "generalConfigurations": {
+                "disabledFeatures": [
+                    {% if admin_portal.general_configurations.disabled_features is defined %}
+                    {% for feature in admin_portal.general_configurations.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ admin_portal.general_configurations.enabled }},
+                "scopes": {
+                    {% if admin_portal.general_configurations.scopes is defined %}
+                    {% for operation, scopes in admin_portal.general_configurations.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "groups": {
+                "disabledFeatures": [
+                    {% if admin_portal.groups.disabled_features is defined %}
+                    {% for feature in admin_portal.groups.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ admin_portal.groups.enabled }},
+                "scopes": {
+                    {% if admin_portal.groups.scopes is defined %}
+                    {% for operation, scopes in admin_portal.groups.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "roles": {
+                "disabledFeatures": [
+                    {% if admin_portal.roles.disabled_features is defined %}
+                    {% for feature in admin_portal.roles.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": true,
+                "scopes": {
+                    {% if admin_portal.roles.scopes is defined %}
+                    {% for operation, scopes in admin_portal.roles.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "users": {
+                "disabledFeatures": [
+                    {% if admin_portal.users.disabled_features is defined %}
+                    {% for feature in admin_portal.users.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ admin_portal.users.enabled }},
+                "scopes": {
+                    {% if admin_portal.users.scopes is defined %}
+                    {% for operation, scopes in admin_portal.users.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "userStores": {
+                "disabledFeatures": [
+                    {% if admin_portal.user_stores.disabled_features is defined %}
+                    {% for feature in admin_portal.user_stores.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ admin_portal.user_stores.enabled }},
+                "scopes": {
+                    {% if admin_portal.user_stores.scopes is defined %}
+                    {% for operation, scopes in admin_portal.user_stores.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            }
+        },
+        "gravatarConfig": {
+           {% if admin_portal.gravatar.configs is defined %}
+           {% for key, value in admin_portal.gravatar.configs.items() %}
+               "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+           {% endfor %}
+           {% endif %}
+        }
+    }
+}
