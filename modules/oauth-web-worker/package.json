@@ -1,0 +1,36 @@
+{
+	"name": "@wso2is/oauth-web-worker",
+	"version": "0.0.1",
+	"description": "OAuth authentication using web worker",
+	"main": "dist/main.js",
+	"module": "dist/main.js",
+	"types": "dist/typings/src/index.d.ts",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "rimraf dist; webpack -p --env.NODE_ENV=production"
+	},
+	"keywords": [
+		"oauth",
+		"web",
+		"worker",
+		"access",
+		"token"
+	],
+	"author": "WSO2",
+	"license": "Apache-2.0",
+	"dependencies": {
+		"axios": "*",
+		"crypto-js": "*",
+		"jsrsasign": "^8.0.16"
+	},
+	"devDependencies": {
+		"@types/crypto-js": "*",
+		"@types/jsrsasign": "^8.0.3",
+		"rimraf": "*",
+		"ts-loader": "*",
+		"typescript": "*",
+		"webpack": "*",
+		"webpack-cli": "*",
+		"worker-loader": "*"
+	}
+}
