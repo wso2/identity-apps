@@ -17,7 +17,7 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosHttpClient } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { store } from "../store";
 
 /**
@@ -25,7 +25,7 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 /**
  * The action types of the totp post endpoint
@@ -49,8 +49,7 @@ export const getTotpQrCode = (): Promise<any> => {
         url: store.getState().config.endpoints.totp
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. Server returned ${response.status}.`);
@@ -80,8 +79,7 @@ export const validateTOTPCode = (code: string): Promise<any> => {
         url: store.getState().config.endpoints.totp
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -109,8 +107,7 @@ export const refreshTOTPCode = (): Promise<any> => {
         url: store.getState().config.endpoints.totp
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -139,8 +136,7 @@ export const initTOTPCode = (): Promise<any> => {
         url: store.getState().config.endpoints.totp
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -165,8 +161,7 @@ export const deleteTOTP = (): Promise<any> => {
         url: store.getState().config.endpoints.totp
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -191,8 +186,7 @@ export const getTOTPSecret = (): Promise<any> => {
         url: store.getState().config.endpoints.totpSecret
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);

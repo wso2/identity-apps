@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AxiosHttpClient } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { Decode, Encode } from "../helpers/base64-utils";
 import { HttpMethods } from "../models";
 import { store } from "../store";
@@ -26,7 +26,7 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 /**
  * Retrieve FIDO meta data
@@ -44,8 +44,7 @@ export const getMetaData = (): Promise<any> => {
         url: store.getState().config.endpoints.fidoMetaData
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
@@ -80,8 +79,7 @@ export const updateDeviceName = (credentialId: string, deviceName: string): Prom
         url: `${store.getState().config.endpoints.fidoMetaData}/${credentialId}`
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
@@ -111,8 +109,7 @@ export const deleteDevice = (credentialId): Promise<any> => {
         url: `${store.getState().config.endpoints.fidoMetaData}/${credentialId}`
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response);
         })
@@ -143,17 +140,19 @@ const responseToObject = (response): Record<string, any> => {
 
         if (response.response.attestationObject) {
             return {
+                // tslint:disable-next-line:object-literal-sort-keys
+                clientExtensionResults,
                 id: response.id,
                 response: {
                     attestationObject: Encode(response.response.attestationObject),
                     clientDataJSON: Encode(response.response.clientDataJSON)
                 },
-                // tslint:disable-next-line:object-literal-sort-keys
-                clientExtensionResults,
                 type: response.type
             };
         } else {
             return {
+                // tslint:disable-next-line:object-literal-sort-keys
+                clientExtensionResults,
                 id: response.id,
                 response: {
                     authenticatorData: Encode(response.response.authenticatorData),
@@ -161,8 +160,6 @@ const responseToObject = (response): Record<string, any> => {
                     signature: Encode(response.response.signature),
                     userHandle: response.response.userHandle && Encode(response.response.userHandle)
                 },
-                // tslint:disable-next-line:object-literal-sort-keys
-                clientExtensionResults,
                 type: response.type
             };
         }
@@ -187,8 +184,7 @@ export const endFidoFlow = (clientResponse): Promise<any> => {
         url: store.getState().config.endpoints.fidoEnd
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
@@ -277,8 +273,7 @@ export const startFidoFlow = (): Promise<any> => {
         url: store.getState().config.endpoints.fidoStart
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
@@ -318,8 +313,7 @@ export const startFidoUsernamelessFlow = (): Promise<any> => {
         url: store.getState().config.endpoints.fidoStartUsernameless
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(

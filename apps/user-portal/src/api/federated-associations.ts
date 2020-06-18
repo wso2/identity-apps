@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AxiosHttpClient } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { HttpMethods } from "../models";
 import { store } from "../store";
 
@@ -25,7 +25,7 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 /**
  * This function calls the federated association API endpoint and gets the list of federated associations
@@ -41,8 +41,7 @@ export const getFederatedAssociations = (): Promise<any> => {
         url: store.getState().config.endpoints.federatedAssociations
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject("Failed to retrieve Federated Associations");
@@ -70,8 +69,7 @@ export const deleteFederatedAssociation = (id: string): Promise<any> => {
         url: `${ store.getState().config.endpoints.federatedAssociations }/${id}`
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response.data);
         })
@@ -94,8 +92,7 @@ export const deleteAllFederatedAssociation = (): Promise<any> => {
         url: store.getState().config.endpoints.federatedAssociations
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response.data);
         })

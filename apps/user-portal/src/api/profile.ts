@@ -17,7 +17,7 @@
  */
 
 import { SignInUtil } from "@wso2is/authentication";
-import { AxiosHttpClient } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import axios from "axios";
 import _ from "lodash";
 import { ApplicationConstants } from "../constants";
@@ -31,7 +31,7 @@ import { toggleSCIMEnabled } from "../store/actions";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 /**
  * Retrieve the user information of the currently authenticated user.
@@ -49,8 +49,7 @@ export const getUserInfo = (): Promise<any> => {
         url: store.getState().config.endpoints.user
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error(`Failed get user info from: 
@@ -122,8 +121,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
         url: store.getState().config.endpoints.me
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then(async (response) => {
             let gravatar = "";
 
@@ -139,7 +137,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
 
             const profileResponse: BasicProfileInterface = {
                 emails: response.data.emails || "",
-                name: response.data.name || { givenName: "", familyName: "" },
+                name: response.data.name || { familyName: "", givenName: "" },
                 organisation: response.data[orgKey] ? response.data[orgKey].organization : "",
                 phoneNumbers: response.data.phoneNumbers || [],
                 profileUrl: response.data.profileUrl || "",
@@ -189,8 +187,7 @@ export const updateProfileInfo = (info: object): Promise<any> => {
         url: store.getState().config.endpoints.me
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
@@ -220,8 +217,7 @@ export const getProfileSchemas = (): Promise<any> => {
         url: store.getState().config.endpoints.profileSchemas
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed get user schemas"));

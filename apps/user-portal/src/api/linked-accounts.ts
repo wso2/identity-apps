@@ -17,7 +17,7 @@
  */
 
 import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authentication";
-import { AxiosHttpClient } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import * as TokenConstants from "../constants";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { store } from "../store";
@@ -27,7 +27,7 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 /**
  * Retrieve the user account associations of the currently authenticated user.
@@ -45,10 +45,10 @@ export const getAssociations = (): Promise<any> => {
         url: store.getState().config.endpoints.associations
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(`Failed to retrieve the linked accounts`);
+                return Promise.reject("Failed to retrieve the linked accounts");
             }
             return Promise.resolve(response.data);
         })
@@ -74,7 +74,7 @@ export const addAccountAssociation = (data: object): Promise<any> => {
         url: store.getState().config.endpoints.associations
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response.data);
         })
@@ -99,7 +99,7 @@ export const removeLinkedAccount = (id: string): Promise<any> => {
         url: `${ store.getState().config.endpoints.associations }/${ id }`
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response.data);
         })
@@ -129,7 +129,7 @@ export const removeAllLinkedAccounts = (): Promise<any> => {
         url: store.getState().config.endpoints.associations
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response.data);
         })

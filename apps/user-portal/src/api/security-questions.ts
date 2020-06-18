@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AxiosHttpClient } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { HttpMethods } from "../models";
 import { store } from "../store";
 
@@ -25,7 +25,7 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 /**
  * Fetch the configured security questions of the user.
@@ -47,7 +47,7 @@ export const getSecurityQs = (): Promise<any> => {
             url: store.getState().config.endpoints.challenges
         };
 
-        return httpClient.request(requestConfig);
+        return httpClient(requestConfig);
     };
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -58,16 +58,16 @@ export const getSecurityQs = (): Promise<any> => {
             url: store.getState().config.endpoints.challengeAnswers
         };
 
-        return httpClient.request(requestConfig);
+        return httpClient(requestConfig);
     };
 
-    return httpClient.all([ getQuestions(), getAnswers() ])
-        .then(httpClient.spread((questions, answers) => {
+    return Promise.all([ getQuestions(), getAnswers() ])
+        .then(([questions, answers]) => {
             if (questions.status !== 200 && answers.status !== 200) {
                 return Promise.reject(new Error("Failed to get security questions and answers"));
             }
             return Promise.resolve([ questions.data, answers.data ]);
-        }));
+        });
 };
 
 /**
@@ -88,7 +88,7 @@ export const addSecurityQs = (data: object): Promise<any> => {
         url: store.getState().config.endpoints.challengeAnswers
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 201) {
                 return Promise.reject(new Error("Failed to add security questions"));
@@ -118,7 +118,7 @@ export const updateSecurityQs = (data: object): Promise<any> => {
         url: store.getState().config.endpoints.challengeAnswers
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update security questions."));
