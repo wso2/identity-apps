@@ -592,7 +592,8 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                 return;
             }
 
-            setInitialValues(values);
+            // Clone values to avoid any mutations.
+            setInitialValues(_.cloneDeep(values));
         };
 
         const mutatedChildren: React.ReactElement[] = children ? [ ...parseChildren(children, formFields) ] : null;
