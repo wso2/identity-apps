@@ -35,6 +35,10 @@ interface FormPropsInterface {
      * @param {FormState} state - From state.
      */
     onFormStateChange?: (state: FormState) => void;
+    /**
+     * Trigger re-initialization of initial values.
+     */
+    reinitialize?: boolean;
     resetState?: boolean;
     submitState?: boolean;
     ref?: React.Ref<any>;
@@ -46,7 +50,7 @@ interface FormPropsInterface {
 export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInterface>> =
     React.forwardRef((props: React.PropsWithChildren<FormPropsInterface>, ref): JSX.Element => {
 
-        const { onSubmit, resetState, submitState, onChange, children, onFormStateChange } = props;
+        const { onSubmit, resetState, submitState, onChange, children, onFormStateChange, reinitialize } = props;
 
         // This holds the values of the form fields
         const [ form, setForm ] = useState(new Map<string, FormValue>());
@@ -531,6 +535,13 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         }, [ resetState ]);
 
         /**
+         * Calls initialize function when an re-initialization is triggered externally
+         */
+        useNonInitialEffect(() => {
+            setInitialFormValues(form, true);
+        }, [ reinitialize ]);
+
+        /**
          * Initializes the state of the from every time the passed formFields prop changes
          */
         useEffect(() => {
@@ -586,9 +597,10 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
          * Sets the initial form values.
          *
          * @param {Map<string, FormValue>} values - Form values.
+         * @param {boolean} forceInit - Forcefully re-initialize the form.
          */
-        const setInitialFormValues = (values: Map<string, FormValue>): void => {
-            if (initialValues !== undefined) {
+        const setInitialFormValues = (values: Map<string, FormValue>, forceInit: boolean = false): void => {
+            if (!forceInit && initialValues !== undefined) {
                 return;
             }
 
