@@ -21,12 +21,13 @@ import _ from "lodash";
 import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { AuthAction, authenticateActionTypes } from "./types";
-import { getProfileInfo, getProfileSchemas } from "../../api";
+import { getProfileInfo, getProfileSchemas, switchAccount } from "../../api";
 import { i18n } from "../../configs";
 import { history } from "../../helpers";
-import { AlertLevels, AuthenticatedUserInterface, BasicProfileInterface, ProfileSchema } from "../../models";
+import { AlertLevels, AuthenticatedUserInterface, BasicProfileInterface, ProfileSchema, LinkedAccountInterface } from "../../models";
 import { getProfileCompletion } from "../../utils";
 import { store } from "../index";
+import { getProfileLinkedAccounts } from ".";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
@@ -187,7 +188,6 @@ export const handleSignIn = () => (dispatch) => {
 			oAuth
 				.signIn()
 				.then((response) => {
-					sessionStorage.setItem("scope", response.allowedScopes);
 					dispatch(setSignIn({
                         // eslint-disable-next-line @typescript-eslint/camelcase
                         display_name: response.displayName,
@@ -195,6 +195,7 @@ export const handleSignIn = () => (dispatch) => {
                         scope: response.allowedScopes,
                         username: response.username
                     }));
+
 					dispatch(getProfileInformation());
 				})
 				.catch((error) => {
@@ -219,4 +220,30 @@ export const handleSignOut = () => (dispatch) => {
 		.catch(() => {
 			history.push(store?.getState()?.config?.deployment?.appLoginPath);
 		});
+};
+
+/**
+ * Handles account switching.
+ * 
+ * @param {LinkedAccountInterface} account Info about the the account to switch to.
+ * 
+ * @returns {(dispatch)=>void} A function that accepts dispatch as an argument.
+ */
+export const handleAccountSwitching = (account: LinkedAccountInterface) => (dispatch) => {
+    switchAccount(account).then((response) => {
+		dispatch(
+			setSignIn({
+				// eslint-disable-next-line @typescript-eslint/camelcase
+				display_name: response.displayName,
+				email: response.email,
+				scope: response.allowedScopes,
+				username: response.username
+			})
+		);
+
+        dispatch(getProfileInformation());
+        dispatch(getProfileLinkedAccounts());
+    }).catch(error => {
+        throw error;
+    });
 };
