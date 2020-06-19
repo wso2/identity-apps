@@ -20,12 +20,7 @@ import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import React, { FunctionComponent } from "react";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import {
-    AccountSecurityWidget,
-    AccountStatusWidget,
-    ConsentManagementWidget,
-    UserSessionsWidget
-} from "./widgets";
+import { AccountSecurityWidget, AccountStatusWidget, ConsentManagementWidget, UserSessionsWidget } from "./widgets";
 import { ApplicationConstants } from "../../constants";
 import { FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
@@ -37,58 +32,47 @@ import { AppState } from "../../store";
  */
 export const Overview: FunctionComponent<{}> = (): JSX.Element => {
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
     return (
         <Grid className="overview-page">
             <Divider hidden />
             <Grid.Row>
                 <Grid.Column computer={ 9 } mobile={ 16 }>
-                    {
-                        hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read) &&
+                    { hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes) &&
                         isFeatureEnabled(
                             accessConfig?.overview,
                             ApplicationConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_STATUS")
-                        )
-                        ? (
+                        ) ? (
                             <AccountStatusWidget />
-                        ) : null
-                    }
+                        ) : null }
                 </Grid.Column>
                 <Grid.Column computer={ 7 } mobile={ 16 }>
-                    {
-                        hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read) &&
+                    { hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes) &&
                         isFeatureEnabled(
                             accessConfig?.overview,
                             ApplicationConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_ACTIVITY")
-                        )
-                        ? (
+                        ) ? (
                             <UserSessionsWidget />
-                        ) : null
-                    }
+                        ) : null }
                 </Grid.Column>
                 <Grid.Column computer={ 8 } mobile={ 16 }>
-                    {
-                        hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read) &&
+                    { hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes) &&
                         isFeatureEnabled(
                             accessConfig?.overview,
                             ApplicationConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_SECURITY")
-                        )
-                        ? (
+                        ) ? (
                             <AccountSecurityWidget />
-                        ) : null
-                    }
+                        ) : null }
                 </Grid.Column>
                 <Grid.Column computer={ 8 } mobile={ 16 }>
-                    {
-                        hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read) &&
+                    { hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes) &&
                         isFeatureEnabled(
                             accessConfig?.overview,
                             ApplicationConstants.FEATURE_DICTIONARY.get("OVERVIEW_CONSENTS")
-                        )
-                        ? (
+                        ) ? (
                             <ConsentManagementWidget />
-                        ) : null
-                    }
+                        ) : null }
                 </Grid.Column>
             </Grid.Row>
         </Grid>
