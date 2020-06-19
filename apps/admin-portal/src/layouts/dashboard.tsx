@@ -88,7 +88,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.features);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
