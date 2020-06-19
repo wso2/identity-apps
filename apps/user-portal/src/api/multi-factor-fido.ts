@@ -134,7 +134,7 @@ const responseToObject = (response): Record<string, any> => {
         try {
             clientExtensionResults = response.getClientExtensionResults();
         } catch (e) {
-            // tslint:disable-next-line:no-console
+            // eslint-disable-next-line no-console
             console.error("getClientExtensionResults failed", e);
         }
 
