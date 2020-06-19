@@ -424,10 +424,13 @@ const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWorkerSing
 			return Promise.reject(new Error("No callback URL found in the session."));
 		}
 
+		const logoutURL =
+			`${logoutEndpoint}?` + `id_token_hint=${idToken}` + `&post_logout_redirect_uri=${callbackURL}`;
+
 		destroyUserSession();
 		destroyOPConfiguration();
 
-		Promise.resolve(`${logoutEndpoint}?` + `id_token_hint=${idToken}` + `&post_logout_redirect_uri=${callbackURL}`);
+		return Promise.resolve(logoutURL);
 	};
 
 	/**
@@ -1112,7 +1115,7 @@ ctx.onmessage = ({ data, ports }) => {
 					.then((response) => {
 						if (response) {
 							port.postMessage({
-								data: true,
+								data: response,
 								success: true
 							});
 						} else {
