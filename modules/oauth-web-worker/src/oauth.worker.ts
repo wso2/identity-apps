@@ -55,11 +55,13 @@ const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWorkerSing
 	/**
 	 * Values to be set when initializing the library.
 	 */
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	let authorizationType: string;
 	let callbackURL: string;
 	let clientHost: string;
 	let clientID: string;
 	let clientSecret: string;
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	let consentDenied: boolean;
 	let enablePKCE: boolean;
 	let prompt: string;
@@ -74,6 +76,7 @@ const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWorkerSing
 	let isOpConfigInitiated: boolean;
 	let authorizeEndpoint: string;
 	let tokenEndpoint: string;
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	let endSessionEndpoint: string;
 	let jwksUri: string;
 	let revokeTokenEndpoint: string;
@@ -87,11 +90,14 @@ const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWorkerSing
 	 */
 	let token: string;
 	let accessTokenExpiresIn: string;
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	let accessTokenIssuedAt: string;
 	let displayName: string;
 	let email: string;
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	let idToken: string;
 	let refreshToken: string;
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	let tokenType: string;
 	let userName: string;
 	let allowedScope: string;
@@ -544,6 +550,7 @@ const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWorkerSing
 					} catch (error) {
 						throw Error(error);
 					}
+
 					return Promise.resolve({
 						data: {
 							allowedScopes: allowedScope,
@@ -648,6 +655,7 @@ const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWorkerSing
 								return Promise.reject(error);
 							});
 					}
+
 					return Promise.reject(error?.response);
 				});
 		} else {
@@ -680,7 +688,9 @@ const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWorkerSing
 	 * @returns {Promise<boolean|AxiosResponse>} A promise that resolves with a boolean value or the request response
 	 * if the the `returnResponse` attribute in the `requestParams` object is set to `true`.
 	 */
-	const customGrant = (requestParams: CustomGrantRequestParams): Promise<boolean | AxiosResponse> => {
+	const customGrant = (
+		requestParams: CustomGrantRequestParams
+	): Promise<SignInResponse | boolean | AxiosResponse> => {
 		if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
 			return Promise.reject(new Error("Invalid token endpoint found."));
 		}
@@ -719,7 +729,7 @@ const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWorkerSing
 
 		return axios(requestConfig)
 			.then(
-				(response: AxiosResponse): Promise<boolean | AxiosResponse> => {
+				(response: AxiosResponse): Promise<boolean | AxiosResponse | SignInResponse> => {
 					if (response.status !== 200) {
 						return Promise.reject(
 							new Error("Invalid status code received in the token response: " + response.status)
@@ -738,7 +748,20 @@ const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWorkerSing
 									tokenType: response.data.token_type
 								};
 								initUserSession(tokenResponse, getAuthenticatedUser(tokenResponse.idToken));
-								return Promise.resolve(true);
+
+								if (requestParams.returnResponse) {
+									return Promise.resolve({
+										data: {
+											allowedScopes: allowedScope,
+											displayName: displayName,
+											email: email,
+											username: userName
+										},
+										type: SIGNED_IN
+									} as SignInResponse);
+								} else {
+									return Promise.resolve(true);
+								}
 							}
 
 							return Promise.reject(
@@ -835,6 +858,7 @@ const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWorkerSing
 				return instance;
 			} else {
 				instance = Constructor(config);
+
 				return instance;
 			}
 		}
@@ -857,6 +881,7 @@ ctx.onmessage = ({ data, ports }) => {
 					success: false
 				});
 			}
+
 			break;
 		case SIGN_IN:
 			if (!oAuthWorker) {
@@ -912,6 +937,7 @@ ctx.onmessage = ({ data, ports }) => {
 						});
 					});
 			}
+
 			break;
 		case AUTH_CODE:
 			if (!oAuthWorker) {
@@ -919,6 +945,7 @@ ctx.onmessage = ({ data, ports }) => {
 					error: "Worker has not been initiated.",
 					success: false
 				});
+
 				break;
 			}
 
@@ -965,6 +992,7 @@ ctx.onmessage = ({ data, ports }) => {
 						success: false
 					});
 				});
+
 			break;
 		case API_CALL:
 			if (!oAuthWorker) {
@@ -972,6 +1000,7 @@ ctx.onmessage = ({ data, ports }) => {
 					error: "Worker has not been initiated.",
 					success: false
 				});
+
 				break;
 			}
 
@@ -1001,6 +1030,7 @@ ctx.onmessage = ({ data, ports }) => {
 						});
 					});
 			}
+
 			break;
 		case LOGOUT:
 			if (!oAuthWorker) {
@@ -1008,6 +1038,7 @@ ctx.onmessage = ({ data, ports }) => {
 					error: "Worker has not been initiated.",
 					success: false
 				});
+
 				break;
 			}
 
@@ -1039,6 +1070,7 @@ ctx.onmessage = ({ data, ports }) => {
 						});
 					});
 			}
+
 			break;
 		case CUSTOM_GRANT:
 			if (!oAuthWorker) {
@@ -1046,6 +1078,7 @@ ctx.onmessage = ({ data, ports }) => {
 					error: "Worker has not been initiated.",
 					success: false
 				});
+
 				break;
 			}
 
@@ -1054,6 +1087,7 @@ ctx.onmessage = ({ data, ports }) => {
 					error: "You have not signed in yet.",
 					success: false
 				});
+
 				break;
 			}
 
@@ -1071,10 +1105,11 @@ ctx.onmessage = ({ data, ports }) => {
 						success: false
 					});
 				});
+
 			break;
 		default:
 			port.postMessage({ error: `Unknown message type ${data?.type}`, success: false });
 	}
 };
 
-export default {} as typeof Worker & { new(): Worker };
+export default {} as typeof Worker & { new (): Worker };

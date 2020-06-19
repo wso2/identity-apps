@@ -18,7 +18,7 @@
 
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { ConfigInterface } from ".";
-import { UserInfo } from "./message";
+import { SignInResponse, UserInfo } from "./message";
 
 export interface OAuthInterface {
 	httpRequest(config: AxiosRequestConfig): Promise<AxiosResponse>;
@@ -26,7 +26,7 @@ export interface OAuthInterface {
 	signIn(): Promise<UserInfo>;
 	initialize(config: ConfigInterface): Promise<boolean>;
 	listenForAuthCode(): Promise<UserInfo>;
-	customGrant(requestParams: CustomGrantRequestParams): Promise<AxiosResponse | boolean>;
+	customGrant(requestParams: CustomGrantRequestParams): Promise<AxiosResponse | boolean | SignInResponse>;
 }
 
 export interface OAuthSingletonInterface {

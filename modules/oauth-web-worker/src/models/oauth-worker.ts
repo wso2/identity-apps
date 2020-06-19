@@ -33,7 +33,7 @@ export interface OAuthWorkerInterface {
 	refreshAccessToken(): Promise<boolean>;
 	signOut(): Promise<boolean>;
 	httpRequest(config: AxiosRequestConfig): Promise<AxiosResponse>;
-	customGrant(requestParams: CustomGrantRequestParams): Promise<AxiosResponse | boolean>;
+	customGrant(requestParams: CustomGrantRequestParams): Promise<AxiosResponse | boolean | SignInResponse>;
 	getUserInfo(): UserInfo;
 }
 

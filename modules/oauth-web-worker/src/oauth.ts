@@ -127,6 +127,7 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
 	 */
 	const removeAuthorizationCode = (): string => {
 		const url = location.href;
+		
 		return url.replace(/\?code=.*$/, "");
 	};
 
@@ -182,7 +183,7 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
 	 */
 	const customGrant = (
 		requestParams: CustomGrantRequestParams
-	): Promise<typeof requestParams["returnResponse"] extends true ? AxiosResponse : boolean> => {
+	): Promise<typeof requestParams["returnResponse"] extends true ? AxiosResponse : boolean | SignInResponse> => {
 		if (!initialized) {
 			return Promise.reject("The object has not been initialized yet");
 		}
@@ -195,9 +196,10 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
 			data: requestParams,
 			type: CUSTOM_GRANT
 		};
+
 		return communicate<
 			CustomGrantRequestParams,
-			typeof requestParams["returnResponse"] extends true ? AxiosResponse : boolean
+			typeof requestParams["returnResponse"] extends true ? AxiosResponse : boolean | SignInResponse
 		>(message)
 			.then((response) => {
 				return Promise.resolve(response);
@@ -228,6 +230,7 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
 			data: config,
 			type: API_CALL
 		};
+
 		return communicate<AxiosRequestConfig, AxiosResponse>(message)
 			.then((response) => {
 				return Promise.resolve(response);
@@ -329,9 +332,11 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
 			data: config,
 			type: INIT
 		};
+
 		return communicate<ConfigInterface, null>(message)
 			.then(() => {
 				initialized = true;
+
 				return Promise.resolve(true);
 			})
 			.catch((error) => {
@@ -346,6 +351,7 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
 	 */
 	const sendAuthorizationCode = (): Promise<UserInfo> => {
 		const authCode = getAuthorizationCode();
+
 		const message: Message<AuthCode> = {
 			data: {
 				code: authCode,
@@ -353,8 +359,10 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
 			},
 			type: AUTH_CODE
 		};
+
 		history.pushState({}, document.title, removeAuthorizationCode());
 		sessionStorage.removeItem(PKCE_CODE_VERIFIER);
+
 		return communicate<AuthCode, SignInResponse>(message)
 			.then((response) => {
 				if (response.type === SIGNED_IN) {
@@ -405,10 +413,12 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
 					data: null,
 					type: SIGN_IN
 				};
+
 				return communicate<null, SignInResponse>(message)
 					.then((response) => {
 						if (response.type === SIGNED_IN) {
 							signedIn = true;
+
 							return Promise.resolve(response.data);
 						} else if (response.type === AUTH_REQUIRED && response.code) {
 							if (response.pkce) {
@@ -444,9 +454,11 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
 		const message: Message<null> = {
 			type: LOGOUT
 		};
+
 		return communicate<null, boolean>(message)
 			.then((response) => {
 				signedIn = false;
+
 				return Promise.resolve(response);
 			})
 			.catch((error) => {
@@ -480,6 +492,7 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
 				return instance;
 			} else {
 				instance = Constructor();
+
 				return instance;
 			}
 		}
