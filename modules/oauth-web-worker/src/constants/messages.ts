@@ -24,3 +24,4 @@ export const AUTH_CODE = "auth-code";
 export const LOGOUT = "logout";
 export const API_CALL = "api-call";
 export const CUSTOM_GRANT = "custom-grant";
+export const REVOKE_TOKEN = "revoke-token";

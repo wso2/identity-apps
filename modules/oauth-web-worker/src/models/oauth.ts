@@ -27,6 +27,7 @@ export interface OAuthInterface {
 	initialize(config: ConfigInterface): Promise<boolean>;
 	listenForAuthCode(): Promise<UserInfo>;
 	customGrant(requestParams: CustomGrantRequestParams): Promise<AxiosResponse | boolean | SignInResponse>;
+	revokeToken(): Promise<boolean>;
 }
 
 export interface OAuthSingletonInterface {

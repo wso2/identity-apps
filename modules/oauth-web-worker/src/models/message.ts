@@ -16,7 +16,17 @@
  * under the License.
  */
 
-import { API_CALL, AUTH_CODE, AUTH_REQUIRED, CUSTOM_GRANT, INIT, LOGOUT, SIGNED_IN, SIGN_IN } from "../constants";
+import {
+	API_CALL,
+	AUTH_CODE,
+	AUTH_REQUIRED,
+	CUSTOM_GRANT,
+	INIT,
+	LOGOUT,
+	REVOKE_TOKEN,
+	SIGNED_IN,
+	SIGN_IN
+} from "../constants";
 
 export interface ResponseMessage<T> {
 	success: boolean;
@@ -54,4 +64,5 @@ export type MessageType =
 	| typeof AUTH_CODE
 	| typeof LOGOUT
 	| typeof API_CALL
-	| typeof CUSTOM_GRANT;
+	| typeof CUSTOM_GRANT
+	| typeof REVOKE_TOKEN;
