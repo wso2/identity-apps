@@ -19,6 +19,7 @@
 import { OAuth } from "@wso2is/oauth-web-worker";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { store } from "../store";
+import { SignInResponse } from "@wso2is/oauth-web-worker/dist/typings/src/models";
 
 /**
  * OAuth object.
@@ -165,12 +166,12 @@ export const switchAccount = (account: LinkedAccountInterface): Promise<any> => 
 				username: account.username,
 				"userstore-domain": account.userStoreDomain
 			},
-			returnResponse: false,
+			returnResponse: true,
 			returnsSession: true,
 			signInRequired: true
 		})
-		.then((response) => {
-			return Promise.resolve(response);
+		.then((response: SignInResponse) => {
+			return Promise.resolve(response?.data);
 		})
 		.catch((error) => {
 			return Promise.reject(error);
