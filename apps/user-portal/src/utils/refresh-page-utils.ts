@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,12 @@
  * under the License.
  *
  */
+import { history } from "../helpers";
 
-export * from "./authenticate-util";
-export * from "./http-utils";
-export * from "./profile-utils";
-export * from "./search-utils";
-export * from "./storage-utils";
-export * from "./string-utils";
-export * from "./filter-utils";
-export * from "./refresh-page-utils";
+/**
+ * Refreshes the page by pushing a new path to history and then going back.
+ */
+export const refreshPage = (): void => {
+    history.push("#refresh");
+    history.goBack();
+};
