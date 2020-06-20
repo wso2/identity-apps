@@ -90,7 +90,9 @@ var AppUtils = AppUtils || (function() {
             }
 
             return {
-                accountApp: _config.accountAppOrigin + this.getTenantPath() + _config.accountApp.path,
+                accountApp: {
+                    path: _config.accountAppOrigin + this.getTenantPath() + _config.accountApp.path
+                },
                 appBase: _config.appBaseName,
                 appBaseWithTenant: this.getTenantPath() + "/" + _config.appBaseName,
                 clientID: (this.isSuperTenant()) ?
