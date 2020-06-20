@@ -18,7 +18,7 @@
 
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importTenantPrefix %>
-<%= htmlWebpackPlugin.options.importSuperTenantvarant %>
+<%= htmlWebpackPlugin.options.importSuperTenantConstant %>
 
 <!DOCTYPE HTML>
 <html>
@@ -49,7 +49,7 @@
             if (window["AppUtils"] === null || window["AppUtils"].getConfig() === null) {
                 AppUtils.init({
                     serverOrigin: "<%= htmlWebpackPlugin.options.serverUrl %>",
-                    superTenant: "<%= htmlWebpackPlugin.options.superTenantvarant %>",
+                    superTenant: "<%= htmlWebpackPlugin.options.superTenantConstant %>",
                     tenantPrefix: "<%= htmlWebpackPlugin.options.tenantPrefix %>"
                 });
             }

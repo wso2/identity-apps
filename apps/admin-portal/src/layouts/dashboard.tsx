@@ -367,7 +367,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                             primary
                             onClick={
                                 (): void => {
-                                    window.open(window[ "AppUtils" ].getConfig().accountAppURL);
+                                    window.open(window[ "AppUtils" ].getConfig().accountApp.path);
                                 }
                             }
                         >

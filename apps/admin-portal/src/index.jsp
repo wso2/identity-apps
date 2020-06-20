@@ -36,8 +36,7 @@
         <script>
             // When OAuth2 response mode is set to "form_post", Authorization code sent in a POST.
             // In such cases, the code is added to the sessionStorage under the key "code".
-            const authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>";
-
+            var authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>";
             if (authorizationCode !== "null") {
                 window.sessionStorage.setItem("code", authorizationCode);
             }
@@ -47,11 +46,38 @@
                 sessionStorage.setItem("session_state", sessionState);
             }
 
-            AppUtils.init({
-                serverOrigin: "<%= htmlWebpackPlugin.options.serverUrl %>",
-                superTenant: "<%= htmlWebpackPlugin.options.superTenantConstant %>",
-                tenantPrefix: "<%= htmlWebpackPlugin.options.tenantPrefix %>"
-            });
+            if (window["AppUtils"] === null || window["AppUtils"].getConfig() === null) {
+                AppUtils.init({
+                    serverOrigin: "<%= htmlWebpackPlugin.options.serverUrl %>",
+                    superTenant: "<%= htmlWebpackPlugin.options.superTenantConstant %>",
+                    tenantPrefix: "<%= htmlWebpackPlugin.options.tenantPrefix %>"
+                });
+            }
+
+            function getRandomPKCEChallenge() {
+                var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz-_";
+                var string_length = 43;
+                var randomString = "";
+                for (var i = 0; i < string_length; i++) {
+                    var rnum = Math.floor(Math.random() * chars.length);
+                    randomString += chars.substring(rnum, rnum + 1);
+                }
+                return randomString;
+            }
+
+            function sendPromptNoneRequest() {
+                var rpIFrame = document.getElementById("rpIFrame");
+                var promptNoneIFrame = rpIFrame.contentWindow.document.getElementById("promptNoneIFrame");
+                var config = window.parent["AppUtils"].getConfig();
+                promptNoneIFrame.src = sessionStorage.getItem("authorization_endpoint") +
+                    "?response_type=code" +
+                    "&client_id=" + config.clientID +
+                    "&scope=openid" +
+                    "&redirect_uri=" + config.loginCallbackURL +
+                    "&state=Y2hlY2tTZXNzaW9u" +
+                    "&prompt=none" +
+                    "&code_challenge_method=S256&code_challenge=" + getRandomPKCEChallenge();
+            }
 
             var config = window["AppUtils"].getConfig();
 
