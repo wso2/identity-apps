@@ -3,7 +3,7 @@
     "clientID": "USER_PORTAL",
     "loginCallbackPath": "/login",
     "logoutCallbackPath": "/login",
-    "productVersion": "5.11.0-m24-SNAPSHOT",
+    "productVersion": "",
     "serverOrigin": "https://localhost:9443",
     "routePaths": {
         "home": "/overview",

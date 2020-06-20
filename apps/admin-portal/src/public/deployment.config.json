@@ -1,5 +1,5 @@
 {
-    "accountAppURL": {
+    "accountApp": {
         "path": "/user-portal/overview"
     },
     "appBaseName": "admin-portal",
@@ -8,7 +8,7 @@
     "i18nResourcePath": "",
     "loginCallbackPath": "/login",
     "logoutCallbackPath": "/login",
-    "productVersion": "5.11.0-m24-SNAPSHOT",
+    "productVersion": "",
     "serverOrigin": "https://localhost:9443",
     "routePaths": {
         "home": "/overview",

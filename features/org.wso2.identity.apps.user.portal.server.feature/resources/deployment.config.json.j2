@@ -4,7 +4,9 @@
     "loginCallbackPath": "{{ user_portal.login_callback_path }}",
     "logoutCallbackPath": "{{ user_portal.logout_callback_path }}",
     "productVersion": "{{ product.version }}",
+    {% if user_portal.server_origin is defined %}
     "serverOrigin": "{{ user_portal.server_origin }}",
+    {% endif %}
     "routePaths": {
         {% if user_portal.route_paths is defined %}
         {% for path, value in user_portal.route_paths.items() %}

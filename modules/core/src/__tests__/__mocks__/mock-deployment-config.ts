@@ -18,7 +18,7 @@
 
 /* eslint-disable sort-keys */
 export const deploymentConfigMock = {
-    accountAppURL: {
+    accountApp: {
         path: "/user-portal/overview"
     },
     appBaseName: "developer-portal",

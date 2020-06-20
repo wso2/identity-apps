@@ -28,7 +28,9 @@
     "loginCallbackPath": "{{ admin_portal.login_callback_path }}",
     "logoutCallbackPath": "{{ admin_portal.logout_callback_path }}",
     "productVersion": "{{ product.version }}",
+    {% if admin_portal.server_origin is defined %}
     "serverOrigin": "{{ admin_portal.server_origin }}",
+    {% endif %}
     "routePaths": {
         {% if admin_portal.route_paths is defined %}
         {% for path, value in admin_portal.route_paths.items() %}
