@@ -18,7 +18,7 @@
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosHttpClient, AxiosHttpClientInstance } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { AxiosResponse } from "axios";
 import { ServerConfigurationsConstants } from "../constants";
 import { store } from "../store";
@@ -26,9 +26,8 @@ import { store } from "../store";
 /**
  * Initialize an axios Http client.
  *
- * @type { AxiosHttpClientInstance }
  */
-const httpClient: AxiosHttpClientInstance = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 export const getConfigurations = (url: string): Promise<any> => {
     const requestConfig = {
@@ -40,14 +39,14 @@ export const getConfigurations = (url: string): Promise<any> => {
         url: url
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     ServerConfigurationsConstants.CONFIGS_FETCH_REQUEST_INVALID_STATUS_CODE_ERROR,
                     null,
                     response.status,
-                    response.request,
+                    response,
                     response,
                     response.config);
             }
@@ -58,7 +57,7 @@ export const getConfigurations = (url: string): Promise<any> => {
                 ServerConfigurationsConstants.CONFIGS_FETCH_REQUEST_ERROR,
                 error.stack,
                 error.code,
-                error.request,
+                error,
                 error.response,
                 error.config);
         });
@@ -75,14 +74,14 @@ export const updateConfigurations = (data: object, url: string): Promise<any> =>
         url: url
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     ServerConfigurationsConstants.CONFIGS_UPDATE_REQUEST_INVALID_STATUS_CODE_ERROR,
                     null,
                     response.status,
-                    response.request,
+                    response,
                     response,
                     response.config);
             }
@@ -94,7 +93,7 @@ export const updateConfigurations = (data: object, url: string): Promise<any> =>
                 ServerConfigurationsConstants.CONFIGS_UPDATE_REQUEST_ERROR,
                 error.stack,
                 error.code,
-                error.request,
+                error,
                 error.response,
                 error.config);
         });
@@ -190,7 +189,7 @@ export const updateAllPasswordPolicies = (data: object): Promise<any> => {
  * @returns {Promise<any>} a promise containing the response.
  */
 export const getRequestPathAuthenticators = (): Promise<any> => {
-    return getConfigurations(store.getState().config.endpoints.requestPathAuthenticators);
+    return getConfigurations(store.getState().config.endpointsPathAuthenticators);
 };
 
 /**
