@@ -46,6 +46,10 @@ export interface CommonAuthReducerStateInterface {
      * Username decoded from the ID token.
      */
     username: string;
+    /**
+     * Scopes that a user is allowed.
+     */
+    scope: string;
 }
 
 /**
