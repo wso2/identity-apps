@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AxiosHttpClient, AxiosHttpClientInstance } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { AxiosError, AxiosResponse } from "axios";
 import { CommonServiceResourcesEndpoints } from "../configs";
 import { RoleConstants } from "../constants";
@@ -28,9 +28,8 @@ import { ContextUtils } from "../utils";
 /**
  * Initialize an axios Http client.
  *
- * @type { AxiosHttpClientInstance }
  */
-const httpClient: AxiosHttpClientInstance = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 /**
  * Retrieve the list of groups that are currently in the system.
@@ -51,7 +50,7 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
         url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).groups
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
