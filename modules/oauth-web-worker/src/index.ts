@@ -17,3 +17,4 @@
  */
 
 export * from "./oauth";
+export * from "./models";
