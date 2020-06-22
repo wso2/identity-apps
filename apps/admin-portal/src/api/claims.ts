@@ -17,16 +17,15 @@
  */
 
 import { Claim, HttpMethods } from "@wso2is/core/models";
-import { AxiosHttpClient, AxiosHttpClientInstance } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { AddExternalClaim } from "../models";
 import { store } from "../store";
 
 /**
  * Get an axios instance.
  *
- * @type {AxiosHttpClientInstance}.
  */
-const httpClient: AxiosHttpClientInstance = AxiosHttpClient.getInstance();
+const httpClient= OAuth.getInstance().httpRequest;
 
 /**
  * Add a local claim.
@@ -47,8 +46,7 @@ export const addLocalClaim = (data: Claim): Promise<any> => {
         url: store.getState().config.endpoints.localClaims
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 201) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -79,8 +77,7 @@ export const getAClaim = (id: string): Promise<any> => {
         url: `${store.getState().config.endpoints.localClaims}/${id}`
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -113,8 +110,7 @@ export const updateAClaim = (id: string, data: Claim): Promise<any> => {
         method: HttpMethods.PUT,
         url: `${store.getState().config.endpoints.localClaims}/${id}`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -144,8 +140,7 @@ export const deleteAClaim = (id: string): Promise<any> => {
         method: HttpMethods.DELETE,
         url: `${store.getState().config.endpoints.localClaims}/${id}`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -177,8 +172,7 @@ export const addDialect = (dialectURI: string): Promise<any> => {
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.claims
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 201) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -207,8 +201,7 @@ export const getADialect = (id: string): Promise<any> => {
         method: HttpMethods.GET,
         url: `${store.getState().config.endpoints.claims}/${id}`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -241,8 +234,7 @@ export const updateADialect = (id: string, dialectURI: string): Promise<any> => 
         method: HttpMethods.PUT,
         url: `${store.getState().config.endpoints.claims}/${id}`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -271,8 +263,7 @@ export const deleteADialect = (id: string): Promise<any> => {
         method: HttpMethods.DELETE,
         url: `${store.getState().config.endpoints.claims}/${id}`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -303,8 +294,7 @@ export const addExternalClaim = (dialectID: string, data: AddExternalClaim): Pro
         method: HttpMethods.POST,
         url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 201) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -334,8 +324,7 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
         method: HttpMethods.GET,
         url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}/${claimID}`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -367,8 +356,7 @@ export const updateAnExternalClaim = (dialectID: string, claimID: string, data: 
         method: HttpMethods.PUT,
         url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}/${claimID}`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -398,8 +386,7 @@ export const deleteAnExternalClaim = (dialectID: string, claimID: string): Promi
         method: HttpMethods.DELETE,
         url: `${store.getState().config.endpoints.externalClaims.replace("{}", dialectID)}/${claimID}`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
