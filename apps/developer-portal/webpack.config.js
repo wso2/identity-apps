@@ -27,14 +27,17 @@ const WriteFilePlugin = require("write-file-webpack-plugin");
 const deploymentConfig = require("./src/public/deployment.config.json");
 
 module.exports = (env) => {
-    const basename = deploymentConfig.appBaseName;
-    const devServerPort = 9001;
-    const publicPath = `/${ basename }`;
 
-    const isProd = env.NODE_ENV === "production";
+    // Build Environments.
+    const isProduction = env.NODE_ENV === "production";
+    const isDevelopment = env.NODE_ENV === "development";
 
     // Checks if analyzing mode enabled.
     const isAnalyzeMode = env.ENABLE_ANALYZER === "true";
+
+    const basename = deploymentConfig.appBaseName;
+    const devServerPort = 9001;
+    const publicPath = `/${ basename }`;
 
     /**
      * Build configurations
@@ -45,7 +48,7 @@ module.exports = (env) => {
     const titleText = deploymentConfig.ui.appTitle;
 
     const compileAppIndex = () => {
-        if (isProd) {
+        if (isProduction) {
             return new HtmlWebpackPlugin({
                 authorizationCode: "<%=request.getParameter(\"code\")%>",
                 contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
@@ -97,6 +100,7 @@ module.exports = (env) => {
         },
         devtool: "eval",
         entry: ["./src/index.tsx"],
+        mode: isProduction ? "production" : "development",
         module: {
             rules: [
                 {
