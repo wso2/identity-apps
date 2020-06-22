@@ -162,7 +162,7 @@ const CSSForm = (): ReactElement => {
      * @param {string} initialValue - Default value set in the default theme less.
      * @param {string} input - Input name.
      * @param {string} [type] - Input type. E.g. "color"
-     * 
+     *
      * @returns {inputProps}
      */
     const useStyleInput = (initialValue: string, input: string, type?: string) => {
@@ -269,7 +269,7 @@ const CSSForm = (): ReactElement => {
  *
  * @return {ReactElement} - Customize page.
  */
-export const CustomizePage = (): ReactElement => {
+const CustomizePage = (): ReactElement => {
 
     const { setAppName, setCopyrightText, setLogo, setProductName, setTheme, state } = useContext(ThemeContext);
 
@@ -433,4 +433,11 @@ ColorPicker.defaultProps = {
     inputOnChangeHandler: () => { return },
     name: "",
     placeholder: ""
-}
+};
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default CustomizePage;

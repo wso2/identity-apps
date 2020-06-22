@@ -31,7 +31,7 @@ type OverviewPageInterface = TestableComponentInterface;
  *
  * @return {React.ReactElement}
  */
-export const PrivacyPage: FunctionComponent<OverviewPageInterface> = (
+const PrivacyPage: FunctionComponent<OverviewPageInterface> = (
     props: OverviewPageInterface
 ): ReactElement => {
 
@@ -368,3 +368,10 @@ export const PrivacyPage: FunctionComponent<OverviewPageInterface> = (
 PrivacyPage.defaultProps = {
     "data-testid": "privacy-policy"
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default PrivacyPage;

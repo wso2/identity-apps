@@ -43,7 +43,7 @@ type ApplicationTemplateSelectPageInterface = TestableComponentInterface;
  *
  * @return {React.ReactElement}
  */
-export const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelectPageInterface> = (
+const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelectPageInterface> = (
     props: ApplicationTemplateSelectPageInterface
 ): ReactElement => {
 
@@ -217,3 +217,10 @@ export const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplat
 ApplicationTemplateSelectPage.defaultProps = {
     "data-testid": "application-templates"
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default ApplicationTemplateSelectPage;

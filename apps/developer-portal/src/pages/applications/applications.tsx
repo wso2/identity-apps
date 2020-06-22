@@ -75,7 +75,7 @@ type ApplicationsPageInterface = TestableComponentInterface;
  *
  * @return {React.ReactElement}
  */
-export const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
+const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     props: ApplicationsPageInterface
 ): ReactElement => {
 
@@ -294,3 +294,10 @@ export const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 ApplicationsPage.defaultProps = {
     "data-testid": "applications"
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default ApplicationsPage;

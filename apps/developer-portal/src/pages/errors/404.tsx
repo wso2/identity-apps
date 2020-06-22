@@ -31,7 +31,7 @@ import { AppState } from "../../store";
  *
  * @return {React.ReactElement}
  */
-export const PageNotFound: FunctionComponent<{}> = (): ReactElement => {
+const PageNotFound: FunctionComponent<{}> = (): ReactElement => {
 
     const { t } = useTranslation();
 
@@ -58,3 +58,10 @@ export const PageNotFound: FunctionComponent<{}> = (): ReactElement => {
         />
     );
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default PageNotFound;

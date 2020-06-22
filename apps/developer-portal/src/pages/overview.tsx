@@ -23,8 +23,7 @@ import {
     Jumbotron,
     PageLayout,
     StatsInsightsWidget,
-    StatsOverviewWidget,
-    StatsQuickLinksWidget
+    StatsOverviewWidget
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -54,7 +53,7 @@ type OverviewPageInterface = TestableComponentInterface;
  *
  * @return {React.ReactElement}
  */
-export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
+const OverviewPage: FunctionComponent<OverviewPageInterface> = (
     props: OverviewPageInterface
 ): ReactElement => {
 
@@ -272,3 +271,10 @@ export const OverviewPage: FunctionComponent<OverviewPageInterface> = (
 OverviewPage.defaultProps = {
     "data-testid": "overview"
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default OverviewPage;
