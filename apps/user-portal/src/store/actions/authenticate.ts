@@ -18,16 +18,22 @@
 
 import { OAuth } from "@wso2is/oauth-web-worker";
 import _ from "lodash";
+import { getProfileLinkedAccounts } from ".";
 import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { AuthAction, authenticateActionTypes } from "./types";
 import { getProfileInfo, getProfileSchemas, switchAccount } from "../../api";
 import { i18n } from "../../configs";
 import { history } from "../../helpers";
-import { AlertLevels, AuthenticatedUserInterface, BasicProfileInterface, ProfileSchema, LinkedAccountInterface } from "../../models";
+import {
+	AlertLevels,
+	AuthenticatedUserInterface,
+	BasicProfileInterface,
+	LinkedAccountInterface,
+	ProfileSchema
+} from "../../models";
 import { getProfileCompletion } from "../../utils";
 import { store } from "../index";
-import { getProfileLinkedAccounts } from ".";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
@@ -188,13 +194,15 @@ export const handleSignIn = () => (dispatch) => {
 			oAuth
 				.signIn()
 				.then((response) => {
-					dispatch(setSignIn({
-                        // eslint-disable-next-line @typescript-eslint/camelcase
-                        display_name: response.displayName,
-                        email: response.email,
-                        scope: response.allowedScopes,
-                        username: response.username
-                    }));
+					dispatch(
+						setSignIn({
+							// eslint-disable-next-line @typescript-eslint/camelcase
+							display_name: response.displayName,
+							email: response.email,
+							scope: response.allowedScopes,
+							username: response.username
+						})
+					);
 
 					dispatch(getProfileInformation());
 				})
@@ -224,26 +232,28 @@ export const handleSignOut = () => (dispatch) => {
 
 /**
  * Handles account switching.
- * 
+ *
  * @param {LinkedAccountInterface} account Info about the the account to switch to.
- * 
+ *
  * @returns {(dispatch)=>void} A function that accepts dispatch as an argument.
  */
 export const handleAccountSwitching = (account: LinkedAccountInterface) => (dispatch) => {
-    switchAccount(account).then((response) => {
-		dispatch(
-			setSignIn({
-				// eslint-disable-next-line @typescript-eslint/camelcase
-				display_name: response.displayName,
-				email: response.email,
-				scope: response.allowedScopes,
-				username: response.username
-			})
-		);
+	switchAccount(account)
+		.then((response) => {
+			dispatch(
+				setSignIn({
+					// eslint-disable-next-line @typescript-eslint/camelcase
+					display_name: response.displayName,
+					email: response.email,
+					scope: response.allowedScopes,
+					username: response.username
+				})
+			);
 
-        dispatch(getProfileInformation());
-        dispatch(getProfileLinkedAccounts());
-    }).catch(error => {
-        throw error;
-    });
+			dispatch(getProfileInformation());
+			dispatch(getProfileLinkedAccounts());
+		})
+		.catch((error) => {
+			throw error;
+		});
 };
