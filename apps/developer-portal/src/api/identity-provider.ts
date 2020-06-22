@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosHttpClient } from "@wso2is/http";
 import { AxiosError, AxiosResponse } from "axios";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
@@ -43,9 +43,8 @@ import { store } from "../store";
 /**
  * Get an axios instance.
  *
- * @type {AxiosHttpClientInstance}.
  */
-const httpClient = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 /**
  * Creates Identity Provider.
@@ -64,7 +63,7 @@ export const createIdentityProvider = (identityProvider: object): Promise<any> =
         url: store.getState().config.endpoints.identityProviders
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if ((response.status !== 201)) {
                 return Promise.reject(new Error("Failed to create the application."));
@@ -108,7 +107,7 @@ export const getIdentityProviderList = (
         url: store.getState().config.endpoints.identityProviders
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get IdP list from: "));
@@ -136,7 +135,7 @@ export const getIdentityProviderDetail = (id: string): Promise<any> => {
         url: store.getState().config.endpoints.identityProviders + "/" + id
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get idp details from: "));
@@ -164,7 +163,7 @@ export const deleteIdentityProvider = (id: string): Promise<any> => {
         url: store.getState().config.endpoints.identityProviders + "/" + id
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 204) {
                 return Promise.reject(new Error("Failed to delete the identity provider."));
@@ -205,7 +204,7 @@ export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): P
         url: store.getState().config.endpoints.identityProviders + "/" + id
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + id));
@@ -242,7 +241,7 @@ export const updateFederatedAuthenticator = (
             "/federated-authenticators/" + authenticatorId
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
@@ -273,7 +272,7 @@ export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId:
             "/federated-authenticators/" + authenticatorId
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
@@ -304,7 +303,7 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
         url: store.getState().config.endpoints.identityProviders + "/meta/federated-authenticators/" + id
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get federated authenticator meta details for: " + id));
@@ -332,7 +331,7 @@ export const getFederatedAuthenticatorsList = (): Promise<any> => {
         url: store.getState().config.endpoints.identityProviders + "/meta/federated-authenticators"
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get federated authenticators list"));
@@ -363,7 +362,7 @@ export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Prom
             authenticatorId
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get federated authenticator metadata for: "
@@ -395,7 +394,7 @@ export const getOutboundProvisioningConnectorMetadata = (connectorId: string): P
             connectorId
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get outbound provisioning connector metadata for: "
@@ -428,7 +427,7 @@ export const getOutboundProvisioningConnector = (idpId: string, connectorId: str
             + connectorId
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get outbound provisioning connector for: "
@@ -467,7 +466,7 @@ export const updateOutboundProvisioningConnector = (
             "/provisioning/outbound-connectors/" + connectorId
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
@@ -502,7 +501,7 @@ export const updateJITProvisioningConfigs = (
             "/provisioning/jit"
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
@@ -542,7 +541,7 @@ export const updateClaimsConfigs = (
         url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/claims"
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
@@ -585,7 +584,7 @@ export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
         url: store.getState().config.endpoints.identityProviders + "/templates"
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
@@ -627,7 +626,7 @@ export const getIdentityProviderTemplate = (templateId: string): Promise<Identit
         url: store.getState().config.endpoints.identityProviders + "/templates/" + templateId
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
@@ -675,7 +674,7 @@ export const updateIDPRoleMappings = (
         url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/roles"
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
@@ -703,7 +702,7 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
         url: store.getState().config.endpoints.localAuthenticators
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
@@ -743,7 +742,7 @@ export const getOutboundProvisioningConnectorsList = (): Promise<OutboundProvisi
         url: store.getState().config.endpoints.identityProviders + "/meta/outbound-provisioning-connectors"
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to fetch outbound provisioning connectors"));
@@ -777,7 +776,7 @@ export const updateIDPCertificate = (
         url: store.getState().config.endpoints.identityProviders + "/" + idpId
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
@@ -817,7 +816,7 @@ export const updateOutboundProvisioningConnectors = (
         url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/provisioning/outbound-connectors/"
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
@@ -851,7 +850,7 @@ export const updateFederatedAuthenticators = (
         url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/federated-authenticators/"
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update identity provider: " + idpId));
