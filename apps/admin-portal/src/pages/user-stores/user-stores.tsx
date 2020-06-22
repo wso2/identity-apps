@@ -72,6 +72,7 @@ export const UserStores: FunctionComponent<UserStoresPageInterface> = (
     ];
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [ userStores, setUserStores ] = useState<UserStoreListItem[]>([]);
     const [ offset, setOffset ] = useState(0);
@@ -267,7 +268,8 @@ export const UserStores: FunctionComponent<UserStoresPageInterface> = (
                 rightActionPanel={
                     hasRequiredScopes(
                         featureConfig?.userStores,
-                        featureConfig?.userStores?.scopes?.create) && (
+                        featureConfig?.userStores?.scopes?.create,
+                        allowedScopes) && (
                         <PrimaryButton
                             onClick={ () => {
                                 history.push(AppConstants.PATHS.get("USERSTORE_TEMPLATES"));

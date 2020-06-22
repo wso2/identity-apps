@@ -132,6 +132,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     const [ tenantCertificate, setTenantCertificate ] = useState("");
 
     const tenantDomain: string = useSelector<AppState, string>((state: AppState) => state.config.deployment.tenant);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const dispatch = useDispatch();
 
@@ -497,13 +498,15 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
      */
     const hasRequiredPermissions = (): boolean => {
         if (type === KEYSTORE
-            && hasRequiredScopes(featureConfig?.certificates, featureConfig?.certificates?.scopes?.read)) {
+            && hasRequiredScopes(
+                featureConfig?.certificates, featureConfig?.certificates?.scopes?.read, allowedScopes
+            )) {
 
             return true;
         }
 
         return type === TRUSTSTORE
-            && hasRequiredScopes(featureConfig?.certificates, featureConfig?.certificates?.scopes?.read);
+            && hasRequiredScopes(featureConfig?.certificates, featureConfig?.certificates?.scopes?.read, allowedScopes);
     };
 
     return (
@@ -624,7 +627,8 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                                                 hidden: !(
                                                     type === KEYSTORE
                                                     && hasRequiredScopes(featureConfig?.certificates,
-                                                        featureConfig?.certificates?.scopes?.delete)
+                                                        featureConfig?.certificates?.scopes?.delete,
+                                                        allowedScopes)
                                                 )
                                                     || isSuper,
                                                 icon: "trash alternate",
