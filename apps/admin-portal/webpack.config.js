@@ -113,6 +113,29 @@ module.exports = (env) => {
         mode: isProduction ? "production" : "development",
         module: {
             rules: [
+                // First, run the linter. It's important to do this before Babel processes the JS.
+                {
+                    enforce: "pre",
+                    exclude: /(node_modules|dist|build|target|plugins)/,
+                    test: /\.(ts|tsx|js|jsx)$/,
+                    use: [
+                        { loader: "cache-loader" },
+                        {
+                            loader: "thread-loader",
+                            options: {
+                                // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                                workers: 1
+                            }
+                        },
+                        {
+                            loader: "eslint-loader",
+                            options: {
+                                happyPackMode: true,
+                                transpileOnly: true
+                            }
+                        }
+                    ]
+                },
                 {
                     test: /\.css$/,
                     use: ["style-loader", "css-loader"]
@@ -160,32 +183,12 @@ module.exports = (env) => {
                 },
                 {
                     enforce: "pre",
-                    exclude: /(node_modules|dist|build|target|plugins)/,
-                    test: /\.(ts|tsx|js|jsx)$/,
-                    use: [
-                        { loader: "cache-loader" },
-                        {
-                            loader: "thread-loader",
-                            options: {
-                                // there should be 1 cpu for the fork-ts-checker-webpack-plugin
-                                workers: 1
-                            }
-                        },
-                        {
-                            loader: "eslint-loader",
-                            options: {
-                                happyPackMode: true,
-                                transpileOnly: true
-                            }
-                        }
-                    ]
-                },
-                {
-                    enforce: "pre",
                     test: /\.js$/,
                     use: ["source-map-loader"]
                 }
-            ]
+            ],
+            // Makes missing exports an error instead of warning.
+            strictExportPresence: true
         },
         node: {
             fs: "empty"
