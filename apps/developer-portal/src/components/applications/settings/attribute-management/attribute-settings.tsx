@@ -32,7 +32,7 @@ import { ContentLoader } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
@@ -46,6 +46,7 @@ import {
     RoleMappingInterface,
     SubjectConfigInterface
 } from "../../../../models";
+import { AppState } from "../../../../store";
 
 export interface SelectedDialectInterface {
     dialectURI: string;
@@ -166,7 +167,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const [triggerAdvanceSettingFormSubmission, setTriggerAdvanceSettingFormSubmission] = useTrigger();
 
     // Role Mapping.
-    const [roleMapping, setRoleMapping] = useState<RoleMappingInterface[]>([]);
+    const [ roleMapping, setRoleMapping ] = useState<RoleMappingInterface[]>([]);
+    
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const getClaims = () => {
         getAllLocalClaims(null)
@@ -606,7 +609,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     setClaimMappingOn={ setClaimMappingOn }
                     claimMappingError={ claimMappingError }
                     readOnly={
-                        !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                        !hasRequiredScopes(
+                            featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)
                     }
                     data-testid={ `${ testId }-attribute-selection` }
                 />
@@ -618,7 +622,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     initialSubject={ claimConfigurations.subject }
                     claimMappingOn={ claimMappingOn }
                     readOnly={
-                        !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                        !hasRequiredScopes(
+                            featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)
                     }
                     data-testid={ `${ testId }-advanced-attribute-settings-form` }
                 />
@@ -627,12 +632,14 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     onSubmit={ setRoleMapping }
                     initialMappings={ claimConfigurations.role?.mappings }
                     readOnly={
-                        !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                        !hasRequiredScopes(
+                            featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)
                     }
                     data-testid={ `${ testId }-role-mapping` }
                 />
                 {
-                    hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update) && (
+                    hasRequiredScopes(
+                        featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes) && (
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
                                 <Button
