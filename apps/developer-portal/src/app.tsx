@@ -63,6 +63,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
     const userName: string = useSelector((state: AppState) => state.auth.username);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const loginInit: boolean = useSelector((state: AppState) => state.auth.loginInit);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     /**
      * Set the deployment configs in redux state.
@@ -130,7 +131,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
             return;
         }
 
-        if (isPortalAccessGranted<FeatureConfigInterface>(config?.ui?.features)) {
+        if (isPortalAccessGranted<FeatureConfigInterface>(config?.ui?.features, allowedScopes)) {
             return;
         }
 
