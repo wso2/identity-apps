@@ -16,9 +16,8 @@
  * under the License.
  */
 
-import { ConfigInterface, IdentityClient } from "@wso2is/authentication";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
-import { TokenConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import {
@@ -132,60 +131,56 @@ export const getProfileInformation = () => (dispatch): void => {
 };
 
 /**
- * Initialize identityManager client
- */
-const identityManager = (() => {
-    let instance: ConfigInterface;
-
-    const createInstance = () => {
-        return new IdentityClient({
-            callbackURL: store.getState().config.deployment.loginCallbackUrl,
-            clientHost: store.getState().config.deployment.clientHost,
-            clientID: store.getState().config.deployment.clientID,
-            responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
-            scope: [ TokenConstants.SYSTEM_SCOPE ],
-            serverOrigin: store.getState().config.deployment.serverOrigin,
-            tenant: store.getState().config.deployment.tenant,
-            tenantPath: store.getState().config.deployment.tenantPath
-        });
-    };
-
-    return {
-        getInstance: () => {
-            if (!instance) {
-                instance = createInstance();
-            }
-
-            return instance;
-        }
-    };
-})();
-
-/**
  * Handle user sign-in
  */
 export const handleSignIn = () => (dispatch) => {
-    identityManager.getInstance().signIn(
-        () => {
-            dispatch(setSignIn());
-            dispatch(getProfileInformation());
-        })
-        .catch((error) => {
-            // TODO: Show error page
-            throw error;
-        });
+	const oAuth = OAuth.getInstance();
+	oAuth
+		.initialize({
+			baseUrls: [window["AppUtils"].getConfig().serverOrigin],
+			callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
+			clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
+			clientID: window["AppUtils"].getConfig().clientID,
+			enablePKCE: true,
+			scope: ["SYSTEM", "openid"],
+			serverOrigin: window["AppUtils"].getConfig().serverOrigin
+		})
+		.then(() => {
+			oAuth
+				.signIn()
+				.then((response) => {
+					dispatch(
+						setSignIn({
+							// eslint-disable-next-line @typescript-eslint/camelcase
+							display_name: response.displayName,
+							email: response.email,
+							scope: response.allowedScopes,
+							username: response.username
+						})
+					);
+
+					dispatch(getProfileInformation());
+				})
+				.catch((error) => {
+					throw error;
+				});
+		})
+		.catch((error) => {
+			throw error;
+		});
 };
 
 /**
  * Handle user sign-out
  */
 export const handleSignOut = () => (dispatch) => {
-    identityManager.getInstance().signOut(
-        () => {
-            AuthenticateUtils.removeAuthenticationCallbackUrl();
-            dispatch(setSignOut());
-        })
-        .catch(() => {
-            history.push(store.getState().config.deployment.appLoginPath);
-        });
+	const oAuth = OAuth.getInstance();
+	oAuth
+		.signOut()
+		.then(() => {
+			dispatch(setSignOut());
+		})
+		.catch(() => {
+			history.push(store?.getState()?.config?.deployment?.appLoginPath);
+		});
 };
