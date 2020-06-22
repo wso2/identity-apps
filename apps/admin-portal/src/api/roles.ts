@@ -17,20 +17,19 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosHttpClient, AxiosHttpClientInstance } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { CreateRoleInterface, PatchRoleDataInterface, SearchRoleInterface } from "../models";
 import { store } from "../store";
 
 /**
  * Initialize an axios Http client.
- * @type { AxiosHttpClientInstance }
  */
-const httpClient: AxiosHttpClientInstance = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 /**
- * Retrive Role details for a give role id.
+ * Retrieve Role details for a give role id.
  *
- * @param roleId role id to retrive role details
+ * @param roleId role id to retrieve role details
  */
 export const getRoleById = (roleId: string): Promise<any> => {
     const requestConfig = {
@@ -42,7 +41,7 @@ export const getRoleById = (roleId: string): Promise<any> => {
         url: store.getState().config.endpoints.groups + "/" + roleId
     };
 
-    return httpClient.request(requestConfig).then((response) => {
+    return httpClient(requestConfig).then((response) => {
         return Promise.resolve(response);
     }).catch((error) => {
         return Promise.reject(error);
@@ -66,7 +65,7 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
         url: store.getState().config.endpoints.groups + "/" + roleId
     };
 
-    return httpClient.request(requestConfig).then((response) => {
+    return httpClient(requestConfig).then((response) => {
         return Promise.resolve(response);
     }).catch((error) => {
         return Promise.reject(error);
@@ -89,7 +88,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
         url: store.getState().config.endpoints.groups + "/.search"
     };
 
-    return httpClient.request(requestConfig).then((response) => {
+    return httpClient(requestConfig).then((response) => {
         return Promise.resolve(response);
     }).catch((error) => {
         return Promise.reject(error)
@@ -113,7 +112,7 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
         url: store.getState().config.endpoints.groups + "/" + roleId
     };
 
-    return httpClient.request(requestConfig).then((response) => {
+    return httpClient(requestConfig).then((response) => {
         return Promise.resolve(response);
     }).catch((error) => {
         return Promise.reject(error)
@@ -136,7 +135,7 @@ export const createRole = (data: CreateRoleInterface): Promise<any> => {
         url: store.getState().config.endpoints.groups
     };
 
-    return httpClient.request(requestConfig).then((response) => {
+    return httpClient(requestConfig).then((response) => {
         return Promise.resolve(response);
     }).catch((error) => {
         return Promise.reject(error)
@@ -160,7 +159,7 @@ export const updateRolePermissions = (roleId: string, data: any): Promise<any> =
         url: store.getState().config.endpoints.groups + "/" + roleId + "/permissions"
     };
 
-    return httpClient.request(requestConfig).then((response) => {
+    return httpClient(requestConfig).then((response) => {
         return Promise.resolve(response);
     }).catch((error) => {
         return Promise.reject(error)
@@ -182,7 +181,7 @@ export const getPermissionList = (): Promise<any> => {
         url: store.getState().config.endpoints.permission
     };
 
-    return httpClient.request(requestConfig).then((response) => {
+    return httpClient(requestConfig).then((response) => {
         return Promise.resolve(response);
     }).catch((error) => {
         return Promise.reject(error);
@@ -192,7 +191,7 @@ export const getPermissionList = (): Promise<any> => {
 /**
  * Retrieve the list of permissions available for a given Role Id.
  *
- * @param roleId Role Id to retrieve relevent permissions
+ * @param roleId Role Id to retrieve relevant permissions
  */
 export const getPermissionsForRole = (roleId: string): Promise<any> => {
     const requestConfig = {
@@ -204,7 +203,7 @@ export const getPermissionsForRole = (roleId: string): Promise<any> => {
         url: store.getState().config.endpoints.groups + "/" + roleId + "/permissions"
     };
 
-    return httpClient.request(requestConfig).then((response) => {
+    return httpClient(requestConfig).then((response) => {
         return Promise.resolve(response);
     }).catch((error) => {
         return Promise.reject(error);
