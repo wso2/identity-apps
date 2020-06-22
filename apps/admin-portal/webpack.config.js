@@ -47,49 +47,11 @@ module.exports = (env) => {
     const devServerPort = 9002;
     const publicPath = `/${ basename }`;
 
-    /**
-     * Build configurations
-     */
+    // Build configurations.
     const distFolder = path.resolve(__dirname, "build", basename);
     const faviconImage = path.resolve(__dirname, "node_modules",
         "@wso2is/theme/dist/lib/themes/default/assets/images/favicon.ico");
     const titleText = deploymentConfig.ui.appTitle;
-
-    const compileAppIndex = () => {
-        if (isProduction) {
-            return new HtmlWebpackPlugin({
-                authorizationCode: "<%=request.getParameter(\"code\")%>",
-                contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
-                    "pageEncoding=\"UTF-8\" %>",
-                favicon: faviconImage,
-                filename: path.join(distFolder, "index.jsp"),
-                hash: true,
-                importSuperTenantConstant: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
-                    "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>",
-                importTenantPrefix: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
-                    "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>",
-                importUtil: "<%@ page import=\"" +
-                    "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
-                publicPath: publicPath,
-                serverUrl: "<%=getServerURL(\"\", true, true)%>",
-                sessionState: "<%=request.getParameter(\"session_state\")%>",
-                superTenantConstant: "<%=SUPER_TENANT_DOMAIN_NAME%>",
-                template: path.join(__dirname, "src", "index.jsp"),
-                tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
-                tenantPrefix: "<%=TENANT_AWARE_URL_PREFIX%>",
-                title: titleText
-            });
-        } else {
-            return new HtmlWebpackPlugin({
-                favicon: faviconImage,
-                filename: path.join(distFolder, "index.html"),
-                hash: true,
-                publicPath: publicPath,
-                template: path.join(__dirname, "src", "index.html"),
-                title: titleText
-            });
-        }
-    };
 
     return {
         devServer: {
@@ -115,29 +77,6 @@ module.exports = (env) => {
         mode: isProduction ? "production" : "development",
         module: {
             rules: [
-                // First, run the linter. It's important to do this before Babel processes the JS.
-                {
-                    enforce: "pre",
-                    exclude: /(node_modules|dist|build|target|plugins)/,
-                    test: /\.(ts|tsx|js|jsx)$/,
-                    use: [
-                        { loader: "cache-loader" },
-                        {
-                            loader: "thread-loader",
-                            options: {
-                                // there should be 1 cpu for the fork-ts-checker-webpack-plugin
-                                workers: 1
-                            }
-                        },
-                        {
-                            loader: "eslint-loader",
-                            options: {
-                                happyPackMode: true,
-                                transpileOnly: true
-                            }
-                        }
-                    ]
-                },
                 {
                     test: /\.css$/,
                     use: ["style-loader", "css-loader"]
@@ -187,6 +126,28 @@ module.exports = (env) => {
                     enforce: "pre",
                     test: /\.js$/,
                     use: ["source-map-loader"]
+                },
+                {
+                    enforce: "pre",
+                    exclude: /(node_modules|dist|build|target|plugins)/,
+                    test: /\.(ts|tsx|js|jsx)$/,
+                    use: [
+                        { loader: "cache-loader" },
+                        {
+                            loader: "thread-loader",
+                            options: {
+                                // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                                workers: 1
+                            }
+                        },
+                        {
+                            loader: "eslint-loader",
+                            options: {
+                                happyPackMode: true,
+                                transpileOnly: true
+                            }
+                        }
+                    ]
                 }
             ],
             // Makes missing exports an error instead of warning.
@@ -293,7 +254,37 @@ module.exports = (env) => {
                     to: "."
                 }
             ]),
-            compileAppIndex(),
+            isProduction
+                ? new HtmlWebpackPlugin({
+                    authorizationCode: "<%=request.getParameter(\"code\")%>",
+                    contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
+                        "pageEncoding=\"UTF-8\" %>",
+                    favicon: faviconImage,
+                    filename: path.join(distFolder, "index.jsp"),
+                    hash: true,
+                    importSuperTenantConstant: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                        "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>",
+                    importTenantPrefix: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                        "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>",
+                    importUtil: "<%@ page import=\"" +
+                        "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
+                    publicPath: publicPath,
+                    serverUrl: "<%=getServerURL(\"\", true, true)%>",
+                    sessionState: "<%=request.getParameter(\"session_state\")%>",
+                    superTenantConstant: "<%=SUPER_TENANT_DOMAIN_NAME%>",
+                    template: path.join(__dirname, "src", "index.jsp"),
+                    tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
+                    tenantPrefix: "<%=TENANT_AWARE_URL_PREFIX%>",
+                    title: titleText
+                })
+                : new HtmlWebpackPlugin({
+                    favicon: faviconImage,
+                    filename: path.join(distFolder, "index.html"),
+                    hash: true,
+                    publicPath: publicPath,
+                    template: path.join(__dirname, "src", "index.html"),
+                    title: titleText
+                }),
             new webpack.DefinePlugin({
                 "process.env": {
                     NODE_ENV: JSON.stringify(env.NODE_ENV)
