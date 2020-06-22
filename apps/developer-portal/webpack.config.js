@@ -16,21 +16,25 @@
  * under the License.
  */
 
-const webpack = require("webpack");
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const webpack = require("webpack");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const WriteFilePlugin = require("write-file-webpack-plugin");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const deploymentConfig = require("./src/public/deployment.config.json");
 
 module.exports = (env) => {
     const basename = deploymentConfig.appBaseName;
     const devServerPort = 9001;
-    const publicPath = `/${basename}`;
+    const publicPath = `/${ basename }`;
 
     const isProd = env.NODE_ENV === "production";
+
+    // Checks if analyzing mode enabled.
+    const isAnalyzeMode = env.ENABLE_ANALYZER === "true";
 
     /**
      * Build configurations
@@ -43,52 +47,56 @@ module.exports = (env) => {
     const compileAppIndex = () => {
         if (isProd) {
             return new HtmlWebpackPlugin({
-                filename: path.join(distFolder, "index.jsp"),
-                template: path.join(__dirname, "src", "index.jsp"),
-                hash: true,
-                favicon: faviconImage,
-                title: titleText,
-                publicPath: publicPath,
+                authorizationCode: "<%=request.getParameter(\"code\")%>",
                 contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                     "pageEncoding=\"UTF-8\" %>",
-                importUtil: "<%@ page import=\"" +
-                    "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
-                importTenantPrefix: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
-                    "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>",
+                favicon: faviconImage,
+                filename: path.join(distFolder, "index.jsp"),
+                hash: true,
                 importSuperTenantConstant: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
                     "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>",
+                importTenantPrefix: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                    "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>",
+                importUtil: "<%@ page import=\"" +
+                    "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
+                publicPath: publicPath,
                 serverUrl: "<%=getServerURL(\"\", true, true)%>",
+                sessionState: "<%=request.getParameter(\"session_state\")%>",
                 superTenantConstant: "<%=SUPER_TENANT_DOMAIN_NAME%>",
+                template: path.join(__dirname, "src", "index.jsp"),
                 tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
                 tenantPrefix: "<%=TENANT_AWARE_URL_PREFIX%>",
-                authorizationCode: "<%=request.getParameter(\"code\")%>",
-                sessionState: "<%=request.getParameter(\"session_state\")%>",
-                NODE_ENV: JSON.stringify(env.NODE_ENV)
+                title: titleText
             });
-        }
-        else {
+        } else {
             return new HtmlWebpackPlugin({
-                filename: path.join(distFolder, "index.html"),
-                template: path.join(__dirname, "src", "index.html"),
-                hash: true,
                 favicon: faviconImage,
-                title: titleText,
+                filename: path.join(distFolder, "index.html"),
+                hash: true,
                 publicPath: publicPath,
-                NODE_ENV: JSON.stringify(env.NODE_ENV)
+                template: path.join(__dirname, "src", "index.html"),
+                title: titleText
             });
         }
     };
 
     return {
+        devServer: {
+            before: function(app) {
+                app.get("/", function(req, res) {
+                    res.redirect(publicPath);
+                });
+            },
+            contentBase: distFolder,
+            historyApiFallback: true,
+            host: "localhost",
+            https: true,
+            inline: true,
+            openPage: basename,
+            port: devServerPort
+        },
+        devtool: "eval",
         entry: ["./src/index.tsx"],
-        output: {
-            path: distFolder,
-            filename: "[name].js",
-            publicPath: `${publicPath}/`
-        },
-        resolve: {
-            extensions: [".tsx", ".ts", ".js", ".json"]
-        },
         module: {
             rules: [
                 {
@@ -159,33 +167,37 @@ module.exports = (env) => {
                     ]
                 },
                 {
+                    enforce: "pre",
                     test: /\.js$/,
-                    use: ["source-map-loader"],
-                    enforce: "pre"
+                    use: ["source-map-loader"]
                 }
             ]
-        },
-        watchOptions: {
-            ignored: [/node_modules([\\]+|\/)+(?!@wso2is)/, /build/]
-        },
-        devServer: {
-            before: function(app) {
-                app.get("/", function(req, res) {
-                    res.redirect(publicPath);
-                });
-            },
-            contentBase: distFolder,
-            historyApiFallback: true,
-            host: "localhost",
-            https: true,
-            inline: true,
-            openPage: basename,
-            port: devServerPort
         },
         node: {
             fs: "empty"
         },
+        optimization: {
+            minimize: true,
+            minimizer: [
+                new TerserPlugin({
+                    cache: path.resolve(__dirname, "cache"),
+                    extractComments: true,
+                    terserOptions: {
+                        keep_fnames: true
+                    }
+                })
+            ].filter(Boolean),
+            splitChunks: {
+                chunks: "all"
+            }
+        },
+        output: {
+            filename: "[name].js",
+            path: distFolder,
+            publicPath: `${ publicPath }/`
+        },
         plugins: [
+            isAnalyzeMode && new BundleAnalyzerPlugin(),
             new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
             new WriteFilePlugin({
                 // Exclude hot-update files
@@ -209,9 +221,9 @@ module.exports = (env) => {
                 },
                 {
                     context: path.join(__dirname, "src"),
+                    force: true,
                     from: "public",
-                    to: ".",
-                    force: true
+                    to: "."
                 }
             ]),
             compileAppIndex(),
@@ -221,22 +233,12 @@ module.exports = (env) => {
                 },
                 "typeof window": JSON.stringify("object")
             })
-        ],
-        devtool: "eval",
-        optimization: {
-            minimize: true,
-            minimizer: [
-                new TerserPlugin({
-                    cache: path.resolve(__dirname, "cache"),
-                    extractComments: true,
-                    terserOptions: {
-                        keep_fnames: true
-                    }
-                })
-            ].filter(Boolean),
-            splitChunks: {
-                chunks: "all"
-            }
+        ].filter(Boolean),
+        resolve: {
+            extensions: [".tsx", ".ts", ".js", ".json"]
+        },
+        watchOptions: {
+            ignored: [/node_modules([\\]+|\/)+(?!@wso2is)/, /build/]
         }
     };
 };

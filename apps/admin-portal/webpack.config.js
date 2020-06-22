@@ -22,6 +22,7 @@ const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const WriteFilePlugin = require("write-file-webpack-plugin");
 const deploymentConfig = require("./src/public/deployment.config.json");
 
@@ -31,6 +32,9 @@ module.exports = (env) => {
     const publicPath = `/${ basename }`;
 
     const isProd = env.NODE_ENV === "production";
+
+    // Checks if analyzing mode enabled.
+    const isAnalyzeMode = env.ENABLE_ANALYZER === "true";
 
     /**
      * Build configurations
@@ -193,6 +197,7 @@ module.exports = (env) => {
             publicPath: `${ publicPath }/`
         },
         plugins: [
+            isAnalyzeMode && new BundleAnalyzerPlugin(),
             new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
             new WriteFilePlugin({
                 // Exclude hot-update files
@@ -228,7 +233,7 @@ module.exports = (env) => {
                 },
                 "typeof window": JSON.stringify("object")
             })
-        ],
+        ].filter(Boolean),
         resolve: {
             extensions: [".tsx", ".ts", ".js", ".json"]
         },
