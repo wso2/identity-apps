@@ -235,7 +235,12 @@ module.exports = (env) => {
             }
         },
         output: {
-            filename: "[name].js",
+            chunkFilename: isProduction
+                ? "static/js/[name].[contenthash:8].chunk.js"
+                : "static/js/[name].chunk.js",
+            filename: isProduction
+                ? "static/js/[name].[contenthash:8].js"
+                : "static/js/[name].js",
             path: distFolder,
             publicPath: `${ publicPath }/`
         },
