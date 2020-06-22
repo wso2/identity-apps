@@ -17,25 +17,64 @@
  *
  */
 
+import { I18nModuleConstants } from "../constants";
 import {
     getLanguagesSupportedByDefault,
     getNamespacesSupportedByDefault,
     getResourcesSupportedByDefault,
     isLanguageSupported
 } from "../helpers";
-import { SupportedLanguagesMeta } from "../models";
-import { I18nModuleConstants } from "../constants";
+import { LocaleBundles, SupportedLanguagesMeta } from "../models";
 
 const DEFAULT_SUPPORTED_LANGUAGES = [ "en-US", "pt-BR", "si-LK", "ta-IN" ];
+
+const LANGUAGE_BUNDLES: LocaleBundles = {
+    "en-US": {
+        "meta": {
+            "code": "en-US",
+            "flag": "us",
+            "name": "English (United States)",
+            "namespaces": [ "common", "devPortal" ]
+        },
+        "resources": {}
+    },
+    "pt-BR": {
+        "meta": {
+            "code": "pt-BR",
+            "flag": "br",
+            "name": "Português (Brazil)",
+            "namespaces": [ "common" ]
+        },
+        "resources": {}
+    },
+    "si-LK": {
+        "meta": {
+            "code": "si-LK",
+            "flag": "lk",
+            "name": "සිංහල (Sri Lanka)",
+            "namespaces": [ "common" ]
+        },
+        "resources": {}
+    },
+    "ta-IN": {
+        "meta": {
+            "code": "ta-IN",
+            "flag": "in",
+            "name": "தமிழ் (India)",
+            "namespaces": [ "common" ]
+        },
+        "resources": {}
+    }
+};
 
 describe("If default supported language retrieval helper function", () => {
 
     test("Should return the default supported languages as an array", () => {
-        expect(Array.isArray(getLanguagesSupportedByDefault())).toBe(true);
+        expect(Array.isArray(getLanguagesSupportedByDefault(LANGUAGE_BUNDLES))).toBe(true);
     });
 
     test("Should return all default supported languages", () => {
-        expect(getLanguagesSupportedByDefault()).toStrictEqual(DEFAULT_SUPPORTED_LANGUAGES);
+        expect(getLanguagesSupportedByDefault(LANGUAGE_BUNDLES)).toStrictEqual(DEFAULT_SUPPORTED_LANGUAGES);
     });
 });
 
@@ -48,22 +87,22 @@ describe("If default supported namespaces retrieval helper function", () => {
     ];
 
     test("Should return the default supported namespaces as an array", () => {
-        expect(Array.isArray(getNamespacesSupportedByDefault())).toBe(true);
+        expect(Array.isArray(getNamespacesSupportedByDefault(LANGUAGE_BUNDLES))).toBe(true);
     });
 
     test("Should return all the default supported namespaces", () => {
-        expect(getNamespacesSupportedByDefault()).toStrictEqual(DEFAULT_SUPPORTED_NAMESPACES);
+        expect(getNamespacesSupportedByDefault(LANGUAGE_BUNDLES)).toStrictEqual(DEFAULT_SUPPORTED_NAMESPACES);
     });
 });
 
 describe("If default supported resources retrieval helper function", () => {
 
     test("Should return the default supported resources in correct format", () => {
-        expect(typeof getResourcesSupportedByDefault()).toBe("object");
+        expect(typeof getResourcesSupportedByDefault(LANGUAGE_BUNDLES)).toBe("object");
     });
 
     test("Should return resources for all the supported languages", () => {
-        expect(Object.keys(getResourcesSupportedByDefault())).toEqual(DEFAULT_SUPPORTED_LANGUAGES);
+        expect(Object.keys(getResourcesSupportedByDefault(LANGUAGE_BUNDLES))).toEqual(DEFAULT_SUPPORTED_LANGUAGES);
     });
 });
 
