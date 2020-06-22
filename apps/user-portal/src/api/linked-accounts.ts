@@ -16,10 +16,9 @@
  * under the License.
  */
 
-import { OAuth } from "@wso2is/oauth-web-worker";
+import { OAuth, SignInResponse } from "@wso2is/oauth-web-worker";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { store } from "../store";
-import { SignInResponse } from "@wso2is/oauth-web-worker/dist/typings/src/models";
 
 /**
  * OAuth object.
