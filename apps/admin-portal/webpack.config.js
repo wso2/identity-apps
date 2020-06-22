@@ -17,6 +17,8 @@
  */
 
 const path = require("path");
+const BrotliPlugin = require("brotli-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -287,7 +289,20 @@ module.exports = (env) => {
             // Moment locales take up ~160KB. Since this portal currently doesn't require all the moment locales,
             // temporarily require only the ones for the languages supported by default.
             // TODO: Remove this when dynamic runtime localization support is announced.
-            new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /pt|si|ta/)
+            new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /pt|si|ta/),
+            new CompressionPlugin({
+                algorithm: "gzip",
+                filename: "[path].gz[query]",
+                minRatio: 0.8,
+                test: /\.(js|css|html|svg)$/,
+                threshold: 10240
+            }),
+            new BrotliPlugin({
+                asset: "[path].br[query]",
+                minRatio: 0.8,
+                test: /\.(js|css|html|svg)$/,
+                threshold: 10240
+            })
         ].filter(Boolean),
         resolve: {
             extensions: [".tsx", ".ts", ".js", ".json"]
