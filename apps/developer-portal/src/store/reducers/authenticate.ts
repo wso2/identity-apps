@@ -27,5 +27,6 @@ export const commonAuthenticateReducerInitialState: CommonAuthReducerStateInterf
     isAuthenticated: false,
     loginInit: false,
     logoutInit: false,
+    scope: "",
     username: ""
 };
