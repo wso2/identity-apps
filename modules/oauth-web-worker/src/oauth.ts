@@ -219,7 +219,7 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
 	 *
 	 * @returns {Promise<AxiosResponse>} A promise that resolves with the response data.
 	 */
-	const httpRequest = <T = void>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
+	const httpRequest = <T = any>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
 		if (!initialized) {
 			return Promise.reject("The object has not been initialized yet ");
 		}

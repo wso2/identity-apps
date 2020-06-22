@@ -21,7 +21,7 @@ import { ConfigInterface } from ".";
 import { SignInResponse, UserInfo } from "./message";
 
 export interface OAuthInterface {
-	httpRequest<T = void>(config: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+	httpRequest<T = any>(config: AxiosRequestConfig): Promise<AxiosResponse<T>>;
 	signOut(): Promise<boolean>;
 	signIn(): Promise<UserInfo>;
 	initialize(config: ConfigInterface): Promise<boolean>;
