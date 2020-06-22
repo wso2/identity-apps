@@ -251,7 +251,21 @@ module.exports = (env) => {
         },
         plugins: [
             isAnalyzeMode && new BundleAnalyzerPlugin(),
-            new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
+            new ForkTsCheckerWebpackPlugin({
+                async: isDevelopment,
+                checkSyntacticErrors: true,
+                eslint: true,
+                measureCompilationTime: true,
+                reportFiles: [
+                    "**",
+                    "!**/__tests__/**",
+                    "!**/?(*.)(spec|test).*"
+                ],
+                silent: true,
+                tsconfig: path.resolve(__dirname, "./tsconfig.json"),
+                useTypescriptIncrementalApi: true,
+                workers: 1
+            }),
             new WriteFilePlugin({
                 // Exclude hot-update files
                 test: /^(?!.*(hot-update)).*/
