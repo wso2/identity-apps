@@ -271,6 +271,11 @@ module.exports = (env) => {
                     to: "libs"
                 },
                 {
+                    context: path.resolve(__dirname, "node_modules", "@wso2is", "theme"),
+                    from: "src",
+                    to: "themes-less"
+                },
+                {
                     context: path.join(__dirname, "node_modules", "@wso2is", "i18n"),
                     from: path.join("dist", "bundle"),
                     to: path.join("resources", "i18n")
